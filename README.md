@@ -1,2 +1,2 @@
-# vuekit
-A collection of essential vue composables, directives and plugins
+# VueKit
+A "magic" collection of essential vue composables, directives and plugins
