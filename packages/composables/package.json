@@ -1,0 +1,21 @@
+{
+  "name": "@vue-equipment/composables",
+  "version": "0.0.1",
+  "description": "Collection of essential Vue Composition Utilities",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "dependencies": {
+    "vue": "^3.2.47"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*"
+  }
+}

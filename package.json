@@ -1,0 +1,22 @@
+{
+  "name": "vue-equipment",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A magic collection of Vue composables, plugins, components and directives",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev packages --open",
+    "docs:build": "vitepress build packages",
+    "docs:preview": "vitepress preview packages"
+  },
+  "keywords": [],
+  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "devDependencies": {
+    "@types/node": "^18.15.13",
+    "eslint": "^8.38.0",
+    "fs-extra": "^11.1.1",
+    "prettier": "^2.8.7",
+    "vite": "^4.3.1",
+    "vitepress": "1.0.0-alpha.73"
+  }
+}

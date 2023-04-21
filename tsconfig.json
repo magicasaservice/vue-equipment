@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "rootDir": ".",
+    "baseUrl": "."
+  },
+  "include": ["packages"],
+  "exclude": ["node_modules", "**/*.md", "**/dist"]
+}
