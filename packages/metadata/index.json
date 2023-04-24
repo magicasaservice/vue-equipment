@@ -1,0 +1,27 @@
+{
+  "packages": {
+    "composables": {
+      "name": "composables",
+      "display": "VueEquipment Composables",
+      "description": "A magic collection of Vue composables",
+      "dir": "packages/composables"
+    }
+  },
+  "categories": [],
+  "functions": [
+    {
+      "name": "useEasings",
+      "package": "composables",
+      "lastUpdated": 1682095054000,
+      "docs": "https://maas.egineering/vue-equipment/composables/useEasings/",
+      "description": "easings as functions"
+    },
+    {
+      "name": "useScrollTo",
+      "package": "composables",
+      "lastUpdated": 1682095054000,
+      "docs": "https://maas.egineering/vue-equipment/composables/useScrollTo/",
+      "description": "scroll to element"
+    }
+  ]
+}

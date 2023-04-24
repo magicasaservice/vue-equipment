@@ -1,4 +1,19 @@
-export function useEasings() {
+type Easing =
+  | 'linear'
+  | 'easeInQuad'
+  | 'easeOutQuad'
+  | 'easeInOutQuad'
+  | 'easeInCubic'
+  | 'easeOutCubic'
+  | 'easeInOutCubic'
+  | 'easeInQuart'
+  | 'easeOutQuart'
+  | 'easeInOutQuart'
+  | 'easeInQuint'
+  | 'easeOutQuint'
+  | 'easeInOutQuint'
+
+function useEasings() {
   const easings = {
     linear: (t: number) => t,
     easeInQuad: (t: number) => t * t,
@@ -20,3 +35,5 @@ export function useEasings() {
 
   return easings
 }
+
+export { useEasings, Easing }

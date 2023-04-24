@@ -36,13 +36,13 @@ export interface VueEquipmentFunction {
   related?: string[]
 }
 
-// export interface VueEquipmentPackage extends PackageManifest {
-//   dir: string
-//   docs?: string
-// }
+export interface VueEquipmentPackage extends PackageManifest {
+  dir: string
+  docs?: string
+}
 
 export interface PackageIndexes {
-  // packages: Record<string, VueUsePackage>
+  packages: Record<string, VueEquipmentPackage>
   categories: string[]
   functions: VueEquipmentFunction[]
 }

@@ -6,20 +6,7 @@ import _metadata, {
   packages as _packages,
 } from './index.json'
 
-const categoriesOrder = [
-  'State',
-  'Elements',
-  'Browser',
-  'Sensors',
-  'Network',
-  'Animation',
-  'Component',
-  'Watch',
-  'Reactivity',
-  'Array',
-  'Time',
-  'Utilities',
-]
+const categoriesOrder = ['Composables', 'Plugins']
 
 export const metadata = _metadata as PackageIndexes
 export const functions = _functions as PackageIndexes['functions']

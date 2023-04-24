@@ -1,7 +1,34 @@
 import { useEasings } from '../useEasings'
-import { unref } from 'vue'
+import { unrefElement } from '@vueuse/core'
 
-const { linear, easeOutQuad } = useEasings()
+import type { Easing } from '../useEasings'
+import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
+
+type EasingFunction = (t: number) => number
+
+type ScrollToParams = {
+  element?: Element
+  top: number
+  duration?: number
+  easing?: Easing | EasingFunction
+  callback?: () => void
+}
+
+type getScrollDurationParams = {
+  element: Element | Window
+  top: number
+  speed: number
+}
+
+type scrollToTargetParams = {
+  target: string | Element | MaybeElement | MaybeComputedElementRef
+  parent: string | Element | Window | MaybeElement | MaybeComputedElementRef
+  offset: number
+  speed: number
+  easing?: Easing | EasingFunction
+}
+
+const easings = useEasings()
 
 function min(a: number, b: number) {
   return a < b ? a : b
@@ -17,29 +44,7 @@ function getScrollPosition(element: Element | Window): number {
   }
 }
 
-type ScrollToParams = {
-  element?: Element
-  top: number
-  duration?: number
-  easingFn?: (t: number) => number
-  callback?: () => void
-}
-
-type getScrollDurationParams = {
-  element: Element | Window
-  top: number
-  speed: number
-}
-
-type scrollToTargetParams = {
-  target: string | Element
-  parentEl: Element | Window
-  offset: number
-  speed: number
-  easingFn?: (t: number) => number
-}
-
-export function useScrollTo() {
+function useScrollTo() {
   function getTopDistance(element: Element): number {
     const rect = element.getBoundingClientRect()
     const scrollTop = (document.scrollingElement || document.documentElement)
@@ -63,7 +68,7 @@ export function useScrollTo() {
     element = document.documentElement || document.body,
     top,
     duration = 500,
-    easingFn = linear,
+    easing = easings.linear,
     callback,
   }: ScrollToParams) {
     const start = Date.now()
@@ -74,10 +79,13 @@ export function useScrollTo() {
       return
     }
 
+    const mappedEasing =
+      typeof easing === 'string' ? easings[easing] : (easing as Function)
+
     const scroll = () => {
       const currentTime = Date.now()
       const time = min(1, (currentTime - start) / duration)
-      const easedTime = easingFn(time)
+      const easedTime = mappedEasing(time)
 
       element.scroll({ top: easedTime * (top - from) + from })
 
@@ -93,30 +101,47 @@ export function useScrollTo() {
 
   function scrollToTarget({
     target,
-    parentEl = window,
+    parent = window,
     offset = 0,
-    speed = 300,
-    easingFn = easeOutQuad,
+    speed = 500,
+    easing = easings.easeOutQuad,
   }: scrollToTargetParams) {
-    const mappedTarget = unref(target)
-    const targetEl =
-      typeof mappedTarget === 'string'
-        ? document.querySelector(mappedTarget)
-        : mappedTarget
+    let parentEl
+    let targetEl
+
+    if (parent === window) {
+      parentEl = parent
+    } else if (typeof parent === 'string') {
+      parentEl = document.querySelector(parent) || document.documentElement
+    } else {
+      parentEl =
+        unrefElement(parent as MaybeComputedElementRef<MaybeElement>) ||
+        document.documentElement
+    }
+
+    if (!parentEl) return
+
+    if (typeof target === 'string') {
+      const queryTarget = parentEl === window ? document : (parentEl as Element)
+      targetEl = queryTarget.querySelector(target)
+    } else {
+      targetEl = unrefElement(target as MaybeComputedElementRef<MaybeElement>)
+    }
 
     if (!targetEl) return
 
     const topDistance = getTopDistance(targetEl) - offset
+
     const scrollDuration = getScrollDuration({
       element: parentEl,
       top: topDistance,
-      speed,
+      speed: speed,
     })
 
     scrollTo({
       top: topDistance,
       duration: scrollDuration,
-      easingFn,
+      easing: easing,
     })
   }
 
@@ -126,4 +151,11 @@ export function useScrollTo() {
     scrollTo,
     scrollToTarget,
   }
+}
+
+export {
+  useScrollTo,
+  ScrollToParams,
+  getScrollDurationParams,
+  scrollToTargetParams,
 }

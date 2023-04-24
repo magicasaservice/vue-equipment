@@ -5,15 +5,14 @@ import type {
   PackageIndexes,
   VueUseFunction,
   VueUsePackage,
-} from '@magicasaservice/vue-equipment/metadata'
+} from '@vue-equipment/metadata'
 
 import fg from 'fast-glob'
 import Git from 'simple-git'
 import { packages } from '../../../meta/packages'
-import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { getCategories } from '../utils'
 
-export const DOCS_URL = 'https://vueuse.org'
+export const DOCS_URL = 'https://maas.egineering/vue-equipment'
 export const DIR_PACKAGE = resolve(__dirname, '..')
 export const DIR_ROOT = resolve(__dirname, '../../..')
 export const DIR_SRC = resolve(DIR_ROOT, 'packages')
@@ -35,7 +34,7 @@ export async function readMetadata() {
   const indexes: PackageIndexes = {
     packages: {},
     categories: [],
-    functions: [...ecosystemFunctions],
+    functions: [],
   }
 
   for (const info of packages) {
@@ -106,7 +105,7 @@ export async function readMetadata() {
         description = description.trim()
         description = description.charAt(0).toLowerCase() + description.slice(1)
 
-        fn.category = ['core', 'shared'].includes(pkg.name)
+        fn.category = ['composables', 'plugins'].includes(pkg.name)
           ? category
           : `@${pkg.display}`
         fn.description = description
@@ -125,21 +124,21 @@ export async function readMetadata() {
     )
   }
 
-  indexes.functions.sort((a, b) => a.name.localeCompare(b.name))
+  indexes.functions.sort((a: any, b: any) => a.name.localeCompare(b.name))
   indexes.categories = getCategories(indexes.functions)
 
   // interop related
-  indexes.functions.forEach((fn) => {
+  indexes.functions.forEach((fn: any) => {
     if (!fn.related) return
 
-    fn.related.forEach((name) => {
-      const target = indexes.functions.find((f) => f.name === name)
+    fn.related.forEach((name: string) => {
+      const target = indexes.functions.find((f: any) => f.name === name)
       if (!target) throw new Error(`Unknown related function: ${name}`)
       if (!target.related) target.related = []
       if (!target.related.includes(fn.name)) target.related.push(fn.name)
     })
   })
-  indexes.functions.forEach((fn) => fn.related?.sort())
+  indexes.functions.forEach((fn: any) => fn.related?.sort())
 
   return indexes
 }

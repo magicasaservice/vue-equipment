@@ -1,15 +1,9 @@
 {
-  "name": "@vue-equipment/composables",
+  "name": "@vue-equipment/metadata",
   "version": "0.0.1",
-  "description": "Collection of essential Vue Composition Utilities",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Metadata for VueEquipment functions",
   "keywords": [],
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
-  "dependencies": {
-    "vue": "^3.2.47"
-  },
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -21,7 +15,10 @@
   "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
-  "devDependencies": {
-    "@vueuse/core": "^10.1.0"
+  "files": [
+    "index.*"
+  ],
+  "scripts": {
+    "update": "tsx scripts/update.ts"
   }
 }

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
@@ -9,9 +10,30 @@
     "strictFunctionTypes": true,
     "declaration": true,
     "declarationDir": "./types",
+    "resolveJsonModule": true,
     "rootDir": ".",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noUnusedLocals": true,
+    "paths": {
+      "@vue-equipment/composables": ["./packages/composables/index.ts"],
+      "@vue-equipment/composables/*": ["./packages/composables/*"],
+      "@vue-equipment/metadata": ["./packages/metadata/index.ts"]
+    }
   },
-  "include": ["packages"],
-  "exclude": ["node_modules", "**/*.md", "**/dist"]
+  "include": [
+    "packages",
+    "packages/.vitepress/components/*.vue",
+    "packages/.vitepress/*.ts",
+    "meta"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.md",
+    "**/dist",
+    "packages/.test",
+    "packages/_docs"
+  ]
 }
