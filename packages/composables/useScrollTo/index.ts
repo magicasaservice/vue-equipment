@@ -1,27 +1,31 @@
 import { useEasings } from '../useEasings'
 import { unrefElement } from '@vueuse/core'
-import type { Easing } from '../useEasings'
+import type { EasingFunction } from '../useEasings'
 import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
 
-export type EasingFunction = (t: number) => number
 export type ScrollToParams = {
-  element?: Element
+  parent?: Element | Window
+  left: number
   top: number
-  duration?: number
-  easing?: Easing | EasingFunction
+  duration?: { x?: number; y?: number }
+  easing?: EasingFunction
   callback?: () => void
 }
 export type getScrollDurationParams = {
-  element: Element | Window
+  parent: Element | Window
+  left: number
   top: number
   speed: number
 }
 export type scrollToTargetParams = {
   target: string | Element | MaybeElement | MaybeComputedElementRef
   parent?: string | Element | Window | MaybeElement | MaybeComputedElementRef
-  offset: number
-  speed: number
-  easing?: Easing | EasingFunction
+  offset?: {
+    x?: number
+    y?: number
+  }
+  speed?: number
+  easing?: EasingFunction
 }
 
 const easings = useEasings()
@@ -30,62 +34,80 @@ function min(a: number, b: number) {
   return a < b ? a : b
 }
 
-function getScrollPosition(element: Element | Window): number {
+function getScrollPosition(element: Element | Window): {
+  x: number
+  y: number
+} {
   if (element === window) {
-    return window.pageYOffset
+    return { x: window.pageXOffset, y: window.pageYOffset }
   } else if (element instanceof Element) {
-    return element.scrollTop
+    return { x: element.scrollLeft, y: element.scrollTop }
   } else {
-    return 0
+    return { x: 0, y: 0 }
   }
 }
 
 export function useScrollTo() {
-  function getTopDistance(element: Element): number {
+  function getDistance(element: Element): { top: number; left: number } {
     const rect = element.getBoundingClientRect()
-    const scrollTop = (document.scrollingElement || document.documentElement)
-      .scrollTop
-    return rect.top + scrollTop
+    const scrollEl = document.scrollingElement || document.documentElement
+
+    return {
+      top: rect.top + scrollEl.scrollTop,
+      left: rect.left + scrollEl.scrollLeft,
+    }
   }
 
   function getScrollDuration({
-    element = window,
+    parent = document.documentElement || document.body,
+    left = 0,
     top = 0,
     speed = 500,
   }: getScrollDurationParams) {
-    const currentPos = getScrollPosition(element)
-    const distance = currentPos - top
-    const duration = Math.abs((distance / speed) * 100)
+    const currentPos = getScrollPosition(parent)
+    const distanceX = currentPos.x - left
+    const distanceY = currentPos.y - top
+    const durationX = Math.abs((distanceX / speed) * 100)
+    const durationY = Math.abs((distanceY / speed) * 100)
 
-    return duration
+    return { x: durationX, y: durationY }
   }
 
   function scrollTo({
-    element = document.documentElement || document.body,
+    parent = document.documentElement || document.body,
     top,
-    duration = 500,
-    easing = easings.linear,
+    left,
+    duration = {},
+    easing = easings.easeOutQuad,
     callback,
   }: ScrollToParams) {
-    const start = Date.now()
-    const from = element.scrollTop
+    const startTime = Date.now()
+    const { x: fromX, y: fromY } = getScrollPosition(parent)
 
-    if (from === top) {
+    if (fromX === top && fromY === left) {
       if (callback) callback()
       return
     }
 
-    const mappedEasing =
-      typeof easing === 'string' ? easings[easing] : (easing as Function)
+    const mappedDuration = { x: 500, y: 500, ...duration }
 
     const scroll = () => {
       const currentTime = Date.now()
-      const time = min(1, (currentTime - start) / duration)
-      const easedTime = mappedEasing(time)
 
-      element.scroll({ top: easedTime * (top - from) + from })
+      const timeX = min(1, (currentTime - startTime) / mappedDuration.x)
+      const timeY = min(1, (currentTime - startTime) / mappedDuration.y)
+      const easedTimeX = easing(timeX)
+      const easedTimeY = easing(timeY)
 
-      if (time < 1) {
+      // We use the min of the two times to make sure we scroll at the same speed
+      const minTime = Math.min(easedTimeX, easedTimeY)
+
+      parent.scroll({
+        left: minTime * (top - fromX) + fromX,
+        top: minTime * (top - fromY) + fromY,
+      })
+
+      if (easedTimeX < 1 || easedTimeY < 1) {
         requestAnimationFrame(scroll)
       } else if (callback) {
         callback()
@@ -97,8 +119,8 @@ export function useScrollTo() {
 
   function scrollToTarget({
     target,
-    parent = window,
-    offset = 0,
+    parent = document.documentElement || document.body,
+    offset = {},
     speed = 500,
     easing = easings.easeOutQuad,
   }: scrollToTargetParams) {
@@ -126,15 +148,22 @@ export function useScrollTo() {
 
     if (!targetEl) return
 
-    const topDistance = getTopDistance(targetEl) - offset
+    const mappedOffset = { x: 0, y: 0, ...offset }
+    const distance = getDistance(targetEl)
+
+    const leftDistance = distance.left - mappedOffset.x
+    const topDistance = distance.top - mappedOffset.y
 
     const scrollDuration = getScrollDuration({
-      element: parentEl,
+      parent: parentEl,
+      left: leftDistance,
       top: topDistance,
       speed: speed,
     })
 
     scrollTo({
+      parent: parentEl,
+      left: leftDistance,
       top: topDistance,
       duration: scrollDuration,
       easing: easing,
@@ -142,7 +171,7 @@ export function useScrollTo() {
   }
 
   return {
-    getTopDistance,
+    getDistance,
     getScrollDuration,
     scrollTo,
     scrollToTarget,
