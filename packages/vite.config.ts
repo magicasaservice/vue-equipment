@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+import UnoCSS from 'unocss/vite'
 
 export default defineConfig(async () => {
   return {
@@ -28,6 +29,7 @@ export default defineConfig(async () => {
         dts: './.vitepress/components.d.ts',
         transformer: 'vue3',
       }),
+      UnoCSS(),
     ],
     resolve: {
       alias: {

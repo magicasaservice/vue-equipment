@@ -1,6 +1,6 @@
 # useScrollTo
 
-Scroll to element
+Scroll to element with a set speed
 
 ## Usage
 

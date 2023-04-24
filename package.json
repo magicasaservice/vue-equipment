@@ -42,6 +42,7 @@
     "rollup-plugin-pure": "^0.0.2",
     "simple-git": "^3.17.0",
     "tsx": "^3.12.6",
+    "unocss": "^0.51.8",
     "unplugin-icons": "^0.16.1",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.3.1",

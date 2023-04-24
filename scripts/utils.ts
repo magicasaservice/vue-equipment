@@ -8,37 +8,11 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
   for (const { name, dir, manualImport } of Object.values(packages)) {
     if (manualImport) continue
 
-    let imports: string[]
-    if (name === 'components') {
-      imports = functions
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .flatMap((fn) => {
-          const arr: string[] = []
-
-          // don't include integration components
-          if (fn.package === 'integrations') return arr
-
-          if (fn.component)
-            arr.push(`export * from '../${fn.package}/${fn.name}/component'`)
-          if (fn.directive)
-            arr.push(`export * from '../${fn.package}/${fn.name}/directive'`)
-          return arr
-        })
-    } else {
-      imports = functions
-        .filter((i) => i.package === name)
-        .map((f) => f.name)
-        .sort()
-        .map((name) => `export * from './${name}'`)
-    }
-
-    if (name === 'composables') {
-      imports.push("export * from './types'")
-    }
-
-    // if (name === 'nuxt') {
-    //   imports.push("export * from '@vueuse/core'")
-    // }
+    const imports = functions
+      .filter((i) => i.package === name)
+      .map((f) => f.name)
+      .sort()
+      .map((name) => `export * from './${name}'`)
 
     await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
 

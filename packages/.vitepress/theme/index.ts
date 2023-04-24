@@ -5,7 +5,7 @@ import DefaultTheme from 'vitepress/theme'
 // import './styles/utils.css'
 // import './styles/vars.css'
 // import './styles/overrides.css'
-// import 'uno.css'
+import 'uno.css'
 
 export default {
   ...DefaultTheme,

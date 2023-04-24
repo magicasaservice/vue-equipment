@@ -1,10 +1,11 @@
 import { useClipboard } from '@vueuse/core'
 import { Ref, unref } from 'vue'
+import { Font } from 'fontkit'
 
 export type glyphToSvgParams = {
   fontSize: Ref<number> | number
   fontWeight: Ref<number> | number
-  fontFile: any
+  fontFile: Ref<Font> | Font
 }
 
 export function useGlyphToSvg({
@@ -13,18 +14,21 @@ export function useGlyphToSvg({
   fontFile,
 }: glyphToSvgParams) {
   const { copy } = useClipboard()
+  const mappedFontFile = unref(fontFile)
+  const mappedFontSize = unref(fontSize)
+  const mappedFontWeight = unref(fontWeight)
 
   const loadVariableFont = () => {
     // @ts-ignore
-    const variableFont = fontFile.value.getVariation({
-      wght: unref(fontWeight),
+    const variableFont = mappedFontFile.getVariation({
+      wght: mappedFontWeight,
     })
     return variableFont
   }
 
   const convertToSvg = (glyph: any) => {
     // Scale according to current font size
-    const scale = unref(fontSize) / fontFile.value.unitsPerEm
+    const scale = mappedFontSize / mappedFontFile.unitsPerEm
     const path = glyph.path.scale(scale, scale).scale(-1, 1).rotate(Math.PI)
 
     // Center inside square bounding box
@@ -47,14 +51,14 @@ export function useGlyphToSvg({
     return svg
   }
 
-  const renderSvg = async (codePoint: any) => {
+  const renderSvg = async (codePoint: string) => {
     const font = await loadVariableFont()
     const glyph = font.glyphForCodePoint(codePoint)
     const svg = convertToSvg(glyph)
     return svg
   }
 
-  const copySvg = async (codePoint: any) => {
+  const copySvg = async (codePoint: string) => {
     const svg = await renderSvg(codePoint)
     copy(svg)
   }
