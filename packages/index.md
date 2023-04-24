@@ -10,5 +10,3 @@ hero:
     src: /favicon.svg
     alt: VueEquipment
 ---
-
-<Home />

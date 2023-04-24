@@ -1,12 +1,18 @@
-// Forked from @vueuse/vueuse
-
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
+import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 const functionNames = ['useScrollTo', 'useEasings']
 
 export function MarkdownTransform(): Plugin {
+  const DIR_TYPES = resolve(__dirname, '../../../types/packages')
+  const hasTypes = fs.existsSync(DIR_TYPES)
+
+  if (!hasTypes) {
+    console.warn('No types dist found, run `npm run build:types` first.')
+  }
+
   return {
     name: 'vueuse-md-transform',
     enforce: 'pre',
@@ -29,21 +35,16 @@ export function MarkdownTransform(): Plugin {
               : frontmatterEnds + 4
             : firstHeader
 
-        const { header } = await getFunctionMarkdown(pkg, name)
+        const { header, footer } = await getFunctionMarkdown(pkg, name)
 
+        if (hasTypes) code = replacer(code, footer, 'FOOTER', 'tail')
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
-        code = code
-          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
-          .replace(
-            /## (Components?(?:\sUsage)?)/i,
-            '## $1\n<LearnMoreComponents />\n\n'
-          )
-          .replace(
-            /## (Directives?(?:\sUsage)?)/i,
-            '## $1\n<LearnMoreDirectives />\n\n'
-          )
+        code = code.replace(
+          /(# \w+?)\n/,
+          `$1\n\n<FunctionInfo fn="${name}"/>\n`
+        )
       }
 
       return code
@@ -63,12 +64,32 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
     fs.existsSync(join(dirname, i))
   )
 
+  const types = await getTypeDefinition(pkg, name)
+
+  let typingSection = ''
+
+  if (types) {
+    const code = `\`\`\`typescript\n${types.trim()}\n\`\`\``
+    typingSection =
+      types.length > 1000
+        ? `
+## Type Declarations
+<details>
+<summary op50 italic cursor-pointer select-none>Show Type Declarations</summary>
+
+${code}
+
+</details>
+`
+        : `\n## Type Declarations\n\n${code}`
+  }
+
   const demoSection = demoPath
     ? demoPath.endsWith('.client.vue')
       ? `
 <script setup>
-import { defineAsyncComponent } from 'vue'
-const Demo = defineAsyncComponent(() => import('./${demoPath}'))
+  import { defineAsyncComponent } from 'vue'
+  const Demo = defineAsyncComponent(() => import('./${demoPath}'))
 </script>
 
 ## Demo
@@ -83,21 +104,22 @@ const Demo = defineAsyncComponent(() => import('./${demoPath}'))
 `
       : `
 <script setup>
-import Demo from \'./${demoPath}\'
+  import Demo from \'./${demoPath}\'
 </script>
 
 ## Demo
-
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
-<Demo/>
+  <p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
+  <Demo/>
 </DemoContainer>
 `
     : ''
 
+  const footer = `${typingSection}`
   const header = demoSection
 
   return {
+    footer,
     header,
   }
 }

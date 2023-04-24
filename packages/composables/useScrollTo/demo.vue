@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useScrollTo } from '@magicasaservice/vue-equipment/composables'
+import { useScrollTo } from '@vue-equipment/composables'
 
 const { scrollToTarget } = useScrollTo()
 const el = ref()

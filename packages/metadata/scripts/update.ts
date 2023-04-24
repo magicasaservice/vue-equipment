@@ -3,14 +3,13 @@ import fs from 'fs-extra'
 import matter from 'gray-matter'
 import type {
   PackageIndexes,
-  VueUseFunction,
-  VueUsePackage,
+  VueEquipmentFunction,
+  VueEquipmentPackage,
 } from '@vue-equipment/metadata'
 
 import fg from 'fast-glob'
 import Git from 'simple-git'
 import { packages } from '../../../meta/packages'
-import { getCategories } from '../utils'
 
 export const DOCS_URL = 'https://maas.egineering/vue-equipment'
 export const DIR_PACKAGE = resolve(__dirname, '..')
@@ -33,7 +32,6 @@ export async function listFunctions(dir: string, ignore: string[] = []) {
 export async function readMetadata() {
   const indexes: PackageIndexes = {
     packages: {},
-    categories: [],
     functions: [],
   }
 
@@ -44,7 +42,7 @@ export async function readMetadata() {
 
     const functions = await listFunctions(dir)
 
-    const pkg: VueUsePackage = {
+    const pkg: VueEquipmentPackage = {
       ...info,
       dir: relative(DIR_ROOT, dir).replace(/\\/g, '/'),
       docs: info.addon ? `${DOCS_URL}/${info.name}/README.html` : undefined,
@@ -57,17 +55,12 @@ export async function readMetadata() {
         const mdPath = join(dir, fnName, 'index.md')
         const tsPath = join(dir, fnName, 'index.ts')
 
-        const fn: VueUseFunction = {
+        const fn: VueEquipmentFunction = {
           name: fnName,
           package: pkg.name,
           lastUpdated:
             +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000,
         }
-
-        if (fs.existsSync(join(dir, fnName, 'component.ts')))
-          fn.component = true
-        if (fs.existsSync(join(dir, fnName, 'directive.ts')))
-          fn.directive = true
 
         if (!fs.existsSync(mdPath)) {
           fn.internal = true
@@ -80,7 +73,6 @@ export async function readMetadata() {
         const mdRaw = await fs.readFile(mdPath, 'utf-8')
 
         const { content: md, data: frontmatter } = matter(mdRaw)
-        const category = frontmatter.category
 
         let alias = frontmatter.alias
         if (typeof alias === 'string')
@@ -105,9 +97,6 @@ export async function readMetadata() {
         description = description.trim()
         description = description.charAt(0).toLowerCase() + description.slice(1)
 
-        fn.category = ['composables', 'plugins'].includes(pkg.name)
-          ? category
-          : `@${pkg.display}`
         fn.description = description
 
         if (description.includes('DEPRECATED') || frontmatter.deprecated)
@@ -125,7 +114,6 @@ export async function readMetadata() {
   }
 
   indexes.functions.sort((a: any, b: any) => a.name.localeCompare(b.name))
-  indexes.categories = getCategories(indexes.functions)
 
   // interop related
   indexes.functions.forEach((fn: any) => {

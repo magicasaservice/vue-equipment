@@ -1,11 +1,10 @@
 import type { PackageManifest } from '@vue-equipment/metadata'
 
-export const packages: any[] = [
+export const packages: PackageManifest[] = [
   {
     name: 'metadata',
     display: 'Metadata for VueEquipment packages',
     manualImport: true,
-    iife: false,
     utils: true,
     target: 'node16',
   },

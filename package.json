@@ -5,23 +5,28 @@
   "description": "A magic collection of Vue composables, plugins, components and directives",
   "scripts": {
     "build": "tsx scripts/build.ts",
+    "build:types": "tsc --emitDeclarationOnly",
     "build:rollup": "rollup -c",
     "clean": "rimraf dist types packages/*/dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "nr -C packages/metadata update",
+    "dev": "nr update && nr docs:dev",
     "docs:dev": "vitepress dev packages --open",
     "docs:build": "vitepress build packages",
-    "docs:preview": "vitepress preview packages"
+    "docs:preview": "vitepress preview packages",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "nr -C packages/metadata update"
   },
   "keywords": [],
+  "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@antfu/ni": "^0.21.3",
     "@rollup/plugin-json": "^6.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.16.0",
+    "@types/prettier": "^2.7.2",
     "@vue-equipment/composables": "workspace:*",
     "@vue-equipment/metadata": "workspace:*",
+    "@vueuse/core": "^10.1.0",
     "consola": "^3.1.0",
     "esbuild": "^0.17.18",
     "esbuild-register": "^3.4.2",
@@ -37,7 +42,10 @@
     "rollup-plugin-pure": "^0.0.2",
     "simple-git": "^3.17.0",
     "tsx": "^3.12.6",
+    "unplugin-icons": "^0.16.1",
+    "unplugin-vue-components": "^0.24.1",
     "vite": "^4.3.1",
-    "vitepress": "1.0.0-alpha.73"
+    "vitepress": "1.0.0-alpha.73",
+    "vue": "^3.2.47"
   }
 }

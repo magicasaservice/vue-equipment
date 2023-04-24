@@ -1,28 +1,24 @@
 import { useEasings } from '../useEasings'
 import { unrefElement } from '@vueuse/core'
-
 import type { Easing } from '../useEasings'
 import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
 
-type EasingFunction = (t: number) => number
-
-type ScrollToParams = {
+export type EasingFunction = (t: number) => number
+export type ScrollToParams = {
   element?: Element
   top: number
   duration?: number
   easing?: Easing | EasingFunction
   callback?: () => void
 }
-
-type getScrollDurationParams = {
+export type getScrollDurationParams = {
   element: Element | Window
   top: number
   speed: number
 }
-
-type scrollToTargetParams = {
+export type scrollToTargetParams = {
   target: string | Element | MaybeElement | MaybeComputedElementRef
-  parent: string | Element | Window | MaybeElement | MaybeComputedElementRef
+  parent?: string | Element | Window | MaybeElement | MaybeComputedElementRef
   offset: number
   speed: number
   easing?: Easing | EasingFunction
@@ -44,7 +40,7 @@ function getScrollPosition(element: Element | Window): number {
   }
 }
 
-function useScrollTo() {
+export function useScrollTo() {
   function getTopDistance(element: Element): number {
     const rect = element.getBoundingClientRect()
     const scrollTop = (document.scrollingElement || document.documentElement)
@@ -151,11 +147,4 @@ function useScrollTo() {
     scrollTo,
     scrollToTarget,
   }
-}
-
-export {
-  useScrollTo,
-  ScrollToParams,
-  getScrollDurationParams,
-  scrollToTargetParams,
 }

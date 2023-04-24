@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Metadata for VueEquipment functions",
   "keywords": [],
+  "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "exports": {
     ".": {

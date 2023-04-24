@@ -10,7 +10,6 @@ export interface PackageManifest {
   deprecated?: boolean
   submodules?: boolean
   build?: boolean
-  iife?: boolean
   cjs?: boolean
   mjs?: boolean
   dts?: boolean
@@ -24,7 +23,6 @@ export interface VueEquipmentFunction {
   package: string
   importPath?: string
   lastUpdated?: number
-  category?: string
   description?: string
   docs?: string
   deprecated?: boolean
@@ -43,7 +41,6 @@ export interface VueEquipmentPackage extends PackageManifest {
 
 export interface PackageIndexes {
   packages: Record<string, VueEquipmentPackage>
-  categories: string[]
   functions: VueEquipmentFunction[]
 }
 

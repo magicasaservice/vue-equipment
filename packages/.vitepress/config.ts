@@ -1,6 +1,8 @@
 import { defineConfig } from 'vitepress'
+import { metadata } from '../metadata/metadata'
 
-// https://vitepress.dev/reference/site-config
+const ComposablesSideBar = getComposablesSideBar()
+
 export default defineConfig({
   title: 'VueEquipment',
   description:
@@ -25,14 +27,21 @@ export default defineConfig({
       },
     ],
 
-    sidebar: [
-      {
-        text: 'Composables',
-        items: [
-          { text: 'useScrollTo', link: '/composables/useScrollTo/' },
-          { text: 'useEasings', link: '/composables/useEasings/' },
-        ],
-      },
-    ],
+    sidebar: {
+      '/composables/': [ComposablesSideBar],
+    },
   },
 })
+
+function getComposablesSideBar() {
+  const functions = metadata.functions.filter((i) => !i.internal)
+
+  return {
+    text: 'Composables',
+    items: functions.map((i) => ({
+      text: i.name,
+      link: i.external || `/${i.package}/${i.name}/`,
+    })),
+    link: functions[0].external || `/${functions[0].package}/README`,
+  }
+}

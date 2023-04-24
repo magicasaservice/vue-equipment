@@ -1,5 +1,11 @@
 .DS_Store
+*.log
+components.d.ts
+dist
+index.json
+indexes.json
 node_modules
-
+cache
+packages/*/LICENSE
+types
 .vitepress/cache
-.vitepress/dist
