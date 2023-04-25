@@ -40,7 +40,7 @@ const scroll = () => {
   scrollToTarget({
     target: el,
     parent: parent,
-    speed: 100,
+    speed: 200,
     easing: easeInQuad,
   })
 }

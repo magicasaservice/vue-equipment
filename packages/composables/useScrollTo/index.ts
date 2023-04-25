@@ -3,6 +3,14 @@ import { unrefElement } from '@vueuse/core'
 import type { EasingFunction } from '../useEasings'
 import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
 
+export type ScrollToTarget =
+  | string
+  | Element
+  | MaybeElement
+  | MaybeComputedElementRef
+
+export type ScrollToParent = ScrollToTarget | Window
+
 export type ScrollToParams = {
   parent?: Element | Window
   left: number
@@ -11,15 +19,17 @@ export type ScrollToParams = {
   easing?: EasingFunction
   callback?: () => void
 }
+
 export type getScrollDurationParams = {
   parent: Element | Window
   left: number
   top: number
   speed: number
 }
+
 export type scrollToTargetParams = {
-  target: string | Element | MaybeElement | MaybeComputedElementRef
-  parent?: string | Element | Window | MaybeElement | MaybeComputedElementRef
+  target: ScrollToTarget
+  parent?: ScrollToParent
   offset?: {
     x?: number
     y?: number
@@ -34,20 +44,42 @@ function min(a: number, b: number) {
   return a < b ? a : b
 }
 
-function getScrollPosition(element: Element | Window): {
-  x: number
-  y: number
-} {
-  if (element === window) {
-    return { x: window.pageXOffset, y: window.pageYOffset }
-  } else if (element instanceof Element) {
-    return { x: element.scrollLeft, y: element.scrollTop }
+function unwrapParent(parent: ScrollToParent) {
+  if (parent === window) {
+    return parent
+  } else if (typeof parent === 'string') {
+    return document.querySelector(parent) || document.documentElement
   } else {
-    return { x: 0, y: 0 }
+    return (
+      unrefElement(parent as MaybeComputedElementRef<MaybeElement>) ||
+      document.documentElement
+    )
+  }
+}
+
+function unwrapTarget(target: ScrollToTarget, parentEl: Element | Window) {
+  if (typeof target === 'string') {
+    const queryTarget = parentEl === window ? document : (parentEl as Element)
+    return queryTarget.querySelector(target)
+  } else {
+    return unrefElement(target as MaybeComputedElementRef<MaybeElement>)
   }
 }
 
 export function useScrollTo() {
+  function getScrollPosition(element: Element | Window): {
+    x: number
+    y: number
+  } {
+    if (element === window) {
+      return { x: window.pageXOffset, y: window.pageYOffset }
+    } else if (element instanceof Element) {
+      return { x: element.scrollLeft, y: element.scrollTop }
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
+
   function getDistance(element: Element): { top: number; left: number } {
     const rect = element.getBoundingClientRect()
     const scrollEl = document.scrollingElement || document.documentElement
@@ -103,7 +135,7 @@ export function useScrollTo() {
       const minTime = Math.min(easedTimeX, easedTimeY)
 
       parent.scroll({
-        left: minTime * (top - fromX) + fromX,
+        left: minTime * (left - fromX) + fromX,
         top: minTime * (top - fromY) + fromY,
       })
 
@@ -124,33 +156,13 @@ export function useScrollTo() {
     speed = 500,
     easing = easings.easeOutQuad,
   }: scrollToTargetParams) {
-    let parentEl
-    let targetEl
-
-    if (parent === window) {
-      parentEl = parent
-    } else if (typeof parent === 'string') {
-      parentEl = document.querySelector(parent) || document.documentElement
-    } else {
-      parentEl =
-        unrefElement(parent as MaybeComputedElementRef<MaybeElement>) ||
-        document.documentElement
-    }
-
+    let parentEl = unwrapParent(parent)
     if (!parentEl) return
-
-    if (typeof target === 'string') {
-      const queryTarget = parentEl === window ? document : (parentEl as Element)
-      targetEl = queryTarget.querySelector(target)
-    } else {
-      targetEl = unrefElement(target as MaybeComputedElementRef<MaybeElement>)
-    }
-
+    let targetEl = unwrapTarget(target, parentEl)
     if (!targetEl) return
 
     const mappedOffset = { x: 0, y: 0, ...offset }
     const distance = getDistance(targetEl)
-
     const leftDistance = distance.left - mappedOffset.x
     const topDistance = distance.top - mappedOffset.y
 
@@ -171,6 +183,7 @@ export function useScrollTo() {
   }
 
   return {
+    getScrollPosition,
     getDistance,
     getScrollDuration,
     scrollTo,

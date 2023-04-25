@@ -13,6 +13,6 @@ const el = ref()
 scrollToTarget({
   target: el,
   speed: 1000,
-  offset: 0,
+  offset: { x: 0, y: 50 },
 })
 ```
