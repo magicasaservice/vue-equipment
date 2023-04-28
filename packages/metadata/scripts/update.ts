@@ -26,6 +26,7 @@ export async function listFunctions(dir: string, ignore: string[] = []) {
     ignore: ['_*', 'dist', 'node_modules', ...ignore],
   })
   files.sort()
+  console.log('files:', files)
   return files
 }
 

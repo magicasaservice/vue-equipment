@@ -13,4 +13,9 @@ export const packages: PackageManifest[] = [
     display: 'Vue Equipment Composables',
     description: 'A magic collection of Vue composables',
   },
+  {
+    name: 'plugins',
+    display: 'Vue Equipment Plugins',
+    description: 'A magic collection of Vue plugins',
+  },
 ]
