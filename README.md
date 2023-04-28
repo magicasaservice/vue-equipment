@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/favicon.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/favicon.svg">
-    <img alt="Show the icon for the repository" src="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/favicon.svg">
+    <source width="256" media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/logo-light.svg">
+    <source width="256" media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/logo-dark.svg">
+    <img width="256" alt="Show the icon for the repository" src="https://raw.githubusercontent.com/magicasaservice/vue-equipment/main/packages/public/favicon.svg">
   </picture>
   </p>
 
