@@ -4,7 +4,7 @@ import { metadata } from '../metadata/metadata'
 const ComposablesSideBar = getComposablesSideBar()
 
 export default defineConfig({
-  title: 'VueEquipment',
+  title: 'Vue Equipment',
   description:
     'A magic collection of Vue composables, plugins, components and directives',
   markdown: {
@@ -15,6 +15,7 @@ export default defineConfig({
   },
 
   themeConfig: {
+    logo: '/favicon.svg',
     nav: [
       { text: 'Home', link: '/' },
       {

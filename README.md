@@ -1,6 +1,12 @@
-<!-- <img width="96" alt="VueEquipment" src="https://user-images.githubusercontent.com/30624279/233440946-072b5fb7-aef7-4c4b-a4df-1b5e609e0760.png"> -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/favicon.svg">
+    <source media="(prefers-color-scheme: light)" srcset="/favicon.svg">
+    <img alt="Show the icon for the repository" src="/favicon.svg">
+  </picture>
+  </p>
 
-# VueEquipment
+# Vue Equipment
 
 > A _magic_ collection of essential Vue composables, plugins, components and directives
 

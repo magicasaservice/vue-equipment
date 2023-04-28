@@ -1,7 +1,7 @@
 {
   "name": "@vue-equipment/metadata",
   "version": "0.0.1",
-  "description": "Metadata for VueEquipment functions",
+  "description": "Metadata for Vue Equipment functions",
   "keywords": [],
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
