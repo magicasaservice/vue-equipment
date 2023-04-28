@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useScrollTo, useEasings } from '@vue-equipment/composables'
+import { useScrollTo, useEasings } from '@maas/vue-composables'
 
 const { scrollToTarget } = useScrollTo()
 const { easeInQuad } = useEasings()

@@ -1,7 +1,7 @@
 {
-  "name": "@maas/vue-composables",
+  "name": "@maas/vue-plugins",
   "version": "0.0.1",
-  "description": "Collection of essential Vue Composition Utilities",
+  "description": "A magic collection of Vue plugins",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,9 +21,10 @@
   "types": "./index.d.ts",
   "dependencies": {
     "@vueuse/core": "^10.1.0",
-    "vue": "^3.2.47"
+    "animejs": "^3.2.1",
+    "mitt": "^3.0.0"
   },
   "devDependencies": {
-    "@types/fontkit": "^2.0.3"
+    "@types/animejs": "^3.1.7"
   }
 }

@@ -17,7 +17,7 @@ const pluginPure = pure({
 
 const externals = [
   '@vueuse/core',
-  '@vue-equipment/composables',
+  '@maas/vue-composables',
   '@vue-equipment/metadata',
 ]
 

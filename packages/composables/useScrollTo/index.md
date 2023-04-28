@@ -5,7 +5,7 @@ Scroll to element with a set speed
 ## Usage
 
 ```ts
-import { useScrollTo } from '@magicasaservice/vue-equipment/composables'
+import { useScrollTo } from '@maas/vue-composables'
 
 const { scrollToTarget } = useScrollTo()
 const el = ref()

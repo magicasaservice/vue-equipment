@@ -11,23 +11,23 @@
     {
       "name": "useEasings",
       "package": "composables",
-      "lastUpdated": 1682339350000,
+      "lastUpdated": 1682351430000,
       "docs": "https://maas.egineering/vue-equipment/composables/useEasings/",
       "description": "easings as functions"
     },
     {
       "name": "useGlyphToSvg",
       "package": "composables",
-      "lastUpdated": 1682339350000,
+      "lastUpdated": 1682351532000,
       "docs": "https://maas.egineering/vue-equipment/composables/useGlyphToSvg/",
       "description": "render [fontkit](https://github.com/foliojs/fontkit) glyphs as SVG"
     },
     {
       "name": "useScrollTo",
       "package": "composables",
-      "lastUpdated": 1682339350000,
+      "lastUpdated": 1682404778000,
       "docs": "https://maas.egineering/vue-equipment/composables/useScrollTo/",
-      "description": "scroll to element"
+      "description": "scroll to element with a set speed"
     }
   ]
 }

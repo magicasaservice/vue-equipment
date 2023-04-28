@@ -7,6 +7,9 @@ importers:
       '@antfu/ni':
         specifier: ^0.21.3
         version: 0.21.3
+      '@maas/vue-composables':
+        specifier: workspace:*
+        version: link:packages/composables
       '@rollup/plugin-json':
         specifier: ^6.0.0
         version: 6.0.0(rollup@3.21.0)
@@ -19,9 +22,6 @@ importers:
       '@types/prettier':
         specifier: ^2.7.2
         version: 2.7.2
-      '@vue-equipment/composables':
-        specifier: workspace:*
-        version: link:packages/composables
       '@vue-equipment/metadata':
         specifier: workspace:*
         version: link:packages/metadata
@@ -106,6 +106,22 @@ importers:
         version: 2.0.3
 
   packages/metadata: {}
+
+  packages/plugins:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^10.1.0
+        version: 10.1.0(vue@3.2.47)
+      animejs:
+        specifier: ^3.2.1
+        version: 3.2.1
+      mitt:
+        specifier: ^3.0.0
+        version: 3.0.0
+    devDependencies:
+      '@types/animejs':
+        specifier: ^3.1.7
+        version: 3.1.7
 
 packages:
 
@@ -727,6 +743,10 @@ packages:
       rollup: 3.21.0
     dev: true
 
+  /@types/animejs@3.1.7:
+    resolution: {integrity: sha512-kFSyjM+fLo3oE9noWEtUvF82ttN8fTrKohiEMIrSzEzEjnsCmtO0rBCUQBlSPEb2w8vfN+v4/Zo0tK21Bgmq4g==}
+    dev: true
+
   /@types/estree@1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
@@ -1101,6 +1121,10 @@ packages:
       '@algolia/requester-node-http': 4.17.0
       '@algolia/transporter': 4.17.0
     dev: true
+
+  /animejs@3.2.1:
+    resolution: {integrity: sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==}
+    dev: false
 
   /ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1966,6 +1990,10 @@ packages:
   /minisearch@6.0.1:
     resolution: {integrity: sha512-Ly1w0nHKnlhAAh6/BF/+9NgzXfoJxaJ8nhopFhQ3NcvFJrFIL+iCg9gw9e9UMBD+XIsp/RyznJ/o5UIe5Kw+kg==}
     dev: true
+
+  /mitt@3.0.0:
+    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+    dev: false
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}

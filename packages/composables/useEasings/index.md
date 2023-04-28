@@ -5,7 +5,7 @@ Easings as functions
 ## Usage
 
 ```ts
-import { useEasings } from '@magicasaservice/vue-equipment/composables'
+import { useEasings } from '@maas/vue-composables'
 
 const {
   linear,

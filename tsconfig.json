@@ -18,8 +18,8 @@
     "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "paths": {
-      "@vue-equipment/composables": ["./packages/composables/index.ts"],
-      "@vue-equipment/composables/*": ["./packages/composables/*"],
+      "@maas/vue-composables": ["./packages/composables/index.ts"],
+      "@maas/vue-composables/*": ["./packages/composables/*"],
       "@vue-equipment/metadata": ["./packages/metadata/index.ts"]
     }
   },
