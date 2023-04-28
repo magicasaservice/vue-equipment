@@ -16,7 +16,7 @@
 
 ## 🤝 Inspiration
 
-This project is heavily inspired by [VueUse][https://vueuse.org].
+This project is heavily inspired by [VueUse](https://vueuse.org).
 
 ## 📄 License
 
