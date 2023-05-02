@@ -1,5 +1,6 @@
 import { ComputedRef, ref, watch, unref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { magicScrollEmit } from '../utils'
 
 import {
   CollisionEntry,
@@ -20,9 +21,6 @@ export function useCollisionDetect(
   const intersecting = ref()
   const scrollDirection = ref<ScrollDirection>()
   const collisionMappedEntries = ref<CollisionMappedEntry[]>([])
-
-  // const nuxtApp = useNuxtApp()
-  // const { $magicEmit } = nuxtApp
 
   function getOffset(
     value: number | (({ vw, vh }: { vw: number; vh: number }) => number)
@@ -133,7 +131,7 @@ export function useCollisionDetect(
       (dir === 'up' && boundingRect[pos] >= offset)
     ) {
       entry.alerted[dir][pos] = true
-      $magicEmit.emit('magic-scroll:collision', {
+      magicScrollEmit.emit('magic-scroll:collision', {
         dir,
         pos,
         el: entry.element,

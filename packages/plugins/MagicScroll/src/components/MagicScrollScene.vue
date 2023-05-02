@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import {
   ref,
   provide,
@@ -15,7 +15,7 @@ import {
   nextTick,
   toRaw,
 } from 'vue'
-import { useUtils } from '../composables/useUtils'
+import { mapValue } from '../utils'
 import { useProgress } from '../composables/useProgress'
 import { useIntersectionObserver } from '@vueuse/core'
 import { WindowScrollKey, ScrollProgressKey, FromTo } from '../types'
@@ -65,8 +65,6 @@ useIntersectionObserver(
   },
   { rootMargin: '150% 0px 150% 0px' }
 )
-
-const { mapValue } = useUtils()
 
 provide('mapValue', mapValue)
 provide(

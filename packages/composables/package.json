@@ -1,5 +1,5 @@
 {
-  "name": "@maas/vue-composables",
+  "name": "composables",
   "version": "0.0.1",
   "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
@@ -7,7 +7,9 @@
   },
   "keywords": [],
   "license": "MIT",
+  "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -19,11 +21,19 @@
   "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
+  "peerDependencies": {
+    "@vueuse/core": "*"
+  },
+  "peerDependenciesMeta": {
+    "@vueuse/core": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "@vueuse/core": "^10.1.0",
     "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@types/fontkit": "^2.0.3"
+    "@types/fontkit": "^2.0.3",
+    "@vueuse/core": "^10.1.0"
   }
 }

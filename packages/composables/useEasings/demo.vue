@@ -18,7 +18,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useEasings, EasingFunction, EasingKey } from '@maas/vue-composables'
+import {
+  useEasings,
+  EasingFunction,
+  EasingKey,
+} from '@maas/vue-equipment/composables'
 import { useRafFn, useElementSize } from '@vueuse/core'
 
 const easings = useEasings()

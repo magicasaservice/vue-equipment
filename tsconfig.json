@@ -18,9 +18,11 @@
     "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "paths": {
-      "@maas/vue-composables": ["./packages/composables/index.ts"],
-      "@maas/vue-composables/*": ["./packages/composables/*"],
-      "@vue-equipment/metadata": ["./packages/metadata/index.ts"]
+      "@maas/vue-equipment/composables": ["./packages/composables/index.ts"],
+      "@maas/vue-equipment/composables/*": ["./packages/composables/*"],
+      "@maas/vue-equipment/plugins": ["./packages/plugins/index.ts"],
+      "@maas/vue-equipment/plugins/*": ["./packages/plugins/*"],
+      "@maas/vue-equipment/metadata": ["./packages/metadata/index.ts"]
     }
   },
   "include": [

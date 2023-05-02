@@ -1,5 +1,5 @@
 {
-  "name": "@maas/vue-plugins",
+  "name": "plugins",
   "version": "0.0.1",
   "description": "A magic collection of Vue plugins",
   "scripts": {
@@ -7,7 +7,9 @@
   },
   "keywords": [],
   "license": "MIT",
+  "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -19,12 +21,26 @@
   "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
-  "dependencies": {
+  "peerDependencies": {
+    "@vueuse/core": "*",
+    "animejs": "*'",
+    "mitt": "*"
+  },
+  "peerDependenciesMeta": {
+    "@vueuse/core": {
+      "optional": true
+    },
+    "animejs": {
+      "optional": true
+    },
+    "mitt": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/animejs": "^3.1.7",
     "@vueuse/core": "^10.1.0",
     "animejs": "^3.2.1",
     "mitt": "^3.0.0"
-  },
-  "devDependencies": {
-    "@types/animejs": "^3.1.7"
   }
 }

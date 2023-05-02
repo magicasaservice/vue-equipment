@@ -7,9 +7,6 @@ importers:
       '@antfu/ni':
         specifier: ^0.21.3
         version: 0.21.3
-      '@maas/vue-composables':
-        specifier: workspace:*
-        version: link:packages/composables
       '@rollup/plugin-json':
         specifier: ^6.0.0
         version: 6.0.0(rollup@3.21.0)
@@ -22,12 +19,12 @@ importers:
       '@types/prettier':
         specifier: ^2.7.2
         version: 2.7.2
-      '@vue-equipment/metadata':
-        specifier: workspace:*
-        version: link:packages/metadata
       '@vueuse/core':
         specifier: ^10.1.0
         version: 10.1.0(vue@3.2.47)
+      composables:
+        specifier: workspace:*
+        version: link:packages/composables
       consola:
         specifier: ^3.1.0
         version: 3.1.0
@@ -49,6 +46,12 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      metadata:
+        specifier: workspace:*
+        version: link:packages/metadata
+      plugins:
+        specifier: workspace:*
+        version: link:packages/plugins
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -94,9 +97,6 @@ importers:
 
   packages/composables:
     dependencies:
-      '@vueuse/core':
-        specifier: ^10.1.0
-        version: 10.1.0(vue@3.2.47)
       vue:
         specifier: ^3.2.47
         version: 3.2.47
@@ -104,11 +104,17 @@ importers:
       '@types/fontkit':
         specifier: ^2.0.3
         version: 2.0.3
+      '@vueuse/core':
+        specifier: ^10.1.0
+        version: 10.1.0(vue@3.2.47)
 
   packages/metadata: {}
 
   packages/plugins:
-    dependencies:
+    devDependencies:
+      '@types/animejs':
+        specifier: ^3.1.7
+        version: 3.1.7
       '@vueuse/core':
         specifier: ^10.1.0
         version: 10.1.0(vue@3.2.47)
@@ -118,10 +124,6 @@ importers:
       mitt:
         specifier: ^3.0.0
         version: 3.0.0
-    devDependencies:
-      '@types/animejs':
-        specifier: ^3.1.7
-        version: 3.1.7
 
 packages:
 
@@ -780,6 +782,7 @@ packages:
 
   /@types/web-bluetooth@0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
+    dev: true
 
   /@unocss/astro@0.51.8(rollup@3.21.0)(vite@4.3.1):
     resolution: {integrity: sha512-1cY22psmzeW6f29Os7nXhrIgbjR2QI2qPU+PDEMprWiaVHlIc86WUKNzPIcuKskAQMMhWVCIN/XlCNzxZzXJqw==}
@@ -1068,9 +1071,11 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: true
 
   /@vueuse/metadata@10.1.0:
     resolution: {integrity: sha512-cM28HjDEw5FIrPE9rgSPFZvQ0ZYnOLAOr8hl1XM6tFl80U3WAR5ROdnAqiYybniwP5gt9MKKAJAqd/ab2aHkqg==}
+    dev: true
 
   /@vueuse/shared@10.1.0(vue@3.2.47):
     resolution: {integrity: sha512-2X52ogu12i9DkKOQ01yeb/BKg9UO87RNnpm5sXkQvyORlbq8ONS5l39MYkjkeVWWjdT0teJru7a2S41dmHmqjQ==}
@@ -1079,6 +1084,7 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: true
 
   /acorn-jsx@5.3.2(acorn@8.8.2):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1124,7 +1130,7 @@ packages:
 
   /animejs@3.2.1:
     resolution: {integrity: sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==}
-    dev: false
+    dev: true
 
   /ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1993,7 +1999,7 @@ packages:
 
   /mitt@3.0.0:
     resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
-    dev: false
+    dev: true
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
@@ -2650,6 +2656,7 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.47
+    dev: true
 
   /vue@3.2.47:
     resolution: {integrity: sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==}

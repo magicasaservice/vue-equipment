@@ -1,1 +1,1 @@
-export * from './magic-scroll'
+export * from './MagicScroll'

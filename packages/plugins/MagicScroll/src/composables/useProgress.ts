@@ -1,8 +1,6 @@
-import { Ref, ref, inject, computed, watch } from 'vue-demi'
+import { Ref, ref, inject, computed } from 'vue'
 import { WindowDimensionsKey, WindowScrollKey, FromTo } from '../types'
-import { useUtils } from './useUtils'
-
-const { clampValue } = useUtils()
+import { clampValue } from '../utils'
 
 export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
   const dimensions = inject(WindowDimensionsKey, { vw: ref(0), vh: ref(0) })

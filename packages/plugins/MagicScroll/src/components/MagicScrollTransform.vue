@@ -4,8 +4,8 @@
   </component>
 </template>
 
-<script lang="ts" setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { computed, withDefaults, defineProps } from 'vue'
 
 interface Props {
   as?: string
@@ -18,24 +18,25 @@ interface Props {
   translateY?: number
 }
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-const {
-  as = 'div',
-  scale = 1,
-  scaleX = 1,
-  scaleY = 1,
-  skewX = 0,
-  skewY = 0,
-  translateX = 0,
-  translateY = 0,
-} = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  as: 'div',
+  scale: 1,
+  scaleX: 1,
+  scaleY: 1,
+  skewX: 0,
+  skewY: 0,
+  translateX: 0,
+  translateY: 0,
+})
 
 const computedStyle = computed(() => {
   return {
     willChange: 'transform',
-    transform: `matrix(${scale || scaleX}, ${skewY}, ${skewX},  ${
-      scale || scaleY
-    }, ${translateX}, ${translateY})`,
+    transform: `matrix(${props.scale || props.scaleX}, ${props.skewY}, ${
+      props.skewX
+    },  ${props.scale || props.scaleY}, ${props.translateX}, ${
+      props.translateY
+    })`,
   }
 })
 </script>

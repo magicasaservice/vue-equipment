@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
 import { AnimeInstance } from 'animejs'
 import anime from 'animejs/lib/anime.es.js'

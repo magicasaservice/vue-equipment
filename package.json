@@ -18,14 +18,33 @@
   "keywords": [],
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.mjs"
+    },
+    "./*": "./*",
+    "./composables": {
+      "types": "./composables.d.ts",
+      "require": "./composables.cjs",
+      "import": "./composables.mjs"
+    },
+    "./plugins": {
+      "types": "./plugins.d.ts",
+      "require": "./plugins.cjs",
+      "import": "./plugins.mjs"
+    }
+  },
   "devDependencies": {
     "@antfu/ni": "^0.21.3",
     "@rollup/plugin-json": "^6.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.16.0",
     "@types/prettier": "^2.7.2",
-    "@maas/vue-composables": "workspace:*",
-    "@vue-equipment/metadata": "workspace:*",
+    "composables": "workspace:*",
+    "plugins": "workspace:*",
+    "metadata": "workspace:*",
     "@vueuse/core": "^10.1.0",
     "consola": "^3.1.0",
     "esbuild": "^0.17.18",
