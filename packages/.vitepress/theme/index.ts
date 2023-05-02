@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
-import { MagicScroll } from '@maas/vue-equipment/plugins'
+import { MagicScroll } from 'plugins'
 
 import 'uno.css'
 

@@ -10,7 +10,7 @@ export function MarkdownTransform(): Plugin {
   const hasTypes = fs.existsSync(DIR_TYPES)
 
   if (!hasTypes) {
-    console.warn('No types dist found, run `npm run build:types` first.')
+    console.warn('No types dist found, run `pnpm run build:types` first.')
   }
 
   return {

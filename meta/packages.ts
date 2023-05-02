@@ -1,4 +1,4 @@
-import type { PackageManifest } from '@vue-equipment/metadata'
+import type { PackageManifest } from '@maas/vue-equipment/metadata'
 
 export const packages: PackageManifest[] = [
   {

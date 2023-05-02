@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
 import { AnimeInstance } from 'animejs'
-import anime from 'animejs/lib/anime.es.js'
+import anime from 'animejs'
 import { ScrollProgressKey } from '../types'
 
 interface Props {

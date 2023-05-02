@@ -24,4 +24,4 @@ const MagicScroll: Plugin = {
   },
 }
 
-export default MagicScroll
+export { MagicScroll }

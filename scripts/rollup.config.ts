@@ -3,7 +3,7 @@ import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import json from '@rollup/plugin-json'
 import { PluginPure as pure } from 'rollup-plugin-pure'
-import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
+import type { OutputOptions, RollupOptions } from 'rollup'
 import fg from 'fast-glob'
 import { packages } from '../meta/packages'
 
@@ -16,7 +16,7 @@ const pluginPure = pure({
 })
 
 const externals = [
-  '@vueuse/core',
+  'vue',
   '@maas/vue-equipment/composables',
   '@maas/vue-equipment/plugins',
   '@maas/vue-equipment/metadata',
