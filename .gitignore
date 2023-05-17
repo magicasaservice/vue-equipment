@@ -8,5 +8,4 @@ node_modules
 cache
 packages/*/LICENSE
 .vitepress/cache
-types
-!../packages/*/types
+/types
