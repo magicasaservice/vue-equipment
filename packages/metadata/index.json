@@ -15,9 +15,16 @@
   },
   "functions": [
     {
+      "name": "MagicPlayer",
+      "package": "plugins",
+      "lastUpdated": 0,
+      "docs": "https://maas.egineering/vue-equipment/plugins/MagicPlayer/",
+      "description": "player"
+    },
+    {
       "name": "MagicScroll",
       "package": "plugins",
-      "lastUpdated": 1683020277000,
+      "lastUpdated": 1683041434000,
       "docs": "https://maas.egineering/vue-equipment/plugins/MagicScroll/",
       "description": "scroll"
     },

@@ -2,7 +2,7 @@
   <div class="w-full h-[300vh]">
     <magic-scroll-provider>
       <magic-scroll-scene>
-        <div class="w-30 h-full bg-black"></div>
+        <div class="w-30 h-30 bg-black"></div>
       </magic-scroll-scene>
     </magic-scroll-provider>
   </div>

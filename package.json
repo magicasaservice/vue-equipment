@@ -7,12 +7,12 @@
     "build": "unbuild",
     "build:types": "tsc --emitDeclarationOnly",
     "clean": "rimraf dist types packages/*/dist",
-    "dev": "nr update && nr docs:dev",
-    "docs:dev": "vitepress dev packages --open",
+    "dev": "nr metadata:update && nr docs:dev",
+    "docs:dev": "vitepress dev packages",
     "docs:build": "vitepress build packages",
     "docs:preview": "vitepress preview packages",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "nr -C packages/metadata update"
+    "metadata:update": "nr -C packages/metadata update",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "license": "MIT",

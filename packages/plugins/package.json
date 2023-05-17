@@ -10,24 +10,18 @@
   "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "require": "./index.cjs",
-      "import": "./index.mjs"
-    },
-    "./*": "./*"
-  },
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
   "peerDependencies": {
     "@vueuse/core": "*",
+    "@vueuse/shared": "*",
     "animejs": "*'",
-    "mitt": "*"
+    "mitt": "*",
+    "hls.js": "*"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
+      "optional": true
+    },
+    "@vueuse/shared": {
       "optional": true
     },
     "animejs": {
@@ -35,12 +29,17 @@
     },
     "mitt": {
       "optional": true
+    },
+    "hls.js": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@types/animejs": "^3.1.7",
     "@vueuse/core": "^10.1.0",
+    "@vueuse/shared": "^10.1.2",
     "animejs": "^3.2.1",
+    "hls.js": "^1.4.3",
     "mitt": "^3.0.0"
   }
 }

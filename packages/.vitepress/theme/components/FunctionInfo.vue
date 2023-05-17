@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { useTimeAgo } from '@vueuse/core'
-import { computed } from 'vue'
-import { functions } from '@maas/vue-equipment/metadata'
-// import exportSizes from '../../../export-size.json'
-
-const props = defineProps<{ fn: string }>()
-const info = computed(() => functions.find((i) => i.name === props.fn))
-const lastUpdated = useTimeAgo(new Date(info?.value?.lastUpdated || 0))
-
-// const exportSize = exportSizes[info?.value!.name as keyof typeof exportSizes]
-
-function getFunctionLink(fn: string) {
-  const info = functions.find((i) => i.name === fn)
-  return info?.docs?.replace(/https?:\/\/maas\.engineering\//g, '/')
-}
-</script>
-
 <template>
   <div class="grid grid-cols-[100px_auto] gap-2 text-sm mt-4 mb-8 items-start">
     <!-- <div opacity="50">Export Size</div> -->
@@ -53,3 +35,21 @@ function getFunctionLink(fn: string) {
     </template>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
+import { computed } from 'vue'
+import { functions } from '@maas/vue-equipment/metadata'
+// import exportSizes from '../../../export-size.json'
+
+const props = defineProps<{ fn: string }>()
+const info = computed(() => functions.find((i) => i.name === props.fn))
+const lastUpdated = useTimeAgo(new Date(info?.value?.lastUpdated || 0))
+
+// const exportSize = exportSizes[info?.value!.name as keyof typeof exportSizes]
+
+function getFunctionLink(fn: string) {
+  const info = functions.find((i) => i.name === fn)
+  return info?.docs?.replace(/https?:\/\/maas\.engineering\//g, '/')
+}
+</script>

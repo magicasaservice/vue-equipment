@@ -7,5 +7,6 @@ indexes.json
 node_modules
 cache
 packages/*/LICENSE
-types
 .vitepress/cache
+types
+!../packages/*/types

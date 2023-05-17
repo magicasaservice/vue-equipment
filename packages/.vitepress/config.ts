@@ -14,9 +14,12 @@ export default defineConfig({
       dark: 'vitesse-dark',
     },
   },
-
   themeConfig: {
     logo: '/favicon.svg',
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2023-PRESENT Magic as a Service GmbH',
+    },
     nav: [
       { text: 'Home', link: '/' },
       {
@@ -28,7 +31,6 @@ export default defineConfig({
         link: '/plugins/',
       },
     ],
-
     sidebar: {
       '/composables/': [ComposablesSideBar],
       '/plugins/': [PluginsSideBar],
@@ -47,9 +49,6 @@ function getComposablesSideBar() {
       text: i.name,
       link: i.external || `/${i.package}/${i.name}/`,
     })),
-    link: functions[0]
-      ? functions[0]?.external || `/${functions[0]?.package}/README`
-      : '',
   }
 }
 
@@ -64,8 +63,5 @@ function getPluginsSideBar() {
       text: i.name,
       link: i.external || `/${i.package}/${i.name}/`,
     })),
-    link: functions[0]
-      ? functions[0]?.external || `/${functions[0]?.package}/README`
-      : '',
   }
 }

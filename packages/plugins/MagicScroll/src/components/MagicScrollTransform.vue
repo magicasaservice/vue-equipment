@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, withDefaults, defineProps } from 'vue'
+import { computed, withDefaults } from 'vue'
 
 interface Props {
   as?: string

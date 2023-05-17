@@ -2,8 +2,7 @@ import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
-
-const functionNames = ['useScrollTo', 'useEasings']
+import { functionNames } from '../../../packages/metadata/metadata'
 
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../../types/packages')
@@ -38,9 +37,9 @@ export function MarkdownTransform(): Plugin {
         const { header, footer } = await getFunctionMarkdown(pkg, name)
 
         if (hasTypes) code = replacer(code, footer, 'FOOTER', 'tail')
+
         if (header)
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
-
         code = code.replace(
           /(# \w+?)\n/,
           `$1\n\n<FunctionInfo fn="${name}"/>\n`
@@ -115,11 +114,11 @@ ${code}
 `
     : ''
 
-  const footer = `${typingSection}`
   const header = demoSection
+  const footer = `${typingSection}`
 
   return {
-    footer,
     header,
+    footer,
   }
 }
