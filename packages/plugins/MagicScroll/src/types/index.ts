@@ -10,7 +10,7 @@ type CollisionEvents = {
     dir: 'up' | 'down'
     pos: 'top' | 'bottom'
     el: Element
-    data: Record<string, any>
+    data?: Record<string, any>
   }
 }
 
