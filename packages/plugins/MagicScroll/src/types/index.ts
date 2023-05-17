@@ -6,10 +6,11 @@ type AlertPositions = {
 }
 
 type CollisionEvents = {
-  collision: {
+  'magic-scroll:collision': {
     dir: 'up' | 'down'
     pos: 'top' | 'bottom'
     el: Element
+    data: Record<string, any>
   }
 }
 
