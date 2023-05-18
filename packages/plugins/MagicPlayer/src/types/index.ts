@@ -1,5 +1,4 @@
-import type { InjectionKey } from 'vue'
-import type { UseMediaApiReturn } from './../composables/useMediaApi'
+type RuntimeSourceProvider = 'file' | 'hls'
 
-const mediaApiInjectionKey = Symbol() as InjectionKey<UseMediaApiReturn>
-export { mediaApiInjectionKey }
+export * from './injectionKeys'
+export { RuntimeSourceProvider }

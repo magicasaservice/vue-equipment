@@ -4,16 +4,35 @@ A magic plugin that adds a player to the page.
 
 ## Usage
 
+### File
+
 ```html
 <template>
-  <div class="w-full aspect-[16/9]">
-    <magic-player playback-id="c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks">
-      <magic-player-controls />
-    </magic-player>
-  </div>
+  <magic-player
+    src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
+  >
+    <magic-player-controls />
+  </magic-player>
 </template>
 
 <script setup>
-  import { MagicPlayer } from '@maas/vue-equipment;
+  import { MagicPlayer, MagicPlayerControls } from '@maas/vue-equipment;
+</script>
+```
+
+### HLS
+
+```html
+<template>
+  <magic-player
+    provider="hls"
+    src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks.m3u8"
+  >
+    <magic-player-controls />
+  </magic-player>
+</template>
+
+<script setup>
+  import { MagicPlayer, MagicPlayerControls } from '@maas/vue-equipment;
 </script>
 ```

@@ -168,7 +168,6 @@ export function useMediaApi(
     rate,
     volume,
     muted,
-    // Methods
     play,
     pause,
     togglePlay,

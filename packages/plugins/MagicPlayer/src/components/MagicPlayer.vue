@@ -1,99 +1,60 @@
 <template>
-  <div ref="player" class="player">
-    <div class="player-media" @click="togglePlay">
-      <video ref="video" class="player-video" preload="auto" playsinline />
-      <img
-        v-show="showThumbnail"
-        ref="thumbnail"
-        class="player-thumbnail"
-        :src="thumbnailSrc"
-      />
-    </div>
+  <div class="magic-player">
+    <video ref="video" class="magic-player__video" preload="auto" playsinline />
+    <div v-if="!loaded || !touched" class="magic-player__poster"></div>
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, provide } from 'vue'
+import { ref, provide, watch } from 'vue'
 import { useMediaApi } from './../composables/useMediaApi'
-import { mediaApiInjectionKey } from './../types'
-import Hls from 'hls.js'
+import { useRuntimeSourceProvider } from './../composables/useRuntimeSourceProvider'
+import { RuntimeSourceProvider, MediaApiInjectionKey } from './../types'
 
-const props = defineProps({
-  playbackId: {
-    type: String,
-    default: '',
-  },
-  thumbnailTime: {
-    type: [Number, String],
-    default: undefined,
-  },
+export type MagicPlayerProps = {
+  provider: RuntimeSourceProvider
+  src: string
+}
+
+const props = withDefaults(defineProps<MagicPlayerProps>(), {
+  provider: 'file',
+  src: '',
 })
 
-// Refs
-const player = ref<HTMLDivElement | undefined>(undefined)
 const video = ref<HTMLVideoElement | undefined>(undefined)
 
-// API
+const touched = ref(false)
+
 const mediaApi = useMediaApi(video)
-provide(mediaApiInjectionKey, mediaApi)
+provide(MediaApiInjectionKey, mediaApi)
 
-// State
-const loaded = ref(false)
-const { currentTime, ended, togglePlay } = mediaApi
-
-// Hls
-const hls = ref<Hls | null>(null)
-
-// Computed
-const src = computed(() => `https://stream.mux.com/${props.playbackId}.m3u8`)
-const thumbnailSrc = computed(
-  () => `https://image.mux.com/${props.playbackId}/thumbnail.jpg?time=12`
-)
-const showThumbnail = computed(
-  () => !loaded.value || currentTime.value <= 0 || ended.value
+const sourceProvider = useRuntimeSourceProvider(
+  video,
+  props.provider,
+  props.src
 )
 
-// Methods
-const load = () => {
-  if (Hls.isSupported()) {
-    hls.value = new Hls()
-    hls.value.loadSource(src.value)
-    hls.value.attachMedia(video.value!)
-    hls.value.on(Hls.Events.FRAG_LOADED, onLoad)
-  } else {
-    video.value!.src = src.value
-    video.value!.load()
-    loaded.value = true
+const { playing } = mediaApi
+const { loaded } = sourceProvider
+
+watch(playing, () => {
+  if (!touched.value) {
+    touched.value = true
   }
-}
-
-const onLoad = () => {
-  loaded.value = true
-}
-
-onMounted(() => {
-  load()
 })
 </script>
 
 <style lang="postcss">
-.player {
+.magic-player {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  color: white;
 }
 
-.player-media {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.player-video {
+.magic-player__video {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -102,12 +63,11 @@ onMounted(() => {
   object-fit: cover;
 }
 
-.player-thumbnail {
+.magic-player__poster {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  object-fit: cover;
 }
 </style>
