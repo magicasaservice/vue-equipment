@@ -231,7 +231,7 @@ onMounted(() => {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.375rem;
   border-radius: 999px;
   color: rgb(255, 255, 255);
   background-color: rgba(34, 34, 34, 0.8);
@@ -273,7 +273,7 @@ onMounted(() => {
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
-  min-width: 2rem;
+  min-width: 3rem;
   display: inline-flex;
   justify-content: center;
 }
