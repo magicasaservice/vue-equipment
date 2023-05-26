@@ -5,11 +5,11 @@
       :to="mappedOptions.teleport?.target"
       :disabled="mappedOptions.teleport?.disabled"
     >
-      <component
+      <dialog
         ref="modal"
-        :is="element"
         class="magic-modal"
         @click.self="close"
+        aria-modal="true"
       >
         <transition
           v-if="mappedOptions.backdrop"
@@ -40,7 +40,7 @@
             <slot v-else />
           </div>
         </transition>
-      </component>
+      </dialog>
     </teleport>
   </transition>
 </template>
@@ -69,7 +69,6 @@ import type { VueElement } from 'vue'
 
 export interface MagicModalProps {
   id: MaybeRef<string>
-  element?: 'dialog' | 'div'
   component?: VueElement
   componentProps?: Record<string, unknown>
   options?: {
@@ -88,7 +87,6 @@ export interface MagicModalProps {
 }
 
 const props = withDefaults(defineProps<MagicModalProps>(), {
-  element: 'div',
   options: () => ({ ...defaultOptions }),
 })
 
@@ -183,6 +181,10 @@ watch(isActive, async (value) => {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
 }
 
 .magic-modal__content {
