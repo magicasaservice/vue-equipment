@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
-import { MagicScroll, MagicPlayer } from 'plugins'
+import { MagicScroll, MagicPlayer, MagicModal } from 'plugins'
 
 import 'uno.css'
 
@@ -8,5 +8,6 @@ export default {
   enhanceApp({ app }) {
     app.use(MagicScroll)
     app.use(MagicPlayer)
+    app.use(MagicModal)
   },
 }
