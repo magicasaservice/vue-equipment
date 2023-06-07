@@ -1,14 +1,3 @@
-/**
- * Formats seconds as a time string
- *
- * @example  formatTime(125, 600) === "02:05"
- * @param    {number} seconds
- *           Number of seconds to be turned into a string
- *
- * @return   {string}
- *           Time formatted as H:MM:SS or M:SS
- */
-
 export function formatTime(s: number): string {
   const hours = Math.floor(s / 3600)
   const minutes = Math.floor((s - hours * 3600) / 60)
@@ -16,4 +5,22 @@ export function formatTime(s: number): string {
   const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`
   const secondsString = seconds < 10 ? `0${seconds}` : `${seconds}`
   return `${hours > 0 ? `${hours}:` : ''}${minutesString}:${secondsString}`
+}
+
+export function clampValue(value: number, min: number, max: number) {
+  return value <= min ? min : value >= max ? max : value
+}
+
+export function mapValue(
+  value: number,
+  inMin: number,
+  inMax: number,
+  outMin: number,
+  outMax: number
+) {
+  return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
+}
+
+export function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
 }

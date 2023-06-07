@@ -1,31 +1,17 @@
 import { MaybeRef, toValue } from '@vueuse/shared'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import type { RuntimeSourceProvider } from './../types'
+import type Hls from 'hls.js'
 
 export function useRuntimeSourceProvider(
   target: MaybeRef<HTMLMediaElement | null | undefined>,
   provider: RuntimeSourceProvider,
   source: string
 ) {
+  let hls: Hls | undefined
   const loaded = ref(false)
 
-  const useHls = async () => {
-    const el = toValue(target)
-    if (!el) return
-    const { default: Hls } = await import('hls.js')
-    const hls = new Hls()
-    if (!Hls.isSupported()) {
-      return console.error('Hls is not supported')
-    } else {
-      hls.loadSource(source)
-      hls.attachMedia(el)
-      hls.on(Hls.Events.FRAG_LOADED, () => {
-        loaded.value = true
-      })
-    }
-  }
-
-  const useFile = () => {
+  const useNative = () => {
     const el = toValue(target)
     if (!el) return
     el.src = source
@@ -39,12 +25,32 @@ export function useRuntimeSourceProvider(
     el.load()
   }
 
-  onMounted(() => {
-    if (provider === 'hls') {
-      useHls()
-    } else if (provider === 'file') {
-      useFile()
+  const useHlsJS = async () => {
+    const el = toValue(target)
+    if (!el) return
+    const { default: Hls } = await import('hls.js')
+    hls = new Hls()
+    if (!Hls.isSupported()) {
+      useNative()
+    } else {
+      hls.loadSource(source)
+      hls.attachMedia(el)
+      hls.on(Hls.Events.FRAG_LOADED, () => {
+        loaded.value = true
+      })
     }
+  }
+
+  onMounted(() => {
+    if (provider === 'file') {
+      useNative()
+    } else if (provider === 'hls') {
+      useHlsJS()
+    }
+  })
+
+  onUnmounted(() => {
+    hls?.destroy()
   })
 
   return {

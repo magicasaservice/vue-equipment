@@ -1,16 +1,26 @@
 <template>
-  <div class="magic-player">
-    <video ref="video" class="magic-player__video" preload="auto" playsinline />
-    <div v-if="!loaded || !touched" class="magic-player__poster"></div>
+  <div ref="playerRef" class="magic-player">
+    <video
+      ref="videoRef"
+      class="magic-player-video"
+      preload="auto"
+      playsinline
+    />
+    <div v-show="!loaded || !touched" class="magic-player-poster"></div>
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, provide, watch } from 'vue'
+import { ref, provide } from 'vue'
 import { useMediaApi } from './../composables/useMediaApi'
+import { usePlayerApi } from './../composables/usePlayerApi'
 import { useRuntimeSourceProvider } from './../composables/useRuntimeSourceProvider'
-import { RuntimeSourceProvider, MediaApiInjectionKey } from './../types'
+import {
+  RuntimeSourceProvider,
+  MediaApiInjectionKey,
+  PlayerApiInjectionKey,
+} from './../types'
 
 export type MagicPlayerProps = {
   provider: RuntimeSourceProvider
@@ -22,27 +32,23 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
   src: '',
 })
 
-const video = ref<HTMLVideoElement | undefined>(undefined)
+const playerRef = ref<HTMLDivElement | undefined>(undefined)
+const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
-const touched = ref(false)
-
-const mediaApi = useMediaApi(video)
+const mediaApi = useMediaApi(videoRef)
 provide(MediaApiInjectionKey, mediaApi)
 
-const sourceProvider = useRuntimeSourceProvider(
-  video,
+const playerApi = usePlayerApi(playerRef, videoRef, mediaApi)
+provide(PlayerApiInjectionKey, playerApi)
+
+const runtimeSourceProvider = useRuntimeSourceProvider(
+  videoRef,
   props.provider,
   props.src
 )
 
-const { playing } = mediaApi
-const { loaded } = sourceProvider
-
-watch(playing, () => {
-  if (!touched.value) {
-    touched.value = true
-  }
-})
+const { touched } = playerApi
+const { loaded } = runtimeSourceProvider
 </script>
 
 <style lang="postcss">
@@ -51,23 +57,16 @@ watch(playing, () => {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  color: white;
 }
 
-.magic-player__video {
+.magic-player-video {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  inset: 0;
   object-fit: cover;
 }
 
-.magic-player__poster {
+.magic-player-poster {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  inset: 0;
 }
 </style>

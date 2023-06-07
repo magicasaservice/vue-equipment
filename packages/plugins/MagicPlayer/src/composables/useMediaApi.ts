@@ -26,31 +26,6 @@ export function useMediaApi(
     return ranges
   }
 
-  // Public Methods
-  function play() {
-    playing.value = true
-  }
-
-  function pause() {
-    playing.value = false
-  }
-
-  function togglePlay() {
-    playing.value = !playing.value
-  }
-
-  function seek(time: number) {
-    currentTime.value = time
-  }
-
-  function mute() {
-    muted.value = true
-  }
-
-  function unmute() {
-    muted.value = false
-  }
-
   // Watchers
   watch([target, volume], () => {
     const el = toValue(target)
@@ -168,12 +143,6 @@ export function useMediaApi(
     rate,
     volume,
     muted,
-    play,
-    pause,
-    togglePlay,
-    seek,
-    mute,
-    unmute,
   }
 }
 
