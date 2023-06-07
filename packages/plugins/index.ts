@@ -1,2 +1,3 @@
-export * from './MagicScroll'
+export * from './MagicModal'
 export * from './MagicPlayer'
+export * from './MagicScroll'
