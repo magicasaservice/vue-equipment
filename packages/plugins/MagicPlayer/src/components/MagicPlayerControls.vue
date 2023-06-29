@@ -132,6 +132,15 @@ const isMouseEnter = ref(false)
   cursor: pointer;
 }
 
+.magic-player-controls__overlay button {
+  background-color: transparent;
+  color: inherit;
+  border: 0;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
 .magic-player-controls__overlay button,
 .magic-player-controls__overlay i {
   width: 3.5rem;
@@ -174,6 +183,7 @@ const isMouseEnter = ref(false)
 
 .magic-player-controls__item button {
   background-color: transparent;
+  color: inherit;
   border: 0;
   outline: none;
   appearance: none;

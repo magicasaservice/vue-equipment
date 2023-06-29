@@ -31,7 +31,7 @@ const { from = 'top-bottom', to = 'bottom-top' } = defineProps<Props>()
 const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
 const pageYOffset = computed(() => scrollPosition.y)
 
-const el = ref()
+const el = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 
 const { getCalculations, getProgress } = useProgress(toRaw(el), from, to)

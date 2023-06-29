@@ -6,13 +6,16 @@
   "scripts": {
     "build": "unbuild",
     "build:types": "tsc --emitDeclarationOnly",
-    "clean": "rimraf dist types packages/*/dist",
+    "clean": "pnpm dlx rimraf dist types packages/*/dist",
     "dev": "nr metadata:update && nr docs:dev",
     "docs:dev": "vitepress dev packages",
     "docs:build": "vitepress build packages",
     "docs:preview": "vitepress preview packages",
+    "module:dev": "cd packages/nuxt && nr dev",
+    "module:build": "cd packages/nuxt && nr build",
     "metadata:update": "nr -C packages/metadata update",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml"
   },
   "keywords": [],
   "license": "MIT",
@@ -53,7 +56,6 @@
     "metadata": "workspace:*",
     "plugins": "workspace:*",
     "prettier": "^2.8.8",
-    "rimraf": "^5.0.0",
     "rollup": "^3.21.0",
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-esbuild": "^5.0.0",
@@ -68,5 +70,8 @@
     "vite": "^4.3.1",
     "vitepress": "1.0.0-alpha.73",
     "vue": "^3.2.47"
+  },
+  "volta": {
+    "node": "18.16.1"
   }
 }

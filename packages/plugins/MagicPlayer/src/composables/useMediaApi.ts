@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref, watch, unref } from 'vue'
 import type { MaybeRef } from '@vueuse/shared'
 import { toValue, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '@vueuse/core'
@@ -54,7 +54,7 @@ export function useMediaApi(
     (time) => {
       const el = toValue(target)
       if (!el) return
-      el.currentTime = time
+      el.currentTime = unref(time)
     }
   )
 

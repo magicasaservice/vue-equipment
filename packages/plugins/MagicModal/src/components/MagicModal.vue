@@ -64,7 +64,8 @@ export const defaultOptions: MagicModalProps['options'] = {
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
-import { onKeyStroke, MaybeRef } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
+import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
 import type { VueElement } from 'vue'
 
 export interface MagicModalProps {
@@ -90,7 +91,7 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
   options: () => ({ ...defaultOptions }),
 })
 
-const modal = ref<HTMLElement | null>(null)
+const modal = ref<HTMLElement | undefined>(undefined)
 const modalApi = useModalApi(props.id, { focusTarget: modal })
 
 const mappedOptions = {

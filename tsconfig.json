@@ -36,6 +36,7 @@
     "**/*.md",
     "**/dist",
     "packages/.test",
-    "packages/_docs"
+    "packages/_docs",
+    "packages/nuxt"
   ]
 }
