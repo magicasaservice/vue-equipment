@@ -22,5 +22,6 @@ export function mapValue(
 }
 
 export function isIOS() {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+  if (typeof window === 'undefined') return false
+  return /iPad|iPhone|iPod/.test(navigator?.userAgent)
 }
