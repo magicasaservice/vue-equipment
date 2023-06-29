@@ -65,7 +65,7 @@ export const defaultOptions: MagicModalProps['options'] = {
 import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
 import { onKeyStroke } from '@vueuse/core'
-import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
+import type { MaybeRef } from '@vueuse/core'
 import type { VueElement } from 'vue'
 
 export interface MagicModalProps {
