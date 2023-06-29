@@ -97,18 +97,19 @@ const isMouseEnter = ref(false)
 <style lang="postcss">
 :root {
   --magic-player-controls-height: 3rem;
-  --magic-player-controls-bottom: 0.75rem;
+  --magic-player-controls-bottom: 1.5rem;
   --magic-player-controls-padding: 0.75rem;
   --magic-player-controls-border-radius: 50rem;
   --magic-player-controls-background-color: rgba(32, 32, 32, 0.8);
   --magic-player-backdrop-filter: blur(80px);
-  --magic-player-controls-color: rgba(255, 255, 255, 0.8);
+  --magic-player-controls-color: rgba(255, 255, 255, 1);
+  --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
+  --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
 
   @media (max-width: 640px) {
     --magic-player-controls-height: 2.5rem;
-    --magic-player-controls-bottom: 0px;
+    --magic-player-controls-bottom: 0.75rem;
     --magic-player-controls-padding: 0.5rem;
-    --magic-player-controls-border-radius: 0;
   }
 }
 
@@ -120,13 +121,15 @@ const isMouseEnter = ref(false)
 .magic-player-controls__overlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--magic-player-controls-overlay-background-color);
+  color: var(--magic-player-controls-overlay-color);
   transition-duration: 300ms;
   transition-property: opacity;
   transition-timing-function: ease-out;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .magic-player-controls__overlay button,

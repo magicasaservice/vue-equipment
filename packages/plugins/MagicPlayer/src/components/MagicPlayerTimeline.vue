@@ -217,4 +217,8 @@ onMounted(() => {
 .magic-player-timeline__slider-buffered {
   opacity: 0.15;
 }
+
+.magic-player-timeline:hover .magic-player-timeline__slider-thumb-handle {
+  transform: translate(-50%, -50%) scale(1);
+}
 </style>
