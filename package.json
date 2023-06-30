@@ -21,20 +21,20 @@
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "require": "./index.cjs",
-      "import": "./index.mjs"
-    },
     "./composables": {
-      "types": "./composables.d.ts",
-      "require": "./composables.cjs",
-      "import": "./composables.mjs"
+      "types": "./composables/index.d.ts",
+      "require": "./composables/index.js",
+      "import": "./composables/index.mjs"
     },
     "./plugins": {
-      "types": "./plugins.d.ts",
-      "require": "./plugins.cjs",
-      "import": "./plugins.mjs"
+      "types": "./plugins/index.d.ts",
+      "require": "./plugins/index.js",
+      "import": "./plugins/index.mjs"
+    },
+    "./nuxt": {
+      "types": "./nuxt/module.d.ts",
+      "require": "./nuxt/module.cjs",
+      "import": "./nuxt/module.mjs"
     }
   },
   "devDependencies": {

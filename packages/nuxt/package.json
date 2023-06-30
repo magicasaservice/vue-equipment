@@ -3,11 +3,10 @@
   "version": "0.0.2",
   "type": "module",
   "scripts": {
-    "prepack": "nuxt-module-build",
+    "build": "nuxt-module-build --outDir ../../dist/nuxt",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"

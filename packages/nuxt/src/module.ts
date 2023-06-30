@@ -3,7 +3,6 @@ import metadata from '../../metadata/index.json'
 
 import type { Import, Preset } from 'unimport'
 
-// Module options TypeScript interface definition
 export interface ModuleOptions {
   autoImportPlugins?: boolean
   autoImportComposables?: boolean
@@ -16,7 +15,6 @@ export default defineNuxtModule<ModuleOptions>({
     name: 'vue-equipment',
     configKey: 'vueEquipment',
   },
-  // Default configuration options of the Nuxt module
   defaults: {
     autoImportPlugins: false,
     autoImportComposables: false,
@@ -57,8 +55,6 @@ export default defineNuxtModule<ModuleOptions>({
         imports: composables,
         priority: -1,
       })
-
-      console.log('sources:', sources)
     })
   },
 })

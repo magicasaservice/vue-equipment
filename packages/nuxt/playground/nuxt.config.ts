@@ -9,14 +9,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   typescript: {
     includeWorkspace: true,
-    // tsConfig: {
-    //   compilerOptions: {
-    //     paths: {
-    //       '@maas/vue-equipment': ['../../..'],
-    //       '@maas/vue-equipment/composables': ['../../../packages/composables'],
-    //     },
-    //   },
-    // },
   },
   alias: {
     '@maas/vue-equipment/composables': path.resolve(
