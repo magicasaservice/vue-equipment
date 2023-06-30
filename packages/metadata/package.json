@@ -1,7 +1,7 @@
 {
   "name": "metadata",
   "version": "0.0.1",
-  "description": "Metadata for Vue Equipment functions",
+  "description": "Metadata for @maas/vue-equipment",
   "keywords": [],
   "license": "MIT",
   "private": true,
@@ -21,6 +21,6 @@
     "index.*"
   ],
   "scripts": {
-    "update": "tsx scripts/update.ts"
+    "update": "esno scripts/update.ts"
   }
 }
