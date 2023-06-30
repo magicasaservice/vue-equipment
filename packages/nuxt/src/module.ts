@@ -1,6 +1,7 @@
 import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
-import type { NuxtPlugin } from '@nuxt/schema'
 import metadata from '../../metadata/index.json'
+
+import type { Import, Preset } from 'unimport'
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
@@ -24,8 +25,10 @@ export default defineNuxtModule<ModuleOptions>({
   },
   async setup(options, nuxt) {
     let plugins: string[]
+    let composables: any[]
     const resolver = createResolver(import.meta.url)
 
+    // Plugins
     if (options.autoImportPlugins) {
       plugins = metadata.functions
         .filter((fn) => fn.package === 'plugins')
@@ -36,15 +39,26 @@ export default defineNuxtModule<ModuleOptions>({
 
     for (const plugin of plugins) {
       const nuxtPlugin = resolver.resolve(`../../plugins/${plugin}/nuxt`)
-
-      // const vuePlugin = await import(resolved)
-      // const nuxtPlugin: unknown = defineNuxtPlugin((nuxtApp: any) => {
-      //   nuxtApp.vueApp.use(vuePlugin[plugin])
-      // })
-
       addPlugin(nuxtPlugin)
     }
 
-    console.log(nuxt.options.plugins)
+    // Composables
+    if (options.autoImportComposables) {
+      composables = metadata.functions
+        .filter((fn) => fn.package === 'composables')
+        .map((fn) => fn.name)
+    } else {
+      composables = options.composables || []
+    }
+
+    nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
+      sources.push({
+        from: '@maas/vue-equipment/composables',
+        imports: composables,
+        priority: -1,
+      })
+
+      console.log('sources:', sources)
+    })
   },
 })

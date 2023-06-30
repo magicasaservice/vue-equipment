@@ -1,14 +1,22 @@
-import { Ref, ref, inject, computed } from 'vue'
-import { WindowDimensionsKey, WindowScrollKey, FromTo } from '../types'
+import { ref, inject, computed } from 'vue'
+import { toValue } from '@vueuse/shared'
+import { WindowDimensionsKey, WindowScrollKey } from '../types'
 import { clampValue } from '../utils'
 
-export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
+import type { MaybeRef } from '@vueuse/shared'
+import type { FromTo } from '../types'
+
+export function useProgress(
+  target: MaybeRef<HTMLElement | null | undefined>,
+  from: FromTo,
+  to: FromTo
+) {
   const dimensions = inject(WindowDimensionsKey, { vw: ref(0), vh: ref(0) })
   const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
 
   const offsetY = computed(() => scrollPosition.y)
 
-  const elRect = ref()
+  const targetRect = ref()
   const start = ref(0)
   const end = ref(0)
 
@@ -24,13 +32,13 @@ export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
 
     switch (points.el) {
       case 'top':
-        y += elRect.value.top + offsetY.value
+        y += targetRect.value.top + offsetY.value
         break
       case 'center':
-        y += elRect.value.top + offsetY.value + elRect.value.height / 2
+        y += targetRect.value.top + offsetY.value + targetRect.value.height / 2
         break
       case 'bottom':
-        y += elRect.value.top + offsetY.value + elRect.value.height
+        y += targetRect.value.top + offsetY.value + targetRect.value.height
         break
     }
 
@@ -45,7 +53,7 @@ export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
         y -= dimensions.vh.value
         break
       case 'initial':
-        y -= elRect.value.top + offsetY.value
+        y -= targetRect.value.top + offsetY.value
         break
     }
 
@@ -53,7 +61,7 @@ export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
   }
 
   const getCalculations = () => {
-    elRect.value = el.value?.getBoundingClientRect()
+    targetRect.value = toValue(target)?.getBoundingClientRect()
     start.value = getOffsetTop(splitLocation(from))
     end.value = getOffsetTop(splitLocation(to))
   }
@@ -61,9 +69,8 @@ export function useProgress(el: Ref<Element>, from: FromTo, to: FromTo) {
   const getProgress = () => {
     const total = Math.abs(end.value - start.value)
     const current = offsetY.value - start.value
-    const progress = current / total
 
-    return clampValue(progress, 0, 1)
+    return clampValue(current / total, 0, 1)
   }
 
   return { getCalculations, getProgress }

@@ -1,14 +1,16 @@
 <template>
-  <div ref="el" class="magic-scroll-anime">
+  <div ref="targetRef" class="magic-scroll-anime">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
-import { AnimeInstance } from 'animejs'
 import anime from 'animejs'
+import { ref, inject, computed, onMounted, watch } from 'vue'
+import { toValue } from '@vueuse/shared'
 import { ScrollProgressKey } from '../types'
+
+import type { AnimeInstance } from 'animejs'
 
 interface Props {
   keyframes: Record<string, any>[]
@@ -17,7 +19,7 @@ interface Props {
 const { keyframes = [] } = defineProps<Props>()
 const animation = ref<AnimeInstance>()
 const duration = ref(0)
-const el = ref()
+const targetRef = ref<HTMLElement | undefined>(undefined)
 
 const progress = inject(
   ScrollProgressKey,
@@ -26,7 +28,7 @@ const progress = inject(
 
 onMounted(() => {
   animation.value = anime({
-    targets: toRaw(el.value),
+    targets: toValue(targetRef.value),
     autoplay: false,
     easing: 'linear',
     keyframes,

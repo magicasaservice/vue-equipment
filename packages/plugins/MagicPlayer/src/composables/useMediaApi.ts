@@ -1,7 +1,8 @@
 import { ref, watch, unref } from 'vue'
-import type { MaybeRef } from '@vueuse/shared'
 import { toValue, watchIgnorable } from '@vueuse/shared'
 import { useEventListener } from '@vueuse/core'
+
+import type { MaybeRef } from '@vueuse/shared'
 
 export function useMediaApi(
   target: MaybeRef<HTMLMediaElement | null | undefined>

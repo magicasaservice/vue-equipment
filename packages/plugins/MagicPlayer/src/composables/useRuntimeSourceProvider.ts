@@ -1,5 +1,7 @@
-import { MaybeRef, toValue } from '@vueuse/shared'
+import { toValue } from '@vueuse/shared'
 import { ref, onMounted, onUnmounted } from 'vue'
+
+import type { MaybeRef } from '@vueuse/shared'
 import type { RuntimeSourceProvider } from './../types'
 import type Hls from 'hls.js'
 

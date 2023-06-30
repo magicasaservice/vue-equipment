@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 
 type AlertPositions = {
   top: boolean
@@ -9,7 +9,7 @@ type CollisionEvents = {
   'magic-scroll:collision': {
     dir: 'up' | 'down'
     pos: 'top' | 'bottom'
-    el: Element
+    el: HTMLElement
     data?: Record<string, any>
   }
 }
@@ -45,7 +45,7 @@ type FromTo =
   | 'bottom-bottom'
 
 export * from './injection-symbols/magic-scroll'
-export {
+export type {
   FromTo,
   CollisionEvents,
   CollisionEntry,

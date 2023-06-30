@@ -1,20 +1,23 @@
 <template>
-  <div ref="el" :style="{ display: 'contents' }">
+  <div ref="targetRef" :style="{ display: 'contents' }">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted, toRaw } from 'vue'
+import { ref, inject, computed, onMounted } from 'vue'
+import { toValue } from '@vueuse/shared'
 import { useCollisionDetect } from '../composables/useCollisionDetect'
-import { WindowDimensionsKey, WindowScrollKey, CollisionEntry } from '../types'
+import { WindowDimensionsKey, WindowScrollKey } from '../types'
+
+import type { CollisionEntry } from '../types'
 
 interface Props {
   collisionEntries: CollisionEntry[]
 }
 
 const props = defineProps<Props>()
-const el = ref()
+const targetRef = ref<HTMLElement | undefined>(undefined)
 const colDetect = ref()
 
 const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
@@ -26,7 +29,7 @@ onMounted(() => {
     pageYOffset,
     windowDimensions,
     props.collisionEntries,
-    toRaw(el.value)
+    toValue(targetRef.value)
   )
 })
 </script>

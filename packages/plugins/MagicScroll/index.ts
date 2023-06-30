@@ -1,5 +1,3 @@
-import { App, Plugin } from 'vue'
-
 import MagicScrollProvider from './src/components/MagicScrollProvider.vue'
 import MagicScrollScene from './src/components/MagicScrollScene.vue'
 import MagicScrollTransform from './src/components/MagicScrollTransform.vue'
@@ -12,7 +10,9 @@ import { magicScrollEmit } from './src/utils'
 import { useProgress } from './src/composables/useProgress'
 import { useCollisionDetect } from './src/composables/useCollisionDetect'
 
-export * from './src/types'
+import type { App, Plugin } from 'vue'
+
+export type * from './src/types'
 
 const MagicScroll: Plugin = {
   install: (app: App) => {

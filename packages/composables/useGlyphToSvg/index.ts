@@ -1,6 +1,8 @@
 import { useClipboard } from '@vueuse/core'
-import { Ref, unref } from 'vue'
-import { Font } from 'fontkit'
+import { unref } from 'vue'
+
+import type { Ref } from 'vue'
+import type { Font } from 'fontkit'
 
 export type glyphToSvgParams = {
   fontSize: Ref<number> | number

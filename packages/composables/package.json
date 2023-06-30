@@ -12,15 +12,14 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "require": "./index.cjs",
-      "import": "./index.mjs"
-    },
-    "./*": "./*"
+      "types": "./../../dist/composables/index.d.ts",
+      "require": "./../../dist/composables/index.js",
+      "import": "./../../dist/composables/index.mjs"
+    }
   },
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "main": "./../../dist/composables/index.mjs",
+  "module": "./../../dist/composables/index.mjs",
+  "types": "./../../dist/composables/index.d.ts",
   "peerDependencies": {
     "@vueuse/core": "*"
   },
@@ -30,7 +29,7 @@
     }
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.3",

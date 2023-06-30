@@ -19,11 +19,9 @@ import { useIntersectionObserver } from '@vueuse/core'
 import { useMediaApi } from './../composables/useMediaApi'
 import { usePlayerApi } from './../composables/usePlayerApi'
 import { useRuntimeSourceProvider } from './../composables/useRuntimeSourceProvider'
-import {
-  RuntimeSourceProvider,
-  MediaApiInjectionKey,
-  PlayerApiInjectionKey,
-} from './../types'
+import { MediaApiInjectionKey, PlayerApiInjectionKey } from './../types'
+
+import type { RuntimeSourceProvider } from './../types'
 
 export type MagicPlayerProps = {
   provider: RuntimeSourceProvider

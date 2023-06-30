@@ -46,6 +46,25 @@
 </template>
 
 <script lang="ts">
+interface MagicModalProps {
+  id: MaybeRef<string>
+  component?: any
+  componentProps?: Record<string, unknown>
+  options?: {
+    backdrop?: boolean
+    focusTrap?: boolean
+    scrollLock?: boolean
+    teleport?: {
+      target: string
+      disabled?: boolean
+    }
+    transitions?: {
+      content?: string
+      backdrop?: string
+    }
+  }
+}
+
 export const defaultOptions: MagicModalProps['options'] = {
   backdrop: true,
   focusTrap: true,
@@ -66,26 +85,6 @@ import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
 import { onKeyStroke } from '@vueuse/core'
 import type { MaybeRef } from '@vueuse/core'
-import type { VueElement } from 'vue'
-
-export interface MagicModalProps {
-  id: MaybeRef<string>
-  component?: VueElement
-  componentProps?: Record<string, unknown>
-  options?: {
-    backdrop?: boolean
-    focusTrap?: boolean
-    scrollLock?: boolean
-    teleport?: {
-      target: string
-      disabled?: boolean
-    }
-    transitions?: {
-      content?: string
-      backdrop?: string
-    }
-  }
-}
 
 const props = withDefaults(defineProps<MagicModalProps>(), {
   options: () => ({ ...defaultOptions }),
@@ -215,39 +214,38 @@ watch(isActive, async (value) => {
 .magic-modal--content-enter-active,
 .magic-modal--content-leave-active {
   transition: all 300ms ease-out;
-  @media (prefers-reduced-motion) {
-    transition: opacity 300ms ease-out;
-  }
 }
 
 .magic-modal--content-enter-from {
   opacity: 0;
   transform: translateY(2rem);
-  @media (prefers-reduced-motion) {
-    transform: none;
-  }
 }
 
 .magic-modal--content-enter-to {
   opacity: 1;
   transform: translateY(0);
-  @media (prefers-reduced-motion) {
-    transform: none;
-  }
 }
 
 .magic-modal--content-leave-from {
   opacity: 1;
   transform: scale(1);
-  @media (prefers-reduced-motion) {
-    transform: none;
-  }
 }
 
 .magic-modal--content-leave-to {
   opacity: 0;
   transform: scale(1.02);
-  @media (prefers-reduced-motion) {
+}
+
+@media (prefers-reduced-motion) {
+  .magic-modal--content-enter-active,
+  .magic-modal--content-leave-active {
+    transition: opacity 300ms ease-out;
+  }
+
+  .magic-modal--content-enter-from,
+  .magic-modal--content-enter-to,
+  .magic-modal--content-leave-from,
+  .magic-modal--content-leave-to {
     transform: none;
   }
 }

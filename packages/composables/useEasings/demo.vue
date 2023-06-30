@@ -18,18 +18,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import {
-  useEasings,
-  EasingFunction,
-  EasingKey,
-} from '@maas/vue-equipment/composables'
+import { useEasings } from '@maas/vue-equipment/composables'
 import { useRafFn, useElementSize } from '@vueuse/core'
+
+import type { EasingFunction, EasingKey } from '@maas/vue-equipment/composables'
 
 const easings = useEasings()
 const { pause, resume, isActive } = useRafFn(() => mapEasings(), {
   immediate: false,
 })
-const el = ref(null)
+const el = ref<HTMLElement | undefined>(undefined)
 const { width } = useElementSize(el)
 
 const startTime = ref(0)

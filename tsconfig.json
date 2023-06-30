@@ -1,22 +1,6 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "target": "es2017",
-    "module": "esnext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "declaration": true,
-    "declarationDir": "./types",
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "baseUrl": ".",
-    "jsx": "preserve",
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "noUnusedLocals": true,
     "paths": {
       "@maas/vue-equipment/composables": ["./packages/composables/index.ts"],
       "@maas/vue-equipment/composables/*": ["./packages/composables/*"],

@@ -1,8 +1,5 @@
 <template>
-  <div>
-    Nuxt module playground!
-
-    <p>File [mp4]</p>
+  <magic-scroll-provider>
     <div class="w-full aspect-[16/9]">
       <magic-player
         provider="file"
@@ -11,5 +8,13 @@
         <magic-player-controls />
       </magic-player>
     </div>
-  </div>
+  </magic-scroll-provider>
 </template>
+
+<script lang="ts" setup>
+const easings = useEasings()
+const scrollTo = useScrollTo()
+
+console.log('easings:', easings)
+console.log('scrollTo:', scrollTo)
+</script>

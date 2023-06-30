@@ -1,40 +1,40 @@
 <template>
-  <div ref="el" class="magic-scroll-scene">
+  <div ref="sceneRef" class="magic-scroll-scene">
     <slot :map-value="mapValue" :progress="progress" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  provide,
-  inject,
-  computed,
-  onMounted,
-  watch,
-  nextTick,
-  toRaw,
-} from 'vue'
+import { ref, provide, inject, computed, onMounted, watch, nextTick } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+import { toValue } from '@vueuse/shared'
 import { mapValue } from '../utils'
 import { useProgress } from '../composables/useProgress'
-import { useIntersectionObserver } from '@vueuse/core'
-import { WindowScrollKey, ScrollProgressKey, FromTo } from '../types'
+import { WindowScrollKey, ScrollProgressKey } from '../types'
+
+import type { FromTo } from '../types'
 
 interface Props {
   from?: FromTo
   to?: FromTo
   debug?: boolean
 }
-// eslint-disable-next-line vue/no-setup-props-destructure
-const { from = 'top-bottom', to = 'bottom-top' } = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  from: 'top-bottom',
+  to: 'bottom-top',
+})
 
 const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
 const pageYOffset = computed(() => scrollPosition.y)
 
-const el = ref<HTMLElement | undefined>(undefined)
+const sceneRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 
-const { getCalculations, getProgress } = useProgress(toRaw(el), from, to)
+const { getCalculations, getProgress } = useProgress(
+  sceneRef,
+  props.from,
+  props.to
+)
 
 const calculate = () => {
   getCalculations()
@@ -59,7 +59,7 @@ watch(
 const intersecting = ref()
 
 useIntersectionObserver(
-  toRaw(el),
+  toValue(sceneRef),
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
   },

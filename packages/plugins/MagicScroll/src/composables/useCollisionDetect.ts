@@ -1,8 +1,9 @@
-import { ComputedRef, ref, watch, unref } from 'vue'
+import { ref, watch, unref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { magicScrollEmit } from '../utils'
 
-import {
+import type { ComputedRef } from 'vue'
+import type {
   CollisionEntry,
   CollisionMappedEntry,
   WindowDimensions,
@@ -15,7 +16,7 @@ export function useCollisionDetect(
   pageYOffset: ComputedRef<number>,
   windowDimensions: WindowDimensions,
   collisionEntries: CollisionEntry[],
-  parent: HTMLElement
+  parent: HTMLElement | undefined
 ) {
   const scrolled = ref(0)
   const intersecting = ref()
@@ -34,6 +35,8 @@ export function useCollisionDetect(
   }
 
   function initialize() {
+    if (!parent) return
+
     collisionMappedEntries.value = collisionEntries.map((entry) => {
       const alerted = {
         up: {
