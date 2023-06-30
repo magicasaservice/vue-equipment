@@ -49,43 +49,20 @@
 import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
 import { onKeyStroke } from '@vueuse/core'
+import { defaultOptions } from './../utils/defaultOptions'
+
 import type { MaybeRef } from '@vueuse/core'
+import type { DefaultOptions } from './../types/index'
 
 interface MagicModalProps {
   id: MaybeRef<string>
   component?: any
   componentProps?: Record<string, unknown>
-  options?: {
-    backdrop?: boolean
-    focusTrap?: boolean
-    scrollLock?: boolean
-    teleport?: {
-      target: string
-      disabled?: boolean
-    }
-    transitions?: {
-      content?: string
-      backdrop?: string
-    }
-  }
-}
-
-const defaultOptions: MagicModalProps['options'] = {
-  backdrop: true,
-  focusTrap: true,
-  scrollLock: true,
-  teleport: {
-    target: 'body',
-    disabled: false,
-  },
-  transitions: {
-    content: 'magic-modal--content',
-    backdrop: 'magic-modal--backdrop',
-  },
+  options?: DefaultOptions
 }
 
 const props = withDefaults(defineProps<MagicModalProps>(), {
-  options: () => ({ ...defaultOptions }),
+  options: () => defaultOptions,
 })
 
 const modal = ref<HTMLElement | undefined>(undefined)
