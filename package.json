@@ -8,6 +8,7 @@
     "build:nuxt": "nuxt-module-build ./packages/nuxt --outDir ../../dist/nuxt",
     "build:plugins": "esno scripts/plugins.ts",
     "build:composables": "esno  scripts/composables.ts",
+    "build:types": "npx tsc --declaration --emitDeclarationOnly --outDir dist",
     "clean": "pnpm dlx rimraf dist types packages/*/dist",
     "dev": "nr metadata:update && nr docs:dev",
     "docs:dev": "vitepress dev packages",
@@ -63,13 +64,15 @@
     "plugins": "workspace:*",
     "prettier": "^2.8.8",
     "simple-git": "^3.17.0",
+    "typescript": "^5.1.6",
     "unocss": "^0.51.8",
     "unplugin-icons": "^0.16.1",
     "unplugin-vue": "4.2.2-beta.0",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.3.1",
     "vitepress": "1.0.0-alpha.73",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-tsc": "^1.8.3"
   },
   "volta": {
     "node": "18.16.1"
