@@ -45,7 +45,12 @@
   </transition>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, watch, nextTick } from 'vue'
+import { useModalApi } from './../composables/useModalApi'
+import { onKeyStroke } from '@vueuse/core'
+import type { MaybeRef } from '@vueuse/core'
+
 interface MagicModalProps {
   id: MaybeRef<string>
   component?: any
@@ -65,7 +70,7 @@ interface MagicModalProps {
   }
 }
 
-export const defaultOptions: MagicModalProps['options'] = {
+const defaultOptions: MagicModalProps['options'] = {
   backdrop: true,
   focusTrap: true,
   scrollLock: true,
@@ -78,13 +83,6 @@ export const defaultOptions: MagicModalProps['options'] = {
     backdrop: 'magic-modal--backdrop',
   },
 }
-</script>
-
-<script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
-import { useModalApi } from './../composables/useModalApi'
-import { onKeyStroke } from '@vueuse/core'
-import type { MaybeRef } from '@vueuse/core'
 
 const props = withDefaults(defineProps<MagicModalProps>(), {
   options: () => ({ ...defaultOptions }),
