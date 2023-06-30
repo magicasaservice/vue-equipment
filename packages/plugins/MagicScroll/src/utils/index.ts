@@ -1,5 +1,5 @@
 import mitt from 'mitt'
-import { CollisionEvents } from '../types'
+import type { CollisionEvents } from '../types'
 
 const emitter = mitt<CollisionEvents>()
 
