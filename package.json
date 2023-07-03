@@ -21,6 +21,7 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "main": "index.js",
   "exports": {
+    ".": "./index.js",
     "./composables": {
       "types": "./dist/composables/index.d.ts",
       "require": "./dist/composables/index.js",
