@@ -11,9 +11,6 @@ export default defineNuxtConfig({
     includeWorkspace: true,
   },
   alias: {
-    '@maas/vue-equipment/composables': path.resolve(
-      __dirname,
-      '../../composables'
-    ),
+    '@maas/vue-equipment': path.resolve(__dirname, '../..'),
   },
 })

@@ -8,6 +8,7 @@
     "clean": "nlx rimraf dist types packages/*/dist",
     "build": "nr clean && nr metadata:update && turbo run build",
     "dev": "nr metadata:update && nr docs:dev",
+    "dev:nuxt": "turbo run dev --filter nuxt",
     "docs:dev": "vitepress dev packages",
     "docs:build": "vitepress build packages",
     "docs:preview": "vitepress preview packages",

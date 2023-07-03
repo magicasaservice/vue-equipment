@@ -1,4 +1,5 @@
-import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, resolvePath } from '@nuxt/kit'
+
 import metadata from '../../metadata/index.json'
 
 import type { Import, Preset } from 'unimport'
@@ -24,7 +25,6 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     let plugins: string[]
     let composables: any[]
-    const resolver = createResolver(import.meta.url)
 
     // Plugins
     if (options.autoImportPlugins) {
@@ -36,8 +36,11 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     for (const plugin of plugins) {
-      const nuxtPlugin = resolver.resolve(`../../plugins/${plugin}/nuxt`)
+      const nuxtPlugin = await resolvePath(
+        `@maas/vue-equipment/plugins/${plugin}/nuxt`
+      )
       addPlugin(nuxtPlugin)
+      console.log('nuxtPlugin:', nuxtPlugin)
     }
 
     // Composables

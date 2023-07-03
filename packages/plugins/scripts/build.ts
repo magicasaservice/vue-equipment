@@ -14,7 +14,6 @@ mkdist({
     '!package.json',
     '!pnpm-lock.yaml',
     '!shims-vue.d.ts',
-    '!**/nuxt.ts',
     '!**/demo.vue',
     '!**/index.md',
     '!scripts/*',
