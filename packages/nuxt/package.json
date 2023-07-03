@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "type": "module",
   "scripts": {
+    "prepack": "nlx nuxi prepare ./playground",
     "build": "nuxt-module-build --outDir ../../dist/nuxt",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
