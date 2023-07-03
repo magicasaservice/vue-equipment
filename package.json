@@ -20,7 +20,6 @@
   "keywords": [],
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
-  "main": "index.js",
   "exports": {
     ".": {
       "types": "./dist/nuxt/types.d.ts",
@@ -37,6 +36,9 @@
       "import": "./dist/plugins/index.mjs"
     }
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@antfu/ni": "^0.21.3",
     "@nuxt/module-builder": "^0.4.0",
