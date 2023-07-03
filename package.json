@@ -21,19 +21,18 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "exports": {
     "./composables": {
-      "types": "./composables/index.d.ts",
-      "require": "./composables/index.js",
-      "import": "./composables/index.mjs"
+      "types": "./dist/composables/index.d.ts",
+      "require": "./dist/composables/index.js",
+      "import": "./dist/composables/index.mjs"
     },
     "./plugins": {
-      "types": "./plugins/index.d.ts",
-      "require": "./plugins/index.js",
-      "import": "./plugins/index.mjs"
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.mjs"
     },
     "./nuxt": {
-      "types": "./nuxt/module.d.ts",
-      "require": "./nuxt/module.cjs",
-      "import": "./nuxt/module.mjs"
+      "types": "./dist/nuxt/types.d.ts",
+      "require": "./dist/nuxt/module.cjs",
+      "import": "./dist/nuxt/module.mjs"
     }
   },
   "devDependencies": {
