@@ -4,9 +4,10 @@
   "private": true,
   "description": "A magic collection of Vue composables, plugins, components and directives",
   "scripts": {
-    "prepare": "nr build",
     "clean": "nlx rimraf dist types packages/*/dist",
-    "build": "nr metadata:update && nr clean && nr build:composables && nr build:plugins && nr build:nuxt && nr build:types",
+    "prepare": "nr build",
+    "prebuild": "nr clean && nr metadata:update",
+    "build": "nr build:composables && nr build:plugins && nr build:nuxt && nr build:types",
     "build:nuxt": "nuxt-module-build ./packages/nuxt --outDir ../../dist/nuxt",
     "build:plugins": "esno scripts/plugins.ts",
     "build:composables": "tsup --config  packages/composables/tsup.config.ts",
