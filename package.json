@@ -4,9 +4,9 @@
   "private": true,
   "description": "A magic collection of Vue composables, plugins, components and directives",
   "scripts": {
-    "prepare": "pnpm run build",
-    "clean": "pnpm dlx rimraf dist types packages/*/dist",
-    "build": "pnpm run clean && pnpm run build:composables && pnpm run build:plugins && pnpm run build:nuxt && pnpm run build:types",
+    "prepare": "nr build",
+    "clean": "nlx rimraf dist types packages/*/dist",
+    "build": "nr metadata:update && nr clean && nr build:composables && nr build:plugins && nr build:nuxt && nr build:types",
     "build:nuxt": "nuxt-module-build ./packages/nuxt --outDir ../../dist/nuxt",
     "build:plugins": "esno scripts/plugins.ts",
     "build:composables": "tsup --config  packages/composables/tsup.config.ts",
@@ -18,7 +18,7 @@
     "module:dev": "cd packages/nuxt && nr dev",
     "metadata:update": "nr -C packages/metadata update",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml"
+    "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml"
   },
   "keywords": [],
   "license": "MIT",

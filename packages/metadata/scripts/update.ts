@@ -56,11 +56,19 @@ export async function readMetadata() {
         const mdPath = join(dir, fnName, 'index.md')
         const tsPath = join(dir, fnName, 'index.ts')
 
+        let lastUpdated = 0
+
+        try {
+          lastUpdated =
+            +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000
+        } catch (e) {
+          console.warn('git:', e)
+        }
+
         const fn: VueEquipmentFunction = {
           name: fnName,
           package: pkg.name,
-          lastUpdated:
-            +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000,
+          lastUpdated: lastUpdated,
         }
 
         if (!fs.existsSync(mdPath)) {
