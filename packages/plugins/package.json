@@ -16,7 +16,7 @@
     "@vueuse/core": "*",
     "@vueuse/integrations": "*",
     "@vueuse/shared": "*",
-    "animejs": "*'",
+    "animejs": "*",
     "hls.js": "*",
     "mitt": "*",
     "uuid": "*"
@@ -34,13 +34,13 @@
     "animejs": {
       "optional": true
     },
-    "@types/animejs": {
-      "optional": true
-    },
     "mitt": {
       "optional": true
     },
     "hls.js": {
+      "optional": true
+    },
+    "uuid": {
       "optional": true
     }
   },
