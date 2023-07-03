@@ -7,6 +7,9 @@
     },
     "nuxt#build": {
       "dependsOn": ["composables#build", "plugins#build"]
+    },
+    "nuxt#dev": {
+      "dependsOn": ["composables#build", "plugins#build"]
     }
   }
 }
