@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A magic collection of Vue plugins",
   "scripts": {
+    "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json --declaration --emitDeclarationOnly",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -62,6 +63,8 @@
     "focus-trap": "^7.4.3",
     "hls.js": "^1.4.3",
     "mitt": "^3.0.0",
-    "uuid": "^9.0.0"
+    "mkdist": "^1.2.0",
+    "uuid": "^9.0.0",
+    "vue-tsc": "^1.8.3"
   }
 }

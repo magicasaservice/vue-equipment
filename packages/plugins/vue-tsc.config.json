@@ -1,0 +1,5 @@
+{
+  "extends": "./../../tsconfig.json",
+  "include": ["./../../dist"],
+  "exclude": ["./../../dist/composables", "./../../dist/nuxt"]
+}

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Collection of essential Vue Composition Utilities",
   "scripts": {
+    "build": "tsup --config tsup.config.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.3",
-    "@vueuse/core": "^10.1.0"
+    "@vueuse/core": "^10.1.0",
+    "tsup": "^7.1.0"
   }
 }

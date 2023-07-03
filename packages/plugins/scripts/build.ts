@@ -3,9 +3,10 @@ import { resolve } from 'path'
 
 mkdist({
   declaration: true,
-  distDir: resolve(__dirname, '../dist/plugins'),
-  rootDir: resolve(__dirname, '../packages/plugins'),
-  srcDir: '.',
+  addRelativeDeclarationExtensions: true,
+  distDir: resolve(__dirname, '../../../dist/plugins'),
+  rootDir: resolve(__dirname, './..'),
+  srcDir: resolve(__dirname, './..'),
   pattern: [
     '**',
     '!index.md',
@@ -16,5 +17,7 @@ mkdist({
     '!**/nuxt.ts',
     '!**/demo.vue',
     '!**/index.md',
+    '!scripts/*',
+    '!*.config.json',
   ],
 })

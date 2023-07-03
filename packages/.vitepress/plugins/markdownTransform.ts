@@ -1,7 +1,7 @@
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import fs from 'fs-extra'
-import { getTypeDefinition, replacer } from '../../../scripts/utils'
+import { getTypeDefinition, replacer } from './../utils'
 import { functionNames } from '../../../packages/metadata/metadata'
 
 export function MarkdownTransform(): Plugin {

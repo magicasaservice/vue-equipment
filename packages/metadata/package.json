@@ -22,5 +22,10 @@
   ],
   "scripts": {
     "update": "esno scripts/update.ts"
+  },
+  "devDependencies": {
+    "fast-glob": "^3.3.0",
+    "gray-matter": "^4.0.3",
+    "simple-git": "^3.19.1"
   }
 }

@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
-import type { PackageIndexes } from 'metadata'
+import type { PackageIndexes } from '../../metadata'
 
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
