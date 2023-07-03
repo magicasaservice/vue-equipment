@@ -36,9 +36,6 @@
       "import": "./dist/plugins/index.mjs"
     }
   },
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@antfu/ni": "^0.21.3",
     "@nuxt/module-builder": "^0.4.0",
