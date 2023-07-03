@@ -42,6 +42,9 @@
     "animejs": {
       "optional": true
     },
+    "@types/animejs": {
+      "optional": true
+    },
     "mitt": {
       "optional": true
     },

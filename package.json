@@ -7,7 +7,7 @@
     "clean": "nlx rimraf dist types packages/*/dist",
     "prepare": "nr build",
     "build": "nr clean && nr metadata:update && nr build:composables && nr build:plugins && nr build:nuxt && nr build:types",
-    "build:nuxt": "nuxt-module-build ./packages/nuxt --outDir ../../dist/nuxt",
+    "build:nuxt": "nlx nuxi prepare ./packages/nuxt/playground && nuxt-module-build ./packages/nuxt --outDir ../../dist/nuxt",
     "build:plugins": "esno scripts/plugins.ts",
     "build:composables": "tsup --config  packages/composables/tsup.config.ts",
     "build:types": "vue-tsc --project tsconfig.types.json --declaration --emitDeclarationOnly",
