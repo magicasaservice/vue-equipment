@@ -300,11 +300,11 @@ packages:
   /@types/fontkit@2.0.3:
     resolution: {integrity: sha512-RA41XvRjS5M5h8XQDB0J6GDEijlGzWjPjiOQvlLEB2UJE4VWLMAyMRM8inrELYu9HHoddqm+/2VxG7o7ysHwVw==}
     dependencies:
-      '@types/node': 20.3.2
+      '@types/node': 20.3.3
     dev: true
 
-  /@types/node@20.3.2:
-    resolution: {integrity: sha512-vOBLVQeCQfIcF/2Y7eKFTqrMnizK5lRNQ7ykML/5RuwVXVWxYkgwS7xbt4B6fKCUPgbSL5FSsjHQpaGQP/dQmw==}
+  /@types/node@20.3.3:
+    resolution: {integrity: sha512-wheIYdr4NYML61AjC8MKj/2jrR/kDQri/CIpVoZwldwhnIrD/j9jIU5bJ8yBKuB2VhpFV7Ab6G2XkBjv9r9Zzw==}
     dev: true
 
   /@types/web-bluetooth@0.0.16:
