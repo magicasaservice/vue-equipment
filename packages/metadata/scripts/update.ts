@@ -23,7 +23,7 @@ export async function listFunctions(dir: string, ignore: string[] = []) {
   const files = await fg('*', {
     onlyDirectories: true,
     cwd: dir,
-    ignore: ['_*', 'dist', 'node_modules', ...ignore],
+    ignore: ['_*', 'dist', 'node_modules', 'scripts', ...ignore],
   })
   files.sort()
   console.log('files:', files)
