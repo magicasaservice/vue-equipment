@@ -19,6 +19,7 @@
   "keywords": [],
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "main": "index.js",
   "exports": {
     "./composables": {
       "types": "./dist/composables/index.d.ts",
