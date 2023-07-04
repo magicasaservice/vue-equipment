@@ -46,6 +46,7 @@
     "focus-trap": "latest",
     "hls.js": "latest",
     "mitt": "latest",
+    "nuxt": "latest",
     "uuid": "latest"
   },
   "peerDependenciesMeta": {
@@ -61,10 +62,13 @@
     "animejs": {
       "optional": true
     },
+    "hls.js": {
+      "optional": true
+    },
     "mitt": {
       "optional": true
     },
-    "hls.js": {
+    "nuxt": {
       "optional": true
     },
     "uuid": {

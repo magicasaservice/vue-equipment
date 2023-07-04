@@ -71,7 +71,6 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsSources({
       from: '@maas/vue-equipment/composables',
       imports: composables,
-      priority: -1,
     })
   },
 })
