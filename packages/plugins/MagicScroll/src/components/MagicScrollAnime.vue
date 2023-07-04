@@ -5,11 +5,13 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import anime from 'animejs'
 import { ref, inject, computed, onMounted, watch } from 'vue'
 import { toValue } from '@vueuse/shared'
 import { ScrollProgressKey } from '../types'
 
+// @ts-ignore
 import type { AnimeInstance } from 'animejs'
 
 interface Props {

@@ -39,14 +39,14 @@
     }
   },
   "peerDependencies": {
-    "@vueuse/core": "latest",
-    "@vueuse/integrations": "latest",
-    "@vueuse/shared": "latest",
-    "animejs": "latest",
-    "focus-trap": "latest",
-    "hls.js": "latest",
-    "mitt": "latest",
-    "uuid": "latest"
+    "@vueuse/core": "@latest",
+    "@vueuse/integrations": "@latest",
+    "@vueuse/shared": "@latest",
+    "animejs": "@latest",
+    "focus-trap": "@latest",
+    "hls.js": "@latest",
+    "mitt": "@latest",
+    "uuid": "@latest"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
