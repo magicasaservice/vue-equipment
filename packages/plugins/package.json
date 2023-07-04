@@ -13,13 +13,14 @@
   "sideEffects": false,
   "exports": "./index.ts",
   "peerDependencies": {
-    "@vueuse/core": "*",
-    "@vueuse/integrations": "*",
-    "@vueuse/shared": "*",
-    "animejs": "*",
-    "hls.js": "*",
-    "mitt": "*",
-    "uuid": "*"
+    "@vueuse/core": "latest",
+    "@vueuse/integrations": "latest",
+    "@vueuse/shared": "latest",
+    "animejs": "latest",
+    "focus-trap": "latest",
+    "hls.js": "latest",
+    "mitt": "latest",
+    "uuid": "latest"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
@@ -47,15 +48,7 @@
   "devDependencies": {
     "@types/animejs": "^3.1.7",
     "@types/uuid": "^9.0.1",
-    "@vueuse/core": "^10.1.0",
-    "@vueuse/integrations": "^10.1.2",
-    "@vueuse/shared": "^10.1.2",
-    "animejs": "^3.2.1",
-    "focus-trap": "^7.4.3",
-    "hls.js": "^1.4.3",
-    "mitt": "^3.0.0",
     "mkdist": "^1.2.0",
-    "uuid": "^9.0.0",
     "vue-tsc": "^1.8.3"
   }
 }

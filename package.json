@@ -8,7 +8,7 @@
     "clean": "nlx rimraf dist types packages/*/dist",
     "build": "nr clean && nr metadata:update && turbo run build",
     "dev": "nr metadata:update && nr docs:dev",
-    "dev:nuxt": "turbo run dev --filter nuxt",
+    "dev:nuxt": "turbo run dev --filter=nuxt",
     "docs:dev": "vitepress dev packages",
     "docs:build": "vitepress build packages",
     "docs:preview": "vitepress preview packages",
@@ -20,6 +20,8 @@
   "keywords": [],
   "license": "MIT",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "main": "./dist/nuxt/module.cjs",
+  "types": "./dist/nuxt/types.d.ts",
   "exports": {
     ".": {
       "types": "./dist/nuxt/types.d.ts",
@@ -36,6 +38,39 @@
       "import": "./dist/plugins/index.mjs"
     }
   },
+  "peerDependencies": {
+    "@vueuse/core": "latest",
+    "@vueuse/integrations": "latest",
+    "@vueuse/shared": "latest",
+    "animejs": "latest",
+    "focus-trap": "latest",
+    "hls.js": "latest",
+    "mitt": "latest",
+    "uuid": "latest"
+  },
+  "peerDependenciesMeta": {
+    "@vueuse/core": {
+      "optional": true
+    },
+    "@vueuse/integrations": {
+      "optional": true
+    },
+    "@vueuse/shared": {
+      "optional": true
+    },
+    "animejs": {
+      "optional": true
+    },
+    "mitt": {
+      "optional": true
+    },
+    "hls.js": {
+      "optional": true
+    },
+    "uuid": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@antfu/ni": "^0.21.3",
     "@nuxt/module-builder": "^0.4.0",
@@ -46,7 +81,6 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
-    "@vueuse/core": "^10.1.0",
     "composables": "workspace:*",
     "eslint": "^8.39.0",
     "esno": "^0.16.3",

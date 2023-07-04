@@ -11,6 +11,6 @@ export default defineNuxtConfig({
     includeWorkspace: true,
   },
   alias: {
-    '@maas/vue-equipment': path.resolve(__dirname, '../..'),
+    '@maas/vue-equipment': path.resolve(__dirname, '../../../dist'),
   },
 })

@@ -1,8 +1,11 @@
-import { defineNuxtModule, addPlugin, resolvePath } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  addPlugin,
+  addImportsSources,
+  resolvePath,
+} from '@nuxt/kit'
 
 import metadata from '../../metadata/index.json'
-
-import type { Import, Preset } from 'unimport'
 
 export interface ModuleOptions {
   autoImportPlugins?: boolean
@@ -25,6 +28,8 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     let plugins: string[]
     let composables: any[]
+
+    nuxt.options.build.transpile.push('@maas/vue-equipment')
 
     // Plugins
     if (options.autoImportPlugins) {
@@ -52,12 +57,10 @@ export default defineNuxtModule<ModuleOptions>({
       composables = options.composables || []
     }
 
-    nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
-      sources.push({
-        from: '@maas/vue-equipment/composables',
-        imports: composables,
-        priority: -1,
-      })
+    addImportsSources({
+      from: '@maas/vue-equipment/composables',
+      imports: composables,
+      priority: -1,
     })
   },
 })
