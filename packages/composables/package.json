@@ -13,7 +13,7 @@
   "sideEffects": false,
   "exports": "./index.ts",
   "peerDependencies": {
-    "@vueuse/core": "*"
+    "@vueuse/core": "latest"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {

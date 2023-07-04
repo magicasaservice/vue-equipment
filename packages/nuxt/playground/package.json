@@ -8,7 +8,7 @@
     "generate": "nuxi generate"
   },
   "dependencies": {
-    "@maas/vue-equipment": "*"
+    "@maas/vue-equipment": "worskspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.16.0",
