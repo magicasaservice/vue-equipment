@@ -2,6 +2,7 @@ import {
   defineNuxtModule,
   addPlugin,
   addImportsSources,
+  createResolver,
   resolvePath,
 } from '@nuxt/kit'
 
@@ -29,7 +30,20 @@ export default defineNuxtModule<ModuleOptions>({
     let plugins: string[]
     let composables: any[]
 
+    // const resolver = createResolver(import.meta.url)
+
     nuxt.options.build.transpile.push('@maas/vue-equipment')
+    nuxt.options.alias = nuxt.options.alias || {}
+
+    nuxt.options.alias['@maas/vue-equipment/plugins'] =
+      nuxt.options.alias['@maas/vue-equipment/plugins'] ||
+      (await resolvePath('../plugins'))
+
+    nuxt.options.alias['@maas/vue-equipment/composables'] =
+      nuxt.options.alias['@maas/vue-equipment/plugins'] ||
+      (await resolvePath('../composables'))
+
+    console.log('nuxt.options.alias:', nuxt.options.alias)
 
     // Plugins
     if (options.autoImportPlugins) {
