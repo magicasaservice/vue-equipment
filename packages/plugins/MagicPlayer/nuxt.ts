@@ -1,3 +1,4 @@
+import { defineNuxtPlugin } from 'nuxt/app'
 import { MagicPlayer } from './index'
 
 // @ts-ignore

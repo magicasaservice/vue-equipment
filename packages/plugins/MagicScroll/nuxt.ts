@@ -1,6 +1,6 @@
+import { defineNuxtPlugin } from 'nuxt/app'
 import { MagicScroll } from './index'
 
-// @ts-ignore
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(MagicScroll)
 })
