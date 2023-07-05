@@ -29,9 +29,10 @@ export function useModalApi(
     ? useFocusTrap(mappedOptions.focusTarget)
     : undefined
 
-  const scrollLock = mappedOptions.scrollLock
-    ? useScrollLock(document.body)
-    : ref(false)
+  const scrollLock =
+    mappedOptions.scrollLock && typeof window !== 'undefined'
+      ? useScrollLock(document.body)
+      : ref(false)
 
   // Private methods
   const { modalStore, addIdToStore, removeIdFromStore } = useModalStore()
@@ -69,6 +70,8 @@ export function useModalApi(
   }
 
   function addScrollLockPadding() {
+    if (typeof window === 'undefined') return
+
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.paddingRight = `${scrollbarWidth}px`
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
