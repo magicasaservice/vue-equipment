@@ -75,6 +75,6 @@ useIntersectionObserver(
   { rootMargin: '150% 0px 150% 0px' }
 )
 
-provide('mapValue', readonly(mapValue))
+provide('mapValue', mapValue)
 provide(ScrollProgressKey, readonly(progress))
 </script>
