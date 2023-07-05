@@ -11,5 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     DemoContainer: typeof import('./theme/components/DemoContainer.vue')['default']
     FunctionInfo: typeof import('./theme/components/FunctionInfo.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
   }
 }

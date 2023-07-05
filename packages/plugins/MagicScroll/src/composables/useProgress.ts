@@ -1,4 +1,4 @@
-import { ref, inject, computed } from 'vue'
+import { ref, inject } from 'vue'
 import { toValue } from '@vueuse/shared'
 import { WindowDimensionsKey, WindowScrollKey } from '../types'
 import { clampValue } from '../utils'
@@ -11,12 +11,10 @@ export function useProgress(
   from: FromTo,
   to: FromTo
 ) {
-  const dimensions = inject(WindowDimensionsKey, { vw: ref(0), vh: ref(0) })
+  const dimensions = inject(WindowDimensionsKey, { vw: 0, vh: 0 })
   const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
 
-  const offsetY = computed(() => scrollPosition.y)
-
-  const targetRect = ref()
+  const targetRect = ref<DOMRect>()
   const start = ref(0)
   const end = ref(0)
 
@@ -30,15 +28,18 @@ export function useProgress(
   const getOffsetTop = (points: { el: string; vp: string }) => {
     let y = 0
 
+    if (!targetRect.value) return y
+
     switch (points.el) {
       case 'top':
-        y += targetRect.value.top + offsetY.value
+        y += targetRect.value.top + scrollPosition.y
         break
       case 'center':
-        y += targetRect.value.top + offsetY.value + targetRect.value.height / 2
+        y +=
+          targetRect.value.top + targetRect.value.height / 2 + scrollPosition.y
         break
       case 'bottom':
-        y += targetRect.value.top + offsetY.value + targetRect.value.height
+        y += targetRect.value.top + targetRect.value.height + scrollPosition.y
         break
     }
 
@@ -47,13 +48,13 @@ export function useProgress(
         y -= 0
         break
       case 'center':
-        y -= dimensions.vh.value / 2
+        y -= dimensions.vh / 2
         break
       case 'bottom':
-        y -= dimensions.vh.value
+        y -= dimensions.vh
         break
       case 'initial':
-        y -= targetRect.value.top + offsetY.value
+        y -= targetRect.value.top + scrollPosition.y
         break
     }
 
@@ -68,7 +69,7 @@ export function useProgress(
 
   const getProgress = () => {
     const total = Math.abs(end.value - start.value)
-    const current = offsetY.value - start.value
+    const current = scrollPosition.y - start.value
 
     return clampValue(current / total, 0, 1)
   }

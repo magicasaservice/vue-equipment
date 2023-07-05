@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, reactive } from 'vue'
-import { useWindowScroll, useWindowSize } from '@vueuse/core'
+import { ref, provide, reactive, readonly } from 'vue'
+import { useWindowScroll, useWindowSize, toValue } from '@vueuse/core'
 import { WindowScrollKey, WindowDimensionsKey } from '../types'
 
 interface Props {
@@ -23,6 +23,12 @@ const scrollPosition = props.hasScrollListener
   : { x: 0, y: 0 }
 const { width, height } = useWindowSize()
 
-provide(WindowScrollKey, reactive(scrollPosition))
-provide(WindowDimensionsKey, { vw: width, vh: height })
+const windowscrollDefault = reactive(scrollPosition)
+const windowDimensionsDefault = reactive({
+  vw: toValue(width),
+  vh: toValue(height),
+})
+
+provide(WindowScrollKey, readonly(windowscrollDefault))
+provide(WindowDimensionsKey, readonly(windowDimensionsDefault))
 </script>

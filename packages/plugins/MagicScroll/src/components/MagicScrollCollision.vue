@@ -21,7 +21,7 @@ const targetRef = ref<HTMLElement | undefined>(undefined)
 const colDetect = ref()
 
 const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
-const windowDimensions = inject(WindowDimensionsKey, { vh: ref(0), vw: ref(0) })
+const windowDimensions = inject(WindowDimensionsKey, { vh: 0, vw: 0 })
 const pageYOffset = computed(() => scrollPosition.y)
 
 onMounted(() => {

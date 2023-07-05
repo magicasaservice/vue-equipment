@@ -5,9 +5,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject, computed, onMounted, watch, nextTick } from 'vue'
+import {
+  ref,
+  provide,
+  inject,
+  computed,
+  onMounted,
+  watch,
+  nextTick,
+  toRaw,
+  readonly,
+} from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { toValue } from '@vueuse/shared'
 import { mapValue } from '../utils'
 import { useProgress } from '../composables/useProgress'
 import { WindowScrollKey, ScrollProgressKey } from '../types'
@@ -59,16 +68,13 @@ watch(
 const intersecting = ref()
 
 useIntersectionObserver(
-  toValue(sceneRef),
+  toRaw(sceneRef),
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
   },
   { rootMargin: '150% 0px 150% 0px' }
 )
 
-provide('mapValue', mapValue)
-provide(
-  ScrollProgressKey,
-  computed(() => progress.value)
-)
+provide('mapValue', readonly(mapValue))
+provide(ScrollProgressKey, readonly(progress))
 </script>

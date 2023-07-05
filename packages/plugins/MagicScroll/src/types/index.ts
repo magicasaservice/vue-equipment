@@ -31,7 +31,7 @@ interface CollisionMappedEntry extends Omit<CollisionEntry, 'element'> {
   element: HTMLElement
 }
 
-type WindowDimensions = { vw: Ref<number>; vh: Ref<number> }
+type WindowDimensions = { vw: number; vh: number }
 
 type FromTo =
   | 'top-top'
@@ -44,7 +44,8 @@ type FromTo =
   | 'bottom-center'
   | 'bottom-bottom'
 
-export * from './injection-symbols/magic-scroll'
+export * from './injectionKeys'
+
 export type {
   FromTo,
   CollisionEvents,
