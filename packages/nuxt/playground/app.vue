@@ -12,8 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-const useModalApi = inject('useModalApi')
-
 const easings = useEasings()
 const scrollTo = useScrollTo()
 const modalApi = useModalApi('magic-modal-demo')
