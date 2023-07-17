@@ -10,6 +10,13 @@ import { magicScrollEmit } from './src/utils'
 import { useProgress } from './src/composables/useProgress'
 import { useCollisionDetect } from './src/composables/useCollisionDetect'
 
+import {
+  EmitKey,
+  StoreKey,
+  UseCollisionDetectKey,
+  UseProgressKey,
+} from './src/types'
+
 import type { App, Plugin } from 'vue'
 
 export type * from './src/types'
@@ -22,11 +29,11 @@ const MagicScroll: Plugin = {
     app.component('MagicScrollAnime', MagicScrollAnime)
     app.component('MagicScrollCollision', MagicScrollCollision)
 
-    app.provide('magicScrollEmit', magicScrollEmit)
-    app.provide('magicScrollStore', magicScrollStore)
+    app.provide(EmitKey, magicScrollEmit)
+    app.provide(StoreKey, magicScrollStore)
 
-    app.provide('useProgress', useProgress)
-    app.provide('useCollisionDetect', useCollisionDetect)
+    app.provide(UseProgressKey, useProgress)
+    app.provide(UseCollisionDetectKey, useCollisionDetect)
   },
 }
 

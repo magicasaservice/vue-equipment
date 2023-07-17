@@ -175,3 +175,5 @@ export function useCollisionDetect(
     collisionMappedEntries,
   }
 }
+
+export type UseCollisionDetectReturn = ReturnType<typeof useCollisionDetect>

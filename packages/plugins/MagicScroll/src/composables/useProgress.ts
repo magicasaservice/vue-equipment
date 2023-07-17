@@ -76,3 +76,5 @@ export function useProgress(
 
   return { getCalculations, getProgress }
 }
+
+export type UseProgressReturn = ReturnType<typeof useProgress>
