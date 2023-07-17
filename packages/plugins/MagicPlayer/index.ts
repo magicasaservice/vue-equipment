@@ -15,10 +15,7 @@ const MagicPlayer: Plugin = {
     app.component('MagicPlayer', MagicPlayerComponent)
     app.component('MagicPlayerControls', MagicPlayerControlsComponent)
     app.component('MagicPlayerTimeline', MagicPlayerTimelineComponent)
-    app.provide('useMediaApi', useMediaApi)
-    app.provide('usePlayerApi', usePlayerApi)
-    app.provide('useRuntimeSourceProvider', useRuntimeSourceProvider)
   },
 }
 
-export { MagicPlayer }
+export { MagicPlayer, useMediaApi, usePlayerApi, useRuntimeSourceProvider }

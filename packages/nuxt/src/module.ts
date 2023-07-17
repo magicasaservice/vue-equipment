@@ -35,6 +35,11 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.build.transpile.push('@maas/vue-equipment')
     nuxt.options.alias = nuxt.options.alias || {}
 
+    nuxt.hook('prepare:types', ({ references }) => {
+      // references.push({ path: template.dst })
+      console.log('references:', references)
+    })
+
     // Aliases
     const packages = ['plugins', 'composables']
     packages.forEach((pkg) => {

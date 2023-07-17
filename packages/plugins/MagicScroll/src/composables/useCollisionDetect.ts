@@ -1,6 +1,6 @@
 import { ref, watch, unref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { magicScrollEmit } from '../utils'
+import { useEmitter } from './useEmitter'
 
 import type { ComputedRef, Ref } from 'vue'
 import type {
@@ -134,7 +134,7 @@ export function useCollisionDetect(
       (dir === 'up' && boundingRect[pos] >= offset)
     ) {
       entry.alerted[dir][pos] = true
-      magicScrollEmit.emit('magic-scroll:collision', {
+      useEmitter().emit('magic-scroll:collision', {
         dir,
         pos,
         el: entry.element,
