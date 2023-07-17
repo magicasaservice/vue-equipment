@@ -4,11 +4,11 @@ import { toValue, useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useModalStore } from './useModalStore'
 
+import type { DefaultOptions } from '../types/index'
 import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
 
-export type useModalApiOptions = {
-  focusTarget?: MaybeElementRef
-  scrollLock?: boolean
+export type useModalApiOptions = Pick<DefaultOptions, 'scrollLock'> & {
+  focusTarget: MaybeElementRef
 }
 
 const defaultOptions = {
@@ -73,15 +73,15 @@ export function useModalApi(
     if (typeof window === 'undefined') return
 
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
-    document.body.style.paddingRight = `${scrollbarWidth}px`
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.body.style.paddingRight = 'var(--scrollbar-width)'
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
     ].filter(
       (x) => getComputedStyle(x, null).getPropertyValue('position') === 'fixed'
     ) as HTMLElement[]
     positionFixedElements.value.forEach(
-      (elem) => (elem.style.paddingRight = `${scrollbarWidth}px`)
+      (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)')
     )
   }
 

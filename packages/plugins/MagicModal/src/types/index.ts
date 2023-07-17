@@ -2,6 +2,7 @@ type DefaultOptions = {
   backdrop?: boolean
   focusTrap?: boolean
   scrollLock?: boolean
+  scrollLockPadding?: boolean
   teleport?: {
     target: string
     disabled?: boolean

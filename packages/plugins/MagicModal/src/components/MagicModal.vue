@@ -104,8 +104,11 @@ function onClose() {
 // Transition Callbacks
 async function onAfterEnter() {
   if (mappedOptions.scrollLock) {
+    if (mappedOptions.scrollLockPadding) {
+      addScrollLockPadding()
+    }
+
     lockScroll()
-    addScrollLockPadding()
   }
 
   if (mappedOptions.focusTrap) {
@@ -117,7 +120,9 @@ async function onAfterEnter() {
 function onAfterLeave() {
   if (mappedOptions.scrollLock) {
     unlockScroll()
-    removeScrollLockPadding()
+    if (mappedOptions.scrollLockPadding) {
+      removeScrollLockPadding()
+    }
   }
 
   if (mappedOptions.focusTrap) {

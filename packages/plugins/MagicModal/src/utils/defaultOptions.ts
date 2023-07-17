@@ -4,6 +4,7 @@ const defaultOptions: DefaultOptions = {
   backdrop: true,
   focusTrap: true,
   scrollLock: true,
+  scrollLockPadding: true,
   teleport: {
     target: 'body',
     disabled: false,
