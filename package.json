@@ -45,7 +45,7 @@
     "animejs": "3.x",
     "focus-trap": "7.x",
     "hls.js": "1.4.x",
-    "mitt": "latest",
+    "mitt": "3.0.1",
     "nuxt": "3.x",
     "uuid": "9.x"
   },
