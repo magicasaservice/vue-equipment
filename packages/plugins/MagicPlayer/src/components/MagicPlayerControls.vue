@@ -105,8 +105,10 @@ const isMouseEnter = ref(false)
   --magic-player-controls-color: rgba(255, 255, 255, 1);
   --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
   --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
+}
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
+  :root {
     --magic-player-controls-height: 2.5rem;
     --magic-player-controls-bottom: 0.75rem;
     --magic-player-controls-padding: 0.5rem;
@@ -136,13 +138,11 @@ const isMouseEnter = ref(false)
   background-color: transparent;
   color: inherit;
   border: 0;
+  border-radius: 0;
+  padding: 0;
   outline: none;
   appearance: none;
   cursor: pointer;
-}
-
-.magic-player-controls__overlay button,
-.magic-player-controls__overlay i {
   width: 3.5rem;
   height: 3.5rem;
 }
@@ -187,6 +187,8 @@ const isMouseEnter = ref(false)
   border: 0;
   outline: none;
   appearance: none;
+  padding: 0;
+  border-radius: 0;
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
