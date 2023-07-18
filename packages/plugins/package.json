@@ -16,7 +16,6 @@
     "@vueuse/core": "10.x",
     "@vueuse/integrations": "10.x",
     "@vueuse/shared": "10.x",
-    "animejs": "3.x",
     "focus-trap": "7.x",
     "hls.js": "1.4.x",
     "mitt": "3.0.1",
@@ -33,9 +32,6 @@
     "@vueuse/shared": {
       "optional": true
     },
-    "animejs": {
-      "optional": true
-    },
     "mitt": {
       "optional": true
     },
@@ -48,7 +44,6 @@
   },
   "devDependencies": {
     "@nuxt/types": "^2.17.0",
-    "@types/animejs": "^3.1.7",
     "@types/uuid": "^9.0.1",
     "mkdist": "^1.2.0",
     "nuxt": "^3.5.1",

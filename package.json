@@ -42,7 +42,6 @@
     "@vueuse/core": "10.x",
     "@vueuse/integrations": "10.x",
     "@vueuse/shared": "10.x",
-    "animejs": "3.x",
     "focus-trap": "7.x",
     "hls.js": "1.4.x",
     "mitt": "3.0.1",
@@ -57,9 +56,6 @@
       "optional": true
     },
     "@vueuse/shared": {
-      "optional": true
-    },
-    "animejs": {
       "optional": true
     },
     "hls.js": {

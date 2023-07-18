@@ -14,9 +14,6 @@ dependencies:
   '@vueuse/shared':
     specifier: 10.x
     version: 10.0.0(vue@3.2.47)
-  animejs:
-    specifier: 3.x
-    version: 3.0.0
   focus-trap:
     specifier: 7.x
     version: 7.0.0
@@ -24,7 +21,7 @@ dependencies:
     specifier: 1.4.x
     version: 1.4.0
   mitt:
-    specifier: latest
+    specifier: 3.0.1
     version: 3.0.1
   nuxt:
     specifier: 3.x
@@ -2074,10 +2071,6 @@ packages:
       '@algolia/requester-node-http': 4.18.0
       '@algolia/transporter': 4.18.0
     dev: true
-
-  /animejs@3.0.0:
-    resolution: {integrity: sha512-YL2+GpjoDYM7hqKpJoh+vhXYNiE0klkgUlDl3m+wCuXh9QJF++/KIT2SQYkBkVhxk/GLlFsqI5I/ogWN4pBQSA==}
-    dev: false
 
   /ansi-escapes@4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
