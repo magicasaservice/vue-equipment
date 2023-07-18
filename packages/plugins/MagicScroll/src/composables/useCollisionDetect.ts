@@ -1,4 +1,4 @@
-import { ref, watch, unref } from 'vue'
+import { ref, watch, unref, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useEmitter } from './useEmitter'
 
@@ -22,6 +22,10 @@ export function useCollisionDetect(
   const intersecting = ref()
   const scrollDirection = ref<ScrollDirection>()
   const collisionMappedEntries = ref<CollisionMappedEntry[]>([])
+
+  const oppositeScrollDirection = computed(() =>
+    scrollDirection.value === 'up' ? 'down' : 'up'
+  )
 
   function getOffset(
     value: number | (({ vw, vh }: { vw: number; vh: number }) => number)
@@ -90,16 +94,11 @@ export function useCollisionDetect(
 
       const boundingRect = entry.element.getBoundingClientRect()
 
-      if (scrollDirection.value === 'down') {
-        observeEntry('top', 'down', boundingRect, entry)
-        observeEntry('bottom', 'down', boundingRect, entry)
-        resetEntry('top', 'up', boundingRect, entry)
-        resetEntry('bottom', 'up', boundingRect, entry)
-      } else if (scrollDirection.value === 'up') {
-        observeEntry('top', 'up', boundingRect, entry)
-        observeEntry('bottom', 'up', boundingRect, entry)
-        resetEntry('top', 'down', boundingRect, entry)
-        resetEntry('bottom', 'down', boundingRect, entry)
+      if (scrollDirection.value) {
+        observeEntry('top', scrollDirection.value, boundingRect, entry)
+        observeEntry('bottom', scrollDirection.value, boundingRect, entry)
+        resetEntry('top', oppositeScrollDirection.value, boundingRect, entry)
+        resetEntry('bottom', oppositeScrollDirection.value, boundingRect, entry)
       }
     }
   }
