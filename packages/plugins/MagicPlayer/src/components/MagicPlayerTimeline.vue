@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject, onMounted } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { MediaApiInjectionKey, PlayerApiInjectionKey } from './../types'
 import { useResizeObserver, useEventListener } from '@vueuse/core'
 import { clampValue, mapValue } from './../utils'
@@ -80,6 +80,7 @@ watch(currentTime, (value) => {
 })
 
 const onMouseEnter = () => {
+  getTimelineTrackSize()
   entered.value = true
 }
 
@@ -135,10 +136,6 @@ const getTimelineTrackSize = () => {
 useResizeObserver(trackRef, getTimelineTrackSize)
 useEventListener(defaultWindow, 'resize', getTimelineTrackSize, {
   passive: true,
-})
-
-onMounted(() => {
-  getTimelineTrackSize()
 })
 </script>
 
