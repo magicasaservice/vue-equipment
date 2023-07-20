@@ -41,7 +41,11 @@
         </button>
       </div>
       <div class="magic-player-controls__item -grow">
-        <magic-player-timeline />
+        <magic-player-timeline>
+          <template #seekPopover="{ seekedTime }" v-if="$slots.seekPopover">
+            <slot name="seekPopover" :seeked-time="seekedTime" :touched="touched" />
+          </template>
+        </magic-player-timeline>
       </div>
       <div class="magic-player-controls__item -shrink-0">
         <button v-if="muted" @click="unmute">

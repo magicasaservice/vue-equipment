@@ -7,6 +7,13 @@
     @pointerup="onPointerUp"
     @pointermove="onPointerMove"
   >
+    <div
+      v-show="!!seekedTime"
+      class="magic-player-timeline__seek-popover"
+      :style="{ left: `${seekedPercentage}%` }"
+    >
+      <slot name="seekPopover" :seeked-time="seekedTime" />
+    </div>
     <div ref="trackRef" class="magic-player-timeline__slider-track">
       <div
         class="magic-player-timeline__slider-thumb"
@@ -43,7 +50,7 @@ import { defaultWindow } from '@vueuse/core'
 const { duration, currentTime, playing, buffered } =
   inject(MediaApiInjectionKey)!
 
-const { play, pause, seek } = inject(PlayerApiInjectionKey)!
+const { play, pause, seek, touched } = inject(PlayerApiInjectionKey)!
 
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRect = ref<DOMRect | undefined>(undefined)
@@ -188,7 +195,6 @@ useEventListener(defaultWindow, 'resize', getTimelineTrackSize, {
   background-color: var(--magic-player-thumb-bg-color);
   border-radius: 50rem;
 }
-
 .magic-player-timeline__slider-scrubbed,
 .magic-player-timeline__slider-seeked,
 .magic-player-timeline__slider-buffered {
@@ -217,5 +223,12 @@ useEventListener(defaultWindow, 'resize', getTimelineTrackSize, {
 
 .magic-player-timeline:hover .magic-player-timeline__slider-thumb-handle {
   transform: translate(-50%, -50%) scale(1);
+}
+
+.magic-player-timeline__seek-popover {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  transform: translateX(-50%);
 }
 </style>
