@@ -1,15 +1,19 @@
 import { toValue } from '@vueuse/shared'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, type Ref } from 'vue'
 
 import type { MaybeRef } from '@vueuse/shared'
-import type { RuntimeSourceProvider } from './../types'
+import type { SourceType } from './../types'
 import type Hls from 'hls.js'
+
+export type UseRuntimeSourceProviderReturn = {
+  loaded: Ref<boolean>
+}
 
 export function useRuntimeSourceProvider(
   target: MaybeRef<HTMLMediaElement | null | undefined>,
-  provider: RuntimeSourceProvider,
+  srcType: SourceType,
   source: string
-) {
+): UseRuntimeSourceProviderReturn {
   let hls: Hls | undefined
   const loaded = ref(false)
 
@@ -44,9 +48,9 @@ export function useRuntimeSourceProvider(
   }
 
   onMounted(() => {
-    if (provider === 'file') {
+    if (srcType === 'native') {
       useNative()
-    } else if (provider === 'hls') {
+    } else if (srcType === 'hls') {
       useHlsJS()
     }
   })
@@ -60,6 +64,4 @@ export function useRuntimeSourceProvider(
   }
 }
 
-export type UseRuntimeSourceProvider = ReturnType<
-  typeof useRuntimeSourceProvider
->
+

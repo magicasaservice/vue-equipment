@@ -14,24 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { useMediaApi } from './../composables/useMediaApi'
-import { usePlayerApi } from './../composables/usePlayerApi'
-import { useRuntimeSourceProvider } from './../composables/useRuntimeSourceProvider'
-import { MediaApiInjectionKey, PlayerApiInjectionKey } from './../types'
 
-import type { RuntimeSourceProvider } from './../types'
+import type { SourceType } from './../types'
+import { useProvidePlayer } from '../composables/usePlayer'
 
 export type MagicPlayerProps = {
-  provider: RuntimeSourceProvider
+  srcType: SourceType
   src: string
   ratio?: string
   fill?: boolean
 }
 
 const props = withDefaults(defineProps<MagicPlayerProps>(), {
-  provider: 'file',
+  srcType: 'native',
   src: '',
   ratio: '16:9',
   fill: false,
@@ -40,21 +37,15 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
-const mediaApi = useMediaApi(videoRef)
-provide(MediaApiInjectionKey, mediaApi)
-
-const playerApi = usePlayerApi(playerRef, videoRef, mediaApi)
-provide(PlayerApiInjectionKey, playerApi)
-
-const runtimeSourceProvider = useRuntimeSourceProvider(
-  videoRef,
-  props.provider,
-  props.src
-)
-
+const { mediaApi, playerApi, runtimeProvider } = useProvidePlayer({
+  playerRef: playerRef,
+  videoRef: videoRef,
+  src: props.src,
+  srcType: props.srcType,
+})
 const { playing } = mediaApi
 const { touched, pause } = playerApi
-const { loaded } = runtimeSourceProvider
+const { loaded } = runtimeProvider
 
 useIntersectionObserver(playerRef, ([{ isIntersecting }]) => {
   if (!isIntersecting && playing.value) {
