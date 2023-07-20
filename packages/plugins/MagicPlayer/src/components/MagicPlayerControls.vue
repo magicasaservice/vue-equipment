@@ -43,7 +43,11 @@
       <div class="magic-player-controls__item -grow">
         <magic-player-timeline>
           <template #seekPopover="{ seekedTime }" v-if="$slots.seekPopover">
-            <slot name="seekPopover" :seeked-time="seekedTime" :touched="touched" />
+            <slot
+              name="seekPopover"
+              :seeked-time="seekedTime"
+              :touched="touched"
+            />
           </template>
         </magic-player-timeline>
       </div>
@@ -68,10 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
-import { MediaApiInjectionKey, PlayerApiInjectionKey } from './../types'
+import { ref  } from 'vue'
 import { useIdle } from '@vueuse/core'
-
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconVolumeOn from './icons/VolumeOn.vue'
@@ -79,9 +81,10 @@ import IconVolumeOff from './icons/VolumeOff.vue'
 import IconFullscreenEnter from './icons/FullscreenEnter.vue'
 import IconFullscreenExit from './icons/FullscreenExit.vue'
 import IconWaiting from './icons/Waiting.vue'
+import { useInjectPlayer } from '../composables/usePlayer'
 
-const { playing, muted, waiting } = inject(MediaApiInjectionKey)!
-
+const { mediaApi, playerApi } = useInjectPlayer()
+const { playing, muted, waiting } = mediaApi
 const {
   touched,
   isFullscreen,
@@ -92,7 +95,7 @@ const {
   unmute,
   enterFullscreen,
   exitFullscreen,
-} = inject(PlayerApiInjectionKey)!
+} = playerApi
 
 const { idle } = useIdle(3000)
 const isMouseEnter = ref(false)

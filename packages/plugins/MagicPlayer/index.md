@@ -25,7 +25,7 @@ A magic plugin that adds a player to the page.
 ```html
 <template>
   <magic-player
-    provider="hls"
+    src-type="hls"
     src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks.m3u8"
   >
     <magic-player-controls />
@@ -42,7 +42,6 @@ A magic plugin that adds a player to the page.
 ```html
 <template>
   <magic-player
-    provider="file"
     src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
   >
     <magic-player-controls>

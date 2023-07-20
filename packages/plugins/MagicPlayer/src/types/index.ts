@@ -1,4 +1,4 @@
-type RuntimeSourceProvider = 'file' | 'hls'
+type SourceType = 'native' | 'hls'
 
 export * from './injectionKeys'
-export type { RuntimeSourceProvider }
+export type { SourceType }

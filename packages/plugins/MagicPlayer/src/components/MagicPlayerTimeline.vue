@@ -41,16 +41,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, inject } from 'vue'
-import { MediaApiInjectionKey, PlayerApiInjectionKey } from './../types'
+import { ref, computed, watch } from 'vue'
 import { useResizeObserver, useEventListener } from '@vueuse/core'
 import { clampValue, mapValue } from './../utils'
 import { defaultWindow } from '@vueuse/core'
+import { useInjectPlayer } from '../composables/usePlayer'
 
-const { duration, currentTime, playing, buffered } =
-  inject(MediaApiInjectionKey)!
-
-const { play, pause, seek, touched } = inject(PlayerApiInjectionKey)!
+const { mediaApi, playerApi } = useInjectPlayer()
+const { duration, currentTime, playing, buffered } = mediaApi
+const { play, pause, seek } = playerApi
 
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRect = ref<DOMRect | undefined>(undefined)
