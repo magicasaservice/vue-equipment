@@ -17,7 +17,7 @@ export function useViewportDimensions(options?: UseViewportDimensionsOptions) {
   }
 
   const setViewportWidth = (initial?: boolean) => {
-    const vw = window.innerWidth * 0.01
+    const vw = Number(window.innerWidth * 0.01).toFixed(2)
 
     if (mappedOptions.width) {
       document.documentElement.style.setProperty(mappedOptions.width, `${vw}px`)
@@ -32,7 +32,7 @@ export function useViewportDimensions(options?: UseViewportDimensionsOptions) {
   }
 
   const setViewportHeight = (initial?: boolean) => {
-    const vh = window.innerHeight * 0.01
+    const vh = Number(window.innerHeight * 0.01).toFixed(2)
 
     if (mappedOptions.height) {
       document.documentElement.style.setProperty(
