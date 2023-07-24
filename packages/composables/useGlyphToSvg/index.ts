@@ -4,7 +4,7 @@ import { unref } from 'vue'
 import type { Ref } from 'vue'
 import type { Font } from 'fontkit'
 
-export type glyphToSvgParams = {
+export type useGlyphToSvgOptions = {
   fontSize: Ref<number> | number
   fontWeight: Ref<number> | number
   fontFile: Ref<Font> | Font
@@ -14,7 +14,7 @@ export function useGlyphToSvg({
   fontSize,
   fontWeight,
   fontFile,
-}: glyphToSvgParams) {
+}: useGlyphToSvgOptions) {
   const { copy } = useClipboard()
   const mappedFontFile = unref(fontFile)
   const mappedFontSize = unref(fontSize)
