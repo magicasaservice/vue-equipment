@@ -7,6 +7,7 @@ import type { MaybeRef } from '@vueuse/shared'
 export function useMediaApi(
   target: MaybeRef<HTMLMediaElement | null | undefined>
 ) {
+  // Public values
   const currentTime = ref(0)
   const duration = ref(0)
   const seeking = ref(false)
@@ -19,7 +20,7 @@ export function useMediaApi(
   const buffered = ref<[number, number][]>([])
   const muted = ref(false)
 
-  // Private Methods
+  // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
     for (let i = 0; i < timeRanges.length; ++i)
@@ -27,7 +28,7 @@ export function useMediaApi(
     return ranges
   }
 
-  // Watchers
+  // Watcher
   watch([target, volume], () => {
     const el = toValue(target)
     if (!el) return
@@ -49,7 +50,7 @@ export function useMediaApi(
     el.playbackRate = rate.value
   })
 
-  // Ignorable Watchers
+  // Ignorable watcher
   const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(
     currentTime,
     (time) => {
@@ -68,6 +69,7 @@ export function useMediaApi(
     }
   )
 
+  // Listener
   useEventListener(target, 'timeupdate', () => {
     ignoreCurrentTimeUpdates(
       () => (currentTime.value = toValue(target)!.currentTime)

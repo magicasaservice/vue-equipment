@@ -1,26 +1,28 @@
 import { toValue } from '@vueuse/shared'
 import { ref, onMounted, onUnmounted, type Ref } from 'vue'
 
-import type { MaybeRef } from '@vueuse/shared'
-import type { SourceType } from './../types'
+import type { UsePlayerArgs } from './../types'
 import type Hls from 'hls.js'
 
 export type UseRuntimeSourceProviderReturn = {
   loaded: Ref<boolean>
 }
 
+type UseRuntimeSourceProviderArgs = Pick<
+  UsePlayerArgs,
+  'videoRef' | 'srcType' | 'src'
+>
+
 export function useRuntimeSourceProvider(
-  target: MaybeRef<HTMLMediaElement | null | undefined>,
-  srcType: SourceType,
-  source: string
+  args: UseRuntimeSourceProviderArgs
 ): UseRuntimeSourceProviderReturn {
   let hls: Hls | undefined
   const loaded = ref(false)
 
   const useNative = () => {
-    const el = toValue(target)
+    const el = toValue(args.videoRef)
     if (!el) return
-    el.src = source
+    el.src = args.src
     el.addEventListener(
       'loadeddata',
       () => {
@@ -32,14 +34,14 @@ export function useRuntimeSourceProvider(
   }
 
   const useHlsJS = async () => {
-    const el = toValue(target)
+    const el = toValue(args.videoRef)
     if (!el) return
     const { default: Hls } = await import('hls.js')
     hls = new Hls()
     if (!Hls.isSupported()) {
       useNative()
     } else {
-      hls.loadSource(source)
+      hls.loadSource(args.src)
       hls.attachMedia(el)
       hls.on(Hls.Events.FRAG_LOADED, () => {
         loaded.value = true
@@ -48,9 +50,9 @@ export function useRuntimeSourceProvider(
   }
 
   onMounted(() => {
-    if (srcType === 'native') {
+    if (args.srcType === 'native') {
       useNative()
-    } else if (srcType === 'hls') {
+    } else if (args.srcType === 'hls') {
       useHlsJS()
     }
   })
@@ -63,5 +65,3 @@ export function useRuntimeSourceProvider(
     loaded,
   }
 }
-
-

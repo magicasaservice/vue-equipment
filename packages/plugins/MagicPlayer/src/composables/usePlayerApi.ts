@@ -1,19 +1,18 @@
 import { ref, watch } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from './../utils'
-import type { MaybeRef } from '@vueuse/shared'
 import type { UseMediaApiReturn } from './useMediaApi'
+import type { UsePlayerArgs } from '../types'
 
-export function usePlayerApi(
-  player: MaybeRef<HTMLElement | null | undefined>,
-  video: MaybeRef<HTMLVideoElement | null | undefined>,
+type UsePlayerApiArgs = Pick<UsePlayerArgs, 'playerRef' | 'videoRef'> & {
   mediaApi: UseMediaApiReturn
-) {
+}
+
+export function usePlayerApi(args: UsePlayerApiArgs) {
   const touched = ref(false)
-  const { currentTime, playing, muted } = mediaApi
+  const fullscreenTarget = isIOS() ? args.videoRef : args.playerRef
 
-  const fullscreenTarget = isIOS() ? video : player
-
+  const { currentTime, playing, muted } = args.mediaApi
   const {
     isFullscreen,
     enter: enterFullscreen,

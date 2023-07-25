@@ -32,47 +32,52 @@
       </template>
     </div>
     <div class="magic-player-controls__bar">
-      <div class="magic-player-controls__item -shrink-0">
-        <button v-if="!playing" @click="play">
-          <icon-play />
-        </button>
-        <button v-else @click="pause">
-          <icon-pause />
-        </button>
+      <div
+        v-if="$slots.seekPopover"
+        v-show="!!seekedTime && touched"
+        ref="popoverRef"
+        class="magic-player-controls__popover"
+        :style="{ marginLeft: `${popoverOffsetX}%` }"
+      >
+        <slot name="seekPopover" />
       </div>
-      <div class="magic-player-controls__item -grow">
-        <magic-player-timeline>
-          <template #seekPopover="{ seekedTime }" v-if="$slots.seekPopover">
-            <slot
-              name="seekPopover"
-              :seeked-time="seekedTime"
-              :touched="touched"
-            />
-          </template>
-        </magic-player-timeline>
-      </div>
-      <div class="magic-player-controls__item -shrink-0">
-        <button v-if="muted" @click="unmute">
-          <icon-volume-off />
-        </button>
-        <button v-else @click="mute">
-          <icon-volume-on />
-        </button>
-      </div>
-      <div class="magic-player-controls__item -shrink-0">
-        <button v-if="isFullscreen" @click="exitFullscreen">
-          <icon-fullscreen-exit />
-        </button>
-        <button v-else @click="enterFullscreen">
-          <icon-fullscreen-enter />
-        </button>
+      <div class="magic-player-controls__bar--inner" ref="barRef">
+        <div class="magic-player-controls__item -shrink-0">
+          <button v-if="!playing" @click="play">
+            <icon-play />
+          </button>
+          <button v-else @click="pause">
+            <icon-pause />
+          </button>
+        </div>
+        <div class="magic-player-controls__item -grow">
+          <div class="magic-player-controls__timeline" ref="trackRef">
+            <magic-player-timeline />
+          </div>
+        </div>
+        <div class="magic-player-controls__item -shrink-0">
+          <button v-if="muted" @click="unmute">
+            <icon-volume-off />
+          </button>
+          <button v-else @click="mute">
+            <icon-volume-on />
+          </button>
+        </div>
+        <div class="magic-player-controls__item -shrink-0">
+          <button v-if="isFullscreen" @click="exitFullscreen">
+            <icon-fullscreen-exit />
+          </button>
+          <button v-else @click="enterFullscreen">
+            <icon-fullscreen-enter />
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref  } from 'vue'
+import { ref } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -82,8 +87,19 @@ import IconFullscreenEnter from './icons/FullscreenEnter.vue'
 import IconFullscreenExit from './icons/FullscreenExit.vue'
 import IconWaiting from './icons/Waiting.vue'
 import { useInjectPlayer } from '../composables/usePlayer'
+import { useProvideControls } from '../composables/useControls'
+
+const barRef = ref<HTMLDivElement | undefined>(undefined)
+const trackRef = ref<HTMLDivElement | undefined>(undefined)
+const popoverRef = ref<HTMLDivElement | undefined>(undefined)
 
 const { mediaApi, playerApi } = useInjectPlayer()
+const { controlsApi } = useProvideControls({
+  barRef: barRef,
+  trackRef: trackRef,
+  popoverRef: popoverRef,
+})
+
 const { playing, muted, waiting } = mediaApi
 const {
   touched,
@@ -97,8 +113,14 @@ const {
   exitFullscreen,
 } = playerApi
 
+const { popoverOffsetX, seekedTime } = controlsApi
+
 const { idle } = useIdle(3000)
 const isMouseEnter = ref(false)
+
+defineExpose({
+  controlsApi,
+})
 </script>
 
 <style lang="postcss">
@@ -106,12 +128,16 @@ const isMouseEnter = ref(false)
   --magic-player-controls-height: 3rem;
   --magic-player-controls-bottom: 1.5rem;
   --magic-player-controls-padding: 0.75rem;
+  --magic-player-controls-gap: 1rem;
   --magic-player-controls-border-radius: 50rem;
   --magic-player-controls-background-color: rgba(32, 32, 32, 0.8);
-  --magic-player-backdrop-filter: blur(80px);
+  --magic-player-controls-backdrop-filter: blur(80px);
   --magic-player-controls-color: rgba(255, 255, 255, 1);
+  --magic-player-controls-icon-width: 1.25rem;
   --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
   --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
+  --magic-player-controls-transition-duration: 300ms;
+  --magic-player-controls-transition-timing-function: ease-out:
 }
 
 @media (max-width: 640px) {
@@ -157,21 +183,29 @@ const isMouseEnter = ref(false)
 .magic-player-controls__bar {
   position: absolute;
   width: calc(100% - (var(--magic-player-controls-bottom) * 2));
-  height: var(--magic-player-controls-height);
   bottom: var(--magic-player-controls-bottom);
   left: 50%;
   transform: translateX(-50%);
-  padding: 0 var(--magic-player-controls-padding);
   margin: 0 auto;
   display: flex;
-  align-items: center;
-  border-radius: var(--magic-player-controls-border-radius);
-  color: var(--magic-player-controls-color);
-  background-color: var(--magic-player-controls-background-color);
-  backdrop-filter: var(--magic-player-backdrop-filter);
-  transition-duration: 300ms;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--magic-player-controls-gap);
+  transition-duration: var(--magic-player-controls-transition-duration);
+  transition-timing-function: var(--magic-player-controls-transition-timing-function);
   transition-property: opacity, transform;
-  transition-timing-function: ease-out;
+}
+
+.magic-player-controls__bar--inner {
+  width: 100%;
+  height: var(--magic-player-controls-height);
+  padding: 0 var(--magic-player-controls-padding);
+  background-color: var(--magic-player-controls-background-color);
+  backdrop-filter: var(--magic-player-controls-backdrop-filter);
+  color: var(--magic-player-controls-color);
+  border-radius: var(--magic-player-controls-border-radius);
+  display: flex;
+  align-items: center;
 }
 
 .magic-player-controls__item {
@@ -197,8 +231,8 @@ const isMouseEnter = ref(false)
   padding: 0;
   border-radius: 0;
   cursor: pointer;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--magic-player-controls-height);
+  height: var(--magic-player-controls-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,18 +240,12 @@ const isMouseEnter = ref(false)
 
 .magic-player-controls__item button svg {
   display: block;
-  width: 1.25rem;
+  width: var(--magic-player-controls-icon-width);
   height: auto;
 }
 
-.magic-player-controls__item time {
-  display: inline-flex;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  font-feature-settings: 'tnum';
-  font-variant-numeric: tabular-nums;
-  padding: 0 0.25rem;
+.magic-player-controls__timeline {
+  width: 100%;
 }
 
 .magic-player-controls.-playing.-idle .magic-player-controls__bar,

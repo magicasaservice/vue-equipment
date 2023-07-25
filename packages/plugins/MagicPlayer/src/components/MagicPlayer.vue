@@ -21,7 +21,7 @@ import type { SourceType } from './../types'
 import { useProvidePlayer } from '../composables/usePlayer'
 
 export type MagicPlayerProps = {
-  srcType: SourceType
+  srcType?: SourceType
   src: string
   ratio?: string
   fill?: boolean
@@ -69,6 +69,12 @@ const computedStyle = computed(() => {
         ? `${computedRatio.value[0]}/${computedRatio.value[1]}`
         : undefined,
   }
+})
+
+defineExpose({
+  playerApi,
+  mediaApi,
+  runtimeProvider,
 })
 </script>
 

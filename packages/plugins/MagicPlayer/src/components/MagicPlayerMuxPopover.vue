@@ -1,16 +1,29 @@
 <template>
-  <canvas
-    ref="canvas"
-    :width="storyboard?.tile_width"
-    :height="storyboard?.tile_height"
-  />
+  <div
+    :style="{
+      width: `${thumbWidth}px`,
+      height: `${thumbHeight}px`,
+    }"
+    class="magic-player-mux-popover"
+  >
+    <canvas
+      ref="canvas"
+      :width="storyboard?.tile_width"
+      :height="storyboard?.tile_height"
+    />
+  </div>
 </template>
 <script setup lang="ts">
-import { shallowRef, onMounted, watch } from 'vue'
+import { shallowRef, onMounted, watch, computed } from 'vue'
+import { useDevicePixelRatio } from '@vueuse/core'
+import { useInjectControls } from '../composables/useControls'
+
+const { controlsApi } = useInjectControls()
+const { seekedTime } = controlsApi
+
 import type { Ref } from 'vue'
 
 type Props = {
-  time: number
   playbackId: string
 }
 
@@ -31,6 +44,18 @@ const canvas = shallowRef() as Ref<HTMLCanvasElement>
 let context: CanvasRenderingContext2D | undefined = undefined
 const storyboard = shallowRef<MuxStoryboard | undefined>()
 let image: HTMLImageElement | undefined = undefined
+
+const { pixelRatio } = useDevicePixelRatio()
+
+const thumbWidth = computed(() => {
+  if (!storyboard.value) return 0
+  return storyboard.value.tile_width / pixelRatio.value
+})
+
+const thumbHeight = computed(() => {
+  if (!storyboard.value) return 0
+  return storyboard.value.tile_height / pixelRatio.value
+})
 
 async function init() {
   if (!props.playbackId) return
@@ -87,5 +112,21 @@ function drawFrame(time: number) {
 }
 
 onMounted(init)
-watch(() => props.time, drawFrame)
+watch(() => seekedTime.value, drawFrame)
 </script>
+
+<style lang="postcss">
+:root {
+  --magic-player-popover-border-radius: 0.25rem;
+}
+
+.magic-player-mux-popover {
+  border-radius: var(--magic-player-popover-border-radius);
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+}
+</style>

@@ -1,146 +1,60 @@
 <template>
-  <div
-    class="magic-player-timeline"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @pointerdown="onPointerDown"
-    @pointerup="onPointerUp"
-    @pointermove="onPointerMove"
-  >
+  <div class="magic-player-timeline">
     <div
-      v-show="!!seekedTime"
-      class="magic-player-timeline__seek-popover"
-      :style="{ left: `${seekedPercentage}%` }"
+      class="magic-player-timeline__target"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+      @pointerdown="onPointerDown"
+      @pointerup="onPointerUp"
+      @pointermove="onPointerMove"
     >
-      <slot name="seekPopover" :seeked-time="seekedTime" />
-    </div>
-    <div ref="trackRef" class="magic-player-timeline__slider-track">
-      <div
-        class="magic-player-timeline__slider-thumb"
-        :style="{ left: `${scrubbedPercentage}%` }"
-      >
-        <div class="magic-player-timeline__slider-thumb-handle"></div>
-      </div>
-      <div class="magic-player-timeline__slider-inner-track">
+      <div class="magic-player-timeline__slider-track">
         <div
-          class="magic-player-timeline__slider-buffered"
-          :style="{ left: `${bufferedPercentage}%` }"
-        />
-        <div
-          v-show="entered"
-          class="magic-player-timeline__slider-seeked"
-          :style="{ left: `${seekedPercentage}%` }"
-        />
-        <div
-          class="magic-player-timeline__slider-scrubbed"
+          class="magic-player-timeline__slider-thumb"
           :style="{ left: `${scrubbedPercentage}%` }"
-        ></div>
+        >
+          <div class="magic-player-timeline__slider-thumb-handle" />
+        </div>
+        <div class="magic-player-timeline__slider-inner-track">
+          <div
+            class="magic-player-timeline__slider-buffered"
+            :style="{ left: `${bufferedPercentage}%` }"
+          />
+          <div
+            v-show="entered"
+            class="magic-player-timeline__slider-seeked"
+            :style="{ left: `${seekedPercentage}%` }"
+          />
+          <div
+            class="magic-player-timeline__slider-scrubbed"
+            :style="{ left: `${scrubbedPercentage}%` }"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useResizeObserver, useEventListener } from '@vueuse/core'
-import { clampValue, mapValue } from './../utils'
-import { defaultWindow } from '@vueuse/core'
-import { useInjectPlayer } from '../composables/usePlayer'
+import { useInjectControls } from '../composables/useControls'
 
-const { mediaApi, playerApi } = useInjectPlayer()
-const { duration, currentTime, playing, buffered } = mediaApi
-const { play, pause, seek } = playerApi
-
-const trackRef = ref<HTMLDivElement | undefined>(undefined)
-const trackRect = ref<DOMRect | undefined>(undefined)
-const entered = ref(false)
-const dragging = ref(false)
-const seekedTime = ref(0)
-const seekedPercentage = ref(0)
-const scrubbedPercentage = ref(0)
-const thumbPercentage = ref(0)
-const resumePlay = ref(false)
-
-const bufferedPercentage = computed(() => {
-  const endBuffer = buffered.value.length > 0 ? buffered.value[0][1] : 0
-  const percentage = (endBuffer / duration.value) * 100
-  return clampValue(percentage, 0, thumbPercentage.value)
-})
-
-watch(currentTime, (value) => {
-  const percentage = (value / duration.value) * 100
-  scrubbedPercentage.value = mapValue(
-    percentage,
-    0,
-    100,
-    0,
-    thumbPercentage.value
-  )
-})
-
-const onMouseEnter = () => {
-  getTimelineTrackSize()
-  entered.value = true
-}
-
-const onMouseLeave = () => {
-  entered.value = false
-  dragging.value = false
-  seekedTime.value = 0
-}
-
-const onPointerDown = (e: MouseEvent | TouchEvent) => {
-  dragging.value = true
-  resumePlay.value = playing.value
-  pause()
-  const x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX
-  seekToTrackPosition(x)
-}
-
-const onPointerUp = () => {
-  dragging.value = false
-  if (resumePlay.value) {
-    play()
-  }
-}
-
-const onPointerMove = (e: MouseEvent | TouchEvent) => {
-  const x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX
-  seekToTrackPosition(x)
-}
-
-const seekToTrackPosition = (absX: number) => {
-  const relX = absX - trackRect.value!.x - trackRect.value!.height / 2
-  const percentage = Math.round((relX / trackRect.value!.width) * 100)
-
-  seekedPercentage.value = clampValue(percentage, 0, thumbPercentage.value)
-
-  seekedTime.value =
-    (duration.value *
-      mapValue(seekedPercentage.value, 0, thumbPercentage.value, 0, 100)) /
-    100
-
-  if (dragging.value) {
-    scrubbedPercentage.value = seekedPercentage.value
-    seek(seekedTime.value)
-  }
-}
-
-const getTimelineTrackSize = () => {
-  trackRect.value = trackRef.value?.getBoundingClientRect()
-  thumbPercentage.value =
-    100 - (trackRect.value!.height / trackRect.value!.width) * 100
-}
-
-useResizeObserver(trackRef, getTimelineTrackSize)
-useEventListener(defaultWindow, 'resize', getTimelineTrackSize, {
-  passive: true,
-})
+const { controlsApi } = useInjectControls()
+const {
+  entered,
+  seekedPercentage,
+  scrubbedPercentage,
+  bufferedPercentage,
+  onMouseEnter,
+  onMouseLeave,
+  onPointerDown,
+  onPointerUp,
+  onPointerMove,
+} = controlsApi
 </script>
 
 <style lang="postcss">
 :root {
-  --magic-player-timeline-height: 40px;
+  --magic-player-target-height: 56px;
   --magic-player-track-height: 4px;
   --magic-player-track-bg-color: rgba(250, 250, 250, 0.15);
   --magic-player-thumb-size: 1rem;
@@ -150,7 +64,15 @@ useEventListener(defaultWindow, 'resize', getTimelineTrackSize, {
 .magic-player-timeline {
   position: relative;
   width: 100%;
-  height: var(--magic-player-timeline-height);
+  height: var(--magic-player-track-height);
+  display: flex;
+  align-items: center;
+}
+
+.magic-player-timeline__target {
+  position: relative;
+  width: 100%;
+  height: var(--magic-player-target-height);
   display: flex;
   align-items: center;
   cursor: pointer;

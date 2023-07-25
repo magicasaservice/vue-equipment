@@ -1,4 +1,3 @@
-import type { MaybeRef } from '@vueuse/core'
 import { provide, inject } from 'vue'
 import { useMediaApi, type UseMediaApiReturn } from './useMediaApi'
 import { usePlayerApi, type UsePlayerApiReturn } from './usePlayerApi'
@@ -10,15 +9,8 @@ import {
   MediaApiInjectionKey,
   PlayerApiInjectionKey,
   RuntimeSourceProviderInjectionKey,
-  type SourceType,
+  type UsePlayerArgs,
 } from './../types'
-
-type UsePlayerArgs = {
-  playerRef: MaybeRef<HTMLElement | undefined>
-  videoRef: MaybeRef<HTMLVideoElement | undefined>
-  srcType: SourceType
-  src: string
-}
 
 type UsePlayerReturn = {
   playerApi: UsePlayerApiReturn
@@ -30,14 +22,10 @@ export function useProvidePlayer(args: UsePlayerArgs): UsePlayerReturn {
   const mediaApi = useMediaApi(args.videoRef)
   provide(MediaApiInjectionKey, mediaApi)
 
-  const playerApi = usePlayerApi(args.playerRef, args.videoRef, mediaApi)
+  const playerApi = usePlayerApi({ ...args, mediaApi })
   provide(PlayerApiInjectionKey, playerApi)
 
-  const runtimeProvider = useRuntimeSourceProvider(
-    args.videoRef,
-    args.srcType,
-    args.src
-  )
+  const runtimeProvider = useRuntimeSourceProvider(args)
   provide(RuntimeSourceProviderInjectionKey, runtimeProvider)
 
   return {
