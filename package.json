@@ -39,7 +39,7 @@
     }
   },
   "peerDependencies": {
-    "@vueuse/core": "10.x",
+    "@vueuse/core": "^10.2",
     "@vueuse/integrations": "10.x",
     "@vueuse/shared": "10.x",
     "focus-trap": "7.x",

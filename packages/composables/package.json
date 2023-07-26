@@ -13,11 +13,11 @@
   "sideEffects": false,
   "exports": "./index.ts",
   "peerDependencies": {
-    "@vueuse/core": "10.x"
+    "@vueuse/core": "^10.2"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
-      "optional": true
+      "optional": false
     }
   },
   "dependencies": {
@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.3",
-    "@vueuse/core": "^10.1.0",
     "tsup": "^7.1.0"
   }
 }
