@@ -101,7 +101,7 @@
     "prepare": "nr build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "release-it"
+    "release": "turbo run release && release-it"
   },
   "types": "./dist/nuxt/types.d.ts",
   "volta": {

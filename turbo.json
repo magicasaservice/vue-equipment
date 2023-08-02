@@ -5,7 +5,9 @@
       "dependsOn": ["^build"],
       "outputs": ["./dist/**"]
     },
-    "release": {},
+    "//#release": {
+      "dependsOn": ["^build"]
+    },
     "nuxt#build": {
       "dependsOn": ["composables#build", "plugins#build"]
     },
