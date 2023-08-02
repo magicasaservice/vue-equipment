@@ -48,6 +48,9 @@
       "import": "./dist/plugins/index.mjs"
     }
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "license": "MIT",
   "main": "./dist/nuxt/module.cjs",
@@ -84,7 +87,6 @@
       "optional": true
     }
   },
-  "private": true,
   "scripts": {
     "build": "nr clean && nr metadata:update && turbo run build",
     "clean": "nlx rimraf dist types packages/*/dist",
@@ -103,5 +105,10 @@
   "types": "./dist/nuxt/types.d.ts",
   "volta": {
     "node": "18.16.1"
+  },
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false
+    }
   }
 }
