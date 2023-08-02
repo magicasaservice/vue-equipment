@@ -6,6 +6,6 @@ This is the `plugins` package.
 
 This package contains the following plugins:
 
-- [Plugin 1](./plugin1.md)
-- [Plugin 2](./plugin2.md)
-- [Plugin 3](./plugin3.md)
+- [MagicModal](./MagicModal/index.md)
+- [MagicPlayer](./MagicPlayer/index.md)
+- [MagicScroll](./MagicScroll/index.md)

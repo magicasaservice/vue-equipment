@@ -6,6 +6,7 @@ This is the `composables` package.
 
 This package contains the following composables:
 
-- [Composable 1](./composable1.md)
-- [Composable 2](./composable2.md)
-- [Composable 3](./composable3.md)
+- [useEasings](./useEasings/index.md)
+- [useGlyphToSvg](./useGlyphToSvg/index.md)
+- [useScrollTo](./useScrollTo/index.md)
+- [useViewportDimensions](./useViewportDimensions/index.md)
