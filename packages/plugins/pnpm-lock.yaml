@@ -9,22 +9,22 @@ dependencies:
     specifier: ^10.3.0
     version: 10.3.0(vue@3.3.4)
   '@vueuse/integrations':
-    specifier: 10.3.0
+    specifier: ^10.3.0
     version: 10.3.0(focus-trap@7.5.2)(vue@3.3.4)
   '@vueuse/shared':
-    specifier: 10.3.0
+    specifier: ^10.3.0
     version: 10.3.0(vue@3.3.4)
   focus-trap:
-    specifier: 7.5.2
+    specifier: ^7.5.2
     version: 7.5.2
   hls.js:
-    specifier: 1.4.10
+    specifier: ^1.4.10
     version: 1.4.10
   mitt:
-    specifier: 3.0.1
+    specifier: ^3.0.1
     version: 3.0.1
   uuid:
-    specifier: 9.0.0
+    specifier: ^9.0.0
     version: 9.0.0
 
 devDependencies:

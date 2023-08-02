@@ -31,7 +31,7 @@
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.4.8",
     "vitepress": "1.0.0-beta.7",
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   },
   "exports": {
     ".": {
@@ -50,20 +50,20 @@
     }
   },
   "files": [
-    "dist"
+    "dist/**"
   ],
   "keywords": [],
   "license": "MIT",
   "main": "./dist/nuxt/module.cjs",
   "peerDependencies": {
     "@vueuse/core": "^10.3.0",
-    "@vueuse/integrations": "10.3.0",
-    "@vueuse/shared": "10.3.0",
-    "focus-trap": "7.5.2",
-    "hls.js": "1.4.10",
-    "mitt": "3.0.1",
-    "nuxt": "3.x",
-    "uuid": "9.0.0"
+    "@vueuse/integrations": "^10.3.0",
+    "@vueuse/shared": "^10.3.0",
+    "focus-trap": "^7.5.2",
+    "hls.js": "^1.4.10",
+    "mitt": "^3.0.1",
+    "nuxt": "^3.5.1",
+    "uuid": "^9.0.0"
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
