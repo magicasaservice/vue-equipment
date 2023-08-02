@@ -19,9 +19,9 @@
       </div>
     </div>
     <div
-      class="m-auto px-6 py-4 rounded flex flex-col w-60 gap-2 bg-gray-500/5"
+      class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5"
     >
-      <button opacity="75" @click="scroll()">Click to scroll</button>
+      <button @click="scroll()" class="w-full h-full px-6 py-4">Click to scroll</button>
     </div>
   </div>
 </template>
