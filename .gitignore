@@ -1,7 +1,6 @@
 .DS_Store
 *.log
 dist
-index.json
 node_modules
 cache
 packages/*/LICENSE

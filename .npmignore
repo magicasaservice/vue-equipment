@@ -1,8 +1,2 @@
 .DS_Store
-*.log
-index.json
 node_modules
-cache
-packages/*/LICENSE
-.vitepress/cache
-.turbo
