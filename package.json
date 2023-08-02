@@ -89,7 +89,6 @@
   },
   "scripts": {
     "build": "nr metadata:update && turbo run build",
-    "clean": "nlx rimraf dist types packages/*/dist",
     "dev": "nr metadata:update && nr docs:dev",
     "dev:nuxt": "turbo run dev --filter=nuxt",
     "docs:build": "vitepress build packages",
@@ -99,9 +98,7 @@
     "module:dev": "cd packages/nuxt && nr dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "turbo run release-it && release-it",
-    "prepare": "nr build",
-    "prepublishOnly": "nr build"
+    "release": "turbo run release-it && release-it"
   },
   "types": "./dist/nuxt/types.d.ts",
   "volta": {
