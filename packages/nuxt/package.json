@@ -20,13 +20,8 @@
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest watch",
-    "release": "release-it --ci"
+    "test:watch": "vitest watch"
   },
   "type": "module",
-  "sideEffects": false,
-  "release-it": {
-    "git": false,
-    "npm": false
-  }
+  "sideEffects": false
 }
