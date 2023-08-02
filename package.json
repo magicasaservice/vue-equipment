@@ -1,11 +1,12 @@
 {
   "name": "@maas/vue-equipment",
   "description": "A magic collection of Vue composables, plugins, components and directives",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@antfu/ni": "^0.21.5",
     "@nuxt/module-builder": "^0.4.0",
+    "@release-it/bumper": "^5.1.0",
     "@rollup/plugin-json": "^6.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^20.4.5",
@@ -100,7 +101,7 @@
     "prepare": "nr build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "turbo run release --concurrency=1"
+    "release": "turbo run release --concurrency=1 && release-it"
   },
   "types": "./dist/nuxt/types.d.ts",
   "volta": {

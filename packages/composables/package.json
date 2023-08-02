@@ -25,7 +25,17 @@
   "scripts": {
     "build": "tsup --config tsup.config.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "release-it"
+    "release": "release-it --ci"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "release-it": {
+    "git": false,
+    "npm": false,
+    "plugins": {
+      "@release-it/bumper": {
+        "in": "package.json",
+        "out": "package.json"
+      }
+    }
+  }
 }

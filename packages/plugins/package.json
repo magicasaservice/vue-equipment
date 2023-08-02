@@ -47,7 +47,17 @@
   "scripts": {
     "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json --declaration --emitDeclarationOnly",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "release-it"
+    "release": "release-it --ci"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "release-it": {
+    "git": false,
+    "npm": false,
+    "plugins": {
+      "@release-it/bumper": {
+        "in": "package.json",
+        "out": "package.json"
+      }
+    }
+  }
 }

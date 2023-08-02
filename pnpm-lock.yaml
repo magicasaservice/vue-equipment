@@ -37,6 +37,9 @@ devDependencies:
   '@nuxt/module-builder':
     specifier: ^0.4.0
     version: 0.4.0(@nuxt/kit@3.6.5)(nuxi@3.6.5)
+  '@release-it/bumper':
+    specifier: ^5.1.0
+    version: 5.1.0(release-it@16.1.3)
   '@rollup/plugin-json':
     specifier: ^6.0.0
     version: 6.0.0(rollup@3.26.3)
@@ -1585,6 +1588,22 @@ packages:
 
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+    dev: true
+
+  /@release-it/bumper@5.1.0(release-it@16.1.3):
+    resolution: {integrity: sha512-mnM5QQJvK+4sqLpU7vkDbGMGh1QNwdnWNPqrkfOCyr/cKgRDvb8e+nbiNZzyI/1XsxSjnfLHDecRVuqucwE6BQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      release-it: ^16.0.0
+    dependencies:
+      '@iarna/toml': 2.2.5
+      detect-indent: 7.0.1
+      fast-glob: 3.3.1
+      ini: 4.1.1
+      js-yaml: 4.1.0
+      lodash-es: 4.17.21
+      release-it: 16.1.3
+      semver: 7.5.4
     dev: true
 
   /@rollup/plugin-alias@4.0.4(rollup@2.79.1):
@@ -3473,6 +3492,11 @@ packages:
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
     dev: false
 
+  /detect-indent@7.0.1:
+    resolution: {integrity: sha512-Mc7QhQ8s+cLrnUfU/Ji94vG/r8M26m8f++vyres4ZoojaRDpZ1eSIh/EpzLNwlWuvzSZ3UbDFspjFvTDXe6e/g==}
+    engines: {node: '>=12.20'}
+    dev: true
+
   /detect-libc@2.0.2:
     resolution: {integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==}
     engines: {node: '>=8'}
@@ -4801,6 +4825,11 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /ini@4.1.1:
+    resolution: {integrity: sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    dev: true
+
   /inquirer@9.2.8:
     resolution: {integrity: sha512-SJ0fVfgIzZL1AD6WvFhivlh5/3hN6WeAvpvPrpPXH/8MOcQHeXhinmSm5CDJNRC2Q+sLh9YJ5k8F8/5APMXSfw==}
     engines: {node: '>=14.18.0'}
@@ -5299,6 +5328,10 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
+
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: true
 
   /lodash._reinterpolate@3.0.0:
     resolution: {integrity: sha512-xYHt68QRoYGjeeM/XOE1uJtvXQAgvszfBhjV4yvsQH0u2i9I6cI6c6/eG4Hh3UAOVn0y/xAXwmTzEay49Q//HA==}

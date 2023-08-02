@@ -21,7 +21,18 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "release": "release-it"
+    "release": "release-it --ci"
   },
-  "type": "module"
+  "type": "module",
+  "sideEffects": false,
+  "release-it": {
+    "git": false,
+    "npm": false,
+    "plugins": {
+      "@release-it/bumper": {
+        "in": "package.json",
+        "out": "package.json"
+      }
+    }
+  }
 }
