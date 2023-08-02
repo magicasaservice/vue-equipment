@@ -1,7 +1,7 @@
 {
   "name": "plugins",
   "description": "A magic collection of Vue plugins",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@nuxt/types": "^2.17.1",
@@ -52,12 +52,6 @@
   "sideEffects": false,
   "release-it": {
     "git": false,
-    "npm": false,
-    "plugins": {
-      "@release-it/bumper": {
-        "in": "package.json",
-        "out": "package.json"
-      }
-    }
+    "npm": false
   }
 }

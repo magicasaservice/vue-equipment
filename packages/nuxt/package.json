@@ -1,6 +1,6 @@
 {
   "name": "nuxt",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "dependencies": {
     "@nuxt/kit": "^3.6.5"
   },
@@ -27,12 +27,6 @@
   "sideEffects": false,
   "release-it": {
     "git": false,
-    "npm": false,
-    "plugins": {
-      "@release-it/bumper": {
-        "in": "package.json",
-        "out": "package.json"
-      }
-    }
+    "npm": false
   }
 }

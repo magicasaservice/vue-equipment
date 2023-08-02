@@ -1,7 +1,7 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "vue": "^3.3.4"
@@ -30,12 +30,6 @@
   "sideEffects": false,
   "release-it": {
     "git": false,
-    "npm": false,
-    "plugins": {
-      "@release-it/bumper": {
-        "in": "package.json",
-        "out": "package.json"
-      }
-    }
+    "npm": false
   }
 }
