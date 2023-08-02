@@ -1,30 +1,31 @@
 {
   "name": "composables",
-  "version": "0.0.1",
   "description": "Collection of essential Vue Composition Utilities",
-  "scripts": {
-    "build": "tsup --config tsup.config.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "license": "MIT",
-  "private": true,
+  "version": "0.1.0-alpha",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
-  "sideEffects": false,
-  "exports": "./index.ts",
-  "peerDependencies": {
-    "@vueuse/core": "^10.2"
-  },
-  "peerDependenciesMeta": {
-    "@vueuse/core": {
-      "optional": false
-    }
-  },
   "dependencies": {
     "vue": "^3.3.4"
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.3",
     "tsup": "^7.1.0"
-  }
+  },
+  "exports": "./index.ts",
+  "keywords": [],
+  "license": "MIT",
+  "peerDependencies": {
+    "@vueuse/core": "^10.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@vueuse/core": {
+      "optional": true
+    }
+  },
+  "private": true,
+  "scripts": {
+    "build": "tsup --config tsup.config.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "release-it"
+  },
+  "sideEffects": false
 }

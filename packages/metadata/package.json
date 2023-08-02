@@ -1,23 +1,23 @@
 {
   "name": "metadata",
-  "version": "0.0.1",
   "description": "Metadata for @maas/vue-equipment",
-  "keywords": [],
-  "license": "MIT",
-  "private": true,
+  "version": "0.1.0-alpha",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "devDependencies": {
+    "fast-glob": "^3.3.1",
+    "gray-matter": "^4.0.3",
+    "simple-git": "^3.19.1"
+  },
   "exports": {
     "./*": "./*"
   },
   "files": [
     "index.*"
   ],
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "update": "esno scripts/update.ts"
-  },
-  "devDependencies": {
-    "fast-glob": "^3.3.0",
-    "gray-matter": "^4.0.3",
-    "simple-git": "^3.19.1"
   }
 }
