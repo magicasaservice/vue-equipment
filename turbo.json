@@ -8,13 +8,13 @@
     "//#metadata:update": {
       "outputs": ["./packages/metadata/index.json"]
     },
-    "//#release-it": {
+    "//#t:release": {
       "dependsOn": ["^build"]
     },
     "//#docs:dev": {
       "dependsOn": ["^build", "composables#build:types", "metadata:update"]
     },
-    "//#docs:build": {
+    "//#t:docs:build": {
       "dependsOn": ["^build", "composables#build:types", "metadata:update"]
     },
     "composables#build:types": {

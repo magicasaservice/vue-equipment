@@ -91,14 +91,14 @@
     "build:types": "turbo run build:types",
     "dev": "turbo run docs:dev && nr docs:dev",
     "dev:nuxt": "turbo run dev --filter=nuxt",
-    "docs:build": "turbo run docs:build && vitepress build packages",
+    "docs:build": "turbo run t:docs:build && vitepress build packages",
     "docs:dev": "vitepress dev packages",
     "docs:preview": "vitepress preview packages",
     "metadata:update": "nr -C packages/metadata update",
     "module:dev": "cd packages/nuxt && nr dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "turbo run release-it && release-it"
+    "release": "turbo run t:release && release-it"
   },
   "types": "./dist/nuxt/types.d.ts",
   "volta": {
