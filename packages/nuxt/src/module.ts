@@ -9,10 +9,8 @@ import {
 import metadata from '../../metadata/index.json'
 
 export interface ModuleOptions {
-  autoImportPlugins?: boolean
-  autoImportComposables?: boolean
-  plugins?: string[]
-  composables?: string[]
+  plugins?: string[] | boolean
+  composables?: string[] | boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -21,10 +19,8 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'vueEquipment',
   },
   defaults: {
-    autoImportPlugins: false,
-    autoImportComposables: false,
-    plugins: [],
-    composables: [],
+    plugins: true,
+    composables: true,
   },
   async setup(options, nuxt) {
     let plugins: string[]
@@ -44,7 +40,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     // Plugins
-    if (options.autoImportPlugins) {
+    if (options.plugins === true) {
       plugins = metadata.functions
         .filter((fn) => fn.package === 'plugins')
         .map((fn) => fn.name)
@@ -55,22 +51,22 @@ export default defineNuxtModule<ModuleOptions>({
     for (const plugin of plugins) {
       // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/nuxt`
+        `@maas/vue-equipment/plugins/${plugin}/nuxt`,
       )
 
       // Autoload composables
-      const composablesDir = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/src/composables`
+      const pluginComposablesDir = await resolver.resolvePath(
+        `@maas/vue-equipment/plugins/${plugin}/src/composables`,
       )
 
       addPlugin(nuxtPlugin)
-      addImportsDir(composablesDir, {
+      addImportsDir(pluginComposablesDir, {
         prepend: true,
       })
     }
 
     // Composables
-    if (options.autoImportComposables) {
+    if (options.composables === true) {
       composables = metadata.functions
         .filter((fn) => fn.package === 'composables')
         .map((fn) => fn.name)
