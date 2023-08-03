@@ -16,10 +16,10 @@
       "dependsOn": ["^build", "nuxt#build"]
     },
     "//#t:docs:dev": {
-      "dependsOn": ["//#metadata:update", "^build", "^build:types"]
+      "dependsOn": ["//#metadata:update", "^build:types", "^build"]
     },
     "//#t:docs:build": {
-      "dependsOn": ["//#metadata:update", "^build", "^build:types"]
+      "dependsOn": ["//#metadata:update", "^build:types", "^build"]
     },
     "nuxt#build": {
       "dependsOn": ["//#metadata:update", "composables#build", "plugins#build"]
