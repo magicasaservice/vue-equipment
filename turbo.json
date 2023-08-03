@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["//#metadata:update", "^build"],
+      "dependsOn": ["^build"],
       "outputs": ["./dist/**"]
     },
     "build:types": {
@@ -23,7 +23,7 @@
       "dependsOn": ["^build", "^build:types", "//#metadata:update"]
     },
     "nuxt#build": {
-      "dependsOn": ["composables#build", "plugins#build"]
+      "dependsOn": ["composables#build", "plugins#build", "//#metadata:update"]
     },
     "nuxt#dev": {
       "dependsOn": ["composables#build", "plugins#build"]
