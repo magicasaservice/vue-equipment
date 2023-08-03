@@ -2,7 +2,6 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
       "outputs": ["./dist/**"]
     },
     "build:types": {
@@ -14,19 +13,19 @@
       "outputs": ["./packages/metadata/index.json"]
     },
     "//#t:release": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "nuxt#build"]
     },
     "//#t:docs:dev": {
-      "dependsOn": ["^build", "^build:types", "//#metadata:update"]
+      "dependsOn": ["//#metadata:update", "^build", "^build:types"]
     },
     "//#t:docs:build": {
-      "dependsOn": ["^build", "^build:types", "//#metadata:update"]
+      "dependsOn": ["//#metadata:update", "^build", "^build:types"]
     },
     "nuxt#build": {
-      "dependsOn": ["composables#build", "plugins#build", "//#metadata:update"]
+      "dependsOn": ["//#metadata:update", "composables#build", "plugins#build"]
     },
     "nuxt#dev": {
-      "dependsOn": ["composables#build", "plugins#build"]
+      "dependsOn": ["//#metadata:update", "composables#build", "plugins#build"]
     }
   }
 }
