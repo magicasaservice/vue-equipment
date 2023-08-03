@@ -5,11 +5,11 @@ import { getTypeDefinition, replacer } from './../utils'
 import { functionNames } from '../../../packages/metadata/metadata'
 
 export function MarkdownTransform(): Plugin {
-  const DIR_TYPES = resolve(__dirname, '../../../types/packages')
+  const DIR_TYPES = resolve(__dirname, '../../../dist/composables')
   const hasTypes = fs.existsSync(DIR_TYPES)
 
   if (!hasTypes) {
-    console.warn('No types dist found!')
+    console.warn('No types dist found! Run `pnpm build:types` first.')
   }
 
   return {
@@ -42,7 +42,7 @@ export function MarkdownTransform(): Plugin {
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
         code = code.replace(
           /(# \w+?)\n/,
-          `$1\n\n<FunctionInfo fn="${name}"/>\n`
+          `$1\n\n<FunctionInfo fn="${name}"/>\n`,
         )
       }
 
@@ -60,10 +60,12 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 
   const dirname = join(DIR_SRC, pkg, name)
   const demoPath = ['demo.vue', 'demo.client.vue'].find((i) =>
-    fs.existsSync(join(dirname, i))
+    fs.existsSync(join(dirname, i)),
   )
 
-  const types = await getTypeDefinition(pkg, name)
+  // Fetch types for all composables
+  const types =
+    pkg === 'composables' ? await getTypeDefinition(pkg, name) : undefined
 
   let typingSection = ''
 

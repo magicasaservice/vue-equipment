@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
 import type { PackageIndexes } from '../../metadata'
 
-const DIR_TYPES = resolve(__dirname, '../types/packages')
+const DIR_TYPES = resolve(__dirname, '../../../types/')
 
 export async function updateImport({ packages, functions }: PackageIndexes) {
   for (const { name, dir, manualImport } of Object.values(packages)) {
@@ -25,7 +25,7 @@ export function replacer(
   code: string,
   value: string,
   key: string,
-  insert: 'head' | 'tail' | 'none' = 'none'
+  insert: 'head' | 'tail' | 'none' = 'none',
 ) {
   const START = `<!--${key}_STARTS-->`
   const END = `<!--${key}_ENDS-->`
@@ -44,7 +44,7 @@ export function replacer(
 
 export async function getTypeDefinition(
   pkg: string,
-  name: string
+  name: string,
 ): Promise<string | undefined> {
   const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
@@ -61,10 +61,10 @@ export async function getTypeDefinition(
     .replace(/export {}/g, '')
 
   const prettier = await import('prettier')
-  return prettier
-    .format(types, {
-      semi: false,
-      parser: 'typescript',
-    })
-    .trim()
+  const formatted = await prettier.format(types, {
+    semi: false,
+    parser: 'typescript',
+  })
+
+  return formatted.trim()
 }

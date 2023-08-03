@@ -3,3 +3,4 @@ packages:
   - 'packages/**/*'
   - '!packages/nuxt/playground'
   - '!packages/nuxt/test'
+  - '!packages/.vitepress'

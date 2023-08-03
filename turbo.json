@@ -5,6 +5,9 @@
       "dependsOn": ["^build"],
       "outputs": ["./dist/**"]
     },
+    "build:types": {
+      "outputs": ["./types/**"]
+    },
     "//#release-it": {
       "dependsOn": ["^build"]
     },

@@ -88,7 +88,8 @@
   },
   "scripts": {
     "build": "nr metadata:update && turbo run build",
-    "dev": "nr metadata:update && nr docs:dev",
+    "build:types": "turbo run build:types",
+    "dev": "nr metadata:update && nr build:types && nr docs:dev",
     "dev:nuxt": "turbo run dev --filter=nuxt",
     "docs:build": "vitepress build packages",
     "docs:dev": "vitepress dev packages",
