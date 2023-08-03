@@ -87,15 +87,14 @@
     }
   },
   "scripts": {
+    "dev": "nr dev:docs",
+    "dev:docs": "turbo run t:docs:dev && vitepress dev packages",
+    "dev:nuxt": "turbo run dev --filter=nuxt",
     "build": "turbo run build",
     "build:types": "turbo run build:types",
-    "dev": "turbo run docs:dev && nr docs:dev",
-    "dev:nuxt": "turbo run dev --filter=nuxt",
     "docs:build": "turbo run t:docs:build && vitepress build packages",
-    "docs:dev": "vitepress dev packages",
     "docs:preview": "vitepress preview packages",
     "metadata:update": "nr -C packages/metadata update",
-    "module:dev": "cd packages/nuxt && nr dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
     "release": "turbo run t:release && release-it"
