@@ -1,25 +1,30 @@
 <template>
-  <div>
-    <div
-      class="flex flex-col gap-4 divide-y divide-[rgba(100,200,0,1)]"
-      ref="el"
-    >
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col p-8 gap-4 bg-gray-500/5 rounded">
       <div class="flex gap-2" v-for="easing in mappedEasings" :key="easing">
         <div class="w-40">{{ easing.name }}</div>
-        <div
-          class="w-4 h-4 bg-black rounded-full text-center"
-          :style="easing.style"
-        />
+        <div class="w-full h-4 flex bg-gray-300/5 rounded-full pr-4">
+          <div class="w-full h-full">
+            <div
+              class="w-4 h-4 bg-black rounded-full text-center"
+              :style="easing.style"
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <button @click="toggle">Start</button>
+    <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
+      <button @click="toggle" class="w-full h-full px-6 py-4">
+        {{ isActive ? 'Reset' : 'Start' }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useEasings } from '@maas/vue-equipment/composables'
-import { useRafFn, useElementSize } from '@vueuse/core'
+import { useRafFn } from '@vueuse/core'
 
 import type { EasingFunction, EasingKey } from '@maas/vue-equipment/composables'
 
@@ -27,13 +32,11 @@ const easings = useEasings()
 const { pause, resume, isActive } = useRafFn(() => mapEasings(), {
   immediate: false,
 })
-const el = ref<HTMLElement | undefined>(undefined)
-const { width } = useElementSize(el)
 
 const startTime = ref(0)
 const duration = ref(1000)
 const startX = ref(0)
-const endX = computed(() => width.value - (40 + 2 + 4) * 4)
+const endX = ref(100)
 
 const mappedEasings = ref<Record<string, any>>([])
 
@@ -70,9 +73,9 @@ const mapEasings = () => {
 
 const getStyle = (easing: EasingFunction) => {
   return {
-    transform: `translateX(${
+    marginLeft: `${
       easing(getCurrentTime()) * (endX.value - startX.value) + startX.value
-    }px)`,
+    }%`,
   }
 }
 
