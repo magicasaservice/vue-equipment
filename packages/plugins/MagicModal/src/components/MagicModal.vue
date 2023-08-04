@@ -23,7 +23,9 @@
         </transition>
         <transition
           :name="mappedOptions.transitions?.content"
+          @before-leave="onBeforeLeave"
           @after-leave="onAfterLeave"
+          @before-enter="onBeforeEnter"
           @after-enter="onAfterEnter"
         >
           <div
@@ -49,7 +51,9 @@
 import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
 import { onKeyStroke } from '@vueuse/core'
+import { toValue } from '@vueuse/shared'
 import { defaultOptions } from './../utils/defaultOptions'
+import { useModalEmitter } from './../composables/useModalEmitter'
 
 import type { MaybeRef } from '@vueuse/core'
 import type { DefaultOptions } from './../types/index'
@@ -102,6 +106,10 @@ function onClose() {
 }
 
 // Transition Callbacks
+function onBeforeEnter() {
+  useModalEmitter().emit('beforeEnter', toValue(props.id))
+}
+
 async function onAfterEnter() {
   if (mappedOptions.scrollLock) {
     if (mappedOptions.scrollLockPadding) {
@@ -115,6 +123,12 @@ async function onAfterEnter() {
     await nextTick()
     trapFocus()
   }
+
+  useModalEmitter().emit('afterEnter', toValue(props.id))
+}
+
+function onBeforeLeave() {
+  useModalEmitter().emit('beforeLeave', toValue(props.id))
 }
 
 function onAfterLeave() {
@@ -130,6 +144,7 @@ function onAfterLeave() {
   }
 
   wrapperActive.value = false
+  useModalEmitter().emit('afterLeave', toValue(props.id))
 }
 
 onKeyStroke('Escape', (e) => {

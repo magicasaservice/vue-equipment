@@ -1,5 +1,7 @@
 import MagicModalComponent from './src/components/MagicModal.vue'
 import { useModalApi } from './src/composables/useModalApi'
+import { useModalEmitter } from './src/composables/useModalEmitter'
+
 import type { App, Plugin } from 'vue'
 
 const MagicModal: Plugin = {
@@ -8,4 +10,4 @@ const MagicModal: Plugin = {
   },
 }
 
-export { MagicModal, useModalApi }
+export { MagicModal, useModalEmitter, useModalApi }

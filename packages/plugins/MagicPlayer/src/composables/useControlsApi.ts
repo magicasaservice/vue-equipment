@@ -137,7 +137,7 @@ export function useControlsApi(args: UseControlsArgs) {
       0,
       100,
       0,
-      thumbPercentage.value
+      thumbPercentage.value,
     )
   })
 
@@ -153,7 +153,7 @@ export function useControlsApi(args: UseControlsArgs) {
     },
     {
       passive: true,
-    }
+    },
   )
 
   return {

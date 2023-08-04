@@ -13,4 +13,11 @@ type DefaultOptions = {
   }
 }
 
-export type { DefaultOptions }
+type ModalEvents = {
+  afterEnter: string
+  afterLeave: string
+  beforeEnter: string
+  beforeLeave: string
+}
+
+export type { DefaultOptions, ModalEvents }

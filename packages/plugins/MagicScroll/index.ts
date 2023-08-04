@@ -5,7 +5,7 @@ import MagicScrollCollision from './src/components/MagicScrollCollision.vue'
 
 import { magicScrollStore } from './src/store'
 
-import { useEmitter } from './src/composables/useEmitter'
+import { useCollisionEmitter } from './src/composables/useCollisionEmitter'
 import { useProgress } from './src/composables/useProgress'
 import { useCollisionDetect } from './src/composables/useCollisionDetect'
 
@@ -26,4 +26,4 @@ const MagicScroll: Plugin = {
   },
 }
 
-export { MagicScroll, useEmitter, useProgress, useCollisionDetect }
+export { MagicScroll, useCollisionEmitter, useProgress, useCollisionDetect }

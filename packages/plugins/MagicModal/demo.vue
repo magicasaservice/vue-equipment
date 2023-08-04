@@ -11,9 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { useModalApi } from '@maas/vue-equipment/plugins'
+import { useModalApi, useModalEmitter } from '@maas/vue-equipment/plugins'
 
 const id = 'magic-modal-demo'
 const modalApi = useModalApi(id)
 const { open } = modalApi
+
+useModalEmitter().on('*', (event, id) => {
+  console.log(event, id)
+})
 </script>

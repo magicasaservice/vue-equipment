@@ -1,6 +1,6 @@
 import { ref, watch, unref, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { useEmitter } from './useEmitter'
+import { useCollisionEmitter } from './useCollisionEmitter'
 
 import type { ComputedRef, Ref } from 'vue'
 import type {
@@ -16,7 +16,7 @@ export function useCollisionDetect(
   pageYOffset: ComputedRef<number>,
   windowDimensions: WindowDimensions,
   collisionEntries: CollisionEntry[],
-  parent: HTMLElement | undefined
+  parent: HTMLElement | undefined,
 ): { collisionMappedEntries: Ref<CollisionMappedEntry[]> } {
   const scrolled = ref(0)
   const intersecting = ref()
@@ -24,11 +24,11 @@ export function useCollisionDetect(
   const collisionMappedEntries = ref<CollisionMappedEntry[]>([])
 
   const oppositeScrollDirection = computed(() =>
-    scrollDirection.value === 'up' ? 'down' : 'up'
+    scrollDirection.value === 'up' ? 'down' : 'up',
   )
 
   function getOffset(
-    value: number | (({ vw, vh }: { vw: number; vh: number }) => number)
+    value: number | (({ vw, vh }: { vw: number; vh: number }) => number),
   ) {
     return typeof value === 'function'
       ? value({
@@ -67,7 +67,7 @@ export function useCollisionDetect(
       ([{ isIntersecting }]) => {
         intersecting.value = isIntersecting
       },
-      { rootMargin: '50% 0px 50% 0px', threshold: 0.01 }
+      { rootMargin: '50% 0px 50% 0px', threshold: 0.01 },
     )
 
     observeAll()
@@ -123,7 +123,7 @@ export function useCollisionDetect(
     pos: Position,
     dir: ScrollDirection,
     boundingRect: DOMRect,
-    entry: CollisionMappedEntry
+    entry: CollisionMappedEntry,
   ) {
     const offset = getOffset(entry.offset![pos] || 0)
     if (entry.alerted[dir][pos]) return
@@ -133,7 +133,7 @@ export function useCollisionDetect(
       (dir === 'up' && boundingRect[pos] >= offset)
     ) {
       entry.alerted[dir][pos] = true
-      useEmitter().emit('magic-scroll:collision', {
+      useCollisionEmitter().emit('collision', {
         dir,
         pos,
         el: entry.element,
@@ -146,7 +146,7 @@ export function useCollisionDetect(
     pos: Position,
     dir: ScrollDirection,
     boundingRect: DOMRect,
-    entry: CollisionMappedEntry
+    entry: CollisionMappedEntry,
   ) {
     const offset = getOffset(entry.offset![pos] || 0)
     if (!entry.alerted[dir][pos]) return
@@ -167,7 +167,7 @@ export function useCollisionDetect(
       if (intersecting.value) {
         observeAll()
       }
-    }
+    },
   )
 
   return {

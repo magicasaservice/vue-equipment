@@ -3,7 +3,7 @@ import type { CollisionEvents } from '../types'
 
 const emitter = mitt<CollisionEvents>()
 
-export function useEmitter() {
+export function useCollisionEmitter() {
   return {
     on: emitter.on,
     off: emitter.off,

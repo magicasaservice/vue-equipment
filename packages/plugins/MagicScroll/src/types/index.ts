@@ -6,7 +6,7 @@ type AlertPositions = {
 }
 
 type CollisionEvents = {
-  'magic-scroll:collision': {
+  collision: {
     dir: 'up' | 'down'
     pos: 'top' | 'bottom'
     el: HTMLElement
