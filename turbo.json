@@ -13,7 +13,7 @@
       "outputs": ["./packages/metadata/index.json"]
     },
     "//#t:release": {
-      "dependsOn": ["^build", "nuxt#build"]
+      "dependsOn": ["^build", "nuxt#build", "^build:types"]
     },
     "//#t:docs:dev": {
       "dependsOn": ["//#metadata:update", "^build:types", "^build"]
