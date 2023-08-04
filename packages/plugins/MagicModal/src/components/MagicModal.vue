@@ -8,6 +8,7 @@
       <dialog
         ref="modal"
         class="magic-modal"
+        :id="toValue(id)"
         @click.self="close"
         aria-modal="true"
       >
@@ -162,9 +163,10 @@ watch(isActive, async (value) => {
 </script>
 
 <style lang="postcss">
-* {
-  transition-duration: 0s;
-  animation-duration: 0s;
+:root {
+  --magic-modal-z-index: 999;
+  --magic-modal-backdrop-color: rgba(0, 0, 0, 0.5);
+  --magic-modal-backdrop-filter: unset;
 }
 
 .magic-modal {
@@ -175,11 +177,16 @@ watch(isActive, async (value) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: var(--magic-modal-z-index);
   background: transparent;
   color: inherit;
   padding: 0;
   border: none;
+}
+
+.magic-modal * {
+  transition-duration: 0s;
+  animation-duration: 0s;
 }
 
 .magic-modal__content {
@@ -201,7 +208,8 @@ watch(isActive, async (value) => {
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--magic-modal-backdrop-color);
+  backdrop-filter: var(--magic-modal-backdrop-filter);
   z-index: -1;
 }
 
