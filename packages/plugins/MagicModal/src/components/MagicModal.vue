@@ -184,11 +184,6 @@ watch(isActive, async (value) => {
   border: none;
 }
 
-.magic-modal * {
-  transition-duration: 0s;
-  animation-duration: 0s;
-}
-
 .magic-modal__content {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
