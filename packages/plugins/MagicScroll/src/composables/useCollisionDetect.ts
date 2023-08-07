@@ -1,20 +1,15 @@
 import { ref, watch, unref, computed } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
 import { useCollisionEmitter } from './useCollisionEmitter'
 
 import type { ComputedRef, Ref } from 'vue'
-import type {
-  CollisionEntry,
-  CollisionMappedEntry,
-  WindowDimensions,
-} from '../types'
+import type { CollisionEntry, CollisionMappedEntry } from '../types'
 
 type ScrollDirection = 'up' | 'down'
 type Position = 'top' | 'bottom'
 
 export function useCollisionDetect(
   pageYOffset: ComputedRef<number>,
-  windowDimensions: WindowDimensions,
   collisionEntries: CollisionEntry[],
   parent: HTMLElement | undefined,
 ): { collisionMappedEntries: Ref<CollisionMappedEntry[]> } {
@@ -27,13 +22,15 @@ export function useCollisionDetect(
     scrollDirection.value === 'up' ? 'down' : 'up',
   )
 
+  const windowDimensions = useWindowSize()
+
   function getOffset(
     value: number | (({ vw, vh }: { vw: number; vh: number }) => number),
   ) {
     return typeof value === 'function'
       ? value({
-          vh: unref(windowDimensions.vh),
-          vw: unref(windowDimensions.vw),
+          vh: unref(windowDimensions.height),
+          vw: unref(windowDimensions.width),
         })
       : value || 0
   }

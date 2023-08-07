@@ -1,60 +1,82 @@
 import { ref, inject } from 'vue'
+import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { toValue } from '@vueuse/shared'
-import { WindowDimensionsKey, WindowScrollKey } from '../types'
+import { ScrollPositionKey } from '../types'
 import { clampValue } from '../utils'
 
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { FromTo } from '../types'
 
-export function useProgress(
-  target: MaybeRef<HTMLElement | null | undefined>,
-  from: FromTo,
+type UseProgressParams = {
+  child: MaybeRef<HTMLElement | null | undefined>
+  parent: MaybeRefOrGetter<HTMLElement | null | undefined>
+  from: FromTo
   to: FromTo
-) {
-  const dimensions = inject(WindowDimensionsKey, { vw: 0, vh: 0 })
-  const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
+}
 
-  const targetRect = ref<DOMRect>()
+export function useProgress(params: UseProgressParams) {
+  const { child, parent, from, to } = params
+  const scrollPosition = inject(ScrollPositionKey, undefined)
+
+  const childRect = ref<DOMRect>()
+  const parentRect = ref<
+    | DOMRect
+    | {
+        width: MaybeRef<number>
+        height: MaybeRef<number>
+        top: MaybeRef<number>
+      }
+  >()
   const start = ref(0)
   const end = ref(0)
 
   const splitLocation = (location: string) => {
     return {
-      el: location.match(/^[a-z]+/)![0],
-      vp: location.match(/[a-z]+$/)![0],
+      child: location.match(/^[a-z]+/)![0],
+      parent: location.match(/[a-z]+$/)![0],
     }
   }
 
-  const getOffsetTop = (points: { el: string; vp: string }) => {
+  const getOffsetTop = (points: { child: string; parent: string }) => {
     let y = 0
 
-    if (!targetRect.value) return y
+    if (!childRect.value) return y
 
-    switch (points.el) {
+    const scrollY = toValue(scrollPosition?.y) || 0
+    if (parent) console.log('scrollY:', scrollY)
+
+    switch (points.child) {
       case 'top':
-        y += targetRect.value.top + scrollPosition.y
+        y += childRect.value.top + scrollY
         break
       case 'center':
-        y +=
-          targetRect.value.top + targetRect.value.height / 2 + scrollPosition.y
+        y += childRect.value.top + childRect.value.height / 2 + scrollY
         break
       case 'bottom':
-        y += targetRect.value.top + targetRect.value.height + scrollPosition.y
+        y += childRect.value.top + childRect.value.height + scrollY
         break
     }
 
-    switch (points.vp) {
+    if (!parentRect.value) return y
+
+    const dimensions = {
+      width: toValue(parentRect.value.width),
+      height: toValue(parentRect.value.height),
+      top: toValue(parentRect.value.top),
+    }
+
+    switch (points.parent) {
       case 'top':
-        y -= 0
+        y -= dimensions.top
         break
       case 'center':
-        y -= dimensions.vh / 2
+        y -= dimensions.top + dimensions.height / 2
         break
       case 'bottom':
-        y -= dimensions.vh
+        y -= dimensions.top + dimensions.height
         break
       case 'initial':
-        y -= targetRect.value.top + scrollPosition.y
+        y -= childRect.value.top + scrollY
         break
     }
 
@@ -62,14 +84,18 @@ export function useProgress(
   }
 
   const getCalculations = () => {
-    targetRect.value = toValue(target)?.getBoundingClientRect()
+    childRect.value = toValue(child)?.getBoundingClientRect()
+    parentRect.value = toValue(parent)
+      ? useElementBounding(parent)
+      : { ...useWindowSize(), top: 0 }
     start.value = getOffsetTop(splitLocation(from))
     end.value = getOffsetTop(splitLocation(to))
   }
 
   const getProgress = () => {
+    const scrollY = toValue(scrollPosition?.y) || 0
     const total = Math.abs(end.value - start.value)
-    const current = scrollPosition.y - start.value
+    const current = scrollY - start.value
 
     return clampValue(current / total, 0, 1)
   }

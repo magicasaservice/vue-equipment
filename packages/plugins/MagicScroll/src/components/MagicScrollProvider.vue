@@ -1,34 +1,35 @@
 <template>
-  <div ref="el" class="magic-scroll-provider">
+  <div class="magic-scroll-provider">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, provide, reactive, readonly } from 'vue'
-import { useWindowScroll, useWindowSize, toValue } from '@vueuse/core'
-import { WindowScrollKey, WindowDimensionsKey } from '../types'
+import { provide, computed } from 'vue'
+import { useScroll } from '@vueuse/core'
+import { ScrollPositionKey, ScrollParentKey } from '../types'
 
 interface Props {
-  hasScrollListener?: Boolean
+  active?: Boolean
+  el?: HTMLElement
 }
 const props = withDefaults(defineProps<Props>(), {
-  hasScrollListener: () => true,
+  active: () => true,
 })
 
-const el = ref()
-
-const scrollPosition = props.hasScrollListener
-  ? useWindowScroll()
-  : { x: 0, y: 0 }
-const { width, height } = useWindowSize()
-
-const windowscrollDefault = reactive(scrollPosition)
-const windowDimensionsDefault = reactive({
-  vw: toValue(width),
-  vh: toValue(height),
+// computed is used to avoid reactivity issues
+const mappedEl = computed(() => {
+  if (props.el) return props.el
+  return window
 })
 
-provide(WindowScrollKey, readonly(windowscrollDefault))
-provide(WindowDimensionsKey, readonly(windowDimensionsDefault))
+const mappedParent = computed(() => {
+  if (props.el) return props.el
+  return undefined
+})
+
+const scrollPosition = useScroll(mappedEl)
+
+provide(ScrollPositionKey, scrollPosition)
+provide(ScrollParentKey, mappedParent)
 </script>

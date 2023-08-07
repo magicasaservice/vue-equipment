@@ -1,16 +1,16 @@
 import type { magicScrollStore } from '../store'
 import type { InjectionKey, Ref } from 'vue'
-import type { WindowDimensions } from './index'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { UseScrollReturn } from '@vueuse/core'
 
-const WindowDimensionsKey = Symbol() as InjectionKey<WindowDimensions>
+const ScrollParentKey = Symbol() as InjectionKey<
+  MaybeRefOrGetter<HTMLElement | undefined>
+>
 
-const WindowScrollKey = Symbol() as InjectionKey<{
-  x: number
-  y: number
-}>
+const ScrollPositionKey = Symbol() as InjectionKey<UseScrollReturn | undefined>
 
 const ScrollProgressKey = Symbol() as InjectionKey<Ref<number>>
 
 const StoreKey = Symbol() as InjectionKey<typeof magicScrollStore>
 
-export { WindowDimensionsKey, WindowScrollKey, ScrollProgressKey, StoreKey }
+export { ScrollParentKey, ScrollPositionKey, ScrollProgressKey, StoreKey }

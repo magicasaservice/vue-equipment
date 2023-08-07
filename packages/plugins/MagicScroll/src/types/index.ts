@@ -31,7 +31,7 @@ interface CollisionMappedEntry extends Omit<CollisionEntry, 'element'> {
   element: HTMLElement
 }
 
-type WindowDimensions = { vw: number; vh: number }
+type Dimensions = { width: number; height: number }
 
 type FromTo =
   | 'top-top'
@@ -51,5 +51,5 @@ export type {
   CollisionEvents,
   CollisionEntry,
   CollisionMappedEntry,
-  WindowDimensions,
+  Dimensions,
 }

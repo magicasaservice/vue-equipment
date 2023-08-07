@@ -9,7 +9,6 @@ import {
   ref,
   provide,
   inject,
-  computed,
   onMounted,
   watch,
   nextTick,
@@ -19,7 +18,7 @@ import {
 import { useIntersectionObserver } from '@vueuse/core'
 import { mapValue } from '../utils'
 import { useProgress } from '../composables/useProgress'
-import { WindowScrollKey, ScrollProgressKey } from '../types'
+import { ScrollPositionKey, ScrollParentKey, ScrollProgressKey } from '../types'
 
 import type { FromTo } from '../types'
 
@@ -33,17 +32,18 @@ const props = withDefaults(defineProps<Props>(), {
   to: 'bottom-top',
 })
 
-const scrollPosition = inject(WindowScrollKey, { x: 0, y: 0 })
-const pageYOffset = computed(() => scrollPosition.y)
+const scrollPosition = inject(ScrollPositionKey, undefined)
+const scrollParent = inject(ScrollParentKey)
 
 const sceneRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 
-const { getCalculations, getProgress } = useProgress(
-  sceneRef,
-  props.from,
-  props.to
-)
+const { getCalculations, getProgress } = useProgress({
+  child: sceneRef,
+  parent: scrollParent,
+  from: props.from,
+  to: props.to,
+})
 
 const calculate = () => {
   getCalculations()
@@ -57,12 +57,12 @@ onMounted(() => {
 })
 
 watch(
-  () => pageYOffset.value,
+  () => scrollPosition?.y.value,
   () => {
     if (intersecting.value) {
       calculate()
     }
-  }
+  },
 )
 
 const intersecting = ref()
@@ -72,7 +72,7 @@ useIntersectionObserver(
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
   },
-  { rootMargin: '150% 0px 150% 0px' }
+  { rootMargin: '150% 0px 150% 0px' },
 )
 
 provide('mapValue', mapValue)
