@@ -43,7 +43,6 @@ export function useProgress(params: UseProgressParams) {
     if (!childRect.value) return y
 
     const scrollY = toValue(scrollPosition?.y) || 0
-    if (parent) console.log('scrollY:', scrollY)
 
     switch (points.child) {
       case 'top':

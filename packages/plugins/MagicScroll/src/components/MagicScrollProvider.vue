@@ -1,6 +1,6 @@
 <template>
   <div class="magic-scroll-provider">
-    <slot />
+    <slot :scroll-position="scrollPosition" />
   </div>
 </template>
 
