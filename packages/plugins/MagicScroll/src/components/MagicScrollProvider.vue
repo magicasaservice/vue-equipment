@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 // computed is used to avoid reactivity issues
 const mappedEl = computed(() => {
   if (props.el) return props.el
+  if (typeof window === 'undefined') return undefined
   return window
 })
 
