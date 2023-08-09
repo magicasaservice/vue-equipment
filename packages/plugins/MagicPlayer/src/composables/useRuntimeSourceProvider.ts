@@ -1,4 +1,4 @@
-import { toValue } from '@vueuse/shared'
+import { toValue } from '@vueuse/core'
 import { ref, onMounted, onUnmounted, type Ref } from 'vue'
 
 import type { UsePlayerArgs } from './../types'
@@ -14,7 +14,7 @@ type UseRuntimeSourceProviderArgs = Pick<
 >
 
 export function useRuntimeSourceProvider(
-  args: UseRuntimeSourceProviderArgs
+  args: UseRuntimeSourceProviderArgs,
 ): UseRuntimeSourceProviderReturn {
   let hls: Hls | undefined
   const loaded = ref(false)
@@ -28,7 +28,7 @@ export function useRuntimeSourceProvider(
       () => {
         loaded.value = true
       },
-      { once: true }
+      { once: true },
     )
     el.load()
   }

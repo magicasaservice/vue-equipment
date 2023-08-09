@@ -1,6 +1,6 @@
 import { ref, computed, watch } from 'vue'
-import { toValue } from '@vueuse/shared'
 import {
+  toValue,
   useResizeObserver,
   useEventListener,
   defaultWindow,

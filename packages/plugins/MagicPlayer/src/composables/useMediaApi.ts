@@ -1,11 +1,10 @@
 import { ref, watch, unref } from 'vue'
-import { toValue, watchIgnorable } from '@vueuse/shared'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, toValue, watchIgnorable } from '@vueuse/core'
 
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from '@vueuse/core'
 
 export function useMediaApi(
-  target: MaybeRef<HTMLMediaElement | null | undefined>
+  target: MaybeRef<HTMLMediaElement | null | undefined>,
 ) {
   // Public values
   const currentTime = ref(0)
@@ -57,7 +56,7 @@ export function useMediaApi(
       const el = toValue(target)
       if (!el) return
       el.currentTime = unref(time)
-    }
+    },
   )
 
   const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(
@@ -66,13 +65,13 @@ export function useMediaApi(
       const el = toValue(target)
       if (!el) return
       isPlaying ? el.play() : el.pause()
-    }
+    },
   )
 
   // Listener
   useEventListener(target, 'timeupdate', () => {
     ignoreCurrentTimeUpdates(
-      () => (currentTime.value = toValue(target)!.currentTime)
+      () => (currentTime.value = toValue(target)!.currentTime),
     )
   })
 

@@ -56,7 +56,6 @@
   "peerDependencies": {
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
-    "@vueuse/shared": "^10.3.0",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "mitt": "^3.0.1",
@@ -65,25 +64,22 @@
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
-      "optional": true
+      "optional": false
     },
     "@vueuse/integrations": {
-      "optional": true
-    },
-    "@vueuse/shared": {
-      "optional": true
+      "optional": false
     },
     "hls.js": {
-      "optional": true
+      "optional": false
     },
     "mitt": {
-      "optional": true
+      "optional": false
     },
     "nuxt": {
-      "optional": true
+      "optional": false
     },
     "uuid": {
-      "optional": true
+      "optional": false
     }
   },
   "scripts": {

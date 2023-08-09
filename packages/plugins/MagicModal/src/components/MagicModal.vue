@@ -51,8 +51,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
 import { useModalApi } from './../composables/useModalApi'
-import { onKeyStroke } from '@vueuse/core'
-import { toValue } from '@vueuse/shared'
+import { onKeyStroke, toValue } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalEmitter } from './../composables/useModalEmitter'
 

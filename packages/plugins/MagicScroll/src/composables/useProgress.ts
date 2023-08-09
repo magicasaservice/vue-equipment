@@ -1,10 +1,10 @@
 import { ref, inject } from 'vue'
 import { useElementBounding, useWindowSize } from '@vueuse/core'
-import { toValue } from '@vueuse/shared'
+import { toValue } from '@vueuse/core'
 import { ScrollPositionKey } from '../types'
 import { clampValue } from '../utils'
 
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/core'
 import type { FromTo } from '../types'
 
 type UseProgressParams = {

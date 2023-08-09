@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { ref, inject, computed, onMounted } from 'vue'
-import { toValue } from '@vueuse/shared'
+import { toValue } from '@vueuse/core'
 import { useCollisionDetect } from '../composables/useCollisionDetect'
 import { ScrollPositionKey } from '../types'
 
