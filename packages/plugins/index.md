@@ -9,3 +9,4 @@ This package contains the following plugins:
 - [MagicModal](./MagicModal/index.md)
 - [MagicPlayer](./MagicPlayer/index.md)
 - [MagicScroll](./MagicScroll/index.md)
+- [MagicMarquee](./MagicMarquee/index.md)
