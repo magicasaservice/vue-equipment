@@ -7,11 +7,9 @@
     "build": "nuxi build",
     "generate": "nuxi generate"
   },
-  "dependencies": {
-    "@maas/vue-equipment": "worskspace:*"
-  },
   "devDependencies": {
     "@types/node": "^18.16.0",
+    "@unocss/nuxt": "^0.55.0",
     "nuxt": "latest"
   }
 }

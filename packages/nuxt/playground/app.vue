@@ -8,6 +8,13 @@
         <magic-player-controls />
       </magic-player>
     </div>
+    <magic-marquee class="py-4">
+      <div class="flex gap-4">
+        <span>Magic Marquee</span>
+        <span>News Update</span>
+        <span>Loud Headline</span>
+      </div>
+    </magic-marquee>
   </magic-scroll-provider>
 </template>
 

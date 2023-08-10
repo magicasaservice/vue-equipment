@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-marquee" @click="togglePlay">
+  <div class="magic-marquee">
     <div class="magic-marquee__track" ref="parentRef">
       <div class="magic-marquee__content" ref="childRef">
         <slot />

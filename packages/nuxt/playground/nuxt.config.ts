@@ -1,7 +1,7 @@
 import * as path from 'path'
 
 export default defineNuxtConfig({
-  modules: ['../src/module'],
+  modules: ['../src/module', '@unocss/nuxt'],
   vueEquipment: {
     plugins: true,
     composables: true,
