@@ -7,7 +7,7 @@ import {
   type MaybeRef,
 } from '@vueuse/core'
 
-export type UseMarqueeParams = {
+export type UseMarqueeApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>
   parent: MaybeRef<HTMLElement | null | undefined>
   options?: {
@@ -16,7 +16,7 @@ export type UseMarqueeParams = {
   }
 }
 
-export function useMarquee({ child, parent, options }: UseMarqueeParams) {
+export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
   // Private state
   const duplicates = ref(1)
   const childRect = useElementBounding(child)

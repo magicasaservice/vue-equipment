@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
-import { useMarquee } from '../composables/useMarquee'
+import { ref, computed } from 'vue'
+import { useMarqueeApi } from '../composables/useMarqueeApi'
 
 interface Props {
   direction?: 'reverse' | 'normal'
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const childRef = ref<HTMLElement | undefined>(undefined)
 
-const { duplicates, playing, play, pause } = useMarquee({
+const { duplicates, playing, play, pause } = useMarqueeApi({
   child: childRef,
   parent: parentRef,
   options: {
