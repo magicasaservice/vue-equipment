@@ -1,14 +1,21 @@
 import DefaultTheme from 'vitepress/theme'
-import { MagicScroll, MagicPlayer, MagicModal, MagicMarquee } from 'plugins'
+import {
+  MagicMarquee,
+  MagicModal,
+  MagicPlayer,
+  MagicScroll,
+  MagicToast,
+} from 'plugins'
 
 import 'uno.css'
 
 export default {
   ...DefaultTheme,
   enhanceApp({ app }) {
-    app.use(MagicScroll)
-    app.use(MagicPlayer)
-    app.use(MagicModal)
     app.use(MagicMarquee)
+    app.use(MagicModal)
+    app.use(MagicPlayer)
+    app.use(MagicScroll)
+    app.use(MagicToast)
   },
 }

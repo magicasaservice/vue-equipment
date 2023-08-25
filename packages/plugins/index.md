@@ -6,7 +6,8 @@ This is the `plugins` package.
 
 This package contains the following plugins:
 
+- [MagicMarquee](./MagicMarquee/index.md)
 - [MagicModal](./MagicModal/index.md)
 - [MagicPlayer](./MagicPlayer/index.md)
 - [MagicScroll](./MagicScroll/index.md)
-- [MagicMarquee](./MagicMarquee/index.md)
+- [MagicToast](./MagicToast/index.md)
