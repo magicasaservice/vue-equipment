@@ -1,13 +1,14 @@
 import { ref, computed } from 'vue'
+import { defu } from 'defu'
 import { v4 as uuidv4 } from 'uuid'
 import { toValue, useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useModalStore } from './useModalStore'
 
-import type { DefaultOptions } from '../types/index'
+import type { Options } from '../types/index'
 import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
 
-export type useModalApiOptions = Pick<DefaultOptions, 'scrollLock'> & {
+export type useModalApiOptions = Pick<Options, 'scrollLock'> & {
   focusTarget: MaybeElementRef
 }
 
@@ -23,7 +24,7 @@ export function useModalApi(
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
   const mappedId = computed(() => toValue(id) || uuidv4())
-  const mappedOptions = { ...defaultOptions, ...options }
+  const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
     ? useFocusTrap(mappedOptions.focusTarget)

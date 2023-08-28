@@ -60,10 +60,10 @@ function increaseSpeed() {
 const toggleDemo = ref<InstanceType<typeof MagicMarquee> | undefined>(undefined)
 
 function togglePlay() {
-  if (toggleDemo.value.playing) {
+  if (toggleDemo.value?.playing) {
     toggleDemo.value.pause()
   } else {
-    toggleDemo.value.play()
+    toggleDemo.value?.play()
   }
 }
 

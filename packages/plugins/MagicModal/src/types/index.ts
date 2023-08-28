@@ -1,10 +1,10 @@
-type DefaultOptions = {
+type Options = {
   backdrop?: boolean
   focusTrap?: boolean
   scrollLock?: boolean
   scrollLockPadding?: boolean
   teleport?: {
-    target: string
+    target?: string
     disabled?: boolean
   }
   transitions?: {
@@ -20,4 +20,4 @@ type ModalEvents = {
   beforeLeave: string
 }
 
-export type { DefaultOptions, ModalEvents }
+export type { Options, ModalEvents }

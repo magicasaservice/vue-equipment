@@ -1,6 +1,6 @@
-import type { DefaultOptions } from '../types/index'
+import type { Options } from '../types/index'
 
-const defaultOptions: DefaultOptions = {
+const defaultOptions: Options = {
   backdrop: true,
   focusTrap: true,
   scrollLock: true,

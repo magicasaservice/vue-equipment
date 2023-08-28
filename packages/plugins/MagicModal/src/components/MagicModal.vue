@@ -49,20 +49,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, type Component } from 'vue'
+import { defu } from 'defu'
 import { useModalApi } from './../composables/useModalApi'
 import { onKeyStroke, toValue } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalEmitter } from './../composables/useModalEmitter'
 
 import type { MaybeRef } from '@vueuse/core'
-import type { DefaultOptions } from './../types/index'
+import type { Options } from './../types/index'
 
 interface MagicModalProps {
   id: MaybeRef<string>
-  component?: any
+  component?: Component
   componentProps?: Record<string, unknown>
-  options?: DefaultOptions
+  options?: Options
 }
 
 const props = withDefaults(defineProps<MagicModalProps>(), {
@@ -71,13 +72,7 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
 
 const modal = ref<HTMLElement | undefined>(undefined)
 const modalApi = useModalApi(props.id, { focusTarget: modal })
-
-const mappedOptions = {
-  ...defaultOptions,
-  ...props.options,
-  teleport: { ...defaultOptions.teleport, ...props.options.teleport },
-  transitions: { ...defaultOptions.transitions, ...props.options.transitions },
-}
+const mappedOptions = defu(props.options, defaultOptions)
 
 const {
   isActive,

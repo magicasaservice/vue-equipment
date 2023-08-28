@@ -16,6 +16,7 @@
   "peerDependencies": {
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
+    "defu": "^6.1.2",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "mitt": "^3.0.1",
@@ -29,10 +30,16 @@
     "@vueuse/integrations": {
       "optional": false
     },
-    "mitt": {
+    "defu": {
+      "optional": false
+    },
+    "focus-trap": {
       "optional": false
     },
     "hls.js": {
+      "optional": false
+    },
+    "mitt": {
       "optional": false
     },
     "uuid": {
@@ -44,5 +51,8 @@
     "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json --declaration --emitDeclarationOnly",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "dependencies": {
+    "defu": "^6.1.2"
+  }
 }

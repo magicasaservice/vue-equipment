@@ -26,7 +26,7 @@ export function useViewportDimensions(options?: UseViewportDimensionsOptions) {
     if (initial && mappedOptions.initialWidth) {
       document.documentElement.style.setProperty(
         mappedOptions.initialWidth,
-        `${vw}px`
+        `${vw}px`,
       )
     }
   }
@@ -37,14 +37,14 @@ export function useViewportDimensions(options?: UseViewportDimensionsOptions) {
     if (mappedOptions.height) {
       document.documentElement.style.setProperty(
         mappedOptions.height || '--vh',
-        `${vh}px`
+        `${vh}px`,
       )
     }
 
     if (initial && mappedOptions.initialHeight) {
       document.documentElement.style.setProperty(
         mappedOptions.initialHeight || '--initial-vh',
-        `${vh}px`
+        `${vh}px`,
       )
     }
   }
