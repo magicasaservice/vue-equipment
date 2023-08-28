@@ -1,7 +1,10 @@
+import type { Component } from 'vue'
+
 type Toast = {
   id: string
-  component: InstanceType<any>
-  destroy: Function
+  component: Component | string
+  props?: Record<string, unknown>
+  remove: Function
 }
 
 type ToastInstance = {
@@ -11,11 +14,20 @@ type ToastInstance = {
   remove: Function
 }
 
-type DefaultOptions = {
+interface Options {
   teleport?: {
-    target: string
+    target?: string
     disabled?: boolean
+  }
+  transitions?: {
+    list: string
+  }
+  layout?: {
+    stack?: boolean
+    max?: number
   }
 }
 
-export type { Toast, ToastInstance, DefaultOptions }
+type AddArgs = Pick<Toast, 'component' | 'props'> & { duration?: number }
+
+export type { Toast, ToastInstance, Options, AddArgs }

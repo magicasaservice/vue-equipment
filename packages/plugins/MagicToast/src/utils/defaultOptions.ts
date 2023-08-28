@@ -1,13 +1,16 @@
-import type { DefaultOptions } from '../types/index'
+import type { Options } from '../types/index'
 
-const defaultOptions: DefaultOptions = {
+const defaultOptions: Options = {
   teleport: {
     target: 'body',
     disabled: false,
   },
   transitions: {
-    content: 'magic-modal--content',
-    backdrop: 'magic-modal--backdrop',
+    list: 'magic-toast--list',
+  },
+  layout: {
+    stack: true,
+    max: 0,
   },
 }
 
