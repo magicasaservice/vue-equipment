@@ -1,6 +1,6 @@
 # useCountdown
 
-A composable function that returns the time remaining until a specified date and time using `luxon` and `@maas/magic-timer`
+Counts down to a specific time and date, based on `luxon` and `@maas/magic-timer`
 
 ## Usage
 
