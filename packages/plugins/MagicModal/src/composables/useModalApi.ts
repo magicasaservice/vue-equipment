@@ -1,12 +1,12 @@
-import { ref, computed } from 'vue'
+import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { v4 as uuidv4 } from 'uuid'
-import { toValue, useScrollLock } from '@vueuse/core'
+import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useModalStore } from './useModalStore'
 
 import type { Options } from '../types/index'
-import type { MaybeElementRef, MaybeRef } from '@vueuse/core'
+import type { MaybeElementRef } from '@vueuse/core'
 
 export type useModalApiOptions = Pick<Options, 'scrollLock'> & {
   focusTarget: MaybeElementRef

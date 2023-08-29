@@ -36,7 +36,7 @@
           >
             <component
               v-if="component"
-              v-bind="componentProps"
+              v-bind="props"
               :is="component"
               @close="close"
             />
@@ -49,20 +49,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, type Component } from 'vue'
+import {
+  ref,
+  watch,
+  nextTick,
+  toValue,
+  type Component,
+  type MaybeRef,
+} from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 import { defu } from 'defu'
 import { useModalApi } from './../composables/useModalApi'
-import { onKeyStroke, toValue } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalEmitter } from './../composables/useModalEmitter'
 
-import type { MaybeRef } from '@vueuse/core'
 import type { Options } from './../types/index'
 
 interface MagicModalProps {
   id: MaybeRef<string>
   component?: Component
-  componentProps?: Record<string, unknown>
+  props?: Record<string, unknown>
   options?: Options
 }
 

@@ -1,6 +1,5 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, toValue } from 'vue'
 import {
-  toValue,
   useResizeObserver,
   useEventListener,
   defaultWindow,

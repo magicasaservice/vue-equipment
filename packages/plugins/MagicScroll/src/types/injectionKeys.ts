@@ -1,6 +1,6 @@
 import type { magicScrollStore } from '../store'
-import type { InjectionKey, Ref } from 'vue'
-import type { UseScrollReturn, MaybeRefOrGetter } from '@vueuse/core'
+import type { InjectionKey, Ref, MaybeRefOrGetter } from 'vue'
+import type { UseScrollReturn } from '@vueuse/core'
 
 const ScrollParentKey = Symbol() as InjectionKey<
   MaybeRefOrGetter<HTMLElement | undefined>

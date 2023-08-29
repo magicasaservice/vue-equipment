@@ -1,5 +1,4 @@
-import { toValue } from '@vueuse/core'
-import { ref, onMounted, onUnmounted, type Ref } from 'vue'
+import { ref, onMounted, onUnmounted, toValue, type Ref } from 'vue'
 
 import type { UsePlayerArgs } from './../types'
 import type Hls from 'hls.js'
