@@ -10,7 +10,7 @@ const defaultOptions: Options = {
   },
   layout: {
     stack: true,
-    max: 0,
+    max: 3,
   },
 }
 

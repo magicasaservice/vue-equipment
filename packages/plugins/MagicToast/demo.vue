@@ -9,11 +9,11 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-right -top" :layout="{ max: 5 }" />
+  <MagicToast :id="id" class="-right -top" :options="options" />
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed } from 'vue'
+import { defineAsyncComponent, ref, computed, unref } from 'vue'
 import { useToastApi } from '@maas/vue-equipment/plugins'
 
 const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
@@ -24,8 +24,14 @@ const id = 'magic-toast-demo'
 const toastApi = useToastApi(id)
 const { add, clear } = toastApi
 
+const options = {
+  layout: {
+    max: 5,
+  },
+}
+
 function onClick() {
   count.value++
-  add({ component, props, duration: 3000 })
+  add({ component, props: unref(props) })
 }
 </script>

@@ -4,23 +4,28 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div class="magic-toast" :id="toValue(id)" :class="toValue(props.class)">
-      <div class="magic-toast__inner">
-        <transition-group :name="mappedOptions.transitions?.list">
-          <component
-            v-for="toast in toasts"
-            :key="toast.id"
-            :is="toast.component"
-            v-bind="toast.props"
-            @close="toast.remove"
-          />
+      <ol class="magic-toast__inner">
+        <transition-group
+          :name="mappedOptions.transitions?.list"
+          tag="ol"
+          class="magic-toast__inner"
+          @after-enter="onAfterEnter"
+        >
+          <li v-for="toast in toasts" :key="toast.id">
+            <component
+              :is="toast.component"
+              v-bind="toast.props"
+              @close="toast.remove"
+            />
+          </li>
         </transition-group>
-      </div>
+      </ol>
     </div>
   </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, toValue, type MaybeRef } from 'vue'
+import { toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
@@ -36,14 +41,17 @@ interface MagicToastProps {
 const props = defineProps<MagicToastProps>()
 const mappedOptions = defu(props.options, defaultOptions)
 
-const { toasts } = useToastApi(props.id)
+const { toasts, count, oldest } = useToastApi(props.id)
 
-// TODO: put this into the api
-// watch(count, (value) => {
-//   if (value && mappedOptions.layout?.max && value > mappedOptions.layout.max) {
-//     oldest.value?.remove()
-//   }
-// })
+function onAfterEnter() {
+  if (
+    count.value &&
+    mappedOptions.layout?.max &&
+    count.value > mappedOptions.layout.max
+  ) {
+    oldest.value?.remove()
+  }
+}
 </script>
 
 <style lang="css">
@@ -69,17 +77,15 @@ const { toasts } = useToastApi(props.id)
 }
 
 .magic-toast__inner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--magic-toast-gap, 1rem);
+  position: relative;
   padding: var(--magic-toast-padding, 1rem);
-  pointer-events: all;
   overflow: scroll;
   max-height: 100%;
 }
 
 .magic-toast__inner * {
   pointer-events: all;
+  margin-bottom: var(--magic-toast-gap, 1rem);
 }
 
 .magic-toast.-top {
@@ -98,21 +104,24 @@ const { toasts } = useToastApi(props.id)
   align-items: flex-end;
 }
 
-.list-move, /* apply transition to moving elements */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
+.magic-toast--list-move,
+.magic-toast--list-enter-active,
+.magic-toast--list-leave-active {
+  transition: all 300ms ease-out;
 }
 
-.list-enter-from,
-.list-leave-to {
+.magic-toast--list-enter-from {
   opacity: 0;
-  transform: translateX(30px);
+  margin-top: translateY(1rem);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
-.list-leave-active {
+.magic-toast--list-leave-to {
+  opacity: 0;
+  margin-top: translateY(1rem);
+}
+
+.magic-toast--list-leave-active:not(:only-child) {
   position: absolute;
+  z-index: -1;
 }
 </style>

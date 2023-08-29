@@ -1,8 +1,8 @@
-import type { AsyncComponentLoader, MaybeRef } from 'vue'
+import type { MaybeRef } from 'vue'
 
 type Toast = {
   id: string
-  component: AsyncComponentLoader
+  component: Object
   props?: MaybeRef<Record<string, any>>
   remove: Function
 }
