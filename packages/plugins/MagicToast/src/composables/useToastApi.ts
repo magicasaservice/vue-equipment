@@ -3,9 +3,10 @@ import {
   onUnmounted,
   onBeforeMount,
   toValue,
+  markRaw,
   type MaybeRef,
 } from 'vue'
-// import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 import { useToastStore } from './useToastStore'
 import type { AddArgs } from './../types'
 
@@ -13,7 +14,7 @@ export function useToastApi(id?: MaybeRef<string>) {
   const { findInstance, addInstance, removeInstance } = useToastStore()
 
   // Private state
-  const mappedId = computed(() => toValue(id) || '12345')
+  const mappedId = computed(() => toValue(id) || uuidv4())
   const instance = computed(() => findInstance(toValue(mappedId)))
 
   // Private methods
@@ -43,7 +44,7 @@ export function useToastApi(id?: MaybeRef<string>) {
     const id = instance.value?.add({
       props,
       duration,
-      component,
+      component: markRaw(component),
     })
     return id
   }

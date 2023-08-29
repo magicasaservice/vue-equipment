@@ -34,13 +34,6 @@ interface MagicToastProps {
 }
 
 const props = defineProps<MagicToastProps>()
-
-// const mappedOptions = {
-//   layout: defu(props.layout, defaultOptions.layout),
-//   transitions: defu(props.transitions, defaultOptions.transitions),
-//   teleport: defu(props.teleport, defaultOptions.teleport),
-// }
-
 const mappedOptions = defu(props.options, defaultOptions)
 
 const { toasts } = useToastApi(props.id)

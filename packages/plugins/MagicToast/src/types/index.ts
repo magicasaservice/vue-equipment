@@ -1,20 +1,20 @@
-import type { Component, MaybeRef } from 'vue'
+import type { AsyncComponentLoader, MaybeRef } from 'vue'
 
 type Toast = {
   id: string
-  component: Component
-  props?: MaybeRef<Record<string, unknown>>
+  component: AsyncComponentLoader
+  props?: MaybeRef<Record<string, any>>
   remove: Function
 }
 
-interface ToastInstance {
+type ToastInstance = {
   id: string
   toasts: Toast[]
   add: (args: AddArgs) => string
   remove: (id: string) => void
 }
 
-interface Options {
+type Options = {
   teleport?: {
     target?: string
     disabled?: boolean

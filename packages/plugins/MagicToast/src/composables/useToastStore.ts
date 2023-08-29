@@ -5,6 +5,7 @@ import type { ToastInstance, Toast, AddArgs } from '../types/index'
 const toastStore = ref<ToastInstance[]>([])
 
 export function useToastStore() {
+  // Private methods
   function removeToastAfterTimeout(
     id: string,
     duration: number,
@@ -17,7 +18,6 @@ export function useToastStore() {
     }
   }
 
-  // Private methods
   function addToast(args: AddArgs, ctx: ToastInstance) {
     const id = uuidv4()
     let { component, props, duration = 0 } = args
@@ -32,7 +32,7 @@ export function useToastStore() {
     // Add toast to instance
     ctx.toasts.push(toast)
 
-    // Remove toast after duration
+    // Remove toast if duration is set
     removeToastAfterTimeout(id, duration, ctx)
 
     return id
@@ -61,7 +61,6 @@ export function useToastStore() {
 
   function addInstance(id: string) {
     const instance = createInstance(id)
-    // @ts-ignore
     toastStore.value.push(instance)
     return instance
   }
