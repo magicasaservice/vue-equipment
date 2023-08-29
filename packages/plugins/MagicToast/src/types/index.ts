@@ -1,17 +1,17 @@
-import type { Component } from 'vue'
+import type { Component, MaybeRef } from 'vue'
 
 type Toast = {
   id: string
-  component: Component | string
-  props?: Record<string, unknown>
+  component: Component
+  props?: MaybeRef<Record<string, unknown>>
   remove: Function
 }
 
-type ToastInstance = {
+interface ToastInstance {
   id: string
   toasts: Toast[]
-  add: Function
-  remove: Function
+  add: (args: AddArgs) => string
+  remove: (id: string) => void
 }
 
 interface Options {

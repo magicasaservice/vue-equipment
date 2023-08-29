@@ -20,38 +20,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
-import { toValue } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
-import { useToastApi } from '../composables/useToastApi'
+import { useToastApi } from './../composables/useToastApi'
 
-import type { MaybeRef } from '@vueuse/core'
 import type { Options } from './../types/index'
 
-interface MagicToastProps extends Options {
+interface MagicToastProps {
   id: MaybeRef<string>
   class: MaybeRef<string>
+  options: Options
 }
 
 const props = defineProps<MagicToastProps>()
 
-const mappedOptions = {
-  layout: defu(props.layout, defaultOptions.layout),
-  transitions: defu(props.transitions, defaultOptions.transitions),
-  teleport: defu(props.teleport, defaultOptions.teleport),
-}
+// const mappedOptions = {
+//   layout: defu(props.layout, defaultOptions.layout),
+//   transitions: defu(props.transitions, defaultOptions.transitions),
+//   teleport: defu(props.teleport, defaultOptions.teleport),
+// }
 
-console.log('mappedOptions:', mappedOptions)
+const mappedOptions = defu(props.options, defaultOptions)
 
-const { toasts, count, oldest } = useToastApi(props.id)
+const { toasts } = useToastApi(props.id)
 
 // TODO: put this into the api
-watch(count, (value) => {
-  if (value && mappedOptions.layout?.max && value > mappedOptions.layout.max) {
-    oldest.value?.remove()
-  }
-})
+// watch(count, (value) => {
+//   if (value && mappedOptions.layout?.max && value > mappedOptions.layout.max) {
+//     oldest.value?.remove()
+//   }
+// })
 </script>
 
 <style lang="css">

@@ -16,7 +16,8 @@
 import { defineAsyncComponent, ref, computed } from 'vue'
 import { useToastApi } from '@maas/vue-equipment/plugins'
 
-const props = computed(() => ({ message: `This is the ${count.value} toast` }))
+const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
+const props = computed(() => ({ message: `Added ${count.value} toasts` }))
 const count = ref(0)
 
 const id = 'magic-toast-demo'
@@ -25,6 +26,6 @@ const { add, clear } = toastApi
 
 function onClick() {
   count.value++
-  add({ component: './demo/DemoToast.vue', props: props.value, duration: 3000 })
+  add({ component, props, duration: 3000 })
 }
 </script>

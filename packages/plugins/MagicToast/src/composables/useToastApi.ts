@@ -1,28 +1,26 @@
-import { computed, markRaw, onUnmounted } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import { toValue } from '@vueuse/core'
+import {
+  computed,
+  onUnmounted,
+  onBeforeMount,
+  toValue,
+  type MaybeRef,
+} from 'vue'
+// import { v4 as uuidv4 } from 'uuid'
 import { useToastStore } from './useToastStore'
-import type { MaybeRef } from '@vueuse/core'
-import type { AddArgs } from '../types'
+import type { AddArgs } from './../types'
 
 export function useToastApi(id?: MaybeRef<string>) {
   const { findInstance, addInstance, removeInstance } = useToastStore()
 
   // Private state
-  const mappedId = computed(() => toValue(id) || uuidv4())
+  const mappedId = computed(() => toValue(id) || '12345')
   const instance = computed(() => findInstance(toValue(mappedId)))
-
-  // Public state
-  const toasts = computed(() => instance.value?.toasts)
-  const count = computed(() => toasts.value?.length)
-  const oldest = computed(() => toasts.value?.[0])
 
   // Private methods
   function initialize() {
     const id = toValue(mappedId)
     if (!findInstance(id)) {
-      addInstance(id)
-      return mappedId.value
+      return addInstance(id)
     }
   }
 
@@ -32,6 +30,11 @@ export function useToastApi(id?: MaybeRef<string>) {
     removeInstance(toValue(id))
   }
 
+  // Public state
+  const toasts = computed(() => instance.value?.toasts)
+  const count = computed(() => toasts.value?.length)
+  const oldest = computed(() => toasts.value?.[0])
+
   // Public methods
   async function add(
     options: Pick<AddArgs, 'component' | 'props' | 'duration'>,
@@ -40,7 +43,7 @@ export function useToastApi(id?: MaybeRef<string>) {
     const id = instance.value?.add({
       props,
       duration,
-      component: typeof component === 'string' ? component : markRaw(component),
+      component,
     })
     return id
   }
@@ -55,7 +58,9 @@ export function useToastApi(id?: MaybeRef<string>) {
   }
 
   // Lifecycle
-  initialize()
+  onBeforeMount(() => {
+    initialize()
+  })
 
   onUnmounted(() => {
     destroy(toValue(mappedId))
@@ -71,4 +76,4 @@ export function useToastApi(id?: MaybeRef<string>) {
   }
 }
 
-export type UseToastApiReturn = ReturnType<typeof useToastApi>
+// export type UseToastApiReturn = ReturnType<typeof useToastApi>

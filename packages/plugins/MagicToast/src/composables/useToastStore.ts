@@ -1,42 +1,49 @@
-import { ref, defineAsyncComponent } from 'vue'
+import { ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { ToastInstance, Toast, AddArgs } from '../types/index'
 
-let toastStore = ref<ToastInstance[]>([])
+const toastStore = ref<ToastInstance[]>([])
 
 export function useToastStore() {
+  function removeToastAfterTimeout(
+    id: string,
+    duration: number,
+    ctx: ToastInstance,
+  ) {
+    if (duration > 0) {
+      setTimeout(() => {
+        ctx.remove(id)
+      }, duration)
+    }
+  }
+
   // Private methods
-  function createInstance(id: string) {
+  function addToast(args: AddArgs, ctx: ToastInstance) {
+    const id = uuidv4()
+    let { component, props, duration = 0 } = args
+
+    const toast: Toast = {
+      component,
+      props,
+      id,
+      remove: () => ctx.remove(id),
+    }
+
+    // Add toast to instance
+    ctx.toasts.push(toast)
+
+    // Remove toast after duration
+    removeToastAfterTimeout(id, duration, ctx)
+
+    return id
+  }
+
+  function createInstance(id: string): ToastInstance {
     const instance: ToastInstance = {
       id: id,
       toasts: [],
-      add: async function (args: AddArgs) {
-        const id = uuidv4()
-        let { component, props, duration = 0 } = args
-
-        // TODO: add type guard
-        if (typeof component === 'string') {
-          component = defineAsyncComponent(() => import(component as string))
-        }
-
-        const toast = {
-          component,
-          props,
-          id,
-          remove: () => this.remove(id),
-        }
-
-        // Add toast to instance
-        this.toasts.push(toast)
-
-        // Remove toast after duration
-        if (duration > 0) {
-          setTimeout(() => {
-            this.remove(id)
-          }, duration)
-        }
-
-        return id
+      add: function (args: AddArgs) {
+        return addToast(args, this)
       },
       remove: function (id: string) {
         this.toasts = this.toasts.filter((toast) => toast.id !== id)
@@ -54,7 +61,9 @@ export function useToastStore() {
 
   function addInstance(id: string) {
     const instance = createInstance(id)
+    // @ts-ignore
     toastStore.value.push(instance)
+    return instance
   }
 
   function removeInstance(id: string) {
