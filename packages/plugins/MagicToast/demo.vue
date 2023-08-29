@@ -9,7 +9,7 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-right -top" :options="options" />
+  <MagicToast :id="id" class="-right -top" />
 </template>
 
 <script setup lang="ts">
@@ -23,12 +23,6 @@ const count = ref(0)
 const id = 'magic-toast-demo'
 const toastApi = useToastApi(id)
 const { add, clear } = toastApi
-
-const options = {
-  layout: {
-    max: 5,
-  },
-}
 
 function onClick() {
   count.value++
