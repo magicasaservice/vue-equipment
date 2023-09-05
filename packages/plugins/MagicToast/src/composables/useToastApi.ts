@@ -77,4 +77,4 @@ export function useToastApi(id?: MaybeRef<string>) {
   }
 }
 
-// export type UseToastApiReturn = ReturnType<typeof useToastApi>
+export type UseToastApiReturn = ReturnType<typeof useToastApi>

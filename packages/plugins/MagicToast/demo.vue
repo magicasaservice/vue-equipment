@@ -9,7 +9,7 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-right -top" />
+  <MagicToast :id="id" class="-bottom" />
 </template>
 
 <script setup lang="ts">
