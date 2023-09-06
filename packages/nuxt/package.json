@@ -6,6 +6,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "0.7.4",
+    "@unocss/nuxt": "^0.55.0",
     "@nuxt/eslint-config": "^0.1.1",
     "@nuxt/module-builder": "^0.4.0",
     "@nuxt/schema": "^3.6.5",
