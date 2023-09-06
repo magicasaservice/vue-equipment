@@ -33,6 +33,22 @@ type ActiveElement = {
   height: number
 }
 
+type ToastEvents = {
+  beforeEnter: string
+  enter: string
+  afterEnter: string
+  beforeLeave: string
+  leave: string
+  afterLeave: string
+}
+
 type AddArgs = Pick<Toast, 'component' | 'props'> & { duration?: number }
 
-export type { Toast, ToastInstance, Options, ActiveElement, AddArgs }
+export type {
+  Toast,
+  ToastInstance,
+  Options,
+  ActiveElement,
+  ToastEvents,
+  AddArgs,
+}

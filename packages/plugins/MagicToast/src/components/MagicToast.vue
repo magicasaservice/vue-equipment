@@ -47,7 +47,7 @@ import { toValue, ref, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
-import { useToastCallbacks } from './../composables/useToastCallbacks'
+import { useToastCallback } from './../composables/useToastCallback'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
@@ -75,7 +75,7 @@ const {
   onLeave,
   onAfterLeave,
   activeElements,
-} = useToastCallbacks({ count, mappedOptions, oldest })
+} = useToastCallback({ id: props.id, mappedOptions, count, oldest })
 
 function onMouseenter() {
   if (mappedOptions.layout?.expand === 'hover') {
@@ -220,7 +220,7 @@ onClickOutside(listRef, outsideClickCallback)
 }
 
 .magic-toast--list-leave-active {
-  transition: all 300ms ease-out;
+  transition: all 150ms ease-out;
 }
 
 .magic-toast--list-leave-to {

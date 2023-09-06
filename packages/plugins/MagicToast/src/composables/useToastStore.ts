@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useToastInternalApi } from './useToastInternalApi'
-import type { ToastInstance, AddArgs } from '../types/index'
+import type { ToastInstance, AddArgs, Toast } from '../types/index'
 
 const toastStore = ref<ToastInstance[]>([])
 
@@ -23,13 +23,15 @@ export function useToastStore() {
   }
 
   // Public methods
-  function findInstance(id: string) {
-    return toastStore.value.find(
+  function findInstance(id: string): ToastInstance | undefined {
+    const instance = toastStore.value.find(
       (instance: ToastInstance) => instance.id === id,
     )
+
+    return instance
   }
 
-  function addInstance(id: string) {
+  function addInstance(id: string): ToastInstance {
     const instance = createInstance(id)
     toastStore.value.push(instance)
     return instance
