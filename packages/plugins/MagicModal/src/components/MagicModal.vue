@@ -25,8 +25,10 @@
         <transition
           :name="mappedOptions.transitions?.content"
           @before-leave="onBeforeLeave"
+          @leave="onLeave"
           @after-leave="onAfterLeave"
           @before-enter="onBeforeEnter"
+          @enter="onEnter"
           @after-enter="onAfterEnter"
         >
           <div
@@ -59,9 +61,10 @@ import {
 } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
 import { defu } from 'defu'
-import { useModalApi } from './../composables/useModalApi'
 import { defaultOptions } from './../utils/defaultOptions'
+import { useModalApi } from './../composables/useModalApi'
 import { useModalEmitter } from './../composables/useModalEmitter'
+import { useModalCallback } from '../composables/useModalCallback'
 
 import type { Options } from './../types/index'
 
@@ -95,6 +98,25 @@ const {
 const innerActive = ref(false)
 const wrapperActive = ref(false)
 
+const {
+  onBeforeEnter,
+  onEnter,
+  onAfterEnter,
+  onBeforeLeave,
+  onLeave,
+  onAfterLeave,
+} = useModalCallback({
+  id: props.id,
+  mappedOptions,
+  addScrollLockPadding,
+  removeScrollLockPadding,
+  lockScroll,
+  unlockScroll,
+  trapFocus,
+  releaseFocus,
+  wrapperActive,
+})
+
 // Handle state
 async function onOpen() {
   wrapperActive.value = true
@@ -104,48 +126,6 @@ async function onOpen() {
 
 function onClose() {
   innerActive.value = false
-}
-
-// Transition Callbacks
-function onBeforeEnter() {
-  useModalEmitter().emit('beforeEnter', toValue(props.id))
-}
-
-async function onAfterEnter() {
-  if (mappedOptions.scrollLock) {
-    if (mappedOptions.scrollLockPadding) {
-      addScrollLockPadding()
-    }
-
-    lockScroll()
-  }
-
-  if (mappedOptions.focusTrap) {
-    await nextTick()
-    trapFocus()
-  }
-
-  useModalEmitter().emit('afterEnter', toValue(props.id))
-}
-
-function onBeforeLeave() {
-  useModalEmitter().emit('beforeLeave', toValue(props.id))
-}
-
-function onAfterLeave() {
-  if (mappedOptions.scrollLock) {
-    unlockScroll()
-    if (mappedOptions.scrollLockPadding) {
-      removeScrollLockPadding()
-    }
-  }
-
-  if (mappedOptions.focusTrap) {
-    releaseFocus()
-  }
-
-  wrapperActive.value = false
-  useModalEmitter().emit('afterLeave', toValue(props.id))
 }
 
 onKeyStroke('Escape', (e) => {

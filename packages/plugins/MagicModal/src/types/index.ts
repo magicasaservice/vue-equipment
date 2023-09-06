@@ -14,10 +14,11 @@ type Options = {
 }
 
 type ModalEvents = {
-  afterEnter: string
-  afterLeave: string
   beforeEnter: string
+  enter: string
+  afterEnter: string
   beforeLeave: string
+  leave: string
+  afterLeave: string
 }
-
 export type { Options, ModalEvents }
