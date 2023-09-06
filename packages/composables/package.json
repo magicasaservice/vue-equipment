@@ -21,13 +21,13 @@
   },
   "peerDependenciesMeta": {
     "@vueuse/core": {
-      "optional": true
+      "optional": false
     },
     "@maas/magic-timer": {
-      "optional": true
+      "optional": false
     },
     "luxon": {
-      "optional": true
+      "optional": false
     }
   },
   "private": true,

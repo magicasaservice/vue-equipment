@@ -54,16 +54,21 @@
   "license": "MIT",
   "main": "./dist/nuxt/module.cjs",
   "peerDependencies": {
+    "@maas/magic-timer": "^0.1.3",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
+    "luxon": "^3.4.2",
     "mitt": "^3.0.1",
+    "motion": "^10.16.2",
     "nuxt": "^3.5.1",
-    "uuid": "^9.0.0",
-    "motion": "^10.16.2"
+    "uuid": "^9.0.0"
   },
   "peerDependenciesMeta": {
+    "@maas/magic-timer": {
+      "optional": false
+    },
     "@vueuse/core": {
       "optional": false
     },
@@ -73,16 +78,19 @@
     "hls.js": {
       "optional": false
     },
+    "luxon": {
+      "optional": false
+    },
     "mitt": {
+      "optional": false
+    },
+    "motion": {
       "optional": false
     },
     "nuxt": {
       "optional": false
     },
     "uuid": {
-      "optional": false
-    },
-    "motion": {
       "optional": false
     }
   },
