@@ -23,11 +23,16 @@ type Options = {
     list: string
   }
   layout?: {
-    stack?: boolean
-    max?: number
+    expand?: boolean | 'hover' | 'click'
+    max?: false | number
   }
+}
+
+type ActiveElement = {
+  id: string
+  height: number
 }
 
 type AddArgs = Pick<Toast, 'component' | 'props'> & { duration?: number }
 
-export type { Toast, ToastInstance, Options, AddArgs }
+export type { Toast, ToastInstance, Options, ActiveElement, AddArgs }

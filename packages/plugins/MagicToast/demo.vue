@@ -9,7 +9,7 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-bottom" />
+  <MagicToast :id="id" class="-bottom-right -from-right" :options="options" />
 </template>
 
 <script setup lang="ts">
@@ -17,8 +17,21 @@ import { defineAsyncComponent, ref, computed, unref } from 'vue'
 import { useToastApi } from '@maas/vue-equipment/plugins'
 
 const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
-const props = computed(() => ({ message: `Added ${count.value} toasts` }))
+const props = computed(() => {
+  const message =
+    count.value % 5
+      ? `Added ${count.value} toasts`
+      : `Extended text for toast ${count.value} so that it is larger in height`
+  return { message }
+})
 const count = ref(0)
+
+const options = {
+  layout: {
+    expand: 'click',
+    max: 4,
+  },
+}
 
 const id = 'magic-toast-demo'
 const toastApi = useToastApi(id)

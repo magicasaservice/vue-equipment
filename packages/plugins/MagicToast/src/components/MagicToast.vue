@@ -6,20 +6,29 @@
     <div class="magic-toast" :id="toValue(id)" :class="toValue(props.class)">
       <transition-group
         tag="ol"
+        ref="groupRef"
         class="magic-toast__inner"
         :name="mappedOptions.transitions!.list"
-        :on-enter="onEnter"
         :on-before-enter="onBeforeEnter"
+        :on-enter="onEnter"
         :on-after-enter="onAfterEnter"
+        :on-before-leave="onBeforeLeave"
+        :on-leave="onLeave"
+        :on-after-leave="onAfterLeave"
       >
         <magic-toast-component
           v-for="(toast, index) in toasts"
+          :id="toast.id"
           :key="toast.id"
-          ref="itemRef"
           :index="index"
           :total="count || 0"
-          :transition="mappedOptions.transitions!.item"
+          :siblings="activeElements"
+          :class="{
+            expanded: isExpanded,
+          }"
           @mouseenter="onMouseenter"
+          @mouseleave="onMouseleave"
+          @click="onClick"
         >
           <component
             :is="toast.component"
@@ -35,8 +44,10 @@
 <script setup lang="ts">
 import { defu } from 'defu'
 import { toValue, ref, type MaybeRef } from 'vue'
+import { onClickOutside, unrefElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
+import { useToastCallbacks } from './../composables/useToastCallbacks'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
@@ -49,52 +60,73 @@ interface MagicToastProps {
 }
 
 const props = defineProps<MagicToastProps>()
-const emit = defineEmits<{
-  onEnter: [el: Element]
-  onBeforeEnter: [el: Element]
-  onAfterEnter: [el: Element]
-}>()
-
-const mappedOptions = defu(props.options, defaultOptions)
-const itemRef = ref<HTMLElement[] | null>(null)
 
 const { toasts, count, oldest } = useToastApi(props.id)
 
-function onBeforeEnter(el: Element) {
-  emit('onBeforeEnter', el)
+const mappedOptions = defu(props.options, defaultOptions)
+const isExpanded = ref(mappedOptions.layout?.expand === true)
+
+const {
+  onBeforeEnter,
+  onEnter,
+  onAfterEnter,
+  onBeforeLeave,
+  onLeave,
+  onAfterLeave,
+  activeElements,
+} = useToastCallbacks({ count, mappedOptions, oldest })
+
+function checkParent(parent: any, child: any) {
+  if (parent.contains(child)) return true
+  return false
 }
 
-function onEnter(el: Element) {
-  emit('onEnter', el)
-  if (
-    count.value &&
-    mappedOptions.layout?.max &&
-    count.value > mappedOptions.layout.max
-  ) {
-    oldest.value?.remove()
+function onMouseenter() {
+  if (mappedOptions.layout?.expand === 'hover') {
+    isExpanded.value = true
   }
 }
 
-function onAfterEnter(el: Element) {
-  emit('onAfterEnter', el)
+function onMouseleave() {
+  if (mappedOptions.layout?.expand === 'hover') {
+    isExpanded.value = false
+  }
 }
 
-function onMouseenter(event: Event) {
-  console.log('onMouseenter', event)
+function onClick() {
+  if (mappedOptions.layout?.expand === 'click') {
+    isExpanded.value = true
+  }
 }
+
+function onClickOutsideCallback(event: MouseEvent) {
+  if (
+    mappedOptions.layout?.expand === 'click' &&
+    !checkParent(unrefElement(groupRef), event.target)
+  ) {
+    isExpanded.value = false
+  }
+}
+
+const groupRef = ref<HTMLElement | undefined>(undefined)
+onClickOutside(groupRef, onClickOutsideCallback)
 </script>
 
 <style lang="css">
 :root {
-  --magic-toast-enter-y: 100%;
+  --magic-toast-enter-x: 0;
+  --magic-toast-enter-y: 0;
   --magic-toast-scale: 0.15;
-  --magic-toast-transformY: 10;
+  --magic-toast-transform-x: 0;
+  --magic-toast-transform-y: 0;
   --magic-toast-transition: transform 300ms ease-out;
   --magic-toast-z-index: 999;
-  --magic-toast-gap: 1rem;
+  --magic-toast-gap: 0.75rem;
   --magic-toast-padding: 1rem;
 
   --mt-multiplier: 1;
+  --mt-transform-x: -50%;
+  --mt-transform-y: -50%;
 }
 
 .magic-toast {
@@ -120,7 +152,9 @@ function onMouseenter(event: Event) {
   height: 100%;
   & .magic-toast-component {
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateX(var(--mt-transform-x, -50%))
+      translateY(var(--mt-transform-y, -50%));
   }
 }
 
@@ -128,37 +162,60 @@ function onMouseenter(event: Event) {
   pointer-events: all;
 }
 
-.magic-toast.-top {
+.magic-toast.-top-left,
+.magic-toast.-top-center,
+.magic-toast.-top-right {
+  --magic-toast-transform-y: 10;
   --magic-toast-enter-y: -100%;
-  --magic-toast-leave-y: -100%;
   --mt-multiplier: 1;
   & .magic-toast-component {
     top: var(--magic-toast-padding, 1rem);
+    --mt-transform-y: 0;
   }
 }
 
-.magic-toast.-bottom {
+.magic-toast.-bottom-left,
+.magic-toast.-bottom-center,
+.magic-toast.-bottom-right {
+  --magic-toast-transform-y: 10;
   --magic-toast-enter-y: 100%;
-  --magic-toast-leave-y: 100%;
   --mt-multiplier: -1;
   & .magic-toast-component {
+    top: unset;
     bottom: var(--magic-toast-padding, 1rem);
+    --mt-transform-y: 0;
   }
 }
 
-.magic-toast.-left {
+.magic-toast.-top-left,
+.magic-toast.-bottom-left {
   & .magic-toast-component {
     left: var(--magic-toast-padding, 1rem);
-    transform: none;
+    --mt-transform-x: 0;
   }
 }
 
-.magic-toast.-right {
+.magic-toast.-top-right,
+.magic-toast.-bottom-right {
   & .magic-toast-component {
     left: unset;
     right: var(--magic-toast-padding, 1rem);
-    transform: none;
+    --mt-transform-x: 0;
   }
+}
+
+.magic-toast.-from-left {
+  --magic-toast-enter-x: -100%;
+  --magic-toast-enter-y: 0;
+  --magic-toast-transform-y: 0;
+  --magic-toast-transform-x: -30;
+}
+
+.magic-toast.-from-right {
+  --magic-toast-enter-x: 100%;
+  --magic-toast-enter-y: 0;
+  --magic-toast-transform-y: 0;
+  --magic-toast-transform-x: 30;
 }
 
 .magic-toast--list-enter-active * {
@@ -166,7 +223,8 @@ function onMouseenter(event: Event) {
 }
 
 .magic-toast--list-enter-from * {
-  transform: translateY(var(--magic-toast-enter-y, 0));
+  transform: translateY(var(--magic-toast-enter-y, 0))
+    translateX(var(--magic-toast-enter-x, 0));
 }
 
 .magic-toast--list-leave-active {

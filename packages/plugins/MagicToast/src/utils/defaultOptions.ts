@@ -9,7 +9,7 @@ const defaultOptions: Options = {
     list: 'magic-toast--list',
   },
   layout: {
-    stack: true,
+    expand: 'hover',
     max: 3,
   },
 }
