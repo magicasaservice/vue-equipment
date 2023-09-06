@@ -9,14 +9,14 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-bottom-right" :options="options" />
+  <MagicToast :id="id" class="-bottom-right" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, ref, computed, unref } from 'vue'
-import { useToastApi } from '@maas/vue-equipment/plugins'
+import { useToastApi, useToastEmitter } from '@maas/vue-equipment/plugins'
 
-const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
+const count = ref(0)
 const props = computed(() => {
   const message =
     count.value % 5
@@ -24,14 +24,8 @@ const props = computed(() => {
       : `Extended text for toast ${count.value} so that it is a bit larger in height for demonstration purposes`
   return { message }
 })
-const count = ref(0)
 
-const options = {
-  layout: {
-    expand: 'click',
-    max: 4,
-  },
-}
+const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
 
 const id = 'magic-toast-demo'
 const toastApi = useToastApi(id)
@@ -41,4 +35,8 @@ function onClick() {
   count.value++
   add({ component, props: unref(props) })
 }
+
+useToastEmitter().on('*', (event, id) => {
+  console.log(event, id)
+})
 </script>
