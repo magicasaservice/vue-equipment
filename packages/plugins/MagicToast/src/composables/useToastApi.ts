@@ -5,10 +5,9 @@ import {
   toValue,
   markRaw,
   type MaybeRef,
-  type ComputedRef,
 } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { useToastStore } from './useToastStore'
+import { useToastStore } from './private/useToastStore'
 import type { AddArgs } from './../types'
 
 export function useToastApi(id?: MaybeRef<string>) {

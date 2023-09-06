@@ -5,14 +5,14 @@ import { clampValue } from '../utils'
 
 import type { FromTo } from '../types'
 
-type UseProgressParams = {
+type UseScrollApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>
   parent: MaybeRefOrGetter<HTMLElement | null | undefined>
   from: FromTo
   to: FromTo
 }
 
-export function useProgress(params: UseProgressParams) {
+export function useScrollApi(params: UseScrollApiParams) {
   const { child, parent, from, to } = params
   const scrollPosition = inject(ScrollPositionKey, undefined)
 
@@ -100,4 +100,4 @@ export function useProgress(params: UseProgressParams) {
   return { getCalculations, getProgress }
 }
 
-export type UseProgressReturn = ReturnType<typeof useProgress>
+export type UseScrollApiReturn = ReturnType<typeof useScrollApi>

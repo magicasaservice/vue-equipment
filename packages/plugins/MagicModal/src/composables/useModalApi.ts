@@ -3,7 +3,7 @@ import { defu } from 'defu'
 import { v4 as uuidv4 } from 'uuid'
 import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { useModalStore } from './useModalStore'
+import { useModalStore } from './private/useModalStore'
 
 import type { Options } from '../types/index'
 import type { MaybeElementRef } from '@vueuse/core'

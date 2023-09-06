@@ -47,7 +47,7 @@ import { toValue, ref, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
-import { useToastCallback } from './../composables/useToastCallback'
+import { useToastCallback } from './../composables/private/useToastCallback'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
@@ -114,7 +114,8 @@ onClickOutside(listRef, outsideClickCallback)
   --magic-toast-transition: transform 300ms ease-out;
   --magic-toast-z-index: 999;
   --magic-toast-gap: 0.75rem;
-  --magic-toast-padding: 1rem;
+  --magic-toast-padding-x: 1rem;
+  --magic-toast-padding-y: 1rem;
 
   --mt-multiplier: 1;
   --mt-transform-x: -50%;
@@ -161,7 +162,7 @@ onClickOutside(listRef, outsideClickCallback)
   --magic-toast-enter-y: -100%;
   --mt-multiplier: 1;
   & .magic-toast-component {
-    top: var(--magic-toast-padding, 1rem);
+    top: var(--magic-toast-padding-y, 1rem);
     --mt-transform-y: 0;
   }
 }
@@ -174,7 +175,7 @@ onClickOutside(listRef, outsideClickCallback)
   --mt-multiplier: -1;
   & .magic-toast-component {
     top: unset;
-    bottom: var(--magic-toast-padding, 1rem);
+    bottom: var(--magic-toast-padding-y, 1rem);
     --mt-transform-y: 0;
   }
 }
@@ -182,7 +183,7 @@ onClickOutside(listRef, outsideClickCallback)
 .magic-toast.-top-left,
 .magic-toast.-bottom-left {
   & .magic-toast-component {
-    left: var(--magic-toast-padding, 1rem);
+    left: var(--magic-toast-padding-x, 1rem);
     --mt-transform-x: 0;
   }
 }
@@ -191,7 +192,7 @@ onClickOutside(listRef, outsideClickCallback)
 .magic-toast.-bottom-right {
   & .magic-toast-component {
     left: unset;
-    right: var(--magic-toast-padding, 1rem);
+    right: var(--magic-toast-padding-x, 1rem);
     --mt-transform-x: 0;
   }
 }

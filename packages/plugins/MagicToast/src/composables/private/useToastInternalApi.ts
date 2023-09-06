@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { defineAsyncComponent } from 'vue'
-import type { ToastInstance, Toast, AddArgs } from './../types'
+import type { ToastInstance, Toast, AddArgs } from './../../types'
 
 export function useToastInternalApi() {
   function removeToastAfterTimeout(

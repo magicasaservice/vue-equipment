@@ -17,7 +17,7 @@ import {
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { mapValue } from '../utils'
-import { useProgress } from '../composables/useProgress'
+import { useScrollApi } from '../composables/useScrollApi'
 import { ScrollPositionKey, ScrollParentKey, ScrollProgressKey } from '../types'
 
 import type { FromTo } from '../types'
@@ -38,7 +38,7 @@ const scrollParent = inject(ScrollParentKey)
 const sceneRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 
-const { getCalculations, getProgress } = useProgress({
+const { getCalculations, getProgress } = useScrollApi({
   child: sceneRef,
   parent: scrollParent,
   from: props.from,

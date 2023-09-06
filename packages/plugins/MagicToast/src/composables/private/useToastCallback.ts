@@ -1,6 +1,6 @@
 import { ref, toValue, type Ref, type MaybeRef } from 'vue'
-import type { ActiveElement, Options, Toast } from './../types/index'
-import { useToastEmitter } from './useToastEmitter'
+import type { ActiveElement, Options, Toast } from './../../types'
+import { useToastEmitter } from './../useToastEmitter'
 
 type Args = {
   id: MaybeRef<string>

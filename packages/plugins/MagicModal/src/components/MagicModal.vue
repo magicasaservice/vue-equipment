@@ -63,8 +63,7 @@ import { onKeyStroke } from '@vueuse/core'
 import { defu } from 'defu'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalApi } from './../composables/useModalApi'
-import { useModalEmitter } from './../composables/useModalEmitter'
-import { useModalCallback } from '../composables/useModalCallback'
+import { useModalCallback } from '../composables/private/useModalCallback'
 
 import type { Options } from './../types/index'
 
