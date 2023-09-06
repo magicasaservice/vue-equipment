@@ -9,7 +9,7 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-bottom-right -from-right" :options="options" />
+  <MagicToast :id="id" class="-bottom-right" :options="options" />
 </template>
 
 <script setup lang="ts">
@@ -21,7 +21,7 @@ const props = computed(() => {
   const message =
     count.value % 5
       ? `Added ${count.value} toasts`
-      : `Extended text for toast ${count.value} so that it is larger in height`
+      : `Extended text for toast ${count.value} so that it is a bit larger in height for demonstration purposes`
   return { message }
 })
 const count = ref(0)

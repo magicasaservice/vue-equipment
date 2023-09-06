@@ -6,7 +6,7 @@
     <div class="magic-toast" :id="toValue(id)" :class="toValue(props.class)">
       <transition-group
         tag="ol"
-        ref="groupRef"
+        ref="listRef"
         class="magic-toast__inner"
         :name="mappedOptions.transitions!.list"
         :on-before-enter="onBeforeEnter"
@@ -28,12 +28,12 @@
           }"
           @mouseenter="onMouseenter"
           @mouseleave="onMouseleave"
-          @click="onClick"
         >
           <component
             :is="toast.component"
             v-bind="toast.props"
             @close="toast.remove"
+            @click.self="onClick"
           />
         </magic-toast-component>
       </transition-group>
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { defu } from 'defu'
 import { toValue, ref, type MaybeRef } from 'vue'
-import { onClickOutside, unrefElement } from '@vueuse/core'
+import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
 import { useToastCallbacks } from './../composables/useToastCallbacks'
@@ -65,6 +65,7 @@ const { toasts, count, oldest } = useToastApi(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
+const listRef = ref<MaybeElement>()
 
 const {
   onBeforeEnter,
@@ -75,11 +76,6 @@ const {
   onAfterLeave,
   activeElements,
 } = useToastCallbacks({ count, mappedOptions, oldest })
-
-function checkParent(parent: any, child: any) {
-  if (parent.contains(child)) return true
-  return false
-}
 
 function onMouseenter() {
   if (mappedOptions.layout?.expand === 'hover') {
@@ -99,24 +95,20 @@ function onClick() {
   }
 }
 
-function onClickOutsideCallback(event: MouseEvent) {
-  if (
-    mappedOptions.layout?.expand === 'click' &&
-    !checkParent(unrefElement(groupRef), event.target)
-  ) {
+function outsideClickCallback() {
+  if (mappedOptions.layout?.expand === 'click') {
     isExpanded.value = false
   }
 }
 
-const groupRef = ref<HTMLElement | undefined>(undefined)
-onClickOutside(groupRef, onClickOutsideCallback)
+onClickOutside(listRef, outsideClickCallback)
 </script>
 
 <style lang="css">
 :root {
   --magic-toast-enter-x: 0;
   --magic-toast-enter-y: 0;
-  --magic-toast-scale: 0.15;
+  --magic-toast-scale: 0.1;
   --magic-toast-transform-x: 0;
   --magic-toast-transform-y: 0;
   --magic-toast-transition: transform 300ms ease-out;
