@@ -63,13 +63,6 @@ watchEffect(() => {
 .magic-toast-component {
   --mt-index: 0;
   --mt-offset: 0;
-  position: absolute;
-}
-
-.magic-toast-component__inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
   --mt-matrix-scale: calc(1 - (var(--magic-toast-scale) * var(--mt-index, 0)));
   --mt-matrix-transform-x: calc(
     var(--magic-toast-transform-x) * var(--mt-index, 0) * var(--mt-multiplier)
@@ -77,7 +70,13 @@ watchEffect(() => {
   --mt-matrix-transform-y: calc(
     var(--magic-toast-transform-y) * var(--mt-index, 0) * var(--mt-multiplier)
   );
+  position: absolute;
+}
 
+.magic-toast-component__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
   transition: var(--magic-toast-transition, transform 300ms ease-out);
   transform: matrix(
     var(--mt-matrix-scale),
@@ -90,15 +89,13 @@ watchEffect(() => {
 }
 
 .magic-toast-component.expanded {
+  --mt-matrix-scale: 1;
+  --mt-matrix-transform-y: calc(((var(--mt-offset)) * var(--mt-multiplier)));
+  --mt-matrix-transform-x: 0;
   &:not(:last-child) {
     & .magic-toast-component__inner {
       padding-bottom: calc(var(--magic-toast-gap) * var(--mt-index));
     }
-  }
-  & .magic-toast-component__inner {
-    --mt-matrix-scale: 1;
-    --mt-matrix-transform-y: calc(((var(--mt-offset)) * var(--mt-multiplier)));
-    --mt-matrix-transform-x: 0;
   }
 }
 </style>
