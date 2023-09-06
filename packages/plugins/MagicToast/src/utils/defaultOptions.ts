@@ -9,8 +9,8 @@ const defaultOptions: Options = {
     list: 'magic-toast--list',
   },
   layout: {
-    expand: 'hover',
-    max: 3,
+    expand: 'click',
+    max: 4,
   },
 }
 
