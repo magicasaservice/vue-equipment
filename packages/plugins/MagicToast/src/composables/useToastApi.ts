@@ -37,9 +37,7 @@ export function useToastApi(id?: MaybeRef<string>) {
   const oldest = computed(() => toasts.value?.[0])
 
   // Public methods
-  async function add(
-    options: Pick<AddArgs, 'component' | 'props' | 'duration'>,
-  ) {
+  async function add(options: AddArgs) {
     const { component, props, duration } = options
     const id = instance.value?.add({
       props,
