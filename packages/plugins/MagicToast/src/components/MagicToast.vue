@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 import { defu } from 'defu'
-import { v4 as uuidv4 } from 'uuid'
 import { toValue, ref, computed, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
