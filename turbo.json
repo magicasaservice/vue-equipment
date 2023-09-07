@@ -17,6 +17,7 @@
       "dependsOn": ["^build", "nuxt#build", "^build:types"]
     },
     "//#t:docs:dev": {
+      "cache": false,
       "dependsOn": ["//#metadata:update", "^build:types", "^build"]
     },
     "//#t:docs:build": {

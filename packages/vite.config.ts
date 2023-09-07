@@ -35,9 +35,10 @@ export default defineConfig(async () => {
       alias: {
         '@maas/vue-equipment/composables': resolve(
           __dirname,
-          'composables/index.ts'
+          'composables/index.ts',
         ),
         '@maas/vue-equipment/plugins': resolve(__dirname, 'plugins/index.ts'),
+        '@maas/vue-equipment/utils': resolve(__dirname, 'utils/index.ts'),
         '@maas/vue-equipment/metadata': resolve(__dirname, 'metadata/index.ts'),
       },
       dedupe: ['vue', '@vue/runtime-core'],
