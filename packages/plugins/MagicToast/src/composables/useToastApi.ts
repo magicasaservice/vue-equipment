@@ -6,7 +6,6 @@ import {
   markRaw,
   type MaybeRef,
 } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
 import { useToastStore } from './private/useToastStore'
 import type { AddArgs } from './../types'
 
@@ -14,7 +13,7 @@ export function useToastApi(id?: MaybeRef<string>) {
   const { findInstance, addInstance, removeInstance } = useToastStore()
 
   // Private state
-  const mappedId = computed(() => toValue(id) || uuidv4())
+  const mappedId = computed(() => toValue(id) || crypto.randomUUID())
   const instance = computed(() => findInstance(toValue(mappedId)))
 
   // Private methods

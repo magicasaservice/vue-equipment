@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { defu } from 'defu'
-import { toValue, ref, computed, type MaybeRef } from 'vue'
+import { toValue, ref, computed, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
@@ -66,6 +66,7 @@ const { toasts, count, oldest } = useToastApi(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
+const teleportKey = ref(crypto.randomUUID())
 const listRef = ref<MaybeElement>()
 
 const {
@@ -77,8 +78,6 @@ const {
   onAfterLeave,
   activeElements,
 } = useToastCallback({ id: props.id, mappedOptions, count, oldest })
-
-const teleportKey = computed(() => `${props.class}-${props.id}`)
 
 function onMouseenter() {
   if (mappedOptions.layout?.expand === 'hover') {
@@ -105,6 +104,10 @@ function outsideClickCallback() {
 }
 
 onClickOutside(listRef, outsideClickCallback)
+watch(
+  () => props.id,
+  () => (teleportKey.value = crypto.randomUUID()),
+)
 </script>
 
 <style lang="css">
