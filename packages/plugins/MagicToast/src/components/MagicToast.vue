@@ -1,5 +1,6 @@
 <template>
   <Teleport
+    :key="teleportKey"
     :to="mappedOptions.teleport?.target"
     :disabled="mappedOptions.teleport?.disabled"
   >
@@ -43,7 +44,8 @@
 
 <script setup lang="ts">
 import { defu } from 'defu'
-import { toValue, ref, type MaybeRef } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
+import { toValue, ref, computed, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
@@ -76,6 +78,8 @@ const {
   onAfterLeave,
   activeElements,
 } = useToastCallback({ id: props.id, mappedOptions, count, oldest })
+
+const teleportKey = computed(() => `${props.class}-${props.id}`)
 
 function onMouseenter() {
   if (mappedOptions.layout?.expand === 'hover') {

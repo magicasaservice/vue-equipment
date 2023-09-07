@@ -9,10 +9,11 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" class="-bottom-right" />
+  <MagicToast :id="id" :class="position" />
 </template>
 
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent, ref, computed, unref } from 'vue'
 import { useToastApi, useToastEmitter } from '@maas/vue-equipment/plugins'
 
@@ -30,6 +31,11 @@ const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
 const id = 'magic-toast-demo'
 const toastApi = useToastApi(id)
 const { add, clear } = toastApi
+
+const isSmallScreen = useMediaQuery('(max-width: 1024px)')
+const position = computed(() =>
+  isSmallScreen.value ? '-bottom-center' : '-bottom-right',
+)
 
 function onClick() {
   count.value++
