@@ -43,8 +43,9 @@
 </template>
 
 <script setup lang="ts">
+import crypto from 'crypto'
 import { defu } from 'defu'
-import { toValue, ref, computed, watch, type MaybeRef } from 'vue'
+import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'

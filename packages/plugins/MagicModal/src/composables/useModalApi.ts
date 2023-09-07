@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock } from '@vueuse/core'
