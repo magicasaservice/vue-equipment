@@ -6,7 +6,9 @@
       "@maas/vue-equipment/composables/*": ["./packages/composables/*"],
       "@maas/vue-equipment/plugins": ["./packages/plugins/index.ts"],
       "@maas/vue-equipment/plugins/*": ["./packages/plugins/*"],
-      "@maas/vue-equipment/metadata": ["./packages/metadata/index.ts"]
+      "@maas/vue-equipment/metadata": ["./packages/metadata/index.ts"],
+      "@maas/vue-equipment/utils": ["./packages/utils/index.ts"],
+      "@maas/vue-equipment/utils/*": ["./packages/utils/*"]
     }
   },
   "include": [

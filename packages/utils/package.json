@@ -1,0 +1,19 @@
+{
+  "name": "utils",
+  "description": "Util functions used throughout",
+  "version": "0.6.1",
+  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "devDependencies": {
+    "tsup": "^7.1.0"
+  },
+  "exports": "./index.ts",
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsup --config tsup.config.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:types": "tsup --config tsup.config.types.ts --dts-only"
+  },
+  "sideEffects": false
+}

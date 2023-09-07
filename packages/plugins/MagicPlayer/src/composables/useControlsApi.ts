@@ -4,7 +4,7 @@ import {
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
-import { clampValue, mapValue } from './../utils'
+import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 import { useInjectPlayer } from './usePlayer'
 
 import type { UseControlsArgs } from '../types'

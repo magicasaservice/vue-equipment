@@ -16,7 +16,7 @@ import {
   readonly,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { mapValue } from '../utils'
+import { mapValue } from '@maas/vue-equipment/utils'
 import { useScrollApi } from '../composables/useScrollApi'
 import { ScrollPositionKey, ScrollParentKey, ScrollProgressKey } from '../types'
 

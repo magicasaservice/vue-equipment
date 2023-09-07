@@ -1,4 +1,5 @@
 import type { MaybeRef } from 'vue'
+import type { PickPartial } from '@maas/vue-equipment/utils/types/PickPartial'
 
 type Toast = {
   id: string
@@ -42,7 +43,8 @@ type ToastEvents = {
   afterLeave: string
 }
 
-type AddArgs = Pick<Toast, 'component' | 'props'> & { duration?: number }
+type AddArgs = Pick<Toast, 'component'> &
+  PickPartial<Toast, 'props'> & { duration?: number }
 
 export type {
   Toast,
