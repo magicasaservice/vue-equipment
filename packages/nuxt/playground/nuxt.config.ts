@@ -20,5 +20,6 @@ export default defineNuxtConfig({
       __dirname,
       '../../../dist/composables',
     ),
+    '@maas/vue-equipment/utils': path.resolve(__dirname, '../../../dist/utils'),
   },
 })

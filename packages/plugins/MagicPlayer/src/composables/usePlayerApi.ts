@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 import { useFullscreen } from '@vueuse/core'
-import { isIOS } from './../utils'
+import { isIOS } from '@maas/vue-equipment/utils'
 import type { UseMediaApiReturn } from './useMediaApi'
 import type { UsePlayerArgs } from '../types'
 
