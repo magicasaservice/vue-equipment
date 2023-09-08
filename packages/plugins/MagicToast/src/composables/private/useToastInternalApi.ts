@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { uuid } from '@maas/vue-equipment/utils'
 import type { ToastInstance, Toast, AddArgs } from './../../types'
 
 export function useToastInternalApi() {
@@ -15,7 +15,7 @@ export function useToastInternalApi() {
   }
 
   function addToast(args: AddArgs, ctx: ToastInstance) {
-    const id = crypto.randomUUID()
+    const id = uuid()
     let { component, props, duration = 0 } = args
 
     const toast: Toast = {

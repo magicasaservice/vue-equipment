@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { uuid } from '@maas/vue-equipment/utils'
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock } from '@vueuse/core'
@@ -23,7 +23,7 @@ export function useModalApi(
 ) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
-  const mappedId = computed(() => toValue(id) || crypto.randomUUID())
+  const mappedId = computed(() => toValue(id) || uuid())
   const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget

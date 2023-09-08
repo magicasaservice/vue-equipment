@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { uuid } from '@maas/vue-equipment/utils'
 import {
   computed,
   onUnmounted,
@@ -14,7 +14,7 @@ export function useToastApi(id?: MaybeRef<string>) {
   const { findInstance, addInstance, removeInstance } = useToastStore()
 
   // Private state
-  const mappedId = computed(() => toValue(id) || crypto.randomUUID())
+  const mappedId = computed(() => toValue(id) || uuid())
   const instance = computed(() => findInstance(toValue(mappedId)))
 
   // Private methods
