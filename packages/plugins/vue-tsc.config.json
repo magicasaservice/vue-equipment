@@ -1,5 +1,11 @@
 {
   "extends": "./../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@maas/vue-equipment/plugins": ["./packages/plugins/index.ts"],
+      "@maas/vue-equipment/plugins/*": ["./packages/plugins/*"]
+    }
+  },
   "include": ["./../../dist"],
   "exclude": [
     "./../../dist/composables",
