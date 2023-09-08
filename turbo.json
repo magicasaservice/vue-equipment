@@ -23,6 +23,9 @@
     "//#t:docs:build": {
       "dependsOn": ["//#metadata:update", "^build:types", "^build"]
     },
+    "plugins#build": {
+      "dependsOn": ["utils#build"]
+    },
     "nuxt#build": {
       "dependsOn": ["//#metadata:update", "composables#build", "plugins#build"]
     },
