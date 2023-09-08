@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { crypto } from '@maas/vue-equipment/utils'
 import {
   computed,
   onUnmounted,

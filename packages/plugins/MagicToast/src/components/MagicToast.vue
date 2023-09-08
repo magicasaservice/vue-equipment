@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import crypto from 'crypto'
+import { crypto } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
