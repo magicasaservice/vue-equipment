@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { crypto } from '@maas/vue-equipment/utils'
+import { uuid } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
@@ -67,7 +67,7 @@ const { toasts, count, oldest } = useToastApi(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
-const teleportKey = ref(crypto.randomUUID())
+const teleportKey = ref(uuid())
 const listRef = ref<MaybeElement>()
 
 const {
@@ -107,7 +107,7 @@ function outsideClickCallback() {
 onClickOutside(listRef, outsideClickCallback)
 watch(
   () => props.id,
-  () => (teleportKey.value = crypto.randomUUID()),
+  () => (teleportKey.value = uuid()),
 )
 </script>
 
