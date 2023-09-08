@@ -1,6 +1,6 @@
 # Magic Player
 
-A magic plugin that adds a player to the page.
+A magic video player.
 
 ## Usage
 
