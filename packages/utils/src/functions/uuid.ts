@@ -1,4 +1,6 @@
 import crypto from 'crypto'
 const isBrowser = typeof window !== 'undefined'
 
-export const uuid = isBrowser ? window.crypto.randomUUID : crypto.randomUUID
+export function uuid() {
+  return isBrowser ? window.crypto.randomUUID() : crypto.randomUUID()
+}
