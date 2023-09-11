@@ -4,7 +4,8 @@
   "pipeline": {
     "build": {
       "cache": false,
-      "outputs": ["./dist/**"]
+      "outputs": ["./dist/**"],
+      "dependsOn": ["//#metadata:update"]
     },
     "build:types": {
       "cache": false,
