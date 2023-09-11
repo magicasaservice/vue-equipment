@@ -96,7 +96,6 @@
     }
   },
   "scripts": {
-    "preinstall": "nr metadata:update",
     "dev": "nr dev:docs",
     "dev:docs": "turbo run t:docs:dev && vitepress dev packages",
     "dev:nuxt": "turbo run dev --filter=nuxt",
