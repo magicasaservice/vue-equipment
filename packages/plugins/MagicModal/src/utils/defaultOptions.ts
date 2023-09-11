@@ -13,6 +13,7 @@ const defaultOptions: Options = {
     content: 'magic-modal--content',
     backdrop: 'magic-modal--backdrop',
   },
+  keys: ['Escape'],
 }
 
 export { defaultOptions }

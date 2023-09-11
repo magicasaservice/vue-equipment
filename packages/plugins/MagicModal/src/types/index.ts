@@ -11,6 +11,7 @@ type Options = {
     content?: string
     backdrop?: string
   }
+  keys?: string[] | false
 }
 
 type ModalEvents = {

@@ -60,12 +60,21 @@ import {
   type MaybeRef,
 } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
-import { defu } from 'defu'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalApi } from './../composables/useModalApi'
 import { useModalCallback } from '../composables/private/useModalCallback'
 
 import type { Options } from './../types/index'
+
+import { createDefu } from 'defu'
+
+// Prevent keys array from being merged with default
+const customDefu = createDefu((obj, key, value) => {
+  if (key === 'keys') {
+    obj[key] = value
+    return true
+  }
+})
 
 interface MagicModalProps {
   id: MaybeRef<string>
@@ -80,7 +89,7 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
 
 const modal = ref<HTMLElement | undefined>(undefined)
 const modalApi = useModalApi(props.id, { focusTarget: modal })
-const mappedOptions = defu(props.options, defaultOptions)
+const mappedOptions = customDefu(props.options, defaultOptions)
 
 const {
   isActive,
@@ -127,10 +136,14 @@ function onClose() {
   innerActive.value = false
 }
 
-onKeyStroke('Escape', (e) => {
-  e.preventDefault()
-  close()
-})
+if (mappedOptions.keys) {
+  for (const key of mappedOptions.keys) {
+    onKeyStroke(key, (e) => {
+      e.preventDefault()
+      close()
+    })
+  }
+}
 
 watch(isActive, async (value) => {
   if (value) {
