@@ -1,6 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["packages/metadata/index.json"],
   "pipeline": {
     "build": {
       "cache": false,
