@@ -159,6 +159,8 @@ watch(isActive, async (value) => {
   --magic-modal-z-index: 999;
   --magic-modal-backdrop-color: rgba(0, 0, 0, 0.5);
   --magic-modal-backdrop-filter: unset;
+  --magic-modal-content-align-items: center;
+  --magic-modal-content-justify-content: center;
 }
 
 .magic-modal {
@@ -182,8 +184,8 @@ watch(isActive, async (value) => {
   max-height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: var(--magic-modal-content-align-items);
+  justify-content: var(--magic-modal-content-justify-content);
   overflow-y: auto;
 }
 
