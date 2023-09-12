@@ -1,7 +1,7 @@
 {
   "name": "@maas/vue-equipment",
   "description": "A magic collection of Vue composables, plugins, components and directives",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@antfu/ni": "^0.21.5",
