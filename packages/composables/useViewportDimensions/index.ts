@@ -62,6 +62,6 @@ export function useViewportDimensions(options?: UseViewportDimensionsOptions) {
   })
 
   onUnmounted(() => {
-    window.addEventListener('resize', setDimensions, { passive: true })
+    window.removeEventListener('resize', setDimensions)
   })
 }
