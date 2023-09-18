@@ -1,6 +1,12 @@
 <template>
   <ol>
     <li>
+      <nuxt-link to="/utils"> Utils </nuxt-link>
+    </li>
+    <li>
+      <nuxt-link to="/composables"> Composables </nuxt-link>
+    </li>
+    <li>
       <nuxt-link to="/magic-marquee"> Magic Marquee </nuxt-link>
     </li>
     <li>
