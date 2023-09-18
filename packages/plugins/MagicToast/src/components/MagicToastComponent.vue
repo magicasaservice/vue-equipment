@@ -71,6 +71,7 @@ watchEffect(() => {
     var(--magic-toast-transform-y) * var(--mt-index, 0) * var(--mt-multiplier)
   );
   position: absolute;
+  list-style: none;
 }
 
 .magic-toast-component__inner {

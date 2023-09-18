@@ -137,7 +137,7 @@ defineExpose({
   --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
   --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
   --magic-player-controls-transition-duration: 300ms;
-  --magic-player-controls-transition-timing-function: ease-out:
+  --magic-player-controls-transition-timing-function: ease-out: ;
 }
 
 @media (max-width: 640px) {
@@ -192,12 +192,15 @@ defineExpose({
   align-items: flex-start;
   gap: var(--magic-player-controls-gap);
   transition-duration: var(--magic-player-controls-transition-duration);
-  transition-timing-function: var(--magic-player-controls-transition-timing-function);
+  transition-timing-function: var(
+    --magic-player-controls-transition-timing-function
+  );
   transition-property: opacity, transform;
 }
 
 .magic-player-controls__bar--inner {
   width: 100%;
+  box-sizing: border-box;
   height: var(--magic-player-controls-height);
   padding: 0 var(--magic-player-controls-padding);
   background-color: var(--magic-player-controls-background-color);
