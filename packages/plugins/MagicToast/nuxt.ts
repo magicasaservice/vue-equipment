@@ -1,6 +1,30 @@
-import { defineNuxtPlugin } from 'nuxt/app'
-import { MagicToast } from './index'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponent,
+  addImports,
+} from '@nuxt/kit'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(MagicToast)
+export default defineNuxtModule({
+  meta: {
+    name: '@maas/vue-equipment/MagicToast',
+  },
+  setup() {
+    const resolver = createResolver(import.meta.url)
+    addComponent({
+      filePath: resolver.resolve('src/components/MagicToast.vue'),
+      name: 'MagicToast',
+      global: true,
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicToast',
+      name: 'useToastApi',
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicToast',
+      name: 'useToastEmitter',
+    })
+  },
 })

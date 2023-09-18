@@ -10,6 +10,10 @@
 
 > A _magic_ collection of essential Vue composables, plugins, components and directives
 
+## 🚧 Disclaimer
+
+This project is still under development. Expect breaking changes before the first stable release.
+
 ## 🧱 Contribute
 
 > Coming soon

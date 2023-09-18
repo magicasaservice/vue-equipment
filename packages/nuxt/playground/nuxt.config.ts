@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   typescript: {
     includeWorkspace: true,
   },
+  css: ['@unocss/reset/tailwind.css'],
   alias: {
     '@maas/vue-equipment': path.resolve(__dirname, '../../../dist'),
     '@maas/vue-equipment/plugins': path.resolve(

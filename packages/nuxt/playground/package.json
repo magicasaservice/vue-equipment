@@ -11,5 +11,8 @@
     "@types/node": "^18.16.0",
     "@unocss/nuxt": "^0.55.0",
     "nuxt": "latest"
+  },
+  "dependencies": {
+    "@unocss/reset": "^0.55.7"
   }
 }

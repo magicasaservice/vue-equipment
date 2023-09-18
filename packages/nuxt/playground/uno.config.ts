@@ -1,3 +1,2 @@
-import { defineConfig } from 'unocss'
-
-export default defineConfig({})
+import config from '../../../unocss.config'
+export default config

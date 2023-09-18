@@ -4,7 +4,17 @@ A simple component and api to trigger modals from anywhere
 
 ## Usage
 
-Modal
+```js
+import { MagicModalPlugin } from '@maas/vue-equipment/plugins'
+import { createApp } from 'vue'
+
+const app = createApp({})
+
+app.use(MagicModalPlugin)
+```
+
+### Modal
+
 ```html
 <template>
   <MagicModal id="magic-modal--demo">
@@ -13,16 +23,17 @@ Modal
 </template>
 ```
 
-Trigger
+### Trigger
+
 ```html
 <template>
   <button @click="open">Open</button>
 </template>
 
 <script setup>
-import { useModalApi } from '@maas/vue-equipment/plugins'
+  import { useModalApi } from '@maas/vue-equipment/plugins'
 
-const modalApi = useModalApi('magic-modal--demo')
-const { open } = modalApi
+  const modalApi = useModalApi('magic-modal--demo')
+  const { open } = modalApi
 </script>
 ```

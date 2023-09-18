@@ -1,9 +1,8 @@
 import {
   defineNuxtModule,
-  addPlugin,
   addImportsSources,
-  addImportsDir,
   createResolver,
+  installModule,
 } from '@nuxt/kit'
 
 import metadata from '../../metadata/index.json'
@@ -54,15 +53,7 @@ export default defineNuxtModule<ModuleOptions>({
         `@maas/vue-equipment/plugins/${plugin}/nuxt`,
       )
 
-      // Autoload composables
-      const pluginComposablesDir = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/src/composables`,
-      )
-
-      addPlugin(nuxtPlugin)
-      addImportsDir(pluginComposablesDir, {
-        prepend: true,
-      })
+      installModule(nuxtPlugin)
     }
 
     // Composables

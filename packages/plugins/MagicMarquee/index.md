@@ -5,5 +5,19 @@ A magic plugin for marquee animations
 ## Usage
 
 ```js
-import { MagicMarquee } from '@maas/vue-equipment;
+import { MagicMarqueePlugin } from '@maas/vue-equipment/plugins'
+import { createApp } from 'vue'
+
+const app = createApp({})
+
+app.use(MagicMarqueePlugin)
 ```
+
+### Marquee
+
+````html
+<magic-marquee>
+  <span>Content</span>
+</magic-marquee>
+```
+````

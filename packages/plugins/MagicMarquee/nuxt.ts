@@ -1,6 +1,21 @@
-import { defineNuxtPlugin } from 'nuxt/app'
-import { MagicMarquee } from './index'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponentsDir,
+  addImportsDir,
+} from '@nuxt/kit'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(MagicMarquee)
+export default defineNuxtModule({
+  meta: {
+    name: '@maas/vue-equipment/MagicMarquee',
+  },
+  setup() {
+    const resolver = createResolver(import.meta.url)
+    addComponentsDir({
+      path: resolver.resolve('src/components'),
+      global: true,
+      pathPrefix: false,
+    })
+    addImportsDir(resolver.resolve('src/composables'))
+  },
 })

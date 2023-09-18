@@ -1,7 +1,41 @@
-import { defineNuxtPlugin } from 'nuxt/app'
-import { MagicPlayer } from './index'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponentsDir,
+  addImports,
+} from '@nuxt/kit'
 
-// @ts-ignore
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(MagicPlayer)
+export default defineNuxtModule({
+  meta: {
+    name: '@maas/vue-equipment/MagicPlayer',
+  },
+  setup() {
+    const resolver = createResolver(import.meta.url)
+    addComponentsDir({
+      path: resolver.resolve('src/components'),
+      global: true,
+      pathPrefix: false,
+      ignore: ['icons/*'],
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicPlayer',
+      name: 'useProvidePlayer',
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicPlayer',
+      name: 'useInjectPlayer',
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicPlayer',
+      name: 'useProvideControls',
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicPlayer',
+      name: 'useInjectControls',
+    })
+  },
 })

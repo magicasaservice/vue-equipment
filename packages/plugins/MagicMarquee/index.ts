@@ -1,11 +1,11 @@
 import type { App, Plugin } from 'vue'
 
-import MagicMarqueeComponent from './src/components/MagicMarquee.vue'
+import MagicMarquee from './src/components/MagicMarquee.vue'
 
-const MagicMarquee: Plugin = {
+const MagicMarqueePlugin: Plugin = {
   install: (app: App) => {
-    app.component('MagicMarquee', MagicMarqueeComponent)
+    app.component('MagicMarquee', MagicMarquee)
   },
 }
 
-export { MagicMarquee }
+export { MagicMarqueePlugin, MagicMarquee }

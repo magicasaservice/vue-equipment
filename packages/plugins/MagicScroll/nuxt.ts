@@ -1,6 +1,21 @@
-import { defineNuxtPlugin } from 'nuxt/app'
-import { MagicScroll } from './index'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponentsDir,
+  addImportsDir,
+} from '@nuxt/kit'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(MagicScroll)
+export default defineNuxtModule({
+  meta: {
+    name: '@maas/vue-equipment/MagicScroll',
+  },
+  setup() {
+    const resolver = createResolver(import.meta.url)
+    addComponentsDir({
+      path: resolver.resolve('src/components'),
+      global: true,
+      pathPrefix: false,
+    })
+    addImportsDir(resolver.resolve('src/composables'))
+  },
 })
