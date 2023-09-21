@@ -19,10 +19,6 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent, ref, computed, unref } from 'vue'
-import {
-  useToastApi,
-  useToastEmitter,
-} from '@maas/vue-equipment/plugins/MagicToast'
 
 const count = ref(0)
 const props = computed(() => {
