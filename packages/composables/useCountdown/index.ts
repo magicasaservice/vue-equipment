@@ -1,55 +1,46 @@
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, unref } from 'vue'
 import { MagicTimer } from '@maas/magic-timer'
 import { DateTime } from 'luxon'
+import { type MaybeRef } from '@vueuse/core'
 
-// type for DD-MM-YYYY
-export type DateFormat = `${number}-${number}-${number}`
+// Type for [YYYY, MM, DD, HH, MM, SS]
+export type DateTimeArray = [number, number, number, number?, number?, number?]
 
-// type for HH:MM:SS
-export type TimeFormat = `${number}:${number}:${number}`
-
-// interface for the options
+// Interface for the options
 export interface CountdownOptions {
-  endDate: DateFormat
-  endTime?: TimeFormat
-  timezone?: string
+  endDateTime: MaybeRef<DateTimeArray>
+  timezone?: MaybeRef<string>
+  zeroIndexedMonths?: boolean
 }
 
-// default options
+// Define the default options
 const defaultOptions: CountdownOptions = {
-  endDate: '1970-01-01',
-  endTime: '00:00:00',
+  endDateTime: [1970, 1, 1, 0, 0, 0],
+  zeroIndexedMonths: false,
 }
 
 export function useCountdown(options: CountdownOptions, callback?: () => void) {
-  // endDate needs to have this format: YYYY-MM-DD
-  if (!options.endDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    options.endDate = '1970-01-01'
-    console.error(
-      'useCountdownClock: The "endDate" option needs to be a string with the format YYYY-MM-DD',
-    )
-  }
-
-  // endTime needs to have this format: HH:MM:SS
-  if (options.endTime && !options.endTime.match(/^\d{2}:\d{2}:\d{2}$/)) {
-    console.error(
-      'useCountdownClock: The "endTime" option needs to be a string with the format HH:MM:SS',
-    )
-  }
-
-  // invalid timezone
-  if (options.timezone && !DateTime.now().setZone(options.timezone).isValid) {
-    console.error(
-      `useCountdownClock: The "timezone" option "${
-        options.timezone
-      }" is not a valid timezone. Do you mean ${
-        DateTime.local().zoneName
-      }? For more information see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones`,
-    )
-  }
-
   // Merge the options with the default options
   options = { ...defaultOptions, ...options } as CountdownOptions
+
+  // Check if the endDateTime is valid
+  if (unref(options.endDateTime).length < 3) {
+    console.error(
+      'useCountdownClock: The "endDateTime" option needs to be an array with the format [YYYY, MM, DD, HH?, MM?, SS?]',
+    )
+  }
+
+  // Check if the timezone is valid
+  const timezone = unref(options.timezone)
+  if (timezone) {
+    if (!DateTime.now().setZone(timezone).isValid) {
+      console.error(
+        `useCountdownClock: The "timezone" option "${timezone}" is not a valid timezone. Do you mean ${
+          DateTime.local().zoneName
+        }? For more information see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones`,
+      )
+    }
+  }
 
   // Create a new timer instance
   const timer = new MagicTimer()
@@ -61,26 +52,26 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
   const minutes = ref(0)
   const seconds = ref(0)
 
-  // Create reactive refs for endDate and endTime so we can update them later
-  const endDate = ref(options.endDate)
-  const endTime = ref(options.endTime)
-
-  // Parse the date string into an date object
-  const parseDate = (dateStr: DateFormat) => {
-    const [year, month, day] = dateStr.split('-').map(Number)
-    return { year, month, day }
-  }
-
-  // Parse the time string into an time object
-  const parseTime = (timeStr: TimeFormat) => {
-    const [hour, minute, second] = timeStr.split(':').map(Number)
-    return { hour, minute, second }
+  // Parse the end dateTime array into an date and time object
+  // if the hour, minute and second are not set, set them to 0
+  // if the month is not zero indexed, add 1 to the month
+  const parseDateTimeArray = (dateTimeArr: DateTimeArray) => {
+    const [year, month, day, hour, minute, second] = dateTimeArr
+    return {
+      year,
+      month: options.zeroIndexedMonths ? month + 1 : month,
+      day,
+      hour: hour ?? 0,
+      minute: minute ?? 0,
+      second: second ?? 0,
+    }
   }
 
   // Calculate the target end date and time
   const endDateTime = computed(() => {
-    const { year, month, day } = parseDate(endDate.value!)
-    const { hour, minute, second } = parseTime(endTime.value!)
+    const { year, month, day, hour, minute, second } = parseDateTimeArray(
+      unref(options.endDateTime),
+    )
 
     return DateTime.fromObject(
       {
@@ -92,14 +83,14 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
         second,
       },
       {
-        zone: options.timezone,
+        zone: unref(options.timezone),
       },
     )
   })
 
   // Update the countdown values
   const tick = () => {
-    const now = DateTime.now().setZone(options.timezone)
+    const now = DateTime.now().setZone(unref(options.timezone))
     const end = endDateTime.value
 
     const diff = end
@@ -131,11 +122,13 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
     return ('0' + value).slice(-2)
   }
 
+  // Listen to the tick event
   const onTick = (callback: () => void) => timer.on('tick', callback)
 
   // Listen to the tick event
   timer.on('tick', tick)
 
+  // Restart the timer
   const restart = () => {
     timer.start()
   }
@@ -146,14 +139,14 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
     timer.start()
   })
 
+  // Return the values and functions
   return {
     years,
     days,
     hours,
     minutes,
     seconds,
-    endDate,
-    endTime,
+    endDateTime,
     pad,
     restart,
     onTick,
