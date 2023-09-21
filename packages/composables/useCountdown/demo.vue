@@ -12,8 +12,7 @@
 import { useCountdown } from '@maas/vue-equipment/composables'
 const { years, days, hours, minutes, seconds } = useCountdown(
   {
-    endDate: '2024-01-01',
-    endTime: '00:00:00',
+    endDateTime: [2024, 1, 1],
     timezone: 'Europe/Berlin',
   },
   () => {
