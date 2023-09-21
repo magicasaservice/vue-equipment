@@ -53,7 +53,7 @@ export default defineNuxtModule<ModuleOptions>({
         `@maas/vue-equipment/plugins/${plugin}/nuxt`,
       )
 
-      installModule(nuxtPlugin)
+      await installModule(nuxtPlugin)
     }
 
     // Composables
