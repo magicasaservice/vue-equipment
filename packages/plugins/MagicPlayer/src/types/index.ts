@@ -15,5 +15,4 @@ type UsePlayerArgs = {
   src: string
 }
 
-export * from './injectionKeys'
 export type { SourceType, UseControlsArgs, UsePlayerArgs }

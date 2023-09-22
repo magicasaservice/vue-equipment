@@ -44,8 +44,6 @@ type FromTo =
   | 'bottom-center'
   | 'bottom-bottom'
 
-export * from './injectionKeys'
-
 export type {
   FromTo,
   CollisionEvents,

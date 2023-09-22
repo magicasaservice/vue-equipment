@@ -1,6 +1,6 @@
 import { ref, inject, toValue, type MaybeRef, type MaybeRefOrGetter } from 'vue'
 import { useElementBounding, useWindowSize } from '@vueuse/core'
-import { ScrollPositionKey } from '../types'
+import { ScrollPositionKey } from '../symbols'
 import { clampValue } from '@maas/vue-equipment/utils'
 
 import type { FromTo } from '../types'
