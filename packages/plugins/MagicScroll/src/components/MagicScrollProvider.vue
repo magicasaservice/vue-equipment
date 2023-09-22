@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { provide, computed } from 'vue'
 import { useScroll } from '@vueuse/core'
-import { ScrollPositionKey, ScrollParentKey } from '../types'
+import { ScrollPositionKey, ScrollParentKey } from '../symbols'
 
 interface Props {
   active?: Boolean

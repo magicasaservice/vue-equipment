@@ -9,8 +9,8 @@ import {
   MediaApiInjectionKey,
   PlayerApiInjectionKey,
   RuntimeSourceProviderInjectionKey,
-  type UsePlayerArgs,
-} from './../types'
+} from './../symbols'
+import type { UsePlayerArgs } from './../types'
 
 type UsePlayerReturn = {
   playerApi: UsePlayerApiReturn
@@ -40,7 +40,7 @@ export function useInjectPlayer(): UsePlayerReturn {
     playerApi: inject(PlayerApiInjectionKey) as UsePlayerApiReturn,
     mediaApi: inject(MediaApiInjectionKey) as UseMediaApiReturn,
     runtimeProvider: inject(
-      RuntimeSourceProviderInjectionKey
+      RuntimeSourceProviderInjectionKey,
     ) as UseRuntimeSourceProviderReturn,
   }
 }

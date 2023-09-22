@@ -8,7 +8,7 @@
 import { ref, inject, computed, onMounted } from 'vue'
 import { toValue } from '@vueuse/core'
 import { useCollisionDetect } from '../composables/useCollisionDetect'
-import { ScrollPositionKey } from '../types'
+import { ScrollPositionKey } from '../symbols'
 
 import type { CollisionEntry } from '../types'
 

@@ -14,8 +14,6 @@ import {
 } from './src/composables/useControls'
 import { useRuntimeSourceProvider } from './src/composables/useRuntimeSourceProvider'
 
-export type * from './src/types'
-
 const MagicPlayerPlugin: Plugin = {
   install: (app: App) => {
     app.component('MagicPlayer', MagicPlayer)
@@ -39,3 +37,6 @@ export {
   useProvideControls,
   useInjectControls,
 }
+
+export * from './src/symbols'
+export type * from './src/types'

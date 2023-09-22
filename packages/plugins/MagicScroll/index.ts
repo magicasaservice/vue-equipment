@@ -10,8 +10,6 @@ import { useCollisionDetect } from './src/composables/useCollisionDetect'
 
 import type { App, Plugin } from 'vue'
 
-export type * from './src/types'
-
 const MagicScrollPlugin: Plugin = {
   install: (app: App) => {
     app.component('MagicScrollProvider', MagicScrollProvider)
@@ -33,3 +31,6 @@ export {
   useScrollApi,
   useCollisionDetect,
 }
+
+export * from './src/symbols'
+export type * from './src/types'

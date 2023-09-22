@@ -1,6 +1,6 @@
 import { provide, inject } from 'vue'
 import { useControlsApi, type UseControlsApiReturn } from './useControlsApi'
-import { ControlsApiInjectionKey } from './../types'
+import { ControlsApiInjectionKey } from './../symbols'
 import type { UseControlsArgs } from '../types'
 
 type UseControlsReturn = {

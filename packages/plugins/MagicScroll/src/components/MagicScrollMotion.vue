@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
 import { animate, type Easing } from 'motion'
-import { ScrollProgressKey } from '../types'
+import { ScrollProgressKey } from '../symbols'
 
 interface Props {
   keyframes: Record<string, any> | null | undefined

@@ -18,7 +18,11 @@ import {
 import { useIntersectionObserver } from '@vueuse/core'
 import { mapValue } from '@maas/vue-equipment/utils'
 import { useScrollApi } from '../composables/useScrollApi'
-import { ScrollPositionKey, ScrollParentKey, ScrollProgressKey } from '../types'
+import {
+  ScrollPositionKey,
+  ScrollParentKey,
+  ScrollProgressKey,
+} from '../symbols'
 
 import type { FromTo } from '../types'
 
