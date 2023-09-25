@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useToastInternalApi } from './useToastInternalApi'
-import type { ToastInstance, AddArgs, Toast } from '../../types'
+import type { ToastInstance, AddArgs } from '../../types'
 
 const toastStore = ref<ToastInstance[]>([])
 
