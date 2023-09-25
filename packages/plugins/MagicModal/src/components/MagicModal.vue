@@ -163,6 +163,7 @@ watch(isActive, async (value) => {
   --magic-modal-backdrop-filter: unset;
   --magic-modal-content-align-items: center;
   --magic-modal-content-justify-content: center;
+  --magic-modal-content-overflow-y: auto;
 }
 
 .magic-modal {
@@ -188,7 +189,7 @@ watch(isActive, async (value) => {
   display: flex;
   align-items: var(--magic-modal-content-align-items);
   justify-content: var(--magic-modal-content-justify-content);
-  overflow-y: auto;
+  overflow-y: var(--magic-modal-content-overflow-y);
 }
 
 .magic-modal__backdrop {
