@@ -1,7 +1,7 @@
 {
   "name": "utils",
   "description": "Util functions used throughout",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "tsup": "^7.1.0"
