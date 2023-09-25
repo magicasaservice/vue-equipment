@@ -9,6 +9,7 @@
         ref="modal"
         class="magic-modal"
         :id="toValue(id)"
+        :class="toValue(props.class)"
         @click.self="close"
         aria-modal="true"
       >
@@ -78,6 +79,7 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicModalProps {
   id: MaybeRef<string>
+  class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
   options?: Options
