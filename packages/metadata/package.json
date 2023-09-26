@@ -1,7 +1,7 @@
 {
   "name": "metadata",
   "description": "Metadata for @maas/vue-equipment",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "fast-glob": "^3.3.1",
