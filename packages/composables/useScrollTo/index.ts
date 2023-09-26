@@ -40,6 +40,7 @@ export type scrollToTargetParams = {
 
 const easings = useEasings()
 
+// Private functions
 function min(a: number, b: number) {
   return a < b ? a : b
 }
@@ -66,6 +67,25 @@ function unwrapTarget(target: ScrollToTarget, parentEl: Element | Window) {
   }
 }
 
+function isHtmlElement(
+  parentEl: Window | SVGElement | Element,
+): parentEl is HTMLElement {
+  return parentEl instanceof HTMLElement
+}
+
+function disableScrollSnap(parentEl: Window | SVGElement | Element) {
+  if (isHtmlElement(parentEl)) {
+    parentEl.style.scrollSnapType = 'none'
+  }
+}
+
+function reenableScrollSnap(parentEl: Window | SVGElement | Element) {
+  if (isHtmlElement(parentEl)) {
+    parentEl.style.scrollSnapType = ''
+  }
+}
+
+// Public composable
 export function useScrollTo() {
   function getScrollPosition(element: Element | Window): {
     x: number
@@ -161,6 +181,8 @@ export function useScrollTo() {
     let targetEl = unwrapTarget(target, parentEl)
     if (!targetEl) return
 
+    disableScrollSnap(parentEl)
+
     const mappedOffset = { x: 0, y: 0, ...offset }
     const distance = getDistance(targetEl)
     const leftDistance = distance.left - mappedOffset.x
@@ -179,6 +201,7 @@ export function useScrollTo() {
       top: topDistance,
       duration: scrollDuration,
       easing: easing,
+      callback: () => reenableScrollSnap(parentEl),
     })
   }
 

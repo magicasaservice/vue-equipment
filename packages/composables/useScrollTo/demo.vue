@@ -2,7 +2,7 @@
   <div class="flex flex-wrap gap-4">
     <div
       ref="parent"
-      class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded"
+      class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded snap-both snap-mandatory"
     >
       <div class="w-900px h-900px relative">
         <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
@@ -18,10 +18,10 @@
         </div>
       </div>
     </div>
-    <div
-      class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5"
-    >
-      <button @click="scroll()" class="w-full h-full px-6 py-4">Click to scroll</button>
+    <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
+      <button @click="scroll()" class="w-full h-full px-6 py-4">
+        Click to scroll
+      </button>
     </div>
   </div>
 </template>
