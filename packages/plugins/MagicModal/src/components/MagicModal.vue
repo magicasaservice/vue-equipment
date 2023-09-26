@@ -14,14 +14,16 @@
         aria-modal="true"
       >
         <transition
-          v-if="mappedOptions.backdrop"
+          v-if="mappedOptions.backdrop || !!$slots.backdrop"
           :name="mappedOptions.transitions?.backdrop"
         >
           <div
             v-show="innerActive"
             class="magic-modal__backdrop"
             @click.self="close"
-          />
+          >
+            <slot name="backdrop" />
+          </div>
         </transition>
         <transition
           :name="mappedOptions.transitions?.content"
