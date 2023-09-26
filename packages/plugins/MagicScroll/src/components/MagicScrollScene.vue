@@ -39,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
 const scrollPosition = inject(ScrollPositionKey, undefined)
 const scrollParent = inject(ScrollParentKey)
 
+const intersecting = ref()
 const sceneRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 
@@ -49,11 +50,10 @@ const { getCalculations, getProgress } = useScrollApi({
   to: props.to,
 })
 
-const calculate = () => {
+async function calculate() {
   getCalculations()
-  nextTick(() => {
-    progress.value = getProgress()
-  })
+  await nextTick()
+  progress.value = getProgress()
 }
 
 onMounted(() => {
@@ -69,13 +69,13 @@ watch(
   },
 )
 
-const intersecting = ref()
-
 useIntersectionObserver(
   toRaw(sceneRef),
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
-    calculate()
+    if (isIntersecting) {
+      calculate()
+    }
   },
   { rootMargin: '150% 0px 150% 0px' },
 )
