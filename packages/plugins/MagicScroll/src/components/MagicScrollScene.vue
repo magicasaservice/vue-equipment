@@ -75,6 +75,7 @@ useIntersectionObserver(
   toRaw(sceneRef),
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
+    calculate()
   },
   { rootMargin: '150% 0px 150% 0px' },
 )
