@@ -1,5 +1,5 @@
 import { ref, inject, toValue, type MaybeRef, type MaybeRefOrGetter } from 'vue'
-import { useElementBounding, useWindowSize } from '@vueuse/core'
+import { useWindowSize } from '@vueuse/core'
 import { ScrollPositionKey } from '../symbols'
 import { clampValue } from '@maas/vue-equipment/utils'
 
@@ -28,14 +28,14 @@ export function useScrollApi(params: UseScrollApiParams) {
   const start = ref(0)
   const end = ref(0)
 
-  const splitLocation = (location: string) => {
+  function splitLocation(location: string) {
     return {
       child: location.match(/^[a-z]+/)![0],
       parent: location.match(/[a-z]+$/)![0],
     }
   }
 
-  const getOffsetTop = (points: { child: string; parent: string }) => {
+  function getOffsetTop(points: { child: string; parent: string }) {
     let y = 0
 
     if (!childRect.value) return y
@@ -80,16 +80,16 @@ export function useScrollApi(params: UseScrollApiParams) {
     return y
   }
 
-  const getCalculations = () => {
+  function getCalculations() {
     childRect.value = toValue(child)?.getBoundingClientRect()
     parentRect.value = toValue(parent)
-      ? useElementBounding(parent)
+      ? toValue(parent)?.getBoundingClientRect()
       : { ...useWindowSize(), top: 0 }
     start.value = getOffsetTop(splitLocation(from))
     end.value = getOffsetTop(splitLocation(to))
   }
 
-  const getProgress = () => {
+  function getProgress() {
     const scrollY = toValue(scrollPosition?.y) || 0
     const total = Math.abs(end.value - start.value)
     const current = scrollY - start.value

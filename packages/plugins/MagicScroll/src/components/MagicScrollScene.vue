@@ -77,7 +77,7 @@ useIntersectionObserver(
       calculate()
     }
   },
-  { rootMargin: '150% 0px 150% 0px' },
+  { rootMargin: '150% 0px 150% 0px', threshold: 0.01 },
 )
 
 provide('mapValue', mapValue)
