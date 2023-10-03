@@ -12,7 +12,10 @@ export default defineNuxtModule({
   },
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
+
+    // Transpile MagicConsent so that it won’t clash with useCookies
     nuxt.options.build.transpile.push('universal-cookie')
+    nuxt.options.build.transpile.push('@vueuse/integrations/useCookies')
 
     // Extend vite config to include universal-cookie
     extendViteConfig((config) => {

@@ -28,6 +28,7 @@
 
 <script lang="ts" setup>
 import { useConsentApi } from '@maas/vue-equipment/plugins'
+import { useCookies } from '@vueuse/integrations/useCookies'
 
 const {
   preferencesVisible,
@@ -37,6 +38,9 @@ const {
   onAcceptSelected,
   onReject,
 } = useConsentApi()
+
+const cookies = useCookies(['test'])
+console.log('cookies:', cookies)
 
 const consentCookies = [
   {
