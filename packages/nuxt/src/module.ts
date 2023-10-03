@@ -29,7 +29,6 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
 
     nuxt.options.build.transpile.push('@maas/vue-equipment')
-    nuxt.options.alias = nuxt.options.alias || {}
 
     // Prevent vite from optimizing plugins
     extendViteConfig((config) => {
@@ -40,6 +39,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Aliases
     const packages = ['plugins', 'composables', 'utils']
+    nuxt.options.alias = nuxt.options.alias || {}
     packages.forEach((pkg) => {
       nuxt.options.alias[`@maas/vue-equipment/${pkg}`] =
         nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ||

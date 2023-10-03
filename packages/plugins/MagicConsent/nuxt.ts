@@ -1,8 +1,9 @@
 import {
   defineNuxtModule,
   createResolver,
-  addComponentsDir,
+  addComponent,
   addImports,
+  extendViteConfig,
 } from '@nuxt/kit'
 
 export default defineNuxtModule({
@@ -13,10 +14,17 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url)
     nuxt.options.build.transpile.push('universal-cookie')
 
-    addComponentsDir({
-      path: resolver.resolve('src/components'),
+    // Extend vite config to include universal-cookie
+    extendViteConfig((config) => {
+      config.optimizeDeps = config.optimizeDeps || {}
+      config.optimizeDeps.include = config.optimizeDeps.include || []
+      config.optimizeDeps.include.push('universal-cookie')
+    })
+
+    addComponent({
+      filePath: resolver.resolve('src/components/MagicConsent.vue'),
+      name: 'MagicConsent',
       global: true,
-      pathPrefix: false,
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicConsent',
