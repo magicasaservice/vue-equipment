@@ -67,7 +67,8 @@
     "luxon": "^3.4.2",
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
-    "nuxt": "^3.5.1"
+    "nuxt": "^3.5.1",
+    "universal-cookie": "^6.1.1"
   },
   "peerDependenciesMeta": {
     "@maas/magic-timer": {
@@ -92,6 +93,9 @@
       "optional": false
     },
     "nuxt": {
+      "optional": false
+    },
+    "universal-cookie": {
       "optional": false
     }
   },
