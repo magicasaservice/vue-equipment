@@ -43,29 +43,38 @@
           </div>
         </div>
         <div class="magic-consent__footer">
-          <div class="magic-consent__actions">
-            <template v-if="preferencesVisible">
-              <button
-                class="button -close"
-                @click="preferencesVisible = !preferencesVisible"
-              >
-                Close
+          <slot name="actions">
+            <div class="magic-consent__actions">
+              <template v-if="preferencesVisible">
+                <button
+                  class="magic-consent-button -secondary"
+                  @click="preferencesVisible = !preferencesVisible"
+                >
+                  Close
+                </button>
+                <button
+                  class="magic-consent-button -secondary"
+                  @click="acceptSelected"
+                >
+                  Accept selected
+                </button>
+              </template>
+              <template v-else>
+                <button
+                  class="magic-consent-button -secondary"
+                  @click="preferencesVisible = true"
+                >
+                  Preferences
+                </button>
+                <button class="magic-consent-button -secondary" @click="reject">
+                  Reject
+                </button>
+              </template>
+              <button class="magic-consent-button -primary" @click="accept">
+                Accept
               </button>
-              <button class="button -save" @click="acceptSelected">
-                Accept selected
-              </button>
-            </template>
-            <template v-else>
-              <button
-                class="button -preferences"
-                @click="preferencesVisible = true"
-              >
-                Preferences
-              </button>
-              <button class="button -reject" @click="reject">Reject</button>
-            </template>
-            <button class="button -accept" @click="accept">Accept</button>
-          </div>
+            </div>
+          </slot>
         </div>
       </div>
     </div>
@@ -111,12 +120,32 @@ const {
   --magic-consent-background-color: rgba(75, 75, 75, 0.5);
   --magic-consent-backdrop-filter: blur(32px);
   --magic-consent-color: rgba(255, 255, 255);
-  --magic-consent-border-radius: 0.5rem;
+  --magic-consent-border-radius: 0;
+  --magic-consent-box-shadow: none;
   --magic-consent-preferences-mask: linear-gradient(
     to top,
     rgb(255 255 255 / 0%),
     rgb(255 255 255 / 100%) 1.5rem
   );
+  --magic-consent-checkbox-size: 0.875rem;
+  --magic-consent-checkbox-border-width: 1px;
+  --magic-consent-checkbox-border-color: currentColor;
+  --magic-consent-checkbox-border-radius: 0;
+
+  --magic-consent-button-width: auto;
+  --magic-consent-button-height: 2.5rem;
+  --magic-consent-button-spacing: 1rem;
+  --magic-consent-button-border-width: 1px;
+  --magic-consent-button-border-radius: 0.25rem;
+  --magic-consent-button-backdrop-filter: none;
+
+  --magic-consent-button-primary-color: rgb(0, 0, 0);
+  --magic-consent-button-primary-background-color: rgb(255 255 255);
+  --magic-consent-button-primary-border-color: transparent;
+
+  --magic-consent-button-secondary-color: rgb(255, 255, 255);
+  --magic-consent-button-secondary-background-color: transparent;
+  --magic-consent-button-secondary-border-color: transparent;
 }
 
 .magic-consent {
@@ -127,7 +156,9 @@ const {
   border-radius: var(--magic-consent-border-radius);
   background-color: var(--magic-consent-background-color);
   color: var(--magic-consent-color);
+  box-shadow: var(--magic-consent-box-shadow);
   backdrop-filter: var(--magic-consent-backdrop-filter);
+  -webkit-backdrop-filter: var(--magic-consent-backdrop-filter);
   overflow: hidden;
 }
 
@@ -218,30 +249,57 @@ li.magic-consent__cookie {
 .magic-consent-checkbox input[type='checkbox'] {
   position: relative;
   flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
+  width: var(--magic-consent-checkbox-size);
+  height: var(--magic-consent-checkbox-size);
   background-color: transparent;
-  border: 1px currentColor solid;
+  border: var(--magic-consent-checkbox-border-width)
+    var(--magic-consent-checkbox-border-color) solid;
   vertical-align: middle;
   cursor: pointer;
   appearance: none;
-  border-radius: 0;
+  border-radius: var(--magic-consent-checkbox-border-radius);
 }
 
 .magic-consent-checkbox input[type='checkbox']:checked::after {
   content: '';
   display: block;
   position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: calc(var(--magic-consent-checkbox-size) / 2);
+  height: calc(var(--magic-consent-checkbox-size) / 2);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: currentColor;
-  border-radius: 0;
+  background-color: var(--magic-consent-checkbox-border-color);
+  border-radius: var(--magic-consent-checkbox-border-radius);
 }
 
 .magic-consent-checkbox:disabled {
   cursor: not-allowed;
+}
+
+.magic-consent-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--magic-consent-button-width);
+  height: var(--magic-consent-button-height);
+  border: var(--magic-consent-button-border-width) solid currentColor;
+  padding: 0 var(--magic-consent-button-spacing);
+  gap: var(--magic-consent-button-spacing);
+  border-radius: var(--magic-consent-button-border-radius);
+  backdrop-filter: var(--magic-consent-button-backdrop-filter);
+  -webkit-backdrop-filter: var(--magic-consent-button-backdrop-filter);
+}
+
+.magic-consent-button.-primary {
+  color: var(--magic-consent-button-primary-color);
+  background-color: var(--magic-consent-button-primary-background-color);
+  border-color: var(--magic-consent-button-primary-border-color);
+}
+
+.magic-consent-button.-secondary {
+  color: var(--magic-consent-button-secondary-color);
+  background-color: var(--magic-consent-button-secondary-background-color);
+  border-color: var(--magic-consent-button-secondary-border-color);
 }
 </style>

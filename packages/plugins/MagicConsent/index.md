@@ -21,13 +21,30 @@ A magic cookie consent plugin to manage cookies and user consent.
         must be the same as the cookie key.
       </span>
     </template>
+    <template #actions>
+      <div class="flex justify-end gap-4">
+        <button @click="preferencesVisible = !preferencesVisible">
+          {{ preferencesVisible ? 'Close' : 'Preferences' }}
+        </button>
+        <button @click="reject">Reject</button>
+        <button @click="accept">Accept</button>
+      </div>
+    </template>
   </magic-consent>
 </template>
 
 <script lang="ts" setup>
 import { useConsentApi } from './src/composables/useConsentApi'
 
-const { onAccept, onAcceptSelected, onReject } = useConsentApi()
+const {
+  preferencesVisible,
+  accept,
+  reject,
+  onAccept,
+  onAcceptSelected,
+  onReject,
+} = useConsentApi()
+
 const consentCookies = [
   {
     key: 'functional', // key is required
