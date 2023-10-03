@@ -9,8 +9,10 @@ export default defineNuxtModule({
   meta: {
     name: '@maas/vue-equipment/MagicConsent',
   },
-  setup() {
+  setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
+    nuxt.options.build.transpile.push('universal-cookie')
+
     addComponentsDir({
       path: resolver.resolve('src/components'),
       global: true,

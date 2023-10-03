@@ -7,6 +7,9 @@
       <nuxt-link to="/composables"> Composables </nuxt-link>
     </li>
     <li>
+      <nuxt-link to="/magic-consent"> Magic Consent </nuxt-link>
+    </li>
+    <li>
       <nuxt-link to="/magic-marquee"> Magic Marquee </nuxt-link>
     </li>
     <li>
