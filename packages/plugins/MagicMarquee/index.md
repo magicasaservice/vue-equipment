@@ -15,9 +15,8 @@ app.use(MagicMarqueePlugin)
 
 ### Marquee
 
-````html
+```vue
 <magic-marquee>
   <span>Content</span>
 </magic-marquee>
 ```
-````
