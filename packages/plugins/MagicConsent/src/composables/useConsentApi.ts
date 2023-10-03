@@ -6,28 +6,28 @@ import { useConsentEmitter } from './useConsentEmitter'
 
 import type { CookieConsentData } from '../types'
 
-// Use universal cookies from the @vueuse/integrations/useCookies
-const universalCookies = useCookies(['cookie_consent'])
-
 // Reactive variables
 const preferencesVisible = ref(false)
 const selectedCookies = ref<{ [key: string]: boolean }>({})
 
-// Computed property to manage the cookie consent data
-const cookieConsentData = computed({
-  get: () => {
-    // Retrieve the cookie consent data from the cookies
-    return universalCookies.get('cookie_consent') as CookieConsentData
-  },
-  set: (value: CookieConsentData) => {
-    // Update the cookie consent data in the cookies
-    universalCookies.set('cookie_consent', value, {
-      maxAge: globalApiState.value?.maxAge,
-    })
-  },
-})
-
 export function useConsentApi() {
+  // Use universal cookies from the @vueuse/integrations/useCookies
+  const universalCookies = useCookies(['cookie_consent'])
+
+  // Computed property to manage the cookie consent data
+  const cookieConsentData = computed({
+    get: () => {
+      // Retrieve the cookie consent data from the cookies
+      return universalCookies.get('cookie_consent') as CookieConsentData
+    },
+    set: (value: CookieConsentData) => {
+      // Update the cookie consent data in the cookies
+      universalCookies.set('cookie_consent', value, {
+        maxAge: globalApiState.value?.maxAge,
+      })
+    },
+  })
+
   // Initialize an event emitter for custom events
   const emitter = useConsentEmitter()
 
