@@ -52,7 +52,7 @@ const {
 } = controlsApi
 </script>
 
-<style lang="postcss">
+<style lang="css">
 :root {
   --magic-player-target-height: 56px;
   --magic-player-track-height: 4px;
@@ -116,6 +116,7 @@ const {
   background-color: var(--magic-player-thumb-bg-color);
   border-radius: 50rem;
 }
+
 .magic-player-timeline__slider-scrubbed,
 .magic-player-timeline__slider-seeked,
 .magic-player-timeline__slider-buffered {

@@ -123,7 +123,7 @@ defineExpose({
 })
 </script>
 
-<style lang="postcss">
+<style lang="css">
 :root {
   --magic-player-controls-height: 3rem;
   --magic-player-controls-bottom: 1.5rem;

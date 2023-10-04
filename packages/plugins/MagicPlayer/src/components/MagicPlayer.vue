@@ -16,9 +16,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { useProvidePlayer } from '../composables/usePlayer'
 
 import type { SourceType } from './../types'
-import { useProvidePlayer } from '../composables/usePlayer'
 
 export type MagicPlayerProps = {
   srcType?: SourceType
@@ -78,7 +78,7 @@ defineExpose({
 })
 </script>
 
-<style lang="postcss">
+<style lang="css">
 .magic-player {
   --aspect-ratio: 16 / 9;
   position: relative;

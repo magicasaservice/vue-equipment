@@ -62,7 +62,7 @@ async function init() {
 
   try {
     storyboard.value = await fetch(
-      `https://image.mux.com/${props.playbackId}/storyboard.json`
+      `https://image.mux.com/${props.playbackId}/storyboard.json`,
     ).then((res) => res.json())
 
     if (!storyboard.value) throw new Error()
@@ -107,7 +107,7 @@ function drawFrame(time: number) {
     0,
     0,
     tile_width,
-    tile_height
+    tile_height,
   )
 }
 
@@ -115,7 +115,7 @@ onMounted(init)
 watch(() => seekedTime.value, drawFrame)
 </script>
 
-<style lang="postcss">
+<style lang="css">
 :root {
   --magic-player-popover-border-radius: 0.25rem;
 }
@@ -125,7 +125,7 @@ watch(() => seekedTime.value, drawFrame)
   overflow: hidden;
 }
 
-canvas {
+.magic-player-mux-popover canvas {
   width: 100%;
   height: auto;
 }
