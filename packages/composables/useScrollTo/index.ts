@@ -92,7 +92,7 @@ export function useScrollTo() {
     y: number
   } {
     if (element === window) {
-      return { x: window.pageXOffset, y: window.pageYOffset }
+      return { x: window.scrollX, y: window.scrollY }
     } else if (element instanceof Element) {
       return { x: element.scrollLeft, y: element.scrollTop }
     } else {
@@ -100,13 +100,20 @@ export function useScrollTo() {
     }
   }
 
-  function getDistance(element: Element): { top: number; left: number } {
-    const rect = element.getBoundingClientRect()
-    const scrollEl = document.scrollingElement || document.documentElement
+  function getDistance(
+    target: Element,
+    parent?: Element | Window,
+  ): { top: number; left: number } {
+    const rect = target.getBoundingClientRect()
+    const scrollEl =
+      parent || document.scrollingElement || document.documentElement
+
+    const scrollTop = scrollEl instanceof Window ? 0 : scrollEl.scrollTop
+    const scrollLeft = scrollEl instanceof Window ? 0 : scrollEl.scrollLeft
 
     return {
-      top: rect.top + scrollEl.scrollTop,
-      left: rect.left + scrollEl.scrollLeft,
+      top: rect.top + scrollTop,
+      left: rect.left + scrollLeft,
     }
   }
 
@@ -184,7 +191,7 @@ export function useScrollTo() {
     disableScrollSnap(parentEl)
 
     const mappedOffset = { x: 0, y: 0, ...offset }
-    const distance = getDistance(targetEl)
+    const distance = getDistance(targetEl, parentEl)
     const leftDistance = distance.left - mappedOffset.x
     const topDistance = distance.top - mappedOffset.y
 
