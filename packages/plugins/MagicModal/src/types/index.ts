@@ -11,7 +11,7 @@ type Options = {
     content?: string
     backdrop?: string
   }
-  tag: 'dialog' | 'div'
+  tag?: 'dialog' | 'div'
   keys?: string[] | false
 }
 
