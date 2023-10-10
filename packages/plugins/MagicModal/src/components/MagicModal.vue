@@ -5,7 +5,8 @@
       :to="mappedOptions.teleport?.target"
       :disabled="mappedOptions.teleport?.disabled"
     >
-      <dialog
+      <component
+        :is="options.tag"
         ref="modal"
         class="magic-modal"
         :id="toValue(id)"
@@ -48,7 +49,7 @@
             <slot v-else />
           </div>
         </transition>
-      </dialog>
+      </component>
     </teleport>
   </transition>
 </template>
