@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@maas/magic-timer':
-    specifier: ^0.1.3
-    version: 0.1.3(eventemitter3@5.0.1)
+    specifier: ^1.0.0
+    version: 1.0.0(eventemitter3@5.0.1)
   '@vueuse/core':
     specifier: ^10.3.0
     version: 10.4.1(vue@3.3.4)
@@ -1288,8 +1288,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /@maas/magic-timer@0.1.3(eventemitter3@5.0.1):
-    resolution: {integrity: sha512-rNJ2O/Emh0N15ey68s87MJiI9VLMd44wTwP8ZQT5S1P6d9g/ICJ0FZYCRuYYPAvtttzK27xtVbcUDhOs6tL+CQ==}
+  /@maas/magic-timer@1.0.0(eventemitter3@5.0.1):
+    resolution: {integrity: sha512-2bYG4qsaxSiCS3OfRpzDjmVY75GCR3UORArwN2yWLVIA3YZVbEnhw9UG5rQ3Y9b/12Sgv6NUdIR3LPNOTw0tCg==}
     peerDependencies:
       eventemitter3: ^5.0.1
     dependencies:
@@ -1784,6 +1784,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: false
     bundledDependencies:
       - napi-wasm
@@ -5529,6 +5530,10 @@ packages:
     resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
     engines: {node: ^14 || ^16 || >=18}
     hasBin: true
+    dev: false
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: false
 
   /natural-compare@1.4.0:

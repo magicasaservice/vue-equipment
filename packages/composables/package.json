@@ -15,7 +15,7 @@
   "keywords": [],
   "license": "MIT",
   "peerDependencies": {
-    "@maas/magic-timer": "^0.1.3",
+    "@maas/magic-timer": "^1.0.0",
     "@vueuse/core": "^10.3.0",
     "luxon": "^3.4.2"
   },

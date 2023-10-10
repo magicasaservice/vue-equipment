@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@maas/magic-timer':
-    specifier: ^0.1.3
-    version: 0.1.3(eventemitter3@5.0.1)
+    specifier: ^1.0.0
+    version: 1.0.0(eventemitter3@5.0.1)
   '@vueuse/core':
     specifier: ^10.3.0
     version: 10.4.1(vue@3.3.4)
@@ -285,8 +285,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@maas/magic-timer@0.1.3(eventemitter3@5.0.1):
-    resolution: {integrity: sha512-rNJ2O/Emh0N15ey68s87MJiI9VLMd44wTwP8ZQT5S1P6d9g/ICJ0FZYCRuYYPAvtttzK27xtVbcUDhOs6tL+CQ==}
+  /@maas/magic-timer@1.0.0(eventemitter3@5.0.1):
+    resolution: {integrity: sha512-2bYG4qsaxSiCS3OfRpzDjmVY75GCR3UORArwN2yWLVIA3YZVbEnhw9UG5rQ3Y9b/12Sgv6NUdIR3LPNOTw0tCg==}
     peerDependencies:
       eventemitter3: ^5.0.1
     dependencies:
