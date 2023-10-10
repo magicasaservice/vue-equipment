@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, unref } from 'vue'
+import { computed, onMounted, ref, unref, watch } from 'vue'
 import { MagicTimer } from '@maas/magic-timer'
 import { DateTime } from 'luxon'
 import { type MaybeRef } from '@vueuse/core'
@@ -54,7 +54,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
 
   // Parse the end dateTime array into an date and time object
   // if the hour, minute and second are not set, set them to 0
-  // if the month is not zero indexed, add 1 to the month
+  // if the month is not zero indexed, add 1 to the month (defined in the options)
   const parseDateTimeArray = (dateTimeArr: DateTimeArray) => {
     const [year, month, day, hour, minute, second] = dateTimeArr
     return {
@@ -67,7 +67,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
     }
   }
 
-  // Calculate the target end date and time
+  // Get the computed endDateTime value from the options
   const endDateTime = computed(() => {
     const { year, month, day, hour, minute, second } = parseDateTimeArray(
       unref(options.endDateTime),
@@ -88,10 +88,18 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
     )
   })
 
-  // Update the countdown values
-  const tick = () => {
+  // Update the countdown values on each tick
+  // if the timer reached the endDateTime stop the timer, reset the values and call the callback
+  function tick() {
     const now = DateTime.now().setZone(unref(options.timezone))
     const end = endDateTime.value
+
+    if (end <= now) {
+      timer.stop()
+      reset()
+      if (callback) callback()
+      return
+    }
 
     const diff = end
       .diff(now, [
@@ -104,12 +112,6 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
       ])
       .toObject()
 
-    if (end < now) {
-      timer.stop()
-      if (callback) callback()
-      return
-    }
-
     years.value = diff.years ?? 0
     days.value = diff.days ?? 0
     hours.value = diff.hours ?? 0
@@ -117,19 +119,31 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
     seconds.value = diff.seconds ?? 0
   }
 
-  // Format numbers with leading zero
-  const pad = (value: number): string => {
+  // Function to pad the values with a leading zero
+  function pad(value: number): string {
     return ('0' + value).slice(-2)
   }
 
   // Listen to the tick event
-  const onTick = (callback: () => void) => timer.on('tick', callback)
+  function onTick(callback: () => void) {
+    timer.on('tick', callback)
+  }
 
   // Listen to the tick event
   timer.on('tick', tick)
 
+  // Reset the countdown values
+  function reset() {
+    years.value = 0
+    days.value = 0
+    hours.value = 0
+    minutes.value = 0
+    seconds.value = 0
+  }
+
   // Restart the timer
-  const restart = () => {
+  function restart() {
+    timer.reset()
     timer.start()
   }
 
@@ -137,6 +151,14 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
   onMounted(() => {
     tick()
     timer.start()
+  })
+
+  // Watch for changes in the endDateTime
+  // and restart the timer
+  watch(endDateTime, () => {
+    // check timer is running to prevent restart on initial load
+    if (timer.state === 'running') return
+    restart()
   })
 
   // Return the values and functions
