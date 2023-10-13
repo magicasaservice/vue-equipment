@@ -3,6 +3,7 @@ import {
   MagicConsentPlugin,
   MagicMarqueePlugin,
   MagicModalPlugin,
+  MagicNoisePlugin,
   MagicPlayerPlugin,
   MagicScrollPlugin,
   MagicToastPlugin,
@@ -16,6 +17,7 @@ export default {
     app.use(MagicConsentPlugin)
     app.use(MagicMarqueePlugin)
     app.use(MagicModalPlugin)
+    app.use(MagicNoisePlugin)
     app.use(MagicPlayerPlugin)
     app.use(MagicScrollPlugin)
     app.use(MagicToastPlugin)

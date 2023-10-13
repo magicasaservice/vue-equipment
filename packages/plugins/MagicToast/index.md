@@ -15,7 +15,7 @@ app.use(MagicToastPlugin)
 
 ### Toast
 
-```html
+```vue
 <template>
   <MagicToast id="magic-toast--demo" />
 </template>
@@ -23,20 +23,20 @@ app.use(MagicToastPlugin)
 
 ### Trigger
 
-```html
+```vue
 <template>
   <button @click="addToast">Open</button>
 </template>
 
 <script setup>
-  import { useToastApi } from '@maas/vue-equipment/plugins'
+import { useToastApi } from '@maas/vue-equipment/plugins'
 
-  const component = defineAsyncComponent(() => import('~/Toast.vue'))
-  const toastApi = useToastApi(id)
-  const { add } = toastApi
+const component = defineAsyncComponent(() => import('~/Toast.vue'))
+const toastApi = useToastApi(id)
+const { add } = toastApi
 
-  function addToast() {
-    add({ component })
-  }
+function addToast() {
+  add({ component })
+}
 </script>
 ```

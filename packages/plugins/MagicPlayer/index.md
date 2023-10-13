@@ -13,7 +13,7 @@ const app = createApp({})
 app.use(MagicPlayerPlugin)
 ```
 
-```html
+```vue
 <template>
   <magic-player
     src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"

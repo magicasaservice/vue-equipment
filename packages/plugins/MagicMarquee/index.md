@@ -13,8 +13,6 @@ const app = createApp({})
 app.use(MagicMarqueePlugin)
 ```
 
-### Marquee
-
 ```vue
 <magic-marquee>
   <span>Content</span>
