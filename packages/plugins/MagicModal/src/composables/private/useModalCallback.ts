@@ -1,10 +1,10 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useModalEmitter } from './../useModalEmitter'
-import type { Options } from '../../types'
+import type { ModalOptions } from '../../types'
 
 type Args = {
   id: MaybeRef<string>
-  mappedOptions: Options
+  mappedOptions: ModalOptions
   addScrollLockPadding: () => void
   removeScrollLockPadding: () => void
   lockScroll: () => void

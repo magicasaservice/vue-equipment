@@ -8,39 +8,28 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, computed, watch, ref, shallowRef } from 'vue'
+import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/useNoiseApi'
+import type { NoiseOptions } from '../types'
 
 interface Props {
-  pixelSize?: number
-  tiles?: number
-  fps?: number
-  color?: string
+  options: NoiseOptions
   pause?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pixelSize: 2,
-  tiles: 32,
-  fps: 8,
-  color: '#000',
   pause: false,
 })
 
 const canvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
 const offCanvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
 
-const options = computed(() => {
-  return {
-    pixelSize: props.pixelSize,
-    tiles: props.tiles,
-    fps: props.fps,
-    color: props.color,
-  }
+const noiseApi = useNoiseApi({
+  canvasRef,
+  offCanvasRef,
+  options: props.options,
 })
-
-const noiseApi = useNoiseApi({ canvasRef, offCanvasRef, options })
 const {
   initialize,
   drawControls,

@@ -1,4 +1,4 @@
-type Options = {
+export type ModalOptions = {
   backdrop?: boolean
   focusTrap?: boolean
   scrollLock?: boolean
@@ -15,7 +15,7 @@ type Options = {
   keys?: string[] | false
 }
 
-type ModalEvents = {
+export type ModalEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string
@@ -23,4 +23,3 @@ type ModalEvents = {
   leave: string
   afterLeave: string
 }
-export type { Options, ModalEvents }

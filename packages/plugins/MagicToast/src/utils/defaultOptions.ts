@@ -1,6 +1,7 @@
-import type { Options } from '../types/index'
+import type { ToastOptions } from '../types/index'
+import type { RequireAll } from '@maas/vue-equipment/utils/types/RequireAll'
 
-const defaultOptions: Options = {
+const defaultOptions: RequireAll<ToastOptions> = {
   teleport: {
     target: 'body',
     disabled: false,

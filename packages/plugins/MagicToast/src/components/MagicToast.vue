@@ -53,12 +53,12 @@ import { useToastCallback } from './../composables/private/useToastCallback'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
-import type { Options } from './../types/index'
+import type { ToastOptions } from './../types/index'
 
 interface MagicToastProps {
   id: MaybeRef<string>
   class: MaybeRef<string>
-  options?: Options
+  options?: ToastOptions
 }
 
 const props = defineProps<MagicToastProps>()

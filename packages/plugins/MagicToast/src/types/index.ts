@@ -15,7 +15,7 @@ type ToastInstance = {
   remove: (id: string) => void
 }
 
-type Options = {
+type ToastOptions = {
   teleport?: {
     target?: string
     disabled?: boolean
@@ -49,7 +49,7 @@ type AddArgs = Pick<Toast, 'component'> &
 export type {
   Toast,
   ToastInstance,
-  Options,
+  ToastOptions,
   ActiveElement,
   ToastEvents,
   AddArgs,

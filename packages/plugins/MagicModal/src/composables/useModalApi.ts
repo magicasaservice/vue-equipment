@@ -5,10 +5,10 @@ import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useModalStore } from './private/useModalStore'
 
-import type { Options } from '../types/index'
+import type { ModalOptions } from '../types/index'
 import type { MaybeElementRef } from '@vueuse/core'
 
-export type useModalApiOptions = Pick<Options, 'scrollLock'> & {
+export type useModalApiOptions = Pick<ModalOptions, 'scrollLock'> & {
   focusTarget: MaybeElementRef
 }
 

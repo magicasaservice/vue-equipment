@@ -9,3 +9,10 @@ export type Pixel = {
 }
 
 export type RafControls = Pick<Pausable, 'pause' | 'resume'>
+
+export type NoiseOptions = {
+  pixelSize?: number
+  tiles?: number
+  fps?: number
+  color?: string
+}

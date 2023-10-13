@@ -68,7 +68,7 @@ import { defaultOptions } from './../utils/defaultOptions'
 import { useModalApi } from './../composables/useModalApi'
 import { useModalCallback } from '../composables/private/useModalCallback'
 
-import type { Options } from './../types/index'
+import type { ModalOptions } from './../types/index'
 
 import { createDefu } from 'defu'
 
@@ -85,7 +85,7 @@ interface MagicModalProps {
   class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
-  options?: Options
+  options?: ModalOptions
 }
 
 const props = withDefaults(defineProps<MagicModalProps>(), {

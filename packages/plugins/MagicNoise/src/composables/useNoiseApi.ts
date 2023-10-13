@@ -6,24 +6,13 @@ import {
   useThrottleFn,
   useRafFn,
 } from '@vueuse/core'
-import type { Pixel, RafControls } from '../types'
+import { defaultOptions } from '../utils/defaultOptions'
+import type { NoiseOptions, Pixel, RafControls } from '../types'
 
 type UseNoiseApiArgs = {
   canvasRef: Ref<HTMLCanvasElement | undefined>
   offCanvasRef: Ref<HTMLCanvasElement | undefined>
-  options?: MaybeRef<{
-    pixelSize?: number
-    tiles?: number
-    color?: string
-    fps?: number
-  }>
-}
-
-const defaultOptions = {
-  pixelSize: 2,
-  tiles: 32,
-  fps: 12,
-  color: 'white',
+  options?: MaybeRef<NoiseOptions>
 }
 
 export function useNoiseApi({
@@ -85,7 +74,7 @@ export function useNoiseApi({
     pixelSize,
     rotation,
   }: calculatePixelArgs) {
-    if (pixelSize <= 0 || pixelSize <= 0) {
+    if (pixelSize <= 0) {
       return []
     }
 
