@@ -7,6 +7,11 @@ import MagicScrollCollision from './src/components/MagicScrollCollision.vue'
 import { useCollisionEmitter } from './src/composables/useCollisionEmitter'
 import { useScrollApi } from './src/composables/useScrollApi'
 import { useCollisionDetect } from './src/composables/useCollisionDetect'
+import {
+  ScrollParentKey,
+  ScrollPositionKey,
+  ScrollProgressKey,
+} from './src/symbols'
 
 import type { App, Plugin } from 'vue'
 
@@ -30,6 +35,9 @@ export {
   useCollisionEmitter,
   useScrollApi,
   useCollisionDetect,
+  ScrollParentKey,
+  ScrollPositionKey,
+  ScrollProgressKey,
 }
 
 export * from './src/symbols'

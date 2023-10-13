@@ -13,6 +13,12 @@ import {
   useInjectControls,
 } from './src/composables/useControls'
 import { useRuntimeSourceProvider } from './src/composables/useRuntimeSourceProvider'
+import {
+  MediaApiInjectionKey,
+  PlayerApiInjectionKey,
+  RuntimeSourceProviderInjectionKey,
+  ControlsApiInjectionKey,
+} from './src/symbols'
 
 const MagicPlayerPlugin: Plugin = {
   install: (app: App) => {
@@ -36,6 +42,10 @@ export {
   useInjectPlayer,
   useProvideControls,
   useInjectControls,
+  MediaApiInjectionKey,
+  PlayerApiInjectionKey,
+  RuntimeSourceProviderInjectionKey,
+  ControlsApiInjectionKey,
 }
 
 export * from './src/symbols'
