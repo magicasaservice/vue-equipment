@@ -12,7 +12,7 @@
         </button>
       </div>
     </div>
-    <MagicToast :id="id" :class="position" />
+    <magic-toast :id="id" :class="position" />
   </div>
 </template>
 

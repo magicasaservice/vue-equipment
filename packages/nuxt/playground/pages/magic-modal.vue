@@ -3,12 +3,12 @@
     <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
       <button class="w-full h-full px-6 py-4" @click="open">Open modal</button>
     </div>
-    <MagicModal :id="id">
+    <magic-modal :id="id">
       <div
         tabindex="1"
         class="bg-gray-300 w-[40rem] h-[30rem] flex justify-center items-center rounded-lg"
       />
-    </MagicModal>
+    </magic-modal>
   </div>
 </template>
 
