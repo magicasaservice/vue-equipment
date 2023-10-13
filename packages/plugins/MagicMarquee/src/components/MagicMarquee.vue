@@ -1,6 +1,6 @@
 <template>
-  <div class="magic-marquee">
-    <div class="magic-marquee__track" ref="parentRef">
+  <div class="magic-marquee" ref="parentRef">
+    <div class="magic-marquee__track">
       <div class="magic-marquee__content" ref="childRef">
         <slot />
       </div>
