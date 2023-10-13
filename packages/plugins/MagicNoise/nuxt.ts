@@ -1,8 +1,8 @@
 import {
   defineNuxtModule,
   createResolver,
-  addComponentsDir,
-  addImportsDir,
+  addComponent,
+  addImports,
 } from '@nuxt/kit'
 
 export default defineNuxtModule({
@@ -11,11 +11,15 @@ export default defineNuxtModule({
   },
   setup() {
     const resolver = createResolver(import.meta.url)
-    addComponentsDir({
-      path: resolver.resolve('src/components'),
+    addComponent({
+      filePath: resolver.resolve('src/components/MagicNoise.vue'),
+      name: 'MagicNoise',
       global: true,
-      pathPrefix: false,
     })
-    addImportsDir(resolver.resolve('src/composables'))
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicNoise',
+      name: 'useNoiseApi',
+    })
   },
 })

@@ -224,7 +224,6 @@ export function useNoiseApi({
     )
 
     for (const pixel of pixels.value) {
-      console.log(pixel)
       if (Math.random() > 0.5) {
         offContext.value.fillStyle = mappedOptions.color
         offContext.value.fillRect(pixel.x, pixel.y, pixel.w, pixel.h)

@@ -16,6 +16,9 @@
       <nuxt-link to="/magic-modal"> Magic Modal </nuxt-link>
     </li>
     <li>
+      <nuxt-link to="/magic-noise"> Magic Noise </nuxt-link>
+    </li>
+    <li>
       <nuxt-link to="/magic-player"> Magic Player </nuxt-link>
     </li>
     <li>
