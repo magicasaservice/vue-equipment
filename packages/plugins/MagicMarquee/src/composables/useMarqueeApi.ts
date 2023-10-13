@@ -2,7 +2,8 @@ import { ref, onMounted, computed, nextTick, watch } from 'vue'
 
 import {
   useElementBounding,
-  useResizeObserver,
+  useElementSize,
+  useThrottleFn,
   toValue,
   type MaybeRef,
 } from '@vueuse/core'
@@ -21,6 +22,9 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
   const duplicates = ref(1)
   const childRect = useElementBounding(child)
   const parentRect = useElementBounding(parent)
+
+  const { width } = useElementSize(parent)
+
   const duration = computed(() =>
     (childRect.width.value / toValue(speed) / 50).toFixed(2),
   )
@@ -78,13 +82,16 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     setCssVariables()
   })
 
-  useResizeObserver(parent, () => {
-    childRect.update()
-    parentRect.update()
-    calculateDuplicates()
-    nextTick()
-    setCssVariables()
-  })
+  watch(
+    width,
+    useThrottleFn(() => {
+      childRect.update()
+      parentRect.update()
+      calculateDuplicates()
+      nextTick()
+      setCssVariables()
+    }, 100),
+  )
 
   watch(speed, () => {
     nextTick()
