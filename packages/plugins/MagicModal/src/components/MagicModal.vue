@@ -6,7 +6,7 @@
       :disabled="mappedOptions.teleport?.disabled"
     >
       <component
-        :is="options.tag"
+        :is="mappedOptions.tag"
         ref="modal"
         class="magic-modal"
         :id="toValue(id)"
