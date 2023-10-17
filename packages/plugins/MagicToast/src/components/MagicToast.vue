@@ -112,13 +112,19 @@ watch(
 </script>
 
 <style lang="css">
+@import '@maas/vue-equipment/utils/css/animations/fade-out.css';
+@import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css';
+@import '@maas/vue-equipment/utils/css/animations/slide-rtl-in.css';
+@import '@maas/vue-equipment/utils/css/animations/slide-ttb-in.css';
+@import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css';
+
 :root {
-  --magic-toast-enter-x: 0;
-  --magic-toast-enter-y: 0;
+  --magic-toast-enter-animation: unset;
+  --magic-toast-leave-animation: fade-out 300ms ease;
   --magic-toast-scale: 0.1;
   --magic-toast-transform-x: 0;
   --magic-toast-transform-y: 0;
-  --magic-toast-transition: transform 300ms ease-out;
+  --magic-toast-transition: transform 300ms ease;
   --magic-toast-z-index: 999;
   --magic-toast-gap: 0.75rem;
   --magic-toast-padding-x: 1rem;
@@ -166,10 +172,11 @@ watch(
 .magic-toast.-top-center,
 .magic-toast.-top-right {
   --magic-toast-transform-y: 10;
-  --magic-toast-enter-y: -100%;
+  --magic-toast-enter-animation: slide-ttb-in 300ms ease;
   --mt-multiplier: 1;
   & .magic-toast-component {
-    top: var(--magic-toast-padding-y, 1rem);
+    top: 0;
+    padding-top: var(--magic-toast-padding-y, 1rem);
     --mt-transform-y: 0;
   }
 }
@@ -178,11 +185,12 @@ watch(
 .magic-toast.-bottom-center,
 .magic-toast.-bottom-right {
   --magic-toast-transform-y: 10;
-  --magic-toast-enter-y: 100%;
+  --magic-toast-enter-animation: slide-btt-in 300ms ease;
   --mt-multiplier: -1;
   & .magic-toast-component {
     top: unset;
-    bottom: var(--magic-toast-padding-y, 1rem);
+    bottom: 0;
+    padding-bottom: var(--magic-toast-padding-y, 1rem);
     --mt-transform-y: 0;
   }
 }
@@ -190,7 +198,8 @@ watch(
 .magic-toast.-top-left,
 .magic-toast.-bottom-left {
   & .magic-toast-component {
-    left: var(--magic-toast-padding-x, 1rem);
+    left: 0;
+    padding-left: var(--magic-toast-padding-x, 1rem);
     --mt-transform-x: 0;
   }
 }
@@ -199,39 +208,29 @@ watch(
 .magic-toast.-bottom-right {
   & .magic-toast-component {
     left: unset;
-    right: var(--magic-toast-padding-x, 1rem);
+    right: 0;
+    padding-right: var(--magic-toast-padding-x, 1rem);
     --mt-transform-x: 0;
   }
 }
 
 .magic-toast.-from-left {
-  --magic-toast-enter-x: -100%;
-  --magic-toast-enter-y: 0;
+  --magic-toast-enter-animation: slide-ltr-in 300ms ease;
   --magic-toast-transform-y: 0;
   --magic-toast-transform-x: -30;
 }
 
 .magic-toast.-from-right {
-  --magic-toast-enter-x: 100%;
-  --magic-toast-enter-y: 0;
+  --magic-toast-enter-animation: slide-rtl-in 300ms ease;
   --magic-toast-transform-y: 0;
   --magic-toast-transform-x: 30;
 }
 
-.magic-toast--list-enter-active * {
-  transition: all 300ms ease-out;
-}
-
-.magic-toast--list-enter-from * {
-  transform: translateY(var(--magic-toast-enter-y, 0))
-    translateX(var(--magic-toast-enter-x, 0));
+.magic-toast--list-enter-active {
+  animation: var(--magic-toast-enter-animation);
 }
 
 .magic-toast--list-leave-active {
-  transition: all 150ms ease-out;
-}
-
-.magic-toast--list-leave-to {
-  opacity: 0;
+  animation: var(--magic-toast-leave-animation);
 }
 </style>

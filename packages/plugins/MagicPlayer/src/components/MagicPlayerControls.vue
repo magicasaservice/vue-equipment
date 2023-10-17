@@ -137,7 +137,7 @@ defineExpose({
   --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
   --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
   --magic-player-controls-transition-duration: 300ms;
-  --magic-player-controls-transition-timing-function: ease-out: ;
+  --magic-player-controls-transition-timing-function: ease: ;
 }
 
 @media (max-width: 640px) {
@@ -160,7 +160,7 @@ defineExpose({
   color: var(--magic-player-controls-overlay-color);
   transition-duration: 300ms;
   transition-property: opacity;
-  transition-timing-function: ease-out;
+  transition-timing-function: ease;
   display: flex;
   align-items: center;
   justify-content: center;

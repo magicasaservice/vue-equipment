@@ -111,7 +111,7 @@ const {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  transition: transform 300ms ease-out;
+  transition: transform 300ms ease;
   z-index: 10;
   background-color: var(--magic-player-thumb-bg-color);
   border-radius: 50rem;

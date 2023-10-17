@@ -159,7 +159,10 @@ watch(isActive, async (value) => {
 })
 </script>
 
-<style lang="postcss">
+<style>
+@import '@maas/vue-equipment/utils/css/animations/fade-in.css';
+@import '@maas/vue-equipment/utils/css/animations/fade-out.css';
+
 :root {
   --magic-modal-z-index: 999;
   --magic-modal-backdrop-color: rgba(0, 0, 0, 0.5);
@@ -167,6 +170,28 @@ watch(isActive, async (value) => {
   --magic-modal-content-align-items: center;
   --magic-modal-content-justify-content: center;
   --magic-modal-content-overflow-y: auto;
+}
+
+@keyframes magic-modal-content-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes magic-modal-content-leave {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
 }
 
 .magic-modal {
@@ -209,64 +234,30 @@ watch(isActive, async (value) => {
 }
 
 /* Content */
-.magic-modal--content-enter-active,
+.magic-modal--content-enter-active {
+  animation: magic-modal-content-enter 300ms ease;
+}
+
 .magic-modal--content-leave-active {
-  transition: all 300ms ease-out;
-}
-
-.magic-modal--content-enter-from {
-  opacity: 0;
-  transform: translateY(2rem);
-}
-
-.magic-modal--content-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.magic-modal--content-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.magic-modal--content-leave-to {
-  opacity: 0;
-  transform: scale(1.02);
+  animation: magic-modal-content-leave 300ms ease;
 }
 
 @media (prefers-reduced-motion) {
-  .magic-modal--content-enter-active,
-  .magic-modal--content-leave-active {
-    transition: opacity 300ms ease-out;
+  .magic-modal--content-enter-active {
+    animation: fade-in 300ms ease;
   }
 
-  .magic-modal--content-enter-from,
-  .magic-modal--content-enter-to,
-  .magic-modal--content-leave-from,
-  .magic-modal--content-leave-to {
-    transform: none;
+  .magic-modal--content-leave-active {
+    animation: fade-out 300ms ease;
   }
 }
 
 /* Backdrop */
-.magic-modal--backdrop-enter-active,
+.magic-modal--backdrop-enter-active {
+  animation: fade-in 300ms ease;
+}
+
 .magic-modal--backdrop-leave-active {
-  transition: opacity 300ms ease-out;
-}
-
-.magic-modal--backdrop-enter-from {
-  opacity: 0;
-}
-
-.magic-modal--backdrop-enter-to {
-  opacity: 1;
-}
-
-.magic-modal--backdrop-leave-from {
-  opacity: 1;
-}
-
-.magic-modal--backdrop-leave-to {
-  opacity: 0;
+  animation: fade-out 300ms ease;
 }
 </style>

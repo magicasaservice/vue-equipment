@@ -32,15 +32,28 @@ export default defineConfig(async () => {
       UnoCSS(),
     ],
     resolve: {
-      alias: {
-        '@maas/vue-equipment/composables': resolve(
-          __dirname,
-          'composables/index.ts',
-        ),
-        '@maas/vue-equipment/plugins': resolve(__dirname, 'plugins/index.ts'),
-        '@maas/vue-equipment/utils': resolve(__dirname, 'utils/index.ts'),
-        '@maas/vue-equipment/metadata': resolve(__dirname, 'metadata/index.ts'),
-      },
+      alias: [
+        {
+          find: '@maas/vue-equipment/composables',
+          replacement: resolve(__dirname, 'composables/index.ts'),
+        },
+        {
+          find: '@maas/vue-equipment/metadata',
+          replacement: resolve(__dirname, 'metadata/index.ts'),
+        },
+        {
+          find: '@maas/vue-equipment/plugins',
+          replacement: resolve(__dirname, 'plugins/index.ts'),
+        },
+        {
+          find: /^@maas\/vue-equipment\/utils$/,
+          replacement: resolve(__dirname, 'utils/index.ts'),
+        },
+        {
+          find: /^@maas\/vue-equipment\/utils\/css/,
+          replacement: resolve(__dirname, 'utils/src/css'),
+        },
+      ],
       dedupe: ['vue', '@vue/runtime-core'],
     },
   }

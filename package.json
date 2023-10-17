@@ -50,6 +50,10 @@
       "types": "./dist/utils/index.d.ts",
       "require": "./dist/utils/index.js",
       "import": "./dist/utils/index.mjs"
+    },
+    "./utils/css/*.css": {
+      "import": "./dist/utils/css/*.css",
+      "require": "./dist/utils/css/*.css"
     }
   },
   "files": [

@@ -10,11 +10,19 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   minify: false,
-  // Copy type utils to dist
   onSuccess: async () => {
+    // Copy type utils to dist
     await cpSync(
       resolve(__dirname, './src/types'),
       resolve(__dirname, '../../dist/utils/types'),
+      {
+        recursive: true,
+      },
+    )
+    // Copy css utils to dist
+    await cpSync(
+      resolve(__dirname, './src/css'),
+      resolve(__dirname, '../../dist/utils/css'),
       {
         recursive: true,
       },

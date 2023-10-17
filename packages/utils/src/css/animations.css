@@ -1,0 +1,21 @@
+@import './animations/clip-in.css';
+@import './animations/clip-out.css';
+@import './animations/fade-down-in.css';
+@import './animations/fade-down-out.css';
+@import './animations/fade-in.css';
+@import './animations/fade-out.css';
+@import './animations/fade-up-in.css';
+@import './animations/fade-up-out.css';
+@import './animations/flip-in.css';
+@import './animations/flip-out.css';
+@import './animations/slide-btt-in.css';
+@import './animations/slide-btt-out.css';
+@import './animations/slide-ltr-in.css';
+@import './animations/slide-ltr-out.css';
+@import './animations/slide-rtl-in.css';
+@import './animations/slide-rtl-out.css';
+@import './animations/slide-ttb-in.css';
+@import './animations/slide-ttb-out.css';
+@import './animations/zoom-in.css';
+@import './animations/zoom-out.css';
+

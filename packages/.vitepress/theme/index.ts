@@ -10,6 +10,7 @@ import {
 } from 'plugins'
 
 import 'uno.css'
+import '../../../dist/utils/css/animations.css'
 
 export default {
   ...DefaultTheme,

@@ -1,0 +1,79 @@
+.fade-enter-active {
+  animation: fade-in 300ms ease;
+}
+
+.fade-leave-active {
+  animation: fade-out 300ms ease;
+}
+
+.fade-up-enter-active {
+  animation: fade-up-in 300ms ease;
+}
+
+.fade-up-leave-active {
+  animation: fade-up-out 300ms ease;
+}
+
+.slide-btt-enter-active {
+  animation: slide-btt-in 300ms ease;
+}
+
+.slide-btt-leave-active {
+  animation: slide-btt-out 300ms ease;
+}
+
+.slide-ttb-enter-active {
+  animation: slide-ttb-in 300ms ease;
+}
+
+.slide-ttb-leave-active {
+  animation: slide-ttb-out 300ms ease;
+}
+
+.slide-rtl-enter-active {
+  animation: slide-rtl-in 300ms ease;
+}
+
+.slide-rtl-leave-active {
+  animation: slide-rtl-out 300ms ease;
+}
+
+.slide-ltr-enter-active {
+  animation: slide-ltr-in 300ms ease;
+}
+
+.slide-ltr-leave-active {
+  animation: slide-ltr-out 300ms ease;
+}
+
+.scroll-up-enter-active {
+  animation: scroll-up-in 300ms ease;
+}
+
+.scroll-up-leave-active {
+  animation: scroll-up-out 300ms ease;
+}
+
+.scroll-down-enter-active {
+  animation: scroll-down-in 300ms ease;
+}
+
+.scroll-down-leave-active {
+  animation: scroll-down-out 300ms ease;
+}
+
+.zoom-enter-active {
+  animation: zoom-in 300ms ease;
+}
+
+.zoom-leave-active {
+  animation: zoom-out 300ms ease;
+}
+
+.clip-enter-active {
+  animation: clip-in 0.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+
+.clip-leave-active {
+  animation: clip-out 0.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}

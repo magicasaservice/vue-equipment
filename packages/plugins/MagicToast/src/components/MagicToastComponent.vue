@@ -78,7 +78,7 @@ watchEffect(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: var(--magic-toast-transition, transform 300ms ease-out);
+  transition: var(--magic-toast-transition, transform 300ms ease);
   transform: matrix(
     var(--mt-matrix-scale),
     0,
