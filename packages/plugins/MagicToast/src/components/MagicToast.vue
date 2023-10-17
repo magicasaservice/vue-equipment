@@ -131,8 +131,8 @@ watch(
   --magic-toast-padding-y: 1rem;
 
   --mt-multiplier: 1;
-  --mt-transform-x: -50%;
-  --mt-transform-y: -50%;
+  --mt-align-items: flex-start;
+  --mt-justify-content: center;
 }
 
 .magic-toast {
@@ -156,12 +156,9 @@ watch(
   max-height: 100%;
   width: 100%;
   height: 100%;
-  & .magic-toast-component {
-    left: 50%;
-    top: 50%;
-    transform: translateX(var(--mt-transform-x, -50%))
-      translateY(var(--mt-transform-y, -50%));
-  }
+  display: flex;
+  align-items: var(--mt-align-items);
+  justify-content: var(--mt-justify-content);
 }
 
 .magic-toast__inner * {
@@ -174,10 +171,9 @@ watch(
   --magic-toast-transform-y: 10;
   --magic-toast-enter-animation: slide-ttb-in 300ms ease;
   --mt-multiplier: 1;
-  & .magic-toast-component {
-    top: 0;
+  & .magic-toast__inner {
     padding-top: var(--magic-toast-padding-y, 1rem);
-    --mt-transform-y: 0;
+    --mt-align-items: flex-start;
   }
 }
 
@@ -187,43 +183,40 @@ watch(
   --magic-toast-transform-y: 10;
   --magic-toast-enter-animation: slide-btt-in 300ms ease;
   --mt-multiplier: -1;
-  & .magic-toast-component {
-    top: unset;
-    bottom: 0;
+  & .magic-toast__inner {
     padding-bottom: var(--magic-toast-padding-y, 1rem);
-    --mt-transform-y: 0;
+    --mt-align-items: flex-end;
   }
 }
 
 .magic-toast.-top-left,
 .magic-toast.-bottom-left {
-  & .magic-toast-component {
-    left: 0;
+  & .magic-toast__inner {
     padding-left: var(--magic-toast-padding-x, 1rem);
-    --mt-transform-x: 0;
+    --mt-justify-content: flex-start;
   }
 }
 
 .magic-toast.-top-right,
 .magic-toast.-bottom-right {
-  & .magic-toast-component {
-    left: unset;
-    right: 0;
+  & .magic-toast__inner {
     padding-right: var(--magic-toast-padding-x, 1rem);
-    --mt-transform-x: 0;
+    --mt-justify-content: flex-end;
   }
 }
 
 .magic-toast.-from-left {
   --magic-toast-enter-animation: slide-ltr-in 300ms ease;
   --magic-toast-transform-y: 0;
-  --magic-toast-transform-x: -30;
+  --magic-toast-transform-x: 30;
+  --mt-multiplier: 1;
 }
 
 .magic-toast.-from-right {
   --magic-toast-enter-animation: slide-rtl-in 300ms ease;
   --magic-toast-transform-y: 0;
   --magic-toast-transform-x: 30;
+  --mt-multiplier: -1;
 }
 
 .magic-toast--list-enter-active {

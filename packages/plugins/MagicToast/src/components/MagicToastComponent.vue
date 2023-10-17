@@ -91,11 +91,12 @@ watchEffect(() => {
 
 .magic-toast-component.expanded {
   --mt-matrix-scale: 1;
-  --mt-matrix-transform-y: calc(((var(--mt-offset)) * var(--mt-multiplier)));
+  --mt-matrix-transform-y: calc(var(--mt-offset) * var(--mt-multiplier));
   --mt-matrix-transform-x: 0;
   &:not(:last-child) {
     & .magic-toast-component__inner {
       padding-bottom: calc(var(--magic-toast-gap) * var(--mt-index));
+      padding-top: calc(var(--magic-toast-gap) * var(--mt-index));
     }
   }
 }
