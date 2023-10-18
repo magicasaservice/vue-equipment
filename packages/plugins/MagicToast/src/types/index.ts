@@ -32,6 +32,10 @@ type ToastOptions = {
 type ActiveElement = {
   id: string
   height: number
+  padding: {
+    top: number
+    bottom: number
+  }
 }
 
 type ToastEvents = {

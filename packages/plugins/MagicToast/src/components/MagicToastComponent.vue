@@ -39,7 +39,7 @@ function setIndex() {
 
 function setOffset() {
   const offset = newerSiblings.value.reduce((acc, curr) => {
-    return acc + curr.height
+    return acc + curr.height - curr.padding.top - curr.padding.bottom
   }, 0)
   elRef.value?.style.setProperty('--mt-offset', `${offset}`)
 }
@@ -65,10 +65,10 @@ watchEffect(() => {
   --mt-offset: 0;
   --mt-matrix-scale: calc(1 - (var(--magic-toast-scale) * var(--mt-index, 0)));
   --mt-matrix-transform-x: calc(
-    var(--magic-toast-transform-x) * var(--mt-index, 0) * var(--mt-multiplier)
+    var(--magic-toast-transform-x) * var(--mt-index, 0) * var(--mt-multiplier-x)
   );
   --mt-matrix-transform-y: calc(
-    var(--magic-toast-transform-y) * var(--mt-index, 0) * var(--mt-multiplier)
+    var(--magic-toast-transform-y) * var(--mt-index, 0) * var(--mt-multiplier-y)
   );
   position: absolute;
   list-style: none;
@@ -91,7 +91,7 @@ watchEffect(() => {
 
 .magic-toast-component.expanded {
   --mt-matrix-scale: 1;
-  --mt-matrix-transform-y: calc(var(--mt-offset) * var(--mt-multiplier));
+  --mt-matrix-transform-y: calc(var(--mt-offset) * var(--mt-multiplier-y));
   --mt-matrix-transform-x: 0;
   &:not(:last-child) {
     & .magic-toast-component__inner {

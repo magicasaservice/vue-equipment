@@ -1,10 +1,10 @@
 import { ref, toValue, type Ref, type MaybeRef } from 'vue'
-import type { ActiveElement, Options, Toast } from './../../types'
+import type { ActiveElement, ToastOptions, Toast } from './../../types'
 import { useToastEmitter } from './../useToastEmitter'
 
 type Args = {
   id: MaybeRef<string>
-  mappedOptions: Options
+  mappedOptions: ToastOptions
   count: Ref<number | undefined>
   oldest: Ref<Toast | undefined>
 }
@@ -29,10 +29,20 @@ export function useToastCallback({ id, mappedOptions, count, oldest }: Args) {
 
   function onAfterEnter(el: Element) {
     useToastEmitter().emit('afterEnter', toValue(id))
+
     const mappedEl = el as HTMLElement
+    const style = window.getComputedStyle(mappedEl)
+
     activeElements.value = [
       ...activeElements.value,
-      { id: el.id, height: mappedEl.offsetHeight },
+      {
+        id: el.id,
+        height: mappedEl.offsetHeight,
+        padding: {
+          top: parseInt(style.paddingTop),
+          bottom: parseInt(style.paddingBottom),
+        },
+      },
     ]
   }
 
