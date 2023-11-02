@@ -36,18 +36,18 @@ export function useModalApi(
       : ref(false)
 
   // Private methods
-  const { modalStore, addIdToStore, removeIdFromStore } = useModalStore()
+  const { modalStore, addInstance, removeInstance } = useModalStore()
 
   // Public state
   const isActive = computed(() => modalStore.value.includes(mappedId.value))
 
   // Public methods
   function open() {
-    addIdToStore(mappedId.value)
+    addInstance(mappedId.value)
   }
 
   function close() {
-    removeIdFromStore(mappedId.value)
+    removeInstance(mappedId.value)
   }
 
   function trapFocus() {
