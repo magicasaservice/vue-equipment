@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, toRefs } from 'vue'
+import { ref, computed } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerApi } from '../composables/usePlayerApi'
 
@@ -53,10 +53,10 @@ const { instance } = usePlayerApi({
   src: props.src,
 })
 
-const { playing } = toRefs(instance.value?.mediaApi)
-const { touched } = toRefs(instance.value?.playerApi)
+const { playing } = instance.value?.mediaApi
+const { touched } = instance.value?.playerApi
 const { onMouseenter, onMouseleave } = instance.value?.playerApi
-const { loaded } = toRefs(instance.value?.runtimeProvider)
+const { loaded } = instance.value?.runtimeProvider
 
 useIntersectionObserver(playerRef, ([{ isIntersecting }]) => {
   if (!isIntersecting && playing.value) {

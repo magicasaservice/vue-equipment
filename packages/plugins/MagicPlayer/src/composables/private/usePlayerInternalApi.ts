@@ -1,4 +1,4 @@
-import { ref, watch, toRefs, toValue } from 'vue'
+import { ref, watch, toValue } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import type { UsePlayerInternalApiArgs } from '../../types'
@@ -7,13 +7,12 @@ import { usePlayerStore } from './usePlayerStore'
 export function usePlayerInternalApi(args: UsePlayerInternalApiArgs) {
   const touched = ref(false)
   const mouseEntered = ref(false)
-
   const fullscreenTarget = isIOS() ? args.videoRef : args.playerRef
-  const { findInstance } = usePlayerStore()
 
+  const { findInstance } = usePlayerStore()
   const instance = findInstance(toValue(args.id))
 
-  const { currentTime, playing, muted } = toRefs(instance.mediaApi)
+  const { currentTime, playing, muted } = instance.mediaApi
 
   const {
     isFullscreen,

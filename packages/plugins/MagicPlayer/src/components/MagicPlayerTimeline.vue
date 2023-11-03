@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import {} from 'vue'
 import { usePlayerApi } from '../composables/usePlayerApi'
 
 interface Props {
@@ -51,7 +51,7 @@ const {
   seekedPercentage,
   scrubbedPercentage,
   bufferedPercentage,
-} = toRefs(instance.value.controlsApi)
+} = instance.value.controlsApi
 
 const {
   onMouseenter,

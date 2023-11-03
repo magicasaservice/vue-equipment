@@ -14,7 +14,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { shallowRef, onMounted, watch, computed, toRefs, type Ref } from 'vue'
+import { shallowRef, onMounted, watch, computed, type Ref } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
 import { usePlayerApi } from '../composables/usePlayerApi'
 
@@ -39,7 +39,7 @@ const props = defineProps<Props>()
 
 const { instance } = usePlayerApi(props.id)
 
-const { seekedTime } = toRefs(instance.value.controlsApi)
+const { seekedTime } = instance.value.controlsApi
 const { pixelRatio } = useDevicePixelRatio()
 
 const canvas = shallowRef() as Ref<HTMLCanvasElement>

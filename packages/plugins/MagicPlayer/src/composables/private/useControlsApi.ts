@@ -1,4 +1,4 @@
-import { ref, computed, watch, toValue, toRefs } from 'vue'
+import { ref, computed, watch, toValue } from 'vue'
 import {
   useResizeObserver,
   useEventListener,
@@ -13,7 +13,7 @@ export function useControlsApi(args: UseControlsApiArgs) {
   const { findInstance } = usePlayerStore()
   const instance = findInstance(toValue(args.id))
 
-  const { buffered, duration, playing, currentTime } = toRefs(instance.mediaApi)
+  const { buffered, duration, playing, currentTime } = instance.mediaApi
   const { play, pause, seek } = instance.playerApi
 
   // Public values

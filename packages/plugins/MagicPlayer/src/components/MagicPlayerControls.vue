@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -99,11 +99,9 @@ const { instance } = usePlayerApi({
   popoverRef: popoverRef,
 })
 
-const { playing, waiting, muted } = toRefs(instance.value?.mediaApi)
-const { touched, mouseEntered, isFullscreen } = toRefs(
-  instance.value?.playerApi,
-)
-const { popoverOffsetX, seekedTime } = toRefs(instance.value?.controlsApi)
+const { playing, waiting, muted } = instance.value?.mediaApi
+const { touched, mouseEntered, isFullscreen } = instance.value?.playerApi
+const { popoverOffsetX, seekedTime } = instance.value?.controlsApi
 
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   instance.value.playerApi

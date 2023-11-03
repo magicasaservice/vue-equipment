@@ -1,4 +1,4 @@
-import { ref, reactive, type Ref } from 'vue'
+import { shallowRef, reactive, type ShallowRef } from 'vue'
 import type { UseMediaApiReturn } from './useMediaApi'
 import type { UsePlayerInternalApiReturn } from './usePlayerInternalApi'
 import type { UseRuntimeSourceProviderReturn } from './useRuntimeSourceProvider'
@@ -12,7 +12,7 @@ export interface PlayerInstance {
   runtimeProvider: UseRuntimeSourceProviderReturn
 }
 
-const playerStore: Ref<PlayerInstance[]> = ref([])
+const playerStore: ShallowRef<PlayerInstance[]> = shallowRef([])
 
 export function usePlayerStore() {
   function createInstance(id: string): PlayerInstance {
