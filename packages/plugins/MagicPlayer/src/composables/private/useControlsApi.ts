@@ -1,22 +1,24 @@
-import { ref, computed, watch, toValue } from 'vue'
+import { ref, computed, watch, toValue, toRefs } from 'vue'
 import {
   useResizeObserver,
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
 import { clampValue, mapValue } from '@maas/vue-equipment/utils'
-import { useInjectPlayer } from './usePlayer'
+import { usePlayerStore } from './usePlayerStore'
 
-import type { UseControlsArgs } from '../types'
+import type { UseControlsApiArgs } from '../../types'
 
-export function useControlsApi(args: UseControlsArgs) {
-  const { mediaApi, playerApi } = useInjectPlayer()
-  const { playing, buffered, duration, currentTime } = mediaApi
-  const { play, pause, seek } = playerApi
+export function useControlsApi(args: UseControlsApiArgs) {
+  const { findInstance } = usePlayerStore()
+  const instance = findInstance(toValue(args.id))
+
+  const { buffered, duration, playing, currentTime } = toRefs(instance.mediaApi)
+  const { play, pause, seek } = instance.playerApi
 
   // Public values
-  const entered = ref(false)
   const dragging = ref(false)
+  const mouseEntered = ref(false)
   const seekedTime = ref(0)
   const seekedPercentage = ref(0)
   const scrubbedPercentage = ref(0)
@@ -24,7 +26,9 @@ export function useControlsApi(args: UseControlsArgs) {
   const popoverOffsetX = ref(0)
 
   const bufferedPercentage = computed(() => {
-    const endBuffer = buffered.value.length > 0 ? buffered.value[0][1] : 0
+    if (!instance?.mediaApi) return 0
+
+    const endBuffer = buffered.value?.length > 0 ? buffered.value[0][1] : 0
     const percentage = (endBuffer / duration.value) * 100
     return clampValue(percentage, 0, thumbPercentage.value)
   })
@@ -96,19 +100,19 @@ export function useControlsApi(args: UseControlsArgs) {
   }
 
   // Public functions
-  function onMouseEnter() {
+  function onMouseenter() {
     getTimelineTrackSize()
     getPopoverSizes()
-    entered.value = true
+    mouseEntered.value = true
   }
 
-  function onMouseLeave() {
-    entered.value = false
+  function onMouseleave() {
+    mouseEntered.value = false
     dragging.value = false
     seekedTime.value = 0
   }
 
-  function onPointerDown(e: MouseEvent | TouchEvent) {
+  function onPointerdown(e: MouseEvent | TouchEvent) {
     dragging.value = true
     resumePlay.value = playing.value
     pause()
@@ -116,14 +120,14 @@ export function useControlsApi(args: UseControlsArgs) {
     seekToTrackPosition(x)
   }
 
-  function onPointerUp() {
+  function onPointerup() {
     dragging.value = false
     if (resumePlay.value) {
       play()
     }
   }
 
-  function onPointerMove(e: MouseEvent | TouchEvent) {
+  function onPointermove(e: MouseEvent | TouchEvent) {
     const x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX
     seekToTrackPosition(x)
   }
@@ -156,7 +160,7 @@ export function useControlsApi(args: UseControlsArgs) {
   )
 
   return {
-    entered,
+    mouseEntered,
     dragging,
     seekedTime,
     seekedPercentage,
@@ -164,11 +168,11 @@ export function useControlsApi(args: UseControlsArgs) {
     bufferedPercentage,
     thumbPercentage,
     popoverOffsetX,
-    onMouseEnter,
-    onMouseLeave,
-    onPointerDown,
-    onPointerUp,
-    onPointerMove,
+    onMouseenter,
+    onMouseleave,
+    onPointerdown,
+    onPointerup,
+    onPointermove,
   }
 }
 

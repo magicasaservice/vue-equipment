@@ -7,7 +7,7 @@
       fill="none"
       stroke-width="4"
       stroke-linecap="round"
-    ></circle>
+    />
   </svg>
 </template>
 

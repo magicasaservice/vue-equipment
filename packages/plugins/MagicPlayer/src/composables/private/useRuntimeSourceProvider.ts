@@ -1,16 +1,11 @@
 import { ref, onMounted, onUnmounted, toValue, type Ref } from 'vue'
 
-import type { UsePlayerArgs } from './../types'
+import type { UseRuntimeSourceProviderArgs } from '../../types'
 import type Hls from 'hls.js'
 
 export type UseRuntimeSourceProviderReturn = {
   loaded: Ref<boolean>
 }
-
-type UseRuntimeSourceProviderArgs = Pick<
-  UsePlayerArgs,
-  'videoRef' | 'srcType' | 'src'
->
 
 export function useRuntimeSourceProvider(
   args: UseRuntimeSourceProviderArgs,

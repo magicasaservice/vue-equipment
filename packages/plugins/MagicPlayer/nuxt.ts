@@ -20,22 +20,7 @@ export default defineNuxtModule({
 
     addImports({
       from: '@maas/vue-equipment/plugins/MagicPlayer',
-      name: 'useProvidePlayer',
-    })
-
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicPlayer',
-      name: 'useInjectPlayer',
-    })
-
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicPlayer',
-      name: 'useProvideControls',
-    })
-
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicPlayer',
-      name: 'useInjectControls',
+      name: 'usePlayerApi',
     })
   },
 })

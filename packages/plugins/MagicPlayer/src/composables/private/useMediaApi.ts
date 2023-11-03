@@ -1,9 +1,8 @@
-import { ref, watch, unref, toValue, type MaybeRef } from 'vue'
+import { ref, watch, unref, toValue } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
+import type { UseMediaApiArgs } from '../../types'
 
-export function useMediaApi(
-  target: MaybeRef<HTMLMediaElement | null | undefined>,
-) {
+export function useMediaApi(args: UseMediaApiArgs) {
   // Public values
   const currentTime = ref(0)
   const duration = ref(0)
@@ -17,6 +16,8 @@ export function useMediaApi(
   const buffered = ref<[number, number][]>([])
   const muted = ref(false)
 
+  const { mediaRef } = args
+
   // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
@@ -26,22 +27,22 @@ export function useMediaApi(
   }
 
   // Watcher
-  watch([target, volume], () => {
-    const el = toValue(target)
+  watch([mediaRef, volume], () => {
+    const el = toValue(mediaRef)
     if (!el) return
 
     el.volume = volume.value
   })
 
-  watch([target, muted], () => {
-    const el = toValue(target)
+  watch([mediaRef, muted], () => {
+    const el = toValue(mediaRef)
     if (!el) return
 
     el.muted = muted.value
   })
 
-  watch([target, rate], () => {
-    const el = toValue(target)
+  watch([mediaRef, rate], () => {
+    const el = toValue(mediaRef)
     if (!el) return
 
     el.playbackRate = rate.value
@@ -51,7 +52,7 @@ export function useMediaApi(
   const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(
     currentTime,
     (time) => {
-      const el = toValue(target)
+      const el = toValue(mediaRef)
       if (!el) return
       el.currentTime = unref(time)
     },
@@ -60,72 +61,72 @@ export function useMediaApi(
   const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(
     playing,
     (isPlaying) => {
-      const el = toValue(target)
+      const el = toValue(mediaRef)
       if (!el) return
       isPlaying ? el.play() : el.pause()
     },
   )
 
   // Listener
-  useEventListener(target, 'timeupdate', () => {
+  useEventListener(mediaRef, 'timeupdate', () => {
     ignoreCurrentTimeUpdates(
-      () => (currentTime.value = toValue(target)!.currentTime),
+      () => (currentTime.value = toValue(mediaRef)!.currentTime),
     )
   })
 
-  useEventListener(target, 'durationchange', () => {
-    duration.value = toValue(target)!.duration
+  useEventListener(mediaRef, 'durationchange', () => {
+    duration.value = toValue(mediaRef)!.duration
   })
 
-  useEventListener(target, 'progress', () => {
-    buffered.value = timeRangeToArray(toValue(target)!.buffered)
+  useEventListener(mediaRef, 'progress', () => {
+    buffered.value = timeRangeToArray(toValue(mediaRef)!.buffered)
   })
 
-  useEventListener(target, 'seeking', () => {
+  useEventListener(mediaRef, 'seeking', () => {
     seeking.value = true
   })
 
-  useEventListener(target, 'seeked', () => {
+  useEventListener(mediaRef, 'seeked', () => {
     seeking.value = false
   })
 
-  useEventListener(target, ['waiting', 'loadstart'], () => {
+  useEventListener(mediaRef, ['waiting', 'loadstart'], () => {
     waiting.value = true
     ignorePlayingUpdates(() => (playing.value = false))
   })
 
-  useEventListener(target, 'loadeddata', () => {
+  useEventListener(mediaRef, 'loadeddata', () => {
     waiting.value = false
   })
 
-  useEventListener(target, 'playing', () => {
+  useEventListener(mediaRef, 'playing', () => {
     waiting.value = false
     ended.value = false
     ignorePlayingUpdates(() => (playing.value = true))
   })
 
-  useEventListener(target, 'ratechange', () => {
-    rate.value = toValue(target)!.playbackRate
+  useEventListener(mediaRef, 'ratechange', () => {
+    rate.value = toValue(mediaRef)!.playbackRate
   })
 
-  useEventListener(target, 'stalled', () => {
+  useEventListener(mediaRef, 'stalled', () => {
     stalled.value = true
   })
 
-  useEventListener(target, 'ended', () => {
+  useEventListener(mediaRef, 'ended', () => {
     ended.value = true
   })
 
-  useEventListener(target, 'pause', () => {
+  useEventListener(mediaRef, 'pause', () => {
     playing.value = false
   })
 
-  useEventListener(target, 'play', () => {
+  useEventListener(mediaRef, 'play', () => {
     playing.value = true
   })
 
-  useEventListener(target, 'volumechange', () => {
-    const el = toValue(target)
+  useEventListener(mediaRef, 'volumechange', () => {
+    const el = toValue(mediaRef)
     if (!el) return
     volume.value = el.volume
     muted.value = el.muted

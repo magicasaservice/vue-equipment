@@ -10,27 +10,10 @@
       '-waiting': waiting,
       '-idle': idle,
       '-not-idle': !idle,
-      '-hover': isMouseEnter,
-      '-not-hover': !isMouseEnter,
+      '-hover': mouseEntered,
+      '-not-hover': !mouseEntered,
     }"
-    @mouseenter="isMouseEnter = true"
-    @mouseleave="isMouseEnter = false"
   >
-    <div class="magic-player-controls__overlay" @click.stop="togglePlay">
-      <template v-if="waiting">
-        <button>
-          <icon-waiting />
-        </button>
-      </template>
-      <template v-else>
-        <button v-if="!playing">
-          <icon-play />
-        </button>
-        <button v-else>
-          <icon-pause />
-        </button>
-      </template>
-    </div>
     <div class="magic-player-controls__bar">
       <div
         v-if="$slots.seekPopover"
@@ -44,31 +27,43 @@
       <div class="magic-player-controls__bar--inner" ref="barRef">
         <div class="magic-player-controls__item -shrink-0">
           <button v-if="!playing" @click="play">
-            <icon-play />
+            <slot name="playIcon">
+              <icon-play />
+            </slot>
           </button>
           <button v-else @click="pause">
-            <icon-pause />
+            <slot name="pauseIcon">
+              <icon-pause />
+            </slot>
           </button>
         </div>
         <div class="magic-player-controls__item -grow">
           <div class="magic-player-controls__timeline" ref="trackRef">
-            <magic-player-timeline />
+            <magic-player-timeline :id="id" />
           </div>
         </div>
         <div class="magic-player-controls__item -shrink-0">
           <button v-if="muted" @click="unmute">
-            <icon-volume-off />
+            <slot name="volumeOffIcon">
+              <icon-volume-off />
+            </slot>
           </button>
           <button v-else @click="mute">
-            <icon-volume-on />
+            <slot name="volumeOnIcon">
+              <icon-volume-on />
+            </slot>
           </button>
         </div>
         <div class="magic-player-controls__item -shrink-0">
           <button v-if="isFullscreen" @click="exitFullscreen">
-            <icon-fullscreen-exit />
+            <slot name="fullscreenExitIcon">
+              <icon-fullscreen-exit />
+            </slot>
           </button>
           <button v-else @click="enterFullscreen">
-            <icon-fullscreen-enter />
+            <slot name="fullscreenEnterIcon">
+              <icon-fullscreen-enter />
+            </slot>
           </button>
         </div>
       </div>
@@ -77,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -85,59 +80,54 @@ import IconVolumeOn from './icons/VolumeOn.vue'
 import IconVolumeOff from './icons/VolumeOff.vue'
 import IconFullscreenEnter from './icons/FullscreenEnter.vue'
 import IconFullscreenExit from './icons/FullscreenExit.vue'
-import IconWaiting from './icons/Waiting.vue'
-import { useInjectPlayer } from '../composables/usePlayer'
-import { useProvideControls } from '../composables/useControls'
+import { usePlayerApi } from '../composables/usePlayerApi'
+
+interface Props {
+  id: string
+}
+
+const props = defineProps<Props>()
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 const popoverRef = ref<HTMLDivElement | undefined>(undefined)
 
-const { mediaApi, playerApi } = useInjectPlayer()
-const { controlsApi } = useProvideControls({
+const { instance } = usePlayerApi({
+  id: props.id,
   barRef: barRef,
   trackRef: trackRef,
   popoverRef: popoverRef,
 })
 
-const { playing, muted, waiting } = mediaApi
-const {
-  touched,
-  isFullscreen,
-  play,
-  pause,
-  togglePlay,
-  mute,
-  unmute,
-  enterFullscreen,
-  exitFullscreen,
-} = playerApi
+const { playing, waiting, muted } = toRefs(instance.value?.mediaApi)
+const { touched, mouseEntered, isFullscreen } = toRefs(
+  instance.value?.playerApi,
+)
+const { popoverOffsetX, seekedTime } = toRefs(instance.value?.controlsApi)
 
-const { popoverOffsetX, seekedTime } = controlsApi
+const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
+  instance.value.playerApi
 
 const { idle } = useIdle(3000)
-const isMouseEnter = ref(false)
-
-defineExpose({
-  controlsApi,
-})
 </script>
 
 <style lang="css">
 :root {
   --magic-player-controls-height: 3rem;
-  --magic-player-controls-bottom: 1.5rem;
   --magic-player-controls-padding: 0.75rem;
+  --magic-player-controls-bottom: 1.5rem;
+  --magic-player-controls-left: 1.5rem;
+  --magic-player-controls-width: calc(
+    100% - (var(--magic-player-controls-left) * 2)
+  );
   --magic-player-controls-gap: 1rem;
   --magic-player-controls-border-radius: 50rem;
   --magic-player-controls-background-color: rgba(32, 32, 32, 0.8);
   --magic-player-controls-backdrop-filter: blur(80px);
   --magic-player-controls-color: rgba(255, 255, 255, 1);
   --magic-player-controls-icon-width: 1.25rem;
-  --magic-player-controls-overlay-background-color: rgba(0, 0, 0, 0.3);
-  --magic-player-controls-overlay-color: rgba(255, 255, 255, 1);
   --magic-player-controls-transition-duration: 300ms;
-  --magic-player-controls-transition-timing-function: ease: ;
+  --magic-player-controls-transition-timing-function: ease;
 }
 
 @media (max-width: 640px) {
@@ -151,41 +141,15 @@ defineExpose({
 .magic-player-controls {
   position: absolute;
   inset: 0;
-}
-
-.magic-player-controls__overlay {
-  position: absolute;
-  inset: 0;
-  background-color: var(--magic-player-controls-overlay-background-color);
-  color: var(--magic-player-controls-overlay-color);
-  transition-duration: 300ms;
-  transition-property: opacity;
-  transition-timing-function: ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.magic-player-controls__overlay button {
-  background-color: transparent;
-  color: inherit;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  outline: none;
-  appearance: none;
-  cursor: pointer;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 100%;
+  pointer-events: none;
 }
 
 .magic-player-controls__bar {
   position: absolute;
-  width: calc(100% - (var(--magic-player-controls-bottom) * 2));
+  width: var(--magic-player-controls-width);
   bottom: var(--magic-player-controls-bottom);
-  left: 50%;
-  transform: translateX(-50%);
+  left: var(--magic-player-controls-left);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -196,6 +160,7 @@ defineExpose({
     --magic-player-controls-transition-timing-function
   );
   transition-property: opacity, transform;
+  pointer-events: auto;
 }
 
 .magic-player-controls__bar--inner {
@@ -251,15 +216,32 @@ defineExpose({
   width: 100%;
 }
 
-.magic-player-controls.-playing.-idle .magic-player-controls__bar,
-.magic-player-controls.-playing.-not-hover .magic-player-controls__bar,
-.magic-player-controls.-untouched .magic-player-controls__bar {
+.magic-player-controls:not(.-standalone).-playing.-idle
+  .magic-player-controls__bar,
+.magic-player-controls:not(.-standalone).-playing.-not-hover
+  .magic-player-controls__bar,
+.magic-player-controls:not(.-standalone).-untouched
+  .magic-player-controls__bar {
   opacity: 0;
-  transform: translate(-50%, 25%);
+  transform: translateY(25%);
 }
 
-.magic-player-controls.-playing.-idle .magic-player-controls__overlay,
-.magic-player-controls.-playing.-not-hover .magic-player-controls__overlay {
-  opacity: 0;
+.magic-player-controls.-standalone {
+  position: relative;
+  inset: unset;
+  --magic-player-controls-width: 100%;
+  --magic-player-controls-bottom: 0;
+  --magic-player-controls-left: 0;
+  --magic-player-controls-padding: 0;
+  --magic-player-controls-background-color: unset;
+  --magic-player-controls-border-radius: unset;
+  --magic-player-controls-background-color: transparent;
+  --magic-player-controls-backdrop-filter: none;
+  --magic-player-controls-transition-duration: unset;
+  --magic-player-controls-transition-timing-function: unset;
+}
+
+.magic-player-controls.-standalone .magic-player-controls__bar {
+  position: relative;
 }
 </style>

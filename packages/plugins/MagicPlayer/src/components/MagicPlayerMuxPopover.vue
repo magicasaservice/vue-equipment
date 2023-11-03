@@ -14,16 +14,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { shallowRef, onMounted, watch, computed } from 'vue'
+import { shallowRef, onMounted, watch, computed, toRefs, type Ref } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
-import { useInjectControls } from '../composables/useControls'
-
-const { controlsApi } = useInjectControls()
-const { seekedTime } = controlsApi
-
-import type { Ref } from 'vue'
+import { usePlayerApi } from '../composables/usePlayerApi'
 
 type Props = {
+  id: string
   playbackId: string
 }
 
@@ -40,12 +36,16 @@ type MuxStoryboard = {
 }
 
 const props = defineProps<Props>()
-const canvas = shallowRef() as Ref<HTMLCanvasElement>
-let context: CanvasRenderingContext2D | undefined = undefined
-const storyboard = shallowRef<MuxStoryboard | undefined>()
-let image: HTMLImageElement | undefined = undefined
 
+const { instance } = usePlayerApi(props.id)
+
+const { seekedTime } = toRefs(instance.value.controlsApi)
 const { pixelRatio } = useDevicePixelRatio()
+
+const canvas = shallowRef() as Ref<HTMLCanvasElement>
+const storyboard = shallowRef<MuxStoryboard | undefined>()
+let context: CanvasRenderingContext2D | undefined = undefined
+let image: HTMLImageElement | undefined = undefined
 
 const thumbWidth = computed(() => {
   if (!storyboard.value) return 0
@@ -112,7 +112,7 @@ function drawFrame(time: number) {
 }
 
 onMounted(init)
-watch(() => seekedTime.value, drawFrame)
+watch(() => seekedTime?.value, drawFrame)
 </script>
 
 <style lang="css">

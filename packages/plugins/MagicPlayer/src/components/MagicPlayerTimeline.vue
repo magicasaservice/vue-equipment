@@ -2,11 +2,11 @@
   <div class="magic-player-timeline">
     <div
       class="magic-player-timeline__target"
-      @mouseenter="onMouseEnter"
-      @mouseleave="onMouseLeave"
-      @pointerdown="onPointerDown"
-      @pointerup="onPointerUp"
-      @pointermove="onPointerMove"
+      @mouseenter="onMouseenter"
+      @mouseleave="onMouseleave"
+      @pointerdown="onPointerdown"
+      @pointerup="onPointerup"
+      @pointermove="onPointermove"
     >
       <div class="magic-player-timeline__slider-track">
         <div
@@ -21,7 +21,7 @@
             :style="{ left: `${bufferedPercentage}%` }"
           />
           <div
-            v-show="entered"
+            v-show="mouseEntered"
             class="magic-player-timeline__slider-seeked"
             :style="{ left: `${seekedPercentage}%` }"
           />
@@ -36,20 +36,30 @@
 </template>
 
 <script setup lang="ts">
-import { useInjectControls } from '../composables/useControls'
+import { toRefs } from 'vue'
+import { usePlayerApi } from '../composables/usePlayerApi'
 
-const { controlsApi } = useInjectControls()
+interface Props {
+  id: string
+}
+
+const props = defineProps<Props>()
+const { instance } = usePlayerApi(props.id)
+
 const {
-  entered,
+  mouseEntered,
   seekedPercentage,
   scrubbedPercentage,
   bufferedPercentage,
-  onMouseEnter,
-  onMouseLeave,
-  onPointerDown,
-  onPointerUp,
-  onPointerMove,
-} = controlsApi
+} = toRefs(instance.value.controlsApi)
+
+const {
+  onMouseenter,
+  onMouseleave,
+  onPointerdown,
+  onPointerup,
+  onPointermove,
+} = instance.value.controlsApi
 </script>
 
 <style lang="css">

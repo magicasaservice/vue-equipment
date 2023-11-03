@@ -1,5 +1,11 @@
 <template>
-  <div ref="playerRef" class="magic-player" :style="computedStyle">
+  <div
+    ref="playerRef"
+    class="magic-player"
+    :style="computedStyle"
+    @mouseenter="onMouseenter"
+    @mouseleave="onMouseleave"
+  >
     <video
       ref="videoRef"
       class="magic-player-video"
@@ -14,13 +20,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, toRefs } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { useProvidePlayer } from '../composables/usePlayer'
+import { usePlayerApi } from '../composables/usePlayerApi'
 
 import type { SourceType } from './../types'
 
 export type MagicPlayerProps = {
+  id: string
   srcType?: SourceType
   src: string
   ratio?: string
@@ -37,19 +44,23 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
-const { mediaApi, playerApi, runtimeProvider } = useProvidePlayer({
-  playerRef: playerRef,
+// Initialize instance
+const { instance } = usePlayerApi({
+  id: props.id,
   videoRef: videoRef,
-  src: props.src,
+  playerRef: playerRef,
   srcType: props.srcType,
+  src: props.src,
 })
-const { playing } = mediaApi
-const { touched, pause } = playerApi
-const { loaded } = runtimeProvider
+
+const { playing } = toRefs(instance.value?.mediaApi)
+const { touched } = toRefs(instance.value?.playerApi)
+const { onMouseenter, onMouseleave } = instance.value?.playerApi
+const { loaded } = toRefs(instance.value?.runtimeProvider)
 
 useIntersectionObserver(playerRef, ([{ isIntersecting }]) => {
   if (!isIntersecting && playing.value) {
-    pause()
+    instance.value.playerApi.pause()
   }
 })
 
@@ -69,12 +80,6 @@ const computedStyle = computed(() => {
         ? `${computedRatio.value[0]}/${computedRatio.value[1]}`
         : undefined,
   }
-})
-
-defineExpose({
-  playerApi,
-  mediaApi,
-  runtimeProvider,
 })
 </script>
 

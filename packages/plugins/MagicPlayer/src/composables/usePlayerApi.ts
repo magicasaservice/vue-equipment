@@ -1,67 +1,90 @@
-import { ref, watch } from 'vue'
-import { useFullscreen } from '@vueuse/core'
-import { isIOS } from '@maas/vue-equipment/utils'
-import type { UseMediaApiReturn } from './useMediaApi'
-import type { UsePlayerArgs } from '../types'
-
-type UsePlayerApiArgs = Pick<UsePlayerArgs, 'playerRef' | 'videoRef'> & {
-  mediaApi: UseMediaApiReturn
-}
+import { uuid } from '@maas/vue-equipment/utils'
+import { computed, onUnmounted, toValue, type MaybeRef, isRef } from 'vue'
+import { usePlayerStore } from './private/usePlayerStore'
+import { usePlayerInternalApi } from './private/usePlayerInternalApi'
+import { useMediaApi } from './private/useMediaApi'
+import { useControlsApi } from './private/useControlsApi'
+import { useRuntimeSourceProvider } from './private/useRuntimeSourceProvider'
+import type { UsePlayerApiArgs } from '../types'
 
 export function usePlayerApi(args: UsePlayerApiArgs) {
-  const touched = ref(false)
-  const fullscreenTarget = isIOS() ? args.videoRef : args.playerRef
+  const { findInstance, addInstance, removeInstance } = usePlayerStore()
 
-  const { currentTime, playing, muted } = args.mediaApi
-  const {
-    isFullscreen,
-    enter: enterFullscreen,
-    exit: exitFullscreen,
-    toggle: toggleFullscreen,
-  } = useFullscreen(fullscreenTarget)
-
-  function play() {
-    playing.value = true
-  }
-
-  function pause() {
-    playing.value = false
-  }
-
-  function togglePlay() {
-    playing.value = !playing.value
-  }
-
-  function seek(time: number) {
-    currentTime.value = time
-  }
-
-  function mute() {
-    muted.value = true
-  }
-
-  function unmute() {
-    muted.value = false
-  }
-
-  watch(playing, () => {
-    if (!touched.value) {
-      touched.value = true
+  // Private state
+  const mappedId = computed(() => {
+    if (typeof args === 'string') {
+      return toValue(args) || uuid()
+    } else if ('id' in args) {
+      return toValue(args.id) || uuid()
+    } else {
+      return uuid()
     }
   })
+  const instance = computed(() => findInstance(toValue(mappedId)))
+
+  // Private methods
+  function initialize() {
+    const id = toValue(mappedId)
+    let instance = findInstance(id)
+
+    // If no instance is found, create one
+    if (!instance) {
+      instance = addInstance(id)
+    }
+
+    // If any args are provided, they are used to full initialize the instance
+    // The order here is important, since some composables depend on each other
+    if (typeof args !== 'string') {
+      if ('mediaRef' in args) {
+        instance.mediaApi = useMediaApi({ mediaRef: args.mediaRef })
+      } else if ('videoRef' in args) {
+        instance.mediaApi = useMediaApi({ mediaRef: args.videoRef })
+      }
+
+      if ('videoRef' in args && 'playerRef' in args) {
+        instance.playerApi = usePlayerInternalApi({
+          id,
+          playerRef: args.playerRef,
+          videoRef: args.videoRef,
+        })
+      }
+
+      if ('videoRef' in args && 'srcType' in args && 'src' in args) {
+        instance.runtimeProvider = useRuntimeSourceProvider({
+          videoRef: args.videoRef,
+          srcType: args.srcType!,
+          src: args.src!,
+        })
+      }
+
+      if ('barRef' in args && 'trackRef' in args) {
+        instance.controlsApi = useControlsApi({
+          id,
+          barRef: args.barRef,
+          trackRef: args.trackRef,
+          popoverRef: args.popoverRef,
+        })
+      }
+    }
+
+    return instance
+  }
+
+  function destroy(id: string) {
+    if (!id) return
+    removeInstance(toValue(id))
+  }
+
+  // Lifecycle
+  onUnmounted(() => {
+    destroy(toValue(mappedId))
+  })
+
+  // Initialize within setup
+  initialize()
 
   return {
-    isFullscreen,
-    touched,
-    play,
-    pause,
-    togglePlay,
-    seek,
-    mute,
-    unmute,
-    enterFullscreen,
-    exitFullscreen,
-    toggleFullscreen,
+    instance,
   }
 }
 
