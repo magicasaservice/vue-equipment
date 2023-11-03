@@ -84,12 +84,15 @@ const computedStyle = computed(() => {
 </script>
 
 <style lang="css">
+:root {
+  --magic-player-aspect-ratio: 16 / 9;
+}
+
 .magic-player {
-  --aspect-ratio: 16 / 9;
   position: relative;
   width: 100%;
   overflow: hidden;
-  aspect-ratio: var(--aspect-ratio);
+  aspect-ratio: var(--magic-player-aspect-ratio);
 }
 
 .magic-player-video {

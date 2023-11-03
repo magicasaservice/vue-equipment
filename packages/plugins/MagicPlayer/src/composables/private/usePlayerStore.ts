@@ -3,6 +3,7 @@ import type { UseMediaApiReturn } from './useMediaApi'
 import type { UsePlayerInternalApiReturn } from './usePlayerInternalApi'
 import type { UseRuntimeSourceProviderReturn } from './useRuntimeSourceProvider'
 import type { UseControlsApiReturn } from './useControlsApi'
+import type { UsePlayerApiArgs } from '../../types'
 
 export interface PlayerInstance {
   id: string
@@ -10,18 +11,26 @@ export interface PlayerInstance {
   playerApi: UsePlayerInternalApiReturn
   controlsApi: UseControlsApiReturn
   runtimeProvider: UseRuntimeSourceProviderReturn
+  args: UsePlayerApiArgs
 }
 
 const playerStore: ShallowRef<PlayerInstance[]> = shallowRef([])
 
 export function usePlayerStore() {
+  const defaultMediaApi = reactive({}) as UseMediaApiReturn
+  const defaultPlayerApi = reactive({}) as UsePlayerInternalApiReturn
+  const defaultControlsApi = reactive({}) as UseControlsApiReturn
+  const defaultRuntimeProvider = reactive({}) as UseRuntimeSourceProviderReturn
+  const defaultArgs = reactive({}) as UsePlayerApiArgs
+
   function createInstance(id: string): PlayerInstance {
     const instance: PlayerInstance = {
       id: id,
-      mediaApi: reactive({}) as UseMediaApiReturn,
-      playerApi: reactive({}) as UsePlayerInternalApiReturn,
-      controlsApi: reactive({}) as UseControlsApiReturn,
-      runtimeProvider: reactive({}) as UseRuntimeSourceProviderReturn,
+      mediaApi: defaultMediaApi,
+      playerApi: defaultPlayerApi,
+      controlsApi: defaultControlsApi,
+      runtimeProvider: defaultRuntimeProvider,
+      args: defaultArgs,
     } as PlayerInstance
     return instance
   }

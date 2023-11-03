@@ -1,5 +1,5 @@
 import { uuid } from '@maas/vue-equipment/utils'
-import { computed, onUnmounted, toValue, type MaybeRef, isRef } from 'vue'
+import { computed, onUnmounted, toValue, nextTick, type MaybeRef } from 'vue'
 import { usePlayerStore } from './private/usePlayerStore'
 import { usePlayerInternalApi } from './private/usePlayerInternalApi'
 import { useMediaApi } from './private/useMediaApi'
@@ -7,7 +7,7 @@ import { useControlsApi } from './private/useControlsApi'
 import { useRuntimeSourceProvider } from './private/useRuntimeSourceProvider'
 import type { UsePlayerApiArgs } from '../types'
 
-export function usePlayerApi(args: UsePlayerApiArgs) {
+export function usePlayerApi(args: UsePlayerApiArgs | MaybeRef<string>) {
   const { findInstance, addInstance, removeInstance } = usePlayerStore()
 
   // Private state
@@ -20,6 +20,8 @@ export function usePlayerApi(args: UsePlayerApiArgs) {
       return uuid()
     }
   })
+
+  // Public state
   const instance = computed(() => findInstance(toValue(mappedId)))
 
   // Private methods

@@ -25,16 +25,14 @@ type UseRuntimeSourceProviderArgs = {
   src: string
 }
 
-type UsePlayerApiArgs =
-  | MaybeRef<string>
-  | (Partial<
-      UseMediaApiArgs &
-        UseControlsApiArgs &
-        UsePlayerInternalApiArgs &
-        UseRuntimeSourceProviderArgs
-    > & {
-      id: MaybeRef<string>
-    })
+type UsePlayerApiArgs = Partial<
+  UseMediaApiArgs &
+    UseControlsApiArgs &
+    UsePlayerInternalApiArgs &
+    UseRuntimeSourceProviderArgs
+> & {
+  id: MaybeRef<string>
+}
 
 export type {
   SourceType,

@@ -99,9 +99,9 @@ const { instance } = usePlayerApi({
   popoverRef: popoverRef,
 })
 
-const { playing, waiting, muted } = instance.value?.mediaApi
-const { touched, mouseEntered, isFullscreen } = instance.value?.playerApi
-const { popoverOffsetX, seekedTime } = instance.value?.controlsApi
+const { playing, waiting, muted } = instance.value.mediaApi
+const { touched, mouseEntered, isFullscreen } = instance.value.playerApi
+const { popoverOffsetX, seekedTime } = instance.value.controlsApi
 
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   instance.value.playerApi

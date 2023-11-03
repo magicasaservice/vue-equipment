@@ -50,8 +50,7 @@ const props = defineProps<Props>()
 const { instance } = usePlayerApi(props.id)
 
 const { playing, waiting } = instance.value.mediaApi
-const { mouseEntered } = instance.value.playerApi
-const { togglePlay } = instance.value.playerApi
+const { mouseEntered, togglePlay } = instance.value.playerApi
 
 const { idle } = useIdle(3000)
 </script>
