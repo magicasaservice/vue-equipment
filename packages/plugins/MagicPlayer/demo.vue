@@ -40,14 +40,14 @@
     </magic-player>
   </div>
 
-  <p>Unnested controls</p>
+  <p>Standalone controls</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
       src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
-      id="unnested-player"
+      id="standalone-player"
     />
     <div class="relative w-full pt-4 flex items-center">
-      <magic-player-controls id="unnested-player" class="-standalone" />
+      <magic-player-controls id="standalone-player" class="-standalone" />
     </div>
   </div>
 </template>
