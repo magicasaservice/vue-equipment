@@ -2,6 +2,7 @@
   <p>File [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
+      autoplay
       src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="default-player"
     >
