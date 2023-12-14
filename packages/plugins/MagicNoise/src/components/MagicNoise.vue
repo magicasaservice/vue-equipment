@@ -14,7 +14,7 @@ import { useNoiseApi } from '../composables/useNoiseApi'
 import type { NoiseOptions } from '../types'
 
 interface Props {
-  options: NoiseOptions
+  options?: NoiseOptions
   pause?: boolean
 }
 
@@ -30,6 +30,7 @@ const noiseApi = useNoiseApi({
   offCanvasRef,
   options: props.options,
 })
+
 const {
   initialize,
   drawControls,
