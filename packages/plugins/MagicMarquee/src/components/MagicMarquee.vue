@@ -98,7 +98,6 @@ defineExpose({
   animation-direction: var(--magic-marquee-animation-direction, normal);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  animation-delay: 0;
   flex-shrink: 0;
   flex-grow: 0;
 }
