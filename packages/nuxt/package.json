@@ -1,6 +1,10 @@
 {
   "name": "nuxt",
   "version": "0.12.0",
+  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "dependencies": {
+    "@nuxt/kit": "^3.7.1"
+  },
   "devDependencies": {
     "@nuxt/devtools": "0.7.4",
     "@nuxt/eslint-config": "^0.1.1",
@@ -21,8 +25,5 @@
     "test:watch": "vitest watch"
   },
   "type": "module",
-  "sideEffects": false,
-  "dependencies": {
-    "@nuxt/kit": "^3.7.1"
-  }
+  "sideEffects": false
 }

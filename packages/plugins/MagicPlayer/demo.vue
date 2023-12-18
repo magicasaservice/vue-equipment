@@ -44,10 +44,24 @@
   <div class="w-full aspect-[16/9]">
     <magic-player
       src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
-      id="standalone-player"
+      id="standalone-controls"
     />
     <div class="relative w-full pt-4 flex items-center">
-      <magic-player-controls id="standalone-player" class="-standalone" />
+      <magic-player-controls id="standalone-controls" class="-standalone" />
     </div>
+  </div>
+
+  <p>Standalone controls before video (currently broken)</p>
+  <div class="relative w-full pt-4 flex items-center">
+    <!-- <magic-player-controls
+      id="standalone-controls-before"
+      class="-standalone"
+    /> -->
+  </div>
+  <div class="w-full aspect-[16/9]">
+    <magic-player
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
+      id="standalone-controls-before"
+    />
   </div>
 </template>

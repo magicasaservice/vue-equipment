@@ -16,6 +16,7 @@ export function MarkdownTransform(): Plugin {
     name: 'vueuse-md-transform',
     enforce: 'pre',
     async transform(code, id) {
+      console.log('code:', code)
       if (!id.match(/\.md\b/)) return null
 
       const [pkg, _name, i] = id.split('/').slice(-3)
