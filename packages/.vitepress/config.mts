@@ -8,12 +8,6 @@ export default defineConfig({
   title: 'Vue Equipment',
   description:
     'A magic collection of Vue composables, plugins, components and directives',
-  markdown: {
-    theme: {
-      light: 'vitesse-light',
-      dark: 'vitesse-dark',
-    },
-  },
   themeConfig: {
     logo: '/favicon.svg',
     footer: {
@@ -40,9 +34,8 @@ export default defineConfig({
 
 function getComposablesSideBar() {
   const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'composables'
+    (i) => !i.internal && i.package === 'composables',
   )
-
   return {
     text: 'Composables',
     items: functions.map((i) => ({
@@ -54,7 +47,7 @@ function getComposablesSideBar() {
 
 function getPluginsSideBar() {
   const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'plugins'
+    (i) => !i.internal && i.package === 'plugins',
   )
 
   return {

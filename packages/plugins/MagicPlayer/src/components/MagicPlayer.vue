@@ -11,6 +11,7 @@
       class="magic-player-video"
       preload="auto"
       playsinline
+      disablePictureInPicture
     />
     <div v-show="!loaded || !touched" class="magic-player-poster">
       <slot name="poster" />
@@ -32,6 +33,7 @@ export type MagicPlayerProps = {
   src: string
   ratio?: string
   fill?: boolean
+  autoplay?: boolean
 }
 
 const props = withDefaults(defineProps<MagicPlayerProps>(), {
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
   src: '',
   ratio: '16:9',
   fill: false,
+  autoplay: false,
 })
 
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
@@ -58,11 +61,19 @@ const { touched } = instance.value?.playerApi
 const { onMouseenter, onMouseleave } = instance.value?.playerApi
 const { loaded } = instance.value?.runtimeProvider
 
-useIntersectionObserver(playerRef, ([{ isIntersecting }]) => {
-  if (!isIntersecting && playing.value) {
-    instance.value.playerApi.pause()
-  }
-})
+useIntersectionObserver(
+  playerRef,
+  ([{ isIntersecting }]) => {
+    if (!isIntersecting && playing.value) {
+      instance.value.playerApi.pause()
+    } else if (isIntersecting && !playing.value && props.autoplay) {
+      instance.value.playerApi.play()
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 
 const computedRatio = computed(() => {
   if (props.ratio) {
