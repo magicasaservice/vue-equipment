@@ -11,12 +11,10 @@ export default defineConfig(async () => {
       hmr: {
         overlay: false,
       },
-      fs: {
-        allow: [resolve(__dirname, '..')],
-      },
     },
     plugins: [
       // custom
+      UnoCSS(),
       MarkdownTransform(),
       Components({
         dirs: resolve(__dirname, '.vitepress/theme/components'),
@@ -26,32 +24,35 @@ export default defineConfig(async () => {
             componentPrefix: '',
           }),
         ],
-        dts: './.vitepress/components.d.ts',
+        dts: '../../docs/apps/.vitepress/components.d.ts',
         transformer: 'vue3',
       }),
-      UnoCSS(),
     ],
     resolve: {
       alias: [
         {
           find: '@maas/vue-equipment/composables',
-          replacement: resolve(__dirname, 'composables/index.ts'),
+          replacement: resolve(__dirname, '../../packages/composables/'),
         },
         {
           find: '@maas/vue-equipment/metadata',
-          replacement: resolve(__dirname, 'metadata/index.ts'),
+          replacement: resolve(__dirname, '../../packages/metadata/'),
         },
         {
           find: '@maas/vue-equipment/plugins',
-          replacement: resolve(__dirname, 'plugins/index.ts'),
+          replacement: resolve(__dirname, '../../packages/plugins/'),
         },
         {
           find: /^@maas\/vue-equipment\/utils$/,
-          replacement: resolve(__dirname, 'utils/index.ts'),
+          replacement: resolve(__dirname, '../../packages/utils/'),
         },
         {
           find: /^@maas\/vue-equipment\/utils\/css/,
-          replacement: resolve(__dirname, 'utils/src/css'),
+          replacement: resolve(__dirname, '../../packages/utils/src/css'),
+        },
+        {
+          find: '../config/tsconfig',
+          replacement: resolve(__dirname, '../../packages/config/tsconfig/'),
         },
       ],
       dedupe: ['vue', '@vue/runtime-core'],

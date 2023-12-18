@@ -1,0 +1,4 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "exclude": ["node_modules", "**/*.md", "**/dist", ".test"]
+}

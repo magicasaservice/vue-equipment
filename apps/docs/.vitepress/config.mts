@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import { metadata } from '../metadata/metadata'
+import { metadata } from './../../../packages/metadata'
 
 const ComposablesSideBar = getComposablesSideBar()
 const PluginsSideBar = getPluginsSideBar()
@@ -12,7 +12,7 @@ export default defineConfig({
     logo: '/favicon.svg',
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2023-PRESENT Magic as a Service GmbH',
+      copyright: '© 2023 Magic as a Service™',
     },
     nav: [
       { text: 'Home', link: '/' },
@@ -30,11 +30,16 @@ export default defineConfig({
       '/plugins/': [PluginsSideBar],
     },
   },
+  srcDir: './../../packages',
+  srcExclude: ['**/*.json'],
+  vite: {
+    configFile: './vite.config.ts',
+  },
 })
 
 function getComposablesSideBar() {
   const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'composables',
+    (i) => !i.internal && i.package === 'composables'
   )
   return {
     text: 'Composables',
@@ -47,7 +52,7 @@ function getComposablesSideBar() {
 
 function getPluginsSideBar() {
   const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'plugins',
+    (i) => !i.internal && i.package === 'plugins'
   )
 
   return {

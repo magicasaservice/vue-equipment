@@ -1,0 +1,20 @@
+{
+  "extends": "../../packages/config/tsconfig/vue-base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "paths": {
+      "@maas/vue-equipment/plugins": ["./../../packages/plugins/index.ts"],
+      "@maas/vue-equipment/plugins/*": ["./../../packages/plugins/*"],
+      "@maas/vue-equipment/composables": [
+        "./../../packages/composables/index.ts"
+      ],
+      "@maas/vue-equipment/composables/*": ["./../../packages/composables/*"],
+      "@maas/vue-equipment/utils": ["./../../packages/utils/index.ts"],
+      "@maas/vue-equipment/utils/types/*": [
+        "./../../packages/utils/src/types/*"
+      ],
+      "@maas/vue-equipment/utils/css/*": ["./../../packages/utils/src/css/*"],
+      "@maas/vue-equipment/metadata": ["./../../packages/metadata/index.ts"]
+    }
+  }
+}

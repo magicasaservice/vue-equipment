@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useConsentApi } from './src/composables/useConsentApi'
+import { useConsentApi } from '@maas/vue-equipment/plugins'
 
 const {
   preferencesVisible,

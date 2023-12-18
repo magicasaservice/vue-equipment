@@ -1,12 +1,12 @@
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
-import fs from 'fs-extra'
+import { existsSync } from 'fs-extra'
 import { getTypeDefinition, replacer } from './../utils'
-import { functionNames } from '../../../packages/metadata/metadata'
+import { functionNames } from '../../../../packages/metadata'
 
 export function MarkdownTransform(): Plugin {
-  const DIR_TYPES = resolve(__dirname, '../../../dist/composables')
-  const hasTypes = fs.existsSync(DIR_TYPES)
+  const DIR_TYPES = resolve(__dirname, '../../../../types/composables')
+  const hasTypes = existsSync(DIR_TYPES)
 
   if (!hasTypes) {
     console.warn('No types dist found! Run `pnpm build:types` first.')
@@ -16,7 +16,6 @@ export function MarkdownTransform(): Plugin {
     name: 'vueuse-md-transform',
     enforce: 'pre',
     async transform(code, id) {
-      console.log('code:', code)
       if (!id.match(/\.md\b/)) return null
 
       const [pkg, _name, i] = id.split('/').slice(-3)
@@ -43,7 +42,7 @@ export function MarkdownTransform(): Plugin {
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
         code = code.replace(
           /(# \w+?)\n/,
-          `$1\n\n<FunctionInfo fn="${name}"/>\n`,
+          `$1\n\n<FunctionInfo fn="${name}"/>\n`
         )
       }
 
@@ -52,7 +51,7 @@ export function MarkdownTransform(): Plugin {
   }
 }
 
-const DIR_SRC = resolve(__dirname, '../..')
+const DIR_SRC = resolve(__dirname, '../../../../packages/')
 const GITHUB_BLOB_URL =
   'https://github.com/magicasaservice/vue-equipment/blob/main/packages'
 
@@ -61,7 +60,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
 
   const dirname = join(DIR_SRC, pkg, name)
   const demoPath = ['demo.vue', 'demo.client.vue'].find((i) =>
-    fs.existsSync(join(dirname, i)),
+    existsSync(join(dirname, i))
   )
 
   // Fetch types for all composables

@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsup'
-import { resolve } from 'path'
-import { cpSync } from 'fs'
+import { resolve } from 'node:path'
+import { cpSync } from 'node:fs'
 
 export default defineConfig({
   entry: [resolve(__dirname, './index.ts')],

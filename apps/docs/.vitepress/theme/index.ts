@@ -1,4 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
+// @ts-ignore
+import Layout from './Layout.vue'
 import {
   MagicConsentPlugin,
   MagicMarqueePlugin,
@@ -9,11 +11,12 @@ import {
   MagicToastPlugin,
 } from 'plugins'
 
-import 'uno.css'
-import '../../../dist/utils/css/animations.css'
+import 'virtual:uno.css'
+import '@maas/vue-equipment/utils/css/animations.css'
 
 export default {
-  ...DefaultTheme,
+  extends: DefaultTheme,
+  Layout,
   enhanceApp({ app }) {
     app.use(MagicConsentPlugin)
     app.use(MagicMarqueePlugin)
