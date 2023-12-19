@@ -1,5 +1,5 @@
 import type { NoiseOptions } from '../types/index'
-import type { RequireAll } from '@maas/vue-equipment/utils/types/RequireAll'
+import type { RequireAll } from 'utils'
 
 const defaultOptions: RequireAll<NoiseOptions> = {
   pixelSize: 2,

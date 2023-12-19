@@ -20,7 +20,9 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
+    "prettier": "^3.1.1",
+    "metadata": "workspace:*",
     "plugins": "workspace:*",
-    "prettier": "^3.1.1"
+    "utils": "workspace:*"
   }
 }

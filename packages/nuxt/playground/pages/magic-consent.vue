@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useConsentApi } from '@maas/vue-equipment/plugins'
+import { useConsentApi } from 'plugins'
 import { useCookies } from '@vueuse/integrations/useCookies'
 
 const {

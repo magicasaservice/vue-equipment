@@ -30,11 +30,11 @@ export default defineNuxtModule({
       global: true,
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicConsent',
+      from: 'plugins/MagicConsent',
       name: 'useConsentApi',
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicConsent',
+      from: 'plugins/MagicConsent',
       name: 'useConsentEmitter',
     })
   },

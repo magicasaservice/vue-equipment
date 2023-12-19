@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { uuid } from '@maas/vue-equipment/utils'
+import { uuid } from 'utils'
 import { defu } from 'defu'
 import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
@@ -107,16 +107,16 @@ function outsideClickCallback() {
 onClickOutside(listRef, outsideClickCallback)
 watch(
   () => props.id,
-  () => (teleportKey.value = uuid()),
+  () => (teleportKey.value = uuid())
 )
 </script>
 
 <style lang="css">
-@import '@maas/vue-equipment/utils/css/animations/fade-out.css';
-@import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css';
-@import '@maas/vue-equipment/utils/css/animations/slide-rtl-in.css';
-@import '@maas/vue-equipment/utils/css/animations/slide-ttb-in.css';
-@import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css';
+@import 'utils/css/animations/fade-out.css';
+@import 'utils/css/animations/slide-ltr-in.css';
+@import 'utils/css/animations/slide-rtl-in.css';
+@import 'utils/css/animations/slide-ttb-in.css';
+@import 'utils/css/animations/slide-btt-in.css';
 
 :root {
   --magic-toast-enter-animation: unset;

@@ -4,9 +4,13 @@
   "version": "0.12.1",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "tsup": "^7.1.0"
+    "@types/node": "^20.10.4",
+    "tsup": "^8.0.1"
   },
-  "exports": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./css/*": "./src/css/*"
+  },
   "keywords": [],
   "license": "MIT",
   "private": true,
@@ -15,5 +19,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:types": "tsup --config tsup.config.ts --dts-only"
   },
+  "type": "module",
   "sideEffects": false
 }

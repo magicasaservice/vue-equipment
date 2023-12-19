@@ -1,18 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "strict": true,
-    "module": "es2022",
-    "target": "es2022",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": [
-      "types",
-      "./node_modules/@types",
-      "./../../node_modules/@types"
-    ]
+    "module": "ESNext",
+    "moduleResolution": "node"
   },
   "exclude": ["node_modules", "**/*.md", "**/dist", ".test"]
 }

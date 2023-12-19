@@ -17,13 +17,13 @@ export default defineNuxtModule({
       pathPrefix: false,
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicModal',
-      typeFrom: '@maas/vue-equipment/plugins/MagicModal',
+      from: '@lugins/MagicModal',
+      typeFrom: 'plugins/MagicModal',
       name: 'useModalApi',
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicModal',
-      typeFrom: '@maas/vue-equipment/plugins/MagicModal',
+      from: 'plugins/MagicModal',
+      typeFrom: 'plugins/MagicModal',
       name: 'useModalEmitter',
     })
   },

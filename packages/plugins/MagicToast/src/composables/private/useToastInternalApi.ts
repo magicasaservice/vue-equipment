@@ -1,11 +1,11 @@
-import { uuid } from '@maas/vue-equipment/utils'
+import { uuid } from 'utils'
 import type { ToastInstance, Toast, AddArgs } from './../../types'
 
 export function useToastInternalApi() {
   function removeToastAfterTimeout(
     id: string,
     duration: number,
-    ctx: ToastInstance,
+    ctx: ToastInstance
   ) {
     if (duration > 0) {
       setTimeout(() => {

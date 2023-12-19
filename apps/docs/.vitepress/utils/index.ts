@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
-import type { PackageIndexes } from '../../../../packages/metadata'
+import type { PackageIndexes } from './../../../../packages/metadata'
 
 const DIR_TYPES = resolve(__dirname, '../../../types/')
 
@@ -25,7 +25,7 @@ export function replacer(
   code: string,
   value: string,
   key: string,
-  insert: 'head' | 'tail' | 'none' = 'none',
+  insert: 'head' | 'tail' | 'none' = 'none'
 ) {
   const START = `<!--${key}_STARTS-->`
   const END = `<!--${key}_ENDS-->`
@@ -44,7 +44,7 @@ export function replacer(
 
 export async function getTypeDefinition(
   pkg: string,
-  name: string,
+  name: string
 ): Promise<string | undefined> {
   const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 

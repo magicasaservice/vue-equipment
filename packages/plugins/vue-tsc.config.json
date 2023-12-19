@@ -1,17 +1,15 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@maas/vue-equipment/plugins": ["./packages/plugins/index.ts"],
-      "@maas/vue-equipment/plugins/*": ["./packages/plugins/*"],
-      "@maas/vue-equipment/utils/": ["./packages/utils/"],
-      "@maas/vue-equipment/utils/*": ["./packages/utils/*"]
-    }
-  },
   "include": ["./../../dist"],
   "exclude": [
     "./../../dist/composables",
     "./../../dist/nuxt",
     "./../../dist/utils"
-  ]
+  ],
+  "compilerOptions": {
+    "paths": {
+      "utils": ["./../utils/"],
+      "utils/*": ["./../utils/*"]
+    }
+  }
 }

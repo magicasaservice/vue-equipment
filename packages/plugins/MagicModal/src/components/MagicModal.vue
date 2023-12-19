@@ -160,8 +160,8 @@ watch(isActive, async (value) => {
 </script>
 
 <style>
-@import '@maas/vue-equipment/utils/css/animations/fade-in.css';
-@import '@maas/vue-equipment/utils/css/animations/fade-out.css';
+@import 'utils/css/animations/fade-in.css';
+@import 'utils/css/animations/fade-out.css';
 
 :root {
   --magic-modal-z-index: 999;

@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
 import { computed } from 'vue'
-import { functions } from '@maas/vue-equipment/metadata'
+import { functions } from '../../../../../packages/metadata'
 // import exportSizes from '../../../export-size.json'
 
 const props = defineProps<{ fn: string }>()

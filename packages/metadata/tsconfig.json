@@ -1,3 +1,7 @@
 {
-  "extends": "../config/tsconfig/package-base.json"
+  "extends": "../config/tsconfig/package-base.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "baseUrl": "./../.."
+  }
 }

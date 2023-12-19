@@ -1,4 +1,4 @@
-import { uuid } from '@maas/vue-equipment/utils'
+import { uuid } from 'utils'
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock } from '@vueuse/core'
@@ -19,7 +19,7 @@ const defaultOptions = {
 
 export function useModalApi(
   id?: MaybeRef<string>,
-  options?: useModalApiOptions,
+  options?: useModalApiOptions
 ) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
@@ -79,10 +79,10 @@ export function useModalApi(
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
     ].filter(
-      (x) => getComputedStyle(x, null).getPropertyValue('position') === 'fixed',
+      (x) => getComputedStyle(x, null).getPropertyValue('position') === 'fixed'
     ) as HTMLElement[]
     positionFixedElements.value.forEach(
-      (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)'),
+      (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)')
     )
   }
 
@@ -90,7 +90,7 @@ export function useModalApi(
     document.body.style.paddingRight = ''
     document.body.style.removeProperty('--scrollbar-width')
     positionFixedElements.value.forEach(
-      (elem) => (elem.style.paddingRight = ''),
+      (elem) => (elem.style.paddingRight = '')
     )
   }
 

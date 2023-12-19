@@ -1,5 +1,4 @@
 import DefaultTheme from 'vitepress/theme'
-// @ts-ignore
 import Layout from './Layout.vue'
 import {
   MagicConsentPlugin,
@@ -12,7 +11,7 @@ import {
 } from 'plugins'
 
 import 'virtual:uno.css'
-import '@maas/vue-equipment/utils/css/animations.css'
+import 'utils/css/animations.css'
 
 export default {
   extends: DefaultTheme,

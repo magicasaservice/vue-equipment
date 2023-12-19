@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+// https://github.com/vitejs/vite/issues/5370
 import { metadata } from './../../../packages/metadata'
 
 const ComposablesSideBar = getComposablesSideBar()

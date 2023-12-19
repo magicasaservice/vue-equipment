@@ -17,7 +17,7 @@ export default defineConfig(async () => {
       UnoCSS(),
       MarkdownTransform(),
       Components({
-        dirs: resolve(__dirname, '.vitepress/theme/components'),
+        dirs: [resolve(__dirname, '.vitepress/theme/components')],
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         resolvers: [
           IconsResolver({
@@ -28,31 +28,16 @@ export default defineConfig(async () => {
         transformer: 'vue3',
       }),
     ],
+    // We need this to resolve the aliases in the demo.vue files
     resolve: {
       alias: [
         {
           find: '@maas/vue-equipment/composables',
-          replacement: resolve(__dirname, '../../packages/composables/'),
-        },
-        {
-          find: '@maas/vue-equipment/metadata',
-          replacement: resolve(__dirname, '../../packages/metadata/'),
+          replacement: resolve(__dirname, '../../packages/composables'),
         },
         {
           find: '@maas/vue-equipment/plugins',
-          replacement: resolve(__dirname, '../../packages/plugins/'),
-        },
-        {
-          find: /^@maas\/vue-equipment\/utils$/,
-          replacement: resolve(__dirname, '../../packages/utils/'),
-        },
-        {
-          find: /^@maas\/vue-equipment\/utils\/css/,
-          replacement: resolve(__dirname, '../../packages/utils/src/css'),
-        },
-        {
-          find: '../config/tsconfig',
-          replacement: resolve(__dirname, '../../packages/config/tsconfig/'),
+          replacement: resolve(__dirname, '../../packages/plugins'),
         },
       ],
       dedupe: ['vue', '@vue/runtime-core'],

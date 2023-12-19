@@ -3,13 +3,7 @@
   "compilerOptions": {
     "noEmit": false,
     "paths": {
-      "@maas/vue-equipment/plugins": ["./index.ts"],
-      "@maas/vue-equipment/plugins/*": ["./*"],
-      "@maas/vue-equipment/composables": ["./../composables/index.ts"],
-      "@maas/vue-equipment/composables/*": ["./../composables/*"],
-      "@maas/vue-equipment/utils": ["./../utils/index.ts"],
-      "@maas/vue-equipment/utils/types/*": ["./../utils/src/types/*"],
-      "@maas/vue-equipment/utils/css/*": ["./../utils/src/css/*"]
+      "@maas/vue-equipment/plugins": ["./index.ts"]
     }
   }
 }

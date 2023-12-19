@@ -18,12 +18,12 @@ export default defineNuxtModule({
     })
 
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicToast',
+      from: 'plugins/MagicToast',
       name: 'useToastApi',
     })
 
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicToast',
+      from: 'plugins/MagicToast',
       name: 'useToastEmitter',
     })
   },

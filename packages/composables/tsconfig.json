@@ -2,11 +2,7 @@
   "extends": "../config/tsconfig/package-base.json",
   "compilerOptions": {
     "paths": {
-      "@maas/vue-equipment/composables": ["./index.ts"],
-      "@maas/vue-equipment/composables/*": ["./*"],
-      "@maas/vue-equipment/utils": ["./../utils/index.ts"],
-      "@maas/vue-equipment/utils/types/*": ["./../utils/src/types/*"],
-      "@maas/vue-equipment/utils/css/*": ["./../utils/src/css/*"]
+      "@maas/vue-equipment/composables": ["./index.ts"]
     }
   }
 }
