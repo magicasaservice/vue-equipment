@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicPlayer',
+    name: '@maas/vue-equipment/nuxt/MagicPlayer',
   },
   setup() {
     const resolver = createResolver(import.meta.url)
@@ -19,7 +19,7 @@ export default defineNuxtModule({
     })
 
     addImports({
-      from: 'plugins/MagicPlayer',
+      from: '@maas/vue-equipment/plugins/MagicPlayer',
       name: 'usePlayerApi',
     })
   },

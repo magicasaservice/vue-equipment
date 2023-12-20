@@ -55,6 +55,12 @@ import MagicToastComponent from './MagicToastComponent.vue'
 
 import type { ToastOptions } from './../types/index'
 
+import 'utils/css/animations/fade-out.css'
+import 'utils/css/animations/slide-ltr-in.css'
+import 'utils/css/animations/slide-rtl-in.css'
+import 'utils/css/animations/slide-ttb-in.css'
+import 'utils/css/animations/slide-btt-in.css'
+
 interface MagicToastProps {
   id: MaybeRef<string>
   class: MaybeRef<string>
@@ -112,12 +118,6 @@ watch(
 </script>
 
 <style lang="css">
-@import 'utils/css/animations/fade-out.css';
-@import 'utils/css/animations/slide-ltr-in.css';
-@import 'utils/css/animations/slide-rtl-in.css';
-@import 'utils/css/animations/slide-ttb-in.css';
-@import 'utils/css/animations/slide-btt-in.css';
-
 :root {
   --magic-toast-enter-animation: unset;
   --magic-toast-leave-animation: fade-out 300ms ease;

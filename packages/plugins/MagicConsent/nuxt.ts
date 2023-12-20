@@ -8,7 +8,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicConsent',
+    name: '@maas/vue-equipment/nuxt/MagicConsent',
   },
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -30,11 +30,11 @@ export default defineNuxtModule({
       global: true,
     })
     addImports({
-      from: 'plugins/MagicConsent',
+      from: '@maas/vue-equipment/plugins/MagicConsent',
       name: 'useConsentApi',
     })
     addImports({
-      from: 'plugins/MagicConsent',
+      from: '@maas/vue-equipment/plugins/MagicConsent',
       name: 'useConsentEmitter',
     })
   },

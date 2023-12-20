@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicScroll',
+    name: '@maas/vue-equipment/nuxt/MagicScroll',
   },
   setup() {
     const resolver = createResolver(import.meta.url)

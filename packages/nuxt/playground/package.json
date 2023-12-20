@@ -14,6 +14,8 @@
     "nuxt": "latest"
   },
   "dependencies": {
-    "@unocss/reset": "^0.55.7"
+    "@unocss/reset": "^0.55.7",
+    "plugins": "workspace:*",
+    "scule": "^1.1.1"
   }
 }

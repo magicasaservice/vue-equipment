@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicNoise',
+    name: '@maas/vue-equipment/nuxt/MagicNoise',
   },
   setup() {
     const resolver = createResolver(import.meta.url)
@@ -18,7 +18,7 @@ export default defineNuxtModule({
     })
 
     addImports({
-      from: 'plugins/MagicNoise',
+      from: '@maas/vue-equipment/plugins/MagicNoise',
       name: 'useNoiseApi',
     })
   },

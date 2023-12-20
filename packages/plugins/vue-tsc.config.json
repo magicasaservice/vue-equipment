@@ -9,7 +9,9 @@
   "compilerOptions": {
     "paths": {
       "utils": ["./../utils/"],
-      "utils/*": ["./../utils/*"]
+      "utils/*": ["./../utils/*"],
+      "@maas/vue-equipment/utils": ["./../utils/"],
+      "@maas/vue-equipment/utils/*": ["./../utils/*"]
     }
   }
 }

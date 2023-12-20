@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicModal',
+    name: '@maas/vue-equipment/nuxt/MagicModal',
   },
   setup() {
     const resolver = createResolver(import.meta.url)
@@ -17,13 +17,11 @@ export default defineNuxtModule({
       pathPrefix: false,
     })
     addImports({
-      from: '@lugins/MagicModal',
-      typeFrom: 'plugins/MagicModal',
+      from: '@maas/vue-equipment/plugins/MagicModal',
       name: 'useModalApi',
     })
     addImports({
-      from: 'plugins/MagicModal',
-      typeFrom: 'plugins/MagicModal',
+      from: '@maas/vue-equipment/plugins/MagicModal',
       name: 'useModalEmitter',
     })
   },

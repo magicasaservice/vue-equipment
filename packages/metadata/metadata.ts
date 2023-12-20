@@ -14,3 +14,6 @@ export const functionNames = functions.map((f) => f.name)
 export function getFunction(name: string) {
   return metadata.functions.find((f) => f.name === name)
 }
+
+export const plugins = functions.filter((p) => p.package === 'plugins')
+export const composables = functions.filter((p) => p.package === 'composables')

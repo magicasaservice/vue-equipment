@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicToast',
+    name: '@maas/vue-equipment/nuxt/MagicToast',
   },
   setup() {
     const resolver = createResolver(import.meta.url)
@@ -18,12 +18,12 @@ export default defineNuxtModule({
     })
 
     addImports({
-      from: 'plugins/MagicToast',
+      from: '@maas/vue-equipment/plugins/MagicToast',
       name: 'useToastApi',
     })
 
     addImports({
-      from: 'plugins/MagicToast',
+      from: '@maas/vue-equipment/plugins/MagicToast',
       name: 'useToastEmitter',
     })
   },
