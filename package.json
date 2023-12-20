@@ -11,7 +11,7 @@
     "turbo": "^1.11.2"
   },
   "exports": {
-    ".": {
+    "./nuxt": {
       "types": "./dist/nuxt/types.d.ts",
       "require": "./dist/nuxt/module.cjs",
       "import": "./dist/nuxt/module.mjs"
