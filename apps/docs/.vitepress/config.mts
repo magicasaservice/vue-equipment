@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitepress'
 // https://github.com/vitejs/vite/issues/5370
-import { metadata } from './../../../packages/metadata'
+import { plugins, composables } from './../../../packages/metadata'
 
-const composables = getComposables()
-const plugins = getPlugins()
+const mappedComposables = getComposables()
+const mappedPlugins = getPlugins()
 
 export default defineConfig({
   title: 'Vue Equipment',
@@ -13,8 +13,8 @@ export default defineConfig({
     logo: '/favicon.svg',
     nav: [
       { text: 'Docs', link: '/overview/introduction' },
-      composables,
-      plugins,
+      mappedComposables,
+      mappedPlugins,
     ],
     sidebar: [
       {
@@ -31,8 +31,8 @@ export default defineConfig({
           },
         ],
       },
-      composables,
-      plugins,
+      mappedComposables,
+      mappedPlugins,
     ],
     footer: {
       message: 'Released under the MIT License.',
@@ -53,13 +53,10 @@ export default defineConfig({
 })
 
 function getComposables() {
-  const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'composables'
-  )
   return {
     text: 'Composables',
     collapsed: false,
-    items: functions.map((i) => ({
+    items: composables.map((i) => ({
       text: i.name,
       link: i.external || `/${i.package}/${i.name}/`,
     })),
@@ -67,14 +64,10 @@ function getComposables() {
 }
 
 function getPlugins() {
-  const functions = metadata.functions.filter(
-    (i) => !i.internal && i.package === 'plugins'
-  )
-
   return {
     text: 'Plugins',
     collapsed: false,
-    items: functions.map((i) => ({
+    items: plugins.map((i) => ({
       text: i.name,
       link: i.external || `/${i.package}/${i.name}/`,
     })),
