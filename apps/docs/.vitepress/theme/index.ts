@@ -8,10 +8,9 @@ import {
   MagicPlayerPlugin,
   MagicScrollPlugin,
   MagicToastPlugin,
-} from 'plugins'
+} from '@maas/vue-equipment/plugins'
 
 import 'virtual:uno.css'
-import 'utils/css/animations.css'
 
 export default {
   extends: DefaultTheme,

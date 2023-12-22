@@ -1,5 +1,5 @@
 import type { MaybeRef } from 'vue'
-import type { PickPartial } from 'utils'
+import type { PickPartial } from '@maas/vue-equipment/utils'
 
 type Toast = {
   id: string

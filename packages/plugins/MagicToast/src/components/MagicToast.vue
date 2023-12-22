@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { uuid } from 'utils'
+import { uuid } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
@@ -55,11 +55,11 @@ import MagicToastComponent from './MagicToastComponent.vue'
 
 import type { ToastOptions } from './../types/index'
 
-import 'utils/css/animations/fade-out.css'
-import 'utils/css/animations/slide-ltr-in.css'
-import 'utils/css/animations/slide-rtl-in.css'
-import 'utils/css/animations/slide-ttb-in.css'
-import 'utils/css/animations/slide-btt-in.css'
+import '@maas/vue-equipment/utils/css/animations/fade-out.css'
+import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css'
+import '@maas/vue-equipment/utils/css/animations/slide-rtl-in.css'
+import '@maas/vue-equipment/utils/css/animations/slide-ttb-in.css'
+import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css'
 
 interface MagicToastProps {
   id: MaybeRef<string>

@@ -4,7 +4,7 @@ import {
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
-import { clampValue, mapValue } from 'utils'
+import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 import { usePlayerStore } from './usePlayerStore'
 
 import type { UseControlsApiArgs } from '../../types'

@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@unocss/reset": "^0.55.7",
-    "plugins": "workspace:*",
+    "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "scule": "^1.1.1"
   }
 }

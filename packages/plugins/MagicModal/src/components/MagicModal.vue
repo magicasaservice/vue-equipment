@@ -71,8 +71,8 @@ import { useModalCallback } from '../composables/private/useModalCallback'
 
 import type { ModalOptions } from './../types/index'
 
-import 'utils/css/animations/fade-in.css'
-import 'utils/css/animations/fade-out.css'
+import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
 // Prevent keys array from being merged with default
 const customDefu = createDefu((obj, key, value) => {

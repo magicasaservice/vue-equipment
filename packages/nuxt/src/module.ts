@@ -6,7 +6,7 @@ import {
   extendViteConfig,
 } from '@nuxt/kit'
 
-import metadata from '../../metadata/index.json'
+import { plugins, composables } from '../../metadata/'
 
 export interface ModuleOptions {
   plugins?: string[] | boolean
@@ -23,8 +23,8 @@ export default defineNuxtModule<ModuleOptions>({
     composables: true,
   },
   async setup(options, nuxt) {
-    let plugins: string[]
-    let composables: any[]
+    let mappedPlugins: string[]
+    let mappedComposables: any[]
 
     const resolver = createResolver(import.meta.url)
 
@@ -40,6 +40,7 @@ export default defineNuxtModule<ModuleOptions>({
     // Aliases
     const packages = ['plugins', 'composables', 'utils']
     nuxt.options.alias = nuxt.options.alias || {}
+
     packages.forEach((pkg) => {
       nuxt.options.alias[`@maas/vue-equipment/${pkg}`] =
         nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ||
@@ -48,14 +49,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Plugins
     if (options.plugins === true) {
-      plugins = metadata.functions
-        .filter((fn) => fn.package === 'plugins')
-        .map((fn) => fn.name)
+      mappedPlugins = plugins.map((fn) => fn.name)
     } else {
-      plugins = options.plugins || []
+      mappedPlugins = options.plugins || []
     }
 
-    for (const plugin of plugins) {
+    for (const plugin of mappedPlugins) {
       // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
         `@maas/vue-equipment/plugins/${plugin}/nuxt`
@@ -66,16 +65,14 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Composables
     if (options.composables === true) {
-      composables = metadata.functions
-        .filter((fn) => fn.package === 'composables')
-        .map((fn) => fn.name)
+      mappedComposables = composables.map((fn) => fn.name)
     } else {
-      composables = options.composables || []
+      mappedComposables = options.composables || []
     }
 
     addImportsSources({
-      from: 'composables',
-      imports: composables,
+      from: '@maas/vue-equipment/composables',
+      imports: mappedComposables,
     })
   },
 })

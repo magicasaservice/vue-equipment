@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { slugify } from 'utils'
+import { slugify } from '@maas/vue-equipment/utils'
 import type { ConsentApiDefinition, ConsentCookieRecord } from '../../types'
 
 // Global API state to manage cookies and maxAge

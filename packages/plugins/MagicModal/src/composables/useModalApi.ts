@@ -1,4 +1,4 @@
-import { uuid } from 'utils'
+import { uuid } from '@maas/vue-equipment/utils'
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock } from '@vueuse/core'

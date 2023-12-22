@@ -1,4 +1,4 @@
-import { uuid } from 'utils'
+import { uuid } from '@maas/vue-equipment/utils'
 import type { ToastInstance, Toast, AddArgs } from './../../types'
 
 export function useToastInternalApi() {

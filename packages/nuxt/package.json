@@ -4,9 +4,9 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@nuxt/kit": "^3.7.1",
-    "composables": "workspace:*",
-    "plugins": "workspace:*",
-    "utils": "workspace:*"
+    "@maas/vue-equipment/composables": "workspace:composables@*",
+    "@maas/vue-equipment/plugins": "workspace:plugins@*",
+    "@maas/vue-equipment/utils": "workspace:utils@*"
   },
   "devDependencies": {
     "@nuxt/devtools": "0.7.4",

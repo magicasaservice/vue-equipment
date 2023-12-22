@@ -34,4 +34,4 @@ cache
 dist
 
 # types
-types
+/types

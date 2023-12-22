@@ -1,6 +1,6 @@
 import { ref, watch, toValue } from 'vue'
 import { useFullscreen } from '@vueuse/core'
-import { isIOS } from 'utils'
+import { isIOS } from '@maas/vue-equipment/utils'
 import type { UsePlayerInternalApiArgs } from '../../types'
 import { usePlayerStore } from './usePlayerStore'
 

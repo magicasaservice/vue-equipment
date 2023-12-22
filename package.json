@@ -51,7 +51,8 @@
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
-    "universal-cookie": "^6.1.1"
+    "universal-cookie": "4.0.4",
+    "@maas/vue-equipment/utils": "workspace:utils@*"
   },
   "peerDependenciesMeta": {
     "@maas/magic-timer": {

@@ -1,4 +1,4 @@
-import { uuid } from 'utils'
+import { uuid } from '@maas/vue-equipment/utils'
 import { computed, onUnmounted, toValue, type MaybeRef } from 'vue'
 import { usePlayerStore } from './private/usePlayerStore'
 import { usePlayerInternalApi } from './private/usePlayerInternalApi'

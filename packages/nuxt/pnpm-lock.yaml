@@ -5,18 +5,18 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@maas/vue-equipment/composables':
+    specifier: workspace:composables@*
+    version: link:../composables
+  '@maas/vue-equipment/plugins':
+    specifier: workspace:plugins@*
+    version: link:../plugins
+  '@maas/vue-equipment/utils':
+    specifier: workspace:utils@*
+    version: link:../utils
   '@nuxt/kit':
     specifier: ^3.7.1
     version: 3.8.2(rollup@3.29.4)
-  composables:
-    specifier: workspace:*
-    version: link:../composables
-  plugins:
-    specifier: workspace:*
-    version: link:../plugins
-  utils:
-    specifier: workspace:*
-    version: link:../utils
 
 devDependencies:
   '@nuxt/devtools':
@@ -1844,6 +1844,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: true
     bundledDependencies:
       - napi-wasm
@@ -6206,6 +6207,10 @@ packages:
     resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
     engines: {node: ^14 || ^16 || >=18}
     hasBin: true
+    dev: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: true
 
   /natural-compare-lite@1.4.0:

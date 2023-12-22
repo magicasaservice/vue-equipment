@@ -5,18 +5,18 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  metadata:
-    specifier: workspace:*
+  '@maas/vue-equipment/metadata':
+    specifier: workspace:metadata@*
     version: link:../../packages/metadata
-  plugins:
-    specifier: workspace:*
+  '@maas/vue-equipment/plugins':
+    specifier: workspace:plugins@*
     version: link:../../packages/plugins
+  '@maas/vue-equipment/utils':
+    specifier: workspace:utils@*
+    version: link:../../packages/utils
   prettier:
     specifier: ^3.1.1
     version: 3.1.1
-  utils:
-    specifier: workspace:*
-    version: link:../../packages/utils
 
 devDependencies:
   '@types/fs-extra':
