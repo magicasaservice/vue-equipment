@@ -4,7 +4,7 @@ import { kebabCase } from 'scule'
 import { plugins, composables } from '../../metadata'
 
 export default defineNuxtConfig({
-  modules: ['@maas/vue-equipment', '@unocss/nuxt'],
+  modules: ['@maas/vue-equipment/nuxt', '@unocss/nuxt'],
   vueEquipment: {
     plugins: true,
     composables: true,
@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   css: ['@unocss/reset/tailwind.css'],
   alias: {
-    '@maas/vue-equipment': path.resolve(__dirname, '../../../dist'),
+    '@maas/vue-equipment/nuxt': path.resolve(__dirname, '../../../dist/nuxt'),
   },
   // Load demo files as routes
   hooks: {
