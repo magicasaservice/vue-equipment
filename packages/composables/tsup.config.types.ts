@@ -1,5 +1,5 @@
 import { defineConfig } from 'tsup'
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 export default defineConfig({
   entry: [resolve(__dirname, './*/index.ts')],

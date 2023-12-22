@@ -17,9 +17,7 @@
   "private": true,
   "scripts": {
     "build": "tsup --config tsup.config.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:types": "tsup --config tsup.config.ts --dts-only"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
   "sideEffects": false
 }

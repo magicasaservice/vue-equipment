@@ -40,7 +40,6 @@
   ],
   "keywords": [],
   "license": "MIT",
-  "main": "./dist/nuxt/module.cjs",
   "peerDependencies": {
     "@maas/magic-timer": "^1.0.0",
     "@vueuse/core": "^10.3.0",
@@ -51,8 +50,7 @@
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
-    "universal-cookie": "4.0.4",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
+    "universal-cookie": "4.0.4"
   },
   "peerDependenciesMeta": {
     "@maas/magic-timer": {
@@ -97,7 +95,6 @@
     "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
     "release": "turbo run t:release && release-it"
   },
-  "types": "./dist/nuxt/types.d.ts",
   "volta": {
     "node": "18.16.1"
   },
