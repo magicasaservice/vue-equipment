@@ -14,6 +14,7 @@ mkdist({
     '!package.json',
     '!pnpm-lock.yaml',
     '!shims-vue.d.ts',
+    '!tsconfig.json',
     '!**/demo.vue',
     '!**/index.md',
     '!scripts/*',

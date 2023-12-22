@@ -11,11 +11,5 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  clampValue,
-  uniq,
-  mapValue,
-  isIOS,
-  uuid,
-} from '@maas/vue-equipment/utils'
+import { clampValue, uniq, mapValue, isIOS, uuid } from 'utils'
 </script>

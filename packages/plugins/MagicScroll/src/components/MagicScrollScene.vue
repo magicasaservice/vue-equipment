@@ -16,7 +16,7 @@ import {
   readonly,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { mapValue } from '@maas/vue-equipment/utils'
+import { mapValue } from 'utils'
 import { useScrollApi } from '../composables/useScrollApi'
 import {
   ScrollPositionKey,
@@ -66,7 +66,7 @@ watch(
     if (intersecting.value) {
       calculate()
     }
-  },
+  }
 )
 
 useIntersectionObserver(
@@ -77,7 +77,7 @@ useIntersectionObserver(
       calculate()
     }
   },
-  { rootMargin: '150% 0px 150% 0px', threshold: 0.01 },
+  { rootMargin: '150% 0px 150% 0px', threshold: 0.01 }
 )
 
 provide('mapValue', mapValue)

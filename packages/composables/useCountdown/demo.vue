@@ -42,6 +42,6 @@ const { years, days, hours, minutes, seconds } = useCountdown(
   },
   () => {
     console.log('Countdown finished!')
-  },
+  }
 )
 </script>

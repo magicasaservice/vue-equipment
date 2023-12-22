@@ -30,9 +30,10 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 import { useViewportDimensions } from '@maas/vue-equipment/composables'
 
-useViewportDimensions()
+onMounted(() => useViewportDimensions())
 </script>
 
 <style scoped>

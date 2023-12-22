@@ -9,7 +9,7 @@
       <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
     </div>
   </div>
-  <MagicToast :id="id" :class="position" />
+  <magic-toast :id="id" :class="position" />
 </template>
 
 <script setup lang="ts">
@@ -34,7 +34,7 @@ const { add, clear } = toastApi
 
 const isSmallScreen = useMediaQuery('(max-width: 1024px)')
 const position = computed(() =>
-  isSmallScreen.value ? '-bottom-center' : '-bottom-right',
+  isSmallScreen.value ? '-bottom-center' : '-bottom-right'
 )
 
 function onClick() {

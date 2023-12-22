@@ -1,31 +1,19 @@
 <template>
   <ol>
-    <li>
-      <nuxt-link to="/utils"> Utils </nuxt-link>
+    <li v-for="composable in composables" :key="composable.name">
+      <nuxt-link :to="`/${kebabCase(composable.name)}`">
+        {{ composable.name }}
+      </nuxt-link>
     </li>
-    <li>
-      <nuxt-link to="/composables"> Composables </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-consent"> Magic Consent </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-marquee"> Magic Marquee </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-modal"> Magic Modal </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-noise"> Magic Noise </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-player"> Magic Player </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-scroll"> Magic Scroll </nuxt-link>
-    </li>
-    <li>
-      <nuxt-link to="/magic-toast"> Magic Toast </nuxt-link>
+    <li v-for="plugin in plugins" :key="plugin.name">
+      <nuxt-link :to="`/${kebabCase(plugin.name)}`">
+        {{ plugin.name }}
+      </nuxt-link>
     </li>
   </ol>
 </template>
+
+<script lang="ts" setup>
+import { kebabCase } from 'scule'
+import { composables, plugins } from '../../../metadata'
+</script>

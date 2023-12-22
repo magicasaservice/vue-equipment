@@ -5,7 +5,7 @@ import type {
   PackageIndexes,
   VueEquipmentFunction,
   VueEquipmentPackage,
-} from '@maas/vue-equipment/metadata'
+} from '../index'
 
 import fg from 'fast-glob'
 import Git from 'simple-git'

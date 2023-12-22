@@ -1,2 +1,2 @@
-import config from '../../../unocss.config'
+import config from '../../../apps/docs/uno.config'
 export default config

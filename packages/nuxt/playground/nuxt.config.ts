@@ -1,4 +1,7 @@
 import * as path from 'path'
+import { kebabCase } from 'scule'
+
+import { plugins, composables } from '../../metadata'
 
 export default defineNuxtConfig({
   modules: ['@maas/vue-equipment', '@unocss/nuxt'],
@@ -13,14 +16,25 @@ export default defineNuxtConfig({
   css: ['@unocss/reset/tailwind.css'],
   alias: {
     '@maas/vue-equipment': path.resolve(__dirname, '../../../dist'),
-    '@maas/vue-equipment/plugins': path.resolve(
-      __dirname,
-      '../../../dist/plugins',
-    ),
-    '@maas/vue-equipment/composables': path.resolve(
-      __dirname,
-      '../../../dist/composables',
-    ),
-    '@maas/vue-equipment/utils': path.resolve(__dirname, '../../../dist/utils'),
+  },
+  // Load demo files as routes
+  hooks: {
+    'pages:extend'(pages) {
+      for (const plugin of plugins) {
+        pages.push({
+          name: plugin.name,
+          path: `/${kebabCase(plugin.name)}`,
+          file: `../../plugins/${plugin.name}/demo.vue`,
+        })
+      }
+
+      for (const composable of composables) {
+        pages.push({
+          name: composable.name,
+          path: `/${kebabCase(composable.name)}`,
+          file: `../../composables/${composable.name}/demo.vue`,
+        })
+      }
+    },
   },
 })

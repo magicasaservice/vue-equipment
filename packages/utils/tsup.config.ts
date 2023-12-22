@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsup'
-import { resolve } from 'path'
-import { cpSync } from 'fs'
+import { resolve } from 'node:path'
+import { cpSync } from 'node:fs'
 
 export default defineConfig({
   entry: [resolve(__dirname, './index.ts')],
@@ -17,7 +17,7 @@ export default defineConfig({
       resolve(__dirname, '../../dist/utils/types'),
       {
         recursive: true,
-      },
+      }
     )
     // Copy css utils to dist
     await cpSync(
@@ -25,7 +25,7 @@ export default defineConfig({
       resolve(__dirname, '../../dist/utils/css'),
       {
         recursive: true,
-      },
+      }
     )
   },
 })

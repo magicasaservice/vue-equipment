@@ -4,7 +4,7 @@ import {
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
-import { clampValue, mapValue } from '@maas/vue-equipment/utils'
+import { clampValue, mapValue } from 'utils'
 import { usePlayerStore } from './usePlayerStore'
 
 import type { UseControlsApiArgs } from '../../types'
@@ -140,7 +140,7 @@ export function useControlsApi(args: UseControlsApiArgs) {
       0,
       100,
       0,
-      thumbPercentage.value,
+      thumbPercentage.value
     )
   })
 
@@ -156,7 +156,7 @@ export function useControlsApi(args: UseControlsApiArgs) {
     },
     {
       passive: true,
-    },
+    }
   )
 
   return {

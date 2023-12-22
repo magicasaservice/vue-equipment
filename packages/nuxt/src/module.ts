@@ -58,7 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     for (const plugin of plugins) {
       // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/nuxt`,
+        `@maas/vue-equipment/plugins/${plugin}/nuxt`
       )
 
       await installModule(nuxtPlugin)
@@ -74,7 +74,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     addImportsSources({
-      from: '@maas/vue-equipment/composables',
+      from: 'composables',
       imports: composables,
     })
   },

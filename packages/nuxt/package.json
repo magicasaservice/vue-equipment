@@ -3,7 +3,10 @@
   "version": "0.12.1",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
-    "@nuxt/kit": "^3.7.1"
+    "@nuxt/kit": "^3.7.1",
+    "composables": "workspace:*",
+    "plugins": "workspace:*",
+    "utils": "workspace:*"
   },
   "devDependencies": {
     "@nuxt/devtools": "0.7.4",

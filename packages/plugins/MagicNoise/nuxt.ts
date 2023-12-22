@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicNoise',
+    name: '@maas/vue-equipment/nuxt/MagicNoise',
   },
   setup() {
     const resolver = createResolver(import.meta.url)

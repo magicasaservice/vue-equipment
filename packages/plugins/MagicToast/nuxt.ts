@@ -7,7 +7,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicToast',
+    name: '@maas/vue-equipment/nuxt/MagicToast',
   },
   setup() {
     const resolver = createResolver(import.meta.url)

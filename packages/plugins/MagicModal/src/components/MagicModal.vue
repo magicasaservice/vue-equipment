@@ -63,6 +63,7 @@ import {
   type Component,
   type MaybeRef,
 } from 'vue'
+import { createDefu } from 'defu'
 import { onKeyStroke } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalApi } from './../composables/useModalApi'
@@ -70,7 +71,8 @@ import { useModalCallback } from '../composables/private/useModalCallback'
 
 import type { ModalOptions } from './../types/index'
 
-import { createDefu } from 'defu'
+import 'utils/css/animations/fade-in.css'
+import 'utils/css/animations/fade-out.css'
 
 // Prevent keys array from being merged with default
 const customDefu = createDefu((obj, key, value) => {
@@ -160,9 +162,6 @@ watch(isActive, async (value) => {
 </script>
 
 <style>
-@import '@maas/vue-equipment/utils/css/animations/fade-in.css';
-@import '@maas/vue-equipment/utils/css/animations/fade-out.css';
-
 :root {
   --magic-modal-z-index: 999;
   --magic-modal-backdrop-color: rgba(0, 0, 0, 0.5);

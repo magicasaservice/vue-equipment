@@ -8,7 +8,7 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/MagicConsent',
+    name: '@maas/vue-equipment/nuxt/MagicConsent',
   },
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)

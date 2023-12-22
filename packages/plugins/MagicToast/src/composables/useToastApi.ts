@@ -1,4 +1,4 @@
-import { uuid } from '@maas/vue-equipment/utils'
+import { uuid } from 'utils'
 import {
   computed,
   onUnmounted,
