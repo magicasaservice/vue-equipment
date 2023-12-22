@@ -9,8 +9,8 @@ export default defineConfig({
   title: 'Vue Equipment',
   description:
     'A magic collection of Vue composables, plugins, components and directives',
+  head: [['link', { rel: 'icon', href: '/apps/docs/public/favicon.svg' }]],
   themeConfig: {
-    logo: '/favicon.svg',
     nav: [
       { text: 'Docs', link: '/overview/introduction' },
       mappedComposables,
