@@ -15,7 +15,7 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@maas/vue-equipment',
+    name: '@maas/vue-equipment/nuxt',
     configKey: 'vueEquipment',
   },
   defaults: {
