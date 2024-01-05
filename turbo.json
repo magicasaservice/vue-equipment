@@ -6,7 +6,13 @@
       "outputs": ["./packages/metadata/index.json"]
     },
     "//#t:release": {
-      "dependsOn": ["^build", "nuxt#build", "^build:types"]
+      "cache": false,
+      "dependsOn": [
+        "plugins#build",
+        "composables#build",
+        "nuxt#build",
+        "^build:types"
+      ]
     },
     "lint": {
       "outputs": []
@@ -16,7 +22,6 @@
       "persistent": true
     },
     "build": {
-      "cache": false,
       "outputs": ["./dist/**"]
     },
     "build:types": {
