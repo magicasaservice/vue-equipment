@@ -8,10 +8,10 @@
     "//#t:release": {
       "cache": false,
       "dependsOn": [
-        "plugins#build",
+        "^build:types",
         "composables#build",
-        "nuxt#build",
-        "^build:types"
+        "plugins#build",
+        "nuxt#build"
       ]
     },
     "lint": {
