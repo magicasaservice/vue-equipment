@@ -33,7 +33,7 @@ export function useModalCallback({
     useModalEmitter().emit('enter', toValue(id))
   }
 
-  async function onAfterEnter(el: Element) {
+  async function onAfterEnter(_el: Element) {
     useModalEmitter().emit('afterEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
@@ -54,7 +54,7 @@ export function useModalCallback({
     useModalEmitter().emit('beforeLeave', toValue(id))
   }
 
-  function onLeave(el: Element) {
+  function onLeave(_el: Element) {
     useModalEmitter().emit('leave', toValue(id))
   }
 

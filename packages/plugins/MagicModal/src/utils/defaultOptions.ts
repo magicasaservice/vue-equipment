@@ -1,4 +1,4 @@
-import type { ModalOptions } from '../types/index'
+import type { ModalOptions } from '../types'
 import type { RequireAll } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAll<ModalOptions> = {
