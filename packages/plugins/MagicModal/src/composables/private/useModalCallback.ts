@@ -2,7 +2,7 @@ import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useModalEmitter } from './../useModalEmitter'
 import type { ModalOptions } from '../../types'
 
-type Args = {
+type UseModalCallbackArgs = {
   id: MaybeRef<string>
   mappedOptions: ModalOptions
   addScrollLockPadding: () => void
@@ -14,17 +14,19 @@ type Args = {
   wrapperActive: Ref<boolean>
 }
 
-export function useModalCallback({
-  id,
-  mappedOptions,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-  lockScroll,
-  unlockScroll,
-  trapFocus,
-  releaseFocus,
-  wrapperActive,
-}: Args) {
+export function useModalCallback(args: UseModalCallbackArgs) {
+  const {
+    id,
+    mappedOptions,
+    addScrollLockPadding,
+    removeScrollLockPadding,
+    lockScroll,
+    unlockScroll,
+    trapFocus,
+    releaseFocus,
+    wrapperActive,
+  } = args
+
   function onBeforeEnter(_el: Element) {
     useModalEmitter().emit('beforeEnter', toValue(id))
   }
