@@ -1,15 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["./../../dist"],
-  "exclude": [
-    "./../../dist/composables",
-    "./../../dist/nuxt",
-    "./../../dist/utils"
-  ],
-  "compilerOptions": {
-    "paths": {
-      "@maas/vue-equipment/utils": ["./../utils/"],
-      "@maas/vue-equipment/utils/*": ["./../utils/*"]
-    }
-  }
+  "include": ["./../../dist/plugins"]
 }
