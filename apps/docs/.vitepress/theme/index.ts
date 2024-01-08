@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import {
   MagicConsentPlugin,
+  MagicDrawerPlugin,
   MagicMarqueePlugin,
   MagicModalPlugin,
   MagicNoisePlugin,
@@ -17,6 +18,7 @@ export default {
   Layout,
   enhanceApp({ app }) {
     app.use(MagicConsentPlugin)
+    app.use(MagicDrawerPlugin)
     app.use(MagicMarqueePlugin)
     app.use(MagicModalPlugin)
     app.use(MagicNoisePlugin)

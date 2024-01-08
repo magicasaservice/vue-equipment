@@ -1,4 +1,5 @@
 export * from './MagicConsent/index'
+export * from './MagicDrawer/index'
 export * from './MagicMarquee/index'
 export * from './MagicModal/index'
 export * from './MagicNoise/index'
