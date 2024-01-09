@@ -10,16 +10,14 @@ import {
 import { useEventListener, unrefElement } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useDrawerEmitter } from '../useDrawerEmitter'
+import { defaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
   elRef: MaybeRef<HTMLDivElement | undefined>
-  position: 'top' | 'right' | 'bottom' | 'left'
+  position: MaybeRef<typeof defaultOptions.position>
+  threshold: MaybeRef<typeof defaultOptions.threshold>
   overshoot: MaybeRef<number>
-  threshold: {
-    distance: MaybeRef<number>
-    momentum: MaybeRef<number>
-  }
   close: () => void
 }
 
@@ -53,22 +51,22 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function checkPosition() {
     switch (position) {
       case 'bottom':
-        if (draggedY.value > toValue(threshold.distance)) {
+        if (draggedY.value > toValue(threshold).distance) {
           shouldClose.value = true
         }
         break
       case 'top':
-        if (draggedY.value < toValue(threshold.distance) * -1) {
+        if (draggedY.value < toValue(threshold).distance * -1) {
           shouldClose.value = true
         }
         break
       case 'right':
-        if (draggedX.value > toValue(threshold.distance)) {
+        if (draggedX.value > toValue(threshold).distance) {
           shouldClose.value = true
         }
         break
       case 'left':
-        if (draggedX.value < toValue(threshold.distance) * -1) {
+        if (draggedX.value < toValue(threshold).distance * -1) {
           shouldClose.value = true
         }
         break
@@ -83,22 +81,22 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     switch (position) {
       case 'bottom':
-        if (velocityY > toValue(threshold.momentum)) {
+        if (velocityY > toValue(threshold).momentum) {
           shouldClose.value = true
         }
         break
       case 'top':
-        if (velocityY < toValue(threshold.momentum) * -1) {
+        if (velocityY < toValue(threshold).momentum * -1) {
           shouldClose.value = true
         }
         break
       case 'right':
-        if (velocityX > toValue(threshold.momentum)) {
+        if (velocityX > toValue(threshold).momentum) {
           shouldClose.value = true
         }
         break
       case 'left':
-        if (velocityX < toValue(threshold.momentum) * -1) {
+        if (velocityX < toValue(threshold).momentum * -1) {
           shouldClose.value = true
         }
         break
@@ -157,8 +155,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function onPointerup(e: PointerEvent) {
     resetStateAndListeners()
-
-    console.log('shouldClose.value:', shouldClose.value)
 
     if (shouldClose.value) {
       close()

@@ -73,6 +73,7 @@ import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 
+import type { RequireAll } from '@maas/vue-equipment/utils'
 import type { DrawerOptions } from './../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
@@ -109,9 +110,13 @@ const props = withDefaults(defineProps<MagicDrawerProps>(), {
 const elRef = ref<HTMLDivElement | undefined>(undefined)
 const drawer = ref<HTMLElement | undefined>(undefined)
 const drawerApi = useDrawerApi(props.id, { focusTarget: drawer })
-const mappedOptions = customDefu(props.options, defaultOptions)
+const mappedOptions: typeof defaultOptions = customDefu(
+  props.options,
+  defaultOptions
+)
 
 const overshoot = ref(0)
+const { position, threshold } = mappedOptions
 
 const {
   isActive,
@@ -125,12 +130,9 @@ const {
 } = drawerApi
 
 const { onPointerdown, style } = useDrawerDrag({
-  position: mappedOptions.position,
-  overshoot: overshoot,
-  threshold: {
-    distance: 200,
-    momentum: 1,
-  },
+  position,
+  threshold,
+  overshoot,
   elRef,
   close,
 })

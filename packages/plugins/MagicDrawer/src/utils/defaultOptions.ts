@@ -15,6 +15,10 @@ const defaultOptions: RequireAll<DrawerOptions> = {
     content: 'magic-drawer--content',
     backdrop: 'magic-drawer--backdrop',
   },
+  threshold: {
+    distance: 150,
+    momentum: 1,
+  },
   tag: 'dialog',
   keys: ['Escape'],
 }
