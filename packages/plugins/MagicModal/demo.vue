@@ -8,14 +8,25 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount } from 'vue'
 import { useModalApi, useModalEmitter } from '@maas/vue-equipment/plugins'
+import type { ModalEvents } from './src/types'
 
 const id = 'magic-modal-demo'
 const className = 'magic-modal--test-class'
 const modalApi = useModalApi(id)
 const { open } = modalApi
 
-useModalEmitter().on('*', (event, id) => {
+function callback(
+  event: keyof ModalEvents,
+  id: ModalEvents[keyof ModalEvents]
+) {
   console.log(event, id)
+}
+
+useModalEmitter().on('*', callback)
+
+onBeforeUnmount(() => {
+  useModalEmitter().off('*', callback)
 })
 </script>
