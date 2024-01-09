@@ -8,14 +8,25 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount } from 'vue'
 import { useDrawerApi, useDrawerEmitter } from '@maas/vue-equipment/plugins'
+import type { DrawerEvents } from './src/types'
 
 const id = 'magic-drawer-demo'
 const className = 'magic-drawer--test-class'
 const drawerApi = useDrawerApi(id)
 const { open } = drawerApi
 
-useDrawerEmitter().on('*', (event, id) => {
+function callback(
+  event: keyof DrawerEvents,
+  id: DrawerEvents[keyof DrawerEvents]
+) {
   console.log(event, id)
+}
+
+useDrawerEmitter().on('*', callback)
+
+onBeforeUnmount(() => {
+  useDrawerEmitter().off('*', callback)
 })
 </script>

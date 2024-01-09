@@ -11,7 +11,6 @@
         class="magic-drawer"
         :id="toValue(id)"
         :class="[toValue(props.class), `-${mappedOptions.position}`]"
-        @click.self="close"
         aria-modal="true"
       >
         <transition
@@ -26,31 +25,33 @@
             <slot name="backdrop" />
           </div>
         </transition>
-        <transition
-          :name="mappedOptions.transitions?.content"
-          @before-leave="onBeforeLeave"
-          @leave="onLeave"
-          @after-leave="onAfterLeave"
-          @before-enter="onBeforeEnter"
-          @enter="onEnter"
-          @after-enter="onAfterEnter"
-        >
-          <div
-            ref="elRef"
-            v-show="innerActive"
-            class="magic-drawer__content"
-            @pointerdown="onPointerdown"
-            :style="style"
+        <div class="magic-drawer__wrapper">
+          <transition
+            :name="mappedOptions.transitions?.content"
+            @before-leave="onBeforeLeave"
+            @leave="onLeave"
+            @after-leave="onAfterLeave"
+            @before-enter="onBeforeEnter"
+            @enter="onEnter"
+            @after-enter="onAfterEnter"
           >
-            <component
-              v-if="component"
-              v-bind="props"
-              :is="component"
-              @close="close"
-            />
-            <slot v-else />
-          </div>
-        </transition>
+            <div
+              ref="elRef"
+              v-show="innerActive"
+              class="magic-drawer__content"
+              @pointerdown="onPointerdown"
+              :style="style"
+            >
+              <component
+                v-if="component"
+                v-bind="props"
+                :is="component"
+                @close="close"
+              />
+              <slot v-else />
+            </div>
+          </transition>
+        </div>
       </component>
     </teleport>
   </transition>
@@ -66,7 +67,7 @@ import {
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
-import { onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, unrefElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
@@ -110,6 +111,8 @@ const drawer = ref<HTMLElement | undefined>(undefined)
 const drawerApi = useDrawerApi(props.id, { focusTarget: drawer })
 const mappedOptions = customDefu(props.options, defaultOptions)
 
+const overshoot = ref(0)
+
 const {
   isActive,
   close,
@@ -123,7 +126,11 @@ const {
 
 const { onPointerdown, style } = useDrawerDrag({
   position: mappedOptions.position,
-  threshold: 200,
+  overshoot: overshoot,
+  threshold: {
+    distance: 200,
+    momentum: 1,
+  },
   elRef,
   close,
 })
@@ -162,6 +169,40 @@ function onClose() {
   innerActive.value = false
 }
 
+function convertToPixels(value: string) {
+  const regex = /^(\d*\.?\d+)\s*(rem|px)$/
+
+  const match = value.match(regex)
+
+  if (!match) {
+    console.error(
+      `--magic-drawer-drag-overshoot (${value}) needs to be specified in px or rem`
+    )
+    return 0
+  }
+
+  const numericValue = parseFloat(match[1])
+  const unit = match[2]
+  const bodyFontSize = window.getComputedStyle(document.body).fontSize
+  const rootFontSize = parseFloat(bodyFontSize) || 16
+
+  switch (unit) {
+    case 'rem':
+      return numericValue * rootFontSize
+    case 'px':
+      return numericValue
+  }
+}
+
+function saveOvershoot() {
+  const element = unrefElement(drawer)
+  const overshootVar = getComputedStyle(element!).getPropertyValue(
+    '--magic-drawer-drag-overshoot'
+  )
+
+  overshoot.value = convertToPixels(overshootVar) || 0
+}
+
 if (mappedOptions.keys) {
   for (const key of mappedOptions.keys) {
     onKeyStroke(key, (e) => {
@@ -177,6 +218,11 @@ watch(isActive, async (value) => {
   } else {
     onClose()
   }
+})
+
+// Save overshoot, as soon as drawer apepars in in DOM
+watch(innerActive, () => {
+  saveOvershoot()
 })
 </script>
 
@@ -195,6 +241,9 @@ watch(isActive, async (value) => {
   --magic-drawer-handle-border-radius: 0.25rem;
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
+  --magic-drawer-drag-overshoot: 4rem;
+  --magic-drawer-drag-overshoot-x: 0;
+  --magic-drawer-drag-overshoot-y: 0;
 }
 
 .magic-drawer {
@@ -212,10 +261,17 @@ watch(isActive, async (value) => {
   border: none;
 }
 
+.magic-drawer.-bottom {
+  --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
+}
+
 .magic-drawer.-top {
   --magic-drawer-enter-animation: slide-ttb-in 300ms ease;
   --magic-drawer-leave-animation: slide-ttb-out 300ms ease;
   --magic-drawer-align-items: flex-start;
+  --magic-drawer-drag-overshoot-y: calc(
+    var(--magic-drawer-drag-overshoot) * -1
+  );
 }
 
 .magic-drawer.-right {
@@ -223,6 +279,7 @@ watch(isActive, async (value) => {
   --magic-drawer-leave-animation: slide-rtl-out 300ms ease;
   --magic-drawer-align-items: center;
   --magic-drawer-justify-content: flex-end;
+  --magic-drawer-drag-overshoot-x: var(--magic-drawer-drag-overshoot);
 }
 
 .magic-drawer.-left {
@@ -230,9 +287,20 @@ watch(isActive, async (value) => {
   --magic-drawer-leave-animation: slide-ltr-out 300ms ease;
   --magic-drawer-align-items: center;
   --magic-drawer-justify-content: flex-start;
+  --magic-drawer-drag-overshoot-x: calc(
+    var(--magic-drawer-drag-overshoot) * -1
+  );
 }
 
-.magic-drawer .magic-drawer__content {
+.magic-drawer__wrapper {
+  width: 100%;
+  transform: translate(
+    var(--magic-drawer-drag-overshoot-x),
+    var(--magic-drawer-drag-overshoot-y)
+  );
+}
+
+.magic-drawer__content {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   max-height: 100%;
