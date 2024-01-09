@@ -10,7 +10,11 @@
         ref="drawer"
         class="magic-drawer"
         :id="toValue(id)"
-        :class="[toValue(props.class), `-${mappedOptions.position}`]"
+        :class="[
+          toValue(props.class),
+          `-${mappedOptions.position}`,
+          { '-dragging': dragging },
+        ]"
         aria-modal="true"
       >
         <transition
@@ -129,7 +133,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, style } = useDrawerDrag({
+const { onPointerdown, dragging, style } = useDrawerDrag({
   position,
   threshold,
   overshoot,
@@ -312,6 +316,11 @@ watch(innerActive, () => {
   align-items: var(--magic-drawer-align-items);
   justify-content: var(--magic-drawer-justify-content);
   overflow-y: var(--magic-drawer-content-overflow-y);
+  cursor: grab;
+}
+
+.magic-drawer.-dragging .magic-drawer__content {
+  cursor: grabbing;
 }
 
 .magic-drawer__backdrop {
