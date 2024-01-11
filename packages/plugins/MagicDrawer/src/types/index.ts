@@ -12,9 +12,9 @@ export type DrawerOptions = {
     content?: string
     backdrop?: string
   }
-  threshold: {
-    distance: number
-    momentum: number
+  threshold?: {
+    distance?: number
+    momentum?: number
   }
   tag?: 'dialog' | 'div'
   keys?: string[] | false
