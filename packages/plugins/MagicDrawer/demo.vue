@@ -1,9 +1,14 @@
 <template>
-  <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-    <button @click="open" class="w-full h-full px-6 py-4">Open drawer</button>
+  <div class="m-auto rounded flex w-60 gap-2 bg-gray-500/5">
+    <button @click="toggle" class="w-full h-full px-6 py-4">
+      Toggle drawer
+    </button>
   </div>
   <magic-drawer :id="id" :class="className" :options="{ position: 'bottom' }">
-    <div tabindex="1" class="bg-gray-100 w-full h-[75vh] rounded-lg" />
+    <div
+      tabindex="1"
+      class="bg-gray-100 w-full h-[calc(50vh+var(--magic-drawer-drag-overshoot))] rounded-lg"
+    />
   </magic-drawer>
 </template>
 
@@ -15,13 +20,17 @@ import type { DrawerEvents } from './src/types'
 const id = 'magic-drawer-demo'
 const className = 'magic-drawer--test-class'
 const drawerApi = useDrawerApi(id)
-const { open } = drawerApi
+const { open, close } = drawerApi
 
 function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
   console.log(event, id)
+}
+
+function toggle() {
+  drawerApi.isActive.value ? close() : open()
 }
 
 useDrawerEmitter().on('*', callback)

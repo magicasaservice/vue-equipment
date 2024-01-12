@@ -10,13 +10,13 @@ import {
 import { useEventListener, unrefElement } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useDrawerEmitter } from '../useDrawerEmitter'
-import { defaultOptions } from '../../utils/defaultOptions'
+import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
   elRef: MaybeRef<HTMLDivElement | undefined>
-  position: MaybeRef<typeof defaultOptions.position>
-  threshold: MaybeRef<typeof defaultOptions.threshold>
+  position: MaybeRef<DefaultOptions['position']>
+  threshold: MaybeRef<DefaultOptions['threshold']>
   overshoot: MaybeRef<number>
   close: () => void
 }
@@ -136,6 +136,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function resetStateAndListeners() {
     dragging.value = false
+    shouldClose.value = false
     cancelPointermove?.()
   }
 
@@ -154,8 +155,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointerup(e: PointerEvent) {
-    resetStateAndListeners()
-
     if (shouldClose.value) {
       close()
     } else {
@@ -184,6 +183,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           break
       }
     }
+
+    // Reset state
+    resetStateAndListeners()
 
     // Prevent accidental click events
     e.preventDefault()
