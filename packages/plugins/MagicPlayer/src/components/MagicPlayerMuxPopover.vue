@@ -7,7 +7,7 @@
     class="magic-player-mux-popover"
   >
     <canvas
-      ref="canvas"
+      ref="canvasRef"
       :width="storyboard?.tile_width"
       :height="storyboard?.tile_height"
     />
@@ -42,7 +42,7 @@ const { instance } = usePlayerApi(props.id)
 const { seekedTime } = instance.value.controlsApi
 const { pixelRatio } = useDevicePixelRatio()
 
-const canvas = shallowRef() as Ref<HTMLCanvasElement>
+const canvasRef = shallowRef() as Ref<HTMLCanvasElement>
 const storyboard = shallowRef<MuxStoryboard | undefined>()
 let context: CanvasRenderingContext2D | undefined = undefined
 let image: HTMLImageElement | undefined = undefined
@@ -62,7 +62,7 @@ async function init() {
 
   try {
     storyboard.value = await fetch(
-      `https://image.mux.com/${props.playbackId}/storyboard.json`,
+      `https://image.mux.com/${props.playbackId}/storyboard.json`
     ).then((res) => res.json())
 
     if (!storyboard.value) throw new Error()
@@ -71,7 +71,7 @@ async function init() {
     image.src = storyboard.value.url
     await image.decode()
 
-    context = canvas.value.getContext('2d')!
+    context = canvasRef.value.getContext('2d')!
     context.drawImage(image, 0, 0)
   } catch (e: any) {
     console.error('Can not initialize timeine preview.', e)
@@ -107,7 +107,7 @@ function drawFrame(time: number) {
     0,
     0,
     tile_width,
-    tile_height,
+    tile_height
   )
 }
 

@@ -1,21 +1,12 @@
 <template>
-  <div ref="sceneRef" class="magic-scroll-scene">
+  <div ref="elRef" class="magic-scroll-scene">
     <slot :map-value="mapValue" :progress="progress" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  provide,
-  inject,
-  onMounted,
-  watch,
-  nextTick,
-  toRaw,
-  readonly,
-} from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { ref, provide, inject, onMounted, watch, nextTick, readonly } from 'vue'
+import { unrefElement, useIntersectionObserver } from '@vueuse/core'
 import { mapValue } from '@maas/vue-equipment/utils'
 import { useScrollApi } from '../composables/useScrollApi'
 import {
@@ -39,12 +30,12 @@ const props = withDefaults(defineProps<Props>(), {
 const scrollPosition = inject(ScrollPositionKey, undefined)
 const scrollParent = inject(ScrollParentKey)
 
-const intersecting = ref()
-const sceneRef = ref<HTMLElement | undefined>(undefined)
+const elRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
+const intersecting = ref()
 
 const { getCalculations, getProgress } = useScrollApi({
-  child: sceneRef,
+  child: elRef,
   parent: scrollParent,
   from: props.from,
   to: props.to,
@@ -70,7 +61,7 @@ watch(
 )
 
 useIntersectionObserver(
-  toRaw(sceneRef),
+  elRef,
   ([{ isIntersecting }]) => {
     intersecting.value = isIntersecting
     if (isIntersecting) {

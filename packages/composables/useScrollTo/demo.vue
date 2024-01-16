@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap gap-4">
     <div
-      ref="parent"
+      ref="parentRef"
       class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded snap-both snap-mandatory"
     >
       <div class="w-900px h-900px relative">
@@ -9,7 +9,7 @@
           TopLeft
         </div>
         <div
-          ref="el"
+          ref="elRef"
           position="absolute bottom-0 right-0"
           bg="gray-500/5"
           p="x-2 y-1"
@@ -33,13 +33,13 @@ import { useScrollTo, useEasings } from '@maas/vue-equipment/composables'
 const { scrollToTarget } = useScrollTo()
 const { easeInQuad } = useEasings()
 
-const el = ref()
-const parent = ref()
+const elRef = ref()
+const parentRef = ref()
 
 const scroll = () => {
   scrollToTarget({
-    target: el,
-    parent: parent,
+    target: elRef,
+    parent: parentRef,
     speed: 200,
     easing: easeInQuad,
   })

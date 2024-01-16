@@ -7,7 +7,7 @@
     >
       <component
         :is="mappedOptions.tag"
-        ref="modal"
+        ref="modalRef"
         class="magic-modal"
         :id="toValue(id)"
         :class="toValue(props.class)"
@@ -94,8 +94,8 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
   options: () => defaultOptions,
 })
 
-const modal = ref<HTMLElement | undefined>(undefined)
-const modalApi = useModalApi(props.id, { focusTarget: modal })
+const modalRef = ref<HTMLElement | undefined>(undefined)
+const modalApi = useModalApi(props.id, { focusTarget: modalRef })
 const mappedOptions = customDefu(props.options, defaultOptions)
 
 const {

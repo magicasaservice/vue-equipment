@@ -7,7 +7,7 @@
     >
       <component
         :is="mappedOptions.tag"
-        ref="drawer"
+        ref="drawerRef"
         class="magic-drawer"
         :id="toValue(id)"
         :class="[
@@ -77,7 +77,6 @@ import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 
-import type { RequireAll } from '@maas/vue-equipment/utils'
 import type { DrawerOptions } from './../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
@@ -112,8 +111,8 @@ const props = withDefaults(defineProps<MagicDrawerProps>(), {
 })
 
 const elRef = ref<HTMLDivElement | undefined>(undefined)
-const drawer = ref<HTMLElement | undefined>(undefined)
-const drawerApi = useDrawerApi(props.id, { focusTarget: drawer })
+const drawerRef = ref<HTMLElement | undefined>(undefined)
+const drawerApi = useDrawerApi(props.id, { focusTarget: drawerRef })
 const mappedOptions: typeof defaultOptions = customDefu(
   props.options,
   defaultOptions
@@ -201,7 +200,7 @@ function convertToPixels(value: string) {
 }
 
 function saveOvershoot() {
-  const element = unrefElement(drawer)
+  const element = unrefElement(drawerRef)
   const overshootVar = getComputedStyle(element!).getPropertyValue(
     '--magic-drawer-drag-overshoot'
   )

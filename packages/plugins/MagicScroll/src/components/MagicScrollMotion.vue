@@ -1,11 +1,12 @@
 <template>
-  <div ref="el" class="m-scroll-motion">
+  <div ref="elRef" class="magic-scroll-motion">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
+import { unrefElement } from '@vueuse/core'
 import { animate, type Easing } from 'motion'
 import { ScrollProgressKey } from '../symbols'
 
@@ -22,16 +23,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const animation = ref()
-const el = ref()
+const elRef = ref()
 
 const progress = inject(
   ScrollProgressKey,
-  computed(() => 0),
+  computed(() => 0)
 )
 
 function createAnimation(currentTime: number = 0) {
   if (!props.keyframes) return
-  animation.value = animate(toRaw(el.value), props.keyframes, {
+  animation.value = animate(unrefElement(elRef), props.keyframes, {
     duration: 1,
     easing: props.easing || 'linear',
     offset: props.offset,
@@ -53,6 +54,6 @@ watch(
   () => props.keyframes,
   () => {
     createAnimation(progress.value)
-  },
+  }
 )
 </script>
