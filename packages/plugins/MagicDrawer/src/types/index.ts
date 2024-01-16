@@ -18,6 +18,10 @@ export type DrawerOptions = {
   }
   tag?: 'dialog' | 'div'
   keys?: string[] | false
+  beforeMount?: {
+    open: boolean
+    animate: boolean
+  }
 }
 
 export type DrawerEvents = {

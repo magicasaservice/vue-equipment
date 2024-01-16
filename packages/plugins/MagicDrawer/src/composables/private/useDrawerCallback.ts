@@ -12,6 +12,7 @@ type UseDrawerCallbackArgs = {
   trapFocus: () => void
   releaseFocus: () => void
   wrapperActive: Ref<boolean>
+  wasActive: Ref<boolean>
 }
 
 export function useDrawerCallback(args: UseDrawerCallbackArgs) {
@@ -25,6 +26,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     trapFocus,
     releaseFocus,
     wrapperActive,
+    wasActive,
   } = args
 
   function onBeforeEnter(_el: Element) {
@@ -50,6 +52,8 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
       await nextTick()
       trapFocus()
     }
+
+    wasActive.value = true
   }
 
   function onBeforeLeave(_el: Element) {

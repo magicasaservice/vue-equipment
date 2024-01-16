@@ -1,5 +1,5 @@
 import { uuid } from '@maas/vue-equipment/utils'
-import { ref, computed, toValue, type MaybeRef } from 'vue'
+import { ref, computed, watch, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'

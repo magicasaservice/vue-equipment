@@ -19,7 +19,7 @@
       >
         <transition
           v-if="mappedOptions.backdrop || !!$slots.backdrop"
-          :name="mappedOptions.transitions?.backdrop"
+          :name="backdropTransition"
         >
           <div
             v-show="innerActive"
@@ -29,9 +29,10 @@
             <slot name="backdrop" />
           </div>
         </transition>
+
         <div class="magic-drawer__wrapper">
           <transition
-            :name="mappedOptions.transitions?.content"
+            :name="contentTransition"
             @before-leave="onBeforeLeave"
             @leave="onLeave"
             @after-leave="onAfterLeave"
@@ -65,8 +66,11 @@
 import {
   ref,
   watch,
+  computed,
   nextTick,
   toValue,
+  onBeforeMount,
+  onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -113,6 +117,7 @@ const props = withDefaults(defineProps<MagicDrawerProps>(), {
 const elRef = ref<HTMLDivElement | undefined>(undefined)
 const drawerRef = ref<HTMLElement | undefined>(undefined)
 const drawerApi = useDrawerApi(props.id, { focusTarget: drawerRef })
+
 const mappedOptions: typeof defaultOptions = customDefu(
   props.options,
   defaultOptions
@@ -123,6 +128,7 @@ const { position, threshold } = mappedOptions
 
 const {
   isActive,
+  open,
   close,
   trapFocus,
   releaseFocus,
@@ -143,6 +149,7 @@ const { onPointerdown, dragging, style } = useDrawerDrag({
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
 const wrapperActive = ref(false)
+const wasActive = ref(false)
 
 const {
   onBeforeEnter,
@@ -161,6 +168,29 @@ const {
   trapFocus,
   releaseFocus,
   wrapperActive,
+  wasActive,
+})
+
+// Surpress animation on initial mount if the options call for it
+// To achive this, the transition names are set to undefined
+const surpressTransition = computed(() => {
+  return (
+    mappedOptions.beforeMount.open &&
+    !mappedOptions.beforeMount.animate &&
+    !wasActive.value
+  )
+})
+
+const backdropTransition = computed(() => {
+  return surpressTransition.value
+    ? undefined
+    : mappedOptions.transitions?.backdrop
+})
+
+const contentTransition = computed(() => {
+  return surpressTransition.value
+    ? undefined
+    : mappedOptions.transitions?.content
 })
 
 // Handle state
@@ -228,6 +258,17 @@ watch(isActive, async (value) => {
 // Save overshoot, as soon as drawer apepars in in DOM
 watch(innerActive, () => {
   saveOvershoot()
+})
+
+onBeforeMount(() => {
+  if (mappedOptions.beforeMount.open) {
+    open()
+  }
+})
+
+// Reset state on unmount
+onBeforeUnmount(() => {
+  close()
 })
 </script>
 

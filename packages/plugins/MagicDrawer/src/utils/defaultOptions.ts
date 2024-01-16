@@ -21,6 +21,10 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
   },
   tag: 'dialog',
   keys: ['Escape'],
+  beforeMount: {
+    open: false,
+    animate: false,
+  },
 }
 
 type DefaultOptions = typeof defaultOptions

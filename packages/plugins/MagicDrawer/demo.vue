@@ -4,7 +4,14 @@
       Toggle drawer
     </button>
   </div>
-  <magic-drawer :id="id" :class="className" :options="{ position: 'bottom' }">
+  <magic-drawer
+    :id="id"
+    :class="className"
+    :options="{
+      position: 'bottom',
+      beforeMount: { open: true, animate: false },
+    }"
+  >
     <div
       tabindex="1"
       class="bg-gray-100 w-full h-[calc(50vh+var(--magic-drawer-drag-overshoot))] rounded-lg"
