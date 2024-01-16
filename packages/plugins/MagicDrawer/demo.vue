@@ -9,7 +9,6 @@
     :class="className"
     :options="{
       position: 'bottom',
-      beforeMount: { open: true, animate: false },
     }"
   >
     <div
