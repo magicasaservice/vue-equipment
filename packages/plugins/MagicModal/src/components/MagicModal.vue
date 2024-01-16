@@ -60,6 +60,7 @@ import {
   watch,
   nextTick,
   toValue,
+  onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -158,6 +159,11 @@ watch(isActive, async (value) => {
   } else {
     onClose()
   }
+})
+
+// Reset state on unmount
+onBeforeUnmount(() => {
+  close()
 })
 </script>
 
