@@ -8,29 +8,24 @@ export type InterpolateArgs = {
 }
 
 export function interpolate(args: InterpolateArgs) {
-  const {
-    from,
-    to,
-    duration,
-    callback,
-    easing = (t: number) => t * (2 - t),
-    interval = 1,
-  } = args
+  const { from, to, duration, callback, easing = (t) => t * (2 - t) } = args
 
-  const steps = Math.ceil(duration / interval)
-  const stepSize = 1 / steps
+  let startTime: number
+  const speed = 1
 
-  let currentStep = 0
+  function animate(timestamp: number) {
+    if (!startTime) startTime = timestamp
 
-  const intervalId = setInterval(() => {
-    const progress = currentStep * stepSize
-    const value = from + (to - from) * easing(progress)
+    const progress = Math.min(1, (timestamp - startTime) / (duration * speed))
+    const easedProgress = easing(progress)
+    const value = from + (to - from) * easedProgress
 
     callback(value)
-    currentStep++
 
-    if (currentStep >= steps) {
-      clearInterval(intervalId)
+    if (progress < 1) {
+      requestAnimationFrame(animate)
     }
-  }, interval)
+  }
+
+  requestAnimationFrame(animate)
 }

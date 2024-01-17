@@ -30,7 +30,7 @@
           </div>
         </transition>
 
-        <div class="magic-drawer__wrapper">
+        <div class="magic-drawer__wrapper" ref="wrapperRef">
           <transition
             :name="contentTransition"
             @before-leave="onBeforeLeave"
@@ -94,9 +94,9 @@ import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
 
-// Prevent keys array from being merged with default
+// Prevent deep merge of certain options
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'keys') {
+  if (key === 'keys' || key === 'snapPoints') {
     obj[key] = value
     return true
   }
@@ -116,6 +116,7 @@ const props = withDefaults(defineProps<MagicDrawerProps>(), {
 
 const elRef = ref<HTMLDivElement | undefined>(undefined)
 const drawerRef = ref<HTMLElement | undefined>(undefined)
+const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 const drawerApi = useDrawerApi(props.id, { focusTarget: drawerRef })
 
 const mappedOptions: typeof defaultOptions = customDefu(
@@ -124,7 +125,7 @@ const mappedOptions: typeof defaultOptions = customDefu(
 )
 
 const overshoot = ref(0)
-const { position, threshold } = mappedOptions
+const { position, threshold, snapPoints } = mappedOptions
 
 const {
   isActive,
@@ -138,11 +139,13 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, dragging, style } = useDrawerDrag({
+const { onPointerdown, dragging, style, draggedY } = useDrawerDrag({
   position,
   threshold,
   overshoot,
   elRef,
+  wrapperRef,
+  snapPoints,
   close,
 })
 
@@ -340,6 +343,7 @@ onBeforeUnmount(() => {
 
 .magic-drawer__wrapper {
   width: 100%;
+  pointer-events: none;
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)
@@ -353,6 +357,7 @@ onBeforeUnmount(() => {
   width: 100%;
   display: flex;
   position: relative;
+  pointer-events: auto;
   align-items: var(--magic-drawer-align-items);
   justify-content: var(--magic-drawer-justify-content);
   overflow-y: var(--magic-drawer-content-overflow-y);

@@ -25,6 +25,7 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
     open: false,
     animate: false,
   },
+  snapPoints: [1],
 }
 
 type DefaultOptions = typeof defaultOptions

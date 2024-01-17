@@ -1,3 +1,5 @@
+type SnapPoint = number | `${string}px`
+
 export type DrawerOptions = {
   position?: 'top' | 'right' | 'bottom' | 'left'
   backdrop?: boolean
@@ -22,6 +24,7 @@ export type DrawerOptions = {
     open: boolean
     animate: boolean
   }
+  snapPoints?: SnapPoint[]
 }
 
 export type DrawerEvents = {

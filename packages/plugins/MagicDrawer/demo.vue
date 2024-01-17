@@ -1,7 +1,13 @@
 <template>
-  <div class="m-auto rounded flex w-60 gap-2 bg-gray-500/5">
-    <button @click="toggle" class="w-full h-full px-6 py-4">
-      Toggle drawer
+  <div class="m-auto rounded flex w-120 gap-2">
+    <button @click="toggle" class="w-full h-full px-6 py-4 bg-gray-500/5">
+      Standard drawer
+    </button>
+    <button
+      @click="drawerSnapApi.open"
+      class="w-full h-full px-6 py-4 bg-gray-500/5"
+    >
+      Snap drawer
     </button>
   </div>
   <magic-drawer
@@ -13,7 +19,20 @@
   >
     <div
       tabindex="1"
-      class="bg-gray-100 w-full h-[calc(50vh+var(--magic-drawer-drag-overshoot))] rounded-lg"
+      class="bg-gray-100 w-full h-[calc(50svh+var(--magic-drawer-drag-overshoot))] rounded-lg"
+    />
+  </magic-drawer>
+
+  <magic-drawer
+    :id="snapId"
+    :options="{
+      position: 'bottom',
+      snapPoints: ['150px', '300px', 0.5, 1],
+    }"
+  >
+    <div
+      tabindex="1"
+      class="bg-gray-100 w-full h-[calc(75svh+var(--magic-drawer-drag-overshoot))] rounded-lg"
     />
   </magic-drawer>
 </template>
@@ -27,6 +46,9 @@ const id = 'magic-drawer-demo'
 const className = 'magic-drawer--test-class'
 const drawerApi = useDrawerApi(id)
 const { open, close } = drawerApi
+
+const snapId = 'magic-drawer-snap'
+const drawerSnapApi = useDrawerApi(snapId)
 
 function callback(
   event: keyof DrawerEvents,
