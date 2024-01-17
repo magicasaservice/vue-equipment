@@ -4,7 +4,7 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 const defaultOptions: RequireAllNested<DrawerOptions> = {
   position: 'bottom',
   backdrop: true,
-  focusTrap: true,
+  focusTrap: false,
   scrollLock: true,
   scrollLockPadding: true,
   teleport: {
@@ -26,6 +26,7 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
     animate: false,
   },
   snapPoints: [1],
+  snapPoint: 1,
 }
 
 type DefaultOptions = typeof defaultOptions

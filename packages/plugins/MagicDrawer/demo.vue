@@ -17,10 +17,7 @@
       position: 'bottom',
     }"
   >
-    <div
-      tabindex="1"
-      class="bg-gray-100 w-full h-[calc(50svh+var(--magic-drawer-drag-overshoot))] rounded-lg"
-    />
+    <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />
   </magic-drawer>
 
   <magic-drawer
@@ -28,12 +25,14 @@
     :options="{
       position: 'bottom',
       snapPoints: ['150px', '300px', 0.5, 1],
+      snapPoint: '150px',
+      beforeMount: {
+        open: true,
+        animate: true,
+      },
     }"
   >
-    <div
-      tabindex="1"
-      class="bg-gray-100 w-full h-[calc(75svh+var(--magic-drawer-drag-overshoot))] rounded-lg"
-    />
+    <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />
   </magic-drawer>
 </template>
 

@@ -40,20 +40,21 @@
             @enter="onEnter"
             @after-enter="onAfterEnter"
           >
-            <div
-              ref="elRef"
-              v-show="innerActive"
-              class="magic-drawer__content"
-              @pointerdown="onPointerdown"
-              :style="style"
-            >
-              <component
-                v-if="component"
-                v-bind="props"
-                :is="component"
-                @close="close"
-              />
-              <slot v-else />
+            <div v-show="innerActive" class="magic-drawer__content">
+              <div
+                ref="elRef"
+                class="magic-drawer__drag"
+                :style="style"
+                @pointerdown="onPointerdown"
+              >
+                <component
+                  v-if="component"
+                  v-bind="props"
+                  :is="component"
+                  @close="close"
+                />
+                <slot v-else />
+              </div>
             </div>
           </transition>
         </div>
@@ -125,7 +126,7 @@ const mappedOptions: typeof defaultOptions = customDefu(
 )
 
 const overshoot = ref(0)
-const { position, threshold, snapPoints } = mappedOptions
+const { position, threshold, snapPoints, snapPoint } = mappedOptions
 
 const {
   isActive,
@@ -139,13 +140,14 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, dragging, style, draggedY } = useDrawerDrag({
+const { onPointerdown, dragging, style } = useDrawerDrag({
   position,
   threshold,
   overshoot,
   elRef,
   wrapperRef,
   snapPoints,
+  snapPoint,
   close,
 })
 
@@ -263,7 +265,8 @@ watch(innerActive, () => {
   saveOvershoot()
 })
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  // Force open
   if (mappedOptions.beforeMount.open) {
     open()
   }
@@ -277,6 +280,7 @@ onBeforeUnmount(() => {
 
 <style>
 :root {
+  --magic-drawer-height: 75svh;
   --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
@@ -344,6 +348,9 @@ onBeforeUnmount(() => {
 .magic-drawer__wrapper {
   width: 100%;
   pointer-events: none;
+  height: calc(
+    var(--magic-drawer-height) + var(--magic-drawer-drag-overshoot-y)
+  );
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)
@@ -351,10 +358,17 @@ onBeforeUnmount(() => {
 }
 
 .magic-drawer__content {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  position: relative;
+}
+
+.magic-drawer__drag {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  max-height: 100%;
   width: 100%;
+  height: 100%;
   display: flex;
   position: relative;
   pointer-events: auto;

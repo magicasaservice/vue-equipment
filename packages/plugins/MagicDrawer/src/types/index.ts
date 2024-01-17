@@ -1,4 +1,4 @@
-type SnapPoint = number | `${string}px`
+export type SnapPoint = number | `${string}px`
 
 export type DrawerOptions = {
   position?: 'top' | 'right' | 'bottom' | 'left'
@@ -25,6 +25,7 @@ export type DrawerOptions = {
     animate: boolean
   }
   snapPoints?: SnapPoint[]
+  snapPoint?: SnapPoint
 }
 
 export type DrawerEvents = {

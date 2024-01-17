@@ -5,6 +5,7 @@ import {
   watch,
   onBeforeUnmount,
   toValue,
+  nextTick,
   type MaybeRef,
 } from 'vue'
 import { useEventListener, unrefElement } from '@vueuse/core'
@@ -20,6 +21,7 @@ type UseDrawerDragArgs = {
   position: MaybeRef<DefaultOptions['position']>
   threshold: MaybeRef<DefaultOptions['threshold']>
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
+  snapPoint: MaybeRef<DefaultOptions['snapPoint']>
   overshoot: MaybeRef<number>
   close: () => void
 }
@@ -32,15 +34,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     position,
     overshoot,
     threshold,
+    snapPoint,
     close,
   } = args
 
-  const { findClosestSnapPoint, drawerHeight, drawerWidth } = useDrawerSnap({
-    snapPoints,
-    position,
-    wrapperRef,
-    overshoot,
-  })
+  const { findClosestSnapPoint, mapSnapPoint, drawerHeight, drawerWidth } =
+    useDrawerSnap({
+      snapPoints,
+      position,
+      wrapperRef,
+      overshoot,
+    })
 
   // Private state
   const dragStart = ref<Date | undefined>(undefined)
@@ -288,6 +292,30 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  async function setInitial() {
+    await nextTick()
+    switch (position) {
+      case 'top':
+      case 'bottom':
+        draggedY.value =
+          (await findClosestSnapPoint({
+            draggedX,
+            draggedY: mapSnapPoint(toValue(snapPoint)),
+          })) || 0
+
+        break
+
+      case 'left':
+      case 'right':
+        draggedX.value =
+          (await findClosestSnapPoint({
+            draggedX: mapSnapPoint(toValue(snapPoint)),
+            draggedY,
+          })) || 0
+        break
+    }
+  }
+
   function resetStateAndListeners() {
     dragging.value = false
     shouldClose.value = false
@@ -424,13 +452,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   // Lifecycle hooks and listeners
   onMounted(() => {
     getSizes()
+    // setInitial()
     useDrawerEmitter().on('*', emitterCallback)
   })
 
   watch(
-    () => unrefElement(elRef),
+    () => [unrefElement(elRef), unrefElement(wrapperRef)],
     () => {
       getSizes()
+      setInitial()
     }
   )
 
@@ -440,8 +470,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   return {
     style,
+    draggedX,
+    draggedY,
     dragging,
     onPointerdown,
-    draggedY,
   }
 }
