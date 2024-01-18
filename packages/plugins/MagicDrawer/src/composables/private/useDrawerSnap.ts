@@ -5,7 +5,7 @@ import { mapValue } from '@maas/vue-equipment/utils'
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
 type UseDrawerSnapArgs = {
-  wrapperRef: MaybeRef<HTMLDivElement | undefined>
+  wrapperRect: MaybeRef<DOMRect | undefined>
   position: MaybeRef<DefaultOptions['position']>
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   canClose: MaybeRef<DefaultOptions['canClose']>
@@ -25,11 +25,9 @@ type FindClosestNumberArgs = {
 }
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
-  const { snapPoints, position, wrapperRef, overshoot, canClose } = args
+  const { snapPoints, position, wrapperRect, overshoot, canClose } = args
 
   // Private state
-  const wrapperRect = ref<DOMRect | undefined>(undefined)
-
   const mappedSnapPoints = computed(() => {
     // Add 0 to the snap points, if canClose is true
     const extended = toValue(canClose)
@@ -42,28 +40,34 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     })
 
     // Filter out undefined values
+    // Keep 0 as a valid snap point
     const filtered: number[] = mapped
-      .filter((snapPoint): snapPoint is number => !!snapPoint)
+      .filter(
+        (snapPoint): snapPoint is number => !!snapPoint || snapPoint === 0
+      )
       .sort((a, b) => a - b)
 
     return filtered
   })
 
   // Public state
-  const drawerHeight = computed(
-    () => wrapperRect.value?.height! - toValue(overshoot)
-  )
+  const drawerHeight = computed(() => {
+    if (toValue(wrapperRect) === undefined) {
+      return 0
+    } else {
+      return toValue(wrapperRect)?.height! - toValue(overshoot)
+    }
+  })
 
-  const drawerWidth = computed(
-    () => wrapperRect.value?.width! - toValue(overshoot)
-  )
+  const drawerWidth = computed(() => {
+    if (toValue(wrapperRect) === undefined) {
+      return 0
+    } else {
+      return toValue(wrapperRect)?.width! - toValue(overshoot)
+    }
+  })
 
   // Private functions
-  async function getSizes() {
-    wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
-    await nextTick()
-  }
-
   function findClosestNumber(args: FindClosestNumberArgs) {
     const { number, numbers, direction } = args
     let filtered = numbers
@@ -107,7 +111,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       const vw = window.innerWidth
 
       // Save guard against NaN
-      if (wrapperRect.value === undefined) {
+      if (toValue(wrapperRect) === undefined) {
         return undefined
       }
 
@@ -117,22 +121,22 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         case 'bottom':
           if (reversedSnapPoint === 1) return drawerHeight.value
           else if (reversedSnapPoint === 0) return 0
-          else return vh * reversedSnapPoint - wrapperRect.value?.top!
+          else return vh * reversedSnapPoint - toValue(wrapperRect)?.top!
 
         case 'top':
           if (reversedSnapPoint === 1) return drawerHeight.value * -1
           else if (reversedSnapPoint === 0) return 0
-          else return vh * reversedSnapPoint - wrapperRect.value?.bottom!
+          else return vh * reversedSnapPoint - toValue(wrapperRect)?.bottom!
 
         case 'right':
           if (reversedSnapPoint === 1) return drawerWidth.value
           else if (reversedSnapPoint === 0) return 0
-          else return vw * reversedSnapPoint - wrapperRect.value?.left!
+          else return vw * reversedSnapPoint - toValue(wrapperRect)?.left!
 
         case 'left':
           if (reversedSnapPoint === 1) return drawerWidth.value * -1
           else if (reversedSnapPoint === 0) return 0
-          else return vw * reversedSnapPoint - wrapperRect.value?.right!
+          else return vw * reversedSnapPoint - toValue(wrapperRect)?.right!
         default:
           return 0
       }
@@ -141,7 +145,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       const parsedSnapPoint = parseFloat(snapPoint)
 
       // Save guard against NaN
-      if (drawerHeight.value === undefined || drawerWidth.value === undefined) {
+      if (!drawerHeight.value || !drawerWidth.value) {
         return undefined
       }
 
@@ -164,8 +168,6 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
 
   async function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
     const { draggedY, draggedX, direction = 'absolute' } = args
-
-    await getSizes()
 
     let closest: number | undefined = 0
 

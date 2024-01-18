@@ -30,7 +30,6 @@
         open: false,
         animate: false,
       },
-      canClose: true,
     }"
   >
     <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />

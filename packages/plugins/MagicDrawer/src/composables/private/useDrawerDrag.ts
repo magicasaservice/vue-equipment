@@ -40,9 +40,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     close,
   } = args
 
+  const elRect = ref<DOMRect | undefined>(undefined)
+  const wrapperRect = ref<DOMRect | undefined>(undefined)
+
   const { findClosestSnapPoint, mapSnapPoint, drawerHeight, drawerWidth } =
     useDrawerSnap({
-      wrapperRef,
+      wrapperRect,
       snapPoints,
       canClose,
       position,
@@ -54,8 +57,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const dragging = ref(false)
   const shouldClose = ref(false)
   const interpolateTo = ref<number | undefined>(undefined)
-
-  const elRect = ref<DOMRect | undefined>(undefined)
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
@@ -78,8 +79,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   )
 
   // Private functions
-  function getSizes() {
+  async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
+    wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
+    await nextTick()
   }
 
   async function checkPosition() {
@@ -297,22 +300,30 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   async function setInitial() {
     await nextTick()
+
     switch (position) {
       case 'top':
       case 'bottom':
+        const mappedSnapPointY = mapSnapPoint(toValue(snapPoint))
+        console.log('toValue(snapPoint):', toValue(snapPoint))
+        console.log('mappedSnapPointY:', mappedSnapPointY)
+        if (!mappedSnapPointY) return
+
         draggedY.value =
           (await findClosestSnapPoint({
             draggedX,
-            draggedY: mapSnapPoint(toValue(snapPoint)) || 0,
+            draggedY: mappedSnapPointY,
           })) || 0
-
         break
 
       case 'left':
       case 'right':
+        const mappedSnapPointX = mapSnapPoint(toValue(snapPoint))
+        if (!mappedSnapPointX) return
+
         draggedX.value =
           (await findClosestSnapPoint({
-            draggedX: mapSnapPoint(toValue(snapPoint)) || 0,
+            draggedX: mappedSnapPointX,
             draggedY,
           })) || 0
         break
@@ -453,16 +464,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   // Lifecycle hooks and listeners
-  onMounted(() => {
-    getSizes()
-    // setInitial()
+  onMounted(async () => {
+    await getSizes()
     useDrawerEmitter().on('*', emitterCallback)
   })
 
   watch(
     () => [unrefElement(elRef), unrefElement(wrapperRef)],
-    () => {
-      getSizes()
+    async () => {
+      await getSizes()
       setInitial()
     }
   )
