@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted, toRaw, watch } from 'vue'
+import { ref, inject, computed, onMounted, watch } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import { animate, type Easing } from 'motion'
 import { ScrollProgressKey } from '../symbols'
