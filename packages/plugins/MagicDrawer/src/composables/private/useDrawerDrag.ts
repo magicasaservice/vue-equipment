@@ -16,6 +16,7 @@ import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
+  id: MaybeRef<string>
   elRef: MaybeRef<HTMLDivElement | undefined>
   wrapperRef: MaybeRef<HTMLDivElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
@@ -29,6 +30,7 @@ type UseDrawerDragArgs = {
 
 export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
+    id,
     elRef,
     wrapperRef,
     snapPoints,
@@ -305,8 +307,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'top':
       case 'bottom':
         const mappedSnapPointY = mapSnapPoint(toValue(snapPoint))
-        console.log('toValue(snapPoint):', toValue(snapPoint))
-        console.log('mappedSnapPointY:', mappedSnapPointY)
         if (!mappedSnapPointY) return
 
         draggedY.value =
@@ -350,9 +350,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function emitterCallback(
     event: keyof DrawerEvents,
-    _payload: DrawerEvents[keyof DrawerEvents]
+    payload: DrawerEvents[keyof DrawerEvents]
   ) {
-    if (event === 'afterLeave') {
+    if (event === 'afterLeave' && payload === toValue(id)) {
       resetDragged()
       resetSnapped()
     }

@@ -141,6 +141,7 @@ const {
 } = drawerApi
 
 const { onPointerdown, dragging, style } = useDrawerDrag({
+  id: props.id,
   elRef,
   wrapperRef,
   position,
