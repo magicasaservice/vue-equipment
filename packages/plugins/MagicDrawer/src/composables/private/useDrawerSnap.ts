@@ -188,12 +188,6 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         break
     }
 
-    console.log(mappedSnapPoints.value)
-    console.log('direction:', direction)
-    console.log('draggedX:', toValue(draggedX))
-    console.log('draggedY:', toValue(draggedY))
-    console.log('closest:', closest)
-
     return closest
   }
 
