@@ -22,6 +22,7 @@ type UseDrawerDragArgs = {
   threshold: MaybeRef<DefaultOptions['threshold']>
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   snapPoint: MaybeRef<DefaultOptions['snapPoint']>
+  canClose: MaybeRef<DefaultOptions['canClose']>
   overshoot: MaybeRef<number>
   close: () => void
 }
@@ -35,14 +36,16 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     overshoot,
     threshold,
     snapPoint,
+    canClose,
     close,
   } = args
 
   const { findClosestSnapPoint, mapSnapPoint, drawerHeight, drawerWidth } =
     useDrawerSnap({
-      snapPoints,
-      position,
       wrapperRef,
+      snapPoints,
+      canClose,
+      position,
       overshoot,
     })
 
@@ -280,13 +283,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'right':
         const newDraggedR = clamp(x - originX.value, 0, toValue(overshoot) * -1)
-        directionX.value = newDraggedR < draggedY.value ? 'below' : 'above'
+        directionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
         break
 
       case 'left':
         const newDraggedL = clamp(x - originX.value, 0, toValue(overshoot))
-        directionX.value = newDraggedL < draggedY.value ? 'below' : 'above'
+        directionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
         break
     }
@@ -300,7 +303,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         draggedY.value =
           (await findClosestSnapPoint({
             draggedX,
-            draggedY: mapSnapPoint(toValue(snapPoint)),
+            draggedY: mapSnapPoint(toValue(snapPoint)) || 0,
           })) || 0
 
         break
@@ -309,7 +312,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
         draggedX.value =
           (await findClosestSnapPoint({
-            draggedX: mapSnapPoint(toValue(snapPoint)),
+            draggedX: mapSnapPoint(toValue(snapPoint)) || 0,
             draggedY,
           })) || 0
         break

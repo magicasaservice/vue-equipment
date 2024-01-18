@@ -27,9 +27,10 @@
       snapPoints: ['150px', '300px', 0.5, 1],
       snapPoint: '150px',
       beforeMount: {
-        open: true,
-        animate: true,
+        open: false,
+        animate: false,
       },
+      canClose: true,
     }"
   >
     <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />

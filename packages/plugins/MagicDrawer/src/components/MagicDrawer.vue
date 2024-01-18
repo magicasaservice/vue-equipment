@@ -24,7 +24,7 @@
           <div
             v-show="innerActive"
             class="magic-drawer__backdrop"
-            @click.self="close"
+            @click.self="closeIfAllowed"
           >
             <slot name="backdrop" />
           </div>
@@ -51,7 +51,7 @@
                   v-if="component"
                   v-bind="props"
                   :is="component"
-                  @close="close"
+                  @close="closeIfAllowed"
                 />
                 <slot v-else />
               </div>
@@ -126,7 +126,7 @@ const mappedOptions: typeof defaultOptions = customDefu(
 )
 
 const overshoot = ref(0)
-const { position, threshold, snapPoints, snapPoint } = mappedOptions
+const { position, threshold, snapPoints, snapPoint, canClose } = mappedOptions
 
 const {
   isActive,
@@ -141,13 +141,14 @@ const {
 } = drawerApi
 
 const { onPointerdown, dragging, style } = useDrawerDrag({
+  elRef,
+  wrapperRef,
   position,
   threshold,
   overshoot,
-  elRef,
-  wrapperRef,
   snapPoints,
   snapPoint,
+  canClose,
   close,
 })
 
@@ -198,17 +199,7 @@ const contentTransition = computed(() => {
     : mappedOptions.transitions?.content
 })
 
-// Handle state
-async function onOpen() {
-  wrapperActive.value = true
-  await nextTick()
-  innerActive.value = true
-}
-
-function onClose() {
-  innerActive.value = false
-}
-
+// Private functions
 function convertToPixels(value: string) {
   const regex = /^(\d*\.?\d+)\s*(rem|px)$/
 
@@ -234,6 +225,23 @@ function convertToPixels(value: string) {
   }
 }
 
+async function onOpen() {
+  wrapperActive.value = true
+  await nextTick()
+  innerActive.value = true
+}
+
+function onClose() {
+  innerActive.value = false
+}
+
+// Public functions
+function closeIfAllowed() {
+  if (canClose) {
+    close()
+  }
+}
+
 function saveOvershoot() {
   const element = unrefElement(drawerRef)
   const overshootVar = getComputedStyle(element!).getPropertyValue(
@@ -243,7 +251,8 @@ function saveOvershoot() {
   overshoot.value = convertToPixels(overshootVar) || 0
 }
 
-if (mappedOptions.keys) {
+// Lifecycle hooks and listeners
+if (mappedOptions.keys && canClose) {
   for (const key of mappedOptions.keys) {
     onKeyStroke(key, (e) => {
       e.preventDefault()
@@ -348,9 +357,7 @@ onBeforeUnmount(() => {
 .magic-drawer__wrapper {
   width: 100%;
   pointer-events: none;
-  height: calc(
-    var(--magic-drawer-height) + var(--magic-drawer-drag-overshoot-y)
-  );
+  height: calc(var(--magic-drawer-height) + var(--magic-drawer-drag-overshoot));
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)

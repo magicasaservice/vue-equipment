@@ -26,6 +26,7 @@ export type DrawerOptions = {
   }
   snapPoints?: SnapPoint[]
   snapPoint?: SnapPoint
+  canClose?: boolean
 }
 
 export type DrawerEvents = {
