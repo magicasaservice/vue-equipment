@@ -18,16 +18,11 @@ interface Props {
 
 const props = defineProps<Props>()
 const targetRef = ref<HTMLElement | undefined>(undefined)
-const colDetect = ref()
 
 const scrollPosition = inject(ScrollPositionKey, undefined)
 const pageYOffset = computed(() => toValue(scrollPosition?.y) || 0)
 
 onMounted(() => {
-  colDetect.value = useCollisionDetect(
-    pageYOffset,
-    props.collisionEntries,
-    toValue(targetRef.value),
-  )
+  useCollisionDetect(pageYOffset, props.collisionEntries, toValue(targetRef))
 })
 </script>

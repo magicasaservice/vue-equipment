@@ -23,7 +23,7 @@ interface CollisionEntry {
   data: Record<string, any>
 }
 
-interface CollisionMappedEntry extends Omit<CollisionEntry, 'element'> {
+interface MappedCollisionEntry extends Omit<CollisionEntry, 'element'> {
   alerted: {
     up: AlertPositions
     down: AlertPositions
@@ -48,6 +48,6 @@ export type {
   FromTo,
   CollisionEvents,
   CollisionEntry,
-  CollisionMappedEntry,
+  MappedCollisionEntry,
   Dimensions,
 }
