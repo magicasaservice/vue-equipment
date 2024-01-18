@@ -36,4 +36,12 @@ export type DrawerEvents = {
   beforeLeave: string
   leave: string
   afterLeave: string
+  beforeSnap: {
+    id: string
+    snapPoint: SnapPoint
+  }
+  afterSnap: {
+    id: string
+    snapPoint: SnapPoint
+  }
 }

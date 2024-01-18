@@ -50,6 +50,23 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     return filtered
   })
 
+  const snapPointsMap = computed(() => {
+    // Add 0 to the snap points, if canClose is true
+    const extended = toValue(canClose)
+      ? [...toValue(snapPoints), 0]
+      : toValue(snapPoints)
+
+    const mapped = extended.reduce((acc, current) => {
+      const key = mapSnapPoint(current)
+      if (key || key === 0) {
+        acc[key] = current
+      }
+      return acc
+    }, {} as Record<number, SnapPoint>)
+
+    return mapped
+  })
+
   // Public state
   const drawerHeight = computed(() => {
     if (toValue(wrapperRect) === undefined) {
@@ -193,5 +210,11 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     return closest
   }
 
-  return { findClosestSnapPoint, mapSnapPoint, drawerHeight, drawerWidth }
+  return {
+    findClosestSnapPoint,
+    mapSnapPoint,
+    snapPointsMap,
+    drawerHeight,
+    drawerWidth,
+  }
 }

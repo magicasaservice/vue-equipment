@@ -45,14 +45,19 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const elRect = ref<DOMRect | undefined>(undefined)
   const wrapperRect = ref<DOMRect | undefined>(undefined)
 
-  const { findClosestSnapPoint, mapSnapPoint, drawerHeight, drawerWidth } =
-    useDrawerSnap({
-      wrapperRect,
-      snapPoints,
-      canClose,
-      position,
-      overshoot,
-    })
+  const {
+    findClosestSnapPoint,
+    mapSnapPoint,
+    snapPointsMap,
+    drawerHeight,
+    drawerWidth,
+  } = useDrawerSnap({
+    wrapperRect,
+    snapPoints,
+    canClose,
+    position,
+    overshoot,
+  })
 
   // Private state
   const dragStart = ref<Date | undefined>(undefined)
@@ -359,6 +364,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   async function interpolateDragged(target: number) {
+    // Find original snap point from map
+    const snapPoint = snapPointsMap.value[target]
+    useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })
+
     switch (position) {
       case 'bottom':
       case 'top':
@@ -372,8 +381,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           duration: 300,
           callback: (value: number) => {
             draggedY.value = value
+            if (draggedY.value === target) {
+              useDrawerEmitter().emit('beforeSnap', {
+                id: toValue(id),
+                snapPoint,
+              })
+            }
           },
         })
+
         break
       case 'right':
       case 'left':
@@ -387,8 +403,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           duration: 300,
           callback: (value: number) => {
             draggedX.value = value
+            if (draggedX.value === target) {
+              useDrawerEmitter().emit('beforeSnap', {
+                id: toValue(id),
+                snapPoint,
+              })
+            }
           },
         })
+
         break
     }
   }
