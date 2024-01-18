@@ -314,6 +314,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   display: flex;
+  pointer-events: none;
   justify-content: var(--magic-drawer-justify-content);
   align-items: var(--magic-drawer-align-items);
   z-index: var(--magic-drawer-z-index);
@@ -397,6 +398,7 @@ onBeforeUnmount(() => {
   bottom: 0;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
   background-color: var(--magic-drawer-backdrop-color);
   backdrop-filter: var(--magic-drawer-backdrop-filter);
   z-index: -1;
