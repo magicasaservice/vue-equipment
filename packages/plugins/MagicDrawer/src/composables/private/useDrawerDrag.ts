@@ -382,7 +382,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           callback: (value: number) => {
             draggedY.value = value
             if (draggedY.value === target) {
-              useDrawerEmitter().emit('beforeSnap', {
+              useDrawerEmitter().emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,
               })
@@ -404,7 +404,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           callback: (value: number) => {
             draggedX.value = value
             if (draggedX.value === target) {
-              useDrawerEmitter().emit('beforeSnap', {
+              useDrawerEmitter().emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,
               })
