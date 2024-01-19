@@ -142,6 +142,7 @@ const {
 
 const { onPointerdown, dragging, style } = useDrawerDrag({
   id: props.id,
+  isActive,
   elRef,
   wrapperRef,
   position,
@@ -387,7 +388,7 @@ onBeforeUnmount(() => {
   cursor: grab;
 }
 
-.magic-drawer.-dragging .magic-drawer__content {
+.magic-drawer.-dragging .magic-drawer__drag {
   cursor: grabbing;
 }
 

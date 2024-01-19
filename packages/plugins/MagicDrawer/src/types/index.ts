@@ -40,6 +40,10 @@ export type DrawerEvents = {
     id: string
     snapPoint: SnapPoint
   }
+  snapTo: {
+    id: string
+    snapPoint: SnapPoint
+  }
   afterSnap: {
     id: string
     snapPoint: SnapPoint

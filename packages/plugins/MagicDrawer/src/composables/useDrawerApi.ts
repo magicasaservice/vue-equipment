@@ -5,8 +5,9 @@ import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useDrawerStore } from './private/useDrawerStore'
 
-import type { DrawerOptions } from '../types/index'
+import type { DrawerOptions, SnapPoint } from '../types/index'
 import type { MaybeElementRef } from '@vueuse/core'
+import { useDrawerEmitter } from './useDrawerEmitter'
 
 export type useDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
   focusTarget: MaybeElementRef
@@ -48,6 +49,10 @@ export function useDrawerApi(
 
   function close() {
     removeInstance(mappedId.value)
+  }
+
+  function snapTo(snapPoint: SnapPoint) {
+    useDrawerEmitter().emit('snapTo', { id: mappedId.value, snapPoint })
   }
 
   function trapFocus() {
@@ -99,6 +104,7 @@ export function useDrawerApi(
     isActive,
     open,
     close,
+    snapTo,
     trapFocus,
     releaseFocus,
     lockScroll,

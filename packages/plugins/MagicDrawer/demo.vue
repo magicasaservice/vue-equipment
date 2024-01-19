@@ -1,5 +1,5 @@
 <template>
-  <div class="m-auto rounded flex w-120 gap-2">
+  <div class="m-auto rounded flex w-120 gap-4">
     <button @click="toggle" class="w-full h-full px-6 py-4 bg-gray-500/5">
       Standard drawer
     </button>
@@ -8,6 +8,12 @@
       class="w-full h-full px-6 py-4 bg-gray-500/5"
     >
       Snap drawer
+    </button>
+    <button
+      @click="drawerSnapApi.snapTo('300px')"
+      class="w-full h-full px-6 py-4 bg-gray-500/5"
+    >
+      Snap to 300px
     </button>
   </div>
   <magic-drawer
@@ -30,6 +36,7 @@
         open: false,
         animate: false,
       },
+      backdrop: false,
     }"
   >
     <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />
@@ -53,7 +60,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  console.log(event, id)
+  // console.log(event, id)
 }
 
 function toggle() {

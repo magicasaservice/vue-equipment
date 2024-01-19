@@ -8,8 +8,13 @@ import {
   nextTick,
   type MaybeRef,
 } from 'vue'
-import { useEventListener, unrefElement } from '@vueuse/core'
-import { interpolate } from '@maas/vue-equipment/utils'
+import {
+  useEventListener,
+  unrefElement,
+  useResizeObserver,
+  useDebounceFn,
+  useThrottleFn,
+} from '@vueuse/core'
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { type DefaultOptions } from '../../utils/defaultOptions'
@@ -17,6 +22,7 @@ import { type DrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
+  isActive: MaybeRef<boolean>
   elRef: MaybeRef<HTMLDivElement | undefined>
   wrapperRef: MaybeRef<HTMLDivElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
@@ -31,6 +37,7 @@ type UseDrawerDragArgs = {
 export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
     id,
+    isActive,
     elRef,
     wrapperRef,
     snapPoints,
@@ -41,23 +48,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     canClose,
     close,
   } = args
-
-  const elRect = ref<DOMRect | undefined>(undefined)
-  const wrapperRect = ref<DOMRect | undefined>(undefined)
-
-  const {
-    findClosestSnapPoint,
-    mapSnapPoint,
-    snapPointsMap,
-    drawerHeight,
-    drawerWidth,
-  } = useDrawerSnap({
-    wrapperRect,
-    snapPoints,
-    canClose,
-    position,
-    overshoot,
-  })
 
   // Private state
   const dragStart = ref<Date | undefined>(undefined)
@@ -70,12 +60,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   const originX = ref(0)
   const originY = ref(0)
-  const snappedY = ref(0)
-  const snappedX = ref(0)
   const directionY = ref<'below' | 'above' | 'absolute'>('absolute')
   const directionX = ref<'below' | 'above' | 'absolute'>('absolute')
 
   const hasSnapPoints = computed(() => toValue(snapPoints).length > 1)
+
+  const elRect = ref<DOMRect | undefined>(undefined)
+  const wrapperRect = ref<DOMRect | undefined>(undefined)
 
   // Public state
   const draggedX = ref(0)
@@ -84,6 +75,28 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const style = computed(
     () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
   )
+
+  // Snap logic
+  const {
+    snappedY,
+    snappedX,
+    activeSnapPoint,
+    snapTo,
+    snapPointsMap,
+    interpolateDragged,
+    findClosestSnapPoint,
+    drawerHeight,
+    drawerWidth,
+  } = useDrawerSnap({
+    id,
+    wrapperRect,
+    snapPoints,
+    canClose,
+    position,
+    overshoot,
+    draggedY,
+    draggedX,
+  })
 
   // Private functions
   async function getSizes() {
@@ -305,36 +318,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
-  async function setInitial() {
-    await nextTick()
-
-    switch (position) {
-      case 'top':
-      case 'bottom':
-        const mappedSnapPointY = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointY) return
-
-        draggedY.value =
-          (await findClosestSnapPoint({
-            draggedX,
-            draggedY: mappedSnapPointY,
-          })) || 0
-        break
-
-      case 'left':
-      case 'right':
-        const mappedSnapPointX = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointX) return
-
-        draggedX.value =
-          (await findClosestSnapPoint({
-            draggedX: mappedSnapPointX,
-            draggedY,
-          })) || 0
-        break
-    }
-  }
-
   function resetStateAndListeners() {
     dragging.value = false
     shouldClose.value = false
@@ -351,6 +334,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function resetSnapped() {
     snappedX.value = 0
     snappedY.value = 0
+    activeSnapPoint.value = undefined
   }
 
   function emitterCallback(
@@ -361,58 +345,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       resetDragged()
       resetSnapped()
     }
-  }
 
-  async function interpolateDragged(target: number) {
-    // Find original snap point from map
-    const snapPoint = snapPointsMap.value[target]
-    useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })
-
-    switch (position) {
-      case 'bottom':
-      case 'top':
-        // Save value the drawer will snap to
-        // Used later, to check if we should close
-        snappedY.value = target
-
-        interpolate({
-          from: draggedY.value,
-          to: target,
-          duration: 300,
-          callback: (value: number) => {
-            draggedY.value = value
-            if (draggedY.value === target) {
-              useDrawerEmitter().emit('afterSnap', {
-                id: toValue(id),
-                snapPoint,
-              })
-            }
-          },
-        })
-
-        break
-      case 'right':
-      case 'left':
-        // Save value the drawer will snap to
-        // Used later, to check if we should close
-        snappedX.value = target
-
-        interpolate({
-          from: draggedX.value,
-          to: target,
-          duration: 300,
-          callback: (value: number) => {
-            draggedX.value = value
-            if (draggedX.value === target) {
-              useDrawerEmitter().emit('afterSnap', {
-                id: toValue(id),
-                snapPoint,
-              })
-            }
-          },
-        })
-
-        break
+    if (
+      event === 'snapTo' &&
+      typeof payload === 'object' &&
+      payload.id === toValue(id)
+    ) {
+      if (!toValue(isActive)) {
+        console.warn('Cannot snap to point when drawer is not open')
+        return
+      } else {
+        snapTo({ snapPoint: payload.snapPoint, interpolate: true })
+      }
     }
   }
 
@@ -421,12 +365,29 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       close()
     } else if (interpolateTo.value || interpolateTo.value === 0) {
       interpolateDragged(interpolateTo.value)
+
+      // Save the snap point we’re snapping to
+      // both the input value, as well as the actual pixel value
+      activeSnapPoint.value = snapPointsMap.value[interpolateTo.value]
+
+      switch (position) {
+        case 'bottom':
+        case 'top':
+          snappedY.value = interpolateTo.value
+          break
+
+        case 'right':
+        case 'left':
+          snappedX.value = interpolateTo.value
+          break
+      }
     } else {
       switch (position) {
         case 'bottom':
         case 'top':
           interpolateDragged(snappedY.value)
           break
+
         case 'right':
         case 'left':
           interpolateDragged(snappedX.value)
@@ -493,12 +454,25 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   watch(
-    () => [unrefElement(elRef), unrefElement(wrapperRef)],
+    () => [unrefElement(wrapperRef), unrefElement(wrapperRef)],
     async () => {
       await getSizes()
-      setInitial()
+      snapTo({ snapPoint, interpolate: false })
     }
   )
+
+  // Make sure the drawer keeps the correct position when the window is resized
+  // To achieve this, we update the snapPointsMap after the drawer has snapped
+  useResizeObserver(elRef, async () => {
+    useThrottleFn(async () => {
+      await getSizes()
+
+      if (activeSnapPoint.value) {
+        await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
+        snapPointsMap.trigger()
+      }
+    }, 100)()
+  })
 
   onBeforeUnmount(() => {
     useDrawerEmitter().off('*', emitterCallback)
