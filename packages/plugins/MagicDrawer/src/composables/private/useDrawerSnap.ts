@@ -221,7 +221,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'top':
       case 'bottom':
         const mappedSnapPointY = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointY) return
+        if (!mappedSnapPointY && mappedSnapPointY !== 0) return
 
         const closestY =
           (await findClosestSnapPoint({
@@ -246,7 +246,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'left':
       case 'right':
         const mappedSnapPointX = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointX) return
+        if (!mappedSnapPointX && mappedSnapPointX !== 0) return
 
         const closestX =
           (await findClosestSnapPoint({

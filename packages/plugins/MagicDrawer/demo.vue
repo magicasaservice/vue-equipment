@@ -60,7 +60,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  // console.log(event, id)
+  console.log(event, id)
 }
 
 function toggle() {
