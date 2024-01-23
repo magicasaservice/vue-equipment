@@ -1,0 +1,9 @@
+.slide-ttb-enter-active {
+  animation: slide-ttb-in 300ms ease;
+}
+
+.slide-ttb-leave-active {
+  animation: slide-ttb-out 300ms ease;
+}
+
+

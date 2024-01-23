@@ -1,0 +1,7 @@
+.slide-ltr-enter-active {
+  animation: slide-ltr-in 300ms ease;
+}
+
+.slide-ltr-leave-active {
+  animation: slide-ltr-out 300ms ease;
+}

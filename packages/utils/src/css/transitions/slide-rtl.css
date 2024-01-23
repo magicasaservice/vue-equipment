@@ -1,0 +1,8 @@
+.slide-rtl-enter-active {
+  animation: slide-rtl-in 300ms ease;
+}
+
+.slide-rtl-leave-active {
+  animation: slide-rtl-out 300ms ease;
+}
+

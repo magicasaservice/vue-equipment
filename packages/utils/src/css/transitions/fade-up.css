@@ -1,0 +1,8 @@
+.fade-up-enter-active {
+  animation: fade-up-in 300ms ease;
+}
+
+.fade-up-leave-active {
+  animation: fade-up-out 300ms ease;
+}
+

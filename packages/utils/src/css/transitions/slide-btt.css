@@ -1,0 +1,8 @@
+.slide-btt-enter-active {
+  animation: slide-btt-in 300ms ease;
+}
+
+.slide-btt-leave-active {
+  animation: slide-btt-out 300ms ease;
+}
+

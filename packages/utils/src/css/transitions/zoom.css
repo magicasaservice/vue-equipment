@@ -1,0 +1,7 @@
+.zoom-enter-active {
+  animation: zoom-in 300ms ease;
+}
+
+.zoom-leave-active {
+  animation: zoom-out 300ms ease;
+}
