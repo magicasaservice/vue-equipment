@@ -30,11 +30,7 @@
       tabindex="1"
       class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
     >
-      <div
-        v-for="i in 50"
-        :key="i"
-        class="p-4 text-black w-full flex justify-center"
-      >
+      <div v-for="i in 50" :key="i" class="p-4 text-black w-full">
         {{ i }}
       </div>
     </div>
@@ -58,8 +54,8 @@
       tabindex="1"
       class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
     >
-      <div v-for="i in 50" :key="i" class="p-4 text-black w-full flex bg-red">
-        {{ i }} Lorem ipsum dolor sit amet
+      <div v-for="i in 50" :key="i" class="p-4 text-black w-full">
+        {{ i }}
       </div>
     </div>
   </magic-drawer>
