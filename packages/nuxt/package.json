@@ -1,6 +1,6 @@
 {
   "name": "nuxt",
-  "version": "0.16.8",
+  "version": "0.16.9",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@nuxt/kit": "^3.7.1",
