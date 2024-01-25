@@ -7,16 +7,20 @@ import {
   toValue,
   nextTick,
   type MaybeRef,
+  type WritableComputedRef,
 } from 'vue'
 import {
   useEventListener,
   unrefElement,
   useResizeObserver,
-  useDebounceFn,
   useThrottleFn,
+  useScrollLock,
 } from '@vueuse/core'
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
+import { useDrawerGuards } from './useDrawerGuards'
+import { isIOS } from '@maas/vue-equipment/utils'
+
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
 
@@ -57,11 +61,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
+  let cancelTouchend: (() => void) | undefined = undefined
+  let scrollLock: WritableComputedRef<boolean> | undefined = undefined
 
   const originX = ref(0)
   const originY = ref(0)
-  const directionY = ref<'below' | 'above' | 'absolute'>('absolute')
-  const directionX = ref<'below' | 'above' | 'absolute'>('absolute')
+  const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
+  const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
+  const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
+  const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
 
   const hasSnapPoints = computed(() => toValue(snapPoints).length > 1)
 
@@ -98,6 +106,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     draggedX,
   })
 
+  const { canDrag, lockScroll } = useDrawerGuards({
+    elRef,
+    absDirectionX,
+    absDirectionY,
+    position,
+  })
+
   // Private functions
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
@@ -111,7 +126,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointB = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionY.value,
+          direction: relDirectionY.value,
         })
 
         if (
@@ -133,7 +148,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointT = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionY.value,
+          direction: relDirectionY.value,
         })
 
         if (
@@ -154,7 +169,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointR = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionX.value,
+          direction: relDirectionX.value,
         })
 
         if (
@@ -175,7 +190,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointL = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionX.value,
+          direction: relDirectionX.value,
         })
 
         if (
@@ -205,7 +220,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointB = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionY.value,
+          direction: relDirectionY.value,
         })
 
         if (velocityY > toValue(threshold).momentum) {
@@ -223,7 +238,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointT = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionY.value,
+          direction: relDirectionY.value,
         })
 
         if (velocityY < toValue(threshold).momentum * -1) {
@@ -241,7 +256,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointR = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionX.value,
+          direction: relDirectionX.value,
         })
 
         if (velocityX > toValue(threshold).momentum) {
@@ -259,7 +274,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const snapPointL = await findClosestSnapPoint({
           draggedX,
           draggedY,
-          direction: directionX.value,
+          direction: relDirectionX.value,
         })
 
         if (velocityX > toValue(threshold).momentum) {
@@ -294,26 +309,50 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     switch (position) {
       case 'bottom':
         const newDraggedB = clamp(y - originY.value, 0, toValue(overshoot) * -1)
-        directionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
+        relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
         break
 
       case 'top':
         const newDraggedT = clamp(y - originY.value, 0, toValue(overshoot))
-        directionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
+        relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
         break
 
       case 'right':
         const newDraggedR = clamp(x - originX.value, 0, toValue(overshoot) * -1)
-        directionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
+        relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
         break
 
       case 'left':
         const newDraggedL = clamp(x - originX.value, 0, toValue(overshoot))
-        directionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
+        relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
+        break
+    }
+  }
+
+  function checkDirection({ x, y }: { x: number; y: number }) {
+    switch (position) {
+      case 'bottom':
+        absDirectionY.value =
+          y < originY.value ? 'with' : y > originY.value ? 'against' : undefined
+        break
+
+      case 'top':
+        absDirectionY.value =
+          y > originY.value ? 'with' : y < originY.value ? 'against' : undefined
+        break
+
+      case 'right':
+        absDirectionX.value =
+          x < originX.value ? 'with' : x > originX.value ? 'against' : undefined
+        break
+
+      case 'left':
+        absDirectionX.value =
+          x > originX.value ? 'with' : x < originX.value ? 'against' : undefined
         break
     }
   }
@@ -322,8 +361,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     dragging.value = false
     shouldClose.value = false
     interpolateTo.value = undefined
+    cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
+  }
+
+  function resetScrollLock() {
+    if (scrollLock?.value) {
+      scrollLock.value = false
+    }
+
+    scrollLock = undefined
   }
 
   function resetDragged() {
@@ -397,6 +445,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Reset state
     resetStateAndListeners()
+    resetScrollLock()
 
     // Prevent accidental click events
     e.preventDefault()
@@ -405,6 +454,23 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function onPointermove(e: PointerEvent) {
     // Reset shouldClose before checking
     shouldClose.value = false
+
+    // Save pointermove direction
+    checkDirection({ x: e.screenX, y: e.screenY })
+
+    // Possibly lock scroll
+    if (!scrollLock) {
+      const target = lockScroll(e.target!)
+      if (target) {
+        scrollLock = useScrollLock(target)
+        scrollLock.value = true
+      }
+    }
+
+    // Check if we should be dragging
+    if (!canDrag(e.target!)) {
+      return
+    }
 
     //Check if we should close or snap based on momentum
     checkMomentum({ x: e.screenX, y: e.screenY })
@@ -433,6 +499,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
     cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
+
+    // Pointerup doesn’t fire on iOS, so we need to use touchend
+    cancelTouchend = isIOS()
+      ? useEventListener(document, 'touchend', onPointerup)
+      : undefined
 
     // Save origin
     originX.value = e.screenX - draggedX.value

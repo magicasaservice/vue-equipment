@@ -1,19 +1,22 @@
 <template>
-  <div class="m-auto rounded flex w-120 gap-4">
-    <button @click="toggle" class="w-full h-full px-6 py-4 bg-gray-500/5">
-      Standard drawer
-    </button>
+  <div class="m-auto rounded flex flex-wrap md:w-120 gap-4">
     <button
-      @click="drawerSnapApi.open"
-      class="w-full h-full px-6 py-4 bg-gray-500/5"
+      @click="toggle"
+      class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
     >
-      Snap drawer
+      Open drawer
     </button>
     <button
       @click="drawerSnapApi.snapTo('300px')"
-      class="w-full h-full px-6 py-4 bg-gray-500/5"
+      class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
     >
       Snap to 300px
+    </button>
+    <button
+      @click="drawerSnapApi.open"
+      class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
+    >
+      Snap drawer
     </button>
   </div>
   <magic-drawer
@@ -23,7 +26,18 @@
       position: 'bottom',
     }"
   >
-    <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />
+    <div
+      tabindex="1"
+      class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
+    >
+      <div
+        v-for="i in 100"
+        :key="i"
+        class="p-4 text-black w-full flex justify-center"
+      >
+        {{ i }}
+      </div>
+    </div>
   </magic-drawer>
 
   <magic-drawer
