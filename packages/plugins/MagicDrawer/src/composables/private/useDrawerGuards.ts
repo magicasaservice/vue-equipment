@@ -15,7 +15,10 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
   const { elRef, absDirectionX, absDirectionY, position, activeSnapPoint } =
     args
 
-  const isHoverSupported = matchMedia('(hover: hover)').matches
+  const isHoverSupported = computed(() => {
+    return typeof window !== 'undefined' && matchMedia('(hover: hover)').matches
+  })
+
   const canSnap = computed(() => {
     return toValue(activeSnapPoint) !== 1 && !!toValue(activeSnapPoint)
   })
@@ -25,7 +28,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // allow dragging
-    if (isHoverSupported) {
+    if (isHoverSupported.value) {
       return true
     }
 
@@ -128,7 +131,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // allow interpolation
-    if (isHoverSupported) {
+    if (isHoverSupported.value) {
       return true
     }
 
@@ -170,7 +173,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // cancel scroll lock
-    if (isHoverSupported) {
+    if (isHoverSupported.value) {
       return undefined
     }
 
