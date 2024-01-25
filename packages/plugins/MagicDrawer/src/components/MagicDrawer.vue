@@ -297,6 +297,7 @@ onBeforeUnmount(() => {
   --magic-drawer-align-items: flex-end;
   --magic-drawer-backdrop-color: rgba(0, 0, 0, 0.5);
   --magic-drawer-backdrop-filter: unset;
+  --magic-drawer-content-overflow-x: hidden;
   --magic-drawer-content-overflow-y: auto;
   --magic-drawer-handle-wrapper-height: 2rem;
   --magic-drawer-handle-width: 3rem;
@@ -384,6 +385,7 @@ onBeforeUnmount(() => {
   pointer-events: auto;
   align-items: var(--magic-drawer-align-items);
   justify-content: var(--magic-drawer-justify-content);
+  overflow-x: var(--magic-drawer-content-overflow-x);
   overflow-y: var(--magic-drawer-content-overflow-y);
   cursor: grab;
 }

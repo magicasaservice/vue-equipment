@@ -1,19 +1,24 @@
-import { toValue, type MaybeRef } from 'vue'
+import { computed, toValue, type MaybeRef } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import { type DefaultOptions } from '../../utils/defaultOptions'
+import { type SnapPoint } from '../../types'
 
 interface UseDrawerGuardsArgs {
   elRef: MaybeRef<HTMLDivElement | undefined>
   absDirectionX: MaybeRef<'with' | 'against' | undefined>
   absDirectionY: MaybeRef<'with' | 'against' | undefined>
   position: MaybeRef<DefaultOptions['position']>
+  activeSnapPoint: MaybeRef<SnapPoint | undefined>
 }
 
 export function useDrawerGuards(args: UseDrawerGuardsArgs) {
-  const { elRef, absDirectionX, absDirectionY, position } = args
+  const { elRef, absDirectionX, absDirectionY, position, activeSnapPoint } =
+    args
 
-  const drawer = unrefElement(elRef)
   const isHoverSupported = matchMedia('(hover: hover)').matches
+  const canSnap = computed(() => {
+    return toValue(activeSnapPoint) !== 1 && !!toValue(activeSnapPoint)
+  })
 
   function canDrag(el: EventTarget) {
     let element = el as HTMLElement
@@ -24,14 +29,26 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
       return true
     }
 
+    // Drawer is not at end,
+    // allow dragging
+    if (canSnap.value) {
+      return true
+    }
+
     while (element) {
+      // All elements traversed,
+      // allow dragging
+      if (element === unrefElement(elRef)) {
+        return true
+      }
+
       switch (position) {
         case 'bottom':
           // Check if the element is scrollable
           if (element.scrollHeight > element.clientHeight) {
             // User has already scrolled,
             // prevent dragging
-            if (element.scrollTop !== 0) {
+            if (element.scrollTop > 0) {
               return false
             }
 
@@ -39,12 +56,6 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             // prevent dragging
             if (toValue(absDirectionY) === 'with') {
               return false
-            }
-
-            // All elements traversed,
-            // allow dragging
-            if (element === drawer) {
-              return true
             }
           }
           break
@@ -54,10 +65,8 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
           if (element.scrollHeight > element.clientHeight) {
             // User has already scrolled,
             // prevent dragging
-            if (
-              element.scrollTop !==
-              element.scrollHeight - element.clientHeight
-            ) {
+            const maxScroll = element.scrollHeight - element.clientHeight
+            if (element.scrollTop < maxScroll) {
               return false
             }
 
@@ -65,35 +74,6 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             // prevent dragging
             if (toValue(absDirectionY) === 'with') {
               return false
-            }
-
-            // All elements traversed,
-            // allow dragging
-            if (element === drawer) {
-              return true
-            }
-          }
-          break
-
-        case 'left':
-          // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
-            // User has already scrolled,
-            // prevent dragging
-            if (element.scrollLeft !== 0) {
-              return false
-            }
-
-            // User scrolls for the first time,
-            // prevent dragging
-            if (toValue(absDirectionX) === 'with') {
-              return false
-            }
-
-            // All elements traversed,
-            // allow dragging
-            if (element === drawer) {
-              return true
             }
           }
           break
@@ -103,10 +83,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
           if (element.scrollWidth > element.clientWidth) {
             // User has already scrolled,
             // prevent dragging
-            if (
-              element.scrollLeft !==
-              element.scrollWidth - element.clientWidth
-            ) {
+            if (element.scrollLeft > 0) {
               return false
             }
 
@@ -115,11 +92,23 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             if (toValue(absDirectionX) === 'with') {
               return false
             }
+          }
+          break
 
-            // All elements traversed,
-            // allow dragging
-            if (element === drawer) {
-              return true
+        case 'left':
+          // Check if the element is scrollable
+          if (element.scrollWidth > element.clientWidth) {
+            // User has already scrolled,
+            // prevent dragging
+            const maxScroll = element.scrollWidth - element.clientWidth
+            if (element.scrollLeft < maxScroll) {
+              return false
+            }
+
+            // User scrolls for the first time,
+            // prevent dragging
+            if (toValue(absDirectionX) === 'with') {
+              return false
             }
           }
           break
@@ -134,30 +123,73 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
     return true
   }
 
+  function canInterpolate(el: EventTarget) {
+    let element = el as HTMLElement
+
+    // Device is not a touch device,
+    // allow interpolation
+    if (isHoverSupported) {
+      return true
+    }
+
+    while (element) {
+      switch (position) {
+        case 'bottom':
+        case 'top':
+          // Element can be scrolled,
+          // let scroll lock handle it
+          if (element.scrollHeight > element.clientHeight) {
+            return false
+          }
+
+          break
+
+        case 'left':
+        case 'right':
+          // Element can be scrolled,
+          // let scroll lock handle it
+          if (element.scrollWidth > element.clientWidth) {
+            return false
+          }
+
+          break
+      }
+
+      // All elements traversed,
+      // allow interpolation
+      if (element === unrefElement(elRef)) {
+        return true
+      }
+
+      element = element.parentNode as HTMLElement
+    }
+  }
+
   function lockScroll(el: EventTarget): HTMLElement | undefined {
     let element = el as HTMLElement
 
     // Device is not a touch device,
     // cancel scroll lock
     if (isHoverSupported) {
-      return
+      return undefined
     }
 
     while (element) {
+      // All elements traversed,
+      // cancel scroll lock
+      // Check needs to happen here
+      if (element === unrefElement(elRef)) {
+        return undefined
+      }
+
       switch (position) {
         case 'bottom':
           // Check if the element is scrollable
           if (element.scrollHeight > element.clientHeight) {
-            // All elements traversed,
-            // cancel scroll lock
-            if (element === drawer) {
-              return undefined
-            }
-
-            // Element is scrolled to the top,
+            // Element is scrolled to the end,
             // user tries to drag,
-            // lock scrolling
-            if (element.scrollTop === 0) {
+            // lock scroll
+            if (element.scrollTop === 0 || canSnap.value) {
               if (toValue(absDirectionY) === 'against') {
                 return element
               }
@@ -168,40 +200,12 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
         case 'top':
           // Check if the element is scrollable
           if (element.scrollHeight > element.clientHeight) {
-            // All elements traversed,
-            // cancel scroll lock
-            if (element === drawer) {
-              return undefined
-            }
-
-            // Element is scrolled to the bottom,
+            // Element is scrolled to the end,
             // user tries to drag,
-            // lock scrolling
-            if (
-              element.scrollTop ===
-              element.scrollHeight - element.clientHeight
-            ) {
+            // lock scroll
+            const maxScroll = element.scrollHeight - element.clientHeight
+            if (element.scrollTop === maxScroll || canSnap.value) {
               if (toValue(absDirectionY) === 'against') {
-                return element
-              }
-            }
-          }
-          break
-
-        case 'left':
-          // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
-            // All elements traversed,
-            // cancel scroll lock
-            if (element === drawer) {
-              return undefined
-            }
-
-            // Element is scrolled to the left,
-            // user tries to drag,
-            // lock scrolling
-            if (element.scrollLeft === 0) {
-              if (toValue(absDirectionX) === 'against') {
                 return element
               }
             }
@@ -211,19 +215,25 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
         case 'right':
           // Check if the element is scrollable
           if (element.scrollWidth > element.clientWidth) {
-            // All elements traversed,
-            // cancel scroll lock
-            if (element === drawer) {
-              return undefined
-            }
-
-            // Element is scrolled to the right,
+            // Element is scrolled to the end,
             // user tries to drag,
-            // lock scrolling
-            if (
-              element.scrollLeft ===
-              element.scrollWidth - element.clientWidth
-            ) {
+            // lock scroll
+            if (element.scrollLeft === 0 || canSnap.value) {
+              if (toValue(absDirectionX) === 'against') {
+                return element
+              }
+            }
+          }
+          break
+
+        case 'left':
+          // Check if the element is scrollable
+          if (element.scrollWidth > element.clientWidth) {
+            // Element is scrolled to the end,
+            // user tries to drag,
+            // lock scroll
+            const maxScroll = element.scrollWidth - element.clientWidth
+            if (element.scrollLeft === maxScroll || canSnap.value) {
               if (toValue(absDirectionX) === 'against') {
                 return element
               }
@@ -239,6 +249,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
   return {
     canDrag,
+    canInterpolate,
     lockScroll,
   }
 }

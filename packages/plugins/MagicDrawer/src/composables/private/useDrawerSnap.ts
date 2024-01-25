@@ -235,8 +235,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           draggedY.value = closestY
         }
 
-        // Save value the drawer will snap to
-        // Used later, to check if we should close
+        // Save value the drawer will snap to, to check if we should close,
         // as well as for window resize events
         snappedY.value = closestY
         activeSnapPoint.value = toValue(snapPoint)
@@ -261,8 +260,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           snappedX.value = closestX
         }
 
-        // Save value the drawer will snap to
-        // Used later, to check if we should close
+        // Save value the drawer will snap to, to check if we should close,
         // as well as for window resize events
         snappedX.value = closestX
         activeSnapPoint.value = toValue(snapPoint)

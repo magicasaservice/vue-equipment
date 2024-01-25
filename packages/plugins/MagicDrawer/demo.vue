@@ -10,7 +10,7 @@
       @click="drawerSnapApi.snapTo('300px')"
       class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
     >
-      Snap to 300px
+      Snap to 400px
     </button>
     <button
       @click="drawerSnapApi.open"
@@ -31,7 +31,7 @@
       class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
     >
       <div
-        v-for="i in 100"
+        v-for="i in 50"
         :key="i"
         class="p-4 text-black w-full flex justify-center"
       >
@@ -43,8 +43,8 @@
   <magic-drawer
     :id="snapId"
     :options="{
-      position: 'bottom',
-      snapPoints: ['150px', '300px', 0.5, 1],
+      position: position,
+      snapPoints: ['150px', 1],
       snapPoint: '150px',
       beforeMount: {
         open: false,
@@ -53,12 +53,20 @@
       backdrop: false,
     }"
   >
-    <div tabindex="1" class="bg-gray-100 w-full h-full rounded-lg" />
+    <div
+      ref="scrollable"
+      tabindex="1"
+      class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
+    >
+      <div v-for="i in 50" :key="i" class="p-4 text-black w-full flex bg-red">
+        {{ i }} Lorem ipsum dolor sit amet
+      </div>
+    </div>
   </magic-drawer>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useDrawerApi, useDrawerEmitter } from '@maas/vue-equipment/plugins'
 import type { DrawerEvents } from './src/types'
 
@@ -70,11 +78,22 @@ const { open, close } = drawerApi
 const snapId = 'magic-drawer-snap'
 const drawerSnapApi = useDrawerApi(snapId)
 
+const scrollable = ref<HTMLDivElement | undefined>(undefined)
+const position = ref('bottom')
+
 function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  console.log(event, id)
+  // console.log(event, id)
+
+  if (event === 'enter' && id === snapId && position.value === 'top') {
+    scrollable.value!.scrollTop = scrollable.value?.scrollHeight || 0
+  }
+
+  if (event === 'enter' && id === snapId && position.value === 'left') {
+    scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
+  }
 }
 
 function toggle() {

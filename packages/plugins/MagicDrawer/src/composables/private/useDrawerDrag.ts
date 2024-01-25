@@ -66,8 +66,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   const originX = ref(0)
   const originY = ref(0)
+
+  // Used to determine closest snap point
   const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
   const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
+
+  // Used to determine scroll lock
   const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
   const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
 
@@ -106,11 +110,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     draggedX,
   })
 
-  const { canDrag, lockScroll } = useDrawerGuards({
+  const { canDrag, canInterpolate, lockScroll } = useDrawerGuards({
     elRef,
     absDirectionX,
     absDirectionY,
     position,
+    activeSnapPoint,
   })
 
   // Private functions
@@ -412,7 +417,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (shouldClose.value) {
       close()
     } else if (interpolateTo.value || interpolateTo.value === 0) {
-      interpolateDragged(interpolateTo.value)
+      // If scroll is not locked, interpolate to snap point
+      // Scroll should only be locked at one end!
+      if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
+        interpolateDragged(interpolateTo.value)
+      }
 
       // Save the snap point we’re snapping to
       // both the input value, as well as the actual pixel value
