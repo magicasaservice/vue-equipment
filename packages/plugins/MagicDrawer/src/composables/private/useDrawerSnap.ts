@@ -5,15 +5,16 @@ import { useDrawerEmitter } from '../useDrawerEmitter'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
+
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
-  wrapperRect: MaybeRef<DOMRect | undefined>
-  position: MaybeRef<DefaultOptions['position']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
-  canClose: MaybeRef<DefaultOptions['canClose']>
-  overshoot: MaybeRef<number>
+  wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
   draggedX: Ref<number>
+  position: MaybeRef<DefaultOptions['position']>
+  snap: MaybeRef<DefaultOptions['snap']>
+  canClose: MaybeRef<DefaultOptions['canClose']>
+  overshoot: MaybeRef<number>
 }
 
 type FindClosestSnapPointArgs = {
@@ -29,14 +30,20 @@ type FindClosestNumberArgs = {
 }
 
 type SnapToArgs = {
-  snapPoint: MaybeRef<SnapPoint>
+  snapPoint: SnapPoint
   interpolate: boolean
+  duration?: number
+}
+
+type InterpolateDraggedArgs = {
+  to: number
+  duration: number
 }
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
   const {
     id,
-    snapPoints,
+    snap,
     position,
     wrapperRect,
     overshoot,
@@ -50,9 +57,8 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     () => toValue(wrapperRect),
     () => {
       // Add 0 to the snap points, if canClose is true
-      const extended = toValue(canClose)
-        ? [...toValue(snapPoints), 0]
-        : toValue(snapPoints)
+      const snapPoints = toValue(snap)?.points
+      const extended = toValue(canClose) ? [...snapPoints, 0] : snapPoints
 
       // Map snap points
       const mapped = extended.map((snapPoint) => {
@@ -73,13 +79,13 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
 
   const snapPointsMap = computedWithControl(
     () => {
-      return { ...toValue(snapPoints) }
+      const snapPoints = toValue(snap)?.points
+      return { ...snapPoints }
     },
     () => {
       // Add 0 to the snap points, if canClose is true
-      const extended = toValue(canClose)
-        ? [...toValue(snapPoints), 0]
-        : toValue(snapPoints)
+      const snapPoints = toValue(snap)?.points
+      const extended = toValue(canClose) ? [...snapPoints, 0] : snapPoints
 
       const mapped = extended.reduce((acc, current) => {
         const key = mapSnapPoint(current)
@@ -214,13 +220,13 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
 
   // Public functions
   async function snapTo(args: SnapToArgs) {
-    const { snapPoint, interpolate } = args
+    const { snapPoint, interpolate, duration = 200 } = args
     await nextTick()
 
     switch (position) {
       case 'top':
       case 'bottom':
-        const mappedSnapPointY = mapSnapPoint(toValue(snapPoint))
+        const mappedSnapPointY = mapSnapPoint(snapPoint)
         if (!mappedSnapPointY && mappedSnapPointY !== 0) return
 
         const closestY =
@@ -230,7 +236,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           })) || 0
 
         if (interpolate) {
-          await interpolateDragged(closestY)
+          await interpolateDragged({ to: closestY, duration })
         } else {
           draggedY.value = closestY
         }
@@ -254,7 +260,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           })) || 0
 
         if (interpolate) {
-          await interpolateDragged(closestX)
+          await interpolateDragged({ to: closestX, duration })
         } else {
           draggedX.value = closestX
           snappedX.value = closestX
@@ -268,9 +274,10 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     }
   }
 
-  async function interpolateDragged(target: number) {
+  async function interpolateDragged(args: InterpolateDraggedArgs) {
+    const { to, duration = 200 } = args
     // Find original snap point from map
-    const snapPoint = snapPointsMap.value[target]
+    const snapPoint = snapPointsMap.value[to]
     useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })
 
     switch (position) {
@@ -278,11 +285,11 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'top':
         interpolate({
           from: draggedY.value,
-          to: target,
-          duration: 300,
+          to: to,
+          duration: duration,
           callback: (value: number) => {
             draggedY.value = value
-            if (draggedY.value === target) {
+            if (draggedY.value === to) {
               useDrawerEmitter().emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,
@@ -296,11 +303,11 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'left':
         interpolate({
           from: draggedX.value,
-          to: target,
-          duration: 300,
+          to: to,
+          duration: duration,
           callback: (value: number) => {
             draggedX.value = value
-            if (draggedX.value === target) {
+            if (draggedX.value === to) {
               useDrawerEmitter().emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,

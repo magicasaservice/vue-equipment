@@ -97,7 +97,7 @@ import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
 
 // Prevent deep merge of certain options
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'keys' || key === 'snapPoints') {
+  if (key === 'keys' || key === 'points') {
     obj[key] = value
     return true
   }
@@ -126,7 +126,7 @@ const mappedOptions: typeof defaultOptions = customDefu(
 )
 
 const overshoot = ref(0)
-const { position, threshold, snapPoints, snapPoint, canClose } = mappedOptions
+const { position, threshold, snap, canClose } = mappedOptions
 
 const {
   isActive,
@@ -148,8 +148,7 @@ const { onPointerdown, dragging, style } = useDrawerDrag({
   position,
   threshold,
   overshoot,
-  snapPoints,
-  snapPoint,
+  snap,
   canClose,
   close,
 })

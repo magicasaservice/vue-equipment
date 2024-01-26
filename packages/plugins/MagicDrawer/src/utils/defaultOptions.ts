@@ -25,8 +25,11 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
     open: false,
     animate: false,
   },
-  snapPoints: [1],
-  snapPoint: 1,
+  snap: {
+    points: [1],
+    duration: 200,
+    initial: 1,
+  },
   canClose: true,
 }
 

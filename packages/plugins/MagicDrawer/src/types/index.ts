@@ -24,8 +24,11 @@ export type DrawerOptions = {
     open: boolean
     animate: boolean
   }
-  snapPoints?: SnapPoint[]
-  snapPoint?: SnapPoint
+  snap?: {
+    points: SnapPoint[]
+    duration?: number
+    initial?: SnapPoint
+  }
   canClose?: boolean
 }
 

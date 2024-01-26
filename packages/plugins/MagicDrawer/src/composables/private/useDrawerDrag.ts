@@ -6,6 +6,7 @@ import {
   onBeforeUnmount,
   toValue,
   nextTick,
+  type Ref,
   type MaybeRef,
   type WritableComputedRef,
 } from 'vue'
@@ -19,7 +20,6 @@ import {
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
-import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
@@ -27,12 +27,11 @@ import { type DrawerEvents } from '../../types'
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
   isActive: MaybeRef<boolean>
-  elRef: MaybeRef<HTMLDivElement | undefined>
-  wrapperRef: MaybeRef<HTMLDivElement | undefined>
+  elRef: Ref<HTMLDivElement | undefined>
+  wrapperRef: Ref<HTMLDivElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
   threshold: MaybeRef<DefaultOptions['threshold']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
-  snapPoint: MaybeRef<DefaultOptions['snapPoint']>
+  snap: MaybeRef<DefaultOptions['snap']>
   canClose: MaybeRef<DefaultOptions['canClose']>
   overshoot: MaybeRef<number>
   close: () => void
@@ -44,11 +43,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     isActive,
     elRef,
     wrapperRef,
-    snapPoints,
     position,
     overshoot,
     threshold,
-    snapPoint,
+    snap,
     canClose,
     close,
   } = args
@@ -75,10 +73,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
   const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
 
-  const hasSnapPoints = computed(() => toValue(snapPoints).length > 1)
+  const hasSnapPoints = computed(() => toValue(snap)?.points.length > 1)
 
   const elRect = ref<DOMRect | undefined>(undefined)
   const wrapperRect = ref<DOMRect | undefined>(undefined)
+
+  const duration = computed(() => toValue(snap)?.duration)
 
   // Public state
   const draggedX = ref(0)
@@ -102,7 +102,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   } = useDrawerSnap({
     id,
     wrapperRect,
-    snapPoints,
+    snap,
     canClose,
     position,
     overshoot,
@@ -408,7 +408,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         console.warn('Cannot snap to point when drawer is not open')
         return
       } else {
-        snapTo({ snapPoint: payload.snapPoint, interpolate: true })
+        snapTo({
+          snapPoint: payload.snapPoint,
+          interpolate: true,
+          duration: duration.value,
+        })
       }
     }
   }
@@ -420,7 +424,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       // If scroll is not locked, interpolate to snap point
       // Scroll should only be locked at one end!
       if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
-        interpolateDragged(interpolateTo.value)
+        interpolateDragged({
+          to: interpolateTo.value,
+          duration: duration.value,
+        })
       }
 
       // Save the snap point we’re snapping to
@@ -442,12 +449,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       switch (position) {
         case 'bottom':
         case 'top':
-          interpolateDragged(snappedY.value)
+          interpolateDragged({
+            to: snappedY.value,
+            duration: duration.value,
+          })
           break
 
         case 'right':
         case 'left':
-          interpolateDragged(snappedX.value)
+          interpolateDragged({
+            to: snappedX.value,
+            duration: duration.value,
+          })
           break
       }
     }
@@ -534,9 +547,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   watch(
-    () => [unrefElement(wrapperRef), unrefElement(wrapperRef)],
+    () => [unrefElement(elRef), unrefElement(wrapperRef)],
     async () => {
       await getSizes()
+      const snapPoint = toValue(snap)?.initial
       snapTo({ snapPoint, interpolate: false })
     }
   )

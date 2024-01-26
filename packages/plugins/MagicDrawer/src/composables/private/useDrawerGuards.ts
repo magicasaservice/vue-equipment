@@ -1,10 +1,10 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, toValue, type Ref, type MaybeRef } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
 
 interface UseDrawerGuardsArgs {
-  elRef: MaybeRef<HTMLDivElement | undefined>
+  elRef: Ref<HTMLDivElement | undefined>
   absDirectionX: MaybeRef<'with' | 'against' | undefined>
   absDirectionY: MaybeRef<'with' | 'against' | undefined>
   position: MaybeRef<DefaultOptions['position']>
@@ -60,6 +60,12 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             if (toValue(absDirectionY) === 'with') {
               return false
             }
+
+            // Direction is not set yet,
+            // prevent dragging
+            if (!toValue(absDirectionY)) {
+              return false
+            }
           }
           break
 
@@ -76,6 +82,12 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             // User scrolls for the first time,
             // prevent dragging
             if (toValue(absDirectionY) === 'with') {
+              return false
+            }
+
+            // Direction is not set yet,
+            // prevent dragging
+            if (!toValue(absDirectionY)) {
               return false
             }
           }
@@ -95,6 +107,12 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             if (toValue(absDirectionX) === 'with') {
               return false
             }
+
+            // Direction is not set yet,
+            // prevent dragging
+            if (!toValue(absDirectionX)) {
+              return false
+            }
           }
           break
 
@@ -111,6 +129,12 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
             // User scrolls for the first time,
             // prevent dragging
             if (toValue(absDirectionX) === 'with') {
+              return false
+            }
+
+            // Direction is not set yet,
+            // prevent dragging
+            if (!toValue(absDirectionX)) {
               return false
             }
           }

@@ -4,13 +4,7 @@
       @click="toggle"
       class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
     >
-      Open drawer
-    </button>
-    <button
-      @click="drawerSnapApi.snapTo('300px')"
-      class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
-    >
-      Snap to 400px
+      Default drawer
     </button>
     <button
       @click="drawerSnapApi.open"
@@ -28,23 +22,21 @@
   >
     <div
       tabindex="1"
-      class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
-    >
-      <div v-for="i in 50" :key="i" class="p-4 text-black w-full">
-        {{ i }}
-      </div>
-    </div>
+      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-scroll"
+    ></div>
   </magic-drawer>
 
   <magic-drawer
     :id="snapId"
     :options="{
       position: position,
-      snapPoints: ['150px', 1],
-      snapPoint: '150px',
       beforeMount: {
         open: false,
         animate: false,
+      },
+      snap: {
+        points: ['150px', 1],
+        initial: '150px',
       },
       backdrop: false,
     }"
@@ -52,7 +44,7 @@
     <div
       ref="scrollable"
       tabindex="1"
-      class="bg-gray-100 w-full h-full rounded-lg absolute inset-0 overflow-scroll"
+      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-scroll"
     >
       <div v-for="i in 50" :key="i" class="p-4 text-black w-full">
         {{ i }}
