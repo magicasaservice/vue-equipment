@@ -15,7 +15,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
   const { elRef, absDirectionX, absDirectionY, position, activeSnapPoint } =
     args
 
-  const isHoverSupported = computed(() => {
+  const hasCursor = computed(() => {
     return typeof window !== 'undefined' && matchMedia('(hover: hover)').matches
   })
 
@@ -28,7 +28,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // allow dragging
-    if (isHoverSupported.value) {
+    if (hasCursor.value) {
       return true
     }
 
@@ -155,7 +155,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // allow interpolation
-    if (isHoverSupported.value) {
+    if (hasCursor.value) {
       return true
     }
 
@@ -197,7 +197,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
     // Device is not a touch device,
     // cancel scroll lock
-    if (isHoverSupported.value) {
+    if (hasCursor.value && !canSnap.value) {
       return undefined
     }
 
