@@ -291,6 +291,7 @@ onBeforeUnmount(() => {
 <style>
 :root {
   --magic-drawer-height: 75svh;
+  --magic-drawer-width: 100%;
   --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
@@ -308,6 +309,7 @@ onBeforeUnmount(() => {
   --magic-drawer-drag-overshoot: 4rem;
   --magic-drawer-drag-overshoot-x: 0rem;
   --magic-drawer-drag-overshoot-y: 0rem;
+  --magic-drawer-padding: 0rem;
 }
 
 .magic-drawer {
@@ -328,6 +330,7 @@ onBeforeUnmount(() => {
 
 .magic-drawer.-bottom {
   --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
+  --magic-drawer-padding: 0 0 var(--magic-drawer-drag-overshoot-y) 0;
 }
 
 .magic-drawer.-top {
@@ -337,6 +340,7 @@ onBeforeUnmount(() => {
   --magic-drawer-drag-overshoot-y: calc(
     var(--magic-drawer-drag-overshoot) * -1
   );
+  --magic-drawer-padding: var(--magic-drawer-drag-overshoot-y) 0 0 0;
 }
 
 .magic-drawer.-right {
@@ -345,6 +349,7 @@ onBeforeUnmount(() => {
   --magic-drawer-align-items: center;
   --magic-drawer-justify-content: flex-end;
   --magic-drawer-drag-overshoot-x: var(--magic-drawer-drag-overshoot);
+  --magic-drawer-padding: 0 var(--magic-drawer-drag-overshoot-x) 0 0;
 }
 
 .magic-drawer.-left {
@@ -355,11 +360,11 @@ onBeforeUnmount(() => {
   --magic-drawer-drag-overshoot-x: calc(
     var(--magic-drawer-drag-overshoot) * -1
   );
+  --magic-drawer-padding: 0 0 0 var(--magic-drawer-drag-overshoot-x);
 }
 
 .magic-drawer__wrapper {
-  width: 100%;
-  pointer-events: none;
+  width: calc(var(--magic-drawer-width) + var(--magic-drawer-drag-overshoot-x));
   height: calc(
     var(--magic-drawer-height) + var(--magic-drawer-drag-overshoot-y)
   );
@@ -367,6 +372,7 @@ onBeforeUnmount(() => {
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)
   );
+  pointer-events: none;
 }
 
 .magic-drawer__content {
@@ -394,6 +400,17 @@ onBeforeUnmount(() => {
 .magic-drawer.-dragging .magic-drawer__drag {
   cursor: grabbing;
 }
+
+.magic-drawer__drag > * {
+  padding: var(--magic-drawer-padding);
+}
+
+/* .magic-drawer__overshoot {
+  display: contents;
+  width: 100%;
+  height: 100%;
+  padding: var(--magic-drawer-padding);
+} */
 
 .magic-drawer__backdrop {
   position: fixed;
