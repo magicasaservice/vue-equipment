@@ -20,6 +20,7 @@ import {
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
+import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type DrawerEvents } from '../../types'
