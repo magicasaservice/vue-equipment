@@ -1,13 +1,12 @@
-import { uuid } from '@maas/vue-equipment/utils'
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
-import { useScrollLock } from '@vueuse/core'
+import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { uuid, matchClass } from '@maas/vue-equipment/utils'
 import { useDrawerStore } from './private/useDrawerStore'
+import { useDrawerEmitter } from './useDrawerEmitter'
 
 import type { DrawerOptions, SnapPoint } from '../types/index'
-import type { MaybeElementRef } from '@vueuse/core'
-import { useDrawerEmitter } from './useDrawerEmitter'
 
 export type useDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
   focusTarget: MaybeElementRef
@@ -78,13 +77,17 @@ export function useDrawerApi(
   function addScrollLockPadding() {
     if (typeof window === 'undefined') return
 
+    const exclude = new RegExp(/magic-drawer(__backdrop)?/)
+
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
     document.body.style.paddingRight = 'var(--scrollbar-width)'
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
     ].filter(
-      (x) => getComputedStyle(x, null).getPropertyValue('position') === 'fixed'
+      (x) =>
+        getComputedStyle(x, null).getPropertyValue('position') === 'fixed' &&
+        !matchClass(x, exclude)
     ) as HTMLElement[]
     positionFixedElements.value.forEach(
       (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)')

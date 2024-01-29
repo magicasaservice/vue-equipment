@@ -31,14 +31,6 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
   function onBeforeEnter(_el: Element) {
     useDrawerEmitter().emit('beforeEnter', toValue(id))
-  }
-
-  function onEnter(_el: Element) {
-    useDrawerEmitter().emit('enter', toValue(id))
-  }
-
-  async function onAfterEnter(_el: Element) {
-    useDrawerEmitter().emit('afterEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
       if (mappedOptions.scrollLockPadding) {
@@ -47,6 +39,14 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
       lockScroll()
     }
+  }
+
+  function onEnter(_el: Element) {
+    useDrawerEmitter().emit('enter', toValue(id))
+  }
+
+  async function onAfterEnter(_el: Element) {
+    useDrawerEmitter().emit('afterEnter', toValue(id))
 
     if (mappedOptions.focusTrap) {
       await nextTick()

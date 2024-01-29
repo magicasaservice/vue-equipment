@@ -27,7 +27,7 @@
     }"
   >
     <div
-      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-scroll"
+      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto"
     ></div>
   </magic-drawer>
 
@@ -41,7 +41,7 @@
     }"
   >
     <div
-      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-scroll"
+      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto"
     >
       <div v-for="i in 50" :key="i" class="p-4 text-black w-full">
         {{ i }}
