@@ -3,20 +3,20 @@
   "version": "0.18.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
-    "@nuxt/kit": "^3.7.1",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
+    "@maas/vue-equipment/utils": "workspace:utils@*",
+    "@nuxt/kit": "^3.9.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "0.7.4",
-    "@nuxt/eslint-config": "^0.1.1",
-    "@nuxt/module-builder": "^0.4.0",
-    "@nuxt/schema": "^3.7.1",
-    "@nuxt/test-utils": "^3.7.1",
-    "@unocss/nuxt": "^0.55.0",
-    "nuxt": "^3.8.2",
-    "vitest": "^0.34.1"
+    "@nuxt/devtools": "1.0.8",
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxt/module-builder": "^0.5.5",
+    "@nuxt/schema": "^3.9.3",
+    "@nuxt/test-utils": "^3.11.0",
+    "@unocss/nuxt": "^0.58.4",
+    "nuxt": "^3.9.3",
+    "vitest": "^1.2.2"
   },
   "scripts": {
     "build": "nuxt-module-build --outDir ../../dist/nuxt && nlx nuxi prepare ./playground",

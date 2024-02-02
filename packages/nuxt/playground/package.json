@@ -9,13 +9,13 @@
     "preview": "nuxi preview"
   },
   "devDependencies": {
-    "@types/node": "^18.16.0",
-    "@unocss/nuxt": "^0.55.0",
-    "nuxt": "^3.8.2"
+    "@types/node": "^20.11.10",
+    "@unocss/nuxt": "^0.58.4",
+    "nuxt": "^3.9.3"
   },
   "dependencies": {
-    "@unocss/reset": "^0.55.7",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "scule": "^1.1.1"
+    "@unocss/reset": "^0.58.4",
+    "scule": "^1.2.0"
   }
 }
