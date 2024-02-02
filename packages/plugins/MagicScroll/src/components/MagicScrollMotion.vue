@@ -46,14 +46,18 @@ onMounted(() => {
 })
 
 watch(progress, (value) => {
-  if (!animation.value || !props.keyframes) return
+  if (!value || !animation.value || !props.keyframes) return
   animation.value.currentTime = value
 })
 
 watch(
   () => props.keyframes,
   () => {
-    createAnimation(progress.value)
+    if (progress.value) {
+      createAnimation(progress.value)
+    } else {
+      createAnimation()
+    }
   }
 )
 </script>

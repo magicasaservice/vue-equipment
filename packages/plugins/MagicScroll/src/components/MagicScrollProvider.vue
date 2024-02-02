@@ -6,12 +6,16 @@
 
 <script setup lang="ts">
 import { provide, computed } from 'vue'
-import { useScroll } from '@vueuse/core'
+import {
+  useScroll,
+  unrefElement,
+  type MaybeComputedElementRef,
+} from '@vueuse/core'
 import { ScrollPositionKey, ScrollParentKey } from '../symbols'
 
 interface Props {
   active?: Boolean
-  el?: HTMLElement
+  el?: MaybeComputedElementRef<HTMLElement>
 }
 const props = withDefaults(defineProps<Props>(), {
   active: () => true,
@@ -19,13 +23,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 // computed is used to avoid reactivity issues
 const mappedEl = computed(() => {
-  if (props.el) return props.el
+  if (props.el) return unrefElement(props.el)
   if (typeof window === 'undefined') return undefined
   return window
 })
 
 const mappedParent = computed(() => {
-  if (props.el) return props.el
+  if (props.el) return unrefElement(props.el)
   return undefined
 })
 
