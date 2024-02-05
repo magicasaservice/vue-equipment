@@ -323,25 +323,33 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   async function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
     const { draggedY, draggedX, direction = 'absolute' } = args
 
-    let closest: number | undefined = 0
+    let closest: number | undefined = undefined
 
     switch (position) {
       case 'bottom':
       case 'top':
-        closest = findClosestNumber({
-          number: toValue(draggedY),
-          numbers: mappedSnapPoints.value,
-          direction: direction,
-        })
-        break
+        if (!toValue(draggedY)) {
+          break
+        } else {
+          closest = findClosestNumber({
+            number: toValue(draggedY),
+            numbers: mappedSnapPoints.value,
+            direction: direction,
+          })
+          break
+        }
       case 'right':
       case 'left':
-        closest = findClosestNumber({
-          number: toValue(draggedX),
-          numbers: mappedSnapPoints.value,
-          direction: direction,
-        })
-        break
+        if (!toValue(draggedX)) {
+          break
+        } else {
+          closest = findClosestNumber({
+            number: toValue(draggedX),
+            numbers: mappedSnapPoints.value,
+            direction: direction,
+          })
+          break
+        }
     }
 
     return closest
