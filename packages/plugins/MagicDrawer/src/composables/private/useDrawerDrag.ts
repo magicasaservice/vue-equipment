@@ -20,10 +20,11 @@ import {
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
+import { useDrawerEventHandler } from './useDrawerEventHandler'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import { type DrawerEvents } from '../../types'
+import type { DrawerEvents, CustomMouseEvent } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
@@ -76,8 +77,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
   const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
 
-  const hasSnapPoints = computed(() => toValue(snap)?.points.length > 1)
-
   const elRect = ref<DOMRect | undefined>(undefined)
   const wrapperRect = ref<DOMRect | undefined>(undefined)
 
@@ -86,6 +85,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   // Public state
   const draggedX = ref(0)
   const draggedY = ref(0)
+  const lastDraggedX = ref(0)
+  const lastDraggedY = ref(0)
 
   const style = computed(
     () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
@@ -120,6 +121,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     position,
     activeSnapPoint,
   })
+
+  const { clickEvent, dispatchEvent } = useDrawerEventHandler()
 
   // Private functions
   async function getSizes() {
@@ -395,9 +398,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Reset state
     resetStateAndListeners()
     resetScrollLock()
-
-    // Prevent accidental click events
-    // e.preventDefault()
   }
 
   function onPointermove(e: PointerEvent) {
@@ -429,18 +429,27 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Check if we should close based on distance
     checkPosition({ x: e.screenX, y: e.screenY })
-
-    // e.preventDefault()
   }
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
+    // Prevent link dragging
+    const tag = (e.target as HTMLElement).tagName
+    if (tag === 'A') {
+      e.preventDefault()
+    }
+
     // Prevent dragging if we're already dragging
     if (dragging.value) {
       return
     } else {
       dragging.value = true
     }
+
+    // Save last dragged position,
+    // used later to check if click event should propagate
+    lastDraggedX.value = draggedX.value
+    lastDraggedY.value = draggedY.value
 
     // Make sure maintain pointer capture so that we keep receiving events
     ;(e.target! as HTMLElement).setPointerCapture(e.pointerId)
@@ -467,6 +476,27 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Set initial transform
     onPointermove(e)
+  }
+
+  async function onClick(e: CustomMouseEvent) {
+    // Save event for later use
+    // or reset event and exit early
+    if (e.custom === 'magic-drawer-clone') {
+      clickEvent.value = undefined
+      return
+    } else {
+      clickEvent.value = e
+      e.preventDefault()
+    }
+
+    // If user has not dragged,
+    // emit click event again for propagation
+    if (
+      lastDraggedX.value === draggedX.value &&
+      lastDraggedY.value === draggedY.value
+    ) {
+      dispatchEvent(clickEvent.value!)
+    }
   }
 
   // Lifecycle hooks and listeners
@@ -507,5 +537,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     draggedY,
     dragging,
     onPointerdown,
+    onClick,
   }
 }

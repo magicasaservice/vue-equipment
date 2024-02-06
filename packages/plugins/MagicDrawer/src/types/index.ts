@@ -6,6 +6,7 @@ export type DrawerOptions = {
   focusTrap?: boolean
   scrollLock?: boolean
   scrollLockPadding?: boolean
+  preventZoom?: boolean
   teleport?: {
     target?: string
     disabled?: boolean
@@ -51,4 +52,8 @@ export type DrawerEvents = {
     id: string
     snapPoint: SnapPoint
   }
+}
+
+export interface CustomMouseEvent extends MouseEvent {
+  custom?: string
 }

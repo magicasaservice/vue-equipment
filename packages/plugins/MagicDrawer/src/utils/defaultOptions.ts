@@ -7,6 +7,7 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
   focusTrap: false,
   scrollLock: true,
   scrollLockPadding: true,
+  preventZoom: true,
   teleport: {
     target: 'body',
     disabled: false,

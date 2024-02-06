@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@maas/vue-equipment/composables':
+    specifier: workspace:composables@*
+    version: link:../composables
   '@maas/vue-equipment/utils':
     specifier: workspace:utils@*
     version: link:../utils

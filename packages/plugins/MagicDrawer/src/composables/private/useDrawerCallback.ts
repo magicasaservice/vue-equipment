@@ -1,4 +1,5 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
+import { useMetaViewport } from '@maas/vue-equipment/composables'
 import { useDrawerEmitter } from './../useDrawerEmitter'
 import type { DrawerOptions } from '../../types'
 
@@ -29,6 +30,8 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     wasActive,
   } = args
 
+  const { setMetaViewport, resetMetaViewport } = useMetaViewport()
+
   function onBeforeEnter(_el: Element) {
     useDrawerEmitter().emit('beforeEnter', toValue(id))
 
@@ -38,6 +41,10 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
       }
 
       lockScroll()
+    }
+
+    if (mappedOptions.preventZoom) {
+      setMetaViewport()
     }
   }
 
@@ -76,6 +83,10 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
     if (mappedOptions.focusTrap) {
       releaseFocus()
+    }
+
+    if (mappedOptions.preventZoom) {
+      resetMetaViewport()
     }
 
     wrapperActive.value = false

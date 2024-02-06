@@ -46,6 +46,7 @@
                 class="magic-drawer__drag"
                 :style="style"
                 @pointerdown="onPointerdown"
+                @click="onClick"
               >
                 <component
                   v-if="component"
@@ -140,7 +141,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, dragging, style } = useDrawerDrag({
+const { onPointerdown, onClick, dragging, style } = useDrawerDrag({
   id: props.id,
   isActive,
   elRef,
