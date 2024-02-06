@@ -455,9 +455,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
 
-    // Maintain pointer capture
-    unrefElement(elRef)?.setPointerCapture(e.pointerId)
-
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
     cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
