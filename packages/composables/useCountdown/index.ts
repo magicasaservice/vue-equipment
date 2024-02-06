@@ -1,7 +1,6 @@
-import { computed, onMounted, ref, unref, watch } from 'vue'
+import { computed, onMounted, ref, unref, watch, type MaybeRef } from 'vue'
 import { MagicTimer } from '@maas/magic-timer'
 import { DateTime } from 'luxon'
-import { type MaybeRef } from '@vueuse/core'
 
 // Type for [YYYY, MM, DD, HH, MM, SS]
 export type DateTimeArray = [number, number, number, number?, number?, number?]
@@ -26,7 +25,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
   // Check if the endDateTime is valid
   if (unref(options.endDateTime).length < 3) {
     console.error(
-      'useCountdownClock: The "endDateTime" option needs to be an array with the format [YYYY, MM, DD, HH?, MM?, SS?]',
+      'useCountdownClock: The "endDateTime" option needs to be an array with the format [YYYY, MM, DD, HH?, MM?, SS?]'
     )
   }
 
@@ -37,7 +36,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
       console.error(
         `useCountdownClock: The "timezone" option "${timezone}" is not a valid timezone. Do you mean ${
           DateTime.local().zoneName
-        }? For more information see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones`,
+        }? For more information see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones`
       )
     }
   }
@@ -70,7 +69,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
   // Get the computed endDateTime value from the options
   const endDateTime = computed(() => {
     const { year, month, day, hour, minute, second } = parseDateTimeArray(
-      unref(options.endDateTime),
+      unref(options.endDateTime)
     )
 
     return DateTime.fromObject(
@@ -84,7 +83,7 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
       },
       {
         zone: unref(options.timezone),
-      },
+      }
     )
   })
 

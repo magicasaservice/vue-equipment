@@ -4,7 +4,7 @@
   "version": "0.19.1",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.4.15"
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.3",

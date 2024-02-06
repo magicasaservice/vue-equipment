@@ -15,7 +15,7 @@ dependencies:
     specifier: ^3.4.2
     version: 3.4.4
   vue:
-    specifier: ^3.3.4
+    specifier: ^3.4.15
     version: 3.4.15
 
 devDependencies:
