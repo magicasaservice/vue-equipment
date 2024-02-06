@@ -20,7 +20,6 @@ import {
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
-import { useDrawerEventHandler } from './useDrawerEventHandler'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
@@ -68,6 +67,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const originY = ref(0)
   const pointerdownX = ref(0)
   const pointerdownY = ref(0)
+  const lastDraggedX = ref(0)
+  const lastDraggedY = ref(0)
 
   // Used to determine closest snap point
   const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
@@ -85,8 +86,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   // Public state
   const draggedX = ref(0)
   const draggedY = ref(0)
-  const lastDraggedX = ref(0)
-  const lastDraggedY = ref(0)
+
+  const hasDragged = computed(() => {
+    return (
+      lastDraggedX.value !== draggedX.value ||
+      lastDraggedY.value !== draggedY.value
+    )
+  })
 
   const style = computed(
     () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
@@ -121,8 +127,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     position,
     activeSnapPoint,
   })
-
-  const { clickEvent, dispatchEvent } = useDrawerEventHandler()
 
   // Private functions
   async function getSizes() {
@@ -312,6 +316,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function resetDragged() {
     draggedX.value = 0
     draggedY.value = 0
+    lastDraggedX.value = 0
+    lastDraggedY.value = 0
   }
 
   function resetSnapped() {
@@ -398,6 +404,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Reset state
     resetStateAndListeners()
     resetScrollLock()
+
+    if (hasDragged.value) {
+      e.preventDefault()
+    }
   }
 
   function onPointermove(e: PointerEvent) {
@@ -433,12 +443,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
-    // Prevent link dragging
-    const tag = (e.target as HTMLElement).tagName
-    if (tag === 'A') {
-      e.preventDefault()
-    }
-
     // Prevent dragging if we're already dragging
     if (dragging.value) {
       return
@@ -451,8 +455,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
 
-    // Make sure maintain pointer capture so that we keep receiving events
-    ;(e.target! as HTMLElement).setPointerCapture(e.pointerId)
+    // Maintain pointer capture
+    unrefElement(elRef)?.setPointerCapture(e.pointerId)
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
@@ -478,24 +482,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     onPointermove(e)
   }
 
-  async function onClick(e: CustomMouseEvent) {
-    // Save event for later use
-    // or reset event and exit early
-    if (e.custom === 'magic-drawer-clone') {
-      clickEvent.value = undefined
-      return
-    } else {
-      clickEvent.value = e
+  async function onClick(e: MouseEvent) {
+    if (hasDragged.value) {
       e.preventDefault()
-    }
-
-    // If user has not dragged,
-    // emit click event again for propagation
-    if (
-      lastDraggedX.value === draggedX.value &&
-      lastDraggedY.value === draggedY.value
-    ) {
-      dispatchEvent(clickEvent.value!)
     }
   }
 
@@ -513,6 +502,14 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       snapTo({ snapPoint, interpolate: false })
     }
   )
+
+  watch(snappedX, (value) => {
+    lastDraggedX.value = value
+  })
+
+  watch(snappedY, (value) => {
+    lastDraggedY.value = value
+  })
 
   // Make sure the drawer keeps the correct position when the window is resized
   // To achieve this, we update the snapPointsMap after the drawer has snapped
@@ -536,6 +533,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     draggedX,
     draggedY,
     dragging,
+    hasDragged,
     onPointerdown,
     onClick,
   }

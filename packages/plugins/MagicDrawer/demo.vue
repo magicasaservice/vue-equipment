@@ -27,8 +27,13 @@
     }"
   >
     <div
-      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto"
-    ></div>
+      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto flex flex-col items-start gap-4 p-4"
+    >
+      <a href="/plugins/MagicModal/">MagicModal</a>
+      <nuxt-link to="/magic-modal">MagicModal (Nuxt)</nuxt-link>
+      <input type="checkbox" v-model="checkbox" />
+      <input type="text" v-model="text" class="bg-white" />
+    </div>
   </magic-drawer>
 
   <magic-drawer
@@ -88,6 +93,9 @@ const drawerHorizontalApi = useDrawerApi(horizontalId)
 
 const scrollable = ref<HTMLDivElement | undefined>(undefined)
 const position = ref('right')
+
+const checkbox = ref(false)
+const text = ref('')
 
 function callback(
   event: keyof DrawerEvents,

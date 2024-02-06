@@ -55,6 +55,7 @@
                   @close="closeIfAllowed"
                 />
                 <slot v-else />
+                <div v-if="hasDragged" class="magic-drawer__overlay" />
               </div>
             </div>
           </transition>
@@ -141,7 +142,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, onClick, dragging, style } = useDrawerDrag({
+const { onPointerdown, onClick, dragging, hasDragged, style } = useDrawerDrag({
   id: props.id,
   isActive,
   elRef,
@@ -406,12 +407,11 @@ onBeforeUnmount(() => {
   padding: var(--magic-drawer-padding);
 }
 
-/* .magic-drawer__overshoot {
-  display: contents;
-  width: 100%;
-  height: 100%;
-  padding: var(--magic-drawer-padding);
-} */
+.magic-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+}
 
 .magic-drawer__backdrop {
   position: fixed;
