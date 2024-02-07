@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerApi } from '../composables/usePlayerApi'
 
@@ -56,7 +56,7 @@ const { instance } = usePlayerApi({
   src: props.src,
 })
 
-const { playing } = instance.value?.mediaApi
+const { playing, muted } = instance.value?.mediaApi
 const { touched } = instance.value?.playerApi
 const { onMouseenter, onMouseleave } = instance.value?.playerApi
 const { loaded } = instance.value?.runtimeProvider
@@ -72,7 +72,7 @@ useIntersectionObserver(
   },
   {
     immediate: true,
-  },
+  }
 )
 
 const computedRatio = computed(() => {
@@ -90,6 +90,12 @@ const computedStyle = computed(() => {
       computedRatio.value && !props.fill
         ? `${computedRatio.value[0]}/${computedRatio.value[1]}`
         : undefined,
+  }
+})
+
+onMounted(() => {
+  if (props.autoplay) {
+    muted.value = true
   }
 })
 </script>
