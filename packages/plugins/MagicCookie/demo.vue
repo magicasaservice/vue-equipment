@@ -1,12 +1,5 @@
-# Magic Consent
-
-A magic cookie consent plugin to manage cookies and user consent.
-
-## Usage
-
-```vue
 <template>
-  <magic-consent :cookies="consentCookies">
+  <magic-cookie :cookies="cookies">
     <template #default>
       <div>
         We use cookies to provide a personalized experience based on your
@@ -30,11 +23,11 @@ A magic cookie consent plugin to manage cookies and user consent.
         <button @click="accept">Accept</button>
       </div>
     </template>
-  </magic-consent>
+  </magic-cookie>
 </template>
 
 <script lang="ts" setup>
-import { useConsentApi } from './src/composables/useConsentApi'
+import { useCookieApi } from '@maas/vue-equipment/plugins'
 
 const {
   preferencesVisible,
@@ -43,9 +36,9 @@ const {
   onAccept,
   onAcceptSelected,
   onReject,
-} = useConsentApi()
+} = useCookieApi()
 
-const consentCookies = [
+const cookies = [
   {
     key: 'functional', // key is required
     optional: false, // mark as necessary
@@ -75,70 +68,69 @@ const consentCookies = [
   },
 ]
 
-onAccept((consent) => {
-  console.log('ACCEPT:', consent.cookies)
+onAccept(({ cookies }) => {
+  console.log('ACCEPT:', cookies)
 
-  if (consent.cookies.statistics) {
+  if (cookies.statistics) {
     // Enable statistics cookies here
     console.log('Statistics cookies enabled')
   }
 
-  if (consent.cookies.marketing) {
+  if (cookies.marketing) {
     // Enable marketing cookies here
     console.log('Marketing cookies enabled')
   }
 
-  if (consent.cookies.preferences) {
+  if (cookies.preferences) {
     // Enable preferences cookies here
     console.log('Preferences cookies enabled')
   }
 })
 
-onAcceptSelected((consent) => {
-  console.log('ACCEPT_SELECTED:', consent.cookies)
+onAcceptSelected(({ cookies }) => {
+  console.log('ACCEPT_SELECTED:', cookies)
 
-  if (consent.cookies.statistics) {
+  if (cookies.statistics) {
     // Enable statistics cookies here
     console.log('Statistics cookies enabled')
-  } else if (consent.cookies.statistics === false) {
+  } else if (cookies.statistics === false) {
     // Disable statistics cookies here if not already disabled
     console.log('Statistics cookies disabled!')
   }
 
-  if (consent.cookies.marketing) {
+  if (cookies.marketing) {
     // Enable marketing cookies here
     console.log('Marketing cookies enabled')
-  } else if (consent.cookies.marketing === false) {
+  } else if (cookies.marketing === false) {
     // Disable marketing cookies here if not already disabled
     console.log('Marketing cookies disabled!')
   }
 
-  if (consent.cookies.preferences) {
+  if (cookies.preferences) {
     // Enable preferences cookies here
     console.log('Preferences cookies enabled')
-  } else if (consent.cookies.preferences === false) {
+  } else if (cookies.preferences === false) {
     // Disable preferences cookies here if not already disabled
     console.log('Preferences cookies disabled!')
   }
 })
 
-onReject((consent) => {
-  console.log('REJECT:', consent.cookies)
+onReject(({ cookies }) => {
+  console.log('REJECT:', cookies)
 
-  if (consent.cookies.statistics === false) {
+  if (cookies.statistics === false) {
     // Disable statistics cookies here
     console.log('Statistics cookies disabled!')
   }
 
-  if (consent.cookies.marketing === false) {
+  if (cookies.marketing === false) {
     // Disable marketing cookies here
     console.log('Marketing cookies disabled!')
   }
 
-  if (consent.cookies.preferences === false) {
+  if (cookies.preferences === false) {
     // Disable preferences cookies here
     console.log('Preferences cookies disabled!')
   }
 })
 </script>
-```

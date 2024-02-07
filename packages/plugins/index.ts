@@ -1,4 +1,4 @@
-export * from './MagicConsent/index'
+export * from './MagicCookie/index'
 export * from './MagicDrawer/index'
 export * from './MagicMarquee/index'
 export * from './MagicModal/index'

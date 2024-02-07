@@ -8,12 +8,12 @@ import {
 
 export default defineNuxtModule({
   meta: {
-    name: '@maas/vue-equipment/nuxt/MagicConsent',
+    name: '@maas/vue-equipment/nuxt/MagicCookie',
   },
   setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    // Transpile MagicConsent so that it won’t clash with useCookies
+    // Transpile MagicCookie so that it won’t clash with useCookies
     nuxt.options.build.transpile.push('universal-cookie')
     nuxt.options.build.transpile.push('@vueuse/integrations/useCookies')
 
@@ -25,17 +25,17 @@ export default defineNuxtModule({
     })
 
     addComponent({
-      filePath: resolver.resolve('src/components/MagicConsent.vue'),
-      name: 'MagicConsent',
+      filePath: resolver.resolve('src/components/MagicCookie.vue'),
+      name: 'MagicCookie',
       global: true,
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicConsent',
-      name: 'useConsentApi',
+      from: '@maas/vue-equipment/plugins/MagicCookie',
+      name: 'useCookieApi',
     })
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicConsent',
-      name: 'useConsentEmitter',
+      from: '@maas/vue-equipment/plugins/MagicCookie',
+      name: 'useCookietEmitter',
     })
   },
 })
