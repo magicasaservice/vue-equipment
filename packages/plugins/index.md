@@ -6,7 +6,7 @@ This is the `plugins` package.
 
 This package contains the following plugins:
 
-- [MagicConsent](./MagicConsent/index.md)
+- [MagicCookie](./MagicCookie/index.md)
 - [MagicMarquee](./MagicMarquee/index.md)
 - [MagicModal](./MagicModal/index.md)
 - [MagicNoise](./MagicNoise/index.md)
