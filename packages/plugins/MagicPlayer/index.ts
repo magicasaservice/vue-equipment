@@ -28,4 +28,4 @@ export {
   usePlayerApi,
 }
 
-export type * from './src/types'
+export type * from './src/types/index'

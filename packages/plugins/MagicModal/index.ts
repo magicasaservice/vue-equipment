@@ -3,7 +3,7 @@ import { useModalApi } from './src/composables/useModalApi'
 import { useModalEmitter } from './src/composables/useModalEmitter'
 
 import type { App, Plugin } from 'vue'
-import type { ModalEvents } from './src/types'
+import type { ModalEvents } from './src/types/index'
 
 const MagicModalPlugin: Plugin = {
   install: (app: App) => {

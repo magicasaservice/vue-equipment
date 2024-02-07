@@ -3,7 +3,7 @@ import { useToastApi } from './src/composables/useToastApi'
 import { useToastEmitter } from './src/composables/useToastEmitter'
 
 import type { App, Plugin } from 'vue'
-import type { ToastEvents } from './src/types'
+import type { ToastEvents } from './src/types/index'
 
 const MagicToastPlugin: Plugin = {
   install: (app: App) => {

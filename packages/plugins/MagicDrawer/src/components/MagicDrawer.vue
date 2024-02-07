@@ -401,6 +401,7 @@ onBeforeUnmount(() => {
 
 .magic-drawer.-dragging .magic-drawer__drag {
   cursor: grabbing;
+  user-select: none;
 }
 
 .magic-drawer__drag > * {

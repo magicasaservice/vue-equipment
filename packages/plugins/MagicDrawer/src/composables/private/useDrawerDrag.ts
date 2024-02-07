@@ -23,7 +23,7 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { DrawerEvents, CustomMouseEvent } from '../../types'
+import type { DrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>

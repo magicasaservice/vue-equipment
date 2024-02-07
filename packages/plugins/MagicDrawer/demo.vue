@@ -77,8 +77,11 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import { useDrawerApi, useDrawerEmitter } from '@maas/vue-equipment/plugins'
-import type { DrawerEvents } from './src/types'
+import {
+  useDrawerApi,
+  useDrawerEmitter,
+  type DrawerEvents,
+} from '@maas/vue-equipment/plugins'
 
 const className = 'magic-drawer--test-class'
 

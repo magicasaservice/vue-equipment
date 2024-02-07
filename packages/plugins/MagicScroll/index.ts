@@ -41,4 +41,4 @@ export {
 }
 
 export * from './src/symbols'
-export type * from './src/types'
+export type * from './src/types/index'

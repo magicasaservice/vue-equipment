@@ -9,8 +9,11 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue'
-import { useModalApi, useModalEmitter } from '@maas/vue-equipment/plugins'
-import type { ModalEvents } from './src/types'
+import {
+  useModalApi,
+  useModalEmitter,
+  type ModalEvents,
+} from '@maas/vue-equipment/plugins'
 
 const id = 'magic-modal-demo'
 const className = 'magic-modal--test-class'
