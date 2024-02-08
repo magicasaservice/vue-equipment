@@ -80,7 +80,9 @@ import IconVolumeOn from './icons/VolumeOn.vue'
 import IconVolumeOff from './icons/VolumeOff.vue'
 import IconFullscreenEnter from './icons/FullscreenEnter.vue'
 import IconFullscreenExit from './icons/FullscreenExit.vue'
-import { usePlayerApi } from '../composables/usePlayerApi'
+import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
 interface Props {
   id: string
@@ -92,19 +94,28 @@ const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 const popoverRef = ref<HTMLDivElement | undefined>(undefined)
 
-const { instance } = usePlayerApi({
+const { playing, waiting, muted } = usePlayerMediaApi({
+  id: props.id,
+})
+
+const {
+  touched,
+  mouseEntered,
+  isFullscreen,
+  play,
+  pause,
+  mute,
+  unmute,
+  enterFullscreen,
+  exitFullscreen,
+} = usePlayerVideoApi({ id: props.id })
+
+const { popoverOffsetX, seekedTime } = usePlayerControlsApi({
   id: props.id,
   barRef: barRef,
   trackRef: trackRef,
   popoverRef: popoverRef,
 })
-
-const { playing, waiting, muted } = instance.value.mediaApi
-const { touched, mouseEntered, isFullscreen } = instance.value.playerApi
-const { popoverOffsetX, seekedTime } = instance.value.controlsApi
-
-const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
-  instance.value.playerApi
 
 const { idle } = useIdle(3000)
 </script>

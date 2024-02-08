@@ -12,10 +12,8 @@
       preload="auto"
       playsinline
       disablePictureInPicture
+      :loop="props.loop"
     />
-    <div v-show="!loaded || !touched" class="magic-player-poster">
-      <slot name="poster" />
-    </div>
     <slot />
   </div>
 </template>
@@ -23,51 +21,59 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { usePlayerApi } from '../composables/usePlayerApi'
+import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
 import type { SourceType } from './../types'
 
-export type MagicPlayerProps = {
+interface Props {
   id: string
   srcType?: SourceType
   src: string
   ratio?: string
   fill?: boolean
   autoplay?: boolean
+  loop?: boolean
 }
 
-const props = withDefaults(defineProps<MagicPlayerProps>(), {
+const props = withDefaults(defineProps<Props>(), {
   srcType: 'native',
   src: '',
   ratio: '16:9',
   fill: false,
   autoplay: false,
+  loop: false,
 })
 
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
-// Initialize instance
-const { instance } = usePlayerApi({
+const { playing, muted } = usePlayerMediaApi({
+  id: props.id,
+  mediaRef: videoRef,
+})
+
+usePlayerRuntime({
+  id: props.id,
+  mediaRef: videoRef,
+  src: props.src,
+  srcType: props.srcType,
+})
+
+const { onMouseenter, onMouseleave, play, pause } = usePlayerVideoApi({
   id: props.id,
   videoRef: videoRef,
   playerRef: playerRef,
-  srcType: props.srcType,
-  src: props.src,
 })
-
-const { playing, muted } = instance.value?.mediaApi
-const { touched } = instance.value?.playerApi
-const { onMouseenter, onMouseleave } = instance.value?.playerApi
-const { loaded } = instance.value?.runtimeProvider
 
 useIntersectionObserver(
   playerRef,
   ([{ isIntersecting }]) => {
     if (!isIntersecting && playing.value) {
-      instance.value.playerApi.pause()
+      pause()
     } else if (isIntersecting && !playing.value && props.autoplay) {
-      instance.value.playerApi.play()
+      play()
     }
   },
   {
@@ -119,10 +125,5 @@ onMounted(() => {
   top: 0;
   left: 0;
   object-fit: cover;
-}
-
-.magic-player-poster {
-  position: absolute;
-  inset: 0;
 }
 </style>

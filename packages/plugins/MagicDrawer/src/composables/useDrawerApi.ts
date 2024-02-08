@@ -8,7 +8,7 @@ import { useDrawerEmitter } from './useDrawerEmitter'
 
 import type { DrawerOptions, SnapPoint } from '../types/index'
 
-export type useDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
+export type UseDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
   focusTarget: MaybeElementRef
 }
 
@@ -19,7 +19,7 @@ const defaultOptions = {
 
 export function useDrawerApi(
   id?: MaybeRef<string>,
-  options?: useDrawerApiOptions
+  options?: UseDrawerApiOptions
 ) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])

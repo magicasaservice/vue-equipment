@@ -11,35 +11,37 @@
     }"
     @click.stop="togglePlay"
   >
-    <template v-if="waiting">
-      <button class="magic-player-overlay__button">
-        <slot name="waitingIcon">
-          <icon-waiting />
-        </slot>
-      </button>
-    </template>
-    <template v-else>
-      <button v-if="!playing" class="magic-player-overlay__button">
-        <slot name="playIcon">
-          <icon-play />
-        </slot>
-      </button>
-      <button v-else class="magic-player-overlay__button">
-        <slot name="pauseIcon">
-          <icon-pause />
-        </slot>
-      </button>
-    </template>
+    <slot>
+      <template v-if="waiting">
+        <button class="magic-player-overlay__button">
+          <slot name="waitingIcon">
+            <icon-waiting />
+          </slot>
+        </button>
+      </template>
+      <template v-else>
+        <button v-if="!playing" class="magic-player-overlay__button">
+          <slot name="playIcon">
+            <icon-play />
+          </slot>
+        </button>
+        <button v-else class="magic-player-overlay__button">
+          <slot name="pauseIcon">
+            <icon-pause />
+          </slot>
+        </button>
+      </template>
+    </slot>
   </div>
 </template>
 
 <script setup lang="ts">
-import {} from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
-import { usePlayerApi } from '../composables/usePlayerApi'
+import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 
 interface Props {
   id: string
@@ -47,10 +49,12 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { instance } = usePlayerApi(props.id)
-
-const { playing, waiting } = instance.value.mediaApi
-const { mouseEntered, togglePlay } = instance.value.playerApi
+const { playing, waiting } = usePlayerMediaApi({
+  id: props.id,
+})
+const { mouseEntered, togglePlay } = usePlayerVideoApi({
+  id: props.id,
+})
 
 const { idle } = useIdle(3000)
 </script>

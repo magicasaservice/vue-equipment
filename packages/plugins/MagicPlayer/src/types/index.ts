@@ -1,44 +1,14 @@
-import { type MaybeRef } from 'vue'
+export type SourceType = 'native' | 'hls'
 
-type SourceType = 'native' | 'hls'
+type API = 'media' | 'player' | 'controls' | 'runtime' | 'player'
 
-type UseMediaApiArgs = {
-  mediaRef: MaybeRef<HTMLMediaElement | undefined>
-}
+export type Buffered = [number, number][]
 
-type UseControlsApiArgs = {
-  id: MaybeRef<string>
-  barRef?: MaybeRef<HTMLDivElement | undefined>
-  trackRef: MaybeRef<HTMLDivElement | undefined>
-  popoverRef?: MaybeRef<HTMLDivElement | undefined>
-}
-
-type UsePlayerInternalApiArgs = {
-  id: MaybeRef<string>
-  playerRef: MaybeRef<HTMLElement | undefined>
-  videoRef: MaybeRef<HTMLVideoElement | undefined>
-}
-
-type UseRuntimeSourceProviderArgs = {
-  videoRef: MaybeRef<HTMLVideoElement | undefined>
-  srcType: SourceType
-  src: string
-}
-
-type UsePlayerApiArgs = Partial<
-  UseMediaApiArgs &
-    UseControlsApiArgs &
-    UsePlayerInternalApiArgs &
-    UseRuntimeSourceProviderArgs
-> & {
-  id: MaybeRef<string>
-}
-
-export type {
-  SourceType,
-  UseMediaApiArgs,
-  UsePlayerApiArgs,
-  UseControlsApiArgs,
-  UsePlayerInternalApiArgs,
-  UseRuntimeSourceProviderArgs,
+export type PlayerPrivateEvents = {
+  update: {
+    id: string
+    api: API
+    key: string
+    value: string | number | boolean | Buffered | DOMRect | HTMLElement
+  }
 }

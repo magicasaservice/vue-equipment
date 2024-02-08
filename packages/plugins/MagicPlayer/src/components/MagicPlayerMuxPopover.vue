@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { shallowRef, onMounted, watch, computed, type Ref } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
-import { usePlayerApi } from '../composables/usePlayerApi'
+import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
 type Props = {
   id: string
@@ -37,9 +37,7 @@ type MuxStoryboard = {
 
 const props = defineProps<Props>()
 
-const { instance } = usePlayerApi(props.id)
-
-const { seekedTime } = instance.value.controlsApi
+const { seekedTime } = usePlayerControlsApi({ id: props.id })
 const { pixelRatio } = useDevicePixelRatio()
 
 const canvasRef = shallowRef() as Ref<HTMLCanvasElement>

@@ -36,30 +36,33 @@
 </template>
 
 <script setup lang="ts">
-import {} from 'vue'
-import { usePlayerApi } from '../composables/usePlayerApi'
+import { computed } from 'vue'
+import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
 interface Props {
   id: string
 }
 
 const props = defineProps<Props>()
-const { instance } = usePlayerApi(props.id)
 
 const {
   mouseEntered,
   seekedPercentage,
   scrubbedPercentage,
   bufferedPercentage,
-} = instance.value.controlsApi
-
-const {
   onMouseenter,
   onMouseleave,
   onPointerdown,
   onPointerup,
   onPointermove,
-} = instance.value.controlsApi
+  trackRect,
+} = usePlayerControlsApi({
+  id: props.id,
+})
+
+const height = computed(() => {
+  return trackRect.value?.height
+})
 </script>
 
 <style lang="css">
