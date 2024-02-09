@@ -17,6 +17,7 @@ const defaultOptions: RequireAllNested<DrawerOptions> = {
     backdrop: 'magic-drawer--backdrop',
   },
   threshold: {
+    lock: 0,
     distance: 150,
     momentum: 1,
   },

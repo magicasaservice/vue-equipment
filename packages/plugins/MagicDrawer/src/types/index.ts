@@ -16,6 +16,7 @@ export type DrawerOptions = {
     backdrop?: string
   }
   threshold?: {
+    lock?: number
     distance?: number
     momentum?: number
   }

@@ -88,10 +88,19 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const draggedY = ref(0)
 
   const hasDragged = computed(() => {
-    return (
-      lastDraggedX.value !== draggedX.value ||
-      lastDraggedY.value !== draggedY.value
-    )
+    const hasDraggedX = !isWithinRange({
+      input: draggedX.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    const hasDraggedY = !isWithinRange({
+      input: draggedY.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    return hasDraggedX || hasDraggedY
   })
 
   const style = computed(
@@ -129,6 +138,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   // Private functions
+
+  interface isWithinRangeArgs {
+    input: number
+    base: number
+    threshold: number
+  }
+
+  function isWithinRange(args: isWithinRangeArgs): boolean {
+    const { input, base, threshold } = args
+    return input >= base - threshold && input <= base + threshold
+  }
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
