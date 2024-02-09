@@ -90,7 +90,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const hasDragged = computed(() => {
     const hasDraggedX = !isWithinRange({
       input: draggedX.value,
-      base: lastDraggedY.value,
+      base: lastDraggedX.value,
       threshold: toValue(threshold).lock,
     })
 
