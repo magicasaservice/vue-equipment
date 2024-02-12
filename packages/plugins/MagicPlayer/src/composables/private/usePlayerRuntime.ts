@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, onUnmounted, toValue, type MaybeRef } from 'vue'
+import { ref, watch, toValue, type MaybeRef } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 import type Hls from 'hls.js'
@@ -17,6 +17,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   const { mediaRef, srcType, src } = args
 
+  // Private functions
   const useNative = () => {
     const el = toValue(mediaRef)
     if (!el || !src) return
@@ -47,17 +48,18 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     }
   }
 
-  onMounted(() => {
+  // Public functions
+  function initialize() {
     if (srcType === 'native') {
       useNative()
     } else if (srcType === 'hls') {
       useHlsJS()
     }
-  })
+  }
 
-  onUnmounted(() => {
+  function destroy() {
     hls?.destroy()
-  })
+  }
 
   const emitter = usePlayerStateEmitter()
 
@@ -86,6 +88,8 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   return {
     loaded,
+    initialize,
+    destroy,
   }
 }
 

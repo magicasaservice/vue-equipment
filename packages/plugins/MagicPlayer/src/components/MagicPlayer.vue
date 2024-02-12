@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
@@ -54,7 +54,7 @@ const { playing, muted } = usePlayerMediaApi({
   mediaRef: videoRef,
 })
 
-usePlayerRuntime({
+const { initialize, destroy } = usePlayerRuntime({
   id: props.id,
   mediaRef: videoRef,
   src: props.src,
@@ -100,9 +100,14 @@ const computedStyle = computed(() => {
 })
 
 onMounted(() => {
+  initialize()
   if (props.autoplay) {
     muted.value = true
   }
+})
+
+onBeforeUnmount(() => {
+  destroy()
 })
 </script>
 

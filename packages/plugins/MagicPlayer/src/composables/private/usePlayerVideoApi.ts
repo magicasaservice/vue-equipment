@@ -1,4 +1,4 @@
-import { ref, watch, toValue, type MaybeRef, type Ref } from 'vue'
+import { ref, watch, toValue, type MaybeRef } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
