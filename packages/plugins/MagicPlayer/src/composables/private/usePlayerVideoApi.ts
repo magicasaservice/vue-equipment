@@ -15,7 +15,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   const fullscreenTarget = ref<HTMLElement | undefined>(undefined)
 
   const { playing, currentTime, muted } = usePlayerMediaApi({
-    id: toValue(args.id),
+    id: args.id,
   })
 
   const { playerRef, videoRef } = args

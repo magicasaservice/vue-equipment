@@ -26,10 +26,10 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   const { trackRef, barRef, popoverRef } = args
 
   const { buffered, duration, playing, currentTime } = usePlayerMediaApi({
-    id: toValue(args.id),
+    id: args.id,
   })
   const { play, pause, seek } = usePlayerVideoApi({
-    id: toValue(args.id),
+    id: args.id,
   })
 
   // Public state
