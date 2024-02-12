@@ -21,3 +21,5 @@ export function usePlayerApi(args: usePlayerApiArgs) {
     playerRuntime,
   }
 }
+
+export type UsePlayerApiApiReturn = ReturnType<typeof usePlayerApi>

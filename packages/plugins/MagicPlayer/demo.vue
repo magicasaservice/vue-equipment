@@ -109,4 +109,31 @@
       id="standalone-controls-before"
     />
   </div>
+
+  <p>Api</p>
+  <div class="w-full aspect-[16/9]">
+    <magic-player
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
+      id="player-api"
+    />
+  </div>
+  <div class="m-auto mt-4 rounded flex flex-col w-60 gap-2 bg-gray-500/5">
+    <button @click="togglePlay" class="w-full h-full px-6 py-4">
+      Toggle Play
+    </button>
+  </div>
 </template>
+
+<script lang="ts" setup>
+import { usePlayerApi } from '@maas/vue-equipment/plugins'
+
+const playerApi = usePlayerApi({ id: 'player-api' })
+
+function togglePlay() {
+  if (playerApi.mediaApi.playing.value) {
+    playerApi.videoApi.pause()
+  } else {
+    playerApi.videoApi.play()
+  }
+}
+</script>
