@@ -1,6 +1,6 @@
 {
   "name": "nuxt",
-  "version": "0.21.2",
+  "version": "0.21.3",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/composables": "workspace:composables@*",
