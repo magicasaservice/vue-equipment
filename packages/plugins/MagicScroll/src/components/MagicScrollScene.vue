@@ -1,13 +1,12 @@
 <template>
   <div ref="elRef" class="magic-scroll-scene">
-    <slot :map-value="mapValue" :progress="progress" />
+    <slot :progress="progress" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, provide, inject, onMounted, watch, nextTick, readonly } from 'vue'
-import { unrefElement, useIntersectionObserver } from '@vueuse/core'
-import { mapValue } from '@maas/vue-equipment/utils'
+import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/useScrollApi'
 import {
   ScrollPositionKey,
@@ -71,6 +70,5 @@ useIntersectionObserver(
   { rootMargin: '150% 0px 150% 0px', threshold: 0.01 }
 )
 
-provide('mapValue', mapValue)
 provide(ScrollProgressKey, readonly(progress))
 </script>
