@@ -346,20 +346,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint.value = undefined
   }
 
-  function emitterCallback(
-    event: keyof DrawerEvents,
-    payload: DrawerEvents[keyof DrawerEvents]
-  ) {
-    if (event === 'afterLeave' && payload === toValue(id)) {
+  function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
+    if (payload === toValue(id)) {
       resetDragged()
       resetSnapped()
     }
+  }
 
-    if (
-      event === 'snapTo' &&
-      typeof payload === 'object' &&
-      payload.id === toValue(id)
-    ) {
+  function snapToCallback(payload: DrawerEvents['snapTo']) {
+    if (payload.id === toValue(id)) {
       if (!toValue(isActive)) {
         console.warn('Cannot snap to point when drawer is not open')
         return
@@ -421,6 +416,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       }
     }
 
+    useDrawerEmitter().emit('afterDrag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
+
     // Reset state
     resetStateAndListeners()
     resetScrollLock()
@@ -459,6 +460,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Check if we should close based on distance
     checkPosition({ x: e.screenX, y: e.screenY })
+
+    useDrawerEmitter().emit('drag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
   }
 
   // Public functions
@@ -468,6 +475,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     } else {
       dragging.value = true
+
+      useDrawerEmitter().emit('beforeDrag', {
+        id: toValue(id),
+        x: draggedX.value,
+        y: draggedY.value,
+      })
     }
 
     // Save last dragged position,
@@ -508,7 +521,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   // Lifecycle hooks and listeners
   onMounted(async () => {
     await getSizes()
-    useDrawerEmitter().on('*', emitterCallback)
+    useDrawerEmitter().on('snapTo', snapToCallback)
+    useDrawerEmitter().on('afterLeave', afterLeaveCallback)
   })
 
   watch(
@@ -542,7 +556,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   onBeforeUnmount(() => {
-    useDrawerEmitter().off('*', emitterCallback)
+    useDrawerEmitter().off('snapTo', snapToCallback)
+    useDrawerEmitter().off('afterLeave', afterLeaveCallback)
   })
 
   return {
