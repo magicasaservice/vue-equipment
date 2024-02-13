@@ -1,7 +1,7 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.21.3",
+  "version": "0.21.4",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "vue": "^3.4.15"
@@ -9,7 +9,8 @@
   "devDependencies": {
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
-    "tsup": "^8.0.1"
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   },
   "exports": "./index.ts",
   "keywords": [],
