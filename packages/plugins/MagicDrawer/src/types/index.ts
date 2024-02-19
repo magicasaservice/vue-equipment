@@ -53,6 +53,21 @@ export type DrawerEvents = {
     id: string
     snapPoint: SnapPoint
   }
+  beforeDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  drag: {
+    id: string
+    x: number
+    y: number
+  }
+  afterDrag: {
+    id: string
+    x: number
+    y: number
+  }
 }
 
 export interface CustomMouseEvent extends MouseEvent {
