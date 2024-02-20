@@ -35,10 +35,10 @@ const progress = inject(
 )
 
 const mappedProgress = computed(() => {
-  return props.progress || progress.value
+  return props.progress || progress.value || 0
 })
 
-function createAnimation(currentTime: number = 0) {
+function createAnimation() {
   if (!props.keyframes) return
   animation.value = animate(unrefElement(elRef)!, props.keyframes, {
     duration: 1,
@@ -46,7 +46,7 @@ function createAnimation(currentTime: number = 0) {
     offset: props.offset,
   })
   animation.value.stop()
-  animation.value.currentTime = currentTime
+  animation.value.currentTime = mappedProgress.value
 }
 
 onMounted(() => {
@@ -61,11 +61,7 @@ watch(mappedProgress, (value) => {
 watch(
   () => props.keyframes,
   () => {
-    if (mappedProgress.value) {
-      createAnimation(mappedProgress.value)
-    } else {
-      createAnimation()
-    }
+    createAnimation()
   }
 )
 </script>
