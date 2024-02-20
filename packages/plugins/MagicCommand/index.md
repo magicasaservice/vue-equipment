@@ -1,0 +1,3 @@
+# Magic Command
+
+## Usage

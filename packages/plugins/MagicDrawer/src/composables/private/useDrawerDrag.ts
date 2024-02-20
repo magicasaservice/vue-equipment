@@ -149,6 +149,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     const { input, base, threshold } = args
     return input >= base - threshold && input <= base + threshold
   }
+
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()

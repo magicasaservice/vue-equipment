@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import {
+  MagicCommandPlugin,
   MagicCookiePlugin,
   MagicDrawerPlugin,
   MagicMarqueePlugin,
@@ -17,6 +18,7 @@ export default {
   extends: DefaultTheme,
   Layout,
   enhanceApp({ app }) {
+    app.use(MagicCommandPlugin)
     app.use(MagicCookiePlugin)
     app.use(MagicDrawerPlugin)
     app.use(MagicMarqueePlugin)

@@ -1,3 +1,4 @@
+export * from './MagicCommand/index'
 export * from './MagicCookie/index'
 export * from './MagicDrawer/index'
 export * from './MagicMarquee/index'

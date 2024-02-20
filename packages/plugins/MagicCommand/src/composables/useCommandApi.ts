@@ -1,18 +1,13 @@
 import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
-import {
-  useScrollLock,
-  type MaybeElementRef,
-  useEventListener,
-} from '@vueuse/core'
+import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { uuid, matchClass } from '@maas/vue-equipment/utils'
-import { useDrawerStore } from './private/useDrawerStore'
-import { useDrawerEmitter } from './useDrawerEmitter'
+import { useCommandStore } from './private/useCommandStore'
 
-import type { DrawerOptions, SnapPoint } from '../types/index'
+import { type CommandOptions } from '../types/index'
 
-export type UseDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
+export type UseCommandApiOptions = Pick<CommandOptions, 'scrollLock'> & {
   focusTarget: MaybeElementRef
 }
 
@@ -21,9 +16,9 @@ const defaultOptions = {
   scrollLock: true,
 }
 
-export function useDrawerApi(
-  id?: MaybeRef<string>,
-  options?: UseDrawerApiOptions
+export function useCommandApi(
+  id: MaybeRef<string>,
+  options?: UseCommandApiOptions
 ) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
@@ -39,11 +34,13 @@ export function useDrawerApi(
       ? useScrollLock(document.body)
       : ref(false)
 
-  // Private methods
-  const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-
   // Public state
-  const isActive = computed(() => drawerStore.value.includes(mappedId.value))
+  const isActive = computed(() =>
+    commandStore.value.map((item) => item.id).includes(mappedId.value)
+  )
+
+  // Private methods
+  const { commandStore, addInstance, removeInstance } = useCommandStore()
 
   // Public methods
   function open() {
@@ -52,10 +49,6 @@ export function useDrawerApi(
 
   function close() {
     removeInstance(mappedId.value)
-  }
-
-  function snapTo(snapPoint: SnapPoint) {
-    useDrawerEmitter().emit('snapTo', { id: mappedId.value, snapPoint })
   }
 
   function trapFocus() {
@@ -81,7 +74,7 @@ export function useDrawerApi(
   function addScrollLockPadding() {
     if (typeof window === 'undefined') return
 
-    const exclude = new RegExp(/magic-drawer(__backdrop)?/)
+    const exclude = new RegExp(/magic-command(__backdrop)?/)
 
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
@@ -106,12 +99,19 @@ export function useDrawerApi(
     )
   }
 
+  // if (mappedOptions.keys?.open) {
+  //   for (const key of mappedOptions.keys.open) {
+  //     onKeyStroke(key, (e) => {
+  //       e.preventDefault()
+  //       open()
+  //     })
+  //   }
+  // }
+
   return {
-    id: mappedId,
     isActive,
     open,
     close,
-    snapTo,
     trapFocus,
     releaseFocus,
     lockScroll,
@@ -120,5 +120,3 @@ export function useDrawerApi(
     removeScrollLockPadding,
   }
 }
-
-export type UseDrawerApiReturn = ReturnType<typeof useDrawerApi>
