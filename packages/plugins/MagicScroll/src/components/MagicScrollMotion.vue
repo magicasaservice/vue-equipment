@@ -16,8 +16,8 @@ import {
 import { ScrollProgressKey } from '../symbols'
 
 interface Props {
-  keyframes: MotionKeyframesDefinition
-  offset?: number[] | undefined
+  keyframes?: MotionKeyframesDefinition
+  offset?: number[]
   easing?: Easing
   progress?: number
 }
