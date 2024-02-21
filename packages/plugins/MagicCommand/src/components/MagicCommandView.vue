@@ -5,14 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  computed,
-  defineProps,
-  inject,
-  toValue,
-  onMounted,
-  onUnmounted,
-} from 'vue'
+import { computed, inject, toValue, onMounted, onUnmounted } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandView } from '../composables/private/useCommandView'

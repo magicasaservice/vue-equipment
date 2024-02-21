@@ -18,7 +18,7 @@ export type CommandOptions = {
     next?: string[] | false
     prev?: string[] | false
   }
-  loop: boolean
+  loop?: boolean
 }
 
 export type CommandEvents = {

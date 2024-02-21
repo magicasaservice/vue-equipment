@@ -13,7 +13,6 @@
 import {
   ref,
   computed,
-  defineProps,
   inject,
   toValue,
   nextTick,

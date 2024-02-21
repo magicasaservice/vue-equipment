@@ -3,7 +3,7 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAllNested<CommandOptions> = {
   backdrop: true,
-  focusTrap: false,
+  focusTrap: true,
   scrollLock: true,
   scrollLockPadding: true,
   teleport: {
