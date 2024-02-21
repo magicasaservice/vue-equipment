@@ -1,4 +1,10 @@
 {
-  "extends": "./tsconfig.json",
-  "include": ["./../../dist/plugins"]
+  "extends": "../config/tsconfig/vue-base.json",
+  "include": ["./../../dist/plugins"],
+  "exclude": ["./../../packages"],
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  }
 }
