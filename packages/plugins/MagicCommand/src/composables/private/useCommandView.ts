@@ -1,41 +1,30 @@
-import { ref, computed, type MaybeRef } from 'vue'
-import { useCommandStore } from './useCommandStore'
-import { toValue } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 const activeView = ref<string | undefined>(undefined)
+const lastActiveView = ref<string | undefined>(undefined)
+const watcherActive = ref(false)
 
-export function useCommandView(id: MaybeRef<string>) {
-  // Private state
-  const instance = computed(() => findInstance(toValue(id)))
-  const items = computed(() => instance.value?.items)
-
-  // Private methods
-  const { findInstance } = useCommandStore()
-
+export function useCommandView() {
   // Public methods
-  function nextView() {
-    if (items.value) {
-      const index = items.value.indexOf(activeView.value || '')
-      activeView.value = items.value[index + 1] || items.value[0]
-    }
-  }
-
-  function prevView() {
-    if (items.value) {
-      const index = items.value.indexOf(activeView.value || '')
-      activeView.value =
-        items.value[index - 1] || items.value[items.value.length - 1]
-    }
-  }
-
   function selectView(id: string) {
     activeView.value = id
   }
 
+  function selectLastView() {
+    activeView.value = lastActiveView.value
+  }
+
+  if (!watcherActive.value) {
+    watcherActive.value = true
+    watch(activeView, (_newView, oldView) => {
+      if (oldView) lastActiveView.value = oldView
+    })
+  }
+
   return {
-    nextView,
-    prevView,
     selectView,
+    selectLastView,
     activeView,
+    lastActiveView,
   }
 }

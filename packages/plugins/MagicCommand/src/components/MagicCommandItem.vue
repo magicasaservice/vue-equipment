@@ -1,5 +1,10 @@
 <template>
-  <div class="magic-command-item" ref="elRef" :data-id="mappedId">
+  <div
+    class="magic-command-item"
+    ref="elRef"
+    :data-id="mappedId"
+    :aria-selected="isActive"
+  >
     <slot :is-active="isActive" />
   </div>
 </template>

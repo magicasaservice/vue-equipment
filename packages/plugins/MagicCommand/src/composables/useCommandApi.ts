@@ -4,6 +4,8 @@ import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { uuid, matchClass } from '@maas/vue-equipment/utils'
 import { useCommandStore } from './private/useCommandStore'
+import { useCommandItem } from './private/useCommandItem'
+import { useCommandView } from './private/useCommandView'
 
 import { type CommandOptions } from '../types/index'
 
@@ -99,6 +101,9 @@ export function useCommandApi(
     )
   }
 
+  const { selectItem, selectLastItem } = useCommandItem(mappedId)
+  const { selectView, selectLastView } = useCommandView()
+
   return {
     isActive,
     open,
@@ -109,5 +114,9 @@ export function useCommandApi(
     unlockScroll,
     addScrollLockPadding,
     removeScrollLockPadding,
+    selectItem,
+    selectLastItem,
+    selectView,
+    selectLastView,
   }
 }

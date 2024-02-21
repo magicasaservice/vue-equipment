@@ -23,10 +23,10 @@ interface Props {
   default?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { default: true })
+const props = withDefaults(defineProps<Props>(), { default: false })
 const commandId = inject(CommandInstanceId, '')
 
-const { activeView, selectView } = useCommandView(commandId)
+const { activeView, selectView } = useCommandView()
 
 const mappedId = computed(() => {
   return props.id || uuid()

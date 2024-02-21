@@ -3,37 +3,8 @@
     <button @click="open" class="w-full h-full px-6 py-4">Open palette</button>
   </div>
   <magic-command :id="id">
-    <magic-command-view
-      class="bg-gray-500 w-[40rem] h-[30rem] rounded-lg flex flex-col"
-    >
-      <magic-command-head class="bg-gray-300 rounded-t-lg">
-        <magic-command-input>
-          <input type="text" placeholder="Search" />
-        </magic-command-input>
-      </magic-command-head>
-      <magic-command-body class="h-full">
-        <magic-command-group>
-          <h2 class="py-2 text-sm">Headline</h2>
-          <magic-command-item
-            v-for="nth in 20"
-            :key="nth"
-            :callback="() => itemCallback(nth)"
-            :default="nth === 1"
-            v-slot="{ isActive }"
-          >
-            <span
-              class="p-2 flex items-center rounded-sm"
-              :class="{ 'bg-blue-500': isActive }"
-            >
-              Item {{ nth }}
-            </span>
-          </magic-command-item>
-        </magic-command-group>
-      </magic-command-body>
-      <magic-command-footer class="bg-gray-300 rounded-b-lg">
-        <button @click="close">Close</button>
-      </magic-command-footer>
-    </magic-command-view>
+    <default-view />
+    <project-view />
   </magic-command>
 </template>
 
@@ -45,13 +16,12 @@ import {
   type CommandEvents,
 } from '@maas/vue-equipment/plugins'
 
+import DefaultView from './demo/DefaultView.vue'
+import ProjectView from './demo/ProjectView.vue'
+
 const id = 'magic-command-demo'
 const commandApi = useCommandApi(id)
-const { open, close } = commandApi
-
-function itemCallback(nth: number) {
-  alert(nth)
-}
+const { open } = commandApi
 
 function callback(
   event: keyof CommandEvents,

@@ -44,7 +44,8 @@ export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
   function scrollInFromBottom(element: HTMLElement) {
     const elementRect = element.getBoundingClientRect()
     const parentRect = mappedParent.value.getBoundingClientRect()
-    const scrollAmount = elementRect.bottom - parentRect.bottom
+    const scrollAmount =
+      elementRect.bottom - parentRect.bottom + paddingBottom.value
 
     mappedParent.value.scrollBy({
       top: scrollAmount,

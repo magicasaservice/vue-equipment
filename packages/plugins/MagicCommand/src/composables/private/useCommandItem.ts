@@ -1,8 +1,10 @@
-import { ref, computed, type MaybeRef } from 'vue'
+import { ref, computed, watch, type MaybeRef } from 'vue'
 import { useCommandStore } from './useCommandStore'
 import { toValue } from '@vueuse/core'
 
 const activeItem = ref<string | undefined>(undefined)
+const lastActiveItem = ref<string | undefined>(undefined)
+const watcherActive = ref(false)
 
 export function useCommandItem(id: MaybeRef<string>) {
   // Private state
@@ -19,9 +21,9 @@ export function useCommandItem(id: MaybeRef<string>) {
       const hasNext = items.value[index + 1] !== undefined
 
       if (hasNext) {
-        activeItem.value = items.value[index + 1]
+        selectItem(items.value[index + 1])
       } else if (loop) {
-        activeItem.value = items.value[0]
+        selectItem(items.value[0])
       }
     }
   }
@@ -32,9 +34,9 @@ export function useCommandItem(id: MaybeRef<string>) {
       const hasPrev = items.value[index - 1] !== undefined
 
       if (hasPrev) {
-        activeItem.value = items.value[index - 1]
+        selectItem(items.value[index - 1])
       } else if (loop) {
-        activeItem.value = items.value[items.value.length - 1]
+        selectItem(items.value[items.value.length - 1])
       }
     }
   }
@@ -43,10 +45,23 @@ export function useCommandItem(id: MaybeRef<string>) {
     activeItem.value = id
   }
 
+  function selectLastItem() {
+    activeItem.value = lastActiveItem.value
+  }
+
+  if (!watcherActive.value) {
+    watcherActive.value = true
+    watch(activeItem, (_newItem, oldItem) => {
+      if (oldItem) lastActiveItem.value = oldItem
+    })
+  }
+
   return {
     nextItem,
     prevItem,
     selectItem,
+    selectLastItem,
     activeItem,
+    lastActiveItem,
   }
 }
