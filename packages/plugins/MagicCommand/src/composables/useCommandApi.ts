@@ -99,15 +99,6 @@ export function useCommandApi(
     )
   }
 
-  // if (mappedOptions.keys?.open) {
-  //   for (const key of mappedOptions.keys.open) {
-  //     onKeyStroke(key, (e) => {
-  //       e.preventDefault()
-  //       open()
-  //     })
-  //   }
-  // }
-
   return {
     isActive,
     open,

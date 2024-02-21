@@ -13,18 +13,29 @@ export function useCommandItem(id: MaybeRef<string>) {
   const { findInstance } = useCommandStore()
 
   // Public methods
-  function nextItem() {
+  function nextItem(loop: boolean = false) {
     if (items.value) {
       const index = items.value.indexOf(activeItem.value || '')
-      activeItem.value = items.value[index + 1] || items.value[0]
+      const hasNext = items.value[index + 1] !== undefined
+
+      if (hasNext) {
+        activeItem.value = items.value[index + 1]
+      } else if (loop) {
+        activeItem.value = items.value[0]
+      }
     }
   }
 
-  function prevItem() {
+  function prevItem(loop: boolean = false) {
     if (items.value) {
       const index = items.value.indexOf(activeItem.value || '')
-      activeItem.value =
-        items.value[index - 1] || items.value[items.value.length - 1]
+      const hasPrev = items.value[index - 1] !== undefined
+
+      if (hasPrev) {
+        activeItem.value = items.value[index - 1]
+      } else if (loop) {
+        activeItem.value = items.value[items.value.length - 1]
+      }
     }
   }
 

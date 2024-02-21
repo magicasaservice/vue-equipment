@@ -18,7 +18,10 @@ const defaultOptions: RequireAllNested<CommandOptions> = {
   keys: {
     open: ['Cmd+k'],
     close: ['Escape'],
+    next: ['ArrowDown'],
+    prev: ['ArrowUp'],
   },
+  loop: false,
 }
 
 type DefaultOptions = typeof defaultOptions

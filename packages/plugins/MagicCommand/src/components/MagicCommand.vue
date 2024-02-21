@@ -57,12 +57,11 @@ import {
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
-import { onKeyStroke, useMagicKeys } from '@vueuse/core'
+import { useMagicKeys } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useCommandApi } from './../composables/useCommandApi'
-import { useCommandItem } from './../composables/private/useCommandItem'
 import { useCommandCallback } from '../composables/private/useCommandCallback'
-import { CommandInstanceId } from './../symbols'
+import { CommandInstanceId, CommandOptionsKey } from './../symbols'
 
 import type { CommandOptions } from './../types/index'
 
@@ -71,7 +70,7 @@ import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'open' || key === 'close') {
+  if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {
     obj[key] = value
     return true
   }
@@ -128,8 +127,6 @@ const {
   wrapperActive,
 })
 
-const { nextItem, prevItem } = useCommandItem(props.id)
-
 // Handle state
 async function onOpen() {
   wrapperActive.value = true
@@ -143,9 +140,8 @@ function onClose() {
 
 if (mappedOptions.keys?.open) {
   for (const key of mappedOptions.keys.open) {
-    const mappedKey = keys[key]
-    watch(mappedKey, (keypress) => {
-      if (keypress) {
+    watch(keys[key], (value) => {
+      if (value) {
         open()
       }
     })
@@ -154,25 +150,13 @@ if (mappedOptions.keys?.open) {
 
 if (mappedOptions.keys?.close) {
   for (const key of mappedOptions.keys.close) {
-    const mappedKey = keys[key]
-    watch(mappedKey, (keypress) => {
-      if (keypress) {
+    watch(keys[key], (value) => {
+      if (value) {
         close()
       }
     })
   }
 }
-
-// Select items with arrow keys
-onKeyStroke(['ArrowRight', 'ArrowDown'], (e) => {
-  e.preventDefault()
-  nextItem()
-})
-
-onKeyStroke(['ArrowLeft', 'ArrowUp'], (e) => {
-  e.preventDefault()
-  prevItem()
-})
 
 watch(isActive, async (value) => {
   if (value) {
@@ -188,6 +172,7 @@ onBeforeUnmount(() => {
 })
 
 provide(CommandInstanceId, props.id)
+provide(CommandOptionsKey, mappedOptions)
 </script>
 
 <style>

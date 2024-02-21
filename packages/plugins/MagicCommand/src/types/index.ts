@@ -15,7 +15,10 @@ export type CommandOptions = {
   keys?: {
     open?: string[] | false
     close?: string[] | false
+    next?: string[] | false
+    prev?: string[] | false
   }
+  loop: boolean
 }
 
 export type CommandEvents = {

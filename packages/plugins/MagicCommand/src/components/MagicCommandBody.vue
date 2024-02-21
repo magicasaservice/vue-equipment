@@ -5,16 +5,65 @@
 </template>
 <script lang="ts" setup>
 import { inject, ref, watch, nextTick } from 'vue'
+import { useMagicKeys } from '@vueuse/core'
+
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
-import { CommandInstanceId } from '../symbols'
+import { CommandInstanceId, CommandOptionsKey } from '../symbols'
 
-const commandId = inject(CommandInstanceId, '')
+import type { CommandOptions } from '../types'
+
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const { activeItem } = useCommandItem(commandId)
+const commandId = inject(CommandInstanceId, '')
+const options = inject(CommandOptionsKey, {} as CommandOptions)
+
+const { activeItem, nextItem, prevItem } = useCommandItem(commandId)
 const { findElement, isElementAbove, isElementBelow, scrollInFromBottom } =
   useCommandScroll(elRef)
+
+const keys = useMagicKeys()
+
+const nextTimeout = ref<NodeJS.Timeout | undefined>(undefined)
+const prevTimeout = ref<NodeJS.Timeout | undefined>(undefined)
+const nextInterval = ref<NodeJS.Timer | undefined>(undefined)
+const prevInterval = ref<NodeJS.Timer | undefined>(undefined)
+
+if (options.keys?.next) {
+  for (const key of options.keys.next) {
+    watch(keys[key], (value) => {
+      if (value) {
+        nextItem(options.loop)
+        nextTimeout.value = setTimeout(() => {
+          nextInterval.value = setInterval(() => {
+            nextItem(options.loop)
+          }, 100)
+        }, 500)
+      } else {
+        clearTimeout(nextTimeout.value)
+        clearInterval(nextInterval.value)
+      }
+    })
+  }
+}
+
+if (options.keys?.prev) {
+  for (const key of options.keys.prev) {
+    watch(keys[key], (value) => {
+      if (value) {
+        prevItem(options.loop)
+        prevTimeout.value = setTimeout(() => {
+          prevInterval.value = setInterval(() => {
+            prevItem(options.loop)
+          }, 100)
+        }, 500)
+      } else {
+        clearTimeout(prevTimeout.value)
+        clearInterval(prevInterval.value)
+      }
+    })
+  }
+}
 
 watch(activeItem, async (value) => {
   if (!value) return
