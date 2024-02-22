@@ -60,37 +60,6 @@ function listenerCallback() {
   })
 }
 
-function getComponentIndex(): number {
-  let parent = getCurrentInstance()?.parent
-
-  // Traverse up to the specified wrapper component
-  while (parent && parent.type.__name !== 'MagicCommandView') {
-    parent = parent.parent
-  }
-
-  if (!parent) {
-    console.error('MagicCommandView not found, can’t register MagicCommandItem')
-    return -1
-  }
-
-  const children = Array.from(
-    (parent.refs.elRef as HTMLElement).querySelectorAll('.magic-command-item')
-  ) as HTMLElement[]
-
-  if (!children.length) {
-    console.error(
-      'MagicCommandView has no children, can’t register MagicCommandItem'
-    )
-    return -1
-  }
-
-  const index = children.findIndex(
-    (child) => child.dataset.id === mappedId.value
-  )
-
-  return index
-}
-
 useEventListener(elRef, props.listener, listenerCallback)
 
 if (props.keys.length) {
