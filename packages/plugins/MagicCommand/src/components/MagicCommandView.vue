@@ -63,7 +63,7 @@ onUnmounted(() => {
 
 // Update sorting for MagicCommandItems
 watch(
-  () => items.value.length,
+  () => items.value?.length,
   () => {
     nextTick(() => {
       if (elRef.value) {
