@@ -17,26 +17,30 @@ export function useCommandItem(id: MaybeRef<string>) {
   // Public methods
   function nextItem(loop: boolean = false) {
     if (items.value) {
-      const index = items.value.indexOf(activeItem.value || '')
+      const index = items.value.findIndex(
+        (item) => item.id === activeItem.value
+      )
       const hasNext = items.value[index + 1] !== undefined
 
       if (hasNext) {
-        selectItem(items.value[index + 1])
+        selectItem(items.value[index + 1].id)
       } else if (loop) {
-        selectItem(items.value[0])
+        selectItem(items.value[0].id)
       }
     }
   }
 
   function prevItem(loop: boolean = false) {
     if (items.value) {
-      const index = items.value.indexOf(activeItem.value || '')
+      const index = items.value.findIndex(
+        (item) => item.id === activeItem.value
+      )
       const hasPrev = items.value[index - 1] !== undefined
 
       if (hasPrev) {
-        selectItem(items.value[index - 1])
+        selectItem(items.value[index - 1].id)
       } else if (loop) {
-        selectItem(items.value[items.value.length - 1])
+        selectItem(items.value[items.value.length - 1].id)
       }
     }
   }

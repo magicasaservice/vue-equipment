@@ -5,9 +5,7 @@
   >
     <magic-command-head class="p-2">
       <div class="w-full border border-neutral-600 p-3 border-b-solid">
-        <magic-command-input>
-          <input type="text" placeholder="Search Projects" />
-        </magic-command-input>
+        <input type="text" placeholder="Search Projects" />
       </div>
     </magic-command-head>
     <magic-command-body class="h-full pb-2">

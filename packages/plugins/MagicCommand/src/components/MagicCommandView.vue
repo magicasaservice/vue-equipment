@@ -1,11 +1,20 @@
 <template>
-  <div class="magic-command-view" v-if="isActive">
+  <div class="magic-command-view" v-if="isActive" ref="elRef">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, toValue, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  computed,
+  inject,
+  toValue,
+  onMounted,
+  onUnmounted,
+  watch,
+  nextTick,
+} from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandView } from '../composables/private/useCommandView'
@@ -18,6 +27,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { default: false })
 const commandId = inject(CommandInstanceId, '')
+const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { activeView, selectView } = useCommandView()
 
@@ -29,7 +39,11 @@ const isActive = computed(() => {
   return toValue(mappedId) === activeView.value
 })
 
-const { addView, removeView } = useCommandStore()
+const items = computed(() => {
+  return findInstance(toValue(commandId))?.items
+})
+
+const { addView, removeView, findInstance, sortItems } = useCommandStore()
 
 onMounted(() => {
   if (toValue(commandId)) {
@@ -46,4 +60,16 @@ onUnmounted(() => {
     removeView(toValue(commandId), mappedId.value)
   }
 })
+
+// Update sorting for MagicCommandItems
+watch(
+  () => items.value.length,
+  () => {
+    nextTick(() => {
+      if (elRef.value) {
+        sortItems(toValue(commandId), elRef.value)
+      }
+    })
+  }
+)
 </script>

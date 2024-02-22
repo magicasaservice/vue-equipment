@@ -10,7 +10,6 @@
       class="magic-command"
       :id="toValue(id)"
       :class="toValue(props.class)"
-      @click.self="close"
       aria-command="true"
     >
       <transition
@@ -215,6 +214,7 @@ provide(CommandOptionsKey, mappedOptions)
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
   z-index: var(--magic-command-z-index);
   background: transparent;
   color: inherit;
@@ -228,6 +228,7 @@ provide(CommandOptionsKey, mappedOptions)
   max-height: 100%;
   width: 100%;
   display: flex;
+  pointer-events: auto;
   align-items: var(--magic-command-content-align-items);
   justify-content: var(--magic-command-content-justify-content);
   overflow-y: var(--magic-command-content-overflow-y);
@@ -241,6 +242,7 @@ provide(CommandOptionsKey, mappedOptions)
   bottom: 0;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
   background-color: var(--magic-command-backdrop-color);
   backdrop-filter: var(--magic-command-backdrop-filter);
   z-index: -1;

@@ -6,9 +6,7 @@
   >
     <magic-command-head class="p-2">
       <div class="w-full border border-neutral-600 p-3 border-b-solid">
-        <magic-command-input>
-          <input type="text" placeholder="Search" />
-        </magic-command-input>
+        <input type="text" placeholder="Search" />
       </div>
     </magic-command-head>
     <magic-command-body class="h-full pb-2">
@@ -21,9 +19,21 @@
         >
           <demo-item :is-active="isActive">View Projects</demo-item>
         </magic-command-item>
+        <magic-command-item v-slot="{ isActive }" :callback="toggleDynamicItem">
+          <demo-item :is-active="isActive"
+            >{{ dynamic ? 'Remove' : 'Add ' }} Filter</demo-item
+          >
+        </magic-command-item>
       </magic-command-group>
       <magic-command-group>
         <h2 class="p-4 text-xs text-neutral-600">Filter</h2>
+        <magic-command-item
+          v-slot="{ isActive }"
+          v-if="dynamic"
+          :callback="() => itemCallback('dynamic')"
+        >
+          <demo-item :is-active="isActive">All</demo-item>
+        </magic-command-item>
         <magic-command-item
           v-for="nth in 20"
           :key="nth"
@@ -38,16 +48,28 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
+import { ref, inject } from 'vue'
 import { useCommandApi, CommandInstanceId } from '@maas/vue-equipment/plugins'
 import DemoItem from './DemoItem.vue'
+
+interface Props {
+  hasDynamicItem?: boolean
+}
+
+defineProps<Props>()
 
 const commandId = inject(CommandInstanceId, '')
 
 const commandApi = useCommandApi(commandId)
 const { selectView } = commandApi
 
-function itemCallback(nth: number) {
+const dynamic = ref(false)
+
+function toggleDynamicItem() {
+  dynamic.value = !dynamic.value
+}
+
+function itemCallback(nth: number | string) {
   console.log(nth)
 }
 
