@@ -4,12 +4,12 @@
     :default="true"
     class="bg-neutral-800 border border-solid border-neutral-600 w-[40rem] max-h-[30rem] rounded-xl overflow-hidden flex flex-col"
   >
-    <magic-command-head class="p-2">
+    <magic-command-head class="px-2 pt-2">
       <div class="w-full border border-neutral-600 p-3 border-b-solid">
         <input type="text" placeholder="Search" />
       </div>
     </magic-command-head>
-    <magic-command-body class="h-full pb-2">
+    <magic-command-body class="h-full py-2">
       <magic-command-group>
         <h2 class="p-4 text-xs text-neutral-600">Suggestions</h2>
         <magic-command-item

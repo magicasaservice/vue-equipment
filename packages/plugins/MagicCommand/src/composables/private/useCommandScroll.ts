@@ -41,6 +41,16 @@ export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
     return mappedParent.value.querySelector(`[data-item-id="${id}"]`)
   }
 
+  function scrollInFromTop(element: HTMLElement) {
+    const elementRect = element.getBoundingClientRect()
+    const parentRect = mappedParent.value.getBoundingClientRect()
+    const scrollAmount = elementRect.top - parentRect.top - paddingTop.value
+
+    mappedParent.value.scrollBy({
+      top: scrollAmount,
+    })
+  }
+
   function scrollInFromBottom(element: HTMLElement) {
     const elementRect = element.getBoundingClientRect()
     const parentRect = mappedParent.value.getBoundingClientRect()
@@ -56,6 +66,7 @@ export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
     isElementAbove,
     isElementBelow,
     findElement,
+    scrollInFromTop,
     scrollInFromBottom,
   }
 }

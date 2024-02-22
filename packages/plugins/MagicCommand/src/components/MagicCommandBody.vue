@@ -19,8 +19,13 @@ const commandId = inject(CommandInstanceId, '')
 const options = inject(CommandOptionsKey, {} as CommandOptions)
 
 const { activeItem, nextItem, prevItem } = useCommandItem(commandId)
-const { findElement, isElementAbove, isElementBelow, scrollInFromBottom } =
-  useCommandScroll(elRef)
+const {
+  findElement,
+  isElementAbove,
+  isElementBelow,
+  scrollInFromBottom,
+  scrollInFromTop,
+} = useCommandScroll(elRef)
 
 const keys = useMagicKeys()
 
@@ -72,7 +77,7 @@ watch(activeItem, async (value) => {
     const element = findElement(value)
     if (element) {
       if (isElementAbove(element)) {
-        element.scrollIntoView()
+        scrollInFromTop(element)
       } else if (isElementBelow(element)) {
         scrollInFromBottom(element)
       }
