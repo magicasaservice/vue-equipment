@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
