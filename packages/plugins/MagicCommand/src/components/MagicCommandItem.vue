@@ -18,7 +18,6 @@ import {
   nextTick,
   onMounted,
   onUnmounted,
-  getCurrentInstance,
 } from 'vue'
 import { useEventListener, onKeyStroke } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'

@@ -1,7 +1,11 @@
 <template>
   <magic-command-view
     id="project-view"
-    class="bg-neutral-800 border border-solid border-neutral-600 w-[40rem] max-h-[30rem] rounded-xl overflow-hidden flex flex-col"
+    :class="{
+      'w-[40rem] max-h-[30rem] rounded-xl': isModal,
+      'w-full h-full': !isModal,
+    }"
+    class="bg-neutral-800 border border-solid border-neutral-600 overflow-hidden flex flex-col"
   >
     <magic-command-head class="p-2">
       <div class="w-full border border-neutral-600 p-3 border-b-solid">
@@ -41,6 +45,12 @@ import { inject } from 'vue'
 import { useCommandApi, CommandInstanceId } from '@maas/vue-equipment/plugins'
 
 import DemoItem from './DemoItem.vue'
+
+interface Props {
+  isModal?: boolean
+}
+
+defineProps<Props>()
 
 const commandId = inject(CommandInstanceId, '')
 

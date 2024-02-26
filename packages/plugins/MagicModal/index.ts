@@ -3,7 +3,7 @@ import { useModalApi } from './src/composables/useModalApi'
 import { useModalEmitter } from './src/composables/useModalEmitter'
 
 import type { App, Plugin } from 'vue'
-import type { ModalEvents } from './src/types/index'
+import type { ModalEvents, ModalOptions } from './src/types/index'
 
 const MagicModalPlugin: Plugin = {
   install: (app: App) => {
@@ -12,4 +12,4 @@ const MagicModalPlugin: Plugin = {
 }
 
 export { MagicModalPlugin, MagicModal, useModalEmitter, useModalApi }
-export type { ModalEvents }
+export type { ModalEvents, ModalOptions }

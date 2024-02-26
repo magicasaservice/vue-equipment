@@ -1,6 +1,6 @@
 export type SnapPoint = number | `${string}px`
 
-export type DrawerOptions = {
+export interface DrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
   backdrop?: boolean
   focusTrap?: boolean
@@ -68,8 +68,4 @@ export type DrawerEvents = {
     x: number
     y: number
   }
-}
-
-export interface CustomMouseEvent extends MouseEvent {
-  custom?: string
 }

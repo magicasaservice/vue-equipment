@@ -1,4 +1,4 @@
-export type ModalOptions = {
+export interface ModalOptions {
   backdrop?: boolean
   focusTrap?: boolean
   scrollLock?: boolean

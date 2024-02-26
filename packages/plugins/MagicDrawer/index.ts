@@ -3,7 +3,7 @@ import { useDrawerApi } from './src/composables/useDrawerApi'
 import { useDrawerEmitter } from './src/composables/useDrawerEmitter'
 
 import type { App, Plugin } from 'vue'
-import type { DrawerEvents } from './src/types/index'
+import type { DrawerEvents, DrawerOptions } from './src/types/index'
 
 const MagicDrawerPlugin: Plugin = {
   install: (app: App) => {
@@ -12,4 +12,4 @@ const MagicDrawerPlugin: Plugin = {
 }
 
 export { MagicDrawerPlugin, MagicDrawer, useDrawerApi, useDrawerEmitter }
-export type { DrawerEvents }
+export type { DrawerEvents, DrawerOptions }

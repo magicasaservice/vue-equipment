@@ -33,24 +33,28 @@ export function useCommandStore() {
 
   function sortItems(id: string, parent: HTMLElement) {
     const instance = findInstance(id)
-    const itemElements: NodeListOf<HTMLElement> =
-      parent.querySelectorAll('[data-item-id]')
+    if (instance) {
+      const itemElements: NodeListOf<HTMLElement> =
+        parent.querySelectorAll('[data-item-id]')
 
-    itemElements.forEach((el, index) => {
-      const itemId = el.dataset.itemId
-      const item = instance.items?.find((item) => item.id === itemId)
+      itemElements.forEach((el, index) => {
+        const itemId = el.dataset.itemId
+        const item = instance.items?.find((item) => item.id === itemId)
 
-      if (item) {
-        item.index = index
-      }
-    })
+        if (item) {
+          item.index = index
+        }
+      })
 
-    instance.items?.sort((a, b) => a.index - b.index)
+      instance.items?.sort((a, b) => a.index - b.index)
+    }
   }
 
   function addItem(id: string, item: string) {
     const instance = findInstance(id)
-    instance.items?.push({ index: -1, id: item })
+    if (instance) {
+      instance.items?.push({ index: -1, id: item })
+    }
   }
 
   function removeItem(id: string, item: string) {
@@ -62,7 +66,9 @@ export function useCommandStore() {
 
   function addView(id: string, view: string) {
     const instance = findInstance(id)
-    instance.views?.push(view)
+    if (instance) {
+      instance.views?.push(view)
+    }
   }
 
   function removeView(id: string, view: string) {
