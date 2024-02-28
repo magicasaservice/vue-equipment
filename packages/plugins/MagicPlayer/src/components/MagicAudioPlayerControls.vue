@@ -80,10 +80,6 @@ const { play, pause, mute, unmute, touched, mouseEntered } = usePlayerAudioApi({
   id: props.id,
 })
 
-const { formattedCurrentTime } = usePlayerMediaApi({
-  id: props.id,
-})
-
 usePlayerControlsApi({
   id: props.id,
   barRef: barRef,
