@@ -50,7 +50,7 @@
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
-    "universal-cookie": "^7.0.2"
+    "universal-cookie": "^7.1.0"
   },
   "peerDependenciesMeta": {
     "@maas/magic-timer": {

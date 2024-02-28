@@ -20,7 +20,7 @@
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "mitt": "^3.0.1",
-    "universal-cookie": "4.0.4"
+    "universal-cookie": "^7.1.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
