@@ -294,8 +294,6 @@ onBeforeUnmount(() => {
 :root {
   --magic-drawer-height: 75svh;
   --magic-drawer-width: 100%;
-  --magic-drawer-min-height: unset;
-  --magic-drawer-min-width: unset;
   --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
@@ -368,14 +366,6 @@ onBeforeUnmount(() => {
   );
   width: calc(
     var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot-x, 0px)
-  );
-  min-height: calc(
-    var(--magic-drawer-min-height, 0px) +
-      var(--magic-drawer-drag-overshoot-y, 0px)
-  );
-  min-width: calc(
-    var(--magic-drawer-min-width, 0px) +
-      var(--magic-drawer-drag-overshoot-x, 0px)
   );
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),

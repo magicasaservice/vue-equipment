@@ -44,5 +44,6 @@ useModalEmitter().on('afterLeave', afterLeaveCallback)
 
 onBeforeUnmount(() => {
   useModalEmitter().off('afterLeave', afterLeaveCallback)
+  close()
 })
 </script>

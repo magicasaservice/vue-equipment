@@ -44,5 +44,6 @@ useDrawerEmitter().on('afterLeave', afterLeaveCallback)
 
 onBeforeUnmount(() => {
   useDrawerEmitter().off('afterLeave', afterLeaveCallback)
+  close()
 })
 </script>
