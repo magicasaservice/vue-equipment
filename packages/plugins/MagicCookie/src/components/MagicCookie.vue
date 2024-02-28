@@ -117,7 +117,7 @@ const {
 :root {
   --magic-cookie-max-width: 480px;
   --magic-cookie-max-height: calc(100vh - 2rem);
-  --magic-cookie-background-color: rgba(75, 75, 75, 0.5);
+  --magic-cookie-background: rgba(75, 75, 75, 0.5);
   --magic-cookie-backdrop-filter: blur(32px);
   --magic-cookie-color: rgba(255, 255, 255);
   --magic-cookie-border-radius: 0;
@@ -140,11 +140,11 @@ const {
   --magic-cookie-button-backdrop-filter: none;
 
   --magic-cookie-button-primary-color: rgb(0, 0, 0);
-  --magic-cookie-button-primary-background-color: rgb(255 255 255);
+  --magic-cookie-button-primary-background: rgb(255 255 255);
   --magic-cookie-button-primary-border-color: transparent;
 
   --magic-cookie-button-secondary-color: rgb(255, 255, 255);
-  --magic-cookie-button-secondary-background-color: transparent;
+  --magic-cookie-button-secondary-background: transparent;
   --magic-cookie-button-secondary-border-color: transparent;
 }
 
@@ -154,7 +154,7 @@ const {
   width: 100%;
   max-width: var(--magic-cookie-max-width);
   border-radius: var(--magic-cookie-border-radius);
-  background-color: var(--magic-cookie-background-color);
+  background-color: var(--magic-cookie-background);
   color: var(--magic-cookie-color);
   box-shadow: var(--magic-cookie-box-shadow);
   backdrop-filter: var(--magic-cookie-backdrop-filter);
@@ -293,13 +293,13 @@ li.magic-cookie__cookie {
 
 .magic-cookie-button.-primary {
   color: var(--magic-cookie-button-primary-color);
-  background-color: var(--magic-cookie-button-primary-background-color);
+  background-color: var(--magic-cookie-button-primary-background);
   border-color: var(--magic-cookie-button-primary-border-color);
 }
 
 .magic-cookie-button.-secondary {
   color: var(--magic-cookie-button-secondary-color);
-  background-color: var(--magic-cookie-button-secondary-background-color);
+  background-color: var(--magic-cookie-button-secondary-background);
   border-color: var(--magic-cookie-button-secondary-border-color);
 }
 </style>
