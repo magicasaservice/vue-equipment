@@ -294,6 +294,8 @@ onBeforeUnmount(() => {
 :root {
   --magic-drawer-height: 75svh;
   --magic-drawer-width: 100%;
+  --magic-drawer-min-height: unset;
+  --magic-drawer-min-width: unset;
   --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
@@ -301,20 +303,15 @@ onBeforeUnmount(() => {
   --magic-drawer-backdrop-filter: unset;
   --magic-drawer-content-overflow-x: hidden;
   --magic-drawer-content-overflow-y: hidden;
-  --magic-drawer-handle-wrapper-height: 2rem;
-  --magic-drawer-handle-width: 3rem;
-  --magic-drawer-handle-height: 0.375rem;
-  --magic-drawer-handle-color: rgb(212 212 216 / 1);
-  --magic-drawer-handle-border-radius: 0.25rem;
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
-  --magic-drawer-drag-overshoot-x: 0rem;
-  --magic-drawer-drag-overshoot-y: 0rem;
-  --magic-drawer-padding: 0rem;
+  --magic-drawer-padding: 0px;
 }
 
 .magic-drawer {
+  --magic-drawer-drag-overshoot-x: 0px;
+  --magic-drawer-drag-overshoot-y: 0px;
   position: fixed;
   inset: 0;
   width: 100%;
@@ -366,9 +363,19 @@ onBeforeUnmount(() => {
 }
 
 .magic-drawer__wrapper {
-  width: calc(var(--magic-drawer-width) + var(--magic-drawer-drag-overshoot-x));
   height: calc(
-    var(--magic-drawer-height) + var(--magic-drawer-drag-overshoot-y)
+    var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot-y, 0px)
+  );
+  width: calc(
+    var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot-x, 0px)
+  );
+  min-height: calc(
+    var(--magic-drawer-min-height, 0px) +
+      var(--magic-drawer-drag-overshoot-y, 0px)
+  );
+  min-width: calc(
+    var(--magic-drawer-min-width, 0px) +
+      var(--magic-drawer-drag-overshoot-x, 0px)
   );
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),

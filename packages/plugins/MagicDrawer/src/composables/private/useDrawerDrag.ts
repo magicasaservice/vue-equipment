@@ -261,7 +261,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       if (value > to) return to
       else return value
     } else {
-      return value
+      // Prevent overdragging, when overshoot is 0
+      if (value < to) return to
+      else return value
     }
   }
 

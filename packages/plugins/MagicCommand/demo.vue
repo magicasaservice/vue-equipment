@@ -57,3 +57,9 @@ onBeforeUnmount(() => {
   useCommandEmitter().off('*', callback)
 })
 </script>
+
+<style>
+#magic-command-demo {
+  --magic-drawer-drag-overshoot: 0rem;
+}
+</style>

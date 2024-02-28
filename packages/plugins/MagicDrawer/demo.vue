@@ -27,7 +27,7 @@
     }"
   >
     <div
-      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto flex flex-col items-start justify-end gap-4 p-4 pb-24"
+      class="bg-gray-100 w-full h-full absolute inset-0 overflow-auto flex flex-col items-start justify-end gap-4 p-4 pb-24"
     >
       <a href="/plugins/MagicModal/">MagicModal</a>
       <!-- <nuxt-link to="/magic-modal">MagicModal (Nuxt)</nuxt-link> -->
@@ -36,8 +36,6 @@
         type="text"
         v-model="text"
         class="bg-white text-black dark:bg-gray-300"
-        @focus="drawerApi.onFocus"
-        @blur="drawerApi.onBlur"
       />
     </div>
   </magic-drawer>
@@ -51,9 +49,7 @@
       },
     }"
   >
-    <div
-      class="bg-gray-100 w-full h-full rounded-t-lg absolute inset-0 overflow-auto pb-24"
-    >
+    <div class="bg-gray-100 w-full h-full absolute inset-0 overflow-auto pb-24">
       <div v-for="i in 25" :key="i" class="p-4 text-black w-full">
         {{ i }}
       </div>
@@ -61,8 +57,6 @@
         type="text"
         v-model="text"
         class="bg-white text-black dark:bg-gray-300"
-        @focus="drawerApi.onFocus"
-        @blur="drawerApi.onBlur"
       />
     </div>
   </magic-drawer>
