@@ -131,9 +131,10 @@ const { idle } = useIdle(3000)
   );
   --magic-player-controls-gap: 1rem;
   --magic-player-controls-border-radius: 50rem;
-  --magic-player-controls-background-color: rgba(32, 32, 32, 0.8);
+  --magic-player-controls-background: rgba(32, 32, 32, 0.8);
   --magic-player-controls-backdrop-filter: blur(80px);
   --magic-player-controls-color: rgba(255, 255, 255, 1);
+  --magic-player-controls-button-width: 3rem;
   --magic-player-controls-icon-width: 1.25rem;
   --magic-player-controls-transition-duration: 300ms;
   --magic-player-controls-transition-timing-function: ease;
@@ -177,7 +178,7 @@ const { idle } = useIdle(3000)
   box-sizing: border-box;
   height: var(--magic-player-controls-height);
   padding: 0 var(--magic-player-controls-padding);
-  background-color: var(--magic-player-controls-background-color);
+  background-color: var(--magic-player-controls-background);
   backdrop-filter: var(--magic-player-controls-backdrop-filter);
   color: var(--magic-player-controls-color);
   border-radius: var(--magic-player-controls-border-radius);
@@ -208,7 +209,7 @@ const { idle } = useIdle(3000)
   padding: 0;
   border-radius: 0;
   cursor: pointer;
-  width: var(--magic-player-controls-height);
+  width: var(--magic-player-controls-button-width);
   height: var(--magic-player-controls-height);
   display: flex;
   align-items: center;
@@ -242,9 +243,9 @@ const { idle } = useIdle(3000)
   --magic-player-controls-bottom: 0;
   --magic-player-controls-left: 0;
   --magic-player-controls-padding: 0;
-  --magic-player-controls-background-color: unset;
+  --magic-player-controls-background: unset;
   --magic-player-controls-border-radius: unset;
-  --magic-player-controls-background-color: transparent;
+  --magic-player-controls-background: transparent;
   --magic-player-controls-backdrop-filter: none;
   --magic-player-controls-transition-duration: unset;
   --magic-player-controls-transition-timing-function: unset;

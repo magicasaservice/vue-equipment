@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
 interface Props {
@@ -59,19 +58,15 @@ const {
 } = usePlayerControlsApi({
   id: props.id,
 })
-
-const height = computed(() => {
-  return trackRect.value?.height
-})
 </script>
 
 <style lang="css">
 :root {
   --magic-player-target-height: 56px;
   --magic-player-track-height: 4px;
-  --magic-player-track-bg-color: rgba(250, 250, 250, 0.15);
+  --magic-player-track-background: rgba(250, 250, 250, 0.15);
   --magic-player-thumb-size: 1rem;
-  --magic-player-thumb-bg-color: rgba(250, 250, 250, 1);
+  --magic-player-thumb-background: rgba(250, 250, 250, 1);
 }
 
 .magic-player-timeline {
@@ -95,7 +90,7 @@ const height = computed(() => {
   position: relative;
   width: 100%;
   height: var(--magic-player-track-height);
-  background: var(--magic-player-track-bg-color);
+  background: var(--magic-player-track-background);
   border-radius: 50rem;
 }
 
@@ -126,7 +121,7 @@ const height = computed(() => {
   transform: translate(-50%, -50%) scale(0);
   transition: transform 300ms ease;
   z-index: 10;
-  background-color: var(--magic-player-thumb-bg-color);
+  background-color: var(--magic-player-thumb-background);
   border-radius: 50rem;
 }
 

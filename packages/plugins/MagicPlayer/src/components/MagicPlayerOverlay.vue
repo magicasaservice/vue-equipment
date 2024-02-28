@@ -61,7 +61,7 @@ const { idle } = useIdle(3000)
 
 <style lang="css">
 :root {
-  --magic-player-overlay-background-color: rgba(0, 0, 0, 0.3);
+  --magic-player-overlay-background: rgba(0, 0, 0, 0.3);
   --magic-player-overlay-color: rgba(255, 255, 255, 1);
   --magic-player-overlay-button-size: 2.5rem;
 }
@@ -69,7 +69,7 @@ const { idle } = useIdle(3000)
 .magic-player-overlay {
   position: absolute;
   inset: 0;
-  background-color: var(--magic-player-overlay-background-color);
+  background-color: var(--magic-player-overlay-background);
   color: var(--magic-player-overlay-color);
   transition-duration: 300ms;
   transition-property: opacity;

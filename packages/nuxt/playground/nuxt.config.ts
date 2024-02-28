@@ -37,4 +37,8 @@ export default defineNuxtConfig({
       }
     },
   },
+  // Use public folder from docs
+  dir: {
+    public: path.resolve(__dirname, '../../../apps/docs/public'),
+  },
 })

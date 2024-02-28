@@ -122,6 +122,24 @@
       Toggle Play
     </button>
   </div>
+
+  <p>Audio Player</p>
+  <div class="w-full">
+    <magic-audio-player
+      src="/demo/magic-player/loveless.mp3"
+      id="audio-player"
+    />
+  </div>
+
+  <p>Audio Player [slot]</p>
+  <div class="w-full">
+    <magic-audio-player
+      src="/demo/magic-player/loveless.mp3"
+      id="audio-player-slot"
+    >
+      <span>Loveless</span>
+    </magic-audio-player>
+  </div>
 </template>
 
 <script lang="ts" setup>

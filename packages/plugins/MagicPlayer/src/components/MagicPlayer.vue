@@ -8,7 +8,7 @@
   >
     <video
       ref="videoRef"
-      class="magic-player-video"
+      class="magic-player__video"
       preload="auto"
       playsinline
       disablePictureInPicture
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
   aspect-ratio: var(--magic-player-aspect-ratio);
 }
 
-.magic-player-video {
+.magic-player__video {
   position: absolute;
   width: 100%;
   height: 100%;

@@ -1,4 +1,4 @@
-import { ref, watch, unref, toValue, type MaybeRef } from 'vue'
+import { ref, computed, watch, unref, toValue, type MaybeRef } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 import type { Buffered } from '../../types'
@@ -24,7 +24,21 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   const { mediaRef } = args
 
+  const formattedCurrentTime = computed(() => formatTime(currentTime.value))
+
   // Private functions
+  function formatTime(currentTime: number): {
+    hours: number
+    minutes: number
+    seconds: number
+  } {
+    const hours = Math.floor(currentTime / 3600)
+    const minutes = Math.floor((currentTime % 3600) / 60)
+    const seconds = Math.floor(currentTime % 60)
+
+    return { hours, minutes, seconds }
+  }
+
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
     for (let i = 0; i < timeRanges.length; ++i)
@@ -296,6 +310,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   return {
     currentTime,
+    formattedCurrentTime,
     duration,
     seeking,
     volume,
