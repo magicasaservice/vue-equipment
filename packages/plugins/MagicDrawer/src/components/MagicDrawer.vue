@@ -82,6 +82,7 @@ import { onKeyStroke, unrefElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
+import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 
 import type { DrawerOptions } from './../types/index'
@@ -122,9 +123,10 @@ const mappedOptions: typeof defaultOptions = customDefu(
   defaultOptions
 )
 
-const elRef = ref<HTMLDivElement | undefined>(undefined)
-const drawerRef = ref<HTMLElement | undefined>(undefined)
+const elRef = ref<HTMLElement | undefined>(undefined)
+const drawerRef = ref<HTMLDivElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
+
 const drawerApi = useDrawerApi(props.id, {
   focusTarget: drawerRef,
   focusTrap: mappedOptions.focusTrap,
@@ -182,6 +184,8 @@ const {
   wrapperActive,
   wasActive,
 })
+
+useDrawerProgress({ id: props.id, elRef, drawerRef, position, overshoot })
 
 // Surpress animation on initial mount if the options call for it
 // To achive this, the transition names are set to undefined
@@ -304,8 +308,8 @@ onBeforeUnmount(() => {
   --magic-drawer-backdrop-filter: unset;
   --magic-drawer-content-overflow-x: hidden;
   --magic-drawer-content-overflow-y: hidden;
-  --magic-drawer-enter-animation: slide-btt-in 300ms ease;
-  --magic-drawer-leave-animation: slide-btt-out 300ms ease;
+  --magic-drawer-enter-animation: slide-btt-in 1000ms ease;
+  --magic-drawer-leave-animation: slide-btt-out 1000ms ease;
   --magic-drawer-drag-overshoot: 4rem;
   --magic-drawer-padding: 0px;
 }

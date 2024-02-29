@@ -4,7 +4,7 @@ import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
 
 interface UseDrawerGuardsArgs {
-  elRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | undefined>
   absDirectionX: MaybeRef<'with' | 'against' | undefined>
   absDirectionY: MaybeRef<'with' | 'against' | undefined>
   position: MaybeRef<DefaultOptions['position']>

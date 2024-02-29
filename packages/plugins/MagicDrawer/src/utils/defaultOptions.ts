@@ -1,7 +1,12 @@
 import type { DrawerOptions } from '../types'
-import type { RequireAll } from '@maas/vue-equipment/utils'
+import type { RequireAll, RequireAllNested } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAll<DrawerOptions> = {
+type DefaultOptions = RequireAll<DrawerOptions> & {
+  threshold: RequireAll<DrawerOptions['threshold']>
+  snap: RequireAll<DrawerOptions['snap']>
+}
+
+const defaultOptions: DefaultOptions = {
   position: 'bottom',
   backdrop: true,
   focusTrap: {
@@ -37,7 +42,5 @@ const defaultOptions: RequireAll<DrawerOptions> = {
   },
   canClose: true,
 }
-
-type DefaultOptions = typeof defaultOptions
 
 export { defaultOptions, type DefaultOptions }

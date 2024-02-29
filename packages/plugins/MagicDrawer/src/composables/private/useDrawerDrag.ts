@@ -28,7 +28,7 @@ import type { DrawerEvents } from '../../types'
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
   isActive: MaybeRef<boolean>
-  elRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
   threshold: MaybeRef<DefaultOptions['threshold']>
@@ -138,7 +138,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   // Private functions
-
   interface isWithinRangeArgs {
     input: number
     base: number
@@ -537,12 +536,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   )
 
-  watch(snappedX, (value) => {
-    lastDraggedX.value = value
-  })
-
-  watch(snappedY, (value) => {
-    lastDraggedY.value = value
+  watch([snappedX, snappedY], ([x, y]) => {
+    lastDraggedX.value = x
+    lastDraggedY.value = y
   })
 
   // Make sure the drawer keeps the correct position when the window is resized

@@ -7,6 +7,7 @@ import {
 } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { uuid, matchClass } from '@maas/vue-equipment/utils'
+import { useDrawerDrag } from './private/useDrawerDrag'
 import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerEmitter } from './useDrawerEmitter'
 

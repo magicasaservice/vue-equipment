@@ -1,5 +1,10 @@
 import { type Options } from 'focus-trap'
 
+type Progress = {
+  x: number
+  y: number
+}
+
 export type SnapPoint = number | `${string}px`
 
 export interface DrawerOptions {
@@ -66,6 +71,11 @@ export type DrawerEvents = {
     y: number
   }
   afterDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  progress: {
     id: string
     x: number
     y: number
