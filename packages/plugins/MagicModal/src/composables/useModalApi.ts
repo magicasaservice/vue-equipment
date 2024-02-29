@@ -7,11 +7,15 @@ import { useModalStore } from './private/useModalStore'
 
 import type { ModalOptions } from '../types/index'
 
-export type useModalApiOptions = Pick<ModalOptions, 'scrollLock'> & {
+export type useModalApiOptions = Pick<
+  ModalOptions,
+  'scrollLock' | 'focusTrap'
+> & {
   focusTarget: MaybeElementRef
 }
 
 const defaultOptions = {
+  focusTrap: false,
   focusTarget: undefined,
   scrollLock: true,
 }
@@ -26,7 +30,9 @@ export function useModalApi(
   const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
-    ? useFocusTrap(mappedOptions.focusTarget)
+    ? typeof mappedOptions.focusTrap === 'boolean'
+      ? useFocusTrap(mappedOptions.focusTarget)
+      : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
   const scrollLock =

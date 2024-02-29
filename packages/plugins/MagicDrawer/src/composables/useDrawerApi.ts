@@ -12,11 +12,15 @@ import { useDrawerEmitter } from './useDrawerEmitter'
 
 import type { DrawerOptions, SnapPoint } from '../types/index'
 
-export type UseDrawerApiOptions = Pick<DrawerOptions, 'scrollLock'> & {
+export type UseDrawerApiOptions = Pick<
+  DrawerOptions,
+  'scrollLock' | 'focusTrap'
+> & {
   focusTarget: MaybeElementRef
 }
 
 const defaultOptions = {
+  focusTrap: false,
   focusTarget: undefined,
   scrollLock: true,
 }
@@ -31,7 +35,9 @@ export function useDrawerApi(
   const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
-    ? useFocusTrap(mappedOptions.focusTarget)
+    ? typeof mappedOptions.focusTrap === 'boolean'
+      ? useFocusTrap(mappedOptions.focusTarget)
+      : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
   const scrollLock =

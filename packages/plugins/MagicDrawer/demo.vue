@@ -65,6 +65,7 @@
     :id="horizontalId"
     :options="{
       position,
+      focusTrap: false,
       snap: {
         points: ['150px', 1],
         initial: '150px',

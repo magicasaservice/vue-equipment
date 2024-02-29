@@ -3,7 +3,10 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAll<ModalOptions> = {
   backdrop: true,
-  focusTrap: true,
+  focusTrap: {
+    initialFocus: false,
+    setReturnFocus: false,
+  },
   scrollLock: true,
   scrollLockPadding: true,
   teleport: {

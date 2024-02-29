@@ -1,6 +1,8 @@
+import { type Options } from 'focus-trap'
+
 export interface ModalOptions {
   backdrop?: boolean
-  focusTrap?: boolean
+  focusTrap?: boolean | Options
   scrollLock?: boolean
   scrollLockPadding?: boolean
   teleport?: {

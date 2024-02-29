@@ -1,10 +1,13 @@
 import type { DrawerOptions } from '../types'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { RequireAll } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAllNested<DrawerOptions> = {
+const defaultOptions: RequireAll<DrawerOptions> = {
   position: 'bottom',
   backdrop: true,
-  focusTrap: false,
+  focusTrap: {
+    initialFocus: false,
+    setReturnFocus: false,
+  },
   scrollLock: true,
   scrollLockPadding: true,
   preventZoom: true,

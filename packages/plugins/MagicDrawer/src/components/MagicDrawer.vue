@@ -5,8 +5,7 @@
       :to="mappedOptions.teleport?.target"
       :disabled="mappedOptions.teleport?.disabled"
     >
-      <component
-        :is="mappedOptions.tag"
+      <div
         ref="drawerRef"
         class="magic-drawer"
         :id="toValue(id)"
@@ -41,7 +40,8 @@
             @after-enter="onAfterEnter"
           >
             <div v-show="innerActive" class="magic-drawer__content">
-              <div
+              <component
+                :is="mappedOptions.tag"
                 ref="elRef"
                 class="magic-drawer__drag"
                 :style="style"
@@ -56,11 +56,11 @@
                 />
                 <slot v-else />
                 <div v-if="hasDragged" class="magic-drawer__overlay" />
-              </div>
+              </component>
             </div>
           </transition>
         </div>
-      </component>
+      </div>
     </teleport>
   </transition>
 </template>
@@ -117,15 +117,18 @@ const props = withDefaults(defineProps<MagicDrawerProps>(), {
   options: () => defaultOptions,
 })
 
-const elRef = ref<HTMLDivElement | undefined>(undefined)
-const drawerRef = ref<HTMLElement | undefined>(undefined)
-const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
-const drawerApi = useDrawerApi(props.id, { focusTarget: drawerRef })
-
 const mappedOptions: typeof defaultOptions = customDefu(
   props.options,
   defaultOptions
 )
+
+const elRef = ref<HTMLDivElement | undefined>(undefined)
+const drawerRef = ref<HTMLElement | undefined>(undefined)
+const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
+const drawerApi = useDrawerApi(props.id, {
+  focusTarget: drawerRef,
+  focusTrap: mappedOptions.focusTrap,
+})
 
 const overshoot = ref(0)
 const { position, threshold, snap, canClose } = mappedOptions

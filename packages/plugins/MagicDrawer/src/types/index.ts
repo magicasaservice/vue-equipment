@@ -1,9 +1,11 @@
+import { type Options } from 'focus-trap'
+
 export type SnapPoint = number | `${string}px`
 
 export interface DrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
   backdrop?: boolean
-  focusTrap?: boolean
+  focusTrap?: boolean | Options
   scrollLock?: boolean
   scrollLockPadding?: boolean
   preventZoom?: boolean

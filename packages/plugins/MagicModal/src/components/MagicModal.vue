@@ -5,7 +5,7 @@
       :to="mappedOptions.teleport?.target"
       :disabled="mappedOptions.teleport?.disabled"
     >
-      <component
+      <div
         :is="mappedOptions.tag"
         ref="modalRef"
         class="magic-modal"
@@ -35,7 +35,8 @@
           @enter="onEnter"
           @after-enter="onAfterEnter"
         >
-          <div
+          <component
+            :is="mappedOptions.tag"
             v-show="innerActive"
             class="magic-modal__content"
             @click.self="close"
@@ -47,9 +48,9 @@
               @close="close"
             />
             <slot v-else />
-          </div>
+          </component>
         </transition>
-      </component>
+      </div>
     </teleport>
   </transition>
 </template>
@@ -95,9 +96,12 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
   options: () => defaultOptions,
 })
 
-const modalRef = ref<HTMLElement | undefined>(undefined)
-const modalApi = useModalApi(props.id, { focusTarget: modalRef })
 const mappedOptions = customDefu(props.options, defaultOptions)
+const modalRef = ref<HTMLElement | undefined>(undefined)
+const modalApi = useModalApi(props.id, {
+  focusTarget: modalRef,
+  focusTrap: mappedOptions.focusTrap,
+})
 
 const {
   isActive,
