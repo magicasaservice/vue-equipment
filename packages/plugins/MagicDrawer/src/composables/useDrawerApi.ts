@@ -1,17 +1,19 @@
-import { ref, computed, toValue, type MaybeRef } from 'vue'
-import { defu } from 'defu'
 import {
-  useScrollLock,
-  type MaybeElementRef,
-  useEventListener,
-} from '@vueuse/core'
+  ref,
+  computed,
+  toValue,
+  onMounted,
+  onBeforeUnmount,
+  type MaybeRef,
+} from 'vue'
+import { defu } from 'defu'
+import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { uuid, matchClass } from '@maas/vue-equipment/utils'
-import { useDrawerDrag } from './private/useDrawerDrag'
 import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerEmitter } from './useDrawerEmitter'
 
-import type { DrawerOptions, SnapPoint } from '../types/index'
+import type { DrawerEvents, DrawerOptions, SnapPoint } from '../types/index'
 
 export type UseDrawerApiOptions = Pick<
   DrawerOptions,
@@ -49,8 +51,16 @@ export function useDrawerApi(
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
 
+  function progressCallback(payload: DrawerEvents['progress']) {
+    if (payload.id === mappedId.value) {
+      progress.value.x = payload.x
+      progress.value.y = payload.y
+    }
+  }
+
   // Public state
   const isActive = computed(() => drawerStore.value.includes(mappedId.value))
+  const progress = ref({ x: 0, y: 0 })
 
   // Public methods
   function open() {
@@ -113,9 +123,18 @@ export function useDrawerApi(
     )
   }
 
+  onMounted(() => {
+    useDrawerEmitter().on('progress', progressCallback)
+  })
+
+  onBeforeUnmount(() => {
+    useDrawerEmitter().off('progress', progressCallback)
+  })
+
   return {
     id: mappedId,
     isActive,
+    progress,
     open,
     close,
     snapTo,

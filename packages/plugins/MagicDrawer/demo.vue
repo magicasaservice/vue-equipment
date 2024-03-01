@@ -30,7 +30,7 @@
       class="bg-gray-100 w-full h-full absolute inset-0 overflow-auto flex flex-col items-start justify-end gap-4 p-4 pb-24"
     >
       <a href="/plugins/MagicModal/">MagicModal</a>
-      <!-- <nuxt-link to="/magic-modal">MagicModal (Nuxt)</nuxt-link> -->
+      <nuxt-link to="/magic-modal">MagicModal (Nuxt)</nuxt-link>
       <input type="checkbox" v-model="checkbox" />
       <input
         type="text"
