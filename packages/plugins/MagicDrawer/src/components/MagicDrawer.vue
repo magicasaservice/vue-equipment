@@ -308,8 +308,8 @@ onBeforeUnmount(() => {
   --magic-drawer-backdrop-filter: unset;
   --magic-drawer-content-overflow-x: hidden;
   --magic-drawer-content-overflow-y: hidden;
-  --magic-drawer-enter-animation: slide-btt-in 1000ms ease;
-  --magic-drawer-leave-animation: slide-btt-out 1000ms ease;
+  --magic-drawer-enter-animation: slide-btt-in 300ms ease;
+  --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
   --magic-drawer-padding: 0px;
 }
@@ -335,6 +335,12 @@ onBeforeUnmount(() => {
 .magic-drawer.-bottom {
   --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 0 var(--magic-drawer-drag-overshoot-y) 0;
+
+  & > .magic-drawer__wrapper {
+    height: calc(
+      var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot, 0px)
+    );
+  }
 }
 
 .magic-drawer.-top {
@@ -345,6 +351,12 @@ onBeforeUnmount(() => {
     var(--magic-drawer-drag-overshoot) * -1
   );
   --magic-drawer-padding: var(--magic-drawer-drag-overshoot-y) 0 0 0;
+
+  & > .magic-drawer__wrapper {
+    height: calc(
+      var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot, 0px)
+    );
+  }
 }
 
 .magic-drawer.-right {
@@ -354,6 +366,12 @@ onBeforeUnmount(() => {
   --magic-drawer-justify-content: flex-end;
   --magic-drawer-drag-overshoot-x: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 var(--magic-drawer-drag-overshoot-x) 0 0;
+
+  & > .magic-drawer__wrapper {
+    width: calc(
+      var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot, 0px)
+    );
+  }
 }
 
 .magic-drawer.-left {
@@ -365,15 +383,17 @@ onBeforeUnmount(() => {
     var(--magic-drawer-drag-overshoot) * -1
   );
   --magic-drawer-padding: 0 0 0 var(--magic-drawer-drag-overshoot-x);
+
+  & > .magic-drawer__wrapper {
+    width: calc(
+      var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot, 0px)
+    );
+  }
 }
 
 .magic-drawer__wrapper {
-  height: calc(
-    var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot-y, 0px)
-  );
-  width: calc(
-    var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot-x, 0px)
-  );
+  height: var(--magic-drawer-height);
+  width: var(--magic-drawer-width);
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)

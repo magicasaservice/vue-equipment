@@ -78,7 +78,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         break
       case 'top':
         rawY = mapValue(
-          elRect.bottom.value,
+          elRect.top.value * -1,
           drawerRect.height.value,
           maxX.value,
           0,
@@ -87,9 +87,9 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         break
       case 'left':
         rawX = mapValue(
-          elRect.right.value,
-          maxX.value,
+          elRect.left.value * -1,
           drawerRect.width.value,
+          maxX.value,
           0,
           1
         )
@@ -108,9 +108,6 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     // Clamp the values between 0 and 1
     const x = clampValue(rawX, 0, 1)
     const y = clampValue(rawY, 0, 1)
-
-    console.log('y:', y)
-    console.log('x:', x)
 
     progress.value = { x, y }
   }
@@ -143,20 +140,31 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
 
   async function afterCallback(payload: DrawerEvents[keyof DrawerEvents]) {
     await nextTick()
+
     if (payload === toValue(id)) {
       pause()
+      await nextTick()
+      rafCallback()
     }
   }
 
-  function afterSnapCallback(payload: DrawerEvents['afterSnap']) {
+  async function afterSnapCallback(payload: DrawerEvents['afterSnap']) {
+    await nextTick()
+
     if (payload.id === toValue(id)) {
       snapPause()
+      await nextTick()
+      rafCallback()
     }
   }
 
-  function afterDragCallback(payload: DrawerEvents['drag']) {
+  async function afterDragCallback(payload: DrawerEvents['drag']) {
+    await nextTick()
+
     if (payload.id === toValue(id)) {
       dragPause()
+      await nextTick()
+      rafCallback()
     }
   }
 

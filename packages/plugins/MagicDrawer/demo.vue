@@ -67,7 +67,7 @@
       position,
       focusTrap: false,
       snap: {
-        points: ['150px', 1],
+        points: ['150px', 0.5, 1],
         initial: '150px',
       },
     }"
@@ -112,7 +112,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  // console.log(event, id)
+  console.log(event, id)
 
   if (event === 'enter' && id === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
