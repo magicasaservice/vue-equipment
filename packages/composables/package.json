@@ -1,7 +1,7 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.24.1",
+  "version": "0.24.2",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "vue": "^3.4.15"
