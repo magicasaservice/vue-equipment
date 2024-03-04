@@ -229,6 +229,19 @@ onBeforeUnmount(() => {
   overflow-y: var(--magic-modal-content-overflow-y);
 }
 
+/* Reset default dialog styles */
+dialog.magic-modal__content {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+}
+
+dialog.magic-modal__content::backdrop {
+  background-color: transparent;
+}
+
 .magic-modal__backdrop {
   position: fixed;
   top: 0;
