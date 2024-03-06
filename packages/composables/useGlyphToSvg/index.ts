@@ -53,14 +53,14 @@ export function useGlyphToSvg({
     return svg
   }
 
-  const renderSvg = async (codePoint: string) => {
+  const renderSvg = async (codePoint: number) => {
     const font = await loadVariableFont()
     const glyph = font.glyphForCodePoint(codePoint)
     const svg = convertToSvg(glyph)
     return svg
   }
 
-  const copySvg = async (codePoint: string) => {
+  const copySvg = async (codePoint: number) => {
     const svg = await renderSvg(codePoint)
     copy(svg)
   }
