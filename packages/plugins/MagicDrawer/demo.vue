@@ -27,10 +27,9 @@
     }"
   >
     <div
-      class="bg-gray-100 w-full h-full absolute inset-0 overflow-auto flex flex-col items-start justify-end gap-4 p-4 pb-24"
+      class="bg-white text-black w-full h-full absolute inset-0 overflow-auto flex flex-col items-start justify-end gap-4 p-4 pb-24"
     >
       <a href="/plugins/MagicModal/">MagicModal</a>
-      <nuxt-link to="/magic-modal">MagicModal (Nuxt)</nuxt-link>
       <input type="checkbox" v-model="checkbox" />
       <input
         type="text"
@@ -49,14 +48,28 @@
       },
     }"
   >
-    <div class="bg-gray-100 w-full h-full absolute inset-0 overflow-auto pb-24">
+    <div class="bg-white w-full h-full absolute inset-0 overflow-auto pb-24">
+      <div class="p-4 flex gap-2">
+        <button
+          @click="drawerSnapApi.snapTo(1)"
+          class="px-4 flex items-center h-12 bg-black"
+        >
+          Snap to 1
+        </button>
+        <button
+          @click="drawerSnapApi.snapTo('150px')"
+          class="px-4 flex items-center h-12 bg-black"
+        >
+          Snap to 150px
+        </button>
+      </div>
       <div v-for="i in 25" :key="i" class="p-4 text-black w-full">
         {{ i }}
       </div>
       <input
         type="text"
         v-model="text"
-        class="bg-white text-black dark:bg-gray-300"
+        class="bg-white text-black dark:bg-black dark:text-white"
       />
     </div>
   </magic-drawer>
@@ -74,7 +87,7 @@
   >
     <div
       ref="scrollable"
-      class="bg-gray-100 absolute inset-0 overflow-x-auto flex"
+      class="bg-white absolute inset-0 overflow-x-auto flex"
     >
       <span v-for="i in 50" :key="i" class="p-4 text-black w-full">
         {{ i }}
@@ -84,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount, watch } from 'vue'
 import {
   useDrawerApi,
   useDrawerEmitter,
@@ -112,7 +125,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  console.log(event, id)
+  // console.log(event, id)
 
   if (event === 'enter' && id === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
@@ -124,6 +137,17 @@ useDrawerEmitter().on('*', callback)
 onBeforeUnmount(() => {
   useDrawerEmitter().off('*', callback)
 })
+
+watch(
+  drawerSnapApi.progress,
+  (value) => {
+    console.log('drawerApi', value.y)
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+)
 </script>
 
 <style>

@@ -371,6 +371,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointerup(e: PointerEvent) {
+    const eventTarget = e.target as HTMLElement
+
+    // TODO: We should probably blacklist more tags or give the option to customize.
+    // Maybe also give the option to blacklist by class or id
+    const tagNameBlacklist = ['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'A']
+
     if (shouldClose.value) {
       close()
     } else if (interpolateTo.value || interpolateTo.value === 0) {
@@ -398,7 +404,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           snappedX.value = interpolateTo.value
           break
       }
-    } else {
+    } else if (!tagNameBlacklist.includes(eventTarget.tagName)) {
       switch (position) {
         case 'bottom':
         case 'top':

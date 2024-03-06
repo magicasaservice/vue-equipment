@@ -187,9 +187,9 @@ const {
 
 useDrawerProgress({ id: props.id, elRef, drawerRef, position, overshoot })
 
-// Surpress animation on initial mount if the options call for it
-// To achive this, the transition names are set to undefined
-const surpressTransition = computed(() => {
+// Prevent animation on initial mount if the options call for it
+// To achieve this, the transition names are set to undefined
+const preventTransition = computed(() => {
   return (
     mappedOptions.beforeMount.open &&
     !mappedOptions.beforeMount.animate &&
@@ -198,13 +198,13 @@ const surpressTransition = computed(() => {
 })
 
 const backdropTransition = computed(() => {
-  return surpressTransition.value
+  return preventTransition.value
     ? undefined
     : mappedOptions.transitions?.backdrop
 })
 
 const contentTransition = computed(() => {
-  return surpressTransition.value
+  return preventTransition.value
     ? undefined
     : mappedOptions.transitions?.content
 })
@@ -257,7 +257,6 @@ function saveOvershoot() {
   const overshootVar = getComputedStyle(element!).getPropertyValue(
     '--magic-drawer-drag-overshoot'
   )
-
   overshoot.value = convertToPixels(overshootVar) || 0
 }
 
@@ -421,6 +420,19 @@ onBeforeUnmount(() => {
   overflow-x: var(--magic-drawer-content-overflow-x);
   overflow-y: var(--magic-drawer-content-overflow-y);
   cursor: grab;
+}
+
+/* Reset default dialog styles */
+dialog.magic-drawer__drag {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+}
+
+dialog.magic-drawer__drag::backdrop {
+  background-color: transparent;
 }
 
 .magic-drawer.-dragging .magic-drawer__drag {
