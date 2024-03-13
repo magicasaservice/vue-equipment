@@ -24,6 +24,9 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   const { mediaRef } = args
 
+  // Computed state
+  const remainingTime = computed(() => duration.value - currentTime.value)
+
   // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
@@ -296,6 +299,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   return {
     currentTime,
+    remainingTime,
     duration,
     seeking,
     volume,

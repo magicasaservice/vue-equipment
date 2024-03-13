@@ -104,6 +104,7 @@ onBeforeUnmount(() => {
   backdrop-filter: var(--magic-audio-player-backdrop-filter);
   border-radius: var(--magic-audio-player-border-radius);
   padding: var(--magic-audio-player-padding);
+  container-type: inline-size;
 }
 
 .magic-audio-player.-slot {

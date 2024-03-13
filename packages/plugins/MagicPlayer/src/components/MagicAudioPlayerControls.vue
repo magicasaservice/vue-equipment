@@ -15,7 +15,10 @@
   >
     <div class="magic-audio-player-controls__bar">
       <div class="magic-audio-player-controls__bar--inner" ref="barRef">
-        <div class="magic-audio-player-controls__item -shrink-0">
+        <div
+          class="magic-audio-player-controls__item -shrink-0"
+          data-slot="play-toggle"
+        >
           <button v-if="!playing" @click="play">
             <slot name="playIcon">
               <icon-play />
@@ -27,25 +30,25 @@
             </slot>
           </button>
         </div>
-        <div class="magic-audio-player-controls__item -shrink-0">
-          <magic-player-current-time :id="id" />
+        <div
+          class="magic-audio-player-controls__item -shrink-0"
+          data-slot="display-time-current"
+        >
+          <magic-player-display-time :id="id" type="current" />
         </div>
-        <div class="magic-audio-player-controls__item -grow">
+        <div
+          class="magic-audio-player-controls__item -grow"
+          data-slot="timeline"
+        >
           <div class="magic-audio-player-controls__timeline" ref="trackRef">
             <magic-player-timeline :id="id" />
           </div>
         </div>
-        <div class="magic-audio-player-controls__item -shrink-0">
-          <button v-if="muted" @click="unmute">
-            <slot name="volumeOffIcon">
-              <icon-volume-off />
-            </slot>
-          </button>
-          <button v-else @click="mute">
-            <slot name="volumeOnIcon">
-              <icon-volume-on />
-            </slot>
-          </button>
+        <div
+          class="magic-audio-player-controls__item -shrink-0"
+          data-slot="display-time-duration"
+        >
+          <magic-player-display-time :id="id" type="duration" />
         </div>
       </div>
     </div>
@@ -55,13 +58,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useIdle } from '@vueuse/core'
-import IconPlay from './icons/Play.vue'
-import IconPause from './icons/Pause.vue'
-import IconVolumeOn from './icons/VolumeOn.vue'
-import IconVolumeOff from './icons/VolumeOff.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import IconPlay from './icons/Play.vue'
+import IconPause from './icons/Pause.vue'
 
 interface Props {
   id: string
@@ -72,11 +73,11 @@ const props = defineProps<Props>()
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 
-const { playing, waiting, muted } = usePlayerMediaApi({
+const { playing, waiting } = usePlayerMediaApi({
   id: props.id,
 })
 
-const { play, pause, mute, unmute, touched, mouseEntered } = usePlayerAudioApi({
+const { play, pause, touched, mouseEntered } = usePlayerAudioApi({
   id: props.id,
 })
 
@@ -160,5 +161,29 @@ const { idle } = useIdle(3000)
 
 .magic-audio-player-controls__timeline {
   width: 100%;
+}
+
+@container (max-width: 480px) {
+  .magic-audio-player-controls__item[data-slot='display-time-current'] {
+    display: none;
+  }
+}
+
+@container (max-width: 320px ) {
+  .magic-audio-player-controls__item[data-slot='display-time-duration'] {
+    display: none;
+  }
+  .magic-audio-player-controls__item[data-slot='timeline'] {
+    padding-right: 1rem;
+  }
+}
+
+@container (max-width: 240px) {
+  .magic-audio-player-controls__item[data-slot='timeline'] {
+    display: none;
+  }
+  .magic-audio-player-controls__bar--inner {
+    justify-content: center;
+  }
 }
 </style>
