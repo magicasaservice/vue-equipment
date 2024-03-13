@@ -41,6 +41,7 @@ const defaultOptions: DefaultOptions = {
     initial: 1,
   },
   canClose: true,
+  disabled: false,
 }
 
 export { defaultOptions, type DefaultOptions }

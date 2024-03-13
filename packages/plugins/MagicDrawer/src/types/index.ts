@@ -39,6 +39,7 @@ export interface DrawerOptions {
     initial?: SnapPoint
   }
   canClose?: boolean
+  disabled?: boolean
 }
 
 export type DrawerEvents = {

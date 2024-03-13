@@ -125,7 +125,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  // console.log(event, id)
+  console.log(event, id)
 
   if (event === 'enter' && id === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0

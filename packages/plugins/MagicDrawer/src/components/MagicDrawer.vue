@@ -12,7 +12,7 @@
         :class="[
           toValue(props.class),
           `-${mappedOptions.position}`,
-          { '-dragging': dragging },
+          { '-dragging': dragging, '-disabled': disabled },
         ]"
         aria-modal="true"
       >
@@ -23,7 +23,7 @@
           <div
             v-show="innerActive"
             class="magic-drawer__backdrop"
-            @click.self="closeIfAllowed"
+            @click.self="guardedClose"
           >
             <slot name="backdrop" />
           </div>
@@ -45,14 +45,14 @@
                 ref="elRef"
                 class="magic-drawer__drag"
                 :style="style"
-                @pointerdown="onPointerdown"
-                @click="onClick"
+                @pointerdown="guardedPointerdown"
+                @click="guardedClick"
               >
                 <component
                   v-if="component"
                   v-bind="props"
                   :is="component"
-                  @close="closeIfAllowed"
+                  @close="guardedClose"
                 />
                 <slot v-else />
                 <div v-if="hasDragged" class="magic-drawer__overlay" />
@@ -209,6 +209,15 @@ const contentTransition = computed(() => {
     : mappedOptions.transitions?.content
 })
 
+// Make sure this is reactive
+const disabled = computed(() => {
+  if (props.options.disabled === undefined) {
+    return defaultOptions.disabled
+  } else {
+    return props.options.disabled
+  }
+})
+
 // Private functions
 function convertToPixels(value: string) {
   const regex = /^(\d*\.?\d+)\s*(rem|px)$/
@@ -246,8 +255,20 @@ function onClose() {
 }
 
 // Public functions
-function closeIfAllowed() {
-  if (canClose) {
+function guardedPointerdown(event: PointerEvent) {
+  if (!disabled.value) {
+    onPointerdown(event)
+  }
+}
+
+function guardedClick(event: PointerEvent) {
+  if (!disabled.value) {
+    onClick(event)
+  }
+}
+
+function guardedClose() {
+  if (canClose && !disabled) {
     close()
   }
 }
@@ -440,6 +461,10 @@ dialog.magic-drawer__drag::backdrop {
   user-select: none;
 }
 
+.magic-drawer.-disabled .magic-drawer__drag {
+  cursor: auto;
+}
+
 .magic-drawer__drag > * {
   padding: var(--magic-drawer-padding);
 }
@@ -462,6 +487,10 @@ dialog.magic-drawer__drag::backdrop {
   background-color: var(--magic-drawer-backdrop-color);
   backdrop-filter: var(--magic-drawer-backdrop-filter);
   z-index: -1;
+}
+
+.magic-drawer.-disabled .magic-drawer__backdrop {
+  pointer-events: none;
 }
 
 /* Content */
