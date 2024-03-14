@@ -268,7 +268,7 @@ function guardedClick(event: PointerEvent) {
 }
 
 function guardedClose() {
-  if (canClose && !disabled) {
+  if (canClose && !disabled.value) {
     close()
   }
 }
