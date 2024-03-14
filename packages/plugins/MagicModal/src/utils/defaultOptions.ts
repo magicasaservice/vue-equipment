@@ -6,6 +6,7 @@ const defaultOptions: RequireAll<ModalOptions> = {
   focusTrap: {
     initialFocus: false,
     setReturnFocus: false,
+    allowOutsideClick: true,
   },
   scrollLock: true,
   scrollLockPadding: true,
