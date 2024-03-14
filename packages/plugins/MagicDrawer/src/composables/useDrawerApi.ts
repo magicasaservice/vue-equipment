@@ -71,7 +71,7 @@ export function useDrawerApi(
     removeInstance(mappedId.value)
   }
 
-  function snapTo(snapPoint: SnapPoint, duration: number) {
+  function snapTo(snapPoint: SnapPoint, duration?: number) {
     useDrawerEmitter().emit('snapTo', {
       id: mappedId.value,
       snapPoint,
