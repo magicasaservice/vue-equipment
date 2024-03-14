@@ -220,7 +220,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
 
   // Public functions
   async function snapTo(args: SnapToArgs) {
-    const { snapPoint, interpolate, duration = 200 } = args
+    const { snapPoint, interpolate, duration } = args
     await nextTick()
 
     switch (position) {
@@ -275,7 +275,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   }
 
   async function interpolateDragged(args: InterpolateDraggedArgs) {
-    const { to, duration = 200 } = args
+    const { to, duration = toValue(snap).duration } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]
     useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })

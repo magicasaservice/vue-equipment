@@ -364,7 +364,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         snapTo({
           snapPoint: payload.snapPoint,
           interpolate: true,
-          duration: duration.value,
+          duration: payload.duration || duration.value,
         })
       }
     }

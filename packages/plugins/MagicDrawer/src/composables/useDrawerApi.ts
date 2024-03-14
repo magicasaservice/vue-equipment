@@ -71,8 +71,12 @@ export function useDrawerApi(
     removeInstance(mappedId.value)
   }
 
-  function snapTo(snapPoint: SnapPoint) {
-    useDrawerEmitter().emit('snapTo', { id: mappedId.value, snapPoint })
+  function snapTo(snapPoint: SnapPoint, duration: number) {
+    useDrawerEmitter().emit('snapTo', {
+      id: mappedId.value,
+      snapPoint,
+      duration,
+    })
   }
 
   function trapFocus() {
