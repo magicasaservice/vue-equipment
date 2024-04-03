@@ -74,7 +74,7 @@
     </div>
   </magic-drawer>
 
-  <!-- <magic-drawer
+  <magic-drawer
     :id="horizontalId"
     :options="{
       position,
@@ -93,7 +93,7 @@
         {{ i }}
       </span>
     </div>
-  </magic-drawer> -->
+  </magic-drawer>
 </template>
 
 <script setup lang="ts">

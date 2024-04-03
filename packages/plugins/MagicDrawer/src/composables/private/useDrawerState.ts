@@ -22,6 +22,17 @@ const lastDraggedY = ref(0)
 const draggedX = ref(0)
 const draggedY = ref(0)
 
+// Used to determine closest snap point
+const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
+const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
+
+// Used to determine scroll lock
+const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
+const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
+
+const elRect = ref<DOMRect | undefined>(undefined)
+const wrapperRect = ref<DOMRect | undefined>(undefined)
+
 export function useDrawerState(args: UseDrawerStateArgs) {
   const { threshold } = args
   const { isWithinRange } = useDrawerUtils()
@@ -59,6 +70,12 @@ export function useDrawerState(args: UseDrawerStateArgs) {
     lastDraggedY,
     draggedX,
     draggedY,
+    relDirectionY,
+    relDirectionX,
+    absDirectionY,
+    absDirectionX,
+    elRect,
+    wrapperRect,
     hasDragged,
     style,
   }

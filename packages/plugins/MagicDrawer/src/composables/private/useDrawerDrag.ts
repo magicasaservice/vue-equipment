@@ -68,6 +68,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedY,
     draggedX,
     draggedY,
+    relDirectionX,
+    relDirectionY,
+    absDirectionX,
+    absDirectionY,
+    elRect,
+    wrapperRect,
     hasDragged,
   } = useDrawerState({ threshold })
 
@@ -75,17 +81,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
-
-  // Used to determine closest snap point
-  const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
-  const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
-
-  // Used to determine scroll lock
-  const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
-  const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
-
-  const elRect = ref<DOMRect | undefined>(undefined)
-  const wrapperRect = ref<DOMRect | undefined>(undefined)
 
   const duration = computed(() => toValue(snap)?.duration)
 
@@ -129,8 +124,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   async function checkPosition({ x, y }: { x: number; y: number }) {
-    const distanceY = Math.abs(y - pointerdownY.value)
     const distanceX = Math.abs(x - pointerdownX.value)
+    const distanceY = Math.abs(y - pointerdownY.value)
 
     switch (position) {
       case 'bottom':
