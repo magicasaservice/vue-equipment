@@ -1,33 +1,31 @@
 import {
   ref,
   computed,
-  onMounted,
   watch,
-  onBeforeUnmount,
   toValue,
   nextTick,
+  onMounted,
+  onBeforeUnmount,
   type Ref,
   type MaybeRef,
   type WritableComputedRef,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useScrollLock,
   useResizeObserver,
   useThrottleFn,
-  useScrollLock,
 } from '@vueuse/core'
-import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
-import { isIOS } from '@maas/vue-equipment/utils'
+import { useDrawerEmitter } from '../useDrawerEmitter'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { DrawerEvents } from '../../types'
+import { type DefaultOptions } from '../../utils/defaultOptions'
 
-type UseDrawerDragArgs = {
+type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   isActive: MaybeRef<boolean>
   elRef: Ref<HTMLElement | undefined>
@@ -40,7 +38,7 @@ type UseDrawerDragArgs = {
   close: () => void
 }
 
-export function useDrawerDrag(args: UseDrawerDragArgs) {
+export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const {
     id,
     isActive,
@@ -71,10 +69,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     hasDragged,
   } = useDrawerState({ threshold })
 
-  let cancelPointerup: (() => void) | undefined = undefined
-  let cancelPointermove: (() => void) | undefined = undefined
-  let cancelTouchend: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
+  let wheelendId: NodeJS.Timeout | undefined = undefined
 
   // Used to determine closest snap point
   const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
@@ -93,8 +89,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
     snappedY,
     snappedX,
-    activeSnapPoint,
     snapTo,
+    activeSnapPoint,
     snapPointsMap,
     interpolateDragged,
     findClosestSnapPoint,
@@ -111,7 +107,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     draggedX,
   })
 
-  const { canDrag, canInterpolate, lockScroll } = useDrawerGuards({
+  const { canInterpolate, lockScroll } = useDrawerGuards({
     elRef,
     absDirectionX,
     absDirectionY,
@@ -229,6 +225,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         const newDraggedB = clamp(y - originY.value, 0, toValue(overshoot) * -1)
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
+
         break
 
       case 'top':
@@ -279,9 +276,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     dragging.value = false
     shouldClose.value = false
     interpolateTo.value = undefined
-    cancelTouchend?.()
-    cancelPointerup?.()
-    cancelPointermove?.()
   }
 
   function resetScrollLock() {
@@ -292,42 +286,42 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     scrollLock = undefined
   }
 
-  function resetDragged() {
-    draggedX.value = 0
-    draggedY.value = 0
-    lastDraggedX.value = 0
-    lastDraggedY.value = 0
-  }
+  // function resetDragged() {
+  //   draggedX.value = 0
+  //   draggedY.value = 0
+  //   lastDraggedX.value = 0
+  //   lastDraggedY.value = 0
+  // }
 
-  function resetSnapped() {
-    snappedX.value = 0
-    snappedY.value = 0
-    activeSnapPoint.value = undefined
-  }
+  // function resetSnapped() {
+  //   snappedX.value = 0
+  //   snappedY.value = 0
+  //   activeSnapPoint.value = undefined
+  // }
 
-  function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
-    if (payload === toValue(id)) {
-      resetDragged()
-      resetSnapped()
-    }
-  }
+  // function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
+  //   if (payload === toValue(id)) {
+  //     resetDragged()
+  //     resetSnapped()
+  //   }
+  // }
 
-  function snapToCallback(payload: DrawerEvents['snapTo']) {
-    if (payload.id === toValue(id)) {
-      if (!toValue(isActive)) {
-        console.warn('Cannot snap to point when drawer is not open')
-        return
-      } else {
-        snapTo({
-          snapPoint: payload.snapPoint,
-          interpolate: true,
-          duration: payload.duration || duration.value,
-        })
-      }
-    }
-  }
+  // function snapToCallback(payload: DrawerEvents['snapTo']) {
+  //   if (payload.id === toValue(id)) {
+  //     if (!toValue(isActive)) {
+  //       console.warn('Cannot snap to point when drawer is not open')
+  //       return
+  //     } else {
+  //       snapTo({
+  //         snapPoint: payload.snapPoint,
+  //         interpolate: true,
+  //         duration: payload.duration || duration.value,
+  //       })
+  //     }
+  //   }
+  // }
 
-  function onPointerup(e: PointerEvent) {
+  function onWheelend(e: WheelEvent) {
     if (shouldClose.value) {
       close()
     } else if (interpolateTo.value || interpolateTo.value === 0) {
@@ -375,71 +369,24 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       }
     }
 
-    useDrawerEmitter().emit('afterDrag', {
-      id: toValue(id),
-      x: draggedX.value,
-      y: draggedY.value,
-    })
-
     // Reset state
     resetStateAndListeners()
     resetScrollLock()
-
-    if (hasDragged.value) {
-      e.preventDefault()
-    }
   }
 
-  function onPointermove(e: PointerEvent) {
-    // Reset shouldClose before checking
-    shouldClose.value = false
-
-    // Save pointermove direction
-    checkDirection({ x: e.screenX, y: e.screenY })
-
-    // Possibly lock scroll
-    if (!scrollLock) {
-      const target = lockScroll(e.target!)
-      if (target) {
-        scrollLock = useScrollLock(target)
-        scrollLock.value = true
-      }
-    }
-
-    // Check if we should be dragging
-    if (!canDrag(e.target!)) {
-      return
-    }
-
-    //Check if we should close or snap based on momentum
-    checkMomentum({ x: e.screenX, y: e.screenY })
-
-    // Save dragged value
-    setDragged({ x: e.screenX, y: e.screenY })
-
-    // Check if we should close based on distance
-    checkPosition({ x: e.screenX, y: e.screenY })
-
-    useDrawerEmitter().emit('drag', {
-      id: toValue(id),
-      x: draggedX.value,
-      y: draggedY.value,
-    })
-  }
-
-  // Public functions
-  function onPointerdown(e: PointerEvent) {
-    // Prevent dragging if we're already dragging
+  function onWheelstart(e: WheelEvent) {
     if (dragging.value) {
       return
     } else {
       dragging.value = true
 
-      useDrawerEmitter().emit('beforeDrag', {
-        id: toValue(id),
-        x: draggedX.value,
-        y: draggedY.value,
-      })
+      if (!scrollLock) {
+        const target = lockScroll(e.target!)
+        if (target) {
+          scrollLock = useScrollLock(target)
+          scrollLock.value = true
+        }
+      }
     }
 
     // Save last dragged position,
@@ -447,56 +394,69 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
 
-    // Add listeners
-    cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
-
-    // Pointerup doesn’t fire on iOS, so we need to use touchend
-    cancelTouchend = isIOS()
-      ? useEventListener(document, 'touchend', onPointerup)
-      : undefined
-
-    // Origin is the distance between pointer event and last dragged position
-    originX.value = e.screenX - draggedX.value
-    originY.value = e.screenY - draggedY.value
-
     // Save pointerdown position, used later to check if threshold for dragging is reached
-    pointerdownY.value = e.screenY
-    pointerdownX.value = e.screenX
+    pointerdownY.value = draggedY.value
+    pointerdownX.value = draggedX.value
 
     // Save start time
     dragStart.value = new Date()
-
-    // Set initial transform
-    onPointermove(e)
   }
 
-  async function onClick(e: MouseEvent) {
-    if (hasDragged.value) {
-      e.preventDefault()
+  // Public functions
+  function onWheel(args: { e: WheelEvent; id: MaybeRef<string> }) {
+    console.log('e:', args.e)
+
+    // Only listen to events from the current instance
+    if (toValue(args.id) !== toValue(id)) {
+      return
     }
+
+    // Clear wheelend event, if the user is still scrolling
+    if (wheelendId) {
+      clearTimeout(wheelendId)
+    }
+
+    const { e } = args
+    onWheelstart(e)
+
+    // Reset shouldClose before checking
+    shouldClose.value = false
+
+    const newX = draggedX.value - e.deltaX
+    const newY = draggedY.value - e.deltaY
+
+    // Save pointermove direction
+    checkDirection({ x: newX, y: newY })
+
+    //Check if we should close or snap based on momentum
+    checkMomentum({ x: newX, y: newY })
+
+    // Save dragged value
+    setDragged({ x: newX, y: newY })
+
+    // Check if we should close based on distance
+    checkPosition({ x: newX, y: newY })
+
+    if (hasDragged.value) {
+      e.stopPropagation()
+    }
+
+    wheelendId = setTimeout(() => onWheelend(e), 50)
   }
 
   // Lifecycle hooks and listeners
   onMounted(async () => {
     await getSizes()
-    useDrawerEmitter().on('snapTo', snapToCallback)
-    useDrawerEmitter().on('afterLeave', afterLeaveCallback)
+    // useDrawerEmitter().on('snapTo', snapToCallback)
+    // useDrawerEmitter().on('afterLeave', afterLeaveCallback)
   })
 
   watch(
     () => [unrefElement(elRef), unrefElement(wrapperRef)],
     async () => {
       await getSizes()
-      const snapPoint = toValue(snap)?.initial
-      snapTo({ snapPoint, interpolate: false })
     }
   )
-
-  watch([snappedX, snappedY], ([x, y]) => {
-    lastDraggedX.value = x
-    lastDraggedY.value = y
-  })
 
   // Make sure the drawer keeps the correct position when the window is resized
   // To achieve this, we update the snapPointsMap after the drawer has snapped
@@ -504,20 +464,19 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     useThrottleFn(async () => {
       await getSizes()
 
-      if (activeSnapPoint.value) {
-        await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
-        snapPointsMap.trigger()
-      }
+      // if (activeSnapPoint.value) {
+      //   await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
+      //   snapPointsMap.trigger()
+      // }
     }, 100)()
   })
 
-  onBeforeUnmount(() => {
-    useDrawerEmitter().off('snapTo', snapToCallback)
-    useDrawerEmitter().off('afterLeave', afterLeaveCallback)
-  })
+  // onBeforeUnmount(() => {
+  //   useDrawerEmitter().off('snapTo', snapToCallback)
+  //   useDrawerEmitter().off('afterLeave', afterLeaveCallback)
+  // })
 
   return {
-    onPointerdown,
-    onClick,
+    onWheel,
   }
 }

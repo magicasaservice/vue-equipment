@@ -37,7 +37,7 @@ type SnapToArgs = {
 
 type InterpolateDraggedArgs = {
   to: number
-  duration: number
+  duration?: number
 }
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
@@ -124,6 +124,10 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   function findClosestNumber(args: FindClosestNumberArgs) {
     const { number, numbers, direction } = args
     let filtered = numbers
+
+    if (!numbers.length) {
+      return undefined
+    }
 
     switch (direction) {
       case 'above':

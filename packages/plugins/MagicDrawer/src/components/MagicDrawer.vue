@@ -73,17 +73,25 @@ import {
   nextTick,
   toValue,
   onBeforeMount,
+  onMounted,
   onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
-import { onKeyStroke, unrefElement } from '@vueuse/core'
+import {
+  onKeyStroke,
+  unrefElement,
+  useEventListener,
+  useThrottleFn,
+} from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
+import { useDrawerWheel } from '../composables/private/useDrawerWheel'
+import { useDrawerState } from '../composables/private/useDrawerState'
 
 import type { DrawerOptions } from './../types/index'
 
@@ -127,6 +135,8 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const drawerRef = ref<HTMLDivElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
+let cancelWheel: (() => void) | undefined = undefined
+
 const drawerApi = useDrawerApi(props.id, {
   focusTarget: drawerRef,
   focusTrap: mappedOptions.focusTrap,
@@ -147,7 +157,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, onClick, dragging, hasDragged, style } = useDrawerDrag({
+const { onPointerdown, onClick } = useDrawerDrag({
   id: props.id,
   isActive,
   elRef,
@@ -159,6 +169,21 @@ const { onPointerdown, onClick, dragging, hasDragged, style } = useDrawerDrag({
   canClose,
   close,
 })
+
+const { onWheel } = useDrawerWheel({
+  id: props.id,
+  isActive,
+  elRef,
+  wrapperRef,
+  position,
+  threshold,
+  overshoot,
+  snap,
+  canClose,
+  close,
+})
+
+const { style, dragging, hasDragged } = useDrawerState({ threshold })
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
@@ -248,10 +273,12 @@ async function onOpen() {
   wrapperActive.value = true
   await nextTick()
   innerActive.value = true
+  cancelWheel = useEventListener(drawerRef.value, 'mousewheel', throttledWheel)
 }
 
 function onClose() {
   innerActive.value = false
+  cancelWheel?.()
 }
 
 // Public functions
@@ -290,6 +317,10 @@ if (mappedOptions.keys && canClose) {
     })
   }
 }
+
+const throttledWheel = useThrottleFn((e: WheelEvent) => {
+  onWheel({ e, id: props.id })
+}, 10)
 
 watch(isActive, async (value) => {
   if (value) {
@@ -511,3 +542,4 @@ dialog.magic-drawer__drag::backdrop {
   animation: fade-out 300ms ease;
 }
 </style>
+../composables/private/useDrawerMousewheel

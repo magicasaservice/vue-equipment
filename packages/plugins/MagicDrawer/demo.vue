@@ -74,7 +74,7 @@
     </div>
   </magic-drawer>
 
-  <magic-drawer
+  <!-- <magic-drawer
     :id="horizontalId"
     :options="{
       position,
@@ -93,11 +93,11 @@
         {{ i }}
       </span>
     </div>
-  </magic-drawer>
+  </magic-drawer> -->
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, watch } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import {
   useDrawerApi,
   useDrawerEmitter,
@@ -125,7 +125,7 @@ function callback(
   event: keyof DrawerEvents,
   id: DrawerEvents[keyof DrawerEvents]
 ) {
-  console.log(event, id)
+  // console.log(event, id)
 
   if (event === 'enter' && id === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
@@ -137,17 +137,6 @@ useDrawerEmitter().on('*', callback)
 onBeforeUnmount(() => {
   useDrawerEmitter().off('*', callback)
 })
-
-watch(
-  drawerSnapApi.progress,
-  (value) => {
-    console.log('drawerApi', value.y)
-  },
-  {
-    deep: true,
-    immediate: true,
-  }
-)
 </script>
 
 <style>
