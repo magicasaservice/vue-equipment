@@ -1,5 +1,5 @@
 <template>
-  <div class="m-auto rounded flex flex-wrap md:w-120 gap-4">
+  <div class="m-auto rounded flex flex-wrap items-center md:w-120 gap-4">
     <div class="w-full flex flex-wrap gap-4">
       <button
         @click="drawerApi.open"
