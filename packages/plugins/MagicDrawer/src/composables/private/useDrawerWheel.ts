@@ -1,34 +1,23 @@
 import {
-  ref,
   computed,
-  watch,
   toValue,
-  nextTick,
-  onMounted,
   type Ref,
   type MaybeRef,
   type WritableComputedRef,
 } from 'vue'
-import {
-  unrefElement,
-  useScrollLock,
-  useResizeObserver,
-  useThrottleFn,
-} from '@vueuse/core'
+import { useScrollLock, useEventListener } from '@vueuse/core'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
-// import { useDrawerEmitter } from '../useDrawerEmitter'
 
-// import type { DrawerEvents } from '../../types'
 import { type DefaultOptions } from '../../utils/defaultOptions'
 
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   isActive: MaybeRef<boolean>
   elRef: Ref<HTMLElement | undefined>
-  wrapperRef: Ref<HTMLDivElement | undefined>
+  drawerRef: Ref<HTMLElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
   threshold: MaybeRef<DefaultOptions['threshold']>
   snap: MaybeRef<DefaultOptions['snap']>
@@ -40,9 +29,8 @@ type UseDrawerWheelArgs = {
 export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const {
     id,
-    isActive,
     elRef,
-    wrapperRef,
+    drawerRef,
     position,
     overshoot,
     threshold,
@@ -52,10 +40,10 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   } = args
 
   // Private state
+  const { findState } = useDrawerState(toValue(id))
   const {
     dragStart,
-    dragging,
-    shouldClose,
+    wheeling,
     interpolateTo,
     lastDraggedX,
     lastDraggedY,
@@ -66,13 +54,29 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     absDirectionX,
     absDirectionY,
     wrapperRect,
-    hasDragged,
-  } = useDrawerState({ threshold })
+  } = findState()
 
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
   let wheelendId: NodeJS.Timeout | undefined = undefined
+  let wheelListener: (() => void) | undefined = undefined
 
   const duration = computed(() => toValue(snap)?.duration)
+
+  const hasDragged = computed(() => {
+    const hasDraggedX = !isWithinRange({
+      input: draggedX.value,
+      base: lastDraggedX.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    const hasDraggedY = !isWithinRange({
+      input: draggedY.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    return hasDraggedX || hasDraggedY
+  })
 
   // Snap logic
   const {
@@ -95,7 +99,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     draggedX,
   })
 
-  const { canInterpolate, lockScroll } = useDrawerGuards({
+  const { lockScroll } = useDrawerGuards({
     elRef,
     absDirectionX,
     absDirectionY,
@@ -103,9 +107,51 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     activeSnapPoint,
   })
 
-  const { clamp } = useDrawerUtils()
+  const { clamp, isWithinRange } = useDrawerUtils()
 
   // Private functions
+  function setSnapped(value: number) {
+    // Save the snap point we’re snapping to
+    // both the input value, as well as the actual pixel value
+    activeSnapPoint.value = snapPointsMap.value[value]
+
+    switch (position) {
+      case 'bottom':
+      case 'top':
+        snappedY.value = value
+        break
+
+      case 'right':
+      case 'left':
+        snappedX.value = value
+        break
+    }
+  }
+
+  function clearAndSnap(snapPoint: number) {
+    // Cancel wheel listener, prevent wheelend call
+    cancelWheelListener()
+    clearTimeout(wheelendId)
+
+    // Interpolate to snap point
+    interpolateDragged({
+      to: snapPoint,
+      duration: duration.value,
+    })
+
+    // Save snap point
+    setSnapped(snapPoint)
+
+    // Reset state
+    resetStateAndListeners()
+    resetScrollLock()
+
+    // Initialize wheel listener after interpolation
+    setTimeout(() => {
+      initializeWheelListener()
+    }, duration.value)
+  }
+
   async function checkPosition({ x, y }: { x: number; y: number }) {
     const distanceX = Math.abs(x - lastDraggedX.value)
     const distanceY = Math.abs(y - lastDraggedY.value)
@@ -120,12 +166,13 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
             direction: relDirectionY.value,
           })
 
-          // Close if last snap point is reached
           if (snapPointY === drawerHeight.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointY
+            // Close if last snap point is reached
+            close()
+            resetStateAndListeners()
+            resetScrollLock()
+          } else if (snapPointY || snapPointY === 0) {
+            clearAndSnap(snapPointY)
           }
         }
 
@@ -142,61 +189,14 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
 
           // Close if last snap point is reached
           if (snapPointX === drawerWidth.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointX
+            close()
+            resetStateAndListeners()
+            resetScrollLock()
+          } else if (snapPointX || snapPointX === 0) {
+            clearAndSnap(snapPointX)
           }
         }
-        break
-    }
-  }
 
-  async function checkMomentum({ x, y }: { x: number; y: number }) {
-    const elapsed = Date.now() - dragStart.value!.getTime()
-
-    const distanceX = Math.abs(x - lastDraggedX.value)
-    const distanceY = Math.abs(y - lastDraggedY.value)
-
-    const velocityX = elapsed && distanceX ? distanceX / elapsed : 0
-    const velocityY = elapsed && distanceY ? distanceY / elapsed : 0
-
-    switch (position) {
-      case 'bottom':
-      case 'top':
-        if (velocityY > toValue(threshold).momentum) {
-          const snapPointB = await findClosestSnapPoint({
-            draggedX: 0,
-            draggedY,
-            direction: relDirectionY.value,
-          })
-          // Close if last snap point is reached
-          if (snapPointB === drawerHeight.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointB
-          }
-        }
-        break
-
-      case 'right':
-      case 'left':
-        if (velocityX > toValue(threshold).momentum) {
-          const snapPointR = await findClosestSnapPoint({
-            draggedX,
-            draggedY,
-            direction: relDirectionX.value,
-          })
-
-          // Close if last snap point is reached
-          if (snapPointR === drawerWidth.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointR
-          }
-        }
         break
     }
   }
@@ -207,7 +207,6 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
         const newDraggedB = clamp(y, 0, toValue(overshoot) * -1)
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
-
         break
 
       case 'top':
@@ -231,8 +230,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   }
 
   function resetStateAndListeners() {
-    dragging.value = false
-    shouldClose.value = false
+    wheeling.value = false
     interpolateTo.value = undefined
   }
 
@@ -244,35 +242,10 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     scrollLock = undefined
   }
 
-  function onWheelend(e: WheelEvent) {
-    if (shouldClose.value) {
-      close()
-    } else if (interpolateTo.value || interpolateTo.value === 0) {
-      // If scroll is locked, interpolate to snap point
-      // Scroll should only be locked at one end!
-      if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
-        interpolateDragged({
-          to: interpolateTo.value,
-          duration: duration.value,
-        })
-      }
+  function onWheelend() {
+    console.log('wheelend')
 
-      // Save the snap point we’re snapping to
-      // both the input value, as well as the actual pixel value
-      activeSnapPoint.value = snapPointsMap.value[interpolateTo.value]
-
-      switch (position) {
-        case 'bottom':
-        case 'top':
-          snappedY.value = interpolateTo.value
-          break
-
-        case 'right':
-        case 'left':
-          snappedX.value = interpolateTo.value
-          break
-      }
-    } else if (hasDragged.value) {
+    if (hasDragged.value) {
       switch (position) {
         case 'bottom':
         case 'top':
@@ -298,10 +271,10 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   }
 
   function onWheelstart(e: WheelEvent) {
-    if (dragging.value) {
+    if (wheeling.value) {
       return
     } else {
-      dragging.value = true
+      wheeling.value = true
 
       if (!scrollLock) {
         const target = lockScroll(e.target!)
@@ -322,30 +295,15 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   }
 
   // Public functions
-  function onWheel(args: { e: WheelEvent; id: MaybeRef<string> }) {
-    console.log('e:', args.e)
+  function onWheel(e: WheelEvent) {
+    onWheelstart(e)
 
-    // Only listen to events from the current instance
-    if (toValue(args.id) !== toValue(id)) {
-      return
-    }
-
-    // Clear wheelend event, if the user is still scrolling
     if (wheelendId) {
       clearTimeout(wheelendId)
     }
 
-    const { e } = args
-    onWheelstart(e)
-
-    // Reset shouldClose before checking
-    shouldClose.value = false
-
     const newX = draggedX.value - e.deltaX
     const newY = draggedY.value - e.deltaY
-
-    //Check if we should close or snap based on momentum
-    checkMomentum({ x: newX, y: newY })
 
     // Save dragged value
     setDragged({ x: newX, y: newY })
@@ -357,10 +315,24 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       e.stopPropagation()
     }
 
-    wheelendId = setTimeout(() => onWheelend(e), 50)
+    wheelendId = setTimeout(() => onWheelend(), 50)
+  }
+
+  function initializeWheelListener() {
+    wheelListener = useEventListener(drawerRef.value, 'wheel', onWheel, {
+      passive: true,
+    })
+  }
+
+  function cancelWheelListener() {
+    if (wheelListener) {
+      wheelListener()
+    }
   }
 
   return {
     onWheel,
+    initializeWheelListener,
+    cancelWheelListener,
   }
 }

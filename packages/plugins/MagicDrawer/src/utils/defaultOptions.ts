@@ -41,6 +41,7 @@ const defaultOptions: DefaultOptions = {
     duration: 200,
     initial: 1,
   },
+  canScroll: false,
   canClose: true,
   disabled: false,
 }

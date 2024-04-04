@@ -1,82 +1,61 @@
-import { ref, computed, toValue, type MaybeRef } from 'vue'
-import { useDrawerUtils } from './useDrawerUtils'
+import { ref, reactive, toRefs, toValue, type Ref, type MaybeRef } from 'vue'
+import type { DrawerState } from '../../types/index'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
+const drawerStateStore: Ref<DrawerState[]> = ref([])
 
-interface UseDrawerStateArgs {
-  threshold: MaybeRef<DefaultOptions['threshold']>
-}
+export function useDrawerState(id: MaybeRef<string>) {
+  function createState(id: string) {
+    const state: DrawerState = {
+      id: id,
+      dragStart: undefined,
+      dragging: false,
+      wheeling: false,
+      shouldClose: false,
+      interpolateTo: undefined,
+      originX: 0,
+      originY: 0,
+      pointerdownX: 0,
+      pointerdownY: 0,
+      lastDraggedX: 0,
+      lastDraggedY: 0,
+      draggedX: 0,
+      draggedY: 0,
+      relDirectionY: 'absolute',
+      relDirectionX: 'absolute',
+      absDirectionY: undefined,
+      absDirectionX: undefined,
+      elRect: undefined,
+      wrapperRect: undefined,
+    }
 
-const dragStart = ref<Date | undefined>(undefined)
-const dragging = ref(false)
-const shouldClose = ref(false)
-const interpolateTo = ref<number | undefined>(undefined)
+    return reactive(state)
+  }
 
-const originX = ref(0)
-const originY = ref(0)
-const pointerdownX = ref(0)
-const pointerdownY = ref(0)
-const lastDraggedX = ref(0)
-const lastDraggedY = ref(0)
+  function addState(id: string) {
+    const instance = createState(id)
+    drawerStateStore.value = [...drawerStateStore.value, instance]
 
-const draggedX = ref(0)
-const draggedY = ref(0)
+    return instance
+  }
 
-// Used to determine closest snap point
-const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
-const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
-
-// Used to determine scroll lock
-const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
-const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
-
-const elRect = ref<DOMRect | undefined>(undefined)
-const wrapperRect = ref<DOMRect | undefined>(undefined)
-
-export function useDrawerState(args: UseDrawerStateArgs) {
-  const { threshold } = args
-  const { isWithinRange } = useDrawerUtils()
-
-  const hasDragged = computed(() => {
-    const hasDraggedX = !isWithinRange({
-      input: draggedX.value,
-      base: lastDraggedX.value,
-      threshold: toValue(threshold).lock,
+  function findState() {
+    let instance = drawerStateStore.value.find((instance) => {
+      return instance.id === id
     })
 
-    const hasDraggedY = !isWithinRange({
-      input: draggedY.value,
-      base: lastDraggedY.value,
-      threshold: toValue(threshold).lock,
-    })
+    if (!instance) instance = addState(toValue(id))
+    return toRefs(instance)
+  }
 
-    return hasDraggedX || hasDraggedY
-  })
-
-  const style = computed(
-    () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
-  )
+  function deleteState() {
+    drawerStateStore.value = drawerStateStore.value.filter(
+      (x: DrawerState) => x.id !== id
+    )
+  }
 
   return {
-    dragStart,
-    dragging,
-    shouldClose,
-    interpolateTo,
-    originX,
-    originY,
-    pointerdownX,
-    pointerdownY,
-    lastDraggedX,
-    lastDraggedY,
-    draggedX,
-    draggedY,
-    relDirectionY,
-    relDirectionX,
-    absDirectionY,
-    absDirectionX,
-    elRect,
-    wrapperRect,
-    hasDragged,
-    style,
+    addState,
+    findState,
+    deleteState,
   }
 }

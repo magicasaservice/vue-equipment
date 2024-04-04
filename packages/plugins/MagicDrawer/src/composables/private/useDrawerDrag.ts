@@ -1,5 +1,5 @@
 import {
-  ref,
+  toRefs,
   computed,
   onMounted,
   watch,
@@ -55,6 +55,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   } = args
 
   // Private state
+  const { findState } = useDrawerState(toValue(id))
   const {
     dragStart,
     dragging,
@@ -74,8 +75,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     absDirectionY,
     elRect,
     wrapperRect,
-    hasDragged,
-  } = useDrawerState({ threshold })
+  } = findState()
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
@@ -83,6 +83,26 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
 
   const duration = computed(() => toValue(snap)?.duration)
+
+  const hasDragged = computed(() => {
+    const hasDraggedX = !isWithinRange({
+      input: draggedX.value,
+      base: lastDraggedX.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    const hasDraggedY = !isWithinRange({
+      input: draggedY.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    return hasDraggedX || hasDraggedY
+  })
+
+  const style = computed(
+    () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
+  )
 
   // Snap logic
   const {
@@ -114,7 +134,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint,
   })
 
-  const { clamp } = useDrawerUtils()
+  const { clamp, isWithinRange } = useDrawerUtils()
 
   // Private functions
   async function getSizes() {
@@ -514,5 +534,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   return {
     onPointerdown,
     onClick,
+    style,
+    hasDragged,
   }
 }

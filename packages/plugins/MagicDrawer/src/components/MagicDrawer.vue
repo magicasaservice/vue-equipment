@@ -68,12 +68,12 @@
 <script setup lang="ts">
 import {
   ref,
+  toRefs,
   watch,
   computed,
   nextTick,
   toValue,
   onBeforeMount,
-  onMounted,
   onBeforeUnmount,
   type Component,
   type MaybeRef,
@@ -135,8 +135,6 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const drawerRef = ref<HTMLDivElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
-let cancelWheel: (() => void) | undefined = undefined
-
 const drawerApi = useDrawerApi(props.id, {
   focusTarget: drawerRef,
   focusTrap: mappedOptions.focusTrap,
@@ -157,7 +155,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, onClick } = useDrawerDrag({
+const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   id: props.id,
   isActive,
   elRef,
@@ -170,11 +168,11 @@ const { onPointerdown, onClick } = useDrawerDrag({
   close,
 })
 
-const { onWheel } = useDrawerWheel({
+const { cancelWheelListener, initializeWheelListener } = useDrawerWheel({
   id: props.id,
   isActive,
   elRef,
-  wrapperRef,
+  drawerRef,
   position,
   threshold,
   overshoot,
@@ -183,7 +181,8 @@ const { onWheel } = useDrawerWheel({
   close,
 })
 
-const { style, dragging, hasDragged } = useDrawerState({ threshold })
+const { findState } = useDrawerState(props.id)
+const { dragging } = findState()
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
@@ -273,12 +272,14 @@ async function onOpen() {
   wrapperActive.value = true
   await nextTick()
   innerActive.value = true
-  cancelWheel = useEventListener(drawerRef.value, 'mousewheel', throttledWheel)
+  await nextTick()
+  if (mappedOptions.canScroll) {
+    initializeWheelListener()
+  }
 }
 
 function onClose() {
   innerActive.value = false
-  cancelWheel?.()
 }
 
 // Public functions
@@ -318,10 +319,6 @@ if (mappedOptions.keys && canClose) {
   }
 }
 
-const throttledWheel = useThrottleFn((e: WheelEvent) => {
-  onWheel({ e, id: props.id })
-}, 10)
-
 watch(isActive, async (value) => {
   if (value) {
     await onOpen()
@@ -330,7 +327,7 @@ watch(isActive, async (value) => {
   }
 })
 
-// Save overshoot, as soon as drawer apepars in in DOM
+// Save overshoot, as soon as drawer apepars in the DOM
 watch(innerActive, () => {
   saveOvershoot()
 })
