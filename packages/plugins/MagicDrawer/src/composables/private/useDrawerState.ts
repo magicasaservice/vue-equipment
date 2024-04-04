@@ -14,8 +14,6 @@ export function useDrawerState(id: MaybeRef<string>) {
       interpolateTo: undefined,
       originX: 0,
       originY: 0,
-      pointerdownX: 0,
-      pointerdownY: 0,
       lastDraggedX: 0,
       lastDraggedY: 0,
       draggedX: 0,

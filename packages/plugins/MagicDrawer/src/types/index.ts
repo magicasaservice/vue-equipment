@@ -52,8 +52,6 @@ export interface DrawerState {
   interpolateTo: number | undefined
   originX: number
   originY: number
-  pointerdownX: number
-  pointerdownY: number
   lastDraggedX: number
   lastDraggedY: number
   draggedX: number

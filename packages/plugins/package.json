@@ -20,7 +20,8 @@
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "mitt": "^3.0.1",
-    "universal-cookie": "^7.1.0"
+    "universal-cookie": "^7.1.0",
+    "wheel-gestures": "^2.2.5"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
@@ -45,6 +46,9 @@
       "optional": false
     },
     "universal-cookie": {
+      "optional": false
+    },
+    "wheel-gestures": {
       "optional": false
     }
   },

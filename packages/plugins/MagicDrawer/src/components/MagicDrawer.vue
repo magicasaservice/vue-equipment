@@ -79,12 +79,7 @@ import {
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
-import {
-  onKeyStroke,
-  unrefElement,
-  useEventListener,
-  useThrottleFn,
-} from '@vueuse/core'
+import { onKeyStroke, unrefElement } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
@@ -168,17 +163,11 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   close,
 })
 
-const { cancelWheelListener, initializeWheelListener } = useDrawerWheel({
+const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   id: props.id,
-  isActive,
   elRef,
   drawerRef,
   position,
-  threshold,
-  overshoot,
-  snap,
-  canClose,
-  close,
 })
 
 const { findState } = useDrawerState(props.id)
@@ -280,6 +269,9 @@ async function onOpen() {
 
 function onClose() {
   innerActive.value = false
+  if (mappedOptions.canScroll) {
+    destroyWheelListener()
+  }
 }
 
 // Public functions
@@ -539,4 +531,3 @@ dialog.magic-drawer__drag::backdrop {
   animation: fade-out 300ms ease;
 }
 </style>
-../composables/private/useDrawerMousewheel

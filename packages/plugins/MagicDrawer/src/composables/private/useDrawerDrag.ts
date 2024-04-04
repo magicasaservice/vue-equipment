@@ -63,8 +63,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     interpolateTo,
     originX,
     originY,
-    pointerdownX,
-    pointerdownY,
     lastDraggedX,
     lastDraggedY,
     draggedX,
@@ -143,19 +141,22 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     await nextTick()
   }
 
-  async function checkPosition({ x, y }: { x: number; y: number }) {
-    const distanceX = Math.abs(x - pointerdownX.value)
-    const distanceY = Math.abs(y - pointerdownY.value)
+  function checkPosition() {
+    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
+    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
 
     switch (position) {
       case 'bottom':
       case 'top':
         if (distanceY > toValue(threshold).distance) {
-          const snapPointY = await findClosestSnapPoint({
+          const snapPointY = findClosestSnapPoint({
             draggedX: 0,
             draggedY,
             direction: relDirectionY.value,
           })
+
+          console.log(relDirectionY.value)
+          console.log('snapPointY:', snapPointY)
 
           // Close if last snap point is reached
           if (snapPointY === drawerHeight.value) {
@@ -171,7 +172,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
       case 'left':
         if (distanceX > toValue(threshold).distance) {
-          const snapPointX = await findClosestSnapPoint({
+          const snapPointX = findClosestSnapPoint({
             draggedX,
             draggedY: 0,
             direction: relDirectionX.value,
@@ -189,11 +190,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
-  async function checkMomentum({ x, y }: { x: number; y: number }) {
+  function checkMomentum() {
     const elapsed = Date.now() - dragStart.value!.getTime()
 
-    const distanceX = Math.abs(x - pointerdownX.value)
-    const distanceY = Math.abs(y - pointerdownY.value)
+    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
+    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
 
     const velocityX = elapsed && distanceX ? distanceX / elapsed : 0
     const velocityY = elapsed && distanceY ? distanceY / elapsed : 0
@@ -202,7 +203,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'bottom':
       case 'top':
         if (velocityY > toValue(threshold).momentum) {
-          const snapPointB = await findClosestSnapPoint({
+          const snapPointB = findClosestSnapPoint({
             draggedX: 0,
             draggedY,
             direction: relDirectionY.value,
@@ -220,7 +221,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
       case 'left':
         if (velocityX > toValue(threshold).momentum) {
-          const snapPointR = await findClosestSnapPoint({
+          const snapPointR = findClosestSnapPoint({
             draggedX,
             draggedY,
             direction: relDirectionX.value,
@@ -307,11 +308,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     scrollLock = undefined
   }
 
-  function resetDragged() {
+  function resetState() {
     draggedX.value = 0
     draggedY.value = 0
     lastDraggedX.value = 0
     lastDraggedY.value = 0
+    originX.value = 0
+    originY.value = 0
+    elRect.value = undefined
+    wrapperRect.value = undefined
   }
 
   function resetSnapped() {
@@ -322,7 +327,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
     if (payload === toValue(id)) {
-      resetDragged()
+      resetState()
       resetSnapped()
     }
   }
@@ -426,14 +431,14 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     }
 
-    //Check if we should close or snap based on momentum
-    checkMomentum({ x: e.screenX, y: e.screenY })
-
     // Save dragged value
     setDragged({ x: e.screenX, y: e.screenY })
 
+    //Check if we should close or snap based on momentum
+    checkMomentum()
+
     // Check if we should close based on distance
-    checkPosition({ x: e.screenX, y: e.screenY })
+    checkPosition()
 
     useDrawerEmitter().emit('drag', {
       id: toValue(id),
@@ -475,10 +480,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     originX.value = e.screenX - draggedX.value
     originY.value = e.screenY - draggedY.value
 
-    // Save pointerdown position, used later to check if threshold for dragging is reached
-    pointerdownY.value = e.screenY
-    pointerdownX.value = e.screenX
-
     // Save start time
     dragStart.value = new Date()
 
@@ -486,7 +487,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     onPointermove(e)
   }
 
-  async function onClick(e: MouseEvent) {
+  function onClick(e: MouseEvent) {
     if (hasDragged.value) {
       e.preventDefault()
     }
