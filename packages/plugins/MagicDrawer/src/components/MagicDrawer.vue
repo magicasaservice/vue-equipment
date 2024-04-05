@@ -154,6 +154,15 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
+// Make sure this is reactive
+const disabled = computed(() => {
+  if (props.options.disabled === undefined) {
+    return defaultOptions.disabled
+  } else {
+    return props.options.disabled
+  }
+})
+
 const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   id: props.id,
   isActive,
@@ -171,6 +180,7 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   id: props.id,
   elRef,
   position,
+  disabled,
 })
 
 const { findState } = useDrawerState(props.id)
@@ -223,15 +233,6 @@ const contentTransition = computed(() => {
   return preventTransition.value
     ? undefined
     : mappedOptions.transitions?.content
-})
-
-// Make sure this is reactive
-const disabled = computed(() => {
-  if (props.options.disabled === undefined) {
-    return defaultOptions.disabled
-  } else {
-    return props.options.disabled
-  }
 })
 
 // Private functions

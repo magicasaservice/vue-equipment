@@ -1,4 +1,10 @@
-import { computed, toValue, type Ref, type MaybeRef } from 'vue'
+import {
+  computed,
+  toValue,
+  type Ref,
+  type MaybeRef,
+  type ComputedRef,
+} from 'vue'
 import { unrefElement } from '@vueuse/core'
 import WheelGestures, { type WheelEventState } from 'wheel-gestures'
 import { useDrawerState } from './useDrawerState'
@@ -9,10 +15,11 @@ type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
+  disabled: ComputedRef<boolean>
 }
 
 export function useDrawerWheel(args: UseDrawerWheelArgs) {
-  const { id, elRef, position } = args
+  const { id, elRef, position, disabled } = args
 
   const { findState } = useDrawerState(toValue(id))
   const { dragging, wheeling } = findState()
@@ -31,7 +38,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   })
 
   const wheelGestures = WheelGestures({
-    preventWheelAction: axis.value,
+    preventWheelAction: disabled ? false : axis.value,
     reverseSign: [true, true, false], // Reverse scroll direction for x and y axis
   })
 
