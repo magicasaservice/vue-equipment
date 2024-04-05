@@ -170,7 +170,6 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   id: props.id,
   elRef,
-  drawerRef,
   position,
 })
 

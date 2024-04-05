@@ -8,12 +8,11 @@ import { type DefaultOptions } from '../../utils/defaultOptions'
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
-  drawerRef: Ref<HTMLElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
 }
 
 export function useDrawerWheel(args: UseDrawerWheelArgs) {
-  const { id, elRef, drawerRef, position } = args
+  const { id, elRef, position } = args
 
   const { findState } = useDrawerState(toValue(id))
   const { dragging, wheeling } = findState()
@@ -107,7 +106,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       onWheelStarted(state)
     }
 
-    if (!dragging.value) {
+    if (!dragging.value || !wheeling.value) {
       return
     }
 
@@ -119,11 +118,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   }
 
   function initializeWheelListener() {
-    if (!unrefElement(drawerRef)) {
-      return
-    }
-
-    unobserveTargetNode = wheelGestures.observe(unrefElement(drawerRef)!)
+    unobserveTargetNode = wheelGestures.observe(document)
     cancelWheel = wheelGestures.on('wheel', handleWheel)
   }
 
