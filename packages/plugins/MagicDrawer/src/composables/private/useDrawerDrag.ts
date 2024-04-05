@@ -1,5 +1,4 @@
 import {
-  toRefs,
   computed,
   onMounted,
   watch,
@@ -201,17 +200,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'bottom':
       case 'top':
         if (velocityY > toValue(threshold).momentum) {
-          const snapPointB = findClosestSnapPoint({
+          const snapPointY = findClosestSnapPoint({
             draggedX: 0,
             draggedY,
             direction: relDirectionY.value,
           })
           // Close if last snap point is reached
-          if (snapPointB === drawerHeight.value) {
+          if (snapPointY === drawerHeight.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
-            interpolateTo.value = snapPointB
+            interpolateTo.value = snapPointY
           }
         }
         break
@@ -219,18 +218,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
       case 'left':
         if (velocityX > toValue(threshold).momentum) {
-          const snapPointR = findClosestSnapPoint({
+          const snapPointX = findClosestSnapPoint({
             draggedX,
             draggedY,
             direction: relDirectionX.value,
           })
 
           // Close if last snap point is reached
-          if (snapPointR === drawerWidth.value) {
+          if (snapPointX === drawerWidth.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
-            interpolateTo.value = snapPointR
+            interpolateTo.value = snapPointX
           }
         }
         break
@@ -241,24 +240,32 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     switch (position) {
       case 'bottom':
         const newDraggedB = clamp(y - originY.value, 0, toValue(overshoot) * -1)
+        if (newDraggedB === draggedY.value) break
+
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
         break
 
       case 'top':
         const newDraggedT = clamp(y - originY.value, 0, toValue(overshoot))
+        if (newDraggedT === draggedY.value) break
+
         relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
         break
 
       case 'right':
         const newDraggedR = clamp(x - originX.value, 0, toValue(overshoot) * -1)
+        if (newDraggedR === draggedX.value) break
+
         relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
         break
 
       case 'left':
         const newDraggedL = clamp(x - originX.value, 0, toValue(overshoot))
+        if (newDraggedL === draggedX.value) break
+
         relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
         break
@@ -373,7 +380,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           snappedX.value = interpolateTo.value
           break
       }
-    } else if (hasDragged.value) {
+    } else {
       switch (position) {
         case 'bottom':
         case 'top':

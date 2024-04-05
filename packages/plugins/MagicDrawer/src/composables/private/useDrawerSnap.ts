@@ -332,9 +332,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     switch (position) {
       case 'bottom':
       case 'top':
-        if (!toValue(draggedY)) {
-          break
-        } else {
+        if (!!toValue(draggedY) || toValue(draggedY) === 0) {
           closest = findClosestNumber({
             number: toValue(draggedY),
             numbers: mappedSnapPoints.value,
@@ -344,9 +342,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         }
       case 'right':
       case 'left':
-        if (!toValue(draggedX)) {
-          break
-        } else {
+        if (!!toValue(draggedX) || toValue(draggedX) === 0) {
           closest = findClosestNumber({
             number: toValue(draggedX),
             numbers: mappedSnapPoints.value,
