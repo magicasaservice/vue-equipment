@@ -37,7 +37,7 @@ type SnapToArgs = {
 
 type InterpolateDraggedArgs = {
   to: number
-  duration: number
+  duration?: number
 }
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
@@ -124,6 +124,10 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   function findClosestNumber(args: FindClosestNumberArgs) {
     const { number, numbers, direction } = args
     let filtered = numbers
+
+    if (!numbers.length) {
+      return undefined
+    }
 
     switch (direction) {
       case 'above':
@@ -230,13 +234,13 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         if (!mappedSnapPointY && mappedSnapPointY !== 0) return
 
         const closestY =
-          (await findClosestSnapPoint({
+          findClosestSnapPoint({
             draggedX,
             draggedY: mappedSnapPointY,
-          })) || 0
+          }) || 0
 
         if (interpolate) {
-          await interpolateDragged({ to: closestY, duration })
+          interpolateDragged({ to: closestY, duration })
         } else {
           draggedY.value = closestY
         }
@@ -254,13 +258,13 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         if (!mappedSnapPointX && mappedSnapPointX !== 0) return
 
         const closestX =
-          (await findClosestSnapPoint({
+          findClosestSnapPoint({
             draggedX: mappedSnapPointX,
             draggedY,
-          })) || 0
+          }) || 0
 
         if (interpolate) {
-          await interpolateDragged({ to: closestX, duration })
+          interpolateDragged({ to: closestX, duration })
         } else {
           draggedX.value = closestX
           snappedX.value = closestX
@@ -274,7 +278,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     }
   }
 
-  async function interpolateDragged(args: InterpolateDraggedArgs) {
+  function interpolateDragged(args: InterpolateDraggedArgs) {
     const { to, duration = toValue(snap).duration } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]
@@ -320,7 +324,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     }
   }
 
-  async function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
+  function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
     const { draggedY, draggedX, direction = 'absolute' } = args
 
     let closest: number | undefined = undefined

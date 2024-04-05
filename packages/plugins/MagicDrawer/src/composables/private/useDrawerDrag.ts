@@ -1,5 +1,5 @@
 import {
-  ref,
+  toRefs,
   computed,
   onMounted,
   watch,
@@ -20,6 +20,8 @@ import {
 import { useDrawerEmitter } from '../useDrawerEmitter'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
+import { useDrawerUtils } from './useDrawerUtils'
+import { useDrawerState } from './useDrawerState'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
@@ -53,39 +55,33 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   } = args
 
   // Private state
-  const dragStart = ref<Date | undefined>(undefined)
-  const dragging = ref(false)
-  const shouldClose = ref(false)
-  const interpolateTo = ref<number | undefined>(undefined)
+  const { findState } = useDrawerState(toValue(id))
+  const {
+    dragStart,
+    dragging,
+    wheeling,
+    shouldClose,
+    interpolateTo,
+    originX,
+    originY,
+    lastDraggedX,
+    lastDraggedY,
+    draggedX,
+    draggedY,
+    relDirectionX,
+    relDirectionY,
+    absDirectionX,
+    absDirectionY,
+    elRect,
+    wrapperRect,
+  } = findState()
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
 
-  const originX = ref(0)
-  const originY = ref(0)
-  const pointerdownX = ref(0)
-  const pointerdownY = ref(0)
-  const lastDraggedX = ref(0)
-  const lastDraggedY = ref(0)
-
-  // Used to determine closest snap point
-  const relDirectionY = ref<'below' | 'above' | 'absolute'>('absolute')
-  const relDirectionX = ref<'below' | 'above' | 'absolute'>('absolute')
-
-  // Used to determine scroll lock
-  const absDirectionY = ref<'with' | 'against' | undefined>(undefined)
-  const absDirectionX = ref<'with' | 'against' | undefined>(undefined)
-
-  const elRect = ref<DOMRect | undefined>(undefined)
-  const wrapperRect = ref<DOMRect | undefined>(undefined)
-
   const duration = computed(() => toValue(snap)?.duration)
-
-  // Public state
-  const draggedX = ref(0)
-  const draggedY = ref(0)
 
   const hasDragged = computed(() => {
     const hasDraggedX = !isWithinRange({
@@ -137,33 +133,24 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint,
   })
 
+  const { clamp, isWithinRange } = useDrawerUtils()
+
   // Private functions
-  interface isWithinRangeArgs {
-    input: number
-    base: number
-    threshold: number
-  }
-
-  function isWithinRange(args: isWithinRangeArgs): boolean {
-    const { input, base, threshold } = args
-    return input >= base - threshold && input <= base + threshold
-  }
-
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
     await nextTick()
   }
 
-  async function checkPosition({ x, y }: { x: number; y: number }) {
-    const distanceY = Math.abs(y - pointerdownY.value)
-    const distanceX = Math.abs(x - pointerdownX.value)
+  function checkPosition() {
+    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
+    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
 
     switch (position) {
       case 'bottom':
       case 'top':
         if (distanceY > toValue(threshold).distance) {
-          const snapPointY = await findClosestSnapPoint({
+          const snapPointY = findClosestSnapPoint({
             draggedX: 0,
             draggedY,
             direction: relDirectionY.value,
@@ -183,7 +170,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
       case 'left':
         if (distanceX > toValue(threshold).distance) {
-          const snapPointX = await findClosestSnapPoint({
+          const snapPointX = findClosestSnapPoint({
             draggedX,
             draggedY: 0,
             direction: relDirectionX.value,
@@ -201,11 +188,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
-  async function checkMomentum({ x, y }: { x: number; y: number }) {
+  function checkMomentum() {
     const elapsed = Date.now() - dragStart.value!.getTime()
 
-    const distanceX = Math.abs(x - pointerdownX.value)
-    const distanceY = Math.abs(y - pointerdownY.value)
+    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
+    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
 
     const velocityX = elapsed && distanceX ? distanceX / elapsed : 0
     const velocityY = elapsed && distanceY ? distanceY / elapsed : 0
@@ -214,7 +201,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'bottom':
       case 'top':
         if (velocityY > toValue(threshold).momentum) {
-          const snapPointB = await findClosestSnapPoint({
+          const snapPointB = findClosestSnapPoint({
             draggedX: 0,
             draggedY,
             direction: relDirectionY.value,
@@ -232,7 +219,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'right':
       case 'left':
         if (velocityX > toValue(threshold).momentum) {
-          const snapPointR = await findClosestSnapPoint({
+          const snapPointR = findClosestSnapPoint({
             draggedX,
             draggedY,
             direction: relDirectionX.value,
@@ -247,22 +234,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
-    }
-  }
-
-  function clamp(value: number, from: number, to: number) {
-    if (from > to) {
-      if (value > from) return value
-      if (value < to) return to
-      else return value
-    } else if (from < to) {
-      if (value < from) return value
-      if (value > to) return to
-      else return value
-    } else {
-      // Prevent overdragging, when overshoot is 0
-      if (value < to) return to
-      else return value
     }
   }
 
@@ -335,11 +306,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     scrollLock = undefined
   }
 
-  function resetDragged() {
+  function resetState() {
     draggedX.value = 0
     draggedY.value = 0
     lastDraggedX.value = 0
     lastDraggedY.value = 0
+    originX.value = 0
+    originY.value = 0
+    elRect.value = undefined
+    wrapperRect.value = undefined
   }
 
   function resetSnapped() {
@@ -350,7 +325,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
     if (payload === toValue(id)) {
-      resetDragged()
+      resetState()
       resetSnapped()
     }
   }
@@ -371,16 +346,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointerup(e: PointerEvent) {
-    const eventTarget = e.target as HTMLElement
-
-    // TODO: We should probably blacklist more tags or give the option to customize.
-    // Maybe also give the option to blacklist by class or id
-    const tagNameBlacklist = ['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'A']
-
     if (shouldClose.value) {
       close()
     } else if (interpolateTo.value || interpolateTo.value === 0) {
-      // If scroll is not locked, interpolate to snap point
+      // If scroll is locked, interpolate to snap point
       // Scroll should only be locked at one end!
       if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
         interpolateDragged({
@@ -404,7 +373,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           snappedX.value = interpolateTo.value
           break
       }
-    } else if (!tagNameBlacklist.includes(eventTarget.tagName)) {
+    } else if (hasDragged.value) {
       switch (position) {
         case 'bottom':
         case 'top':
@@ -440,6 +409,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointermove(e: PointerEvent) {
+    // Prevent real mousemove while wheeling
+    if (e.isTrusted && wheeling.value) {
+      return
+    }
+
     // Reset shouldClose before checking
     shouldClose.value = false
 
@@ -460,14 +434,14 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     }
 
-    //Check if we should close or snap based on momentum
-    checkMomentum({ x: e.screenX, y: e.screenY })
-
     // Save dragged value
     setDragged({ x: e.screenX, y: e.screenY })
 
+    //Check if we should close or snap based on momentum
+    checkMomentum()
+
     // Check if we should close based on distance
-    checkPosition({ x: e.screenX, y: e.screenY })
+    checkPosition()
 
     useDrawerEmitter().emit('drag', {
       id: toValue(id),
@@ -509,10 +483,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     originX.value = e.screenX - draggedX.value
     originY.value = e.screenY - draggedY.value
 
-    // Save pointerdown position, used later to check if threshold for dragging is reached
-    pointerdownY.value = e.screenY
-    pointerdownX.value = e.screenX
-
     // Save start time
     dragStart.value = new Date()
 
@@ -520,7 +490,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     onPointermove(e)
   }
 
-  async function onClick(e: MouseEvent) {
+  function onClick(e: MouseEvent) {
     if (hasDragged.value) {
       e.preventDefault()
     }
@@ -566,12 +536,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   return {
-    style,
-    draggedX,
-    draggedY,
-    dragging,
-    hasDragged,
     onPointerdown,
     onClick,
+    style,
+    hasDragged,
   }
 }

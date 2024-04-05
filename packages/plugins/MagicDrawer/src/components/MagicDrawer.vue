@@ -12,7 +12,11 @@
         :class="[
           toValue(props.class),
           `-${mappedOptions.position}`,
-          { '-dragging': dragging, '-disabled': disabled },
+          {
+            '-dragging': dragging,
+            '-wheeling': wheeling,
+            '-disabled': disabled,
+          },
         ]"
         aria-modal="true"
       >
@@ -68,6 +72,7 @@
 <script setup lang="ts">
 import {
   ref,
+  toRefs,
   watch,
   computed,
   nextTick,
@@ -84,6 +89,8 @@ import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
+import { useDrawerWheel } from '../composables/private/useDrawerWheel'
+import { useDrawerState } from '../composables/private/useDrawerState'
 
 import type { DrawerOptions } from './../types/index'
 
@@ -147,7 +154,7 @@ const {
   removeScrollLockPadding,
 } = drawerApi
 
-const { onPointerdown, onClick, dragging, hasDragged, style } = useDrawerDrag({
+const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   id: props.id,
   isActive,
   elRef,
@@ -159,6 +166,16 @@ const { onPointerdown, onClick, dragging, hasDragged, style } = useDrawerDrag({
   canClose,
   close,
 })
+
+const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
+  id: props.id,
+  elRef,
+  drawerRef,
+  position,
+})
+
+const { findState } = useDrawerState(props.id)
+const { dragging, wheeling } = findState()
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
@@ -248,10 +265,17 @@ async function onOpen() {
   wrapperActive.value = true
   await nextTick()
   innerActive.value = true
+  await nextTick()
+  if (mappedOptions.canScroll) {
+    initializeWheelListener()
+  }
 }
 
 function onClose() {
   innerActive.value = false
+  if (mappedOptions.canScroll) {
+    destroyWheelListener()
+  }
 }
 
 // Public functions
@@ -299,7 +323,7 @@ watch(isActive, async (value) => {
   }
 })
 
-// Save overshoot, as soon as drawer apepars in in DOM
+// Save overshoot, as soon as drawer apepars in the DOM
 watch(innerActive, () => {
   saveOvershoot()
 })
@@ -459,6 +483,10 @@ dialog.magic-drawer__drag::backdrop {
 .magic-drawer.-dragging .magic-drawer__drag {
   cursor: grabbing;
   user-select: none;
+}
+
+.magic-drawer.-wheeling .magic-drawer__drag {
+  cursor: auto;
 }
 
 .magic-drawer.-disabled .magic-drawer__drag {

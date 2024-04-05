@@ -27,7 +27,7 @@ const defaultOptions: DefaultOptions = {
   },
   threshold: {
     lock: 0,
-    distance: 150,
+    distance: 128,
     momentum: 1,
   },
   tag: 'dialog',
@@ -41,6 +41,7 @@ const defaultOptions: DefaultOptions = {
     duration: 200,
     initial: 1,
   },
+  canScroll: false,
   canClose: true,
   disabled: false,
 }

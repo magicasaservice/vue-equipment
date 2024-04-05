@@ -11,6 +11,7 @@ import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { uuid, matchClass } from '@maas/vue-equipment/utils'
 import { useDrawerStore } from './private/useDrawerStore'
+import { useDrawerState } from './private/useDrawerState'
 import { useDrawerEmitter } from './useDrawerEmitter'
 
 import type { DrawerEvents, DrawerOptions, SnapPoint } from '../types/index'
@@ -50,6 +51,7 @@ export function useDrawerApi(
 
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
+  const { deleteState } = useDrawerState(mappedId.value)
 
   function progressCallback(payload: DrawerEvents['progress']) {
     if (payload.id === mappedId.value) {
@@ -69,6 +71,7 @@ export function useDrawerApi(
 
   function close() {
     removeInstance(mappedId.value)
+    deleteState()
   }
 
   function snapTo(snapPoint: SnapPoint, duration?: number) {

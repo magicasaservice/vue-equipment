@@ -20,6 +20,9 @@ dependencies:
   hls.js:
     specifier: ^1.4.10
     version: 1.5.7
+  lethargy-ts:
+    specifier: ^0.0.5
+    version: 0.0.5
   luxon:
     specifier: ^3.4.2
     version: 3.4.4
@@ -35,6 +38,9 @@ dependencies:
   universal-cookie:
     specifier: ^7.1.0
     version: 7.1.0
+  wheel-gestures:
+    specifier: ^2.2.5
+    version: 2.2.5
 
 devDependencies:
   '@antfu/ni':
@@ -4877,6 +4883,10 @@ packages:
       readable-stream: 2.3.8
     dev: false
 
+  /lethargy-ts@0.0.5:
+    resolution: {integrity: sha512-zgtxmwztrhTjiWOsNWM8vvI/UodRfzLb86F+mah9paNGngM+mlbZqiT5DIOQ6DwbZn+uVy5v6BYUHbhn+ThlbA==}
+    dev: false
+
   /lilconfig@3.1.1:
     resolution: {integrity: sha512-O18pf7nyvHTckunPWCV1XUNXU1piu01y2b7ATJ0ppkUkk8ocqVWBrYjJBCwHDjD/ZWcfyrA0P4gKhzWGi5EINQ==}
     engines: {node: '>=14'}
@@ -8024,6 +8034,11 @@ packages:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
+    dev: false
+
+  /wheel-gestures@2.2.5:
+    resolution: {integrity: sha512-01BlXRjBVt5Gy0VH2rRqMeccHruTGq2Gd1fx0UqCPN8KDeDCmlTXsRGc/hXJk6W+wnO9CNJp2xfntMNRArBxKQ==}
+    engines: {node: '>=10'}
     dev: false
 
   /which-boxed-primitive@1.0.2:

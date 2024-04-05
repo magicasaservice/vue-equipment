@@ -38,8 +38,30 @@ export interface DrawerOptions {
     duration?: number
     initial?: SnapPoint
   }
+  canScroll?: boolean
   canClose?: boolean
   disabled?: boolean
+}
+
+export interface DrawerState {
+  id: string
+  dragStart: Date | undefined
+  dragging: boolean
+  wheeling: boolean
+  shouldClose: boolean
+  interpolateTo: number | undefined
+  originX: number
+  originY: number
+  lastDraggedX: number
+  lastDraggedY: number
+  draggedX: number
+  draggedY: number
+  relDirectionY: 'below' | 'above' | 'absolute' // Used to determine closest snap point
+  relDirectionX: 'below' | 'above' | 'absolute'
+  absDirectionY: 'with' | 'against' | undefined // Used to determine scroll lock
+  absDirectionX: 'with' | 'against' | undefined
+  elRect: DOMRect | undefined
+  wrapperRect: DOMRect | undefined
 }
 
 export type DrawerEvents = {
