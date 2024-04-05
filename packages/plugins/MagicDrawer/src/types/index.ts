@@ -38,7 +38,7 @@ export interface DrawerOptions {
     duration?: number
     initial?: SnapPoint
   }
-  canScroll?: boolean
+  mousewheel?: boolean
   canClose?: boolean
   disabled?: boolean
 }

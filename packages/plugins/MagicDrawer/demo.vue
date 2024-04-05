@@ -112,7 +112,7 @@
         points: ['150px', 1],
         initial: '150px',
       },
-      canScroll: true,
+      mousewheel: true,
     }"
   >
     <div class="bg-white w-full h-full absolute inset-0 overflow-auto pb-24">

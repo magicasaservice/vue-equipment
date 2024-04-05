@@ -41,7 +41,7 @@ const defaultOptions: DefaultOptions = {
     duration: 200,
     initial: 1,
   },
-  canScroll: false,
+  mousewheel: false,
   canClose: true,
   disabled: false,
 }

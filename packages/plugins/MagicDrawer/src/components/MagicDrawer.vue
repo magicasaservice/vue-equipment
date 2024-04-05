@@ -266,14 +266,14 @@ async function onOpen() {
   await nextTick()
   innerActive.value = true
   await nextTick()
-  if (mappedOptions.canScroll) {
+  if (mappedOptions.mousewheel) {
     initializeWheelListener()
   }
 }
 
 function onClose() {
   innerActive.value = false
-  if (mappedOptions.canScroll) {
+  if (mappedOptions.mousewheel) {
     destroyWheelListener()
   }
 }
