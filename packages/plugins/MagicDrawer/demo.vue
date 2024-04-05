@@ -25,7 +25,7 @@
         @click="drawerScrollApi.open"
         class="w-full h-full px-6 py-4 bg-gray-500/5 md:flex-1"
       >
-        Scrollable drawer
+        Mousewheel snap drawer
       </button>
     </div>
   </div>
