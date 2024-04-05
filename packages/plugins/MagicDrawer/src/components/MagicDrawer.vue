@@ -12,7 +12,11 @@
         :class="[
           toValue(props.class),
           `-${mappedOptions.position}`,
-          { '-dragging': dragging, '-disabled': disabled },
+          {
+            '-dragging': dragging,
+            '-wheeling': wheeling,
+            '-disabled': disabled,
+          },
         ]"
         aria-modal="true"
       >
@@ -171,7 +175,7 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
 })
 
 const { findState } = useDrawerState(props.id)
-const { dragging } = findState()
+const { dragging, wheeling } = findState()
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
@@ -479,6 +483,10 @@ dialog.magic-drawer__drag::backdrop {
 .magic-drawer.-dragging .magic-drawer__drag {
   cursor: grabbing;
   user-select: none;
+}
+
+.magic-drawer.-wheeling .magic-drawer__drag {
+  cursor: auto;
 }
 
 .magic-drawer.-disabled .magic-drawer__drag {

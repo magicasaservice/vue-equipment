@@ -16,7 +16,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const { id, elRef, drawerRef, position } = args
 
   const { findState } = useDrawerState(toValue(id))
-  const { dragging } = findState()
+  const { dragging, wheeling } = findState()
 
   let startEvent: PointerEvent
 
@@ -33,7 +33,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
 
   const wheelGestures = WheelGestures({
     preventWheelAction: axis.value,
-    reverseSign: [true, true, false],
+    reverseSign: [true, true, false], // Reverse scroll direction for x and y axis
   })
 
   let unobserveTargetNode: ReturnType<
@@ -43,7 +43,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   let cancelWheel: ReturnType<ReturnType<typeof WheelGestures>['on']>
 
   function createPointerEvent(
-    type: 'pointerdown' | 'pointermove' | 'pointerup',
+    type: 'pointermove' | 'pointerup',
     state: WheelEventState
   ) {
     let moveX, moveY
@@ -73,13 +73,19 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     try {
       startEvent = new PointerEvent('pointerdown', state.event)
       dispatchEvent(startEvent)
+      wheeling.value = true
     } catch (e) {
       return destroyWheelListener()
     }
   }
 
+  function onWheelMove(state: WheelEventState) {
+    dispatchEvent(createPointerEvent('pointermove', state))
+  }
+
   function onWheelEnded(state: WheelEventState) {
     dispatchEvent(createPointerEvent('pointerup', state))
+    wheeling.value = false
   }
 
   function handleWheel(state: WheelEventState) {
@@ -108,7 +114,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     if (isEndingOrRelease) {
       onWheelEnded(state)
     } else {
-      dispatchEvent(createPointerEvent('pointermove', state))
+      onWheelMove(state)
     }
   }
 

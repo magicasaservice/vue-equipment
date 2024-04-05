@@ -59,6 +59,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
     dragStart,
     dragging,
+    wheeling,
     shouldClose,
     interpolateTo,
     originX,
@@ -154,9 +155,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
             draggedY,
             direction: relDirectionY.value,
           })
-
-          console.log(relDirectionY.value)
-          console.log('snapPointY:', snapPointY)
 
           // Close if last snap point is reached
           if (snapPointY === drawerHeight.value) {
@@ -411,6 +409,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointermove(e: PointerEvent) {
+    // Prevent real mousemove while wheeling
+    if (e.isTrusted && wheeling.value) {
+      return
+    }
+
     // Reset shouldClose before checking
     shouldClose.value = false
 
