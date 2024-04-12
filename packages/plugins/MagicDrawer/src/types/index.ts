@@ -1,10 +1,5 @@
 import { type Options } from 'focus-trap'
 
-type Progress = {
-  x: number
-  y: number
-}
-
 export type SnapPoint = number | `${string}px`
 
 export interface DrawerOptions {

@@ -1,5 +1,5 @@
 import type { DrawerOptions } from '../types'
-import type { RequireAll, RequireAllNested } from '@maas/vue-equipment/utils'
+import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type DefaultOptions = RequireAll<DrawerOptions> & {
   threshold: RequireAll<DrawerOptions['threshold']>
