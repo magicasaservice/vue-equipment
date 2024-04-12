@@ -13,6 +13,7 @@
       playsinline
       disablePictureInPicture
       :loop="props.loop"
+      :muted="muted"
     />
     <slot />
   </div>

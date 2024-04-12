@@ -83,7 +83,16 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     (isPlaying) => {
       const el = toValue(mediaRef)
       if (!el) return
-      isPlaying ? el.play() : el.pause()
+
+      if (isPlaying) {
+        const playPromise = el.play()
+        if (playPromise !== undefined)
+          playPromise.catch((error) => {
+            console.warn('Playback error:', error)
+          })
+      } else {
+        el.pause()
+      }
     }
   )
 
