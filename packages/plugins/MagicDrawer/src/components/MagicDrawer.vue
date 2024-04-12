@@ -1,72 +1,70 @@
 <template>
-  <transition :duration="5000">
-    <teleport
-      v-if="wrapperActive"
-      :to="mappedOptions.teleport?.target"
-      :disabled="mappedOptions.teleport?.disabled"
+  <teleport
+    v-if="wrapperActive"
+    :to="mappedOptions.teleport?.target"
+    :disabled="mappedOptions.teleport?.disabled"
+  >
+    <div
+      ref="drawerRef"
+      class="magic-drawer"
+      :id="toValue(id)"
+      :class="[
+        toValue(props.class),
+        `-${mappedOptions.position}`,
+        {
+          '-dragging': dragging,
+          '-wheeling': wheeling,
+          '-disabled': disabled,
+        },
+      ]"
+      aria-modal="true"
     >
-      <div
-        ref="drawerRef"
-        class="magic-drawer"
-        :id="toValue(id)"
-        :class="[
-          toValue(props.class),
-          `-${mappedOptions.position}`,
-          {
-            '-dragging': dragging,
-            '-wheeling': wheeling,
-            '-disabled': disabled,
-          },
-        ]"
-        aria-modal="true"
+      <transition
+        v-if="mappedOptions.backdrop || !!$slots.backdrop"
+        :name="backdropTransition"
       >
-        <transition
-          v-if="mappedOptions.backdrop || !!$slots.backdrop"
-          :name="backdropTransition"
+        <div
+          v-show="innerActive"
+          class="magic-drawer__backdrop"
+          @click.self="guardedClose"
         >
-          <div
-            v-show="innerActive"
-            class="magic-drawer__backdrop"
-            @click.self="guardedClose"
-          >
-            <slot name="backdrop" />
+          <slot name="backdrop" />
+        </div>
+      </transition>
+
+      <div class="magic-drawer__wrapper" ref="wrapperRef">
+        <transition
+          :name="contentTransition"
+          @before-leave="onBeforeLeave"
+          @leave="onLeave"
+          @after-leave="onAfterLeave"
+          @before-enter="onBeforeEnter"
+          @enter="onEnter"
+          @after-enter="onAfterEnter"
+        >
+          <div v-show="innerActive" class="magic-drawer__content">
+            <component
+              :is="mappedOptions.tag"
+              ref="elRef"
+              class="magic-drawer__drag"
+              :style="style"
+              @pointerdown="guardedPointerdown"
+              @click="guardedClick"
+            >
+              <component
+                v-if="component"
+                v-bind="props"
+                :is="component"
+                @close="guardedClose"
+              />
+              <slot v-else />
+              <div v-if="hasDragged" class="magic-drawer__overlay" />
+            </component>
           </div>
         </transition>
-
-        <div class="magic-drawer__wrapper" ref="wrapperRef">
-          <transition
-            :name="contentTransition"
-            @before-leave="onBeforeLeave"
-            @leave="onLeave"
-            @after-leave="onAfterLeave"
-            @before-enter="onBeforeEnter"
-            @enter="onEnter"
-            @after-enter="onAfterEnter"
-          >
-            <div v-show="innerActive" class="magic-drawer__content">
-              <component
-                :is="mappedOptions.tag"
-                ref="elRef"
-                class="magic-drawer__drag"
-                :style="style"
-                @pointerdown="guardedPointerdown"
-                @click="guardedClick"
-              >
-                <component
-                  v-if="component"
-                  v-bind="props"
-                  :is="component"
-                  @close="guardedClose"
-                />
-                <slot v-else />
-                <div v-if="hasDragged" class="magic-drawer__overlay" />
-              </component>
-            </div>
-          </transition>
-        </div>
       </div>
-    </teleport>
-  </transition>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">

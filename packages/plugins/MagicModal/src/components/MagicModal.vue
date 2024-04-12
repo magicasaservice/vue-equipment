@@ -1,58 +1,56 @@
 <template>
-  <transition :duration="5000">
-    <teleport
-      v-if="wrapperActive"
-      :to="mappedOptions.teleport?.target"
-      :disabled="mappedOptions.teleport?.disabled"
+  <teleport
+    v-if="wrapperActive"
+    :to="mappedOptions.teleport?.target"
+    :disabled="mappedOptions.teleport?.disabled"
+  >
+    <div
+      :is="mappedOptions.tag"
+      ref="modalRef"
+      class="magic-modal"
+      :id="toValue(id)"
+      :class="toValue(props.class)"
+      @click.self="close"
+      aria-modal="true"
     >
-      <div
-        :is="mappedOptions.tag"
-        ref="modalRef"
-        class="magic-modal"
-        :id="toValue(id)"
-        :class="toValue(props.class)"
-        @click.self="close"
-        aria-modal="true"
+      <transition
+        v-if="mappedOptions.backdrop || !!$slots.backdrop"
+        :name="mappedOptions.transitions?.backdrop"
       >
-        <transition
-          v-if="mappedOptions.backdrop || !!$slots.backdrop"
-          :name="mappedOptions.transitions?.backdrop"
+        <div
+          v-show="innerActive"
+          class="magic-modal__backdrop"
+          @click.self="close"
         >
-          <div
-            v-show="innerActive"
-            class="magic-modal__backdrop"
-            @click.self="close"
-          >
-            <slot name="backdrop" />
-          </div>
-        </transition>
-        <transition
-          :name="mappedOptions.transitions?.content"
-          @before-leave="onBeforeLeave"
-          @leave="onLeave"
-          @after-leave="onAfterLeave"
-          @before-enter="onBeforeEnter"
-          @enter="onEnter"
-          @after-enter="onAfterEnter"
+          <slot name="backdrop" />
+        </div>
+      </transition>
+      <transition
+        :name="mappedOptions.transitions?.content"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+        @after-leave="onAfterLeave"
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+      >
+        <component
+          :is="mappedOptions.tag"
+          v-show="innerActive"
+          class="magic-modal__content"
+          @click.self="close"
         >
           <component
-            :is="mappedOptions.tag"
-            v-show="innerActive"
-            class="magic-modal__content"
-            @click.self="close"
-          >
-            <component
-              v-if="component"
-              v-bind="props"
-              :is="component"
-              @close="close"
-            />
-            <slot v-else />
-          </component>
-        </transition>
-      </div>
-    </teleport>
-  </transition>
+            v-if="component"
+            v-bind="props"
+            :is="component"
+            @close="close"
+          />
+          <slot v-else />
+        </component>
+      </transition>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
