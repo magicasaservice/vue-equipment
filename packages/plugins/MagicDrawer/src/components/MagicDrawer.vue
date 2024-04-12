@@ -81,15 +81,15 @@ import {
 } from 'vue'
 import { createDefu } from 'defu'
 import { onKeyStroke, unrefElement } from '@vueuse/core'
-import { defaultOptions } from './../utils/defaultOptions'
-import { useDrawerApi } from './../composables/useDrawerApi'
+import { defaultOptions } from '../utils/defaultOptions'
+import { useDrawerApi } from '../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
 
-import type { DrawerOptions } from './../types/index'
+import type { DrawerOptions } from '../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'

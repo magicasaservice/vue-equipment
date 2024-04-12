@@ -1,5 +1,6 @@
 export * from './MagicCommand/index'
 export * from './MagicCookie/index'
+export * from './MagicDraggable/index'
 export * from './MagicDrawer/index'
 export * from './MagicMarquee/index'
 export * from './MagicModal/index'

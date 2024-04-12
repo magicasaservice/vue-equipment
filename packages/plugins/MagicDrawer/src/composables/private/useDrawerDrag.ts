@@ -459,7 +459,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
-    // Prevent dragging if we're already dragging
+    // Prevent dragging if we’re already dragging
     if (dragging.value) {
       return
     } else {
