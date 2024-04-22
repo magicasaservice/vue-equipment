@@ -1,8 +1,8 @@
 .slide-btt-enter-active {
-  animation: slide-btt-in 300ms ease;
+  animation: slide-btt-in var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 
 .slide-btt-leave-active {
-  animation: slide-btt-out 300ms ease;
+  animation: slide-btt-out var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 

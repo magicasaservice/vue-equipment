@@ -1,7 +1,7 @@
 .zoom-enter-active {
-  animation: zoom-in 300ms ease;
+  animation: zoom-in var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 
 .zoom-leave-active {
-  animation: zoom-out 300ms ease;
+  animation: zoom-out var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }

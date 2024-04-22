@@ -1,8 +1,7 @@
 .slide-rtl-enter-active {
-  animation: slide-rtl-in 300ms ease;
+  animation: slide-rtl-in var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 
 .slide-rtl-leave-active {
-  animation: slide-rtl-out 300ms ease;
+  animation: slide-rtl-out var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
-
