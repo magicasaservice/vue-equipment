@@ -31,12 +31,13 @@ function afterLeaveCallback() {
 }
 
 const { close, isActive } = useCommandApi(commandId)
+const drawerApi = useDrawerApi(commandId)
 
 watch(isActive, (value) => {
   if (value) {
-    useDrawerApi(commandId).open()
+    drawerApi.open()
   } else {
-    useDrawerApi(commandId).close()
+    drawerApi.close()
   }
 })
 

@@ -31,12 +31,13 @@ function afterLeaveCallback() {
 }
 
 const { close, isActive } = useCommandApi(commandId)
+const modalApi = useModalApi(commandId)
 
 watch(isActive, (value) => {
   if (value) {
-    useModalApi(commandId).open()
+    modalApi.open()
   } else {
-    useModalApi(commandId).close()
+    modalApi.close()
   }
 })
 

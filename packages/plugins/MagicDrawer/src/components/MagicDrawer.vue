@@ -306,8 +306,8 @@ function saveOvershoot() {
 if (mappedOptions.keys && canClose) {
   for (const key of mappedOptions.keys) {
     onKeyStroke(key, (e) => {
-      e.preventDefault()
       close()
+      e.preventDefault()
     })
   }
 }

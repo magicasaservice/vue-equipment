@@ -149,8 +149,8 @@ function onClose() {
 if (mappedOptions.keys) {
   for (const key of mappedOptions.keys) {
     onKeyStroke(key, (e) => {
-      e.preventDefault()
       close()
+      e.preventDefault()
     })
   }
 }
