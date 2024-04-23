@@ -49,7 +49,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
     mouseEntered.value = false
   }
 
-  // Lifecycle
+  // Lifecycle hooks and listeners
   watch(playing, (value) => {
     if (!touched.value && value) {
       touched.value = true
