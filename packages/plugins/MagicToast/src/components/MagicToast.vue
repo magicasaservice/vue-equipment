@@ -43,10 +43,17 @@
 </template>
 
 <script setup lang="ts">
-import { uuid } from '@maas/vue-equipment/utils'
+import {
+  toValue,
+  ref,
+  watch,
+  onBeforeMount,
+  onUnmounted,
+  type MaybeRef,
+} from 'vue'
 import { defu } from 'defu'
-import { toValue, ref, watch, type MaybeRef } from 'vue'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
+import { uuid } from '@maas/vue-equipment/utils'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from './../composables/useToastApi'
 import { useToastCallback } from './../composables/private/useToastCallback'
@@ -69,7 +76,7 @@ interface MagicToastProps {
 
 const props = defineProps<MagicToastProps>()
 
-const { toasts, count, oldest } = useToastApi(props.id)
+const { toasts, count, oldest, initialize, destroy } = useToastApi(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
@@ -111,10 +118,20 @@ function outsideClickCallback() {
 }
 
 onClickOutside(listRef, outsideClickCallback)
+
+// Lifecycle hooks and listeners
 watch(
   () => props.id,
   () => (teleportKey.value = uuid())
 )
+
+onBeforeMount(() => {
+  initialize()
+})
+
+onUnmounted(() => {
+  destroy(toValue(props.id))
+})
 </script>
 
 <style lang="css">
