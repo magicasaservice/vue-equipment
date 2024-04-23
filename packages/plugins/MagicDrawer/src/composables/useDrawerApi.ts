@@ -22,7 +22,10 @@ const defaultOptions = {
   scrollLock: true,
 }
 
-const scrollLock = useScrollLock(document?.documentElement)
+const scrollLock =
+  typeof window !== 'undefined'
+    ? useScrollLock(document?.documentElement)
+    : ref(false)
 
 export function useDrawerApi(
   id?: MaybeRef<string>,
