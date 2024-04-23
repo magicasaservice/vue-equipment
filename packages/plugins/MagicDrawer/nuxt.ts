@@ -9,8 +9,13 @@ export default defineNuxtModule({
   meta: {
     name: '@maas/vue-equipment/nuxt/MagicDrawer',
   },
-  setup() {
+  setup(_options, nuxt) {
     const resolver = createResolver(import.meta.url)
+
+    // Hotfix
+    // Waiting for https://github.com/xiel/wheel-gestures/pull/707
+    nuxt.options.build.transpile.push('wheel-gestures')
+
     addComponentsDir({
       path: resolver.resolve('src/components'),
       global: true,
