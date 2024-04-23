@@ -10,10 +10,6 @@
     "release-it": "^17.0.1",
     "turbo": "^1.11.2"
   },
-  "dependencies": {
-    "@maas/vue-equipment/composables": "workspace:composables@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
-  },
   "exports": {
     "./nuxt": {
       "types": "./dist/nuxt/types.d.ts",
@@ -55,7 +51,9 @@
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
     "universal-cookie": "^7.1.0",
-    "wheel-gestures": "^2.2.5"
+    "wheel-gestures": "^2.2.5",
+    "@maas/vue-equipment/composables": "workspace:composables@*",
+    "@maas/vue-equipment/utils": "workspace:utils@*"
   },
   "peerDependenciesMeta": {
     "@maas/magic-timer": {
