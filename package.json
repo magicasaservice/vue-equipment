@@ -10,6 +10,10 @@
     "release-it": "^17.0.1",
     "turbo": "^1.11.2"
   },
+  "dependencies": {
+    "@maas/vue-equipment/composables": "workspace:composables@*",
+    "@maas/vue-equipment/utils": "workspace:utils@*"
+  },
   "exports": {
     "./nuxt": {
       "types": "./dist/nuxt/types.d.ts",

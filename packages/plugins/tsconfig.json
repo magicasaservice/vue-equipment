@@ -3,8 +3,7 @@
   "compilerOptions": {
     "noEmit": false,
     "paths": {
-      "@maas/vue-equipment/plugins": ["./index.ts"],
-      "@maas/vue-equipment/composables": ["../composables/index.ts"]
+      "@maas/vue-equipment/plugins": ["./index.ts"]
     }
   }
 }

@@ -8,6 +8,12 @@ dependencies:
   '@maas/magic-timer':
     specifier: ^1.0.0
     version: 1.0.1(eventemitter3@5.0.1)
+  '@maas/vue-equipment/composables':
+    specifier: workspace:composables@*
+    version: link:packages/composables
+  '@maas/vue-equipment/utils':
+    specifier: workspace:utils@*
+    version: link:packages/utils
   '@vueuse/core':
     specifier: ^10.3.0
     version: 10.9.0(vue@3.4.21)
@@ -20,9 +26,6 @@ dependencies:
   hls.js:
     specifier: ^1.4.10
     version: 1.5.7
-  lethargy-ts:
-    specifier: ^0.0.5
-    version: 0.0.5
   luxon:
     specifier: ^3.4.2
     version: 3.4.4
@@ -4881,10 +4884,6 @@ packages:
     engines: {node: '>= 0.6.3'}
     dependencies:
       readable-stream: 2.3.8
-    dev: false
-
-  /lethargy-ts@0.0.5:
-    resolution: {integrity: sha512-zgtxmwztrhTjiWOsNWM8vvI/UodRfzLb86F+mah9paNGngM+mlbZqiT5DIOQ6DwbZn+uVy5v6BYUHbhn+ThlbA==}
     dev: false
 
   /lilconfig@3.1.1:

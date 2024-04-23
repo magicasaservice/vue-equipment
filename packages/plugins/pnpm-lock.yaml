@@ -29,9 +29,6 @@ dependencies:
   hls.js:
     specifier: ^1.4.10
     version: 1.5.7
-  lethargy-ts:
-    specifier: ^0.0.5
-    version: 0.0.5
   mitt:
     specifier: ^3.0.1
     version: 3.0.1
@@ -1685,10 +1682,6 @@ packages:
 
   /knitwork@1.0.0:
     resolution: {integrity: sha512-dWl0Dbjm6Xm+kDxhPQJsCBTxrJzuGl0aP9rhr+TG8D3l+GL90N8O8lYUi7dTSAN2uuDqCtNgb6aEuQH5wsiV8Q==}
-    dev: false
-
-  /lethargy-ts@0.0.5:
-    resolution: {integrity: sha512-zgtxmwztrhTjiWOsNWM8vvI/UodRfzLb86F+mah9paNGngM+mlbZqiT5DIOQ6DwbZn+uVy5v6BYUHbhn+ThlbA==}
     dev: false
 
   /lilconfig@3.1.1:
