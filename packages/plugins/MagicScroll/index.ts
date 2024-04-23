@@ -11,7 +11,7 @@ import {
   ScrollParentKey,
   ScrollPositionKey,
   ScrollProgressKey,
-} from './src/symbols'
+} from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
 
@@ -40,5 +40,5 @@ export {
   ScrollProgressKey,
 }
 
-export * from './src/symbols'
+export * from './src/symbols/index'
 export type * from './src/types/index'
