@@ -49,6 +49,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.10.4
     version: 20.12.7
+  '@vue/tsconfig':
+    specifier: ^0.5.1
+    version: 0.5.1
   release-it:
     specifier: ^17.0.1
     version: 17.2.0
@@ -2442,6 +2445,10 @@ packages:
   /@vue/shared@3.4.24:
     resolution: {integrity: sha512-BW4tajrJBM9AGAknnyEw5tO2xTmnqgup0VTnDAMcxYmqOX0RG0b9aSUGAbEKolD91tdwpA6oCwbltoJoNzpItw==}
     dev: false
+
+  /@vue/tsconfig@0.5.1:
+    resolution: {integrity: sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==}
+    dev: true
 
   /@vueuse/components@10.9.0(vue@3.4.24):
     resolution: {integrity: sha512-BHQpA0yIi3y7zKa1gYD0FUzLLkcRTqVhP8smnvsCK6GFpd94Nziq1XVPD7YpFeho0k5BzbBiNZF7V/DpkJ967A==}
