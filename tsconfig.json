@@ -1,0 +1,10 @@
+{
+  "extends": "./packages/config/tsconfig/vue-base.json",
+  "compilerOptions": {
+    "paths": {
+      "@maas/vue-equipment/composables": ["./dist/composables"],
+      "@maas/vue-equipment/plugins": ["./dist/plugins"],
+      "@maas/vue-equipment/utils": ["./dist/utils"]
+    }
+  }
+}
