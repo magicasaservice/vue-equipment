@@ -26,7 +26,7 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
   const { width } = useElementSize(parent)
 
   const duration = computed(() =>
-    (childRect.width.value / toValue(speed) / 50).toFixed(2),
+    (childRect.width.value / toValue(speed) / 50).toFixed(2)
   )
 
   // Public state
@@ -48,15 +48,15 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
   function setCssVariables() {
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-duration',
-      `${toValue(duration)}s`,
+      `${toValue(duration)}s`
     )
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-name',
-      `magicMarqueeScrollX`,
+      `magicMarqueeScrollX`
     )
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-direction',
-      `${toValue(options?.direction) || 'normal'}`,
+      `${toValue(options?.direction) || 'normal'}`
     )
   }
 
@@ -64,7 +64,7 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     playing.value = false
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-play-state',
-      'paused',
+      'paused'
     )
   }
 
@@ -72,15 +72,15 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     playing.value = true
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-play-state',
-      'running',
+      'running'
     )
   }
 
-  onMounted(() => {
+  async function initialize() {
     calculateDuplicates()
-    nextTick()
+    await nextTick()
     setCssVariables()
-  })
+  }
 
   watch(
     width,
@@ -90,14 +90,14 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
       calculateDuplicates()
       nextTick()
       setCssVariables()
-    }, 100),
+    }, 100)
   )
 
   watch(speed, () => {
     nextTick()
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-duration',
-      `${toValue(duration)}s`,
+      `${toValue(duration)}s`
     )
   })
 
@@ -105,7 +105,7 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     nextTick()
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-direction',
-      `${toValue(dir)}`,
+      `${toValue(dir)}`
     )
   })
 
@@ -114,5 +114,6 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     playing,
     play,
     pause,
+    initialize,
   }
 }

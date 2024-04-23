@@ -27,7 +27,7 @@ export function useModalCallback(args: UseModalCallbackArgs) {
     wrapperActive,
   } = args
 
-  function onBeforeEnter(_el: Element) {
+  function onBeforeEnter(_el?: Element) {
     useModalEmitter().emit('beforeEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
@@ -39,11 +39,11 @@ export function useModalCallback(args: UseModalCallbackArgs) {
     }
   }
 
-  function onEnter(_el: Element) {
+  function onEnter(_el?: Element) {
     useModalEmitter().emit('enter', toValue(id))
   }
 
-  async function onAfterEnter(_el: Element) {
+  async function onAfterEnter(_el?: Element) {
     useModalEmitter().emit('afterEnter', toValue(id))
 
     if (mappedOptions.focusTrap) {
@@ -52,15 +52,15 @@ export function useModalCallback(args: UseModalCallbackArgs) {
     }
   }
 
-  function onBeforeLeave(_el: Element) {
+  function onBeforeLeave(_el?: Element) {
     useModalEmitter().emit('beforeLeave', toValue(id))
   }
 
-  function onLeave(_el: Element) {
+  function onLeave(_el?: Element) {
     useModalEmitter().emit('leave', toValue(id))
   }
 
-  function onAfterLeave(_el: Element) {
+  function onAfterLeave(_el?: Element) {
     useModalEmitter().emit('afterLeave', toValue(id))
 
     if (mappedOptions.scrollLock) {

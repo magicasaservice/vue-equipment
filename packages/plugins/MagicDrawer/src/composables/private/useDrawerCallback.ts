@@ -32,7 +32,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
   const { setMetaViewport, resetMetaViewport } = useMetaViewport()
 
-  function onBeforeEnter(_el: Element) {
+  function onBeforeEnter(_el?: Element) {
     useDrawerEmitter().emit('beforeEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
@@ -48,11 +48,11 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     }
   }
 
-  function onEnter(_el: Element) {
+  function onEnter(_el?: Element) {
     useDrawerEmitter().emit('enter', toValue(id))
   }
 
-  async function onAfterEnter(_el: Element) {
+  async function onAfterEnter(_el?: Element) {
     useDrawerEmitter().emit('afterEnter', toValue(id))
 
     if (mappedOptions.focusTrap) {
@@ -63,7 +63,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     wasActive.value = true
   }
 
-  function onBeforeLeave(_el: Element) {
+  function onBeforeLeave(_el?: Element) {
     useDrawerEmitter().emit('beforeLeave', toValue(id))
   }
 
@@ -71,7 +71,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     useDrawerEmitter().emit('leave', toValue(id))
   }
 
-  function onAfterLeave(_el: Element) {
+  function onAfterLeave(_el?: Element) {
     useDrawerEmitter().emit('afterLeave', toValue(id))
 
     if (mappedOptions.scrollLock) {

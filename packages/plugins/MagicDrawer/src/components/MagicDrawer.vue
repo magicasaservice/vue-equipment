@@ -75,12 +75,15 @@ import {
   nextTick,
   toValue,
   onBeforeMount,
+  onMounted,
   onBeforeUnmount,
+  onUnmounted,
   type Component,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
 import { onKeyStroke, unrefElement } from '@vueuse/core'
+import { useMetaViewport } from '@maas/vue-equipment/composables'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
@@ -149,6 +152,8 @@ const {
   unlockScroll,
   addScrollLockPadding,
   removeScrollLockPadding,
+  initialize,
+  destroy,
 } = drawerApi
 
 // Make sure this is reactive
@@ -209,6 +214,8 @@ const {
 })
 
 useDrawerProgress({ id: props.id, elRef, drawerRef, position, overshoot })
+
+const { resetMetaViewport } = useMetaViewport()
 
 // Prevent animation on initial mount if the options call for it
 // To achieve this, the transition names are set to undefined
@@ -332,9 +339,32 @@ onBeforeMount(async () => {
   }
 })
 
+onMounted(() => {
+  initialize()
+})
+
 // Reset state on unmount
 onBeforeUnmount(() => {
   close()
+})
+
+onUnmounted(() => {
+  if (mappedOptions.scrollLock) {
+    unlockScroll()
+    if (mappedOptions.scrollLockPadding) {
+      removeScrollLockPadding()
+    }
+  }
+
+  if (mappedOptions.focusTrap) {
+    releaseFocus()
+  }
+
+  if (mappedOptions.preventZoom) {
+    resetMetaViewport()
+  }
+
+  destroy()
 })
 </script>
 
