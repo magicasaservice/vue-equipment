@@ -22,6 +22,8 @@ const defaultOptions = {
   scrollLock: true,
 }
 
+const scrollLock = useScrollLock(document?.documentElement)
+
 export function useDrawerApi(
   id?: MaybeRef<string>,
   options?: UseDrawerApiOptions
@@ -36,11 +38,6 @@ export function useDrawerApi(
       ? useFocusTrap(mappedOptions.focusTarget)
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
-
-  const scrollLock =
-    mappedOptions.scrollLock && typeof window !== 'undefined'
-      ? useScrollLock(document.body)
-      : ref(false)
 
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
@@ -88,11 +85,15 @@ export function useDrawerApi(
   }
 
   function lockScroll() {
-    scrollLock.value = true
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = true
+    }
   }
 
   function unlockScroll() {
-    scrollLock.value = false
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = false
+    }
   }
 
   function addScrollLockPadding() {

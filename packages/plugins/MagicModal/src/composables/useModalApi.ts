@@ -20,6 +20,8 @@ const defaultOptions = {
   scrollLock: true,
 }
 
+const scrollLock = useScrollLock(document?.documentElement)
+
 export function useModalApi(
   id?: MaybeRef<string>,
   options?: useModalApiOptions
@@ -34,11 +36,6 @@ export function useModalApi(
       ? useFocusTrap(mappedOptions.focusTarget)
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
-
-  const scrollLock =
-    mappedOptions.scrollLock && typeof window !== 'undefined'
-      ? useScrollLock(document.body)
-      : ref(false)
 
   // Private methods
   const { modalStore, addInstance, removeInstance } = useModalStore()
@@ -68,11 +65,15 @@ export function useModalApi(
   }
 
   function lockScroll() {
-    scrollLock.value = true
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = true
+    }
   }
 
   function unlockScroll() {
-    scrollLock.value = false
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = false
+    }
   }
 
   function addScrollLockPadding() {
