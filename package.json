@@ -7,6 +7,7 @@
     "@antfu/ni": "^0.21.12",
     "@release-it/bumper": "^6.0.1",
     "@types/node": "^20.10.4",
+    "@vue/tsconfig": "^0.5.1",
     "release-it": "^17.0.1",
     "turbo": "^1.11.2"
   },
