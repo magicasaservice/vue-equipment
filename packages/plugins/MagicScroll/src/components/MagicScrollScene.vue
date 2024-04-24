@@ -67,7 +67,7 @@ useIntersectionObserver(
       calculate()
     }
   },
-  { rootMargin: '150% 0px 150% 0px', threshold: 0.01 }
+  { rootMargin: '150% 0px 150% 0px', threshold: 0.01, immediate: true }
 )
 
 provide(ScrollProgressKey, readonly(progress))
