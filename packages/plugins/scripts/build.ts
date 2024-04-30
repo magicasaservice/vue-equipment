@@ -16,6 +16,7 @@ mkdist({
     '!shims-vue.d.ts',
     '!tsconfig.json',
     '!**/demo.vue',
+    '!**/demo/*.vue',
     '!**/index.md',
     '!scripts/*',
     '!*.config.json',

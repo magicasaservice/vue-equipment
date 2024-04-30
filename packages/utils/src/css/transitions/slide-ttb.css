@@ -1,9 +1,7 @@
 .slide-ttb-enter-active {
-  animation: slide-ttb-in 300ms ease;
+  animation: slide-ttb-in var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 
 .slide-ttb-leave-active {
-  animation: slide-ttb-out 300ms ease;
+  animation: slide-ttb-out var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
-
-

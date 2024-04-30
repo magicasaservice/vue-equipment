@@ -77,7 +77,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     exit()
   }
 
-  // Lifecycle
+  // Lifecycle hooks and listeners
   watch(playing, (value) => {
     if (!touched.value && value) {
       touched.value = true

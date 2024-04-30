@@ -1,7 +1,7 @@
 .slide-ltr-enter-active {
-  animation: slide-ltr-in 300ms ease;
+  animation: slide-ltr-in var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }
 
 .slide-ltr-leave-active {
-  animation: slide-ltr-out 300ms ease;
+  animation: slide-ltr-out var(--duration, 300ms) var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
 }

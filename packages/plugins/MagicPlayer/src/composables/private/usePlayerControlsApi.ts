@@ -152,7 +152,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     seekToTrackPosition(x)
   }
 
-  // Lifecycle
+  // Lifecycle hooks and listeners
   watch(() => trackRef, getTimelineTrackSize)
   watch(() => popoverRef, getPopoverSizes)
   watch(() => barRef, getPopoverSizes)

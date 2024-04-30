@@ -1,11 +1,4 @@
-import {
-  ref,
-  computed,
-  toValue,
-  onMounted,
-  onBeforeUnmount,
-  type MaybeRef,
-} from 'vue'
+import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
@@ -29,6 +22,11 @@ const defaultOptions = {
   scrollLock: true,
 }
 
+const scrollLock =
+  typeof window !== 'undefined'
+    ? useScrollLock(document?.documentElement)
+    : ref(false)
+
 export function useDrawerApi(
   id?: MaybeRef<string>,
   options?: UseDrawerApiOptions
@@ -43,11 +41,6 @@ export function useDrawerApi(
       ? useFocusTrap(mappedOptions.focusTarget)
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
-
-  const scrollLock =
-    mappedOptions.scrollLock && typeof window !== 'undefined'
-      ? useScrollLock(document.body)
-      : ref(false)
 
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
@@ -95,11 +88,15 @@ export function useDrawerApi(
   }
 
   function lockScroll() {
-    scrollLock.value = true
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = true
+    }
   }
 
   function unlockScroll() {
-    scrollLock.value = false
+    if (mappedOptions.scrollLock) {
+      scrollLock.value = false
+    }
   }
 
   function addScrollLockPadding() {
@@ -130,13 +127,13 @@ export function useDrawerApi(
     )
   }
 
-  onMounted(() => {
+  function initialize() {
     useDrawerEmitter().on('progress', progressCallback)
-  })
+  }
 
-  onBeforeUnmount(() => {
+  function destroy() {
     useDrawerEmitter().off('progress', progressCallback)
-  })
+  }
 
   return {
     id: mappedId,
@@ -151,6 +148,8 @@ export function useDrawerApi(
     unlockScroll,
     addScrollLockPadding,
     removeScrollLockPadding,
+    initialize,
+    destroy,
   }
 }
 

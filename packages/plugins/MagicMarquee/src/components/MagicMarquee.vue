@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useMarqueeApi } from '../composables/useMarqueeApi'
 
 interface Props {
@@ -32,13 +32,17 @@ const props = withDefaults(defineProps<Props>(), {
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const childRef = ref<HTMLElement | undefined>(undefined)
 
-const { duplicates, playing, play, pause } = useMarqueeApi({
+const { duplicates, playing, play, pause, initialize } = useMarqueeApi({
   child: childRef,
   parent: parentRef,
   options: {
     speed: computed(() => props.speed),
     direction: computed(() => props.direction),
   },
+})
+
+onMounted(() => {
+  initialize()
 })
 
 defineExpose({

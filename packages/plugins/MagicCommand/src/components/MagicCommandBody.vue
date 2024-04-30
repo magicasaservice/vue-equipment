@@ -29,10 +29,10 @@ const {
 
 const keys = useMagicKeys()
 
-const nextTimeout = ref<NodeJS.Timeout | undefined>(undefined)
-const prevTimeout = ref<NodeJS.Timeout | undefined>(undefined)
-const nextInterval = ref<NodeJS.Timer | undefined>(undefined)
-const prevInterval = ref<NodeJS.Timer | undefined>(undefined)
+const nextTimeout = ref<ReturnType<typeof setTimeout> | undefined>(undefined)
+const prevTimeout = ref<ReturnType<typeof setTimeout> | undefined>(undefined)
+const nextInterval = ref<ReturnType<typeof setInterval> | undefined>(undefined)
+const prevInterval = ref<ReturnType<typeof setInterval> | undefined>(undefined)
 
 if (options.keys?.next) {
   for (const key of options.keys.next) {

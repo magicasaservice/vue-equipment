@@ -1,23 +1,24 @@
 {
   "name": "@maas/vue-equipment",
   "description": "A magic collection of Vue composables, plugins, components and directives",
-  "version": "0.25.3",
+  "version": "0.26.5",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
     "@release-it/bumper": "^6.0.1",
     "@types/node": "^20.10.4",
+    "@vue/tsconfig": "^0.5.1",
     "release-it": "^17.0.1",
     "turbo": "^1.11.2"
   },
   "exports": {
     "./nuxt": {
-      "types": "./dist/nuxt/types.d.ts",
+      "types": "./dist/nuxt/types.d.mts",
       "require": "./dist/nuxt/module.cjs",
       "import": "./dist/nuxt/module.mjs"
     },
     "./composables": {
-      "types": "./dist/composables/index.d.ts",
+      "types": "./dist/composables/index.d.mts",
       "require": "./dist/composables/index.js",
       "import": "./dist/composables/index.mjs"
     },
@@ -26,7 +27,7 @@
       "import": "./dist/plugins/index.mjs"
     },
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
+      "types": "./dist/utils/index.d.mts",
       "require": "./dist/utils/index.js",
       "import": "./dist/utils/index.mjs"
     },
@@ -41,9 +42,11 @@
   "keywords": [],
   "license": "MIT",
   "peerDependencies": {
+    "@nuxt/kit": "^3.9.3",
     "@maas/magic-timer": "^1.0.0",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
+    "defu": "^6.1.2",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "luxon": "^3.4.2",
@@ -51,9 +54,13 @@
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
     "universal-cookie": "^7.1.0",
+    "vue": "^3.4.26",
     "wheel-gestures": "^2.2.5"
   },
   "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": false
+    },
     "@maas/magic-timer": {
       "optional": false
     },
@@ -61,6 +68,9 @@
       "optional": false
     },
     "@vueuse/integrations": {
+      "optional": false
+    },
+    "defu": {
       "optional": false
     },
     "hls.js": {
@@ -79,6 +89,9 @@
       "optional": false
     },
     "universal-cookie": {
+      "optional": false
+    },
+    "vue": {
       "optional": false
     },
     "wheel-gestures": {

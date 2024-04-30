@@ -60,6 +60,7 @@ import {
   nextTick,
   toValue,
   onBeforeUnmount,
+  onUnmounted,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -149,8 +150,8 @@ function onClose() {
 if (mappedOptions.keys) {
   for (const key of mappedOptions.keys) {
     onKeyStroke(key, (e) => {
-      e.preventDefault()
       close()
+      e.preventDefault()
     })
   }
 }
@@ -166,6 +167,19 @@ watch(isActive, async (value) => {
 // Reset state on unmount
 onBeforeUnmount(() => {
   close()
+})
+
+onUnmounted(() => {
+  if (mappedOptions.scrollLock) {
+    unlockScroll()
+    if (mappedOptions.scrollLockPadding) {
+      removeScrollLockPadding()
+    }
+  }
+
+  if (mappedOptions.focusTrap) {
+    releaseFocus()
+  }
 })
 </script>
 

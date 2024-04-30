@@ -1,7 +1,7 @@
 .clip-enter-active {
-  animation: clip-in 0.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+  animation: clip-in var(--duration, 600ms) var(--easing, cubic-bezier(0.83, 0, 0.17, 1)) forwards;
 }
 
 .clip-leave-active {
-  animation: clip-out 0.6s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+  animation: clip-out var(--duration, 600ms) var(--easing, cubic-bezier(0.83, 0, 0.17, 1)) forwards;
 }

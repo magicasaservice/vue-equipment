@@ -21,6 +21,7 @@ interface Props {
   to?: FromTo
   debug?: boolean
 }
+
 const props = withDefaults(defineProps<Props>(), {
   from: 'top-bottom',
   to: 'bottom-top',
@@ -67,7 +68,7 @@ useIntersectionObserver(
       calculate()
     }
   },
-  { rootMargin: '150% 0px 150% 0px', threshold: 0.01 }
+  { rootMargin: '150% 0px 150% 0px', immediate: true }
 )
 
 provide(ScrollProgressKey, readonly(progress))

@@ -1,12 +1,5 @@
 import { uuid } from '@maas/vue-equipment/utils'
-import {
-  computed,
-  onUnmounted,
-  onBeforeMount,
-  toValue,
-  markRaw,
-  type MaybeRef,
-} from 'vue'
+import { computed, toValue, markRaw, type MaybeRef } from 'vue'
 import { useToastStore } from './private/useToastStore'
 import type { AddArgs } from './../types'
 
@@ -56,15 +49,6 @@ export function useToastApi(id?: MaybeRef<string>) {
     instance.value.toasts = []
   }
 
-  // Lifecycle
-  onBeforeMount(() => {
-    initialize()
-  })
-
-  onUnmounted(() => {
-    destroy(toValue(mappedId))
-  })
-
   return {
     toasts,
     count,
@@ -72,6 +56,8 @@ export function useToastApi(id?: MaybeRef<string>) {
     add,
     remove,
     clear,
+    initialize,
+    destroy,
   }
 }
 
