@@ -48,11 +48,11 @@ export default defineConfig(async () => {
           replacement: resolve(__dirname, '../../packages/utils'),
         },
       ],
-      dedupe: ['vue', '@vue/runtime-core'],
+      dedupe: ['vue'],
     },
     build: {
       rollupOptions: {
-        external: ['@maas/vue-equipment', '@vue/runtime-core'],
+        external: ['@maas/vue-equipment'],
       },
     },
   }
