@@ -83,7 +83,7 @@ import {
 } from 'vue'
 import { createDefu } from 'defu'
 import { onKeyStroke, unrefElement } from '@vueuse/core'
-import { useMetaViewport } from '../../../../composables'
+import { useMetaViewport } from '@maas/vue-equipment/composables'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerApi } from './../composables/useDrawerApi'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
