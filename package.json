@@ -13,12 +13,12 @@
   },
   "exports": {
     "./nuxt": {
-      "types": "./dist/nuxt/types.d.ts",
+      "types": "./dist/nuxt/types.d.mts",
       "require": "./dist/nuxt/module.cjs",
       "import": "./dist/nuxt/module.mjs"
     },
     "./composables": {
-      "types": "./dist/composables/index.d.ts",
+      "types": "./dist/composables/index.d.mts",
       "require": "./dist/composables/index.js",
       "import": "./dist/composables/index.mjs"
     },
@@ -27,7 +27,7 @@
       "import": "./dist/plugins/index.mjs"
     },
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
+      "types": "./dist/utils/index.d.mts",
       "require": "./dist/utils/index.js",
       "import": "./dist/utils/index.mjs"
     },
