@@ -42,9 +42,11 @@
   "keywords": [],
   "license": "MIT",
   "peerDependencies": {
+    "@nuxt/kit": "^3.9.3",
     "@maas/magic-timer": "^1.0.0",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
+    "defu": "^6.1.2",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
     "luxon": "^3.4.2",
@@ -52,9 +54,13 @@
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
     "universal-cookie": "^7.1.0",
+    "vue": "^3.4.26",
     "wheel-gestures": "^2.2.5"
   },
   "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": false
+    },
     "@maas/magic-timer": {
       "optional": false
     },
@@ -62,6 +68,9 @@
       "optional": false
     },
     "@vueuse/integrations": {
+      "optional": false
+    },
+    "defu": {
       "optional": false
     },
     "hls.js": {
@@ -80,6 +89,9 @@
       "optional": false
     },
     "universal-cookie": {
+      "optional": false
+    },
+    "vue": {
       "optional": false
     },
     "wheel-gestures": {

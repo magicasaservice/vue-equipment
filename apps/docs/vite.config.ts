@@ -52,7 +52,7 @@ export default defineConfig(async () => {
     },
     build: {
       rollupOptions: {
-        external: '@maas/vue-equipment',
+        external: ['@maas/vue-equipment', '@vue/runtime-core'],
       },
     },
   }
