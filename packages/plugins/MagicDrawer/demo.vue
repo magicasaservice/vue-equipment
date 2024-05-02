@@ -52,9 +52,9 @@
   <magic-drawer
     :id="snapId"
     :options="{
-      snap: {
-        points: ['150px', 1],
-        initial: '150px',
+      snapPoints: ['150px', 1],
+      initial: {
+        snapPoint: '150px',
       },
     }"
   >
@@ -89,9 +89,9 @@
     :options="{
       position,
       focusTrap: false,
-      snap: {
-        points: ['150px', 0.5, 1],
-        initial: '150px',
+      snapPoints: ['150px', 1],
+      initial: {
+        snapPoint: '150px',
       },
     }"
   >
@@ -108,11 +108,11 @@
   <magic-drawer
     :id="scrollId"
     :options="{
-      snap: {
-        points: ['150px', 1],
-        initial: '150px',
+      enableMousewheel: true,
+      snapPoints: ['150px', 1],
+      initial: {
+        snapPoint: '150px',
       },
-      mousewheel: true,
     }"
   >
     <div class="bg-white w-full h-full absolute inset-0 overflow-auto pb-24">

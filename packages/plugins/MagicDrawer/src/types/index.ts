@@ -5,15 +5,15 @@ export type SnapPoint = number | `${string}px`
 export interface DrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
   backdrop?: boolean
+  tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
-  scrollLock?: boolean
-  scrollLockPadding?: boolean
-  preventZoom?: boolean
+  scrollLock?: boolean | { padding: true }
+  snapPoints: SnapPoint[]
   teleport?: {
     target?: string
     disabled?: boolean
   }
-  transitions?: {
+  transition?: {
     content?: string
     backdrop?: string
   }
@@ -22,19 +22,23 @@ export interface DrawerOptions {
     distance?: number
     momentum?: number
   }
-  tag?: 'dialog' | 'div'
-  keys?: string[] | false
-  beforeMount?: {
-    open: boolean
-    animate: boolean
+  animation?: {
+    snap?: {
+      duration?: number
+      easing?: (t: number) => number
+    }
   }
-  snap?: {
-    points: SnapPoint[]
-    duration?: number
-    initial?: SnapPoint
+  initial?: {
+    open?: boolean
+    transition?: boolean
+    snapPoint?: SnapPoint
   }
-  mousewheel?: boolean
-  canClose?: boolean
+  keyListener?: {
+    close: string[] | false
+  }
+  enableMousewheel?: boolean
+  preventZoom?: boolean
+  preventDragClose?: boolean
   disabled?: boolean
 }
 

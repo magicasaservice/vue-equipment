@@ -2,47 +2,53 @@ import type { DrawerOptions } from '../types'
 import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type DefaultOptions = RequireAll<DrawerOptions> & {
+  scrollLock: RequireAll<DrawerOptions['scrollLock']>
   threshold: RequireAll<DrawerOptions['threshold']>
-  snap: RequireAll<DrawerOptions['snap']>
+  animation: RequireAll<DrawerOptions['animation']>
+  initial: RequireAll<DrawerOptions['initial']>
+  keyListener: RequireAll<DrawerOptions['keyListener']>
 }
 
 const defaultOptions: DefaultOptions = {
   position: 'bottom',
   backdrop: true,
+  tag: 'dialog',
   focusTrap: {
     initialFocus: false,
     setReturnFocus: false,
     allowOutsideClick: true,
   },
-  scrollLock: true,
-  scrollLockPadding: true,
-  preventZoom: true,
+  scrollLock: { padding: true },
   teleport: {
     target: 'body',
     disabled: false,
   },
-  transitions: {
+  transition: {
     content: 'magic-drawer--content',
     backdrop: 'magic-drawer--backdrop',
+  },
+  animation: {
+    snap: {
+      duration: 300,
+    },
   },
   threshold: {
     lock: 0,
     distance: 128,
     momentum: 1,
   },
-  tag: 'dialog',
-  keys: ['Escape'],
-  beforeMount: {
+  snapPoints: [1],
+  initial: {
     open: false,
-    animate: false,
+    transition: false,
+    snapPoint: 1,
   },
-  snap: {
-    points: [1],
-    duration: 200,
-    initial: 1,
+  keyListener: {
+    close: ['Escape'],
   },
-  mousewheel: false,
-  canClose: true,
+  preventZoom: false,
+  preventDragClose: false,
+  enableMousewheel: false,
   disabled: false,
 }
 
