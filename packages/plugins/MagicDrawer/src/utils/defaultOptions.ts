@@ -19,6 +19,7 @@ const defaultOptions: DefaultOptions = {
     allowOutsideClick: true,
   },
   scrollLock: { padding: true },
+  snapPoints: [1],
   teleport: {
     target: 'body',
     disabled: false,
@@ -27,17 +28,16 @@ const defaultOptions: DefaultOptions = {
     content: 'magic-drawer--content',
     backdrop: 'magic-drawer--backdrop',
   },
-  animation: {
-    snap: {
-      duration: 300,
-    },
-  },
   threshold: {
     lock: 0,
     distance: 128,
     momentum: 1,
   },
-  snapPoints: [1],
+  animation: {
+    snap: {
+      duration: 300,
+    },
+  },
   initial: {
     open: false,
     transition: false,
@@ -46,9 +46,9 @@ const defaultOptions: DefaultOptions = {
   keyListener: {
     close: ['Escape'],
   },
+  enableMousewheel: false,
   preventZoom: false,
   preventDragClose: false,
-  enableMousewheel: false,
   disabled: false,
 }
 
