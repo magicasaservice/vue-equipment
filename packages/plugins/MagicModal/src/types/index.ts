@@ -2,19 +2,20 @@ import { type Options } from 'focus-trap'
 
 export interface ModalOptions {
   backdrop?: boolean
+  tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
-  scrollLock?: boolean
-  scrollLockPadding?: boolean
+  scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string
     disabled?: boolean
   }
-  transitions?: {
+  transition?: {
     content?: string
     backdrop?: string
   }
-  tag?: 'dialog' | 'div'
-  keys?: string[] | false
+  keyListener?: {
+    close?: string[] | false
+  }
 }
 
 export type ModalEvents = {
