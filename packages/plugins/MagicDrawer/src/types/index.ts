@@ -7,7 +7,7 @@ export interface DrawerOptions {
   backdrop?: boolean
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
-  scrollLock?: boolean | { padding: true }
+  scrollLock?: boolean | { padding: boolean }
   snapPoints: SnapPoint[]
   teleport?: {
     target?: string
@@ -34,7 +34,7 @@ export interface DrawerOptions {
     snapPoint?: SnapPoint
   }
   keyListener?: {
-    close: string[] | false
+    close?: string[] | false
   }
   enableMousewheel?: boolean
   preventZoom?: boolean
