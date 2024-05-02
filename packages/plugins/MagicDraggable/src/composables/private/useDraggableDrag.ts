@@ -11,14 +11,15 @@ type UseDraggableDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
-  // threshold: MaybeRef<DefaultOptions['threshold']>
+  threshold: MaybeRef<DefaultOptions['threshold']>
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   animation: MaybeRef<DefaultOptions['animation']>
   initial: MaybeRef<DefaultOptions['initial']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
-  const { id, elRef, wrapperRef, snapPoints, initial, animation } = args
+  const { id, elRef, wrapperRef, threshold, snapPoints, initial, animation } =
+    args
 
   // Private state
   const { findState } = useDraggableState(toValue(id))
@@ -42,11 +43,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Public state
   const style = computed(
-    () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
+    () => `transform: translate3d(${draggedX.value}px, ${draggedY.value}px, 0)`
   )
 
   // Snap logic
-  const { snapTo, mapSnapPoint, mappedSnapPoints, interpolateDragged } =
+  const { mapSnapPoint, mappedSnapPoints, interpolateDragged } =
     useDraggableSnap({
       elRect,
       wrapperRect,
@@ -64,7 +65,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
-    // TODO: 'setDragged'
     draggedX.value = x - originX.value
     draggedY.value = y - originY.value
   }
@@ -133,24 +133,72 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     return vectorA.x * vectorB.x + vectorA.y * vectorB.y
   }
 
-  function checkDistance(draggedCoords: Coordinates, snapPoint: Coordinates) {
-    if (!interpolateTo.value) {
-      return
+  function calculateDistance(a: Coordinates, b: Coordinates) {
+    return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
+  }
+
+  function checkDistance() {
+    // Check if threshold distance is reached
+    if (toValue(threshold).distance) {
+      const lastDraggedCoords = {
+        x: lastDraggedX.value,
+        y: lastDraggedY.value,
+      }
+      const draggedCoords = { x: draggedX.value, y: draggedY.value }
+      const draggedDistance = calculateDistance(
+        lastDraggedCoords,
+        draggedCoords
+      )
+
+      if (draggedDistance < toValue(threshold).distance!) {
+        return false
+      }
     }
 
-    const distanceToInterpolateTo = Math.sqrt(
-      (interpolateTo.value?.x - draggedCoords.x) ** 2 +
-        (interpolateTo.value?.y - draggedCoords.y) ** 2
-    )
+    return true
+  }
 
-    const distanceToSnapPoint = Math.sqrt(
-      (snapPoint.x - draggedCoords.x) ** 2 +
-        (snapPoint.y - draggedCoords.y) ** 2
-    )
+  function checkMomentum() {
+    // Check if threshold momentum is reached
+    if (dragStart.value && toValue(threshold).momentum) {
+      const lastDraggedCoords = {
+        x: lastDraggedX.value,
+        y: lastDraggedY.value,
+      }
+      const draggedCoords = { x: draggedX.value, y: draggedY.value }
+      const draggedDistance = calculateDistance(
+        lastDraggedCoords,
+        draggedCoords
+      )
 
-    if (distanceToSnapPoint < distanceToInterpolateTo) {
-      interpolateTo.value = snapPoint
+      const dragTime = new Date().getTime() - dragStart.value.getTime()
+
+      if (dragTime === 0) {
+        return false
+      }
+
+      const dragSpeed = draggedDistance / dragTime
+      console.log('dragSpeed:', dragSpeed)
+
+      if (dragSpeed < toValue(threshold).momentum!) {
+        return false
+      }
     }
+
+    return true
+  }
+
+  function findSmallerDistance(a: Coordinates, b: Coordinates) {
+    const distanceA = calculateDistance(a, {
+      x: draggedX.value,
+      y: draggedY.value,
+    })
+    const distanceB = calculateDistance(b, {
+      x: draggedX.value,
+      y: draggedY.value,
+    })
+
+    return distanceA < distanceB ? a : b
   }
 
   function findSnapPoint() {
@@ -158,6 +206,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     const lastDraggedCoords = { x: lastDraggedX.value, y: lastDraggedY.value }
     const draggedCoords = { x: draggedX.value, y: draggedY.value }
+
     const lineVector = vectorBetweenCoordinates(
       lastDraggedCoords,
       draggedCoords
@@ -176,8 +225,17 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         bestDotProduct = currentDotProduct
         interpolateTo.value = snapPoint
       } else if (currentDotProduct === bestDotProduct) {
-        // If dot product is the same, check distance and pick the closest one
-        checkDistance(draggedCoords, snapPoint)
+        // If dot product is the same, compare distance and pick the closest one
+        // compareDistances(draggedCoords, snapPoint)
+        if (!interpolateTo.value) {
+          interpolateTo.value = snapPoint
+        } else {
+          const smallerDistance = findSmallerDistance(
+            snapPoint,
+            interpolateTo.value!
+          )
+          interpolateTo.value = smallerDistance
+        }
       }
     }
   }
@@ -200,6 +258,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Check for collision with bounding box
     getSizes()
     detectCollision()
+
+    // Check threshold and snap back to last dragged position if not reached
+    if (!checkDistance() && !checkMomentum()) {
+      interpolateTo.value = { x: lastDraggedX.value, y: lastDraggedY.value }
+      return
+    }
 
     // Find snap point
     if (toValue(snapPoints).length) {

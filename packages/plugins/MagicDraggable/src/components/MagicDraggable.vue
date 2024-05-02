@@ -73,12 +73,13 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial } = mappedOptions
+const { snapPoints, animation, initial, threshold } = mappedOptions
 
 const { initialize, onPointerdown, onClick, style } = useDraggableDrag({
   id: props.id,
   elRef,
   wrapperRef,
+  threshold,
   snapPoints,
   animation,
   initial,
