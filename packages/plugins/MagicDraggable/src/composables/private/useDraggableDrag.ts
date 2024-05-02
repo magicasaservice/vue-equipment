@@ -15,7 +15,6 @@ type UseDraggableDragArgs = {
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
-  // const { id, elRef, wrapperRef, threshold, snap } = args
   const { id, elRef, wrapperRef, threshold, snap } = args
 
   // Private state
@@ -121,7 +120,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   }
 
-  function onPointerup(e: PointerEvent) {
+  function onPointerup(_e: PointerEvent) {
     const { x, y } = interpolateTo.value || {}
 
     if (x !== undefined && y !== undefined) {
