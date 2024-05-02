@@ -118,30 +118,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   }
 
-  // function checkDirection(draggedObject: DraggedObject): {
-  //   let closestPoint: SnapPoint | undefined = undefined
-  //   let maxAngle = -Infinity
-
-  //   for (let i = 0; i < mappedSnapPoints.length; i++) {
-  //     const dx = points[i].x - draggedObject.x
-  //     const dy = points[i].y - draggedObject.y
-  //     const angle = Math.atan2(dy, dx) // Calculate angle of vector
-
-  //     // Normalize angle between -π and π
-  //     const normalizedAngle = angle < 0 ? angle + 2 * Math.PI : angle
-
-  //     // Determine angle difference between vector and x-axis
-  //     const angleDifference = Math.abs(normalizedAngle)
-
-  //     if (angleDifference > maxAngle) {
-  //       maxAngle = angleDifference
-  //       closestPoint = { ...points[i], index: i }
-  //     }
-  //   }
-
-  //   return closestPoint
-  // }
-
   function vectorBetweenCoordinates(a: Coordinates, b: Coordinates) {
     const dx = b.x - a.x
     const dy = b.y - a.y
@@ -157,7 +133,27 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     return vectorA.x * vectorB.x + vectorA.y * vectorB.y
   }
 
-  function checkDirection() {
+  function checkDistance(draggedCoords: Coordinates, snapPoint: Coordinates) {
+    if (!interpolateTo.value) {
+      return
+    }
+
+    const distanceToInterpolateTo = Math.sqrt(
+      (interpolateTo.value?.x - draggedCoords.x) ** 2 +
+        (interpolateTo.value?.y - draggedCoords.y) ** 2
+    )
+
+    const distanceToSnapPoint = Math.sqrt(
+      (snapPoint.x - draggedCoords.x) ** 2 +
+        (snapPoint.y - draggedCoords.y) ** 2
+    )
+
+    if (distanceToSnapPoint < distanceToInterpolateTo) {
+      interpolateTo.value = snapPoint
+    }
+  }
+
+  function findSnapPoint() {
     let bestDotProduct = -Infinity
 
     const lastDraggedCoords = { x: lastDraggedX.value, y: lastDraggedY.value }
@@ -175,11 +171,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         snapPoint
       )
       const currentDotProduct = dotProduct(lineVector, targetVector)
-      console.log('currentDotProduct:', snapPoint, currentDotProduct)
 
       if (currentDotProduct > bestDotProduct) {
         bestDotProduct = currentDotProduct
         interpolateTo.value = snapPoint
+      } else if (currentDotProduct === bestDotProduct) {
+        // If dot product is the same, check distance and pick the closest one
+        checkDistance(draggedCoords, snapPoint)
       }
     }
   }
@@ -203,8 +201,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     getSizes()
     detectCollision()
 
-    // Check direction
-    checkDirection()
+    // Find snap point
+    if (toValue(snapPoints).length) {
+      findSnapPoint()
+    }
   }
 
   // Public functions

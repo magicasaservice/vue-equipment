@@ -9,9 +9,9 @@
         'center-left',
         'center',
         'center-right',
-        // 'bottom-left',
-        // 'bottom-center',
-        // 'bottom-right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right',
       ],
       initial: {
         snapPoint: 'top-left',
