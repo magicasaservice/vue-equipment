@@ -5,17 +5,20 @@ import { useDraggableState } from './useDraggableState'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
+import type { Coordinates, SnapPoint } from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
-  threshold: MaybeRef<DefaultOptions['threshold']>
-  snap: MaybeRef<DefaultOptions['snap']>
+  // threshold: MaybeRef<DefaultOptions['threshold']>
+  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
+  animation: MaybeRef<DefaultOptions['animation']>
+  initial: MaybeRef<DefaultOptions['initial']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
-  const { id, elRef, wrapperRef, threshold, snap } = args
+  const { id, elRef, wrapperRef, snapPoints, initial, animation } = args
 
   // Private state
   const { findState } = useDraggableState(toValue(id))
@@ -43,13 +46,15 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   )
 
   // Snap logic
-  const { snapTo, mapSnapPoint, interpolateDragged } = useDraggableSnap({
-    elRect,
-    wrapperRect,
-    snap,
-    draggedY,
-    draggedX,
-  })
+  const { snapTo, mapSnapPoint, mappedSnapPoints, interpolateDragged } =
+    useDraggableSnap({
+      elRect,
+      wrapperRect,
+      animation,
+      snapPoints,
+      draggedY,
+      draggedX,
+    })
 
   // Private functions
   async function getSizes() {
@@ -70,13 +75,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
-  }
-
-  interface CollisionInfo {
-    top: number
-    left: number
-    bottom: number
-    right: number
   }
 
   function detectCollision() {
@@ -120,6 +118,72 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   }
 
+  // function checkDirection(draggedObject: DraggedObject): {
+  //   let closestPoint: SnapPoint | undefined = undefined
+  //   let maxAngle = -Infinity
+
+  //   for (let i = 0; i < mappedSnapPoints.length; i++) {
+  //     const dx = points[i].x - draggedObject.x
+  //     const dy = points[i].y - draggedObject.y
+  //     const angle = Math.atan2(dy, dx) // Calculate angle of vector
+
+  //     // Normalize angle between -π and π
+  //     const normalizedAngle = angle < 0 ? angle + 2 * Math.PI : angle
+
+  //     // Determine angle difference between vector and x-axis
+  //     const angleDifference = Math.abs(normalizedAngle)
+
+  //     if (angleDifference > maxAngle) {
+  //       maxAngle = angleDifference
+  //       closestPoint = { ...points[i], index: i }
+  //     }
+  //   }
+
+  //   return closestPoint
+  // }
+
+  function vectorBetweenCoordinates(a: Coordinates, b: Coordinates) {
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const length = Math.sqrt(dx * dx + dy * dy)
+    if (length === 0) {
+      return { x: 0, y: 0 } // Return zero vector if length is zero to avoid division by zero
+    } else {
+      return { x: dx / length, y: dy / length }
+    }
+  }
+
+  function dotProduct(vectorA: Coordinates, vectorB: Coordinates): number {
+    return vectorA.x * vectorB.x + vectorA.y * vectorB.y
+  }
+
+  function checkDirection() {
+    let bestDotProduct = -Infinity
+
+    const lastDraggedCoords = { x: lastDraggedX.value, y: lastDraggedY.value }
+    const draggedCoords = { x: draggedX.value, y: draggedY.value }
+    const lineVector = vectorBetweenCoordinates(
+      lastDraggedCoords,
+      draggedCoords
+    )
+
+    for (let i = 0; i < mappedSnapPoints.value.length; i++) {
+      const snapPoint = mappedSnapPoints.value[i]
+
+      const targetVector = vectorBetweenCoordinates(
+        lastDraggedCoords,
+        snapPoint
+      )
+      const currentDotProduct = dotProduct(lineVector, targetVector)
+      console.log('currentDotProduct:', snapPoint, currentDotProduct)
+
+      if (currentDotProduct > bestDotProduct) {
+        bestDotProduct = currentDotProduct
+        interpolateTo.value = snapPoint
+      }
+    }
+  }
+
   function onPointerup(_e: PointerEvent) {
     const { x, y } = interpolateTo.value || {}
 
@@ -138,6 +202,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Check for collision with bounding box
     getSizes()
     detectCollision()
+
+    // Check direction
+    checkDirection()
   }
 
   // Public functions
@@ -195,10 +262,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     await nextTick()
     // Snap to initial position
-    if (!!toValue(snap).initial) {
-      const { x, y } = mapSnapPoint(toValue(snap).initial!)
-      draggedX.value = x
-      draggedY.value = y
+    if (toValue(initial).snapPoint) {
+      const mappedSnapPoint = mapSnapPoint(toValue(initial).snapPoint!)
+
+      if (mappedSnapPoint) {
+        draggedX.value = mappedSnapPoint.x
+        draggedY.value = mappedSnapPoint.y
+      }
     }
   }
 

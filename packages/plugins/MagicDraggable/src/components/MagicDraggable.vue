@@ -31,13 +31,9 @@
 <script lang="ts" setup>
 import {
   ref,
-  watch,
   computed,
-  nextTick,
   toValue,
   onMounted,
-  onBeforeMount,
-  onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -77,16 +73,15 @@ const disabled = computed(() => {
   }
 })
 
-const { threshold, snap } = mappedOptions
+const { snapPoints, animation, initial } = mappedOptions
 
 const { initialize, onPointerdown, onClick, style } = useDraggableDrag({
   id: props.id,
-  // isActive,
   elRef,
   wrapperRef,
-  threshold,
-  // overshoot,
-  snap,
+  snapPoints,
+  animation,
+  initial,
 })
 
 // Public functions
@@ -109,21 +104,11 @@ onMounted(() => {
 
 <style>
 :root {
-  /* --magic-draggable-height: 75svh;
-  --magic-draggable-width: 100%; */
   --magic-draggable-z-index: 999;
   --magic-draggable-position: fixed;
   --magic-draggable-height: 100%;
   --magic-draggable-width: 100%;
   --magic-draggable-inset: 0;
-  /* --magic-draggable-justify-content: center;
-  --magic-draggable-align-items: flex-end;
-  --magic-draggable-content-overflow-x: hidden;
-  --magic-draggable-content-overflow-y: hidden; */
-  /* --magic-draggable-enter-animation: slide-btt-in 300ms ease;
-  --magic-draggable-leave-animation: slide-btt-out 300ms ease;
-  --magic-draggable-drag-overshoot: 4rem;
-  --magic-draggable-padding: 0px; */
 }
 
 .magic-draggable {

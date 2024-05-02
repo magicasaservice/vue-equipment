@@ -4,7 +4,7 @@ import { mapValue, interpolate } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import { type SnapPoint } from '../../types'
+import type { SnapPoint, Coordinates } from '../../types'
 
 type UseDraggableSnapArgs = {
   // id: MaybeRef<string>
@@ -12,43 +12,45 @@ type UseDraggableSnapArgs = {
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
   draggedX: Ref<number>
-  snap: MaybeRef<DefaultOptions['snap']>
-  // overshoot: MaybeRef<number>
+  animation: MaybeRef<DefaultOptions['animation']>
+  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
 }
 
 type InterpolateDraggedArgs = {
   x: number
   y: number
   duration?: number
+  easing?: (t: number) => number
 }
 
 export function useDraggableSnap(args: UseDraggableSnapArgs) {
-  const { draggedY, draggedX, elRect, wrapperRect, snap } = args
+  const { draggedY, draggedX, elRect, wrapperRect, animation, snapPoints } =
+    args
 
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
     () => {
-      const snapPoints = toValue(snap)?.points
-
       // Map snap points
-      const mapped = snapPoints.map((snapPoint) => {
-        return mapSnapPoint(snapPoint)
-      })
+      const mapped = toValue(snapPoints)
+        .map((snapPoint) => {
+          return mapSnapPoint(snapPoint)
+        })
+        .filter((snapPoint) => snapPoint !== undefined) as Coordinates[]
 
       return mapped
     }
   )
 
   // Private functions
-  function mapSnapPoint(snapPoint: SnapPoint) {
+  function mapSnapPoint(snapPoint: SnapPoint): Coordinates | undefined {
     if (!wrapperRect.value) {
       console.warn('Wrapper rect is not defined')
-      return {}
+      return undefined
     }
 
     if (!elRect.value) {
       console.warn('Element rect is not defined')
-      return {}
+      return undefined
     }
 
     const mappedSnapPoint =
@@ -66,18 +68,24 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
         }
       case 'top-center':
         return {
-          x: wrapperRect.value.width / 2 + mappedOffset.x,
+          x:
+            wrapperRect.value.width / 2 +
+            mappedOffset.x -
+            elRect.value.width / 2,
           y: mappedOffset.y,
         }
       case 'top-right':
         return {
-          x: wrapperRect.value.width - mappedOffset.x,
+          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
           y: mappedOffset.y,
         }
       case 'center-left':
         return {
           x: mappedOffset.x,
-          y: wrapperRect.value.height / 2 + mappedOffset.y,
+          y:
+            wrapperRect.value.height / 2 +
+            mappedOffset.y -
+            elRect.value.height / 2,
         }
       case 'center':
         return {
@@ -92,35 +100,47 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
         }
       case 'center-right':
         return {
-          x: wrapperRect.value.width - mappedOffset.x,
-          y: wrapperRect.value.height / 2 + mappedOffset.y,
+          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
+          y:
+            wrapperRect.value.height / 2 +
+            mappedOffset.y -
+            elRect.value.height / 2,
         }
       case 'bottom-left':
         return {
           x: mappedOffset.x,
-          y: wrapperRect.value.height + mappedOffset.y,
+          y: wrapperRect.value.height + mappedOffset.y - elRect.value.height,
         }
       case 'bottom-center':
         return {
-          x: wrapperRect.value.width / 2 + mappedOffset.x,
-          y: wrapperRect.value.height - mappedOffset.y,
+          x:
+            wrapperRect.value.width / 2 +
+            mappedOffset.x -
+            elRect.value.width / 2,
+          y: wrapperRect.value.height - mappedOffset.y - elRect.value.height,
         }
       case 'bottom-right':
         return {
-          x: wrapperRect.value.width - mappedOffset.x,
-          y: wrapperRect.value.height - mappedOffset.y,
+          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
+          y: wrapperRect.value.height - mappedOffset.y - elRect.value.height,
         }
     }
   }
 
   // Public functions
   function interpolateDragged(args: InterpolateDraggedArgs) {
-    const { x, y, duration = 300 } = args
+    const {
+      x,
+      y,
+      duration = toValue(animation).snap?.duration || 300,
+      easing = toValue(animation).snap?.easing,
+    } = args
 
     interpolate({
       from: draggedY.value,
       to: y,
-      duration: duration,
+      duration,
+      easing,
       callback: (value: number) => {
         draggedY.value = value
       },
@@ -129,7 +149,8 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     interpolate({
       from: draggedX.value,
       to: x,
-      duration: duration,
+      duration,
+      easing,
       callback: (value: number) => {
         draggedX.value = value
       },
@@ -137,13 +158,16 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   }
 
   function snapTo(snapPoint: SnapPoint, duration?: number) {
-    const { x, y } = mapSnapPoint(snapPoint)
-    interpolateDragged({ x, y, duration })
+    const mappedSnapPoint = mapSnapPoint(snapPoint)
+
+    if (mappedSnapPoint) {
+      interpolateDragged({
+        x: mappedSnapPoint.x,
+        y: mappedSnapPoint.y,
+        duration,
+      })
+    }
   }
 
-  return {
-    mapSnapPoint,
-    interpolateDragged,
-    snapTo,
-  }
+  return { mappedSnapPoints, mapSnapPoint, interpolateDragged, snapTo }
 }

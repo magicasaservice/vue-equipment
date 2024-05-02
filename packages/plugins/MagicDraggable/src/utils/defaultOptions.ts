@@ -4,6 +4,7 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 type DefaultOptions = RequireAll<DraggableOptions>
 
 const defaultOptions: DefaultOptions = {
+  tag: 'div',
   teleport: {
     target: 'body',
     disabled: false,
@@ -12,12 +13,15 @@ const defaultOptions: DefaultOptions = {
     distance: 128,
     momentum: 1,
   },
-  snap: {
-    points: ['center'],
-    duration: 200,
-    initial: 'center',
+  animation: {
+    snap: {
+      duration: 300,
+    },
   },
-  tag: 'div',
+  initial: {
+    snapPoint: 'center',
+  },
+  snapPoints: [],
   disabled: false,
 }
 

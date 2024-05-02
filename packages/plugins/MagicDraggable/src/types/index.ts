@@ -9,6 +9,11 @@ type Position =
   | 'bottom-center'
   | 'bottom-right'
 
+export type Coordinates = {
+  x: number
+  y: number
+}
+
 export type SnapPoint =
   | [
       Position,
@@ -20,6 +25,7 @@ export type SnapPoint =
   | Position
 
 export interface DraggableOptions {
+  tag?: 'dialog' | 'div'
   teleport?: {
     target?: string
     disabled?: boolean
@@ -28,12 +34,16 @@ export interface DraggableOptions {
     distance?: number
     momentum?: number
   }
-  snap?: {
-    points: SnapPoint[]
-    duration?: number
-    initial?: SnapPoint
+  animation?: {
+    snap?: {
+      duration?: number
+      easing?: (t: number) => number
+    }
   }
-  tag?: 'dialog' | 'div'
+  initial?: {
+    snapPoint?: SnapPoint
+  }
+  snapPoints: SnapPoint[]
   disabled?: boolean
 }
 
@@ -41,7 +51,7 @@ export interface DraggableState {
   id: string
   dragStart: Date | undefined
   dragging: boolean
-  interpolateTo: { x: number; y: number } | undefined
+  interpolateTo: Coordinates | undefined
   originX: number
   originY: number
   lastDraggedX: number
