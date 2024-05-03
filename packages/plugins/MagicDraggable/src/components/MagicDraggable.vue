@@ -143,6 +143,7 @@ onMounted(() => {
   display: inline-flex;
   width: auto;
   height: auto;
+  transform-origin: center;
 }
 
 .magic-draggable.-dragging .magic-draggable__drag {

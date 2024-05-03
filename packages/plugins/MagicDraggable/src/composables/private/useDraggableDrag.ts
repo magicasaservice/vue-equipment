@@ -1,9 +1,18 @@
-import { ref, computed, toValue, nextTick, type Ref, type MaybeRef } from 'vue'
+import {
+  ref,
+  computed,
+  toValue,
+  nextTick,
+  watch,
+  type Ref,
+  type MaybeRef,
+} from 'vue'
 import {
   useEventListener,
   unrefElement,
   useResizeObserver,
   useThrottleFn,
+  useIdle,
 } from '@vueuse/core'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
@@ -45,9 +54,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
-  let idleTimeout: NodeJS.Timeout | undefined = undefined
 
-  const draggingIdle = ref(false)
+  const momentumThresholdReached = ref(false)
+  const distanceThresholdReached = ref(false)
 
   // Public state
   const style = computed(
@@ -86,6 +95,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   function resetStateAndListeners() {
     dragging.value = false
     interpolateTo.value = undefined
+    momentumThresholdReached.value = false
+    distanceThresholdReached.value = false
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
@@ -165,11 +176,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       )
 
       if (draggedDistance < toValue(threshold).distance!) {
-        return false
+        return
       }
     }
 
-    return true
+    distanceThresholdReached.value = true
   }
 
   function checkMomentum() {
@@ -188,18 +199,17 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       const dragTime = new Date().getTime() - dragStart.value.getTime()
 
       if (dragTime === 0) {
-        return false
+        return
       }
 
       const dragSpeed = draggedDistance / dragTime
-      console.log('dragSpeed:', dragSpeed)
 
       if (dragSpeed < toValue(threshold).momentum!) {
-        return false
+        return
       }
     }
 
-    return true
+    momentumThresholdReached.value = true
   }
 
   function findSmallerDistance(a: Coordinates, b: Coordinates) {
@@ -280,8 +290,17 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     getSizes()
     detectCollision()
 
-    // Check threshold and snap back to last dragged position if not reached
-    if (!checkDistance() && !checkMomentum()) {
+    // Check thresholds
+    if (!distanceThresholdReached.value) {
+      checkDistance()
+    }
+
+    if (!momentumThresholdReached.value) {
+      checkMomentum()
+    }
+
+    // Snap back to last dragged position if thresholds are not reached
+    if (!distanceThresholdReached.value && !momentumThresholdReached.value) {
       interpolateTo.value = { x: lastDraggedX.value, y: lastDraggedY.value }
       return
     }
@@ -357,10 +376,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   }
 
-  // Make sure the drawer keeps the correct position when the window is resized
-  // To achieve this, we update the snapPointsMap after the drawer has snapped
+  // Make sure the element keeps the correct position when the container is resized
+  // To achieve this, we update the snapPointsMap after the element has snapped
   useResizeObserver(wrapperRef, async () => {
-    console.log('resize!', activeSnapPoint.value)
     useThrottleFn(async () => {
       await getSizes()
 
@@ -369,6 +387,23 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         snapPointsMap.trigger()
       }
     }, 100)()
+  })
+
+  // If the user pauses for 50ms while dragging, this resets the last dragged position
+  // so that the direction of the drag can be calculated correctly.
+  // To ensure no wrong values are saved, the thresholds need to be reached first
+  const { idle } = useIdle(50)
+
+  watch(idle, (value) => {
+    if (
+      value &&
+      dragging.value &&
+      momentumThresholdReached.value &&
+      distanceThresholdReached.value
+    ) {
+      lastDraggedX.value = draggedX.value
+      lastDraggedY.value = draggedY.value
+    }
   })
 
   return {
