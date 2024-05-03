@@ -1,7 +1,9 @@
-import { useEasings } from '../useEasings'
-import { unrefElement } from '@vueuse/core'
-import type { EasingFunction } from '../useEasings'
-import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
+import {
+  unrefElement,
+  type MaybeComputedElementRef,
+  type MaybeElement,
+} from '@vueuse/core'
+import { easeOutQuad } from '@maas/vue-equipment/utils'
 
 export type ScrollToTarget =
   | string
@@ -16,7 +18,7 @@ export type ScrollToParams = {
   left: number
   top: number
   duration?: { x?: number; y?: number }
-  easing?: EasingFunction
+  easing?: (t: number) => number
   callback?: () => void
 }
 
@@ -35,10 +37,8 @@ export type scrollToTargetParams = {
     y?: number
   }
   speed?: number
-  easing?: EasingFunction
+  easing?: (t: number) => number
 }
-
-const easings = useEasings()
 
 // Private functions
 function min(a: number, b: number) {
@@ -68,7 +68,7 @@ function unwrapTarget(target: ScrollToTarget, parentEl: Element | Window) {
 }
 
 function isHtmlElement(
-  parentEl: Window | SVGElement | Element,
+  parentEl: Window | SVGElement | Element
 ): parentEl is HTMLElement {
   return parentEl instanceof HTMLElement
 }
@@ -102,7 +102,7 @@ export function useScrollTo() {
 
   function getDistance(
     target: Element,
-    parent?: Element | Window,
+    parent?: Element | Window
   ): { top: number; left: number } {
     const rect = target.getBoundingClientRect()
     const scrollEl =
@@ -137,7 +137,7 @@ export function useScrollTo() {
     top,
     left,
     duration = {},
-    easing = easings.easeOutQuad,
+    easing = easeOutQuad,
     callback,
   }: ScrollToParams) {
     const startTime = Date.now()
@@ -181,7 +181,7 @@ export function useScrollTo() {
     parent = document.documentElement || document.body,
     offset = {},
     speed = 500,
-    easing = easings.easeOutQuad,
+    easing = easeOutQuad,
   }: scrollToTargetParams) {
     let parentEl = unwrapParent(parent)
     if (!parentEl) return
