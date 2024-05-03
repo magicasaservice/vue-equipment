@@ -4,13 +4,13 @@
     :options="{
       snapPoints: [
         'top-left',
-        'top-center',
+        // 'top-center',
         'top-right',
-        'center-left',
-        'center',
-        'center-right',
+        // 'center-left',
+        // 'center',
+        // 'center-right',
         'bottom-left',
-        'bottom-center',
+        // 'bottom-center',
         'bottom-right',
       ],
       initial: {

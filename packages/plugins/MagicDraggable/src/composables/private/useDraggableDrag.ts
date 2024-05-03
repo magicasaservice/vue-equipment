@@ -1,11 +1,16 @@
-import { computed, toValue, nextTick, type Ref, type MaybeRef } from 'vue'
-import { useEventListener, unrefElement } from '@vueuse/core'
+import { ref, computed, toValue, nextTick, type Ref, type MaybeRef } from 'vue'
+import {
+  useEventListener,
+  unrefElement,
+  useResizeObserver,
+  useThrottleFn,
+} from '@vueuse/core'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { Coordinates, SnapPoint } from '../../types'
+import type { Coordinates } from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
@@ -40,6 +45,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
+  let idleTimeout: NodeJS.Timeout | undefined = undefined
+
+  const draggingIdle = ref(false)
 
   // Public state
   const style = computed(
@@ -47,15 +55,21 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   )
 
   // Snap logic
-  const { mapSnapPoint, mappedSnapPoints, interpolateDragged } =
-    useDraggableSnap({
-      elRect,
-      wrapperRect,
-      animation,
-      snapPoints,
-      draggedY,
-      draggedX,
-    })
+  const {
+    snapTo,
+    activeSnapPoint,
+    mapSnapPoint,
+    mappedSnapPoints,
+    snapPointsMap,
+    interpolateDragged,
+  } = useDraggableSnap({
+    elRect,
+    wrapperRect,
+    animation,
+    snapPoints,
+    draggedY,
+    draggedX,
+  })
 
   // Private functions
   async function getSizes() {
@@ -247,6 +261,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       interpolateDragged({ x, y })
     }
 
+    // Save the snap point we’re snapping to
+    // both the input value, as well as the actual pixel value
+    if (interpolateTo.value) {
+      const key = `x${interpolateTo.value.x}y${interpolateTo.value.y}`
+      activeSnapPoint.value = snapPointsMap.value[key]
+    }
+
     // Reset state
     resetStateAndListeners()
   }
@@ -335,6 +356,20 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       }
     }
   }
+
+  // Make sure the drawer keeps the correct position when the window is resized
+  // To achieve this, we update the snapPointsMap after the drawer has snapped
+  useResizeObserver(wrapperRef, async () => {
+    console.log('resize!', activeSnapPoint.value)
+    useThrottleFn(async () => {
+      await getSizes()
+
+      if (activeSnapPoint.value) {
+        await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
+        snapPointsMap.trigger()
+      }
+    }, 100)()
+  })
 
   return {
     initialize,

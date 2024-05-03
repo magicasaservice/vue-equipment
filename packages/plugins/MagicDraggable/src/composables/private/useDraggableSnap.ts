@@ -23,9 +23,18 @@ type InterpolateDraggedArgs = {
   easing?: (t: number) => number
 }
 
+type SnapToArgs = {
+  snapPoint: SnapPoint
+  interpolate?: boolean
+  duration?: number
+}
+
 export function useDraggableSnap(args: UseDraggableSnapArgs) {
   const { draggedY, draggedX, elRect, wrapperRect, animation, snapPoints } =
     args
+
+  // Public state
+  const activeSnapPoint = ref<SnapPoint | undefined>(undefined)
 
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
@@ -41,6 +50,21 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     }
   )
 
+  const snapPointsMap = computedWithControl(
+    () => toValue(snapPoints),
+    () => {
+      const mapped = toValue(snapPoints).reduce((acc, current) => {
+        const key = mapSnapPoint(current)
+        if (key) {
+          const mappedKey = `x${key.x}y${key.y}`
+          acc[mappedKey] = current
+        }
+        return acc
+      }, {} as Record<string, SnapPoint>)
+
+      return mapped
+    }
+  )
   // Private functions
   function mapSnapPoint(snapPoint: SnapPoint): Coordinates | undefined {
     if (!wrapperRect.value) {
@@ -132,7 +156,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     const {
       x,
       y,
-      duration = toValue(animation).snap?.duration || 300,
+      duration = toValue(animation).snap?.duration!,
       easing = toValue(animation).snap?.easing,
     } = args
 
@@ -157,17 +181,35 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     })
   }
 
-  function snapTo(snapPoint: SnapPoint, duration?: number) {
+  async function snapTo(args: SnapToArgs) {
+    const { snapPoint, interpolate, duration } = args
+    await nextTick()
+
     const mappedSnapPoint = mapSnapPoint(snapPoint)
 
     if (mappedSnapPoint) {
-      interpolateDragged({
-        x: mappedSnapPoint.x,
-        y: mappedSnapPoint.y,
-        duration,
-      })
+      if (interpolate) {
+        interpolateDragged({
+          x: mappedSnapPoint.x,
+          y: mappedSnapPoint.y,
+          duration,
+        })
+      } else {
+        draggedX.value = mappedSnapPoint.x
+        draggedY.value = mappedSnapPoint.y
+      }
     }
+
+    // Save value for window resize events
+    activeSnapPoint.value = snapPoint
   }
 
-  return { mappedSnapPoints, mapSnapPoint, interpolateDragged, snapTo }
+  return {
+    mappedSnapPoints,
+    activeSnapPoint,
+    snapPointsMap,
+    mapSnapPoint,
+    interpolateDragged,
+    snapTo,
+  }
 }

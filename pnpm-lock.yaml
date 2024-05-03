@@ -72,6 +72,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@maas/vue-equipment/composables':
+        specifier: workspace:composables@*
+        version: link:../../packages/composables
       '@maas/vue-equipment/metadata':
         specifier: workspace:metadata@*
         version: link:../../packages/metadata
@@ -118,6 +121,9 @@ importers:
       '@maas/magic-timer':
         specifier: ^1.0.0
         version: 1.0.1(eventemitter3@5.0.1)
+      '@maas/vue-equipment/utils':
+        specifier: workspace:utils@*
+        version: link:../utils
       '@vueuse/core':
         specifier: ^10.3.0
         version: 10.9.0(vue@3.4.26(typescript@5.4.5))

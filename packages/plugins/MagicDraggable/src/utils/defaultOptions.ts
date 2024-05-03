@@ -3,6 +3,8 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type DefaultOptions = RequireAll<DraggableOptions>
 
+import { easeOutBack } from '@maas/vue-equipment/utils'
+
 const defaultOptions: DefaultOptions = {
   tag: 'div',
   teleport: {
@@ -15,7 +17,8 @@ const defaultOptions: DefaultOptions = {
   },
   animation: {
     snap: {
-      duration: 300,
+      duration: 500,
+      easing: easeOutBack,
     },
   },
   initial: {

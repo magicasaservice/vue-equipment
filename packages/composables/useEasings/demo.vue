@@ -26,8 +26,6 @@ import { ref } from 'vue'
 import { useEasings } from '@maas/vue-equipment/composables'
 import { useRafFn } from '@vueuse/core'
 
-import type { EasingFunction, EasingKey } from '@maas/vue-equipment/composables'
-
 const easings = useEasings()
 const { pause, resume, isActive } = useRafFn(() => mapEasings(), {
   immediate: false,
@@ -60,18 +58,18 @@ const toggle = () => {
 }
 
 const mapEasings = () => {
-  const easingsArray: EasingKey[] = Object.keys(easings) as EasingKey[]
+  const easingsValues = Object.values(easings)
+  const easingsKeys = Object.keys(easings)
 
-  mappedEasings.value = easingsArray.map((easing) => {
-    const easingFn = easings[easing]
+  mappedEasings.value = easingsValues.map((easing, i) => {
     return {
-      name: easing,
-      style: isActive.value ? getStyle(easingFn) : '',
+      name: easingsKeys[i],
+      style: isActive.value ? getStyle(easing) : '',
     }
   })
 }
 
-const getStyle = (easing: EasingFunction) => {
+const getStyle = (easing: typeof easings.easeInCubic) => {
   return {
     marginLeft: `${
       easing(getCurrentTime()) * (endX.value - startX.value) + startX.value
