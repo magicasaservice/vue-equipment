@@ -150,4 +150,8 @@ onMounted(() => {
   cursor: grabbing;
   user-select: none;
 }
+
+.magic-draggable.-disabled .magic-draggable__drag {
+  cursor: default;
+}
 </style>

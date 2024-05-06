@@ -7,10 +7,6 @@ import { easeOutBack } from '@maas/vue-equipment/utils'
 
 const defaultOptions: DefaultOptions = {
   tag: 'div',
-  teleport: {
-    target: 'body',
-    disabled: false,
-  },
   threshold: {
     distance: 128,
     momentum: 1.5,

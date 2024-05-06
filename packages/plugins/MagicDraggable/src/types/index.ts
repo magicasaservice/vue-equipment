@@ -26,10 +26,6 @@ export type SnapPoint =
 
 export interface DraggableOptions {
   tag?: 'dialog' | 'div'
-  teleport?: {
-    target?: string
-    disabled?: boolean
-  }
   threshold?: {
     distance?: number
     momentum?: number
