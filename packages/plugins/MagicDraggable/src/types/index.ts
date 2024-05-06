@@ -40,7 +40,7 @@ export interface DraggableOptions {
   initial?: {
     snapPoint?: SnapPoint
   }
-  snapPoints: SnapPoint[]
+  snapPoints?: SnapPoint[]
   disabled?: boolean
 }
 
