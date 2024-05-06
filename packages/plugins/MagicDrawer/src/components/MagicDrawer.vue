@@ -92,7 +92,7 @@ import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
 
-import type { DrawerOptions } from './../types/index'
+import type { DrawerOptions } from '../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
@@ -106,8 +106,9 @@ import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
 
 // Prevent deep merge of certain options
+// In this case, don’t merge the `close` and `points` options
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'keys' || key === 'points') {
+  if (key === 'close' || key === 'points') {
     obj[key] = value
     return true
   }
@@ -140,7 +141,14 @@ const drawerApi = useDrawerApi(props.id, {
 })
 
 const overshoot = ref(0)
-const { position, threshold, snap, canClose } = mappedOptions
+const {
+  position,
+  snapPoints,
+  threshold,
+  animation,
+  preventDragClose,
+  initial,
+} = mappedOptions
 
 const {
   isActive,
@@ -171,10 +179,12 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   elRef,
   wrapperRef,
   position,
+  snapPoints,
   threshold,
   overshoot,
-  snap,
-  canClose,
+  animation,
+  initial,
+  preventDragClose,
   close,
 })
 
@@ -221,8 +231,8 @@ const { resetMetaViewport } = useMetaViewport()
 // To achieve this, the transition names are set to undefined
 const preventTransition = computed(() => {
   return (
-    mappedOptions.beforeMount.open &&
-    !mappedOptions.beforeMount.animate &&
+    mappedOptions.initial.open &&
+    !mappedOptions.initial.transition &&
     !wasActive.value
   )
 })
@@ -230,13 +240,11 @@ const preventTransition = computed(() => {
 const backdropTransition = computed(() => {
   return preventTransition.value
     ? undefined
-    : mappedOptions.transitions?.backdrop
+    : mappedOptions.transition?.backdrop
 })
 
 const contentTransition = computed(() => {
-  return preventTransition.value
-    ? undefined
-    : mappedOptions.transitions?.content
+  return preventTransition.value ? undefined : mappedOptions.transition?.content
 })
 
 // Private functions
@@ -270,14 +278,14 @@ async function onOpen() {
   await nextTick()
   innerActive.value = true
   await nextTick()
-  if (mappedOptions.mousewheel) {
+  if (mappedOptions.enableMousewheel) {
     initializeWheelListener()
   }
 }
 
 function onClose() {
   innerActive.value = false
-  if (mappedOptions.mousewheel) {
+  if (mappedOptions.enableMousewheel) {
     destroyWheelListener()
   }
 }
@@ -296,7 +304,7 @@ function guardedClick(event: PointerEvent) {
 }
 
 function guardedClose() {
-  if (canClose && !disabled.value) {
+  if (!disabled.value) {
     close()
   }
 }
@@ -310,8 +318,8 @@ function saveOvershoot() {
 }
 
 // Lifecycle hooks and listeners
-if (mappedOptions.keys && canClose) {
-  for (const key of mappedOptions.keys) {
+if (mappedOptions.keyListener.close) {
+  for (const key of mappedOptions.keyListener.close) {
     onKeyStroke(key, (e) => {
       close()
       e.preventDefault()
@@ -334,7 +342,7 @@ watch(innerActive, () => {
 
 onBeforeMount(async () => {
   // Force open
-  if (mappedOptions.beforeMount.open) {
+  if (mappedOptions.initial.open) {
     open()
   }
 })
@@ -351,7 +359,10 @@ onBeforeUnmount(() => {
 onUnmounted(() => {
   if (mappedOptions.scrollLock) {
     unlockScroll()
-    if (mappedOptions.scrollLockPadding) {
+    if (
+      typeof mappedOptions.scrollLock === 'object' &&
+      mappedOptions.scrollLock.padding
+    ) {
       removeScrollLockPadding()
     }
   }
@@ -360,7 +371,7 @@ onUnmounted(() => {
     releaseFocus()
   }
 
-  if (mappedOptions.preventZoom) {
+  if (!mappedOptions.preventZoom) {
     resetMetaViewport()
   }
 

@@ -5,6 +5,7 @@ import { useDrawerEmitter } from '../useDrawerEmitter'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
+import { type RequireAllNested } from '@maas/vue-equipment/utils'
 
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
@@ -12,8 +13,9 @@ type UseDrawerSnapArgs = {
   draggedY: Ref<number>
   draggedX: Ref<number>
   position: MaybeRef<DefaultOptions['position']>
-  snap: MaybeRef<DefaultOptions['snap']>
-  canClose: MaybeRef<DefaultOptions['canClose']>
+  animation: MaybeRef<DefaultOptions['animation']>
+  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
+  preventDragClose: MaybeRef<DefaultOptions['preventDragClose']>
   overshoot: MaybeRef<number>
 }
 
@@ -38,27 +40,30 @@ type SnapToArgs = {
 type InterpolateDraggedArgs = {
   to: number
   duration?: number
+  easing?: (t: number) => number
 }
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
   const {
     id,
-    snap,
+    snapPoints,
+    animation,
     position,
     wrapperRect,
     overshoot,
     draggedY,
     draggedX,
-    canClose,
+    preventDragClose,
   } = args
 
   // Private state
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
     () => {
-      // Add 0 to the snap points, if canClose is true
-      const snapPoints = toValue(snap)?.points
-      const extended = toValue(canClose) ? [...snapPoints, 0] : snapPoints
+      // Add 0 to the snap points, if preventDragClose is false
+      const extended = toValue(preventDragClose)
+        ? toValue(snapPoints)
+        : [...toValue(snapPoints), 0]
 
       // Map snap points
       const mapped = extended.map((snapPoint) => {
@@ -78,14 +83,12 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   )
 
   const snapPointsMap = computedWithControl(
+    () => toValue(snapPoints),
     () => {
-      const snapPoints = toValue(snap)?.points
-      return { ...snapPoints }
-    },
-    () => {
-      // Add 0 to the snap points, if canClose is true
-      const snapPoints = toValue(snap)?.points
-      const extended = toValue(canClose) ? [...snapPoints, 0] : snapPoints
+      // Add 0 to the snap points, if preventDragClose is false
+      const extended = toValue(preventDragClose)
+        ? toValue(snapPoints)
+        : [...toValue(snapPoints), 0]
 
       const mapped = extended.reduce((acc, current) => {
         const key = mapSnapPoint(current)
@@ -279,7 +282,11 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   }
 
   function interpolateDragged(args: InterpolateDraggedArgs) {
-    const { to, duration = toValue(snap).duration } = args
+    const {
+      to,
+      duration = toValue(animation)?.snap?.duration || 300,
+      easing,
+    } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]
     useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })
@@ -289,8 +296,9 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'top':
         interpolate({
           from: draggedY.value,
-          to: to,
-          duration: duration,
+          to,
+          duration,
+          easing,
           callback: (value: number) => {
             draggedY.value = value
             if (draggedY.value === to) {
@@ -307,8 +315,9 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'left':
         interpolate({
           from: draggedX.value,
-          to: to,
-          duration: duration,
+          to,
+          duration,
+          easing,
           callback: (value: number) => {
             draggedX.value = value
             if (draggedX.value === to) {

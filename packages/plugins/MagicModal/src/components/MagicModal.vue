@@ -15,7 +15,7 @@
     >
       <transition
         v-if="mappedOptions.backdrop || !!$slots.backdrop"
-        :name="mappedOptions.transitions?.backdrop"
+        :name="mappedOptions.transition?.backdrop"
       >
         <div
           v-show="innerActive"
@@ -26,7 +26,7 @@
         </div>
       </transition>
       <transition
-        :name="mappedOptions.transitions?.content"
+        :name="mappedOptions.transition?.content"
         @before-leave="onBeforeLeave"
         @leave="onLeave"
         @after-leave="onAfterLeave"
@@ -147,8 +147,8 @@ function onClose() {
   innerActive.value = false
 }
 
-if (mappedOptions.keys) {
-  for (const key of mappedOptions.keys) {
+if (mappedOptions.keyListener?.close) {
+  for (const key of mappedOptions.keyListener.close) {
     onKeyStroke(key, (e) => {
       close()
       e.preventDefault()
@@ -172,7 +172,10 @@ onBeforeUnmount(() => {
 onUnmounted(() => {
   if (mappedOptions.scrollLock) {
     unlockScroll()
-    if (mappedOptions.scrollLockPadding) {
+    if (
+      typeof mappedOptions.scrollLock === 'object' &&
+      mappedOptions.scrollLock.padding
+    ) {
       removeScrollLockPadding()
     }
   }

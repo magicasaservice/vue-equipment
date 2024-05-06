@@ -3,23 +3,24 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAll<ModalOptions> = {
   backdrop: true,
+  tag: 'dialog',
   focusTrap: {
     initialFocus: false,
     setReturnFocus: false,
     allowOutsideClick: true,
   },
-  scrollLock: true,
-  scrollLockPadding: true,
+  scrollLock: { padding: true },
   teleport: {
     target: 'body',
     disabled: false,
   },
-  transitions: {
+  transition: {
     content: 'magic-modal--content',
     backdrop: 'magic-modal--backdrop',
   },
-  tag: 'dialog',
-  keys: ['Escape'],
+  keyListener: {
+    close: ['Escape'],
+  },
 }
 
 export { defaultOptions }

@@ -1,4 +1,5 @@
 export * from './src/functions/clampValue'
+export * from './src/functions/easings'
 export * from './src/functions/formatTime'
 export * from './src/functions/interpolate'
 export * from './src/functions/isIOS'

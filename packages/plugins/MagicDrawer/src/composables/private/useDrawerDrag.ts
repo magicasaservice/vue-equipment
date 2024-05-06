@@ -32,9 +32,11 @@ type UseDrawerDragArgs = {
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
   position: MaybeRef<DefaultOptions['position']>
+  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   threshold: MaybeRef<DefaultOptions['threshold']>
-  snap: MaybeRef<DefaultOptions['snap']>
-  canClose: MaybeRef<DefaultOptions['canClose']>
+  initial: MaybeRef<DefaultOptions['initial']>
+  animation: MaybeRef<DefaultOptions['animation']>
+  preventDragClose: MaybeRef<DefaultOptions['preventDragClose']>
   overshoot: MaybeRef<number>
   close: () => void
 }
@@ -46,10 +48,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     elRef,
     wrapperRef,
     position,
+    snapPoints,
     overshoot,
     threshold,
-    snap,
-    canClose,
+    initial,
+    animation,
+    preventDragClose,
     close,
   } = args
 
@@ -79,8 +83,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
-
-  const duration = computed(() => toValue(snap)?.duration)
 
   const hasDragged = computed(() => {
     const hasDraggedX = !isWithinRange({
@@ -116,8 +118,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   } = useDrawerSnap({
     id,
     wrapperRect,
-    snap,
-    canClose,
+    animation,
+    snapPoints,
+    preventDragClose,
     position,
     overshoot,
     draggedY,
@@ -346,7 +349,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         snapTo({
           snapPoint: payload.snapPoint,
           interpolate: true,
-          duration: payload.duration || duration.value,
+          duration: payload.duration,
         })
       }
     }
@@ -361,7 +364,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
         interpolateDragged({
           to: interpolateTo.value,
-          duration: duration.value,
         })
       }
 
@@ -386,7 +388,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         case 'top':
           interpolateDragged({
             to: snappedY.value,
-            duration: duration.value,
           })
           break
 
@@ -394,7 +395,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         case 'left':
           interpolateDragged({
             to: snappedX.value,
-            duration: duration.value,
           })
           break
       }
@@ -459,7 +459,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
-    // Prevent dragging if we're already dragging
+    // Prevent dragging if we’re already dragging
     if (dragging.value) {
       return
     } else {
@@ -514,8 +514,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     () => [unrefElement(elRef), unrefElement(wrapperRef)],
     async () => {
       await getSizes()
-      const snapPoint = toValue(snap)?.initial
-      snapTo({ snapPoint, interpolate: false })
+      const snapPoint = toValue(initial)?.snapPoint
+
+      if (snapPoint) {
+        snapTo({ snapPoint, interpolate: false })
+      }
     }
   )
 
