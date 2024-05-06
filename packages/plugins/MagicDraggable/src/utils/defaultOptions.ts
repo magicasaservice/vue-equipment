@@ -14,7 +14,7 @@ const defaultOptions: DefaultOptions = {
   threshold: {
     distance: 128,
     momentum: 1,
-    idle: 125,
+    idle: 250,
   },
   animation: {
     snap: {
