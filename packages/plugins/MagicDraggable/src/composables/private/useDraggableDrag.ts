@@ -419,9 +419,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }, 100)()
   })
 
-  // If the user pauses for 250ms while dragging, reset thresholds and last dragged position
+  // If the user pauses while dragging, reset thresholds and last dragged position
   // This ensures that the element either snaps back or snaps to a snap point in a new right direction
-  const { idle } = useIdle(250)
+  const { idle } = useIdle(toValue(threshold).idle)
 
   watch(idle, (value) => {
     if (value && dragging.value) {
