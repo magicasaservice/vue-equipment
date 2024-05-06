@@ -276,6 +276,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   }
 
   function onPointerup(_e: PointerEvent) {
+    // Snap to the closest snap point if the user did not drag with enough momentum
+    if (!momentumThresholdReached.value && distanceThresholdReached.value) {
+      interpolateTo.value = findClosestSnapPoint()
+    }
+
     const { x, y } = interpolateTo.value || {}
 
     if (x !== undefined && y !== undefined) {

@@ -26,6 +26,9 @@
           'bottom-right',
         ],
         initial: { snapPoint: 'center' },
+        threshold: {
+          distance: 32,
+        },
       }"
       class="border-solid border-2 border-gray-500 aspect-square"
     >
@@ -37,5 +40,6 @@
 <style>
 #demo-contained-draggable {
   --magic-draggable-position: relative;
+  --magic-draggable-z-index: 1;
 }
 </style>
