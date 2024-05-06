@@ -14,6 +14,8 @@ export function useDraggableState(id: MaybeRef<string>) {
       originY: 0,
       lastDraggedX: 0,
       lastDraggedY: 0,
+      intermediateDraggedX: 0,
+      intermediateDraggedY: 0,
       draggedX: 0,
       draggedY: 0,
       elRect: undefined,

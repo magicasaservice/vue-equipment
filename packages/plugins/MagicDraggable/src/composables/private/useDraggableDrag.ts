@@ -45,6 +45,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     originY,
     lastDraggedX,
     lastDraggedY,
+    intermediateDraggedX,
+    intermediateDraggedY,
     draggedX,
     draggedY,
     elRect,
@@ -165,13 +167,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   function checkDistance() {
     // Check if threshold distance is reached
     if (toValue(threshold).distance) {
-      const lastDraggedCoords = {
-        x: lastDraggedX.value,
-        y: lastDraggedY.value,
+      const intermediateDraggedCoords = {
+        x: intermediateDraggedX.value,
+        y: intermediateDraggedY.value,
       }
       const draggedCoords = { x: draggedX.value, y: draggedY.value }
       const draggedDistance = calculateDistance(
-        lastDraggedCoords,
+        intermediateDraggedCoords,
         draggedCoords
       )
 
@@ -186,13 +188,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   function checkMomentum() {
     // Check if threshold momentum is reached
     if (dragStart.value && toValue(threshold).momentum) {
-      const lastDraggedCoords = {
-        x: lastDraggedX.value,
-        y: lastDraggedY.value,
+      const intermediateDraggedCoords = {
+        x: intermediateDraggedX.value,
+        y: intermediateDraggedY.value,
       }
       const draggedCoords = { x: draggedX.value, y: draggedY.value }
       const draggedDistance = calculateDistance(
-        lastDraggedCoords,
+        intermediateDraggedCoords,
         draggedCoords
       )
 
@@ -212,27 +214,25 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     momentumThresholdReached.value = true
   }
 
-  function findSmallerDistance(a: Coordinates, b: Coordinates) {
-    const distanceA = calculateDistance(a, {
-      x: draggedX.value,
-      y: draggedY.value,
-    })
-    const distanceB = calculateDistance(b, {
-      x: draggedX.value,
-      y: draggedY.value,
-    })
+  function compareDistances(a: Coordinates, b: Coordinates) {
+    const draggedCoords = { x: draggedX.value, y: draggedY.value }
+    const distanceA = calculateDistance(a, draggedCoords)
+    const distanceB = calculateDistance(b, draggedCoords)
 
     return distanceA < distanceB ? a : b
   }
 
-  function findSnapPoint() {
+  function findSnapPointByVector() {
     let bestDotProduct = -Infinity
 
-    const lastDraggedCoords = { x: lastDraggedX.value, y: lastDraggedY.value }
+    const intermediateDraggedCoords = {
+      x: intermediateDraggedX.value,
+      y: intermediateDraggedY.value,
+    }
     const draggedCoords = { x: draggedX.value, y: draggedY.value }
 
     const lineVector = vectorBetweenCoordinates(
-      lastDraggedCoords,
+      intermediateDraggedCoords,
       draggedCoords
     )
 
@@ -240,9 +240,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       const snapPoint = mappedSnapPoints.value[i]
 
       const targetVector = vectorBetweenCoordinates(
-        lastDraggedCoords,
+        intermediateDraggedCoords,
         snapPoint
       )
+
       const currentDotProduct = dotProduct(lineVector, targetVector)
 
       if (currentDotProduct > bestDotProduct) {
@@ -250,11 +251,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         interpolateTo.value = snapPoint
       } else if (currentDotProduct === bestDotProduct) {
         // If dot product is the same, compare distance and pick the closest one
-        // compareDistances(draggedCoords, snapPoint)
         if (!interpolateTo.value) {
           interpolateTo.value = snapPoint
         } else {
-          const smallerDistance = findSmallerDistance(
+          const smallerDistance = compareDistances(
             snapPoint,
             interpolateTo.value!
           )
@@ -262,6 +262,17 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         }
       }
     }
+  }
+
+  function findClosestSnapPoint() {
+    const draggedCoords = { x: draggedX.value, y: draggedY.value }
+    const closestSnapPoint = mappedSnapPoints.value.reduce((a, b) => {
+      return calculateDistance(a, draggedCoords) <
+        calculateDistance(b, draggedCoords)
+        ? a
+        : b
+    })
+    return closestSnapPoint
   }
 
   function onPointerup(_e: PointerEvent) {
@@ -307,7 +318,23 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Find snap point
     if (toValue(snapPoints).length) {
-      findSnapPoint()
+      findSnapPointByVector()
+    }
+  }
+
+  function onIdle() {
+    // Snap to the closest point if the user has idled
+    interpolateTo.value = findClosestSnapPoint()
+
+    // Reset the intermediate dragged position, so that the direction vector
+    // is calculated correctly for the subsequent drag
+    if (distanceThresholdReached.value && momentumThresholdReached.value) {
+      intermediateDraggedX.value = draggedX.value
+      intermediateDraggedY.value = draggedY.value
+
+      // Reset thresholds
+      distanceThresholdReached.value = false
+      momentumThresholdReached.value = false
     }
   }
 
@@ -320,8 +347,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       dragging.value = true
     }
 
-    // Save last dragged position,
-    // used later to check if click event should propagate
+    // Save intermediate and last dragged position,
+    // used later to reset position and calculate vectors
+    intermediateDraggedX.value = draggedX.value
+    intermediateDraggedY.value = draggedY.value
+
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
 
@@ -389,20 +419,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }, 100)()
   })
 
-  // If the user pauses for 50ms while dragging, this resets the last dragged position
-  // so that the direction of the drag can be calculated correctly.
-  // To ensure no wrong values are saved, the thresholds need to be reached first
-  const { idle } = useIdle(50)
+  // If the user pauses for 250ms while dragging, reset thresholds and last dragged position
+  // This ensures that the element either snaps back or snaps to a snap point in a new right direction
+  const { idle } = useIdle(250)
 
   watch(idle, (value) => {
-    if (
-      value &&
-      dragging.value &&
-      momentumThresholdReached.value &&
-      distanceThresholdReached.value
-    ) {
-      lastDraggedX.value = draggedX.value
-      lastDraggedY.value = draggedY.value
+    if (value && dragging.value) {
+      onIdle()
     }
   })
 

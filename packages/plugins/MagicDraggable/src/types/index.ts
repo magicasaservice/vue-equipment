@@ -56,6 +56,8 @@ export interface DraggableState {
   originY: number
   lastDraggedX: number
   lastDraggedY: number
+  intermediateDraggedX: number
+  intermediateDraggedY: number
   draggedX: number
   draggedY: number
   elRect: DOMRect | undefined
