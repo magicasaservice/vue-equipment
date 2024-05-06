@@ -8,7 +8,7 @@ export interface DrawerOptions {
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
   scrollLock?: boolean | { padding: boolean }
-  snapPoints: SnapPoint[]
+  snapPoints?: SnapPoint[]
   teleport?: {
     target?: string
     disabled?: boolean
