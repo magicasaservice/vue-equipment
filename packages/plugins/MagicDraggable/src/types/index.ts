@@ -30,6 +30,7 @@ export interface DraggableOptions {
     distance?: number
     momentum?: number
     idle?: number
+    lock?: number
   }
   animation?: {
     snap?: {

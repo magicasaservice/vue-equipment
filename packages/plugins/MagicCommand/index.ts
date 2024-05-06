@@ -8,9 +8,7 @@ import MagicCommandModal from './src/components/MagicCommandModal.vue'
 import MagicCommandProvider from './src/components/MagicCommandProvider.vue'
 import MagicCommandView from './src/components/MagicCommandView.vue'
 
-import { useCommandApi } from './src/composables/useCommandApi'
-import { useCommandEmitter } from './src/composables/useCommandEmitter'
-
+import { useMagicCommand } from './src/composables/useMagicCommand'
 import { CommandInstanceId, CommandOptionsKey } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
@@ -32,8 +30,7 @@ const MagicCommandPlugin: Plugin = {
 
 export {
   MagicCommandPlugin,
-  useCommandApi,
-  useCommandEmitter,
+  useMagicCommand,
   CommandInstanceId,
   CommandOptionsKey,
 }

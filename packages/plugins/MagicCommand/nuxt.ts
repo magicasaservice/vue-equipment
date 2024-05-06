@@ -19,11 +19,7 @@ export default defineNuxtModule({
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicCommand',
-      name: 'useCommandApi',
-    })
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicCommand',
-      name: 'useCommandEmitter',
+      name: 'useMagicCommand',
     })
   },
 })

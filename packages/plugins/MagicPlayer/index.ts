@@ -8,7 +8,7 @@ import MagicPlayerMuxPopover from './src/components/MagicPlayerMuxPopover.vue'
 import MagicPlayerOverlay from './src/components/MagicPlayerOverlay.vue'
 import MagicPlayerPoster from './src/components/MagicPlayerPoster.vue'
 import MagicPlayerTimeline from './src/components/MagicPlayerTimeline.vue'
-import { usePlayerApi } from './src/composables/usePlayerApi'
+import { useMagicPlayer } from './src/composables/useMagicPlayer'
 
 const MagicPlayerPlugin: Plugin = {
   install: (app: App) => {
@@ -32,7 +32,7 @@ export {
   MagicPlayerPoster,
   MagicPlayerOverlay,
   MagicPlayerTimeline,
-  usePlayerApi,
+  useMagicPlayer,
 }
 
 export type * from './src/types/index'

@@ -1,5 +1,4 @@
 import {
-  ref,
   watch,
   toValue,
   computed,
@@ -9,7 +8,8 @@ import {
   type Ref,
   type MaybeRef,
 } from 'vue'
-import { useDrawerEmitter } from './../useDrawerEmitter'
+import { useMagicDrawer } from './../useMagicDrawer'
+import { useDrawerState } from './useDrawerState'
 import { useElementBounding, useRafFn } from '@vueuse/core'
 
 import type { DrawerEvents } from '../../types'
@@ -27,9 +27,9 @@ interface UseDrawerProgressArgs {
 
 export function useDrawerProgress(args: UseDrawerProgressArgs) {
   const { id, drawerRef, elRef, position, overshoot } = args
+  const { findState } = useDrawerState(id)
 
   // Private state
-
   const drawerRect = useElementBounding(drawerRef)
   const elRect = useElementBounding(elRef)
 
@@ -41,7 +41,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   )
 
   // Public state
-  const progress = ref({ x: 0, y: 0 })
+  const { progress } = findState()
 
   // Private method
   function rafCallback() {
@@ -49,6 +49,8 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     elRect.update()
     calculateProgress()
   }
+
+  const { emitter } = useMagicDrawer(id)
 
   const { pause: snapPause, resume: snapResume } = useRafFn(rafCallback, {
     immediate: false,
@@ -113,7 +115,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   }
 
   watch([() => progress.value.x, () => progress.value.y], ([x, y]) => {
-    useDrawerEmitter().emit('progress', {
+    emitter.emit('progress', {
       id: toValue(id),
       x,
       y,
@@ -169,25 +171,25 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   }
 
   onMounted(() => {
-    useDrawerEmitter().on('beforeEnter', beforeCallback)
-    useDrawerEmitter().on('afterEnter', afterCallback)
-    useDrawerEmitter().on('beforeDrag', beforeDragCallback)
-    useDrawerEmitter().on('afterDrag', afterDragCallback)
-    useDrawerEmitter().on('beforeSnap', beforeSnapCallback)
-    useDrawerEmitter().on('afterSnap', afterSnapCallback)
-    useDrawerEmitter().on('beforeLeave', beforeCallback)
-    useDrawerEmitter().on('afterLeave', afterCallback)
+    emitter.on('beforeEnter', beforeCallback)
+    emitter.on('afterEnter', afterCallback)
+    emitter.on('beforeDrag', beforeDragCallback)
+    emitter.on('afterDrag', afterDragCallback)
+    emitter.on('beforeSnap', beforeSnapCallback)
+    emitter.on('afterSnap', afterSnapCallback)
+    emitter.on('beforeLeave', beforeCallback)
+    emitter.on('afterLeave', afterCallback)
   })
 
   onBeforeUnmount(() => {
-    useDrawerEmitter().off('beforeEnter', beforeCallback)
-    useDrawerEmitter().off('afterEnter', afterCallback)
-    useDrawerEmitter().off('beforeDrag', beforeDragCallback)
-    useDrawerEmitter().off('afterDrag', afterDragCallback)
-    useDrawerEmitter().off('beforeSnap', beforeSnapCallback)
-    useDrawerEmitter().off('afterSnap', afterSnapCallback)
-    useDrawerEmitter().off('beforeLeave', beforeCallback)
-    useDrawerEmitter().off('afterLeave', afterCallback)
+    emitter.off('beforeEnter', beforeCallback)
+    emitter.off('afterEnter', afterCallback)
+    emitter.off('beforeDrag', beforeDragCallback)
+    emitter.off('afterDrag', afterDragCallback)
+    emitter.off('beforeSnap', beforeSnapCallback)
+    emitter.off('afterSnap', afterSnapCallback)
+    emitter.off('beforeLeave', beforeCallback)
+    emitter.off('afterLeave', afterCallback)
   })
 
   return { progress }

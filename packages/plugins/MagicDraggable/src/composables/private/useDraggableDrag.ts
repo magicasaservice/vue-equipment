@@ -11,12 +11,13 @@ import {
   useEventListener,
   unrefElement,
   useResizeObserver,
+  useScrollLock,
   useThrottleFn,
   useIdle,
 } from '@vueuse/core'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
-import { isIOS } from '@maas/vue-equipment/utils'
+import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { Coordinates } from '../../types'
@@ -64,6 +65,22 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   const style = computed(
     () => `transform: translate3d(${draggedX.value}px, ${draggedY.value}px, 0)`
   )
+
+  const hasDragged = computed(() => {
+    const hasDraggedX = !isWithinRange({
+      input: draggedX.value,
+      base: lastDraggedX.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    const hasDraggedY = !isWithinRange({
+      input: draggedY.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    return hasDraggedX || hasDraggedY
+  })
 
   // Snap logic
   const {
@@ -381,9 +398,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   }
 
   function onClick(e: MouseEvent) {
-    // if (hasDragged.value) {
-    e.preventDefault()
-    // }
+    if (hasDragged.value) {
+      e.preventDefault()
+    }
   }
 
   async function initialize() {
@@ -456,5 +473,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     onPointerdown,
     onClick,
     style,
+    hasDragged,
   }
 }

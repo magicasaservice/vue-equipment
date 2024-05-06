@@ -1,10 +1,15 @@
 import { computed, toValue, type MaybeRef } from 'vue'
+import mitt from 'mitt'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from './private/useCommandStore'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
 
-export function useCommandApi(id: MaybeRef<string>) {
+import type { CommandEvents } from '../types'
+
+const emitter = mitt<CommandEvents>()
+
+export function useMagicCommand(id?: MaybeRef<string>) {
   // Private state
   const mappedId = computed(() => toValue(id) || uuid())
 
@@ -36,5 +41,6 @@ export function useCommandApi(id: MaybeRef<string>) {
     selectLastItem,
     selectView,
     selectLastView,
+    emitter,
   }
 }

@@ -8,7 +8,7 @@ type usePlayerApiArgs = {
   id: MaybeRef<string>
 }
 
-export function usePlayerApi(args: usePlayerApiArgs) {
+export function useMagicPlayer(args: usePlayerApiArgs) {
   const mediaApi = usePlayerMediaApi({ id: args.id })
   const videoApi = usePlayerVideoApi({ id: args.id })
   const controlsApi = usePlayerControlsApi({ id: args.id })
@@ -22,4 +22,4 @@ export function usePlayerApi(args: usePlayerApiArgs) {
   }
 }
 
-export type UsePlayerApiApiReturn = ReturnType<typeof usePlayerApi>
+export type UseMagicPlayerReturn = ReturnType<typeof useMagicPlayer>

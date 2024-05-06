@@ -1,16 +1,13 @@
-import { ref, computed, toValue, type MaybeRef } from 'vue'
+import { ref } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { uuid, matchClass } from '@maas/vue-equipment/utils'
-import { useDrawerStore } from './private/useDrawerStore'
-import { useDrawerState } from './private/useDrawerState'
-import { useDrawerEmitter } from './useDrawerEmitter'
+import { matchClass } from '@maas/vue-equipment/utils'
 
-import type { DrawerEvents, DrawerOptions, SnapPoint } from '../types/index'
+import type { ModalOptions } from '../../types/index'
 
-export type UseDrawerApiOptions = Pick<
-  DrawerOptions,
+export type useModalApiOptions = Pick<
+  ModalOptions,
   'scrollLock' | 'focusTrap'
 > & {
   focusTarget: MaybeElementRef
@@ -27,13 +24,9 @@ const scrollLock =
     ? useScrollLock(document?.documentElement)
     : ref(false)
 
-export function useDrawerApi(
-  id?: MaybeRef<string>,
-  options?: UseDrawerApiOptions
-) {
+export function useModalDOM(options?: useModalApiOptions) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
-  const mappedId = computed(() => toValue(id) || uuid())
   const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
@@ -42,39 +35,7 @@ export function useDrawerApi(
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
-  // Private methods
-  const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-  const { deleteState } = useDrawerState(mappedId.value)
-
-  function progressCallback(payload: DrawerEvents['progress']) {
-    if (payload.id === mappedId.value) {
-      progress.value.x = payload.x
-      progress.value.y = payload.y
-    }
-  }
-
-  // Public state
-  const isActive = computed(() => drawerStore.value.includes(mappedId.value))
-  const progress = ref({ x: 0, y: 0 })
-
   // Public methods
-  function open() {
-    addInstance(mappedId.value)
-  }
-
-  function close() {
-    removeInstance(mappedId.value)
-    deleteState()
-  }
-
-  function snapTo(snapPoint: SnapPoint, duration?: number) {
-    useDrawerEmitter().emit('snapTo', {
-      id: mappedId.value,
-      snapPoint,
-      duration,
-    })
-  }
-
   function trapFocus() {
     if (focusTrap) {
       focusTrap.activate()
@@ -102,7 +63,7 @@ export function useDrawerApi(
   function addScrollLockPadding() {
     if (typeof window === 'undefined') return
 
-    const exclude = new RegExp(/magic-drawer(__backdrop)?/)
+    const exclude = new RegExp(/magic-modal(__backdrop)?/)
 
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
@@ -127,30 +88,12 @@ export function useDrawerApi(
     )
   }
 
-  function initialize() {
-    useDrawerEmitter().on('progress', progressCallback)
-  }
-
-  function destroy() {
-    useDrawerEmitter().off('progress', progressCallback)
-  }
-
   return {
-    id: mappedId,
-    isActive,
-    progress,
-    open,
-    close,
-    snapTo,
     trapFocus,
     releaseFocus,
     lockScroll,
     unlockScroll,
     addScrollLockPadding,
     removeScrollLockPadding,
-    initialize,
-    destroy,
   }
 }
-
-export type UseDrawerApiReturn = ReturnType<typeof useDrawerApi>

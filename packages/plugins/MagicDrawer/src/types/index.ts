@@ -47,6 +47,10 @@ export interface DrawerState {
   dragStart: Date | undefined
   dragging: boolean
   wheeling: boolean
+  progress: {
+    x: number
+    y: number
+  }
   shouldClose: boolean
   interpolateTo: number | undefined
   originX: number

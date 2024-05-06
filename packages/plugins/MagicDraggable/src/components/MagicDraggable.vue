@@ -23,6 +23,7 @@
       >
         <component v-if="component" v-bind="props" :is="component" />
         <slot v-else />
+        <div v-if="hasDragged" class="magic-draggable__overlay" />
       </component>
     </div>
   </div>
@@ -33,6 +34,7 @@ import {
   ref,
   computed,
   toValue,
+  watch,
   onMounted,
   type Component,
   type MaybeRef,
@@ -40,6 +42,7 @@ import {
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
+import { useDraggableScrollLock } from '../composables/private/useDraggableScrollLock'
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { DraggableOptions } from '../types'
@@ -75,15 +78,23 @@ const disabled = computed(() => {
 
 const { snapPoints, animation, initial, threshold } = mappedOptions
 
-const { initialize, onPointerdown, onClick, style } = useDraggableDrag({
-  id: props.id,
-  elRef,
-  wrapperRef,
-  threshold,
-  snapPoints,
-  animation,
-  initial,
-})
+const { initialize, onPointerdown, onClick, style, hasDragged } =
+  useDraggableDrag({
+    id: props.id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    animation,
+    initial,
+  })
+
+const {
+  lockScroll,
+  unlockScroll,
+  addScrollLockPadding,
+  removeScrollLockPadding,
+} = useDraggableScrollLock()
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
@@ -97,6 +108,16 @@ function guardedClick(event: PointerEvent) {
     onClick(event)
   }
 }
+
+watch(dragging, (value) => {
+  if (value) {
+    lockScroll()
+    addScrollLockPadding()
+  } else {
+    unlockScroll()
+    removeScrollLockPadding()
+  }
+})
 
 onMounted(() => {
   initialize()
@@ -153,5 +174,11 @@ onMounted(() => {
 
 .magic-draggable.-disabled .magic-draggable__drag {
   cursor: default;
+}
+
+.magic-draggable__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
 }
 </style>

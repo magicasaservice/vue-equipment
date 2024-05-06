@@ -24,11 +24,7 @@ export default defineNuxtModule({
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicDrawer',
-      name: 'useDrawerApi',
-    })
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicDrawer',
-      name: 'useDrawerEmitter',
+      name: 'useMagicDrawer',
     })
   },
 })

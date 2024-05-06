@@ -67,8 +67,9 @@ import {
 import { createDefu } from 'defu'
 import { onKeyStroke } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
-import { useModalApi } from './../composables/useModalApi'
+import { useModalDOM } from '../composables/private/useModalDOM'
 import { useModalCallback } from '../composables/private/useModalCallback'
+import { useMagicModal } from '../composables/useMagicModal'
 
 import type { ModalOptions } from './../types/index'
 
@@ -97,21 +98,19 @@ const props = withDefaults(defineProps<MagicModalProps>(), {
 
 const mappedOptions = customDefu(props.options, defaultOptions)
 const modalRef = ref<HTMLElement | undefined>(undefined)
-const modalApi = useModalApi(props.id, {
-  focusTarget: modalRef,
-  focusTrap: mappedOptions.focusTrap,
-})
-
 const {
-  isActive,
-  close,
   trapFocus,
   releaseFocus,
   lockScroll,
   unlockScroll,
   addScrollLockPadding,
   removeScrollLockPadding,
-} = modalApi
+} = useModalDOM({
+  focusTarget: modalRef,
+  focusTrap: mappedOptions.focusTrap,
+})
+
+const { isActive, close } = useMagicModal(props.id)
 
 // Split isActive into two values to animate modal smoothly
 const innerActive = ref(false)

@@ -21,7 +21,7 @@ export default defineNuxtModule({
 
     addImports({
       from: '@maas/vue-equipment/plugins/MagicPlayer',
-      name: 'usePlayerApi',
+      name: 'useMagicPlayer',
     })
   },
 })

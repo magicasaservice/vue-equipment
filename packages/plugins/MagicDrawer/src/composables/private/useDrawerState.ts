@@ -24,6 +24,10 @@ export function useDrawerState(id: MaybeRef<string>) {
       absDirectionX: undefined,
       elRect: undefined,
       wrapperRect: undefined,
+      progress: {
+        x: 0,
+        y: 0,
+      },
     }
 
     return reactive(state)

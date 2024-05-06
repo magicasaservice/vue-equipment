@@ -1,13 +1,12 @@
-import { ref, computed, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
+import { ref, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
 import { computedWithControl } from '@vueuse/core'
-import { mapValue, interpolate } from '@maas/vue-equipment/utils'
+import { interpolate } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { SnapPoint, Coordinates } from '../../types'
 
 type UseDraggableSnapArgs = {
-  // id: MaybeRef<string>
   elRect: Ref<DOMRect | undefined>
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>

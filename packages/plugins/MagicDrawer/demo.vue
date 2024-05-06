@@ -136,31 +136,29 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import {
-  useDrawerApi,
-  useDrawerEmitter,
-  type DrawerEvents,
-} from '@maas/vue-equipment/plugins'
+import { useMagicDrawer, type DrawerEvents } from '@maas/vue-equipment/plugins'
 
 const className = 'magic-drawer--test-class'
 
 const id = 'magic-drawer-demo'
-const drawerApi = useDrawerApi(id)
+const drawerApi = useMagicDrawer(id)
 
 const snapId = 'magic-drawer-snap-demo'
-const drawerSnapApi = useDrawerApi(snapId)
+const drawerSnapApi = useMagicDrawer(snapId)
 
 const horizontalId = 'magic-drawer-horizontal-demo'
-const drawerHorizontalApi = useDrawerApi(horizontalId)
+const drawerHorizontalApi = useMagicDrawer(horizontalId)
 
 const scrollId = 'magic-drawer-scroll-demo'
-const drawerScrollApi = useDrawerApi(scrollId)
+const drawerScrollApi = useMagicDrawer(scrollId)
 
 const scrollable = ref<HTMLDivElement | undefined>(undefined)
 const position = ref('right')
 
 const checkbox = ref(false)
 const text = ref('')
+
+const { emitter } = useMagicDrawer()
 
 function callback(
   event: keyof DrawerEvents,
@@ -173,10 +171,10 @@ function callback(
   }
 }
 
-useDrawerEmitter().on('*', callback)
+emitter.on('*', callback)
 
 onBeforeUnmount(() => {
-  useDrawerEmitter().off('*', callback)
+  emitter.off('*', callback)
 })
 </script>
 

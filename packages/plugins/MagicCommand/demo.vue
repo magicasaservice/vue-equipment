@@ -26,8 +26,7 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import {
-  useCommandApi,
-  useCommandEmitter,
+  useMagicCommand,
   type CommandEvents,
 } from '@maas/vue-equipment/plugins'
 
@@ -35,8 +34,8 @@ import DefaultView from './demo/DefaultView.vue'
 import ProjectView from './demo/ProjectView.vue'
 
 const id = 'magic-command-demo'
-const commandApi = useCommandApi(id)
-const { open } = commandApi
+const commandApi = useMagicCommand(id)
+const { open, emitter } = commandApi
 
 const wrapper = ref<'modal' | 'drawer'>('modal')
 
@@ -51,10 +50,10 @@ function toggleWrapper() {
   wrapper.value = wrapper.value === 'modal' ? 'drawer' : 'modal'
 }
 
-useCommandEmitter().on('*', callback)
+emitter.on('*', callback)
 
 onBeforeUnmount(() => {
-  useCommandEmitter().off('*', callback)
+  emitter.off('*', callback)
 })
 </script>
 

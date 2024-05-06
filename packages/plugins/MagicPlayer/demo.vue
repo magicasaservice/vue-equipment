@@ -143,9 +143,9 @@
 </template>
 
 <script lang="ts" setup>
-import { usePlayerApi } from '@maas/vue-equipment/plugins'
+import { useMagicPlayer } from '@maas/vue-equipment/plugins'
 
-const playerApi = usePlayerApi({ id: 'player-api' })
+const playerApi = useMagicPlayer({ id: 'player-api' })
 
 function togglePlay() {
   if (playerApi.mediaApi.playing.value) {
