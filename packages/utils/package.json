@@ -1,7 +1,7 @@
 {
   "name": "utils",
   "description": "Util functions used throughout",
-  "version": "0.26.5",
+  "version": "0.27.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@types/node": "^20.10.4",
