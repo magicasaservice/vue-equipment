@@ -13,7 +13,7 @@ const defaultOptions: DefaultOptions = {
   },
   threshold: {
     distance: 128,
-    momentum: 1,
+    momentum: 1.5,
     idle: 250,
   },
   animation: {
