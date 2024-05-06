@@ -3,34 +3,29 @@
     <magic-draggable
       id="demo-draggable"
       :options="{
-        snapPoints: [
-          'top-left',
-          // 'top-center',
-          'top-right',
-          // 'center-left',
-          // 'center',
-          // 'center-right',
-          'bottom-left',
-          // 'bottom-center',
-          'bottom-right',
-        ],
+        snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
         initial: {
           snapPoint: 'top-left',
         },
       }"
     >
-      <div class="bg-[blue] aspect-square w-40 rounded-md" />
+      <div class="bg-[red] aspect-square w-40 rounded-md" />
     </magic-draggable>
     <magic-draggable
       id="demo-contained-draggable"
       :options="{
         snapPoints: [
+          'top-left',
           'top-center',
+          'top-right',
           'center-left',
+          'center',
           'center-right',
+          'bottom-left',
           'bottom-center',
+          'bottom-right',
         ],
-        initial: { snapPoint: 'top-center' },
+        initial: { snapPoint: 'center' },
       }"
       class="border-solid border-2 border-gray-500 aspect-square"
     >
