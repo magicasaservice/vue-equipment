@@ -424,6 +424,19 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }, 100)()
   })
 
+  // Make sure the element keeps the correct position when its size changes
+  // To achieve this, we update the snapPointsMap after the element has snapped
+  useResizeObserver(elRef, async () => {
+    useThrottleFn(async () => {
+      await getSizes()
+
+      if (activeSnapPoint.value) {
+        await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
+        snapPointsMap.trigger()
+      }
+    }, 100)()
+  })
+
   // If the user pauses while dragging, reset thresholds and last dragged position
   // This ensures that the element either snaps back or snaps to a snap point in a new right direction
   const { idle } = useIdle(toValue(threshold).idle)
