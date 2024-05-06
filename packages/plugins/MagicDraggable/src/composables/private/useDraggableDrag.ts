@@ -400,8 +400,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
 
     await nextTick()
-    // Snap to initial position
     if (toValue(initial).snapPoint) {
+      // Save initial snap point
+      // Important for the resize listeners to work properly right away
+      activeSnapPoint.value = toValue(initial).snapPoint
+
+      // Snap to initial position
       const mappedSnapPoint = mapSnapPoint(toValue(initial).snapPoint!)
 
       if (mappedSnapPoint) {
