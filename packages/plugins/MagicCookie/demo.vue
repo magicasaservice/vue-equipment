@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useCookieApi } from '@maas/vue-equipment/plugins'
+import { useMagicCookie } from '@maas/vue-equipment/plugins'
 
 const {
   preferencesVisible,
@@ -36,7 +36,7 @@ const {
   onAccept,
   onAcceptSelected,
   onReject,
-} = useCookieApi()
+} = useMagicCookie()
 
 const cookies = [
   {
