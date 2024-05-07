@@ -483,6 +483,7 @@ onUnmounted(() => {
 .magic-drawer__drag {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  touch-action: none;
   width: 100%;
   height: 100%;
   display: flex;

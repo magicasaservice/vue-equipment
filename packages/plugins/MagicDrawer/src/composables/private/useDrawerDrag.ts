@@ -423,6 +423,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     }
 
+    // Prevent dragging with a secondary pointer
+    if (e.isTrusted && !e.isPrimary) {
+      return
+    }
+
     // Reset shouldClose before checking
     shouldClose.value = false
 
