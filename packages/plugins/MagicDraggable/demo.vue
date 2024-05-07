@@ -5,7 +5,7 @@
       :options="{
         snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
         initial: {
-          snapPoint: 'center',
+          snapPoint: 'top-left',
         },
       }"
     >

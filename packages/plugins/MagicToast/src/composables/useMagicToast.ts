@@ -1,4 +1,3 @@
-import { uuid } from '@maas/vue-equipment/utils'
 import { computed, toValue, markRaw, type MaybeRef } from 'vue'
 import { useToastStore } from './private/useToastStore'
 import type { AddArgs } from './../types'
