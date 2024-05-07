@@ -66,7 +66,7 @@ interface Props {
 
 defineProps<Props>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 
 const commandApi = useMagicCommand(commandId)
 const { selectView } = commandApi
