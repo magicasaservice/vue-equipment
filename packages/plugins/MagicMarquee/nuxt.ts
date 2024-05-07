@@ -17,6 +17,5 @@ export default defineNuxtModule({
       global: true,
       pathPrefix: false,
     })
-    addImportsDir(resolver.resolve('src/composables'))
   },
 })

@@ -1,5 +1,6 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useMagicDrawer } from './../useMagicDrawer'
 import type { DrawerOptions } from '../../types'
 
@@ -31,8 +32,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   } = args
 
   const { setMetaViewport, resetMetaViewport } = useMetaViewport()
-
-  const { emitter } = useMagicDrawer(id)
+  const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el?: Element) {
     emitter.emit('beforeEnter', toValue(id))

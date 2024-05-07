@@ -10,7 +10,7 @@ type CollisionEvents = {
     dir: 'up' | 'down'
     pos: 'top' | 'bottom'
     el: HTMLElement
-    data?: Record<string, any>
+    data?: Record<string, unknown>
   }
 }
 
@@ -20,7 +20,7 @@ interface CollisionEntry {
     bottom: number | (() => number)
   }
   element?: string
-  data: Record<string, any>
+  data: Record<string, unknown>
 }
 
 interface MappedCollisionEntry extends Omit<CollisionEntry, 'element'> {

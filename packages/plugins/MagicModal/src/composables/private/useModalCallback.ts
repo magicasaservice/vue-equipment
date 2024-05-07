@@ -1,5 +1,5 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
-import { useMagicModal } from './../useMagicModal'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { ModalOptions } from '../../types'
 
 type UseModalCallbackArgs = {
@@ -27,7 +27,7 @@ export function useModalCallback(args: UseModalCallbackArgs) {
     wrapperActive,
   } = args
 
-  const { emitter } = useMagicModal(id)
+  const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el?: Element) {
     emitter.emit('beforeEnter', toValue(id))

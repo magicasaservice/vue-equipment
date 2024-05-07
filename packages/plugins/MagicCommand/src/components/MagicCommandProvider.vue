@@ -8,9 +8,9 @@
 import { watch, provide, onBeforeUnmount, type MaybeRef } from 'vue'
 import { createDefu } from 'defu'
 import { useMagicKeys } from '@vueuse/core'
-import { defaultOptions } from './../utils/defaultOptions'
+import { defaultOptions } from '../utils/defaultOptions'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { CommandInstanceId, CommandOptionsKey } from './../symbols'
+import { MagicCommandInstanceId, MagicCommandOptions } from '../symbols'
 
 import type { CommandOptions } from './../types/index'
 
@@ -64,6 +64,6 @@ onBeforeUnmount(() => {
   close()
 })
 
-provide(CommandInstanceId, props.id)
-provide(CommandOptionsKey, mappedOptions)
+provide(MagicCommandInstanceId, props.id)
+provide(MagicCommandOptions, mappedOptions)
 </script>

@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useMarqueeApi } from '../composables/useMarqueeApi'
+import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 
 interface Props {
   direction?: 'reverse' | 'normal'

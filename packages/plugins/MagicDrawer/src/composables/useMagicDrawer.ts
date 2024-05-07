@@ -1,47 +1,39 @@
 import { computed, toValue, type MaybeRef } from 'vue'
-import mitt from 'mitt'
-import { uuid } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerState } from './private/useDrawerState'
 
-import type { SnapPoint, DrawerEvents } from '../types/index'
+import type { SnapPoint } from '../types/index'
 
-const emitter = mitt<DrawerEvents>()
-
-export function useMagicDrawer(id?: MaybeRef<string>) {
-  // Private state
-  const mappedId = computed(() => toValue(id) || uuid())
-
+export function useMagicDrawer(id: MaybeRef<string>) {
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-  const { deleteState, findState } = useDrawerState(mappedId.value)
+  const { deleteState, findState } = useDrawerState(toValue(id))
 
   const { progress } = findState()
 
   // Public state
-  const isActive = computed(() => drawerStore.value.includes(mappedId.value))
+  const isActive = computed(() => drawerStore.value.includes(toValue(id)))
 
   // Public methods
   function open() {
-    addInstance(mappedId.value)
+    addInstance(toValue(id))
   }
 
   function close() {
-    removeInstance(mappedId.value)
+    removeInstance(toValue(id))
     deleteState()
   }
 
   function snapTo(snapPoint: SnapPoint, duration?: number) {
-    emitter.emit('snapTo', {
-      id: mappedId.value,
+    useMagicEmitter().emit('snapTo', {
+      id: toValue(id),
       snapPoint,
       duration,
     })
   }
 
   return {
-    id: mappedId,
-    emitter,
     isActive,
     progress,
     open,

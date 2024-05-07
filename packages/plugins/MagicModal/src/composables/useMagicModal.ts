@@ -1,35 +1,25 @@
 import { computed, toValue, type MaybeRef } from 'vue'
-import mitt from 'mitt'
-import { uuid } from '@maas/vue-equipment/utils'
 import { useModalStore } from './private/useModalStore'
-import type { ModalEvents } from '../types'
 
-const emitter = mitt<ModalEvents>()
-
-export function useMagicModal(id?: MaybeRef<string>) {
-  // Private state
-  const mappedId = computed(() => toValue(id) || uuid())
-
+export function useMagicModal(id: MaybeRef<string>) {
   // Private methods
   const { modalStore, addInstance, removeInstance } = useModalStore()
 
   // Public state
-  const isActive = computed(() => modalStore.value.includes(mappedId.value))
+  const isActive = computed(() => modalStore.value.includes(toValue(id)))
 
   // Public methods
   function open() {
-    addInstance(mappedId.value)
+    addInstance(toValue(id))
   }
 
   function close() {
-    removeInstance(mappedId.value)
+    removeInstance(toValue(id))
   }
 
   return {
-    id: mappedId,
     isActive,
     open,
     close,
-    emitter,
   }
 }

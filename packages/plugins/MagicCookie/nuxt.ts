@@ -32,7 +32,7 @@ export default defineNuxtModule({
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicCookie',
-      name: 'useCookieApi',
+      name: 'useMagicCookie',
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicCookie',

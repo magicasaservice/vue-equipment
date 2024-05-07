@@ -1,7 +1,7 @@
 import { ref, computed, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { mapValue, interpolate } from '@maas/vue-equipment/utils'
-import { useMagicDrawer } from './../useMagicDrawer'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
@@ -123,7 +123,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   })
 
   // Private functions
-  const { emitter } = useMagicDrawer(id)
+  const emitter = useMagicEmitter()
 
   function findClosestNumber(args: FindClosestNumberArgs) {
     const { number, numbers, direction } = args

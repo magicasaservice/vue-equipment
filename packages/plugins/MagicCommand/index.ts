@@ -9,7 +9,10 @@ import MagicCommandProvider from './src/components/MagicCommandProvider.vue'
 import MagicCommandView from './src/components/MagicCommandView.vue'
 
 import { useMagicCommand } from './src/composables/useMagicCommand'
-import { CommandInstanceId, CommandOptionsKey } from './src/symbols/index'
+import {
+  MagicCommandInstanceId,
+  MagicCommandOptions,
+} from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
 import type { CommandEvents } from './src/types/index'
@@ -31,7 +34,7 @@ const MagicCommandPlugin: Plugin = {
 export {
   MagicCommandPlugin,
   useMagicCommand,
-  CommandInstanceId,
-  CommandOptionsKey,
+  MagicCommandInstanceId,
+  MagicCommandOptions,
 }
 export type { CommandEvents }

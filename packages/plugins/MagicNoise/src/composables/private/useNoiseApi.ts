@@ -6,8 +6,8 @@ import {
   useThrottleFn,
   useRafFn,
 } from '@vueuse/core'
-import { defaultOptions } from '../utils/defaultOptions'
-import type { NoiseOptions, Pixel, RafControls } from '../types'
+import { defaultOptions } from '../../utils/defaultOptions'
+import type { NoiseOptions, Pixel, RafControls } from '../../types'
 
 type UseNoiseApiArgs = {
   canvasRef: Ref<HTMLCanvasElement | undefined>
@@ -140,7 +140,7 @@ export function useNoiseApi({
     // Round up to nearest pixelSize
     const adjustedOffCanvasDim = findBiggerNumber(
       maxOffCanvasDim,
-      mappedOptions.pixelSize,
+      mappedOptions.pixelSize
     )
 
     // Save and set dimensions
@@ -209,7 +209,7 @@ export function useNoiseApi({
       0,
       0,
       offCanvasRef.value.width,
-      offCanvasRef.value.height,
+      offCanvasRef.value.height
     )
 
     for (const pixel of pixels.value) {

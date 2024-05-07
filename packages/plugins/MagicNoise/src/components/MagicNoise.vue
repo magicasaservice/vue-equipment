@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
-import { useNoiseApi } from '../composables/useNoiseApi'
+import { useNoiseApi } from '../composables/private/useNoiseApi'
 import type { NoiseOptions } from '../types'
 
 interface Props {
@@ -52,7 +52,7 @@ watch(
       drawControls.value?.resume()
       transferControls.value?.resume()
     }
-  },
+  }
 )
 
 onMounted(() => {

@@ -1,34 +1,37 @@
 import { ref, toValue, type Ref, type MaybeRef } from 'vue'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { ActiveElement, ToastOptions, Toast } from './../../types'
-import { useToastEmitter } from './../useToastEmitter'
 
-type Args = {
+type UseToastCallbackArgs = {
   id: MaybeRef<string>
   mappedOptions: ToastOptions
   count: Ref<number | undefined>
-  oldest: Ref<Toast | undefined>
+  firstToast: Ref<Toast | undefined>
 }
 
-export function useToastCallback({ id, mappedOptions, count, oldest }: Args) {
+export function useToastCallback(args: UseToastCallbackArgs) {
+  const { id, mappedOptions, count, firstToast } = args
+
   const activeElements = ref<ActiveElement[]>([])
+  const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el: Element) {
-    useToastEmitter().emit('beforeEnter', toValue(id))
+    emitter.emit('beforeEnter', toValue(id))
   }
 
   function onEnter(_el: Element) {
-    useToastEmitter().emit('enter', toValue(id))
+    emitter.emit('enter', toValue(id))
     if (
       count.value &&
       mappedOptions.layout?.max &&
       count.value > mappedOptions.layout.max
     ) {
-      oldest.value?.remove()
+      firstToast.value?.remove()
     }
   }
 
   function onAfterEnter(el: Element) {
-    useToastEmitter().emit('afterEnter', toValue(id))
+    emitter.emit('afterEnter', toValue(id))
 
     const mappedEl = el as HTMLElement
     const style = window.getComputedStyle(mappedEl)
@@ -47,18 +50,18 @@ export function useToastCallback({ id, mappedOptions, count, oldest }: Args) {
   }
 
   function onBeforeLeave(_el: Element) {
-    useToastEmitter().emit('beforeLeave', toValue(id))
+    emitter.emit('beforeLeave', toValue(id))
   }
 
   function onLeave(el: Element) {
-    useToastEmitter().emit('leave', toValue(id))
+    emitter.emit('leave', toValue(id))
     activeElements.value = activeElements.value.filter(
-      (item) => item.id !== el.id,
+      (item) => item.id !== el.id
     )
   }
 
   function onAfterLeave(_el: Element) {
-    useToastEmitter().emit('afterLeave', toValue(id))
+    emitter.emit('afterLeave', toValue(id))
   }
 
   return {

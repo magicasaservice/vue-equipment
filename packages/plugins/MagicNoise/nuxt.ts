@@ -17,10 +17,5 @@ export default defineNuxtModule({
       name: 'MagicNoise',
       global: true,
     })
-
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicNoise',
-      name: 'useNoiseApi',
-    })
   },
 })

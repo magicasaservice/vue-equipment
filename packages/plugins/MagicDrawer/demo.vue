@@ -136,7 +136,11 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import { useMagicDrawer, type DrawerEvents } from '@maas/vue-equipment/plugins'
+import {
+  useMagicDrawer,
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 
 const className = 'magic-drawer--test-class'
 
@@ -158,12 +162,8 @@ const position = ref('right')
 const checkbox = ref(false)
 const text = ref('')
 
-const { emitter } = useMagicDrawer()
-
-function callback(
-  event: keyof DrawerEvents,
-  id: DrawerEvents[keyof DrawerEvents]
-) {
+function callback(payload: keyof MagicEmitterEvents) {
+  const [event, id] = payload
   console.log(event, id)
 
   if (event === 'enter' && id === horizontalId && position.value === 'left') {
@@ -171,10 +171,10 @@ function callback(
   }
 }
 
-emitter.on('*', callback)
+useMagicEmitter().on('*', callback)
 
 onBeforeUnmount(() => {
-  emitter.off('*', callback)
+  useMagicEmitter().off('*', callback)
 })
 </script>
 

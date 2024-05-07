@@ -83,7 +83,7 @@
 
 <script lang="ts" setup>
 import { defineCookieApi } from '../composables/private/defineCookieApi'
-import { useCookieApi } from '../composables/useCookieApi'
+import { useMagicCookie } from '../composables/useMagicCookie'
 import type { CookieRecord } from '../types'
 
 // Define the props and their default values
@@ -110,7 +110,7 @@ const {
   acceptSelected,
   reject,
   toggleSelection,
-} = useCookieApi()
+} = useMagicCookie()
 </script>
 
 <style lang="css">

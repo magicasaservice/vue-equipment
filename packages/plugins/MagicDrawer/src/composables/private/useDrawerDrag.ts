@@ -16,12 +16,12 @@ import {
   useThrottleFn,
   useScrollLock,
 } from '@vueuse/core'
-import { useMagicDrawer } from '../useMagicDrawer'
+import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
-import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { DrawerEvents } from '../../types'
@@ -138,7 +138,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const { clamp } = useDrawerUtils()
 
   // Private functions
-  const { emitter } = useMagicDrawer(id)
+  const emitter = useMagicEmitter()
 
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()

@@ -8,14 +8,13 @@ import {
   type Ref,
   type MaybeRef,
 } from 'vue'
-import { useMagicDrawer } from './../useMagicDrawer'
-import { useDrawerState } from './useDrawerState'
 import { useElementBounding, useRafFn } from '@vueuse/core'
+import { clampValue, mapValue } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useDrawerState } from './useDrawerState'
 
 import type { DrawerEvents } from '../../types'
 import type { DefaultOptions } from '../../utils/defaultOptions'
-
-import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 
 interface UseDrawerProgressArgs {
   id: MaybeRef<string>
@@ -50,7 +49,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     calculateProgress()
   }
 
-  const { emitter } = useMagicDrawer(id)
+  const emitter = useMagicEmitter()
 
   const { pause: snapPause, resume: snapResume } = useRafFn(rafCallback, {
     immediate: false,
