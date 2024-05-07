@@ -23,7 +23,7 @@ import { useEventListener, onKeyStroke } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandItem } from '../composables/private/useCommandItem'
-import { CommandInstanceId } from '../symbols'
+import { MagicCommandInstanceId } from '../symbols'
 
 interface Props {
   id?: string
@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 const { selectItem, activeItem } = useCommandItem(commandId)
 
 const mappedId = computed(() => {

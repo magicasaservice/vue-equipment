@@ -53,7 +53,10 @@
 
 <script setup lang="ts">
 import { ref, inject } from 'vue'
-import { useMagicCommand, CommandInstanceId } from '@maas/vue-equipment/plugins'
+import {
+  useMagicCommand,
+  MagicCommandInstanceId,
+} from '@maas/vue-equipment/plugins'
 import DemoItem from './DemoItem.vue'
 
 interface Props {

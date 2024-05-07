@@ -14,7 +14,7 @@ import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useMagicDrawer } from '../../../MagicDrawer'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { CommandInstanceId } from './../symbols'
+import { MagicCommandInstanceId } from './../symbols'
 
 import type { CommandDrawerOptions } from '../types'
 
@@ -25,7 +25,7 @@ interface MagicCommandProps {
 
 const props = defineProps<MagicCommandProps>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
 function afterLeaveCallback() {
