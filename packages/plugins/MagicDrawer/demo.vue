@@ -140,7 +140,9 @@ import {
   useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
+  type DrawerEvents,
 } from '@maas/vue-equipment/plugins'
+import type { ValueOf } from '@maas/vue-equipment/utils'
 
 const className = 'magic-drawer--test-class'
 
@@ -162,19 +164,25 @@ const position = ref('right')
 const checkbox = ref(false)
 const text = ref('')
 
-function callback(payload: keyof MagicEmitterEvents) {
-  const [event, id] = payload
-  console.log(event, id)
+function callback(
+  id: keyof MagicEmitterEvents,
+  payload: ValueOf<MagicEmitterEvents>
+) {
+  console.log(id, payload)
+}
 
-  if (event === 'enter' && id === horizontalId && position.value === 'left') {
+function enterCallback(payload: ValueOf<DrawerEvents>) {
+  if (payload === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
   }
 }
 
 useMagicEmitter().on('*', callback)
+useMagicEmitter().on('enter', enterCallback)
 
 onBeforeUnmount(() => {
   useMagicEmitter().off('*', callback)
+  useMagicEmitter().off('enter', enterCallback)
 })
 </script>
 
