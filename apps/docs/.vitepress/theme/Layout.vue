@@ -13,7 +13,7 @@ onMounted(() => {
   watchEffect(() => {
     document.documentElement.setAttribute(
       'data-color-mode',
-      isDark.value ? 'dark' : 'light',
+      isDark.value ? 'dark' : 'light'
     )
   })
 })
