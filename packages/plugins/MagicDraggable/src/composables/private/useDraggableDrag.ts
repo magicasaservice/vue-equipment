@@ -11,13 +11,13 @@ import {
   useEventListener,
   unrefElement,
   useResizeObserver,
-  useScrollLock,
   useThrottleFn,
   useIdle,
 } from '@vueuse/core'
+import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
-import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import { useDraggableScrollLock } from './useDraggableScrollLock'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { Coordinates } from '../../types'
@@ -100,6 +100,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   })
 
   // Private functions
+  const {
+    lockScroll,
+    unlockScroll,
+    addScrollLockPadding,
+    removeScrollLockPadding,
+  } = useDraggableScrollLock()
+
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
@@ -313,9 +320,18 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Reset state
     resetStateAndListeners()
+
+    // Unlock scroll
+    unlockScroll()
+    removeScrollLockPadding()
   }
 
   function onPointermove(e: PointerEvent) {
+    // Prevent dragging with a secondary pointer
+    if (!e.isPrimary) {
+      return
+    }
+
     // Save dragged value
     setDragged({ x: e.screenX, y: e.screenY })
 
@@ -362,6 +378,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
+    // Lock scroll as soon as the user starts dragging
+    lockScroll()
+    addScrollLockPadding()
+
     // Prevent dragging if we’re already dragging
     if (dragging.value) {
       return

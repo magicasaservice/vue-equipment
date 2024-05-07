@@ -34,7 +34,6 @@ import {
   ref,
   computed,
   toValue,
-  watch,
   onMounted,
   type Component,
   type MaybeRef,
@@ -42,7 +41,6 @@ import {
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
-import { useDraggableScrollLock } from '../composables/private/useDraggableScrollLock'
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { DraggableOptions } from '../types'
@@ -89,13 +87,6 @@ const { initialize, onPointerdown, onClick, style, hasDragged } =
     initial,
   })
 
-const {
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-} = useDraggableScrollLock()
-
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
   if (!disabled.value) {
@@ -108,16 +99,6 @@ function guardedClick(event: PointerEvent) {
     onClick(event)
   }
 }
-
-watch(dragging, (value) => {
-  if (value) {
-    lockScroll()
-    addScrollLockPadding()
-  } else {
-    unlockScroll()
-    removeScrollLockPadding()
-  }
-})
 
 onMounted(() => {
   initialize()
@@ -165,6 +146,7 @@ onMounted(() => {
   width: auto;
   height: auto;
   transform-origin: center;
+  touch-action: none;
 }
 
 .magic-draggable.-dragging .magic-draggable__drag {
