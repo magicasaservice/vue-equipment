@@ -7,11 +7,11 @@
 <script setup lang="ts">
 import { ref, provide, inject, onMounted, watch, nextTick, readonly } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { useScrollApi } from '../composables/useScrollApi'
+import { useScrollApi } from '../composables/private/useScrollApi'
 import {
-  ScrollPositionKey,
-  ScrollParentKey,
-  ScrollProgressKey,
+  MagicScrollParent,
+  MagicScrollProgress,
+  MagicScrollReturn,
 } from '../symbols'
 
 import type { FromTo } from '../types'
@@ -27,8 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
   to: 'bottom-top',
 })
 
-const scrollPosition = inject(ScrollPositionKey, undefined)
-const scrollParent = inject(ScrollParentKey)
+const scrollReturn = inject(MagicScrollReturn, undefined)
+const scrollParent = inject(MagicScrollParent)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
@@ -52,7 +52,7 @@ onMounted(() => {
 })
 
 watch(
-  () => scrollPosition?.y.value,
+  () => scrollReturn?.y.value,
   () => {
     if (intersecting.value) {
       calculate()
@@ -71,5 +71,5 @@ useIntersectionObserver(
   { rootMargin: '150% 0px 150% 0px', immediate: true }
 )
 
-provide(ScrollProgressKey, readonly(progress))
+provide(MagicScrollProgress, readonly(progress))
 </script>

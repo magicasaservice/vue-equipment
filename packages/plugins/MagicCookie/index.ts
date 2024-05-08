@@ -1,8 +1,7 @@
 import type { App, Plugin } from 'vue'
 
 import MagicCookie from './src/components/MagicCookie.vue'
-import { useCookieApi } from './src/composables/useCookieApi'
-import { useCookieEmitter } from './src/composables/useCookieEmitter'
+import { useMagicCookie } from './src/composables/useMagicCookie'
 
 import type { CookieEvents } from './src/types/index'
 
@@ -12,5 +11,5 @@ const MagicCookiePlugin: Plugin = {
   },
 }
 
-export { MagicCookiePlugin, MagicCookie, useCookieApi, useCookieEmitter }
+export { MagicCookiePlugin, MagicCookie, useMagicCookie }
 export type { CookieEvents }

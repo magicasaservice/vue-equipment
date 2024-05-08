@@ -1,8 +1,8 @@
 import { computed, ref } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { toValue } from '@vueuse/core'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { globalApiState } from './private/defineCookieApi'
-import { useCookieEmitter } from './useCookieEmitter'
 
 import type { CookieConsent } from '../types'
 
@@ -10,7 +10,7 @@ import type { CookieConsent } from '../types'
 const preferencesVisible = ref(false)
 const selectedCookies = ref<{ [key: string]: boolean }>({})
 
-export function useCookieApi() {
+export function useMagicCookie() {
   // Use universal cookies from the @vueuse/integrations/useCookies
   const universalCookies = useCookies(['cookie_consent'])
 
@@ -27,7 +27,7 @@ export function useCookieApi() {
   })
 
   // Initialize an event emitter for custom events
-  const emitter = useCookieEmitter()
+  const emitter = useMagicEmitter()
 
   // Initial state: selectedCookies value is set based on the current cookie consent data
   selectedCookies.value = cookieConsent.value?.cookies || {}
@@ -129,3 +129,5 @@ export function useCookieApi() {
     onReject,
   }
 }
+
+export type UseMagicCookieReturn = ReturnType<typeof useMagicCookie>

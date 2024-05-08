@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent, ref, computed, unref } from 'vue'
-import { useToastApi, useToastEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicToast, useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 const count = ref(0)
 const props = computed(() => {
@@ -29,7 +29,7 @@ const props = computed(() => {
 const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
 
 const id = 'magic-toast-demo'
-const toastApi = useToastApi(id)
+const toastApi = useMagicToast(id)
 const { add, clear } = toastApi
 
 const isSmallScreen = useMediaQuery('(max-width: 1024px)')
@@ -42,7 +42,7 @@ function onClick() {
   add({ component, props: unref(props) })
 }
 
-useToastEmitter().on('*', (event, id) => {
+useMagicEmitter().on('*', (event, id) => {
   console.log(event, id)
 })
 </script>

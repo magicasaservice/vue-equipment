@@ -1,6 +1,6 @@
 <template>
   <div class="magic-scroll-provider">
-    <slot :scroll-position="scrollPosition" />
+    <slot :scroll-return="scrollReturn" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import {
   unrefElement,
   type MaybeComputedElementRef,
 } from '@vueuse/core'
-import { ScrollPositionKey, ScrollParentKey } from '../symbols'
+import { MagicScrollReturn, MagicScrollParent } from '../symbols'
 
 interface Props {
   active?: Boolean
@@ -33,8 +33,8 @@ const mappedParent = computed(() => {
   return undefined
 })
 
-const scrollPosition = useScroll(mappedEl)
+const scrollReturn = useScroll(mappedEl)
 
-provide(ScrollPositionKey, scrollPosition)
-provide(ScrollParentKey, mappedParent)
+provide(MagicScrollReturn, scrollReturn)
+provide(MagicScrollParent, mappedParent)
 </script>

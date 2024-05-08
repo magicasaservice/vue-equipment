@@ -19,11 +19,7 @@ export default defineNuxtModule({
     })
     addImports({
       from: '@maas/vue-equipment/plugins/MagicModal',
-      name: 'useModalApi',
-    })
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicModal',
-      name: 'useModalEmitter',
+      name: 'useMagicModal',
     })
   },
 })

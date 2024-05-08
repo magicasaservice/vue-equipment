@@ -23,6 +23,7 @@
       >
         <component v-if="component" v-bind="props" :is="component" />
         <slot v-else />
+        <div v-if="hasDragged" class="magic-draggable__overlay" />
       </component>
     </div>
   </div>
@@ -75,15 +76,16 @@ const disabled = computed(() => {
 
 const { snapPoints, animation, initial, threshold } = mappedOptions
 
-const { initialize, onPointerdown, onClick, style } = useDraggableDrag({
-  id: props.id,
-  elRef,
-  wrapperRef,
-  threshold,
-  snapPoints,
-  animation,
-  initial,
-})
+const { initialize, onPointerdown, onClick, style, hasDragged } =
+  useDraggableDrag({
+    id: props.id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    animation,
+    initial,
+  })
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
@@ -144,6 +146,7 @@ onMounted(() => {
   width: auto;
   height: auto;
   transform-origin: center;
+  touch-action: none;
 }
 
 .magic-draggable.-dragging .magic-draggable__drag {
@@ -153,5 +156,11 @@ onMounted(() => {
 
 .magic-draggable.-disabled .magic-draggable__drag {
   cursor: default;
+}
+
+.magic-draggable__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
 }
 </style>

@@ -2,7 +2,8 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import * as VueEquipmentPlugins from '@maas/vue-equipment/plugins'
 
-import 'virtual:uno.css'
+import 'uno.css'
+import './style.css'
 
 export default {
   extends: DefaultTheme,

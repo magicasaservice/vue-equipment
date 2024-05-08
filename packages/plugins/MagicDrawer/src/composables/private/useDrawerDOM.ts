@@ -1,14 +1,13 @@
-import { ref, computed, toValue, type MaybeRef } from 'vue'
+import { ref } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { uuid, matchClass } from '@maas/vue-equipment/utils'
-import { useModalStore } from './private/useModalStore'
+import { matchClass } from '@maas/vue-equipment/utils'
 
-import type { ModalOptions } from '../types/index'
+import type { DrawerOptions } from '../../types/index'
 
-export type useModalApiOptions = Pick<
-  ModalOptions,
+export type UseDrawerDOMOptions = Pick<
+  DrawerOptions,
   'scrollLock' | 'focusTrap'
 > & {
   focusTarget: MaybeElementRef
@@ -25,13 +24,9 @@ const scrollLock =
     ? useScrollLock(document?.documentElement)
     : ref(false)
 
-export function useModalApi(
-  id?: MaybeRef<string>,
-  options?: useModalApiOptions
-) {
+export function useDrawerDOM(options?: UseDrawerDOMOptions) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
-  const mappedId = computed(() => toValue(id) || uuid())
   const mappedOptions = defu(options, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
@@ -40,21 +35,7 @@ export function useModalApi(
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
-  // Private methods
-  const { modalStore, addInstance, removeInstance } = useModalStore()
-
-  // Public state
-  const isActive = computed(() => modalStore.value.includes(mappedId.value))
-
   // Public methods
-  function open() {
-    addInstance(mappedId.value)
-  }
-
-  function close() {
-    removeInstance(mappedId.value)
-  }
-
   function trapFocus() {
     if (focusTrap) {
       focusTrap.activate()
@@ -82,7 +63,7 @@ export function useModalApi(
   function addScrollLockPadding() {
     if (typeof window === 'undefined') return
 
-    const exclude = new RegExp(/magic-modal(__backdrop)?/)
+    const exclude = new RegExp(/magic-drawer(__backdrop)?/)
 
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
@@ -108,10 +89,6 @@ export function useModalApi(
   }
 
   return {
-    id: mappedId,
-    isActive,
-    open,
-    close,
     trapFocus,
     releaseFocus,
     lockScroll,
@@ -120,5 +97,3 @@ export function useModalApi(
     removeScrollLockPadding,
   }
 }
-
-export type UseModalApiReturn = ReturnType<typeof useModalApi>

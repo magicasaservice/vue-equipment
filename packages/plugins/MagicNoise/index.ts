@@ -1,7 +1,7 @@
 import type { App, Plugin } from 'vue'
 
 import MagicNoise from './src/components/MagicNoise.vue'
-import { useNoiseApi } from './src/composables/useNoiseApi'
+import { useNoiseApi } from './src/composables/private/useNoiseApi'
 
 const MagicNoisePlugin: Plugin = {
   install: (app: App) => {

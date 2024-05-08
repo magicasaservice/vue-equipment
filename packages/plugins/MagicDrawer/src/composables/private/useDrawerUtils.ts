@@ -1,9 +1,3 @@
-interface isWithinRangeArgs {
-  input: number
-  base: number
-  threshold: number
-}
-
 export function useDrawerUtils() {
   function clamp(value: number, from: number, to: number) {
     if (from > to) {
@@ -21,13 +15,7 @@ export function useDrawerUtils() {
     }
   }
 
-  function isWithinRange(args: isWithinRangeArgs): boolean {
-    const { input, base, threshold } = args
-    return input >= base - threshold && input <= base + threshold
-  }
-
   return {
     clamp,
-    isWithinRange,
   }
 }

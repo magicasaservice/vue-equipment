@@ -137,24 +137,26 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import {
-  useDrawerApi,
-  useDrawerEmitter,
+  useMagicDrawer,
+  useMagicEmitter,
+  type MagicEmitterEvents,
   type DrawerEvents,
 } from '@maas/vue-equipment/plugins'
+import type { ValueOf } from '@maas/vue-equipment/utils'
 
 const className = 'magic-drawer--test-class'
 
 const id = 'magic-drawer-demo'
-const drawerApi = useDrawerApi(id)
+const drawerApi = useMagicDrawer(id)
 
 const snapId = 'magic-drawer-snap-demo'
-const drawerSnapApi = useDrawerApi(snapId)
+const drawerSnapApi = useMagicDrawer(snapId)
 
 const horizontalId = 'magic-drawer-horizontal-demo'
-const drawerHorizontalApi = useDrawerApi(horizontalId)
+const drawerHorizontalApi = useMagicDrawer(horizontalId)
 
 const scrollId = 'magic-drawer-scroll-demo'
-const drawerScrollApi = useDrawerApi(scrollId)
+const drawerScrollApi = useMagicDrawer(scrollId)
 
 const scrollable = ref<HTMLDivElement | undefined>(undefined)
 const position = ref('right')
@@ -163,20 +165,24 @@ const checkbox = ref(false)
 const text = ref('')
 
 function callback(
-  event: keyof DrawerEvents,
-  id: DrawerEvents[keyof DrawerEvents]
+  id: keyof MagicEmitterEvents,
+  payload: ValueOf<MagicEmitterEvents>
 ) {
-  console.log(event, id)
+  console.log(id, payload)
+}
 
-  if (event === 'enter' && id === horizontalId && position.value === 'left') {
+function enterCallback(payload: ValueOf<DrawerEvents>) {
+  if (payload === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
   }
 }
 
-useDrawerEmitter().on('*', callback)
+useMagicEmitter().on('*', callback)
+useMagicEmitter().on('enter', enterCallback)
 
 onBeforeUnmount(() => {
-  useDrawerEmitter().off('*', callback)
+  useMagicEmitter().off('*', callback)
+  useMagicEmitter().off('enter', enterCallback)
 })
 </script>
 

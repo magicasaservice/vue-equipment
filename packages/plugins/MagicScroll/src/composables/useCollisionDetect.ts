@@ -1,6 +1,6 @@
 import { ref, watch, unref, computed } from 'vue'
 import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
-import { useCollisionEmitter } from './useCollisionEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 import type { ComputedRef, Ref } from 'vue'
 import type { CollisionEntry, MappedCollisionEntry } from '../types'
@@ -134,7 +134,7 @@ export function useCollisionDetect(
       (dir === 'up' && boundingRect[pos] >= offset)
     ) {
       entry.alerted[dir][pos] = true
-      useCollisionEmitter().emit('collision', {
+      useMagicEmitter().emit('collision', {
         dir,
         pos,
         el: entry.element,

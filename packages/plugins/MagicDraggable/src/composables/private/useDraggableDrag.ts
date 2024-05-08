@@ -14,9 +14,10 @@ import {
   useThrottleFn,
   useIdle,
 } from '@vueuse/core'
+import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
-import { isIOS } from '@maas/vue-equipment/utils'
+import { useDraggableScrollLock } from './useDraggableScrollLock'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { Coordinates } from '../../types'
@@ -65,6 +66,22 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     () => `transform: translate3d(${draggedX.value}px, ${draggedY.value}px, 0)`
   )
 
+  const hasDragged = computed(() => {
+    const hasDraggedX = !isWithinRange({
+      input: draggedX.value,
+      base: lastDraggedX.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    const hasDraggedY = !isWithinRange({
+      input: draggedY.value,
+      base: lastDraggedY.value,
+      threshold: toValue(threshold).lock,
+    })
+
+    return hasDraggedX || hasDraggedY
+  })
+
   // Snap logic
   const {
     snapTo,
@@ -83,6 +100,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   })
 
   // Private functions
+  const {
+    lockScroll,
+    unlockScroll,
+    addScrollLockPadding,
+    removeScrollLockPadding,
+  } = useDraggableScrollLock()
+
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
@@ -296,9 +320,18 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Reset state
     resetStateAndListeners()
+
+    // Unlock scroll
+    unlockScroll()
+    removeScrollLockPadding()
   }
 
   function onPointermove(e: PointerEvent) {
+    // Prevent dragging with a secondary pointer
+    if (!e.isPrimary) {
+      return
+    }
+
     // Save dragged value
     setDragged({ x: e.screenX, y: e.screenY })
 
@@ -345,6 +378,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
+    // Lock scroll as soon as the user starts dragging
+    lockScroll()
+    addScrollLockPadding()
+
     // Prevent dragging if we’re already dragging
     if (dragging.value) {
       return
@@ -381,9 +418,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   }
 
   function onClick(e: MouseEvent) {
-    // if (hasDragged.value) {
-    e.preventDefault()
-    // }
+    if (hasDragged.value) {
+      e.preventDefault()
+    }
   }
 
   async function initialize() {
@@ -456,5 +493,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     onPointerdown,
     onClick,
     style,
+    hasDragged,
   }
 }

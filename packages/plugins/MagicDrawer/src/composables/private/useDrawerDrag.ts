@@ -16,12 +16,12 @@ import {
   useThrottleFn,
   useScrollLock,
 } from '@vueuse/core'
-import { useDrawerEmitter } from '../useDrawerEmitter'
+import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
-import { isIOS } from '@maas/vue-equipment/utils'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import type { DrawerEvents } from '../../types'
@@ -135,9 +135,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint,
   })
 
-  const { clamp, isWithinRange } = useDrawerUtils()
+  const { clamp } = useDrawerUtils()
 
   // Private functions
+  const emitter = useMagicEmitter()
+
   async function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
@@ -400,7 +402,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       }
     }
 
-    useDrawerEmitter().emit('afterDrag', {
+    emitter.emit('afterDrag', {
       id: toValue(id),
       x: draggedX.value,
       y: draggedY.value,
@@ -418,6 +420,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function onPointermove(e: PointerEvent) {
     // Prevent real mousemove while wheeling
     if (e.isTrusted && wheeling.value) {
+      return
+    }
+
+    // Prevent dragging with a secondary pointer
+    if (e.isTrusted && !e.isPrimary) {
       return
     }
 
@@ -450,7 +457,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Check if we should close based on distance
     checkPosition()
 
-    useDrawerEmitter().emit('drag', {
+    emitter.emit('drag', {
       id: toValue(id),
       x: draggedX.value,
       y: draggedY.value,
@@ -465,7 +472,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     } else {
       dragging.value = true
 
-      useDrawerEmitter().emit('beforeDrag', {
+      emitter.emit('beforeDrag', {
         id: toValue(id),
         x: draggedX.value,
         y: draggedY.value,
@@ -506,8 +513,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   // Lifecycle hooks and listeners
   onMounted(async () => {
     await getSizes()
-    useDrawerEmitter().on('snapTo', snapToCallback)
-    useDrawerEmitter().on('afterLeave', afterLeaveCallback)
+    emitter.on('snapTo', snapToCallback)
+    emitter.on('afterLeave', afterLeaveCallback)
   })
 
   watch(
@@ -541,8 +548,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   onBeforeUnmount(() => {
-    useDrawerEmitter().off('snapTo', snapToCallback)
-    useDrawerEmitter().off('afterLeave', afterLeaveCallback)
+    emitter.off('snapTo', snapToCallback)
+    emitter.off('afterLeave', afterLeaveCallback)
   })
 
   return {

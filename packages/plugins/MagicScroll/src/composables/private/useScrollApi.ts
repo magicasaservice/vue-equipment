@@ -1,9 +1,9 @@
 import { ref, inject, toValue, type MaybeRef, type MaybeRefOrGetter } from 'vue'
 import { useWindowSize } from '@vueuse/core'
-import { ScrollPositionKey } from '../symbols'
+import { MagicScrollReturn } from '../../symbols'
 import { clampValue } from '@maas/vue-equipment/utils'
 
-import type { FromTo } from '../types'
+import type { FromTo } from '../../types'
 
 type UseScrollApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>
@@ -14,7 +14,7 @@ type UseScrollApiParams = {
 
 export function useScrollApi(params: UseScrollApiParams) {
   const { child, parent, from, to } = params
-  const scrollPosition = inject(ScrollPositionKey, undefined)
+  const scrollReturn = inject(MagicScrollReturn, undefined)
 
   const childRect = ref<DOMRect>()
   const parentRect = ref<
@@ -40,7 +40,7 @@ export function useScrollApi(params: UseScrollApiParams) {
 
     if (!childRect.value) return y
 
-    const scrollY = toValue(scrollPosition?.y) || 0
+    const scrollY = toValue(scrollReturn?.y) || 0
 
     switch (points.child) {
       case 'top':
@@ -90,7 +90,7 @@ export function useScrollApi(params: UseScrollApiParams) {
   }
 
   function getProgress() {
-    const scrollY = toValue(scrollPosition?.y) || 0
+    const scrollY = toValue(scrollReturn?.y) || 0
     const total = Math.abs(end.value - start.value)
     const current = scrollY - start.value
 

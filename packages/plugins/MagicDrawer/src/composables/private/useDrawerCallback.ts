@@ -1,6 +1,7 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables'
-import { useDrawerEmitter } from './../useDrawerEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from './../useMagicDrawer'
 import type { DrawerOptions } from '../../types'
 
 type UseDrawerCallbackArgs = {
@@ -31,12 +32,16 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   } = args
 
   const { setMetaViewport, resetMetaViewport } = useMetaViewport()
+  const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el?: Element) {
-    useDrawerEmitter().emit('beforeEnter', toValue(id))
+    emitter.emit('beforeEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
-      if (mappedOptions.scrollLockPadding) {
+      if (
+        typeof mappedOptions.scrollLock === 'object' &&
+        mappedOptions.scrollLock.padding
+      ) {
         addScrollLockPadding()
       }
 
@@ -49,11 +54,11 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   }
 
   function onEnter(_el?: Element) {
-    useDrawerEmitter().emit('enter', toValue(id))
+    emitter.emit('enter', toValue(id))
   }
 
   async function onAfterEnter(_el?: Element) {
-    useDrawerEmitter().emit('afterEnter', toValue(id))
+    emitter.emit('afterEnter', toValue(id))
 
     if (mappedOptions.focusTrap) {
       await nextTick()
@@ -64,19 +69,22 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   }
 
   function onBeforeLeave(_el?: Element) {
-    useDrawerEmitter().emit('beforeLeave', toValue(id))
+    emitter.emit('beforeLeave', toValue(id))
   }
 
   function onLeave(_el: Element) {
-    useDrawerEmitter().emit('leave', toValue(id))
+    emitter.emit('leave', toValue(id))
   }
 
   function onAfterLeave(_el?: Element) {
-    useDrawerEmitter().emit('afterLeave', toValue(id))
+    emitter.emit('afterLeave', toValue(id))
 
     if (mappedOptions.scrollLock) {
       unlockScroll()
-      if (mappedOptions.scrollLockPadding) {
+      if (
+        typeof mappedOptions.scrollLock === 'object' &&
+        mappedOptions.scrollLock.padding
+      ) {
         removeScrollLockPadding()
       }
     }

@@ -1,11 +1,10 @@
 import { ref, computed, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { mapValue, interpolate } from '@maas/vue-equipment/utils'
-import { useDrawerEmitter } from '../useDrawerEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
 import { type SnapPoint } from '../../types'
-import { type RequireAllNested } from '@maas/vue-equipment/utils'
 
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
@@ -124,6 +123,8 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   })
 
   // Private functions
+  const emitter = useMagicEmitter()
+
   function findClosestNumber(args: FindClosestNumberArgs) {
     const { number, numbers, direction } = args
     let filtered = numbers
@@ -289,7 +290,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]
-    useDrawerEmitter().emit('beforeSnap', { id: toValue(id), snapPoint })
+    emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
     switch (position) {
       case 'bottom':
@@ -302,7 +303,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           callback: (value: number) => {
             draggedY.value = value
             if (draggedY.value === to) {
-              useDrawerEmitter().emit('afterSnap', {
+              emitter.emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,
               })
@@ -321,7 +322,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           callback: (value: number) => {
             draggedX.value = value
             if (draggedX.value === to) {
-              useDrawerEmitter().emit('afterSnap', {
+              emitter.emit('afterSnap', {
                 id: toValue(id),
                 snapPoint,
               })

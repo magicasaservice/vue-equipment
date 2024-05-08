@@ -85,7 +85,7 @@ import { createDefu } from 'defu'
 import { onKeyStroke, unrefElement } from '@vueuse/core'
 import { useMetaViewport } from '@maas/vue-equipment/composables'
 import { defaultOptions } from './../utils/defaultOptions'
-import { useDrawerApi } from './../composables/useDrawerApi'
+import { useDrawerDOM } from '../composables/private/useDrawerDOM'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
 import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
@@ -104,6 +104,7 @@ import '@maas/vue-equipment/utils/css/animations/slide-ltr-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
+import { useMagicDrawer } from '../composables/useMagicDrawer'
 
 // Prevent deep merge of certain options
 // In this case, don’t merge the `close` and `points` options
@@ -135,10 +136,19 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const drawerRef = ref<HTMLDivElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
-const drawerApi = useDrawerApi(props.id, {
+const {
+  trapFocus,
+  releaseFocus,
+  lockScroll,
+  unlockScroll,
+  addScrollLockPadding,
+  removeScrollLockPadding,
+} = useDrawerDOM({
   focusTarget: drawerRef,
   focusTrap: mappedOptions.focusTrap,
 })
+
+const { isActive, open, close } = useMagicDrawer(props.id)
 
 const overshoot = ref(0)
 const {
@@ -149,20 +159,6 @@ const {
   preventDragClose,
   initial,
 } = mappedOptions
-
-const {
-  isActive,
-  open,
-  close,
-  trapFocus,
-  releaseFocus,
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-  initialize,
-  destroy,
-} = drawerApi
 
 // Make sure this is reactive
 const disabled = computed(() => {
@@ -347,10 +343,6 @@ onBeforeMount(async () => {
   }
 })
 
-onMounted(() => {
-  initialize()
-})
-
 // Reset state on unmount
 onBeforeUnmount(() => {
   close()
@@ -374,8 +366,6 @@ onUnmounted(() => {
   if (!mappedOptions.preventZoom) {
     resetMetaViewport()
   }
-
-  destroy()
 })
 </script>
 
@@ -493,6 +483,7 @@ onUnmounted(() => {
 .magic-drawer__drag {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  touch-action: none;
   width: 100%;
   height: 100%;
   display: flex;

@@ -11,9 +11,10 @@
 
 <script setup lang="ts">
 import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
-import { useModalApi, useModalEmitter } from '../../../MagicModal'
-import { useCommandApi } from './../composables/useCommandApi'
-import { CommandInstanceId } from './../symbols'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicModal } from '../../../MagicModal'
+import { useMagicCommand } from '../composables/useMagicCommand'
+import { MagicCommandInstanceId } from './../symbols'
 
 import type { CommandModalOptions } from '../types'
 
@@ -24,14 +25,15 @@ interface MagicCommandProps {
 
 const props = defineProps<MagicCommandProps>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
+const emitter = useMagicEmitter()
 
 function afterLeaveCallback() {
   close()
 }
 
-const { close, isActive } = useCommandApi(commandId)
-const modalApi = useModalApi(commandId)
+const { close, isActive } = useMagicCommand(commandId)
+const modalApi = useMagicModal(commandId)
 
 watch(isActive, (value) => {
   if (value) {
@@ -41,10 +43,10 @@ watch(isActive, (value) => {
   }
 })
 
-useModalEmitter().on('afterLeave', afterLeaveCallback)
+emitter.on('afterLeave', afterLeaveCallback)
 
 onBeforeUnmount(() => {
-  useModalEmitter().off('afterLeave', afterLeaveCallback)
+  emitter.off('afterLeave', afterLeaveCallback)
   close()
 })
 </script>

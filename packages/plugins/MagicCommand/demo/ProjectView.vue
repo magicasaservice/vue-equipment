@@ -42,7 +42,10 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { useCommandApi, CommandInstanceId } from '@maas/vue-equipment/plugins'
+import {
+  useMagicCommand,
+  MagicCommandInstanceId,
+} from '@maas/vue-equipment/plugins'
 
 import DemoItem from './DemoItem.vue'
 
@@ -52,9 +55,9 @@ interface Props {
 
 defineProps<Props>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 
-const commandApi = useCommandApi(commandId)
+const commandApi = useMagicCommand(commandId)
 const { selectLastView } = commandApi
 
 function itemCallback(nth: number) {

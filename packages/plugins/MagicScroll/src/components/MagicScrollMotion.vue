@@ -13,7 +13,7 @@ import {
   type AnimationControls,
   type Easing,
 } from 'motion'
-import { ScrollProgressKey } from '../symbols'
+import { MagicScrollProgress } from '../symbols'
 
 interface Props {
   keyframes?: MotionKeyframesDefinition
@@ -30,7 +30,7 @@ const animation = ref<AnimationControls | undefined>(undefined)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const progress = inject(
-  ScrollProgressKey,
+  MagicScrollProgress,
   computed(() => 0)
 )
 

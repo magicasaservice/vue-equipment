@@ -53,7 +53,10 @@
 
 <script setup lang="ts">
 import { ref, inject } from 'vue'
-import { useCommandApi, CommandInstanceId } from '@maas/vue-equipment/plugins'
+import {
+  useMagicCommand,
+  MagicCommandInstanceId,
+} from '@maas/vue-equipment/plugins'
 import DemoItem from './DemoItem.vue'
 
 interface Props {
@@ -63,9 +66,9 @@ interface Props {
 
 defineProps<Props>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 
-const commandApi = useCommandApi(commandId)
+const commandApi = useMagicCommand(commandId)
 const { selectView } = commandApi
 
 const dynamic = ref(false)

@@ -18,7 +18,7 @@ import {
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandView } from '../composables/private/useCommandView'
-import { CommandInstanceId } from '../symbols'
+import { MagicCommandInstanceId } from '../symbols'
 
 interface Props {
   id?: string
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), { default: false })
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { activeView, selectView } = useCommandView()

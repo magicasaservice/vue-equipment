@@ -11,9 +11,10 @@
 
 <script setup lang="ts">
 import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
-import { useDrawerApi, useDrawerEmitter } from '../../../MagicDrawer'
-import { useCommandApi } from './../composables/useCommandApi'
-import { CommandInstanceId } from './../symbols'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from '../../../MagicDrawer'
+import { useMagicCommand } from '../composables/useMagicCommand'
+import { MagicCommandInstanceId } from './../symbols'
 
 import type { CommandDrawerOptions } from '../types'
 
@@ -24,14 +25,15 @@ interface MagicCommandProps {
 
 const props = defineProps<MagicCommandProps>()
 
-const commandId = inject(CommandInstanceId, '')
+const commandId = inject(MagicCommandInstanceId, '')
+const emitter = useMagicEmitter()
 
 function afterLeaveCallback() {
   close()
 }
 
-const { close, isActive } = useCommandApi(commandId)
-const drawerApi = useDrawerApi(commandId)
+const { close, isActive } = useMagicCommand(commandId)
+const drawerApi = useMagicDrawer(commandId)
 
 watch(isActive, (value) => {
   if (value) {
@@ -41,10 +43,10 @@ watch(isActive, (value) => {
   }
 })
 
-useDrawerEmitter().on('afterLeave', afterLeaveCallback)
+emitter.on('afterLeave', afterLeaveCallback)
 
 onBeforeUnmount(() => {
-  useDrawerEmitter().off('afterLeave', afterLeaveCallback)
+  emitter.off('afterLeave', afterLeaveCallback)
   close()
 })
 </script>

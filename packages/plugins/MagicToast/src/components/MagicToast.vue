@@ -55,8 +55,9 @@ import { defu } from 'defu'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
 import { defaultOptions } from './../utils/defaultOptions'
-import { useToastApi } from './../composables/useToastApi'
+import { useToastApi } from '../composables/private/useToastApi'
 import { useToastCallback } from './../composables/private/useToastCallback'
+import { useMagicToast } from '../composables/useMagicToast'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
@@ -76,7 +77,8 @@ interface MagicToastProps {
 
 const props = defineProps<MagicToastProps>()
 
-const { toasts, count, oldest, initialize, destroy } = useToastApi(props.id)
+const { initialize, destroy } = useToastApi(props.id)
+const { toasts, count, firstToast } = useMagicToast(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
@@ -91,7 +93,7 @@ const {
   onLeave,
   onAfterLeave,
   activeElements,
-} = useToastCallback({ id: props.id, mappedOptions, count, oldest })
+} = useToastCallback({ id: props.id, mappedOptions, count, firstToast })
 
 function onMouseenter() {
   if (mappedOptions.layout?.expand === 'hover') {
