@@ -7,7 +7,7 @@ export default defineNuxtModule({
   },
   setup() {
     addImports({
-      from: '@maas/vue-equipment/plugins/MagicToast',
+      from: '@maas/vue-equipment/plugins/MagicEmitter',
       name: 'useMagicEmitter',
     })
   },
