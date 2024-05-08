@@ -16,10 +16,5 @@ export default defineNuxtModule({
       name: 'MagicDraggable',
       global: true,
     })
-
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicDraggable',
-      name: 'useDraggableApi',
-    })
   },
 })

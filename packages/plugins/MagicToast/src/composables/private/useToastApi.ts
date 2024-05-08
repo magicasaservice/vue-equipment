@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { toValue, type MaybeRef } from 'vue'
 import { useToastStore } from './useToastStore'
 import { useMagicToast } from '../useMagicToast'
 

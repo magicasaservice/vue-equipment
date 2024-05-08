@@ -20,7 +20,7 @@ export default defineNuxtModule({
 
     addImports({
       from: '@maas/vue-equipment/plugins/MagicToast',
-      name: 'useToastApi',
+      name: 'useMagicToast',
     })
   },
 })
