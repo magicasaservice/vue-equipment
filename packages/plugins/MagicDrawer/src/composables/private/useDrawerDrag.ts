@@ -37,6 +37,7 @@ type UseDrawerDragArgs = {
   initial: MaybeRef<DefaultOptions['initial']>
   animation: MaybeRef<DefaultOptions['animation']>
   preventDragClose: MaybeRef<DefaultOptions['preventDragClose']>
+  disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
   close: () => void
 }
@@ -54,6 +55,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     initial,
     animation,
     preventDragClose,
+    disabled,
     close,
   } = args
 
@@ -357,6 +359,27 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  function onCancel() {
+    switch (position) {
+      case 'bottom':
+      case 'top':
+        interpolateDragged({
+          to: snappedY.value,
+        })
+        break
+
+      case 'right':
+      case 'left':
+        interpolateDragged({
+          to: snappedX.value,
+        })
+        break
+    }
+
+    resetStateAndListeners()
+    resetScrollLock()
+  }
+
   function onPointerup(e: PointerEvent) {
     if (shouldClose.value) {
       close()
@@ -533,6 +556,16 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedX.value = x
     lastDraggedY.value = y
   })
+
+  // If the disabled value is updated and true, reset everything
+  watch(
+    () => toValue(disabled),
+    (value) => {
+      if (value) {
+        onCancel()
+      }
+    }
+  )
 
   // Make sure the drawer keeps the correct position when the window is resized
   // To achieve this, we update the snapPointsMap after the drawer has snapped

@@ -181,6 +181,7 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   animation,
   initial,
   preventDragClose,
+  disabled,
   close,
 })
 
