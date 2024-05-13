@@ -14,9 +14,6 @@ import { MagicCommandInstanceId, MagicCommandOptions } from '../symbols'
 
 import type { CommandOptions } from './../types/index'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {
   if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {

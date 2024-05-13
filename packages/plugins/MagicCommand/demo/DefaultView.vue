@@ -60,7 +60,6 @@ import {
 import DemoItem from './DemoItem.vue'
 
 interface Props {
-  hasDynamicItem?: boolean
   isModal?: boolean
 }
 
