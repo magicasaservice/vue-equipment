@@ -11,10 +11,10 @@
 import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
-import type { NoiseOptions } from '../types'
+import type { MagicNoiseOptions } from '../types'
 
 interface MagicNoiseProps {
-  options?: NoiseOptions
+  options?: MagicNoiseOptions
   pause?: boolean
 }
 

@@ -75,7 +75,6 @@ import {
   nextTick,
   toValue,
   onBeforeMount,
-  onMounted,
   onBeforeUnmount,
   onUnmounted,
   type Component,
@@ -92,7 +91,7 @@ import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
 
-import type { DrawerOptions } from '../types/index'
+import type { MagicDrawerOptions } from '../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
@@ -120,7 +119,7 @@ interface MagicDrawerProps {
   class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
-  options?: DrawerOptions
+  options?: MagicDrawerOptions
 }
 
 const props = withDefaults(defineProps<MagicDrawerProps>(), {

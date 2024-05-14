@@ -16,11 +16,11 @@ import { useMagicModal } from '../../../MagicModal'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from './../symbols'
 
-import type { CommandModalOptions } from '../types'
+import type { MagicCommandModalOptions } from '../types'
 
 interface MagicCommandProps {
   class?: MaybeRef<string>
-  options?: CommandModalOptions
+  options?: MagicCommandModalOptions
 }
 
 const props = defineProps<MagicCommandProps>()

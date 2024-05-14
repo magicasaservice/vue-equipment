@@ -16,11 +16,11 @@ import { useMagicDrawer } from '../../../MagicDrawer'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from './../symbols'
 
-import type { CommandDrawerOptions } from '../types'
+import type { MagicCommandDrawerOptions } from '../types'
 
 interface MagicCommandProps {
   class?: MaybeRef<string>
-  options?: CommandDrawerOptions
+  options?: MagicCommandDrawerOptions
 }
 
 const props = defineProps<MagicCommandProps>()
