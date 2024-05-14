@@ -4,10 +4,10 @@ import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { matchClass } from '@maas/vue-equipment/utils'
 
-import type { DrawerOptions } from '../../types/index'
+import type { MagicDrawerOptions } from '../../types/index'
 
 export type UseDrawerDOMOptions = Pick<
-  DrawerOptions,
+  MagicDrawerOptions,
   'scrollLock' | 'focusTrap'
 > & {
   focusTarget: MaybeElementRef

@@ -13,8 +13,9 @@ import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerState } from './useDrawerState'
 
-import type { DrawerEvents } from '../../types'
+import type { MagicDrawerEvents } from '../../types'
 import type { DefaultOptions } from '../../utils/defaultOptions'
+import type { ValueOf } from '@maas/vue-equipment/utils'
 
 interface UseDrawerProgressArgs {
   id: MaybeRef<string>
@@ -121,25 +122,25 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     })
   })
 
-  function beforeCallback(payload: DrawerEvents[keyof DrawerEvents]) {
+  function beforeCallback(payload: ValueOf<MagicDrawerEvents>) {
     if (payload === toValue(id)) {
       resume()
     }
   }
 
-  function beforeSnapCallback(payload: DrawerEvents['beforeSnap']) {
+  function beforeSnapCallback(payload: MagicDrawerEvents['beforeSnap']) {
     if (payload.id === toValue(id)) {
       snapResume()
     }
   }
 
-  function beforeDragCallback(payload: DrawerEvents['beforeDrag']) {
+  function beforeDragCallback(payload: MagicDrawerEvents['beforeDrag']) {
     if (payload.id === toValue(id)) {
       dragResume()
     }
   }
 
-  async function afterCallback(payload: DrawerEvents[keyof DrawerEvents]) {
+  async function afterCallback(payload: ValueOf<MagicDrawerEvents>) {
     await nextTick()
 
     if (payload === toValue(id)) {
@@ -149,7 +150,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     }
   }
 
-  async function afterSnapCallback(payload: DrawerEvents['afterSnap']) {
+  async function afterSnapCallback(payload: MagicDrawerEvents['afterSnap']) {
     await nextTick()
 
     if (payload.id === toValue(id)) {
@@ -159,7 +160,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     }
   }
 
-  async function afterDragCallback(payload: DrawerEvents['drag']) {
+  async function afterDragCallback(payload: MagicDrawerEvents['drag']) {
     await nextTick()
 
     if (payload.id === toValue(id)) {

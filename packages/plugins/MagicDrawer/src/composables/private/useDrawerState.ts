@@ -1,11 +1,11 @@
 import { ref, reactive, toRefs, toValue, type Ref, type MaybeRef } from 'vue'
-import type { DrawerState } from '../../types/index'
+import type { MagicDrawerState } from '../../types/index'
 
-const drawerStateStore: Ref<DrawerState[]> = ref([])
+const drawerStateStore: Ref<MagicDrawerState[]> = ref([])
 
 export function useDrawerState(id: MaybeRef<string>) {
   function createState(id: string) {
-    const state: DrawerState = {
+    const state: MagicDrawerState = {
       id: id,
       dragStart: undefined,
       dragging: false,
@@ -51,7 +51,7 @@ export function useDrawerState(id: MaybeRef<string>) {
 
   function deleteState() {
     drawerStateStore.value = drawerStateStore.value.filter(
-      (x: DrawerState) => x.id !== id
+      (x: MagicDrawerState) => x.id !== id
     )
   }
 

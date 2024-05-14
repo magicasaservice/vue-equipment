@@ -24,7 +24,7 @@ import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { DrawerEvents } from '../../types'
+import type { MagicDrawerEvents } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
@@ -337,14 +337,14 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint.value = undefined
   }
 
-  function afterLeaveCallback(payload: DrawerEvents['afterLeave']) {
+  function afterLeaveCallback(payload: MagicDrawerEvents['afterLeave']) {
     if (payload === toValue(id)) {
       resetState()
       resetSnapped()
     }
   }
 
-  function snapToCallback(payload: DrawerEvents['snapTo']) {
+  function snapToCallback(payload: MagicDrawerEvents['snapTo']) {
     if (payload.id === toValue(id)) {
       if (!toValue(isActive)) {
         console.warn('Cannot snap to point when drawer is not open')
