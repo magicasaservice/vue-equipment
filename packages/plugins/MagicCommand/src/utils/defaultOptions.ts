@@ -1,7 +1,7 @@
-import type { CommandOptions } from '../types'
+import type { MagicCommandOptions } from '../types'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAllNested<CommandOptions> = {
+const defaultOptions: RequireAllNested<MagicCommandOptions> = {
   keys: {
     open: ['Cmd+k'],
     close: ['Escape'],

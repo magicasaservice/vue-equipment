@@ -1,7 +1,7 @@
-import type { ModalOptions } from '../../../MagicModal'
-import type { DrawerOptions } from '../../../MagicDrawer'
+import type { MagicModalOptions } from '../../../MagicModal'
+import type { MagicDrawerOptions } from '../../../MagicDrawer'
 
-export type CommandOptions = {
+export type MagicCommandOptions = {
   keys?: {
     open?: string[] | false
     close?: string[] | false
@@ -11,7 +11,7 @@ export type CommandOptions = {
   loop?: boolean
 }
 
-export type CommandEvents = {
+export type MagicCommandEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string
@@ -20,5 +20,5 @@ export type CommandEvents = {
   afterLeave: string
 }
 
-export interface CommandModalOptions extends ModalOptions {}
-export interface CommandDrawerOptions extends DrawerOptions {}
+export interface MagicCommandModalOptions extends MagicModalOptions {}
+export interface MagicCommandDrawerOptions extends MagicDrawerOptions {}
