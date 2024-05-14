@@ -1,6 +1,6 @@
 import { type Options } from 'focus-trap'
 
-export interface ModalOptions {
+export interface MagicModalOptions {
   backdrop?: boolean
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
@@ -18,7 +18,7 @@ export interface ModalOptions {
   }
 }
 
-export type ModalEvents = {
+export type MagicModalEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string

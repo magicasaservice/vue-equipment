@@ -4,10 +4,10 @@ import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { matchClass } from '@maas/vue-equipment/utils'
 
-import type { ModalOptions } from '../../types/index'
+import type { MagicModalOptions } from '../../types/index'
 
 export type useModalApiOptions = Pick<
-  ModalOptions,
+  MagicModalOptions,
   'scrollLock' | 'focusTrap'
 > & {
   focusTarget: MaybeElementRef
