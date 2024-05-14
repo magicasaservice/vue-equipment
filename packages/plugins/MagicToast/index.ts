@@ -2,7 +2,7 @@ import MagicToast from './src/components/MagicToast.vue'
 import { useMagicToast } from './src/composables/useMagicToast'
 
 import type { App, Plugin } from 'vue'
-import type { ToastEvents } from './src/types/index'
+import type { MagicToastEvents } from './src/types/index'
 
 const MagicToastPlugin: Plugin = {
   install: (app: App) => {
@@ -11,4 +11,4 @@ const MagicToastPlugin: Plugin = {
 }
 
 export { MagicToastPlugin, MagicToast, useMagicToast }
-export type { ToastEvents }
+export type { MagicToastEvents }

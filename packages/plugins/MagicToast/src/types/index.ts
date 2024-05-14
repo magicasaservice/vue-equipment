@@ -1,21 +1,21 @@
 import type { MaybeRef } from 'vue'
 import type { PickPartial } from '@maas/vue-equipment/utils'
 
-type Toast = {
+type MagicToast = {
   id: string
   component: Object
   props?: MaybeRef<Record<string, any>>
   remove: Function
 }
 
-type ToastInstance = {
+type MagicToastInstance = {
   id: string
-  toasts: Toast[]
-  add: (args: AddArgs) => string
+  toasts: MagicToast[]
+  add: (args: AddToastArgs) => string
   remove: (id: string) => void
 }
 
-type ToastOptions = {
+type MagicToastOptions = {
   teleport?: {
     target?: string
     disabled?: boolean
@@ -38,7 +38,7 @@ type ActiveElement = {
   }
 }
 
-type ToastEvents = {
+type MagicToastEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string
@@ -47,14 +47,14 @@ type ToastEvents = {
   afterLeave: string
 }
 
-type AddArgs = Pick<Toast, 'component'> &
-  PickPartial<Toast, 'props'> & { duration?: number }
+type AddToastArgs = Pick<MagicToast, 'component'> &
+  PickPartial<MagicToast, 'props'> & { duration?: number }
 
 export type {
-  Toast,
-  ToastInstance,
-  ToastOptions,
+  MagicToast,
+  MagicToastInstance,
+  MagicToastOptions,
   ActiveElement,
-  ToastEvents,
-  AddArgs,
+  MagicToastEvents,
+  AddToastArgs,
 }

@@ -1,12 +1,16 @@
 import { ref, toValue, type Ref, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import type { ActiveElement, ToastOptions, Toast } from './../../types'
+import type {
+  ActiveElement,
+  MagicToastOptions,
+  MagicToast,
+} from './../../types'
 
 type UseToastCallbackArgs = {
   id: MaybeRef<string>
-  mappedOptions: ToastOptions
+  mappedOptions: MagicToastOptions
   count: Ref<number | undefined>
-  firstToast: Ref<Toast | undefined>
+  firstToast: Ref<MagicToast | undefined>
 }
 
 export function useToastCallback(args: UseToastCallbackArgs) {
