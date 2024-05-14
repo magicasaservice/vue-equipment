@@ -2,7 +2,7 @@ import type { App, Plugin } from 'vue'
 
 import MagicDraggable from './src/components/MagicDraggable.vue'
 
-import type { DraggableOptions } from './src/types'
+import type { MagicDraggableOptions } from './src/types'
 
 const MagicDraggablePlugin: Plugin = {
   install: (app: App) => {
@@ -11,4 +11,4 @@ const MagicDraggablePlugin: Plugin = {
 }
 
 export { MagicDraggablePlugin, MagicDraggable }
-export type { DraggableOptions }
+export type { MagicDraggableOptions }

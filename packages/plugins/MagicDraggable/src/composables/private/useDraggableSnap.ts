@@ -4,7 +4,10 @@ import { interpolate } from '@maas/vue-equipment/utils'
 import { defu } from 'defu'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { SnapPoint, Coordinates } from '../../types'
+import type {
+  MagicDraggableSnapPoint,
+  MagicDraggableCoordinates,
+} from '../../types'
 
 type UseDraggableSnapArgs = {
   elRect: Ref<DOMRect | undefined>
@@ -23,7 +26,7 @@ type InterpolateDraggedArgs = {
 }
 
 type SnapToArgs = {
-  snapPoint: SnapPoint
+  snapPoint: MagicDraggableSnapPoint
   interpolate?: boolean
   duration?: number
 }
@@ -33,7 +36,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     args
 
   // Public state
-  const activeSnapPoint = ref<SnapPoint | undefined>(undefined)
+  const activeSnapPoint = ref<MagicDraggableSnapPoint | undefined>(undefined)
 
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
@@ -43,7 +46,9 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
         .map((snapPoint) => {
           return mapSnapPoint(snapPoint)
         })
-        .filter((snapPoint) => snapPoint !== undefined) as Coordinates[]
+        .filter(
+          (snapPoint) => snapPoint !== undefined
+        ) as MagicDraggableCoordinates[]
 
       return mapped
     }
@@ -59,13 +64,15 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           acc[mappedKey] = current
         }
         return acc
-      }, {} as Record<string, SnapPoint>)
+      }, {} as Record<string, MagicDraggableSnapPoint>)
 
       return mapped
     }
   )
   // Private functions
-  function mapSnapPoint(snapPoint: SnapPoint): Coordinates | undefined {
+  function mapSnapPoint(
+    snapPoint: MagicDraggableSnapPoint
+  ): MagicDraggableCoordinates | undefined {
     if (!wrapperRect.value) {
       console.warn('Wrapper rect is not defined')
       return undefined

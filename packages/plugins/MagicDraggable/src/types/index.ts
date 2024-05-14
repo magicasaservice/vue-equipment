@@ -9,12 +9,12 @@ type Position =
   | 'bottom-center'
   | 'bottom-right'
 
-export type Coordinates = {
+export type MagicDraggableCoordinates = {
   x: number
   y: number
 }
 
-export type SnapPoint =
+export type MagicDraggableSnapPoint =
   | [
       Position,
       offset?: {
@@ -24,7 +24,7 @@ export type SnapPoint =
     ]
   | Position
 
-export interface DraggableOptions {
+export interface MagicDraggableOptions {
   tag?: 'dialog' | 'div'
   threshold?: {
     distance?: number
@@ -39,17 +39,17 @@ export interface DraggableOptions {
     }
   }
   initial?: {
-    snapPoint?: SnapPoint
+    snapPoint?: MagicDraggableSnapPoint
   }
-  snapPoints?: SnapPoint[]
+  snapPoints?: MagicDraggableSnapPoint[]
   disabled?: boolean
 }
 
-export interface DraggableState {
+export interface MagicDraggableState {
   id: string
   dragStart: Date | undefined
   dragging: boolean
-  interpolateTo: Coordinates | undefined
+  interpolateTo: MagicDraggableCoordinates | undefined
   originX: number
   originY: number
   lastDraggedX: number

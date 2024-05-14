@@ -1,9 +1,9 @@
-import type { DraggableOptions } from '../types'
+import type { MagicDraggableOptions } from '../types'
 import type { RequireAll } from '@maas/vue-equipment/utils'
 
-type DefaultOptions = RequireAll<DraggableOptions> & {
-  threshold: RequireAll<DraggableOptions['threshold']>
-  animation: RequireAll<DraggableOptions['animation']>
+type DefaultOptions = RequireAll<MagicDraggableOptions> & {
+  threshold: RequireAll<MagicDraggableOptions['threshold']>
+  animation: RequireAll<MagicDraggableOptions['animation']>
 }
 
 import { easeOutBack } from '@maas/vue-equipment/utils'
