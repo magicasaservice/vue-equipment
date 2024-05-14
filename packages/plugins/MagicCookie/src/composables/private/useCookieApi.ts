@@ -1,14 +1,19 @@
 import { ref } from 'vue'
 import { slugify } from '@maas/vue-equipment/utils'
-import type { CookieApiDefinition, CookieRecord } from '../../types'
+import type { MagicCookieRecord } from '../../types'
+
+type UseCookieApiArgs = {
+  cookies: MagicCookieRecord[]
+  maxAge?: number
+}
 
 // Global API state to manage cookies and maxAge
-export const globalApiState = ref({
-  cookies: [] as CookieRecord[],
+export const cookieApiStore = ref({
+  cookies: [] as MagicCookieRecord[],
   maxAge: undefined as number | undefined,
 })
 
-export function defineCookieApi({ cookies, maxAge }: CookieApiDefinition) {
+export function useCookieApi({ cookies, maxAge }: UseCookieApiArgs) {
   // Validate the input configuration
   if (!Array.isArray(cookies)) {
     console.warn('Invalid configuration. "cookies" must be an array.')
@@ -16,7 +21,7 @@ export function defineCookieApi({ cookies, maxAge }: CookieApiDefinition) {
 
   // Map the cookies array to include a 'key' property that is slugified
   // with specific options (separator, lowercase, and strict).
-  globalApiState.value.cookies = cookies?.map((cookie) => {
+  cookieApiStore.value.cookies = cookies?.map((cookie) => {
     return {
       ...cookie,
       key: slugify(cookie.key, {
@@ -28,5 +33,5 @@ export function defineCookieApi({ cookies, maxAge }: CookieApiDefinition) {
   })
 
   // Set the global maxAge value based on the provided maxAge.
-  globalApiState.value.maxAge = maxAge
+  cookieApiStore.value.maxAge = maxAge
 }

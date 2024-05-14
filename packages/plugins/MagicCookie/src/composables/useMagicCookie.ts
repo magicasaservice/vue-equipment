@@ -2,9 +2,9 @@ import { computed, ref } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { toValue } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { globalApiState } from './private/defineCookieApi'
+import { cookieApiStore } from './private/defineCookieApi'
 
-import type { CookieConsent } from '../types'
+import type { MagicCookieConsent } from '../types'
 
 // Reactive variables
 const preferencesVisible = ref(false)
@@ -17,11 +17,11 @@ export function useMagicCookie() {
   // Computed property to manage cookie consent data
   const cookieConsent = computed({
     get: () => {
-      return universalCookies.get('cookie_consent') as CookieConsent
+      return universalCookies.get('cookie_consent') as MagicCookieConsent
     },
-    set: (value: CookieConsent) => {
+    set: (value: MagicCookieConsent) => {
       universalCookies.set('cookie_consent', value, {
-        maxAge: globalApiState.value?.maxAge,
+        maxAge: cookieApiStore.value?.maxAge,
       })
     },
   })
@@ -45,7 +45,7 @@ export function useMagicCookie() {
   function accept() {
     // Create an object representing all cookies as accepted
     const cookies: { [key: string]: boolean } =
-      globalApiState.value?.cookies?.reduce((result, cookie) => {
+      cookieApiStore.value?.cookies?.reduce((result, cookie) => {
         result[cookie.key] = true
         return result
       }, {} as { [key: string]: boolean })
@@ -82,7 +82,7 @@ export function useMagicCookie() {
   function reject() {
     // Create an object representing all cookies as rejected (optional cookies as accepted)
     const cookies: { [key: string]: boolean } =
-      globalApiState.value?.cookies?.reduce((result, cookie) => {
+      cookieApiStore.value?.cookies?.reduce((result, cookie) => {
         result[cookie.key] = cookie.optional === false ? true : false
         return result
       }, {} as { [key: string]: boolean })
@@ -101,18 +101,18 @@ export function useMagicCookie() {
   }
 
   // Events
-  function onAccept(handler: (args: CookieConsent) => void) {
-    emitter.on('accept', (args: CookieConsent) => handler(toValue(args)))
+  function onAccept(handler: (args: MagicCookieConsent) => void) {
+    emitter.on('accept', (args: MagicCookieConsent) => handler(toValue(args)))
   }
 
-  function onAcceptSelected(handler: (args: CookieConsent) => void) {
-    emitter.on('acceptSelected', (args: CookieConsent) =>
+  function onAcceptSelected(handler: (args: MagicCookieConsent) => void) {
+    emitter.on('acceptSelected', (args: MagicCookieConsent) =>
       handler(toValue(args))
     )
   }
 
-  function onReject(handler: (args: CookieConsent) => void) {
-    emitter.on('reject', (args: CookieConsent) => handler(toValue(args)))
+  function onReject(handler: (args: MagicCookieConsent) => void) {
+    emitter.on('reject', (args: MagicCookieConsent) => handler(toValue(args)))
   }
 
   // Return the API functions and reactive variables
