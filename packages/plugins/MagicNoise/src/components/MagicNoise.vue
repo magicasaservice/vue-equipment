@@ -13,12 +13,12 @@ import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
 import type { NoiseOptions } from '../types'
 
-interface Props {
+interface MagicNoiseProps {
   options?: NoiseOptions
   pause?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicNoiseProps>(), {
   pause: false,
 })
 

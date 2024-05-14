@@ -1,7 +1,7 @@
-import type { NoiseOptions } from '../types/index'
+import type { MagicNoiseOptions } from '../types/index'
 import type { RequireAll } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAll<NoiseOptions> = {
+const defaultOptions: RequireAll<MagicNoiseOptions> = {
   pixelSize: 2,
   tiles: 32,
   fps: 12,

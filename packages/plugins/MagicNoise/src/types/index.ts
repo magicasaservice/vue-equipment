@@ -10,7 +10,7 @@ export type Pixel = {
 
 export type RafControls = Pick<Pausable, 'pause' | 'resume'>
 
-export type NoiseOptions = {
+export type MagicNoiseOptions = {
   pixelSize?: number
   tiles?: number
   fps?: number
