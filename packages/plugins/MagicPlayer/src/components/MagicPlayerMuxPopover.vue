@@ -18,9 +18,15 @@ import { shallowRef, onMounted, watch, computed, type Ref } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
-type Props = {
+type MagicPlayerMuxPopoverProps = {
   id: string
   playbackId: string
+}
+
+type Tile = {
+  start: number
+  x: number
+  y: number
 }
 
 type MuxStoryboard = {
@@ -28,14 +34,10 @@ type MuxStoryboard = {
   tile_width: number
   tile_height: number
   duration: number
-  tiles: Array<{
-    start: number
-    x: number
-    y: number
-  }>
+  tiles: Tile[]
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicPlayerMuxPopoverProps>()
 
 const { seekedTime } = usePlayerControlsApi({ id: props.id })
 const { pixelRatio } = useDevicePixelRatio()

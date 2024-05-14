@@ -26,11 +26,11 @@ import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
-import type { SourceType } from './../types'
+import type { MagicPlayerSourceType } from './../types'
 
-interface Props {
+interface MagicPlayerProps {
   id: string
-  srcType?: SourceType
+  srcType?: MagicPlayerSourceType
   src: string
   ratio?: string
   fill?: boolean
@@ -38,7 +38,7 @@ interface Props {
   loop?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicPlayerProps>(), {
   srcType: 'native',
   src: '',
   ratio: '16:9',

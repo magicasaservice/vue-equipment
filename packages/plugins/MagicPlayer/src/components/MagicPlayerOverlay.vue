@@ -43,11 +43,11 @@ import IconWaiting from './icons/Waiting.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 
-interface Props {
+interface MagicPlayerOverlayProps {
   id: string
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicPlayerOverlayProps>()
 
 const { playing, waiting } = usePlayerMediaApi({
   id: props.id,

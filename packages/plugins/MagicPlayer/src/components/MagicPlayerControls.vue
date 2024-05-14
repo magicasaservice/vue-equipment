@@ -84,11 +84,11 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
-interface Props {
+interface MagicPlayerControlsProps {
   id: string
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicPlayerControlsProps>()
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)

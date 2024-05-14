@@ -9,12 +9,12 @@ import { computed } from 'vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { formatTime } from '@maas/vue-equipment/utils'
 
-interface Props {
+interface MagicPlayerDisplayTimeProps {
   id: string
   type: 'current' | 'remaining' | 'duration'
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicPlayerDisplayTimeProps>(), {
   type: 'current',
 })
 

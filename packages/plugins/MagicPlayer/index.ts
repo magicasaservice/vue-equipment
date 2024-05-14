@@ -10,6 +10,8 @@ import MagicPlayerPoster from './src/components/MagicPlayerPoster.vue'
 import MagicPlayerTimeline from './src/components/MagicPlayerTimeline.vue'
 import { useMagicPlayer } from './src/composables/useMagicPlayer'
 
+import type { MagicPlayerSourceType } from './src/types/index'
+
 const MagicPlayerPlugin: Plugin = {
   install: (app: App) => {
     app.component('MagicAudioPlayer', MagicAudioPlayer)
@@ -35,4 +37,4 @@ export {
   useMagicPlayer,
 }
 
-export type * from './src/types/index'
+export type { MagicPlayerSourceType }

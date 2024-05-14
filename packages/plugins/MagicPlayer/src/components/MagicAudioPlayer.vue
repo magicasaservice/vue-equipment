@@ -22,13 +22,13 @@ import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
-interface Props {
+interface MagicAudioPlayerProps {
   id: string
   src: string
   loop?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicAudioPlayerProps>(), {
   src: '',
   loop: false,
 })

@@ -64,11 +64,11 @@ import { usePlayerControlsApi } from '../composables/private/usePlayerControlsAp
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 
-interface Props {
+interface MagicAudioPlayerControlsProps {
   id: string
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicAudioPlayerControlsProps>()
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
