@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { toValue } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { cookieApiStore } from './private/defineCookieApi'
+import { cookieApiStore } from './private/useCookieApi'
 
 import type { MagicCookieConsent } from '../types'
 
