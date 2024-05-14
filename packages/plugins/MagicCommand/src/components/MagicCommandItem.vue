@@ -25,7 +25,7 @@ import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { MagicCommandInstanceId } from '../symbols'
 
-interface Props {
+interface MagicCommandItemProps {
   id?: string
   default?: boolean
   callback: Function | false
@@ -33,7 +33,7 @@ interface Props {
   keys?: string[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicCommandItemProps>(), {
   listener: () => ['click'],
   keys: () => ['Enter'],
 })
