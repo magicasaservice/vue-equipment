@@ -108,7 +108,7 @@ import { useMagicDrawer } from '../composables/useMagicDrawer'
 // Prevent deep merge of certain options
 // In this case, don’t merge the `close` and `points` options
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'close' || key === 'points') {
+  if (key === 'close' || key === 'snapPoints') {
     obj[key] = value
     return true
   }
