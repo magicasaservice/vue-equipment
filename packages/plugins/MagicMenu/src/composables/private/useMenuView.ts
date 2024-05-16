@@ -69,8 +69,8 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     })
   }
 
-  function getActiveView() {
-    return [...state.views.value].reverse().find((view) => {
+  function getActiveViews() {
+    return state.views.value.filter((view) => {
       return view.active
     })
   }
@@ -101,7 +101,6 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   function getNextView(id: string) {
     const siblings = getViewSiblings(id)
-    console.log('siblings:', siblings)
     const index = siblings.findIndex((item) => {
       return item.id === id
     })
@@ -186,7 +185,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     initializeView,
     deleteView,
     getView,
-    getActiveView,
+    getActiveViews,
     getNestedView,
     getNextView,
     getPreviousView,

@@ -6,10 +6,8 @@ import { useMenuState } from './useMenuState'
 
 export function useMenuKeyListener(instanceId: string) {
   const {
-    getActiveView,
+    getActiveViews,
     getNestedView,
-    getNextView,
-    getPreviousView,
     selectView,
     unselectView,
     selectNextView,
@@ -18,7 +16,7 @@ export function useMenuKeyListener(instanceId: string) {
   } = useMenuView(instanceId)
   const {
     getViewItems,
-    getActiveItem,
+    getActiveItems,
     selectItem,
     selectNextItem,
     selectPreviousItem,
@@ -29,115 +27,98 @@ export function useMenuKeyListener(instanceId: string) {
   const state = findState()
 
   function onArrowDown() {
-    const activeView = getActiveView()
+    const activeViews = getActiveViews()
+    const activeItems = getActiveItems()
 
-    if (activeView) {
-      const items = getViewItems(activeView.id)
-      const activeItem = items.find((item) => item.active)
+    const lastItem = activeItems[activeItems.length - 1]
+    const lastView = activeViews[activeViews.length - 1]
 
-      if (activeItem) {
-        selectNextItem(activeItem.id)
-      } else {
+    switch (true) {
+      // Top level items, not nested inside a view
+      case lastItem.parent.length === 0:
+        const items = getViewItems(lastView.id)
         selectItem(items[0].id)
-      }
+        break
+      // Nested items
+      default:
+        selectNextItem(lastItem.id)
+        break
     }
   }
 
   function onArrowUp() {
-    const activeView = getActiveView()
+    const activeItems = getActiveItems()
+    const lastItem = activeItems[activeItems.length - 1]
 
-    if (activeView) {
-      const items = getViewItems(activeView.id)
-      const activeItem = items.find((item) => item.active)
-
-      if (activeItem) {
-        selectPreviousItem(activeItem.id)
-      }
+    // Nested items only
+    if (lastItem.parent.length > 0) {
+      selectPreviousItem(lastItem.id)
     }
   }
 
   async function onArrowRight() {
-    const activeView = getActiveView()
-    const activeItem = getActiveItem()
+    const activeItems = getActiveItems()
+    const activeViews = getActiveViews()
 
-    // Open view
-    if (activeView) {
-      const items = getViewItems(activeView.id)
-      const activeNestedItem = items.find((item) => item.active)
+    const lastItem = activeItems[activeItems.length - 1]
+    const lastView = activeViews[activeViews.length - 1]
 
-      // Nested active item
-      if (activeNestedItem) {
-        const nestedView = getNestedView(activeNestedItem.id)
+    // Safeguard
+    if (!lastView || !lastItem) return
 
-        // Nested active item has a nested view
+    switch (true) {
+      // Top level items, not nested inside a view
+      case lastItem.parent.length === 0:
+        selectNextView(lastView.id)
+        selectNextItem(lastItem.id)
+        break
+      case lastItem.parent.length > 1:
+        // Check if last item has a nested view
+        // If it does, select it and select the first item in the nested view
+        // if it does not, simply select the next view and item
+        const nestedView = getNestedView(lastItem.id)
         if (nestedView) {
           selectView(nestedView.id)
-          await nextTick()
 
-          // Select first item in nested view
+          await nextTick()
           const items = getViewItems(nestedView.id)
           selectItem(items[0].id)
         } else {
-          // Nested active item does not have a nested view
-          // Switch to next view
-          const nextView = getNextView(activeView.id)
-          const parentId = nextView.parent[activeView.parent.length - 1]
-          selectView(nextView.id)
-          selectItem(parentId)
+          selectNextView(activeViews[0].id)
+          selectNextItem(activeItems[0].id)
         }
-      } else {
-        // No nested active item
-        selectNextView(activeView.id)
-
-        if (activeItem) {
-          selectNextItem(activeItem.id)
-        }
-      }
-    } else {
-      if (activeItem) {
-        selectNextItem(activeItem.id)
-      }
+        break
     }
   }
 
   function onArrowLeft() {
-    const activeView = getActiveView()
+    const activeViews = getActiveViews()
+    const activeItems = getActiveItems()
 
-    if (activeView) {
-      if (activeView.parent.length > 1) {
-        unselectView(activeView.id)
-      } else {
-        const previousView = getPreviousView(activeView.id)
-        const parentId = previousView.parent[activeView.parent.length - 1]
-        selectView(previousView.id)
-        selectItem(parentId)
-      }
+    const lastItem = activeItems[activeItems.length - 1]
+    const lastView = activeViews[activeViews.length - 1]
+
+    // Safeguard
+    if (!lastView || !lastItem) return
+
+    switch (true) {
+      // Top level items, not nested inside a view
+      case lastItem.parent.length === 0:
+        selectPreviousView(lastView.id)
+        selectPreviousItem(lastItem.id)
+        break
+      case lastView.parent.length > 1:
+        // If the view is a nested view, simply unselect it
+        // If the view is a top level view, select the previous view and item
+        unselectView(lastView.id)
+        break
+      default:
+        selectPreviousView(activeViews[0].id)
+        selectPreviousItem(activeItems[0].id)
     }
   }
 
-  async function onEnter() {
-    const activeView = getActiveView()
-
-    if (activeView) {
-      const items = getViewItems(activeView.id)
-      const activeNestedItem = items.find((item) => item.active)
-
-      // Nested active item
-      if (activeNestedItem) {
-        const nestedView = getNestedView(activeNestedItem.id)
-
-        // Nested active item has a nested view
-        if (nestedView) {
-          selectView(nestedView.id)
-          await nextTick()
-
-          // Select first item in nested view
-          const items = getViewItems(nestedView.id)
-          selectItem(items[0].id)
-        }
-      }
-    }
-  }
+  async function onEnter() {}
 
   function onEscape() {
     state.active.value = false

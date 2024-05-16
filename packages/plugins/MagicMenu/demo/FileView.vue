@@ -4,7 +4,7 @@
     <magic-menu-item>New Window</magic-menu-item>
     <magic-menu-item>New Incognito Window</magic-menu-item>
     <magic-menu-item>
-      <span>Share</span>
+      <span>Share ></span>
       <file-share-view />
     </magic-menu-item>
 

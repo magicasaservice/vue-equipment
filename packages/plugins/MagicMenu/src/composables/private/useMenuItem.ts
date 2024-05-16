@@ -66,8 +66,8 @@ export function useMenuItem(instanceId: MaybeRef<string>) {
     })
   }
 
-  function getActiveItem() {
-    return [...state.items.value].reverse().find((item) => {
+  function getActiveItems() {
+    return state.items.value.filter((item) => {
       return item.active
     })
   }
@@ -126,6 +126,14 @@ export function useMenuItem(instanceId: MaybeRef<string>) {
     })
   }
 
+  function unselectItem(id: string) {
+    const instance = getItem(id)
+
+    if (instance) {
+      instance.active = false
+    }
+  }
+
   function selectNextItem(id: string) {
     const nextItem = getNextItem(id)
 
@@ -152,12 +160,13 @@ export function useMenuItem(instanceId: MaybeRef<string>) {
     initializeItem,
     deleteItem,
     getItem,
-    getActiveItem,
+    getActiveItems,
     getViewItems,
     getNextItem,
     getPreviousItem,
     selectPreviousItem,
     selectItem,
+    unselectItem,
     selectNextItem,
     unselectAllItems,
   }

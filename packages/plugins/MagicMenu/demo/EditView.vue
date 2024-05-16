@@ -7,7 +7,7 @@
       <span>Redo</span>
     </magic-menu-item>
     <magic-menu-item id="find-item">
-      <span>Find</span>
+      <span>Find ></span>
       <edit-find-view />
     </magic-menu-item>
     <magic-menu-item>
