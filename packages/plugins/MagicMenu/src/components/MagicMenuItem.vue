@@ -4,8 +4,9 @@
     ref="elRef"
     :class="{ '-active': isActive }"
     :id="mappedId"
-    @mouseenter="onActive"
-    @touchstart="onActive"
+    @mouseenter="select"
+    @touchstart="select"
+    @mouseleave="unselect"
   >
     <slot :is-active="isActive" />
   </div>
@@ -19,9 +20,10 @@ import {
   provide,
   nextTick,
   toValue,
+  watch,
   onBeforeUnmount,
 } from 'vue'
-import { useEventListener, onKeyStroke } from '@vueuse/core'
+import { useEventListener, onKeyStroke, useMouseInElement } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
 import {
   MagicMenuInstanceId,
@@ -51,37 +53,65 @@ const mappedId = computed(() => {
 })
 
 const parentTree = inject(MagicMenuParentTree, [])
+const parentId = computed(() => parentTree[parentTree.length - 1])
 const mappedParentTree = computed(() => [
   ...toValue(parentTree),
   mappedId.value,
 ])
 
-const mappedParentId = computed(() => parentTree[parentTree.length - 1])
-
 if (!instanceId) {
   throw new Error('MagicMenuItem must be used inside a MagicMenuProvider')
 }
 
-const { initializeItem, selectItem, deleteItem } = useMenuItem(instanceId)
+if (!parentId.value) {
+  throw new Error('MagicMenuItem must be used inside a MagicMenuView')
+}
+
+const { initializeItem, selectItem, unselectItem, deleteItem } =
+  useMenuItem(instanceId)
 const item = initializeItem({ id: mappedId.value, parentTree })
 
-const { selectView, getNestedView, unselectNestedViews } =
+const { selectView, unselectView, getNestedView, unselectNestedViews } =
   useMenuView(instanceId)
+
+const { elementX, isOutside, elementWidth } = useMouseInElement(elRef)
 
 const isActive = computed(() => {
   return item.active.value
 })
 
-function onActive() {
+function select() {
   selectItem(mappedId.value)
 
   // Unselect any nested views of siblings
-  unselectNestedViews(mappedParentId.value)
+  unselectNestedViews(parentId.value)
 
   const possibleNestedView = getNestedView(mappedId.value)
 
   if (possibleNestedView) {
     selectView(possibleNestedView.id)
+  }
+}
+
+function unselect() {
+  // Only unselect the item if there is no active nested view present
+  const possibleNestedView = getNestedView(mappedId.value)
+  if (!possibleNestedView?.active) {
+    unselectItem(mappedId.value)
+  }
+}
+
+function unselectNestedView() {
+  const possibleNestedView = getNestedView(mappedId.value)
+
+  if (possibleNestedView) {
+    unselectView(possibleNestedView.id)
+  }
+}
+
+function trackMouse() {
+  if (elementX.value < elementWidth.value) {
+    unselectNestedView()
   }
 }
 
@@ -98,6 +128,12 @@ useEventListener(elRef, props.listener, listenerCallback)
 if (props.keys.length) {
   onKeyStroke(props.keys, () => (isActive.value ? listenerCallback() : null))
 }
+
+watch(isOutside, (value) => {
+  if (value) {
+    trackMouse()
+  }
+})
 
 onBeforeUnmount(() => {
   deleteItem(mappedId.value)
