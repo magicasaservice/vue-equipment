@@ -29,7 +29,7 @@ interface MagicCommandItemProps {
   id?: string
   default?: boolean
   callback: Function | false
-  listener?: ('click' | 'hover')[]
+  listener?: ('click' | 'mouseenter' | 'touchstart')[]
   keys?: string[]
 }
 

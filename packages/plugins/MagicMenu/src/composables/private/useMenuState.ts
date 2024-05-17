@@ -3,13 +3,14 @@ import type { MagicMenuState } from '../../types/index'
 
 const menuStateStore: Ref<MagicMenuState[]> = ref([])
 
-export function useMenuState(id: MaybeRef<string>) {
+export function useMenuState(instanceId: MaybeRef<string>) {
   function createState(id: string) {
     const state: MagicMenuState = {
       id: id,
       views: [],
       items: [],
       active: false,
+      mode: 'mouse',
     }
 
     return reactive(state)
@@ -22,24 +23,24 @@ export function useMenuState(id: MaybeRef<string>) {
     return instance
   }
 
-  function findState() {
+  function initializeState() {
     let instance = menuStateStore.value.find((instance) => {
-      return instance.id === id
+      return instance.id === toValue(instanceId)
     })
 
-    if (!instance) instance = addState(toValue(id))
+    if (!instance) instance = addState(toValue(instanceId))
     return toRefs(instance)
   }
 
   function deleteState() {
     menuStateStore.value = menuStateStore.value.filter(
-      (x: MagicMenuState) => x.id !== id
+      (x: MagicMenuState) => x.id !== toValue(instanceId)
     )
   }
 
   return {
     addState,
-    findState,
+    initializeState,
     deleteState,
     menuStateStore,
   }

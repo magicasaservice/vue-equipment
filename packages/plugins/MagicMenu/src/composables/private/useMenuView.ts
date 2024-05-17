@@ -19,8 +19,8 @@ type FindViewArgs = {
 }
 
 export function useMenuView(instanceId: MaybeRef<string>) {
-  const { findState } = useMenuState(instanceId)
-  const state = findState()
+  const { initializeState } = useMenuState(instanceId)
+  const state = initializeState()
 
   // Private functions
   const { arraysAreEqual } = useMenuUtils()

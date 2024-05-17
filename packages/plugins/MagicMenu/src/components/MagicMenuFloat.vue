@@ -10,7 +10,6 @@ import { useFloating, autoUpdate, flip, type Placement } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuParentTree } from '../symbols'
 
 interface MagicMenuFloatProps {
-  parentId: HTMLElement
   placement?:
     | 'top'
     | 'right'
@@ -33,12 +32,10 @@ const referenceEl = ref<HTMLElement | null>(null)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const parentTree = inject(MagicMenuParentTree, [toValue(instanceId)])
-
-const nestingLevel = computed(() => parentTree.length)
+const parentId = computed(() => parentTree[parentTree.length - 2])
 
 const mappedPlacement = computed((): Placement => {
-  // +1 Since this element is nested inside a MagicMenuView
-  return props.placement || nestingLevel.value <= 2
+  return props.placement || parentId.value?.includes('magic-menu-bar-item')
     ? 'bottom-start'
     : 'right-start'
 })
@@ -50,7 +47,7 @@ const { floatingStyles } = useFloating(referenceEl, elRef, {
 })
 
 watch(
-  () => props.parentId,
+  () => parentId.value,
   (value) => {
     referenceEl.value = document.querySelector('#' + value)
   },

@@ -1,25 +1,25 @@
 <template>
   <teleport to="body" v-if="isActive">
-    <magic-menu-float :parent-id="mappedParentId">
-      <div class="magic-menu-view" :id="mappedId" role="menu">
+    <div class="magic-menu-view" :id="mappedId" role="menu">
+      <magic-menu-float>
         <slot />
-      </div>
-    </magic-menu-float>
+      </magic-menu-float>
+    </div>
   </teleport>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide, toValue } from 'vue'
+import { computed, inject, watch, provide, toValue, onBeforeUnmount } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { MagicMenuInstanceId, MagicMenuParentTree } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
+import { useMenuItem } from '../composables/private/useMenuItem'
 
-interface MagicCommandViewProps {
+interface MagicMenuViewProps {
   id?: string
-  parentId?: string
 }
 
-const props = defineProps<MagicCommandViewProps>()
+const props = defineProps<MagicMenuViewProps>()
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const mappedId = computed(() => {
@@ -31,21 +31,32 @@ if (!instanceId) {
 }
 
 const parentTree = inject(MagicMenuParentTree, [toValue(instanceId)])
+const parentId = computed(() => parentTree[parentTree.length - 1])
 
 const mappedParentTree = computed(() => [
   ...toValue(parentTree),
   mappedId.value,
 ])
 
-const mappedParentId = computed(
-  () => props.parentId || parentTree[parentTree.length - 1]
-)
-
 const { initializeView, deleteView } = useMenuView(instanceId)
 const view = initializeView({ id: mappedId.value, parentTree })
 
+const { getItem } = useMenuItem(instanceId)
+const parentItem = computed(() => getItem(parentId.value))
+
 const isActive = computed(() => {
   return view.active.value
+})
+
+const parentActive = computed(() => {
+  return parentItem.value?.active
+})
+
+// Deactivate the view if the parent item is deactivated
+watch(parentActive, (value) => {
+  if (!value) {
+    view.active.value = false
+  }
 })
 
 onBeforeUnmount(() => {

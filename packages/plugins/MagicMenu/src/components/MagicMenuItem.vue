@@ -4,8 +4,9 @@
     ref="elRef"
     :class="{ '-active': isActive }"
     :id="mappedId"
-    @mouseenter="select"
-    @touchstart="select"
+    @mouseenter="guardedSelect"
+    @pointermove.passive="guardedSelect"
+    @touchstart.passive="guardedSelect"
     @mouseleave="unselect"
   >
     <slot :is-active="isActive" />
@@ -22,6 +23,7 @@ import {
   toValue,
   watch,
   onBeforeUnmount,
+  onMounted,
 } from 'vue'
 import { useEventListener, onKeyStroke, useMouseInElement } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
@@ -30,6 +32,7 @@ import {
   MagicMenuItemActive,
   MagicMenuParentTree,
 } from '../symbols'
+import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuView } from '../composables/private/useMenuView'
 
@@ -48,12 +51,13 @@ const props = withDefaults(defineProps<MagicMenuItemProps>(), {
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
+const parentTree = inject(MagicMenuParentTree, [])
+const parentId = computed(() => parentTree[parentTree.length - 1])
+
 const mappedId = computed(() => {
   return props.id || `magic-menu-item-${uuid()}`
 })
 
-const parentTree = inject(MagicMenuParentTree, [])
-const parentId = computed(() => parentTree[parentTree.length - 1])
 const mappedParentTree = computed(() => [
   ...toValue(parentTree),
   mappedId.value,
@@ -67,71 +71,66 @@ if (!parentId.value) {
   throw new Error('MagicMenuItem must be used inside a MagicMenuView')
 }
 
+const { initializeState } = useMenuState(toValue(instanceId))
+const state = initializeState()
+
 const { initializeItem, selectItem, unselectItem, deleteItem } =
   useMenuItem(instanceId)
 const item = initializeItem({ id: mappedId.value, parentTree })
 
-const { selectView, unselectView, getNestedView, unselectNestedViews } =
-  useMenuView(instanceId)
-
+const { selectView, unselectView, getNestedView } = useMenuView(instanceId)
 const { elementX, isOutside, elementWidth } = useMouseInElement(elRef)
 
 const isActive = computed(() => {
   return item.active.value
 })
 
-function select() {
-  selectItem(mappedId.value)
+function guardedSelect() {
+  if (state.active.value && state.mode.value === 'mouse' && !isActive.value) {
+    selectItem(mappedId.value)
 
-  // Unselect any nested views of siblings
-  unselectNestedViews(parentId.value)
-
-  const possibleNestedView = getNestedView(mappedId.value)
-
-  if (possibleNestedView) {
-    selectView(possibleNestedView.id)
+    // Select nested view, if it exists
+    const nextView = getNestedView(mappedId.value)
+    if (nextView) {
+      selectView(nextView.id)
+    }
   }
 }
 
 function unselect() {
-  // Only unselect the item if there is no active nested view present
-  const possibleNestedView = getNestedView(mappedId.value)
-  if (!possibleNestedView?.active) {
+  // Check for active nested views
+  if (!getNestedView(mappedId.value)?.active) {
     unselectItem(mappedId.value)
   }
 }
 
-function unselectNestedView() {
-  const possibleNestedView = getNestedView(mappedId.value)
-
-  if (possibleNestedView) {
-    unselectView(possibleNestedView.id)
-  }
-}
-
-function trackMouse() {
+function checkMousePosition() {
   if (elementX.value < elementWidth.value) {
-    unselectNestedView()
+    const possibleNestedView = getNestedView(mappedId.value)
+
+    if (possibleNestedView) {
+      unselectView(possibleNestedView.id)
+    }
   }
 }
 
-function listenerCallback() {
-  nextTick(() => {
-    if (props.callback) {
-      props.callback()
-    }
-  })
+async function listenerCallback() {
+  if (isActive.value && !!props.callback) {
+    await nextTick()
+    props.callback()
+  }
 }
 
 useEventListener(elRef, props.listener, listenerCallback)
 
 if (props.keys.length) {
-  onKeyStroke(props.keys, () => (isActive.value ? listenerCallback() : null))
+  onKeyStroke(props.keys, listenerCallback)
 }
 
+// Cursor moved outside the element
 watch(isOutside, (value) => {
   if (value) {
-    trackMouse()
+    checkMousePosition()
   }
 })
 

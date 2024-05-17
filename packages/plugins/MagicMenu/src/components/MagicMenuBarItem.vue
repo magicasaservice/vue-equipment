@@ -8,15 +8,15 @@
     :aria-expanded="isActive"
     aria-haspopup="menu"
     role="menuitem"
-    @mouseenter="onMouseenter"
-    @touchstart="onTouchstart"
+    @mouseenter="guardedSelect"
+    @touchstart.passive="guardedSelect"
   >
     <slot :is-active="isActive" />
   </button>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, nextTick, inject, provide, toValue } from 'vue'
+import { computed, ref, nextTick, watch, inject, provide, toValue } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useEventListener, onKeyStroke } from '@vueuse/core'
 import {
@@ -52,12 +52,8 @@ if (!instanceId) {
   throw new Error('MagicMenuBarItem must be used inside a MagicMenuProvider')
 }
 
-const { findState } = useMenuState(toValue(instanceId))
-const state = findState()
-
-const menuActive = computed(() => {
-  return state.active.value
-})
+const { initializeState } = useMenuState(toValue(instanceId))
+const state = initializeState()
 
 const parentTree = inject(MagicMenuParentTree, [])
 const mappedParentTree = computed(() => [
@@ -77,27 +73,9 @@ const isActive = computed(() => {
   return item.active.value
 })
 
-function onMouseenter() {
-  if (menuActive.value) {
+function guardedSelect() {
+  if (state.active.value && state.mode.value === 'mouse') {
     selectItem(mappedId.value)
-
-    const possibleNestedView = getNestedView(mappedId.value)
-
-    if (possibleNestedView) {
-      selectView(possibleNestedView.id)
-    }
-  }
-}
-
-function onTouchstart() {
-  if (menuActive.value) {
-    selectItem(mappedId.value)
-  }
-
-  const possibleNestedView = getNestedView(mappedId.value)
-
-  if (possibleNestedView) {
-    selectView(possibleNestedView.id)
   }
 }
 
@@ -122,6 +100,17 @@ useEventListener(elRef, props.listener, listenerCallback)
 if (props.keys.length) {
   onKeyStroke(props.keys, () => (isActive.value ? listenerCallback() : null))
 }
+
+// Open nested view if active
+watch(isActive, (value) => {
+  if (value) {
+    const possibleNestedView = getNestedView(mappedId.value)
+
+    if (possibleNestedView) {
+      selectView(possibleNestedView.id)
+    }
+  }
+})
 
 provide(MagicMenuItemActive, isActive)
 provide(MagicMenuParentTree, mappedParentTree.value)

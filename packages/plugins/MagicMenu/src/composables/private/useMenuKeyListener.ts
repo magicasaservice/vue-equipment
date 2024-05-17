@@ -1,17 +1,14 @@
-import { nextTick } from 'vue'
-import { onKeyStroke } from '@vueuse/core'
+import { computed, nextTick, toValue, type MaybeRef } from 'vue'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
 import { useMenuState } from './useMenuState'
 
-export function useMenuKeyListener(instanceId: string) {
+export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const {
     getActiveViews,
     getNestedView,
     selectView,
     unselectView,
-    selectNextView,
-    selectPreviousView,
     unselectAllViews,
   } = useMenuView(instanceId)
   const {
@@ -23,113 +20,159 @@ export function useMenuKeyListener(instanceId: string) {
     unselectAllItems,
   } = useMenuItem(instanceId)
 
-  const { findState } = useMenuState(instanceId)
-  const state = findState()
+  const { initializeState } = useMenuState(instanceId)
+  const state = initializeState()
 
-  function onArrowDown() {
-    const activeViews = getActiveViews()
-    const activeItems = getActiveItems()
+  const activeItems = computed(() => getActiveItems())
+  const activeViews = computed(() => getActiveViews())
 
-    const lastItem = activeItems[activeItems.length - 1]
-    const lastView = activeViews[activeViews.length - 1]
+  const firstActiveItem = computed(() =>
+    activeItems.value.reduce((a, b) =>
+      a.parent.length < b.parent.length ? a : b
+    )
+  )
 
+  const firstActiveView = computed(() =>
+    activeViews.value.reduce((a, b) =>
+      a.parent.length < b.parent.length ? a : b
+    )
+  )
+
+  const lastActiveItem = computed(() =>
+    activeItems.value.reduce((a, b) =>
+      a.parent.length >= b.parent.length ? a : b
+    )
+  )
+
+  const lastActiveView = computed(() =>
+    activeViews.value.reduce((a, b) =>
+      a.parent.length >= b.parent.length ? a : b
+    )
+  )
+
+  const nextView = computed(() => getNestedView(lastActiveItem.value.id))
+
+  // Private functions
+  function keyStrokeGuard(e: KeyboardEvent) {
     switch (true) {
-      // Top level items, not nested inside a view
-      case lastItem.parent.length === 0:
-        const items = getViewItems(lastView.id)
-        selectItem(items[0].id)
-        break
-      // Nested items
+      case state.active.value === false:
+        throw new Error('Menu is not active')
       default:
-        selectNextItem(lastItem.id)
-        break
+        state.mode.value = 'keyboard'
+        e.preventDefault()
+        e.stopPropagation()
     }
   }
 
-  function onArrowUp() {
-    const activeItems = getActiveItems()
-    const lastItem = activeItems[activeItems.length - 1]
-
-    // Nested items only
-    if (lastItem.parent.length > 0) {
-      selectPreviousItem(lastItem.id)
+  // Public functions
+  async function onArrowRight(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (e) {
+      console.error(e)
     }
-  }
-
-  async function onArrowRight() {
-    const activeItems = getActiveItems()
-    const activeViews = getActiveViews()
-
-    const lastItem = activeItems[activeItems.length - 1]
-    const lastView = activeViews[activeViews.length - 1]
-
-    // Safeguard
-    if (!lastView || !lastItem) return
 
     switch (true) {
-      // Top level items, not nested inside a view
-      case lastItem.parent.length === 0:
-        selectNextView(lastView.id)
-        selectNextItem(lastItem.id)
-        break
-      case lastItem.parent.length > 1:
-        // Check if last item has a nested view
-        // If it does, select it and select the first item in the nested view
-        // if it does not, simply select the next view and item
-        const nestedView = getNestedView(lastItem.id)
-        if (nestedView) {
-          selectView(nestedView.id)
+      case !!nextView.value:
+        if (firstActiveItem.value.id === lastActiveItem.value.id) {
+          selectNextItem(firstActiveItem.value.id)
+        } else {
+          selectView(nextView.value.id)
 
           await nextTick()
-          const items = getViewItems(nestedView.id)
+          const items = getViewItems(nextView.value.id)
           selectItem(items[0].id)
-        } else {
-          selectNextView(activeViews[0].id)
-          selectNextItem(activeItems[0].id)
         }
+        break
+      default:
+        selectNextItem(firstActiveItem.value.id)
+    }
+  }
+
+  function onArrowLeft(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (e) {
+      console.error(e)
+    }
+
+    switch (true) {
+      case firstActiveView.value.id !== lastActiveView.value.id:
+        const items = getViewItems(lastActiveView.value.id)
+
+        if (items.some((item) => item.active)) {
+          unselectView(lastActiveView.value.id)
+        }
+
+        break
+      default:
+        selectPreviousItem(firstActiveItem.value.id)
         break
     }
   }
 
-  function onArrowLeft() {
-    const activeViews = getActiveViews()
-    const activeItems = getActiveItems()
+  function onArrowDown(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (e) {
+      console.error(e)
+    }
 
-    const lastItem = activeItems[activeItems.length - 1]
-    const lastView = activeViews[activeViews.length - 1]
-
-    // Safeguard
-    if (!lastView || !lastItem) return
+    const items = getViewItems(lastActiveView.value.id)
 
     switch (true) {
-      // Top level items, not nested inside a view
-      case lastItem.parent.length === 0:
-        selectPreviousView(lastView.id)
-        selectPreviousItem(lastItem.id)
+      case items.some((item) => item.active):
+        selectNextItem(lastActiveItem.value.id)
         break
-      case lastView.parent.length > 1:
-        // If the view is a nested view, simply unselect it
-        // If the view is a top level view, select the previous view and item
-        unselectView(lastView.id)
+      case firstActiveView.value.id === lastActiveView.value.id:
+        selectItem(items[0].id)
         break
       default:
-        selectPreviousView(activeViews[0].id)
-        selectPreviousItem(activeItems[0].id)
+        selectNextItem(lastActiveItem.value.id)
+    }
+  }
+
+  function onArrowUp(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (e) {
+      console.error(e)
+    }
+
+    const items = getViewItems(lastActiveView.value.id)
+
+    switch (true) {
+      case items.some((item) => item.active):
+        selectPreviousItem(lastActiveItem.value.id)
+        break
+      case firstActiveView.value.id === lastActiveView.value.id:
+        selectItem(items[items.length - 1].id)
+        break
+      default:
+        selectPreviousItem(lastActiveItem.value.id)
     }
   }
 
   async function onEnter() {}
 
-  function onEscape() {
+  function onEscape(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (e) {
+      console.error(e)
+    }
+
     state.active.value = false
     unselectAllItems()
     unselectAllViews()
   }
 
-  onKeyStroke('ArrowDown', onArrowDown)
-  onKeyStroke('ArrowUp', onArrowUp)
-  onKeyStroke('ArrowRight', onArrowRight)
-  onKeyStroke('ArrowLeft', onArrowLeft)
-  onKeyStroke('Enter', onEnter)
-  onKeyStroke('Escape', onEscape)
+  return {
+    onArrowDown,
+    onArrowUp,
+    onArrowRight,
+    onArrowLeft,
+    onEnter,
+    onEscape,
+  }
 }

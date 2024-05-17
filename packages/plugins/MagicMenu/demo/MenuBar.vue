@@ -43,7 +43,7 @@ import ProfilesView from './ProfilesView.vue'
   z-index: 999;
 }
 
-.magic-menu-view {
+.magic-menu-view > div {
   width: 200px;
   background: purple;
 }

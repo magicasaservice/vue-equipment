@@ -15,4 +15,5 @@ export interface MagicMenuState {
   items: MagicMenuItem[]
   views: MagicMenuView[]
   active: boolean
+  mode: 'keyboard' | 'mouse'
 }

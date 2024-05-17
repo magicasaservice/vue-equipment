@@ -1,4 +1,4 @@
-import { reactive, toRefs, toValue, type MaybeRef } from 'vue'
+import { reactive, toRefs, computed, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MagicMenuItem } from '../../types/index'
 import { useMenuUtils } from './useMenuUtils'
@@ -19,8 +19,8 @@ type FindItemArgs = {
 }
 
 export function useMenuItem(instanceId: MaybeRef<string>) {
-  const { findState } = useMenuState(instanceId)
-  const state = findState()
+  const { initializeState } = useMenuState(instanceId)
+  const state = initializeState()
 
   // Private functions
   const { arraysAreEqual } = useMenuUtils()
