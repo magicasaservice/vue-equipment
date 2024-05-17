@@ -98,11 +98,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     switch (true) {
       case firstActiveView.value.id !== lastActiveView.value.id:
-        const items = getViewItems(lastActiveView.value.id)
-
-        if (items.some((item) => item.active)) {
-          unselectView(lastActiveView.value.id)
-        }
+        unselectView(lastActiveView.value.id)
 
         break
       default:
