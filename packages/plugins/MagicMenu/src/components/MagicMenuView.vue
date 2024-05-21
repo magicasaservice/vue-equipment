@@ -1,18 +1,20 @@
 <template>
-  <teleport to="body" v-if="isActive">
-    <div class="magic-menu-view" :id="mappedId" role="menu">
-      <magic-menu-float>
-        <slot />
-      </magic-menu-float>
-    </div>
-  </teleport>
+  <div class="magic-menu-view" :id="mappedId">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch, provide, toValue, onBeforeUnmount } from 'vue'
+import { computed, inject, onBeforeUnmount, provide } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
-import { MagicMenuInstanceId, MagicMenuParentTree } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
+
+import {
+  MagicMenuInstanceId,
+  MagicMenuViewId,
+  MagicMenuParentTree,
+  MagicMenuItemId,
+} from '../symbols'
 import { useMenuItem } from '../composables/private/useMenuItem'
 
 interface MagicMenuViewProps {
@@ -21,47 +23,30 @@ interface MagicMenuViewProps {
 
 const props = defineProps<MagicMenuViewProps>()
 
+const parentTree = inject(MagicMenuParentTree, [])
 const instanceId = inject(MagicMenuInstanceId, undefined)
-const mappedId = computed(() => {
-  return props.id || `magic-menu-view-${uuid()}`
-})
+const itemId = inject(MagicMenuItemId, undefined)
 
 if (!instanceId) {
   throw new Error('MagicMenuView must be used inside a MagicMenuProvider')
 }
 
-const parentTree = inject(MagicMenuParentTree, [toValue(instanceId)])
-const parentId = computed(() => parentTree[parentTree.length - 1])
+const mappedId = computed(() => props.id ?? `magic-menu-view-${uuid()}`)
+const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
-const mappedParentTree = computed(() => [
-  ...toValue(parentTree),
-  mappedId.value,
-])
-
+// Register view
 const { initializeView, deleteView } = useMenuView(instanceId)
-const view = initializeView({ id: mappedId.value, parentTree })
-
-const { getItem } = useMenuItem(instanceId)
-const parentItem = computed(() => getItem(parentId.value))
-
-const isActive = computed(() => {
-  return view.active.value
+initializeView({
+  id: mappedId.value,
+  parent: { views: parentTree, item: itemId ?? '' },
 })
 
-const parentActive = computed(() => {
-  return parentItem.value?.active
-})
+// Pass id and parent tree to children
+provide(MagicMenuParentTree, mappedParentTree.value)
+provide(MagicMenuViewId, mappedId.value)
 
-// Deactivate the view if the parent item is deactivated
-watch(parentActive, (value) => {
-  if (!value) {
-    view.active.value = false
-  }
-})
-
+// Lifecycle
 onBeforeUnmount(() => {
   deleteView(mappedId.value)
 })
-
-provide(MagicMenuParentTree, mappedParentTree.value)
 </script>

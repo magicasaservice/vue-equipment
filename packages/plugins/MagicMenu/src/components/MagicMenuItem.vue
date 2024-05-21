@@ -2,142 +2,82 @@
   <div
     class="magic-menu-item"
     ref="elRef"
-    :class="{ '-active': isActive }"
     :id="mappedId"
+    :class="{ '-active': item.active }"
     @mouseenter="guardedSelect"
-    @pointermove.passive="guardedSelect"
+    @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"
-    @mouseleave="unselect"
+    @mouseleave="guardedUnselect"
   >
-    <slot :is-active="isActive" />
+    <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import {
-  computed,
-  inject,
-  ref,
-  provide,
-  nextTick,
-  toValue,
-  watch,
-  onBeforeUnmount,
-  onMounted,
-} from 'vue'
-import { useEventListener, onKeyStroke, useMouseInElement } from '@vueuse/core'
+import { computed, inject, provide, onBeforeUnmount, onMounted } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
+import { useMenuItem } from '../composables/private/useMenuItem'
+import { useMenuState } from '../composables/private/useMenuState'
+import { useMenuView } from '../composables/private/useMenuView'
 import {
   MagicMenuInstanceId,
-  MagicMenuItemActive,
-  MagicMenuParentTree,
+  MagicMenuViewId,
+  MagicMenuItemId,
 } from '../symbols'
-import { useMenuState } from '../composables/private/useMenuState'
-import { useMenuItem } from '../composables/private/useMenuItem'
-import { useMenuView } from '../composables/private/useMenuView'
 
 interface MagicMenuItemProps {
   id?: string
-  callback?: Function | false
-  listener?: ('click' | 'mouseenter' | 'touchstart')[]
-  keys?: string[]
 }
 
-const props = withDefaults(defineProps<MagicMenuItemProps>(), {
-  listener: () => ['click'],
-  keys: () => ['Enter'],
-})
-
-const elRef = ref<HTMLElement | undefined>(undefined)
+const props = defineProps<MagicMenuItemProps>()
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
-const parentTree = inject(MagicMenuParentTree, [])
-const parentId = computed(() => parentTree[parentTree.length - 1])
-
-const mappedId = computed(() => {
-  return props.id || `magic-menu-item-${uuid()}`
-})
-
-const mappedParentTree = computed(() => [
-  ...toValue(parentTree),
-  mappedId.value,
-])
+const viewId = inject(MagicMenuViewId, undefined)
 
 if (!instanceId) {
   throw new Error('MagicMenuItem must be used inside a MagicMenuProvider')
 }
 
-if (!parentId.value) {
+if (!viewId) {
   throw new Error('MagicMenuItem must be used inside a MagicMenuView')
 }
 
-const { initializeState } = useMenuState(toValue(instanceId))
-const state = initializeState()
+const mappedId = computed(() => props.id ?? `magic-menu-item-${uuid()}`)
 
-const { initializeItem, selectItem, unselectItem, deleteItem } =
-  useMenuItem(instanceId)
-const item = initializeItem({ id: mappedId.value, parentTree })
-
-const { selectView, unselectView, getNestedView } = useMenuView(instanceId)
-const { elementX, isOutside, elementWidth } = useMouseInElement(elRef)
-
-const isActive = computed(() => {
-  return item.active.value
+// Register item
+const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
+  instanceId,
+  viewId,
 })
 
-function guardedSelect() {
-  if (state.active.value && state.mode.value === 'mouse' && !isActive.value) {
-    selectItem(mappedId.value)
+// Guarded select
+// Check for mode as well as active state
+const { initializeState } = useMenuState(instanceId)
+const state = initializeState()
+const item = initializeItem(mappedId.value)
 
-    // Select nested view, if it exists
-    const nextView = getNestedView(mappedId.value)
-    if (nextView) {
-      selectView(nextView.id)
-    }
+function guardedSelect() {
+  if (state.mode === 'mouse' && !item.active) {
+    selectItem(mappedId.value)
   }
 }
 
-function unselect() {
-  // Check for active nested views
-  if (!getNestedView(mappedId.value)?.active) {
+// Guarded unselect
+// Check for active nested views
+const { getNestedView } = useMenuView(instanceId)
+const view = getNestedView(mappedId.value)
+
+function guardedUnselect() {
+  if (!view) {
     unselectItem(mappedId.value)
   }
 }
 
-function checkMousePosition() {
-  if (elementX.value < elementWidth.value) {
-    const possibleNestedView = getNestedView(mappedId.value)
+// Pass id to children
+provide(MagicMenuItemId, mappedId.value)
 
-    if (possibleNestedView) {
-      unselectView(possibleNestedView.id)
-    }
-  }
-}
-
-async function listenerCallback() {
-  if (isActive.value && !!props.callback) {
-    await nextTick()
-    props.callback()
-  }
-}
-
-useEventListener(elRef, props.listener, listenerCallback)
-
-if (props.keys.length) {
-  onKeyStroke(props.keys, listenerCallback)
-}
-
-// Cursor moved outside the element
-watch(isOutside, (value) => {
-  if (value) {
-    checkMousePosition()
-  }
-})
-
+// Lifecycle
 onBeforeUnmount(() => {
   deleteItem(mappedId.value)
 })
-
-provide(MagicMenuItemActive, isActive)
-provide(MagicMenuParentTree, mappedParentTree.value)
 </script>

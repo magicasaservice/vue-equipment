@@ -1,174 +1,163 @@
-import { computed, nextTick, toValue, type MaybeRef } from 'vue'
+import { nextTick, type MaybeRef } from 'vue'
+import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
-import { useMenuState } from './useMenuState'
+import type { MagicMenuView } from '../../types/index'
 
 export function useMenuKeyListener(instanceId: MaybeRef<string>) {
-  const {
-    getActiveViews,
-    getNestedView,
-    selectView,
-    unselectView,
-    unselectAllViews,
-  } = useMenuView(instanceId)
-  const {
-    getViewItems,
-    getActiveItems,
-    selectItem,
-    selectNextItem,
-    selectPreviousItem,
-    unselectAllItems,
-  } = useMenuItem(instanceId)
-
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
-  const activeItems = computed(() => getActiveItems())
-  const activeViews = computed(() => getActiveViews())
-
-  const firstActiveItem = computed(() =>
-    activeItems.value.reduce((a, b) =>
-      a.parent.length < b.parent.length ? a : b
-    )
-  )
-
-  const firstActiveView = computed(() =>
-    activeViews.value.reduce((a, b) =>
-      a.parent.length < b.parent.length ? a : b
-    )
-  )
-
-  const lastActiveItem = computed(() =>
-    activeItems.value.reduce((a, b) =>
-      a.parent.length >= b.parent.length ? a : b
-    )
-  )
-
-  const lastActiveView = computed(() =>
-    activeViews.value.reduce((a, b) =>
-      a.parent.length >= b.parent.length ? a : b
-    )
-  )
-
-  const nextView = computed(() => getNestedView(lastActiveItem.value.id))
+  const {
+    selectView,
+    unselectView,
+    unselectNonTreeViews,
+    unselectAllViews,
+    getView,
+    getNextView,
+    getPreviousView,
+    getTopLevelView,
+    getNestedView,
+    getParentView,
+  } = useMenuView(instanceId)
 
   // Private functions
   function keyStrokeGuard(e: KeyboardEvent) {
     switch (true) {
-      case state.active.value === false:
+      case !state.active:
         throw new Error('Menu is not active')
       default:
-        state.mode.value = 'keyboard'
+        state.mode = 'keyboard'
         e.preventDefault()
         e.stopPropagation()
     }
+  }
+
+  function selectFirstItem(view: MagicMenuView) {
+    const viewId = view.id
+    const { selectItem } = useMenuItem({ instanceId, viewId })
+    selectItem(view.items[0].id)
   }
 
   // Public functions
   async function onArrowRight(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (e) {
-      console.error(e)
-    }
+    } catch (_e: unknown) {}
 
-    switch (true) {
-      case !!nextView.value:
-        if (firstActiveItem.value.id === lastActiveItem.value.id) {
-          selectNextItem(firstActiveItem.value.id)
-        } else {
-          selectView(nextView.value.id)
+    const viewId = state.viewInFocus
+    const viewInFocus = getView(viewId)
 
-          await nextTick()
-          const items = getViewItems(nextView.value.id)
-          selectItem(items[0].id)
-        }
-        break
-      default:
-        selectNextItem(firstActiveItem.value.id)
+    if (viewInFocus) {
+      const activeItem = viewInFocus?.items.find((item) => item.active)
+      const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
+
+      if (nestedView) {
+        selectView(nestedView.id)
+        await nextTick()
+        selectFirstItem(nestedView)
+        return
+      }
+
+      const topLevelView = getTopLevelView()
+      const nextView = topLevelView ? getNextView(topLevelView.id) : undefined
+
+      if (nextView && !nextView.parent.item) {
+        selectView(nextView.id)
+        state.viewInFocus = nextView.id
+        return
+      }
     }
   }
 
   function onArrowLeft(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (e) {
-      console.error(e)
+    } catch (_e: unknown) {}
+
+    const viewId = state.viewInFocus
+    const viewInFocus = getView(viewId)
+
+    if (viewInFocus && viewInFocus.parent.item) {
+      unselectView(viewId)
+      state.viewInFocus = getParentView(viewId)?.id ?? ''
+      return
     }
 
-    switch (true) {
-      case firstActiveView.value.id !== lastActiveView.value.id:
-        unselectView(lastActiveView.value.id)
+    const topLevelView = getTopLevelView()
 
-        break
-      default:
-        selectPreviousItem(firstActiveItem.value.id)
-        break
-    }
-  }
+    const previousView = topLevelView
+      ? getPreviousView(topLevelView.id)
+      : undefined
 
-  function onArrowDown(e: KeyboardEvent) {
-    try {
-      keyStrokeGuard(e)
-    } catch (e) {
-      console.error(e)
-    }
-
-    const items = getViewItems(lastActiveView.value.id)
-
-    switch (true) {
-      case items.some((item) => item.active):
-        selectNextItem(lastActiveItem.value.id)
-        break
-      case firstActiveView.value.id === lastActiveView.value.id:
-        selectItem(items[0].id)
-        break
-      default:
-        selectNextItem(lastActiveItem.value.id)
+    if (previousView) {
+      selectView(previousView.id)
+      state.viewInFocus = previousView.id
+      return
     }
   }
 
   function onArrowUp(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (e) {
-      console.error(e)
-    }
+    } catch (_e: unknown) {}
 
-    const items = getViewItems(lastActiveView.value.id)
+    const viewId = state.viewInFocus
+    const viewInFocus = getView(viewId)
+    if (!viewInFocus) return
 
-    switch (true) {
-      case items.some((item) => item.active):
-        selectPreviousItem(lastActiveItem.value.id)
-        break
-      case firstActiveView.value.id === lastActiveView.value.id:
-        selectItem(items[items.length - 1].id)
-        break
-      default:
-        selectPreviousItem(lastActiveItem.value.id)
+    const activeIndex = viewInFocus.items.findIndex((item) => item.active)
+    const prevIndex = activeIndex - 1
+
+    if (prevIndex >= 0) {
+      // Select previous item
+      const prevItem = viewInFocus.items[prevIndex]
+      const { selectItem } = useMenuItem({ instanceId, viewId })
+      selectItem(prevItem?.id)
+
+      // Unselect all views that are nested deeper than the view in focus
+      unselectNonTreeViews(viewId)
     }
   }
 
-  async function onEnter() {}
+  function onArrowDown(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (_e: unknown) {}
+
+    const viewId = state.viewInFocus
+    const viewInFocus = getView(viewId)
+    if (!viewInFocus) return
+
+    const activeIndex = viewInFocus.items.findIndex((item) => item.active)
+    const nextIndex = activeIndex + 1
+
+    if (nextIndex >= 0) {
+      // Select next item
+      const nextItem = viewInFocus.items[nextIndex]
+      const { selectItem } = useMenuItem({ instanceId, viewId })
+      selectItem(nextItem?.id)
+
+      // Unselect all views that are nested deeper than the view in focus
+      unselectNonTreeViews(viewId)
+    }
+  }
 
   function onEscape(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (e) {
-      console.error(e)
-    }
+    } catch (_e: unknown) {}
 
-    state.active.value = false
-    unselectAllItems()
+    state.active = false
+    state.viewInFocus = ''
     unselectAllViews()
   }
 
   return {
-    onArrowDown,
-    onArrowUp,
     onArrowRight,
     onArrowLeft,
-    onEnter,
+    onArrowUp,
+    onArrowDown,
     onEscape,
   }
 }

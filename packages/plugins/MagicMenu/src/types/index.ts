@@ -1,19 +1,21 @@
+import type { ToRefs } from 'vue'
+
 export interface MagicMenuItem {
   id: string
-  parent: string[]
   active: boolean
 }
 
 export interface MagicMenuView {
   id: string
-  parent: string[]
   active: boolean
+  items: MagicMenuItem[]
+  parent: { item: string; views: string[] }
 }
 
 export interface MagicMenuState {
   id: string
-  items: MagicMenuItem[]
-  views: MagicMenuView[]
-  active: boolean
   mode: 'keyboard' | 'mouse'
+  active: boolean
+  views: MagicMenuView[]
+  viewInFocus: string
 }

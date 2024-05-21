@@ -1,41 +1,40 @@
-import { reactive, toRefs, toValue, type MaybeRef } from 'vue'
+import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MagicMenuView } from '../../types/index'
 import { useMenuUtils } from './useMenuUtils'
 
-type CreateViewArgs = {
-  id: string
-  parentTree: string[]
-}
-
-type AddViewArgs = {
-  id: string
-  parentTree: string[]
-}
-
-type FindViewArgs = {
-  id: string
-  parentTree: string[]
-}
+type CreateViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
+type AddViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
+type FindViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
 
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
+  // Public state
+  const currentView = computed(() =>
+    state.views
+      .filter((view) => view.active)
+      .reduce((a, b) =>
+        a.parent.views.length >= b.parent.views.length ? a : b
+      )
+  )
+
   // Private functions
   const { arraysAreEqual } = useMenuUtils()
 
   function createView(args: CreateViewArgs) {
-    const { id, parentTree } = args
+    const { id, parent } = args
 
-    if (parentTree.length === 0) {
-      parentTree.push(toValue(instanceId))
+    if (parent.views.length === 0) {
+      parent.views.push(toValue(instanceId))
     }
 
     const view: MagicMenuView = {
       id: id,
-      parent: parentTree,
+      parent: parent,
       active: false,
+      items: [],
     }
 
     return reactive(view)
@@ -43,7 +42,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   function addView(args: AddViewArgs) {
     const view = createView(args)
-    state.views.value = [...state.views.value, view]
+    state.views = [...state.views, view]
 
     return view
   }
@@ -54,83 +53,57 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     let instance = getView(id)
 
     if (!instance) instance = addView(args)
-    return toRefs(instance)
+    return instance
   }
 
   function deleteView(id: string) {
-    state.views.value = state.views.value.filter(
-      (x: MagicMenuView) => x.id !== id
-    )
+    state.views = state.views?.filter((view) => view.id !== id)
   }
 
   function getView(id: string) {
-    return state.views.value.find((view) => {
+    return state.views?.find((view) => {
       return view.id === id
     })
   }
 
-  function getActiveViews() {
-    return state.views.value.filter((view) => {
-      return view.active
-    })
-  }
-
-  function getNestedView(itemId: string) {
-    return state.views.value.find((view) => {
-      return view.parent[view.parent.length - 1] === itemId
-    })
-  }
-
-  function getViewSiblings(id: string, includeSelf = true) {
-    const instance = getView(id)
-    if (!instance?.parent) return []
-
-    // In order to match the parent tree, the last item needs to be removed
-    // The last parent view is the one that is relevant here
-    const mappedParent = [...instance.parent].slice(0, -1)
-    const siblings = state.views.value.filter((item) => {
-      const mappedItemParent = [...item.parent].slice(0, -1)
-
-      return includeSelf
-        ? arraysAreEqual(mappedParent, mappedItemParent)
-        : arraysAreEqual(mappedParent, mappedItemParent) && item.id !== id
-    })
-
-    return siblings
-  }
-
   function getNextView(id: string) {
-    const siblings = getViewSiblings(id)
-    const index = siblings.findIndex((item) => {
-      return item.id === id
-    })
-
-    return siblings[index + 1]
+    const index = state.views?.findIndex((view) => view.id === id)
+    return state.views?.[index + 1]
   }
 
   function getPreviousView(id: string) {
-    const siblings = getViewSiblings(id)
-    const index = siblings.findIndex((item) => {
-      return item.id === id
-    })
+    const index = state.views?.findIndex((view) => view.id === id)
+    return state.views?.[index - 1]
+  }
 
-    return siblings[index - 1]
+  function getTopLevelView() {
+    return state.views?.find((view) => view.active && !view.parent.item)
+  }
+
+  function getNestedView(id: string) {
+    return state.views?.find((view) => view.parent.item === id)
+  }
+
+  function getParentView(id: string) {
+    const view = getView(id)
+    const parentId = view?.parent.views[view.parent.views.length - 1]
+    return getView(parentId ?? '')
+  }
+
+  function getNonTreeViews(id: string) {
+    const currentView = getView(id)
+    return state.views?.filter(
+      (view) => !currentView?.parent.views.includes(view.id) && view.id !== id
+    )
   }
 
   function selectView(id: string) {
-    // Activate view
     const instance = getView(id)
 
     if (instance) {
       instance.active = true
+      unselectNonTreeViews(id)
     }
-
-    // Deactivate sibling views in the same branch
-    const siblings = getViewSiblings(id, false)
-
-    siblings.forEach((sibling) => {
-      sibling.active = false
-    })
   }
 
   function unselectView(id: string) {
@@ -141,60 +114,30 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     }
   }
 
-  function selectNestedView(itemId: string) {
-    const instance = getNestedView(itemId)
-
-    if (instance) {
-      instance.active = true
-    }
-  }
-
-  function unselectNestedViews(id: string) {
-    const siblingNestedViews = state.views.value.filter((view) => {
-      return view.parent[view.parent.length - 2] === id
-    })
-
-    siblingNestedViews.forEach((view) => {
-      view.active = false
-    })
-  }
-
-  function selectNextView(id: string) {
-    const nextView = getNextView(id)
-
-    if (nextView) {
-      selectView(nextView.id)
-    }
-  }
-
-  function selectPreviousView(id: string) {
-    const previousView = getPreviousView(id)
-
-    if (previousView) {
-      selectView(previousView.id)
-    }
+  function unselectNonTreeViews(id: string) {
+    const nonTreeViews = getNonTreeViews(id)
+    nonTreeViews.forEach((view) => (view.active = false))
   }
 
   function unselectAllViews() {
-    state.views.value.forEach((view) => {
+    state.views?.forEach((view) => {
       view.active = false
     })
   }
 
   return {
+    currentView,
     initializeView,
     deleteView,
     getView,
-    getActiveViews,
-    getNestedView,
     getNextView,
     getPreviousView,
+    getTopLevelView,
+    getNestedView,
+    getParentView,
     selectView,
     unselectView,
-    selectNestedView,
-    selectNextView,
-    selectPreviousView,
-    unselectNestedViews,
+    unselectNonTreeViews,
     unselectAllViews,
   }
 }

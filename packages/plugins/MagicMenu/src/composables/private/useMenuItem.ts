@@ -1,129 +1,90 @@
-import { reactive, toRefs, computed, type MaybeRef } from 'vue'
-import { useMenuState } from './useMenuState'
+import { reactive, computed, type MaybeRef } from 'vue'
 import type { MagicMenuItem } from '../../types/index'
-import { useMenuUtils } from './useMenuUtils'
+import { useMenuView } from './useMenuView'
+import { useMenuState } from './useMenuState'
 
-type CreateItemArgs = {
-  id: string
-  parentTree: string[]
+type UseMenuItemArgs = {
+  instanceId: MaybeRef<string>
+  viewId: string
 }
 
-type AddItemArgs = {
-  id: string
-  parentTree: string[]
-}
+export function useMenuItem(args: UseMenuItemArgs) {
+  const { instanceId, viewId } = args
 
-type FindItemArgs = {
-  id: string
-  parentTree: string[]
-}
-
-export function useMenuItem(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
+  const { getView, unselectNonTreeViews } = useMenuView(instanceId)
+  const view = getView(viewId)
+
+  if (!view) {
+    throw new Error(`View ${viewId} not found`)
+  }
+
   // Private functions
-  const { arraysAreEqual } = useMenuUtils()
-
-  function createItem(args: CreateItemArgs) {
-    const { id, parentTree } = args
-
+  function createItem(id: string) {
     const item: MagicMenuItem = {
       id: id,
-      parent: parentTree,
       active: false,
     }
 
     return reactive(item)
   }
 
-  function addItem(args: AddItemArgs) {
-    const item = createItem(args)
-    state.items.value = [...state.items.value, item]
+  function addItem(id: string) {
+    const item = createItem(id)
+
+    if (view?.items) {
+      view.items = [...view?.items, item]
+    }
 
     return item
   }
 
+  function unselectSiblings(id: string) {
+    return view?.items
+      .filter((item) => item.id !== id)
+      .forEach((item) => (item.active = false))
+  }
+
   // Public functions
-  function initializeItem(args: FindItemArgs) {
-    const { id } = args
+  function initializeItem(id: string) {
+    const instance = getItem(id)
 
-    let instance = getItem(id)
+    if (!instance) {
+      const item = addItem(id)
+      return item
+    }
 
-    if (!instance) instance = addItem(args)
-    return toRefs(instance)
+    return instance
   }
 
   function deleteItem(id: string) {
-    state.items.value = state.items.value.filter(
-      (x: MagicMenuItem) => x.id !== id
-    )
+    if (!view?.items) return
+    view.items = view.items.filter((x) => x.id !== id)
   }
 
   function getItem(id: string) {
-    return state.items.value.find((item) => {
+    return view?.items.find((item) => {
       return item.id === id
     })
-  }
-
-  function getActiveItems() {
-    return state.items.value.filter((item) => {
-      return item.active
-    })
-  }
-
-  function getViewItems(viewId: string) {
-    return state.items.value.filter((item) => {
-      return item.parent[item.parent.length - 1] === viewId
-    })
-  }
-
-  function getItemSiblings(id: string, includeSelf = true) {
-    const instance = getItem(id)
-
-    const siblings = state.items.value.filter((item) => {
-      if (!instance?.parent) return false
-
-      return includeSelf
-        ? arraysAreEqual(instance?.parent, item.parent)
-        : arraysAreEqual(instance?.parent, item.parent) && item.id !== id
-    })
-
-    return siblings
-  }
-
-  function getNextItem(id: string) {
-    const siblings = getItemSiblings(id)
-    const index = siblings.findIndex((item) => {
-      return item.id === id
-    })
-
-    return siblings[index + 1]
-  }
-
-  function getPreviousItem(id: string) {
-    const siblings = getItemSiblings(id)
-    const index = siblings.findIndex((item) => {
-      return item.id === id
-    })
-
-    return siblings[index - 1]
   }
 
   function selectItem(id: string) {
-    // Activate item
     const instance = getItem(id)
 
     if (instance) {
       instance.active = true
+
+      // Deactivate all non tree views
+      unselectSiblings(id)
+      unselectNonTreeViews(viewId)
+
+      // Set view in focus
+      if (view) {
+        state.viewInFocus = view.id
+      }
     }
-
-    // Deactivate sibling items in the same branch
-    const siblings = getItemSiblings(id, false)
-
-    siblings.forEach((sibling) => {
-      sibling.active = false
-    })
   }
 
   function unselectItem(id: string) {
@@ -134,40 +95,11 @@ export function useMenuItem(instanceId: MaybeRef<string>) {
     }
   }
 
-  function selectNextItem(id: string) {
-    const nextItem = getNextItem(id)
-
-    if (nextItem) {
-      selectItem(nextItem.id)
-    }
-  }
-
-  function selectPreviousItem(id: string) {
-    const previousItem = getPreviousItem(id)
-
-    if (previousItem) {
-      selectItem(previousItem.id)
-    }
-  }
-
-  function unselectAllItems() {
-    state.items.value.forEach((item) => {
-      item.active = false
-    })
-  }
-
   return {
     initializeItem,
     deleteItem,
     getItem,
-    getActiveItems,
-    getViewItems,
-    getNextItem,
-    getPreviousItem,
-    selectPreviousItem,
     selectItem,
     unselectItem,
-    selectNextItem,
-    unselectAllItems,
   }
 }
