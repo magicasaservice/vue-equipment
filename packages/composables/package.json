@@ -1,7 +1,7 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.28.3",
+  "version": "0.28.4",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/utils": "workspace:utils@*",
