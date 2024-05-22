@@ -16,18 +16,21 @@
 import { computed, inject } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
+import { useMenuItem } from '../composables/private/useMenuItem'
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,
   MagicMenuItemId,
 } from '../symbols'
-import { useMenuItem } from '../composables/private/useMenuItem'
 
-interface MagicMenuTrigger {
+import type { MagicMenuTrigger } from '../types'
+
+interface MagicMenuTriggerProps {
   disabled?: boolean
+  trigger?: MagicMenuTrigger
 }
 
-const props = defineProps<MagicMenuTrigger>()
+const props = defineProps<MagicMenuTriggerProps>()
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -51,9 +54,33 @@ const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
+const mappedTrigger = computed(() => {
+  if (props.trigger) {
+    return props.trigger
+  }
+
+  switch (state.options.mode) {
+    case 'menubar':
+      return view?.parent.item
+        ? ['mouseenter', 'mouseleave', 'click']
+        : ['mouseenter', 'click']
+    case 'dropdown':
+      return view?.parent.item
+        ? ['mouseenter', 'mouseleave', 'click']
+        : ['click']
+    case 'context':
+      return ['right-click']
+  }
+})
 
 function onMouseenter() {
-  if (view && viewId && state.active && !mappedDisabled.value) {
+  if (
+    mappedTrigger.value.includes('mouseenter') &&
+    view &&
+    viewId &&
+    state.active &&
+    !mappedDisabled.value
+  ) {
     selectView(viewId)
 
     // If the trigger is nested inside an item, don’t focus the view
@@ -64,7 +91,12 @@ function onMouseenter() {
 }
 
 function onClick() {
-  if (view && viewId && !mappedDisabled.value) {
+  if (
+    mappedTrigger.value.includes('click') &&
+    view &&
+    viewId &&
+    !mappedDisabled.value
+  ) {
     selectView(viewId)
     state.active = true
 
@@ -76,7 +108,7 @@ function onClick() {
 }
 
 function onMouseleave() {
-  if (view && viewId) {
+  if (mappedTrigger.value.includes('mouseleave') && view && viewId) {
     unselectView(viewId)
   }
 }

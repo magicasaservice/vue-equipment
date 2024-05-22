@@ -96,10 +96,16 @@
       </magic-menu-view>
     </magic-menu-provider>
 
-    <magic-menu-provider id="magic-menu--dropdown">
+    <magic-menu-provider
+      id="magic-menu--dropdown"
+      :options="{ mode: 'dropdown' }"
+    >
       <magic-menu-view class="flex justify-center">
-        <magic-menu-trigger class="inline">Open</magic-menu-trigger>
-        <magic-menu-content placement="bottom">
+        <magic-menu-trigger
+          class="inline w-16 h-16 rounded-full border-dashed flex items-center justify-center"
+          >Menu</magic-menu-trigger
+        >
+        <magic-menu-content>
           <magic-menu-item>New Tab</magic-menu-item>
           <magic-menu-item>New Window</magic-menu-item>
           <magic-menu-item>New Private Window</magic-menu-item>
@@ -113,36 +119,33 @@
               </magic-menu-content>
             </magic-menu-view>
           </magic-menu-item>
-          <magic-menu-item>Show Bookmarksw</magic-menu-item>
+          <magic-menu-item>Show Bookmarks</magic-menu-item>
           <magic-menu-item>Show Full URLs</magic-menu-item>
           <magic-menu-item>Christoph Jeworutzki</magic-menu-item>
           <magic-menu-item>Robin Scholz</magic-menu-item>
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
+
+    <magic-menu-provider
+      id="magic-menu--context"
+      :options="{ mode: 'context' }"
+      class="w-full"
+    >
+      <magic-menu-view>
+        <magic-menu-trigger
+          class="w-full h-36 border-dashed rounded-lg flex items-center justify-center"
+        >
+          Right click
+        </magic-menu-trigger>
+        <magic-menu-content>
+          <magic-menu-item>Item 1</magic-menu-item>
+          <magic-menu-item>Item 2</magic-menu-item>
+          <magic-menu-item>Item 3</magic-menu-item>
+        </magic-menu-content>
+      </magic-menu-view>
+    </magic-menu-provider>
   </div>
-
-  <!-- <magic-menu-provider id="magic-menu--dropdown">
-    <magic-menu-view position="bottom">
-      <magic-menu-trigger>ICON</magic-menu-trigger>
-      <magic-menu-content>
-        <magic-menu-item>Item 1</magic-menu-item>
-        <magic-menu-item>Item 2</magic-menu-item>
-        <magic-menu-item>Item 3</magic-menu-item>
-      </magic-menu-content>
-    </magic-menu-view>
-  </magic-menu-provider>
-
-  <magic-menu-provider id="magic-menu--context">
-    <magic-menu-view>
-      <magic-menu-trigger listener="rightClick"> ICON </magic-menu-trigger>
-      <magic-menu-content>
-        <magic-menu-item>Item 1</magic-menu-item>
-        <magic-menu-item>Item 2</magic-menu-item>
-        <magic-menu-item>Item 3</magic-menu-item>
-      </magic-menu-content>
-    </magic-menu-view>
-  </magic-menu-provider> -->
 </template>
 
 <style>

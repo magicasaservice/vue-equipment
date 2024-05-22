@@ -1,4 +1,4 @@
-import { nextTick, type MaybeRef } from 'vue'
+import { type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
@@ -57,7 +57,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
       if (nestedView) {
         selectView(nestedView.id)
-        await nextTick()
+        await new Promise((resolve) => requestAnimationFrame(resolve))
         selectFirstItem(nestedView)
         return
       }

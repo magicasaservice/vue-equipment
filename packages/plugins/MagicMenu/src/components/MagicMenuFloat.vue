@@ -5,13 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, inject, toValue } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { useFloating, autoUpdate, flip, type Placement } from '@floating-ui/vue'
-import {
-  MagicMenuInstanceId,
-  MagicMenuViewId,
-  MagicMenuParentTree,
-} from '../symbols'
+import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
+import { useMenuView } from '../composables/private/useMenuView'
+import { useMenuState } from '../composables/private/useMenuState'
 
 interface MagicMenuFloatProps {
   placement?: Placement
@@ -23,15 +21,27 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const referenceEl = ref<HTMLElement | null>(null)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
-const parentTree = inject(MagicMenuParentTree, [toValue(instanceId)])
 const viewId = inject(MagicMenuViewId, undefined)
 
-const mappedPlacement = computed((): Placement => {
-  return props.placement
-    ? props.placement
-    : toValue(parentTree).length === 2
-    ? 'bottom-start'
-    : 'right-start'
+const { initializeState } = useMenuState(instanceId ?? '')
+const state = initializeState()
+
+const { getView } = useMenuView(instanceId ?? '')
+const view = getView(viewId ?? '')
+
+const mappedPlacement = computed(() => {
+  if (props.placement) {
+    return props.placement
+  }
+
+  switch (state.options.mode) {
+    case 'menubar':
+      return !view?.parent.item ? 'bottom-start' : 'right-start'
+    case 'dropdown':
+      return !view?.parent.item ? 'bottom' : 'right-start'
+    case 'context':
+      return 'right-start'
+  }
 })
 
 const { floatingStyles } = useFloating(referenceEl, elRef, {

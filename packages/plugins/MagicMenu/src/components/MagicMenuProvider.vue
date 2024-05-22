@@ -7,21 +7,36 @@
 <script lang="ts" setup>
 import { ref, provide, watch, type MaybeRef, onBeforeUnmount } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
+import { defu } from 'defu'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
-import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
 import { MagicMenuInstanceId } from '../symbols'
+import { defaultOptions } from '../utils/defaultOptions'
+
+import type { MagicMenuOptions } from '../types'
 
 interface MagicMenuProviderProps {
   id: MaybeRef<string>
+  options?: MagicMenuOptions
 }
 
 const props = defineProps<MagicMenuProviderProps>()
 const elRef = ref<HTMLElement | undefined>(undefined)
 
+const mappedOptions = defu(props.options, defaultOptions)
+
 const { initializeState, deleteState } = useMenuState(props.id)
 const state = initializeState()
+
+// Save options to state for all children to access
+watch(
+  () => mappedOptions,
+  (value) => {
+    state.options = value
+  },
+  { immediate: true, deep: true }
+)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
@@ -81,3 +96,9 @@ onBeforeUnmount(() => {
 
 provide(MagicMenuInstanceId, props.id)
 </script>
+
+<style>
+.magic-menu-provider {
+  outline: none;
+}
+</style>
