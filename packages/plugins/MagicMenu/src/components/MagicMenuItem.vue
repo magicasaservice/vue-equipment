@@ -9,7 +9,7 @@
     @touchstart.passive="guardedSelect"
     @mouseleave="guardedUnselect"
   >
-    <slot />
+    <slot :is-active="item.active" />
   </div>
 </template>
 
@@ -23,6 +23,7 @@ import {
   MagicMenuInstanceId,
   MagicMenuViewId,
   MagicMenuItemId,
+  MagicMenuItemActive,
 } from '../symbols'
 
 interface MagicMenuItemProps {
@@ -73,8 +74,9 @@ function guardedUnselect() {
   }
 }
 
-// Pass id to children
+// Pass id and active state to children
 provide(MagicMenuItemId, mappedId.value)
+provide(MagicMenuItemActive, item.active)
 
 // Lifecycle
 onBeforeUnmount(() => {

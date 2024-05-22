@@ -6,8 +6,9 @@
     :id="`${viewId}-trigger`"
     @click="onClick"
     @mouseenter="onMouseenter"
+    @mouseleave="onMouseleave"
   >
-    <slot />
+    <slot :is-active="view?.active" />
   </div>
 </template>
 
@@ -33,7 +34,7 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be used inside a MagicMenuView')
 }
 
-const { getView, selectView } = useMenuView(instanceId)
+const { getView, selectView, unselectView } = useMenuView(instanceId)
 const view = getView(viewId)
 
 const { initializeState } = useMenuState(instanceId)
@@ -59,6 +60,12 @@ function onClick() {
     if (!itemId) {
       state.viewInFocus = viewId
     }
+  }
+}
+
+function onMouseleave() {
+  if (view && viewId) {
+    unselectView(viewId)
   }
 }
 </script>

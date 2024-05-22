@@ -14,8 +14,8 @@ import {
   MagicMenuViewId,
   MagicMenuParentTree,
   MagicMenuItemId,
+  MagicMenuViewActive,
 } from '../symbols'
-import { useMenuItem } from '../composables/private/useMenuItem'
 
 interface MagicMenuViewProps {
   id?: string
@@ -36,14 +36,15 @@ const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
 // Register view
 const { initializeView, deleteView } = useMenuView(instanceId)
-initializeView({
+const view = initializeView({
   id: mappedId.value,
   parent: { views: parentTree, item: itemId ?? '' },
 })
 
-// Pass id and parent tree to children
+// Pass id, active state and parent tree to children
 provide(MagicMenuParentTree, mappedParentTree.value)
 provide(MagicMenuViewId, mappedId.value)
+provide(MagicMenuViewActive, view.active)
 
 // Lifecycle
 onBeforeUnmount(() => {
