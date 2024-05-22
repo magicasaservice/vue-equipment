@@ -31,7 +31,7 @@ const lastY = ref(0)
 const { x, y } = usePointer()
 
 watch(
-  () => state?.mode,
+  () => state?.input,
   (value) => {
     if (value === 'keyboard') {
       lastX.value = x.value
@@ -43,7 +43,7 @@ watch(
 watch([x, y], ([x, y]) => {
   if (x !== lastX.value || y !== lastY.value) {
     if (state) {
-      state.mode = 'mouse'
+      state.input = 'mouse'
     }
   }
 })

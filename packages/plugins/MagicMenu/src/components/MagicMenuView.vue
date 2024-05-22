@@ -28,7 +28,7 @@ const instanceId = inject(MagicMenuInstanceId, undefined)
 const itemId = inject(MagicMenuItemId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicMenuView must be used inside a MagicMenuProvider')
+  throw new Error('MagicMenuView must be nested inside MagicMenuProvider')
 }
 
 const mappedId = computed(() => props.id ?? `magic-menu-view-${uuid()}`)

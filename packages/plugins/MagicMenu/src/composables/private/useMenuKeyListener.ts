@@ -27,16 +27,19 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       case !state.active:
         throw new Error('Menu is not active')
       default:
-        state.mode = 'keyboard'
+        state.input = 'keyboard'
         e.preventDefault()
         e.stopPropagation()
     }
   }
 
+  function getEnabledItems(view: MagicMenuView) {
+    return view.items.filter((item) => !item.disabled)
+  }
+
   function selectFirstItem(view: MagicMenuView) {
-    const viewId = view.id
-    const { selectItem } = useMenuItem({ instanceId, viewId })
-    selectItem(view.items[0].id)
+    const { selectItem } = useMenuItem({ instanceId, viewId: view.id })
+    selectItem(getEnabledItems(view)[0].id)
   }
 
   // Public functions
@@ -45,11 +48,11 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.viewInFocus
-    const viewInFocus = getView(viewId)
+    const viewId = state.inputView
+    const inputView = getView(viewId)
 
-    if (viewInFocus) {
-      const activeItem = viewInFocus?.items.find((item) => item.active)
+    if (inputView) {
+      const activeItem = inputView?.items.find((item) => item.active)
       const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
 
       if (nestedView) {
@@ -64,7 +67,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
       if (nextView && !nextView.parent.item) {
         selectView(nextView.id)
-        state.viewInFocus = nextView.id
+        state.inputView = nextView.id
         return
       }
     }
@@ -75,12 +78,12 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.viewInFocus
-    const viewInFocus = getView(viewId)
+    const viewId = state.inputView
+    const inputView = getView(viewId)
 
-    if (viewInFocus && viewInFocus.parent.item) {
+    if (inputView && inputView.parent.item) {
       unselectView(viewId)
-      state.viewInFocus = getParentView(viewId)?.id ?? ''
+      state.inputView = getParentView(viewId)?.id ?? ''
       return
     }
 
@@ -92,7 +95,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     if (previousView) {
       selectView(previousView.id)
-      state.viewInFocus = previousView.id
+      state.inputView = previousView.id
       return
     }
   }
@@ -102,18 +105,24 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.viewInFocus
-    const viewInFocus = getView(viewId)
-    if (!viewInFocus) return
+    const viewId = state.inputView
+    const inputView = getView(viewId)
+    if (!inputView) return
 
-    const activeIndex = viewInFocus.items.findIndex((item) => item.active)
-    const prevIndex = activeIndex - 1
+    const enabledItems = getEnabledItems(inputView)
+    const prevIndex = enabledItems.findIndex((item) => item.active) - 1
 
     if (prevIndex >= 0) {
       // Select previous item
-      const prevItem = viewInFocus.items[prevIndex]
       const { selectItem } = useMenuItem({ instanceId, viewId })
-      selectItem(prevItem?.id)
+      selectItem(enabledItems[prevIndex]?.id)
+
+      // Unselect all views that are nested deeper than the view in focus
+      unselectNonTreeViews(viewId)
+    } else if (prevIndex !== -1) {
+      // Select last item
+      const { selectItem } = useMenuItem({ instanceId, viewId })
+      selectItem(enabledItems[enabledItems.length - 1]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
       unselectNonTreeViews(viewId)
@@ -125,18 +134,17 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.viewInFocus
-    const viewInFocus = getView(viewId)
-    if (!viewInFocus) return
+    const viewId = state.inputView
+    const inputView = getView(viewId)
+    if (!inputView) return
 
-    const activeIndex = viewInFocus.items.findIndex((item) => item.active)
-    const nextIndex = activeIndex + 1
+    const enabledItems = getEnabledItems(inputView)
+    const nextIndex = enabledItems.findIndex((item) => item.active) + 1
 
     if (nextIndex >= 0) {
       // Select next item
-      const nextItem = viewInFocus.items[nextIndex]
       const { selectItem } = useMenuItem({ instanceId, viewId })
-      selectItem(nextItem?.id)
+      selectItem(enabledItems[nextIndex]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
       unselectNonTreeViews(viewId)
@@ -149,7 +157,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     } catch (_e: unknown) {}
 
     state.active = false
-    state.viewInFocus = ''
+    state.inputView = ''
     unselectAllViews()
   }
 

@@ -6,6 +6,8 @@ const MagicMenuParentTree = Symbol() as InjectionKey<string[]>
 const MagicMenuViewId = Symbol() as InjectionKey<string>
 const MagicMenuViewActive = Symbol() as InjectionKey<boolean>
 
+const MagicMenuContentId = Symbol() as InjectionKey<string>
+
 const MagicMenuItemId = Symbol() as InjectionKey<string>
 const MagicMenuItemActive = Symbol() as InjectionKey<boolean>
 
@@ -14,6 +16,7 @@ export {
   MagicMenuParentTree,
   MagicMenuViewId,
   MagicMenuViewActive,
+  MagicMenuContentId,
   MagicMenuItemId,
   MagicMenuItemActive,
 }

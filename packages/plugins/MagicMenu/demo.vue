@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full flex gap-12 items-center">
-    <magic-menu-provider id="magic-menu--menubar" class="flex-1 flex">
+  <div class="w-full flex flex-col gap-24 items-center">
+    <magic-menu-provider id="magic-menu--menubar" class="flex">
       <magic-menu-view>
         <magic-menu-trigger class="px-4">Edit</magic-menu-trigger>
         <magic-menu-content>
@@ -28,12 +28,14 @@
         <magic-menu-content>
           <magic-menu-item>New Tab</magic-menu-item>
           <magic-menu-item>New Window</magic-menu-item>
-          <magic-menu-item>New Incognito Window</magic-menu-item>
+          <magic-menu-item :disabled="true">
+            New Incognito Window
+          </magic-menu-item>
           <magic-menu-item>
             <magic-menu-view>
               <magic-menu-trigger>Share ></magic-menu-trigger>
               <magic-menu-content>
-                <magic-menu-item>Email Link</magic-menu-item>
+                <magic-menu-item :disabled="true">Email Link</magic-menu-item>
                 <magic-menu-item>Messages</magic-menu-item>
                 <magic-menu-item>Notes</magic-menu-item>
                 <magic-menu-item>
@@ -78,9 +80,9 @@
               </magic-menu-content>
             </magic-menu-view>
           </magic-menu-item>
-          <magic-menu-item>
+          <magic-menu-item :disabled="true">
             <magic-menu-view>
-              <magic-menu-trigger>Robin Scholz > </magic-menu-trigger>
+              <magic-menu-trigger>Robin Scholz ></magic-menu-trigger>
               <magic-menu-content>
                 <magic-menu-item>User Settings</magic-menu-item>
                 <magic-menu-item>Edit Profile</magic-menu-item>
@@ -94,7 +96,7 @@
       </magic-menu-view>
     </magic-menu-provider>
 
-    <magic-menu-provider id="magic-menu--dropdown" class="flex-1">
+    <magic-menu-provider id="magic-menu--dropdown">
       <magic-menu-view class="flex justify-center">
         <magic-menu-trigger class="inline">Open</magic-menu-trigger>
         <magic-menu-content placement="bottom">
@@ -152,9 +154,13 @@
   background-color: blueviolet;
 }
 
+.magic-menu-item.-disabled {
+  opacity: 0.5;
+}
+
 .magic-menu-content__inner {
   width: 200px;
-  background: lightskyblue;
+  background: lightcoral;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

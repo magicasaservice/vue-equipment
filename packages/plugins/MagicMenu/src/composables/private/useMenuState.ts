@@ -10,8 +10,8 @@ export function useMenuState(instanceId: MaybeRef<string>) {
       id: id,
       views: [],
       active: false,
-      mode: 'mouse',
-      viewInFocus: '',
+      input: 'mouse',
+      inputView: '',
     }
 
     return reactive(state)

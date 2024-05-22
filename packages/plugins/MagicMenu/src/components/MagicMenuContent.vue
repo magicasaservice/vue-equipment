@@ -11,9 +11,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, provide } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
-import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
+import {
+  MagicMenuInstanceId,
+  MagicMenuViewId,
+  MagicMenuContentId,
+} from '../symbols'
 import type { Placement } from '@floating-ui/vue'
 
 interface MagicMenuContentProps {
@@ -26,11 +30,11 @@ const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicMenuContent must be used inside a MagicMenuProvider')
+  throw new Error('MagicMenuContent must be nested inside MagicMenuProvider')
 }
 
 if (!viewId) {
-  throw new Error('MagicMenuContent must be used inside a MagicMenuView')
+  throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
 const { getView, selectView } = useMenuView(instanceId)
@@ -41,4 +45,6 @@ function onMouseenter() {
     selectView(viewId)
   }
 }
+
+provide(MagicMenuContentId, `${viewId}-content`)
 </script>

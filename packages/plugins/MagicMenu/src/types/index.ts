@@ -3,6 +3,7 @@ import type { ToRefs } from 'vue'
 export interface MagicMenuItem {
   id: string
   active: boolean
+  disabled: boolean
 }
 
 export interface MagicMenuView {
@@ -14,8 +15,8 @@ export interface MagicMenuView {
 
 export interface MagicMenuState {
   id: string
-  mode: 'keyboard' | 'mouse'
   active: boolean
   views: MagicMenuView[]
-  viewInFocus: string
+  input: 'keyboard' | 'mouse'
+  inputView: string
 }

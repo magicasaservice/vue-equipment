@@ -1,12 +1,16 @@
-import { reactive, computed, type MaybeRef } from 'vue'
-import type { MagicMenuItem } from '../../types/index'
+import { reactive, type MaybeRef } from 'vue'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
+import type { MagicMenuItem } from '../../types/index'
 
 type UseMenuItemArgs = {
   instanceId: MaybeRef<string>
   viewId: string
 }
+
+type InitializeItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
+type CreateItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
+type AddItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
 
 export function useMenuItem(args: UseMenuItemArgs) {
   const { instanceId, viewId } = args
@@ -22,17 +26,20 @@ export function useMenuItem(args: UseMenuItemArgs) {
   }
 
   // Private functions
-  function createItem(id: string) {
+  function createItem(args: CreateItemArgs) {
+    const { id, disabled } = args
+
     const item: MagicMenuItem = {
       id: id,
       active: false,
+      disabled: disabled,
     }
 
     return reactive(item)
   }
 
-  function addItem(id: string) {
-    const item = createItem(id)
+  function addItem(args: AddItemArgs) {
+    const item = createItem(args)
 
     if (view?.items) {
       view.items = [...view?.items, item]
@@ -48,11 +55,12 @@ export function useMenuItem(args: UseMenuItemArgs) {
   }
 
   // Public functions
-  function initializeItem(id: string) {
+  function initializeItem(args: InitializeItemArgs) {
+    const { id } = args
     const instance = getItem(id)
 
     if (!instance) {
-      const item = addItem(id)
+      const item = addItem(args)
       return item
     }
 
@@ -82,7 +90,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
 
       // Set view in focus
       if (view) {
-        state.viewInFocus = view.id
+        state.inputView = view.id
       }
     }
   }
