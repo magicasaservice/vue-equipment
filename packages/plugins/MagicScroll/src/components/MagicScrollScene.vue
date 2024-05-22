@@ -47,10 +47,6 @@ async function calculate() {
   progress.value = getProgress()
 }
 
-onMounted(() => {
-  calculate()
-})
-
 watch(
   () => scrollReturn?.y.value,
   () => {
@@ -58,6 +54,14 @@ watch(
       calculate()
     }
   }
+)
+
+watch(
+  () => scrollReturn?.y.value,
+  () => {
+    calculate()
+  },
+  { once: true }
 )
 
 useIntersectionObserver(
