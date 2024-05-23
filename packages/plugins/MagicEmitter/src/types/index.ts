@@ -7,16 +7,10 @@ import type { ModalEvents } from '../../../MagicModal'
 import type { ToastEvents } from '../../../MagicToast'
 
 type MergeTypes<T, U> = {
-  [K in keyof (T & U)]: K extends keyof T
-    ? K extends keyof U
-      ? T[K] | U[K]
-      : T[K]
-    : K extends keyof U
-    ? U[K]
-    : never
-}
+  [K in keyof T]: K extends keyof U ? T[K] | U[K] : T[K]
+} & Omit<U, keyof T>
 
-type Merge<T extends any[]> = T extends [infer First, ...infer Rest]
+type Merge<T extends unknown[]> = T extends [infer First, ...infer Rest]
   ? MergeTypes<First, Merge<Rest>>
   : {}
 
