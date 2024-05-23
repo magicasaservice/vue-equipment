@@ -37,7 +37,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     args
 
   // Private state
-  const { findState } = useDraggableState(toValue(id))
+  const { initializeState } = useDraggableState(toValue(id))
   const {
     dragStart,
     dragging,
@@ -52,7 +52,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     draggedY,
     elRect,
     wrapperRect,
-  } = findState()
+  } = initializeState()
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined

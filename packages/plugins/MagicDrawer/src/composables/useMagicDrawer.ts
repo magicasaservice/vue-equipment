@@ -8,9 +8,9 @@ import type { SnapPoint } from '../types/index'
 export function useMagicDrawer(id: MaybeRef<string>) {
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-  const { deleteState, findState } = useDrawerState(toValue(id))
+  const { deleteState, initializeState } = useDrawerState(toValue(id))
 
-  const { progress } = findState()
+  const { progress } = initializeState()
 
   // Public state
   const isActive = computed(() => drawerStore.value.includes(toValue(id)))

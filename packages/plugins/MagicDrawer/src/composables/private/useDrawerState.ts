@@ -40,7 +40,7 @@ export function useDrawerState(id: MaybeRef<string>) {
     return instance
   }
 
-  function findState() {
+  function initializeState() {
     let instance = drawerStateStore.value.find((instance) => {
       return instance.id === id
     })
@@ -57,7 +57,7 @@ export function useDrawerState(id: MaybeRef<string>) {
 
   return {
     addState,
-    findState,
+    initializeState,
     deleteState,
   }
 }

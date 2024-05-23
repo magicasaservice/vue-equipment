@@ -192,8 +192,8 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   disabled,
 })
 
-const { findState } = useDrawerState(props.id)
-const { dragging, wheeling } = findState()
+const { initializeState } = useDrawerState(props.id)
+const { dragging, wheeling } = initializeState()
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
