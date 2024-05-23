@@ -15,6 +15,7 @@ import {
   useIdle,
 } from '@vueuse/core'
 import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
@@ -91,6 +92,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     snapPointsMap,
     interpolateDragged,
   } = useDraggableSnap({
+    id,
     elRect,
     wrapperRect,
     animation,
@@ -100,6 +102,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   })
 
   // Private functions
+  const emitter = useMagicEmitter()
+
   const {
     lockScroll,
     unlockScroll,
@@ -318,6 +322,23 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       activeSnapPoint.value = snapPointsMap.value[key]
     }
 
+    if (
+      intermediateDraggedX.value === draggedX.value &&
+      intermediateDraggedY.value === draggedY.value
+    ) {
+      emitter.emit('dragCanceled', {
+        id: toValue(id),
+        x: draggedX.value,
+        y: draggedY.value,
+      })
+    } else {
+      emitter.emit('afterDrag', {
+        id: toValue(id),
+        x: draggedX.value,
+        y: draggedY.value,
+      })
+    }
+
     // Reset state
     resetStateAndListeners()
 
@@ -358,6 +379,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     if (toValue(snapPoints).length) {
       findSnapPointByVector()
     }
+
+    emitter.emit('drag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
   }
 
   function onIdle() {
@@ -387,6 +414,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       return
     } else {
       dragging.value = true
+
+      emitter.emit('beforeDrag', {
+        id: toValue(id),
+        x: draggedX.value,
+        y: draggedY.value,
+      })
     }
 
     // Save intermediate and last dragged position,

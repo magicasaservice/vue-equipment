@@ -14,7 +14,7 @@ export type Coordinates = {
   y: number
 }
 
-export type SnapPoint =
+export type DraggableSnapPoint =
   | [
       Position,
       offset?: {
@@ -39,9 +39,9 @@ export interface DraggableOptions {
     }
   }
   initial?: {
-    snapPoint?: SnapPoint
+    snapPoint?: DraggableSnapPoint
   }
-  snapPoints?: SnapPoint[]
+  snapPoints?: DraggableSnapPoint[]
   disabled?: boolean
 }
 
@@ -60,4 +60,40 @@ export interface DraggableState {
   draggedY: number
   elRect: DOMRect | undefined
   wrapperRect: DOMRect | undefined
+}
+
+export type DraggableEvents = {
+  beforeSnap: {
+    id: string
+    snapPoint: DraggableSnapPoint
+  }
+  snapTo: {
+    id: string
+    snapPoint: DraggableSnapPoint
+    duration?: number
+  }
+  afterSnap: {
+    id: string
+    snapPoint: DraggableSnapPoint
+  }
+  beforeDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  drag: {
+    id: string
+    x: number
+    y: number
+  }
+  afterDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  dragCanceled: {
+    id: string
+    x: number
+    y: number
+  }
 }

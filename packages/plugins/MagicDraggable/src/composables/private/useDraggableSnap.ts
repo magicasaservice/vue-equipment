@@ -1,12 +1,14 @@
 import { ref, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { defu } from 'defu'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { SnapPoint, Coordinates } from '../../types'
+import type { DraggableSnapPoint, Coordinates } from '../../types'
 
 type UseDraggableSnapArgs = {
+  id: MaybeRef<string>
   elRect: Ref<DOMRect | undefined>
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
@@ -23,17 +25,17 @@ type InterpolateDraggedArgs = {
 }
 
 type SnapToArgs = {
-  snapPoint: SnapPoint
+  snapPoint: DraggableSnapPoint
   interpolate?: boolean
   duration?: number
 }
 
 export function useDraggableSnap(args: UseDraggableSnapArgs) {
-  const { draggedY, draggedX, elRect, wrapperRect, animation, snapPoints } =
+  const { id, draggedY, draggedX, elRect, wrapperRect, animation, snapPoints } =
     args
 
   // Public state
-  const activeSnapPoint = ref<SnapPoint | undefined>(undefined)
+  const activeSnapPoint = ref<DraggableSnapPoint | undefined>(undefined)
 
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
@@ -59,13 +61,16 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           acc[mappedKey] = current
         }
         return acc
-      }, {} as Record<string, SnapPoint>)
+      }, {} as Record<string, DraggableSnapPoint>)
 
       return mapped
     }
   )
   // Private functions
-  function mapSnapPoint(snapPoint: SnapPoint): Coordinates | undefined {
+  const emitter = useMagicEmitter()
+  function mapSnapPoint(
+    snapPoint: DraggableSnapPoint
+  ): Coordinates | undefined {
     if (!wrapperRect.value) {
       console.warn('Wrapper rect is not defined')
       return undefined
@@ -158,6 +163,8 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       duration = toValue(animation).snap?.duration!,
       easing = toValue(animation).snap?.easing,
     } = args
+    const snapPoint = snapPointsMap.value[`x${x}y${y}`]
+    emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
     interpolate({
       from: draggedY.value,
@@ -166,6 +173,9 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       easing,
       callback: (value: number) => {
         draggedY.value = value
+        if (y > x && draggedY.value === y) {
+          emitter.emit('afterSnap', { id: toValue(id), snapPoint })
+        }
       },
     })
 
@@ -176,6 +186,9 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       easing,
       callback: (value: number) => {
         draggedX.value = value
+        if (x >= y && draggedX.value === x) {
+          emitter.emit('afterSnap', { id: toValue(id), snapPoint })
+        }
       },
     })
   }
