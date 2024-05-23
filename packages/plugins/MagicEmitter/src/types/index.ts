@@ -1,10 +1,10 @@
-import type { CollisionEvents } from '../../../MagicScroll'
-import type { CommandEvents } from '../../../MagicCommand'
-import type { CookieEvents } from '../../../MagicCookie'
-import type { DraggableEvents } from '../../../MagicDraggable'
-import type { DrawerEvents } from '../../../MagicDrawer'
-import type { ModalEvents } from '../../../MagicModal'
-import type { ToastEvents } from '../../../MagicToast'
+import type { CollisionEvents } from '../../../MagicScroll/index'
+import type { CommandEvents } from '../../../MagicCommand/index'
+import type { CookieEvents } from '../../../MagicCookie/index'
+import type { DraggableEvents } from '../../../MagicDraggable/index'
+import type { DrawerEvents } from '../../../MagicDrawer/index'
+import type { ModalEvents } from '../../../MagicModal/index'
+import type { ToastEvents } from '../../../MagicToast/index'
 
 type MergeTypes<T, U> = {
   [K in keyof T]: K extends keyof U ? T[K] | U[K] : T[K]
