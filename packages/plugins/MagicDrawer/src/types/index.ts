@@ -1,6 +1,6 @@
 import { type Options } from 'focus-trap'
 
-export type SnapPoint = number | `${string}px`
+export type DrawerSnapPoint = number | `${string}px`
 
 export interface DrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
@@ -8,7 +8,7 @@ export interface DrawerOptions {
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
   scrollLock?: boolean | { padding: boolean }
-  snapPoints?: SnapPoint[]
+  snapPoints?: DrawerSnapPoint[]
   teleport?: {
     target?: string
     disabled?: boolean
@@ -31,7 +31,7 @@ export interface DrawerOptions {
   initial?: {
     open?: boolean
     transition?: boolean
-    snapPoint?: SnapPoint
+    snapPoint?: DrawerSnapPoint
   }
   keyListener?: {
     close?: string[] | false
@@ -76,16 +76,16 @@ export type DrawerEvents = {
   afterLeave: string
   beforeSnap: {
     id: string
-    snapPoint: SnapPoint
+    snapPoint: DrawerSnapPoint
   }
   snapTo: {
     id: string
-    snapPoint: SnapPoint
+    snapPoint: DrawerSnapPoint
     duration?: number
   }
   afterSnap: {
     id: string
-    snapPoint: SnapPoint
+    snapPoint: DrawerSnapPoint
   }
   beforeDrag: {
     id: string

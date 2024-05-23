@@ -3,7 +3,7 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerState } from './private/useDrawerState'
 
-import type { SnapPoint } from '../types/index'
+import type { DrawerSnapPoint } from '../types/index'
 
 export function useMagicDrawer(id: MaybeRef<string>) {
   // Private methods
@@ -25,7 +25,7 @@ export function useMagicDrawer(id: MaybeRef<string>) {
     deleteState()
   }
 
-  function snapTo(snapPoint: SnapPoint, duration?: number) {
+  function snapTo(snapPoint: DrawerSnapPoint, duration?: number) {
     useMagicEmitter().emit('snapTo', {
       id: toValue(id),
       snapPoint,

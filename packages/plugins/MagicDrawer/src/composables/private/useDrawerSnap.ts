@@ -4,7 +4,7 @@ import { mapValue, interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import { type SnapPoint } from '../../types'
+import { type DrawerSnapPoint } from '../../types'
 
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
@@ -31,7 +31,7 @@ type FindClosestNumberArgs = {
 }
 
 type SnapToArgs = {
-  snapPoint: SnapPoint
+  snapPoint: DrawerSnapPoint
   interpolate: boolean
   duration?: number
 }
@@ -95,7 +95,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           acc[key] = current
         }
         return acc
-      }, {} as Record<number, SnapPoint>)
+      }, {} as Record<number, DrawerSnapPoint>)
 
       return mapped
     }
@@ -104,7 +104,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   // Public state
   const snappedY = ref(0)
   const snappedX = ref(0)
-  const activeSnapPoint = ref<SnapPoint | undefined>(undefined)
+  const activeSnapPoint = ref<DrawerSnapPoint | undefined>(undefined)
 
   const drawerHeight = computed(() => {
     if (toValue(wrapperRect) === undefined) {
@@ -162,7 +162,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     return closestNumber
   }
 
-  function mapSnapPoint(snapPoint: SnapPoint) {
+  function mapSnapPoint(snapPoint: DrawerSnapPoint) {
     if (typeof snapPoint === 'number') {
       // Reverse snap point percentages,
       // so that 0% is the top of the drawer
