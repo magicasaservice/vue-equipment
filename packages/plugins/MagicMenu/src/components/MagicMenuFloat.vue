@@ -6,7 +6,13 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, inject } from 'vue'
-import { useFloating, autoUpdate, flip, type Placement } from '@floating-ui/vue'
+import {
+  useFloating,
+  autoUpdate,
+  flip,
+  shift,
+  type Placement,
+} from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
@@ -47,13 +53,15 @@ const mappedPlacement = computed(() => {
 const { floatingStyles } = useFloating(referenceEl, elRef, {
   placement: mappedPlacement,
   whileElementsMounted: autoUpdate,
-  middleware: [flip()],
+  middleware: [flip(), shift()],
 })
 
 watch(
   () => viewId,
   (value) => {
-    referenceEl.value = document.querySelector(`#${value}-trigger`)
+    referenceEl.value = document.querySelector(
+      `[data-magic-menu-id="${value}-trigger"]`
+    )
   },
   { immediate: true }
 )

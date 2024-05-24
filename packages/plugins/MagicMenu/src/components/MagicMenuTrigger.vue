@@ -3,7 +3,7 @@
     class="magic-menu-trigger"
     ref="elRef"
     :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
-    :id="`${viewId}-trigger`"
+    :data-magic-menu-id="`${viewId}-trigger`"
     @click="onClick"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -24,13 +24,15 @@ import {
 } from '../symbols'
 
 import type { MagicMenuTrigger } from '../types'
+import { useMenuTrigger } from '../composables/private/useMenuTrigger'
 
 interface MagicMenuTriggerProps {
   disabled?: boolean
-  trigger?: MagicMenuTrigger
+  trigger?: MagicMenuTrigger[]
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
+const elRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -44,7 +46,7 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
-const { getView, selectView, unselectView } = useMenuView(instanceId)
+const { getView } = useMenuView(instanceId)
 const view = getView(viewId)
 
 const { initializeState } = useMenuState(instanceId)
@@ -54,8 +56,9 @@ const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
-const mappedTrigger = computed(() => {
-  if (props.trigger) {
+
+const mappedTrigger = computed<MagicMenuTrigger[]>(() => {
+  if (props.trigger?.length) {
     return props.trigger
   }
 
@@ -73,43 +76,21 @@ const mappedTrigger = computed(() => {
   }
 })
 
-function onMouseenter() {
-  if (
-    mappedTrigger.value.includes('mouseenter') &&
-    view &&
-    viewId &&
-    state.active &&
-    !mappedDisabled.value
-  ) {
-    selectView(viewId)
+const { initialize, onMouseenter, onClick, onMouseleave } = useMenuTrigger({
+  instanceId,
+  viewId,
+  itemId,
+  mappedDisabled,
+  mappedTrigger,
+  elRef,
+})
 
-    // If the trigger is nested inside an item, don’t focus the view
-    if (!itemId) {
-      state.inputView = viewId
-    }
-  }
-}
-
-function onClick() {
-  if (
-    mappedTrigger.value.includes('click') &&
-    view &&
-    viewId &&
-    !mappedDisabled.value
-  ) {
-    selectView(viewId)
-    state.active = true
-
-    // If the trigger is nested inside an item, don’t focus the view
-    if (!itemId) {
-      state.inputView = viewId
-    }
-  }
-}
-
-function onMouseleave() {
-  if (mappedTrigger.value.includes('mouseleave') && view && viewId) {
-    unselectView(viewId)
-  }
-}
+// Initialize watcher
+initialize()
 </script>
+
+<style>
+.magic-menu-trigger {
+  cursor: var(--magic-menu-trigger-cursor, pointer);
+}
+</style>

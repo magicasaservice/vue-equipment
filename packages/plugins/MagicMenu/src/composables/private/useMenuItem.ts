@@ -84,13 +84,13 @@ export function useMenuItem(args: UseMenuItemArgs) {
     if (instance) {
       instance.active = true
 
-      // Deactivate all non tree views
+      // Deactivate all siblings and non tree views
       unselectSiblings(id)
       unselectNonTreeViews(viewId)
 
       // Set view in focus
       if (view) {
-        state.inputView = view.id
+        state.input.view = view.id
       }
     }
   }

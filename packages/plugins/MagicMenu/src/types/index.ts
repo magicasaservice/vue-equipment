@@ -1,5 +1,15 @@
 type MagicMenuMode = 'dropdown' | 'menubar' | 'context'
-export type MagicMenuTrigger = 'click' | 'hover' | 'right-click'
+
+export type MagicMenuTrigger =
+  | 'click'
+  | 'mouseenter'
+  | 'mouseleave'
+  | 'right-click'
+
+export type Coordinates = {
+  x: number
+  y: number
+}
 
 export interface MagicMenuItem {
   id: string
@@ -22,8 +32,10 @@ export interface MagicMenuState {
   id: string
   active: boolean
   views: MagicMenuView[]
-  mode: MagicMenuMode[]
-  input: 'keyboard' | 'mouse'
-  inputView: string
   options: MagicMenuOptions
+  input: {
+    type: 'keyboard' | 'pointer'
+    disabled: ('keyboard' | 'pointer')[]
+    view: string
+  }
 }

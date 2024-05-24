@@ -80,8 +80,8 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     return state.views?.find((view) => view.active && !view.parent.item)
   }
 
-  function getNestedView(id: string) {
-    return state.views?.find((view) => view.parent.item === id)
+  function getNestedView(itemId: string) {
+    return state.views?.find((view) => view.parent.item === itemId)
   }
 
   function getParentView(id: string) {

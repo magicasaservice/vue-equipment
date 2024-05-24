@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full flex flex-col gap-24 items-center">
+  <div class="w-full max-w-screen flex flex-col gap-24 items-center">
     <magic-menu-provider id="magic-menu--menubar" class="flex">
       <magic-menu-view>
         <magic-menu-trigger class="px-4">Edit</magic-menu-trigger>
         <magic-menu-content>
           <magic-menu-item>Undo</magic-menu-item>
           <magic-menu-item>Redo</magic-menu-item>
-          <magic-menu-item id="test">
+          <magic-menu-item>
             <magic-menu-view>
               <magic-menu-trigger>Find ></magic-menu-trigger>
               <magic-menu-content>
@@ -150,7 +150,8 @@
 
 <style>
 .magic-menu-trigger.-active {
-  background-color: red;
+  outline: solid 1px;
+  outline-color: rgba(100, 200, 20);
 }
 
 .magic-menu-item.-active {

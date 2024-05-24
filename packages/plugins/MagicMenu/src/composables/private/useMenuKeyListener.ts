@@ -27,7 +27,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       case !state.active:
         throw new Error('Menu is not active')
       default:
-        state.input = 'keyboard'
+        state.input.type = 'keyboard'
         e.preventDefault()
         e.stopPropagation()
     }
@@ -48,11 +48,11 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.inputView
+    const viewId = state.input.view
     const inputView = getView(viewId)
 
     if (inputView) {
-      const activeItem = inputView?.items.find((item) => item.active)
+      const activeItem = inputView.items.find((item) => item.active)
       const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
 
       if (nestedView) {
@@ -67,7 +67,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
       if (nextView && !nextView.parent.item) {
         selectView(nextView.id)
-        state.inputView = nextView.id
+        state.input.view = nextView.id
         return
       }
     }
@@ -78,12 +78,12 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.inputView
+    const viewId = state.input.view
     const inputView = getView(viewId)
 
     if (inputView && inputView.parent.item) {
       unselectView(viewId)
-      state.inputView = getParentView(viewId)?.id ?? ''
+      state.input.view = getParentView(viewId)?.id ?? ''
       return
     }
 
@@ -95,7 +95,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     if (previousView) {
       selectView(previousView.id)
-      state.inputView = previousView.id
+      state.input.view = previousView.id
       return
     }
   }
@@ -105,7 +105,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.inputView
+    const viewId = state.input.view
     const inputView = getView(viewId)
     if (!inputView) return
 
@@ -134,7 +134,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
-    const viewId = state.inputView
+    const viewId = state.input.view
     const inputView = getView(viewId)
     if (!inputView) return
 
@@ -157,7 +157,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     } catch (_e: unknown) {}
 
     state.active = false
-    state.inputView = ''
+    state.input.view = ''
     unselectAllViews()
   }
 

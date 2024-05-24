@@ -3,11 +3,11 @@
     <transition :name="mappedTransition">
       <div
         class="magic-menu-content"
-        :id="`${viewId}-content`"
+        :data-magic-menu-id="`${viewId}-content`"
         v-if="innerActive"
       >
         <magic-menu-float :placement="placement">
-          <div class="magic-menu-content__inner" @mouseenter="onMouseenter">
+          <div class="magic-menu-content__inner">
             <slot />
           </div>
         </magic-menu-float>
@@ -47,18 +47,11 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
-const { getView, selectView } = useMenuView(instanceId)
+const { getView } = useMenuView(instanceId)
 const view = getView(viewId)
 
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
-
-// TODO: Find a better solution for this
-function onMouseenter() {
-  if (viewId) {
-    selectView(viewId)
-  }
-}
 
 const mappedTransition = computed(() => {
   switch (state.options.mode) {

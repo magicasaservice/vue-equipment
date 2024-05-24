@@ -27,16 +27,7 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const mappedOptions = defu(props.options, defaultOptions)
 
 const { initializeState, deleteState } = useMenuState(props.id)
-const state = initializeState()
-
-// Save options to state for all children to access
-watch(
-  () => mappedOptions,
-  (value) => {
-    state.options = value
-  },
-  { immediate: true, deep: true }
-)
+const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
@@ -46,7 +37,7 @@ const lastY = ref(0)
 const { x, y } = usePointer()
 
 watch(
-  () => state?.input,
+  () => state?.input.type,
   (value) => {
     if (value === 'keyboard') {
       lastX.value = x.value
@@ -58,7 +49,7 @@ watch(
 watch([x, y], ([x, y]) => {
   if (x !== lastX.value || y !== lastY.value) {
     if (state) {
-      state.input = 'mouse'
+      state.input.type = 'pointer'
     }
   }
 })
@@ -85,7 +76,11 @@ onClickOutside(
     }
   },
   {
-    ignore: ['.magic-menu-view', '.magic-menu-item'],
+    ignore: [
+      '.magic-menu-view',
+      '.magic-menu-item',
+      '.magic-menu-cursor-blocker',
+    ],
   }
 )
 

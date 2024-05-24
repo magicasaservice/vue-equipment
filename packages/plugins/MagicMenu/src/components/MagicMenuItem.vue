@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, onBeforeUnmount, onMounted } from 'vue'
+import { computed, inject, provide, onBeforeUnmount, watch } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
@@ -68,7 +68,12 @@ const item = initializeItem({
 })
 
 function guardedSelect() {
-  if (state.input === 'mouse' && !item.active && !item.disabled) {
+  if (
+    state.input.type === 'pointer' &&
+    !state.input.disabled.includes('pointer') &&
+    !item.active &&
+    !item.disabled
+  ) {
     selectItem(mappedId.value)
   }
 }
@@ -76,11 +81,24 @@ function guardedSelect() {
 // Guarded unselect
 // Check for active nested views
 const { getNestedView } = useMenuView(instanceId)
-const view = getNestedView(mappedId.value)
+const nestedView = computed(() => getNestedView(mappedId.value))
 
 function guardedUnselect() {
-  if (!view) {
+  // If there is no nested active view, unselect the item
+  if (!nestedView.value || !nestedView.value.active) {
     unselectItem(mappedId.value)
+  } else {
+    // If there is a nested active view,
+    // unselect the item once it is closed
+    watch(
+      () => nestedView.value?.active,
+      (value) => {
+        if (!value) {
+          unselectItem(mappedId.value)
+        }
+      },
+      { once: true }
+    )
   }
 }
 
@@ -95,8 +113,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+.magic-menu-item {
+  cursor: var(--magic-menu-item-cursor, default);
+}
+
 .magic-menu-item.-disabled {
-  cursor: var(--magic-menu-cursor-disabled, not-allowed);
+  cursor: var(--magic-menu-item-cursor-disabled, not-allowed);
   & > * {
     pointer-events: none;
   }
