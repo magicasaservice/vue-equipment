@@ -23,7 +23,7 @@
           :key="toast.id"
           :index="index"
           :total="count || 0"
-          :siblings="activeElements"
+          :siblings="activeToasts"
           :class="{
             expanded: isExpanded,
           }"
@@ -92,7 +92,7 @@ const {
   onBeforeLeave,
   onLeave,
   onAfterLeave,
-  activeElements,
+  activeToasts,
 } = useToastCallback({ id: props.id, mappedOptions, count, firstToast })
 
 function onMouseenter() {

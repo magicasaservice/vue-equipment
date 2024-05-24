@@ -17,14 +17,17 @@ import {
   useScrollLock,
 } from '@vueuse/core'
 import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { MagicDrawerEvents } from '../../types'
+import type { DrawerSnapPoint } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
@@ -337,21 +340,29 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint.value = undefined
   }
 
+<<<<<<< HEAD
   function afterLeaveCallback(payload: MagicDrawerEvents['afterLeave']) {
+=======
+  function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
+>>>>>>> main
     if (payload === toValue(id)) {
       resetState()
       resetSnapped()
     }
   }
 
+<<<<<<< HEAD
   function snapToCallback(payload: MagicDrawerEvents['snapTo']) {
+=======
+  function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
+>>>>>>> main
     if (payload.id === toValue(id)) {
       if (!toValue(isActive)) {
         console.warn('Cannot snap to point when drawer is not open')
         return
       } else {
         snapTo({
-          snapPoint: payload.snapPoint,
+          snapPoint: payload.snapPoint as DrawerSnapPoint,
           interpolate: true,
           duration: payload.duration,
         })

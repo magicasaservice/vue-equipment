@@ -13,13 +13,13 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted, watchEffect } from 'vue'
-import { type ActiveElement } from './../types'
+import { type ActiveToast } from './../types'
 
 interface MagicToastComponentProps {
   index: number
   total: number
   id: string
-  siblings: ActiveElement[]
+  siblings: ActiveToast[]
 }
 
 const props = defineProps<MagicToastComponentProps>()

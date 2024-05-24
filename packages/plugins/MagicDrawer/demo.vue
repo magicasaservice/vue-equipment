@@ -140,7 +140,10 @@ import {
   useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
+<<<<<<< HEAD
   type MagicDrawerEvents,
+=======
+>>>>>>> main
 } from '@maas/vue-equipment/plugins'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
@@ -171,7 +174,11 @@ function callback(
   console.log(id, payload)
 }
 
+<<<<<<< HEAD
 function enterCallback(payload: ValueOf<MagicDrawerEvents>) {
+=======
+function enterCallback(payload: ValueOf<MagicEmitterEvents>) {
+>>>>>>> main
   if (payload === horizontalId && position.value === 'left') {
     scrollable.value!.scrollLeft = scrollable.value?.scrollWidth || 0
   }
