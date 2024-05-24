@@ -1,7 +1,6 @@
 import { ref, computed, watch, type ComputedRef, type MaybeRef } from 'vue'
 import {
   useEventListener,
-  useMouseInElement,
   useElementBounding,
   type MaybeElementRef,
   type MaybeElement,
@@ -26,6 +25,14 @@ type IsPointInTriangleArgs = {
   c: Coordinates
 }
 
+type IsPointInRectangleArgs = {
+  p: Coordinates
+  top: number
+  left: number
+  bottom: number
+  right: number
+}
+
 export function useMenuTrigger(args: UseMenuTriggerArgs) {
   // Private state
   const { instanceId, viewId, itemId, mappedTrigger, mappedDisabled, elRef } =
@@ -34,11 +41,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
 
   const mouseleaveCoordinates = ref<Coordinates>({ x: 0, y: 0 })
-  const contentElement = ref<MaybeElement | undefined>(undefined)
-
-  const { isOutside: isOutsideTrigger } = useMouseInElement(elRef)
-  const { isOutside: isOutsideContent } = useMouseInElement(contentElement)
-  const isInsideTriangle = ref(false)
+  const contentEl = ref<MaybeElement | undefined>(undefined)
 
   const { getView, selectView, unselectView } = useMenuView(instanceId)
   const view = getView(viewId)
@@ -46,10 +49,14 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
+  const isInsideTriangle = ref(false)
+  const isInsideTrigger = ref(false)
+  const isInsideContent = ref(false)
+
   const isOutside = computed(() => {
     return (
-      isOutsideTrigger.value &&
-      isOutsideContent.value &&
+      !isInsideTrigger.value &&
+      !isInsideContent.value &&
       !isInsideTriangle.value
     )
   })
@@ -57,7 +64,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   // Private functions
   function resetState() {
     mouseleaveCoordinates.value = { x: 0, y: 0 }
-    contentElement.value = undefined
+    // contentElement.value = undefined
     isInsideTriangle.value = false
   }
 
@@ -146,11 +153,20 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     return u >= 0 && v >= 0 && u + v <= 1
   }
 
+  function isPointInRectangle(args: IsPointInRectangleArgs) {
+    const { p, top, left, bottom, right } = args
+    return p.x >= left && p.x <= right && p.y >= top && p.y <= bottom
+  }
+
   async function onPointermove(e: PointerEvent) {
     const mouseCoordinates = { x: e.clientX, y: e.clientY }
-    const { top, left, bottom, right } = useElementBounding(
-      contentElement.value
-    )
+    const { top, left, bottom, right } = useElementBounding(contentEl.value)
+    const {
+      top: topTrigger,
+      left: leftTrigger,
+      bottom: bottomTrigger,
+      right: rightTrigger,
+    } = useElementBounding(elRef)
 
     // Find the closest side of the content element
     const rightDistance = Math.abs(right.value - mouseleaveCoordinates.value.x)
@@ -173,6 +189,24 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       a,
       b,
       c,
+    })
+
+    // Check if the mouse is inside the content element
+    isInsideContent.value = isPointInRectangle({
+      p: mouseCoordinates,
+      top: top.value,
+      left: left.value,
+      bottom: bottom.value,
+      right: right.value,
+    })
+
+    // Check if the mouse is inside the trigger element
+    isInsideTrigger.value = isPointInRectangle({
+      p: mouseCoordinates,
+      top: topTrigger.value,
+      left: leftTrigger.value,
+      bottom: bottomTrigger.value,
+      right: rightTrigger.value,
     })
   }
 
@@ -219,7 +253,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     if (mappedTrigger.value.includes('mouseleave') && viewId) {
       // Save mouse coordinates and content element
       mouseleaveCoordinates.value = { x: e.clientX, y: e.clientY }
-      contentElement.value = findContentElement()
 
       // Add pointermove listener
       cancelPointermove = useEventListener('pointermove', onPointermove)
@@ -227,6 +260,17 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   function initialize() {
+    watch(
+      () => view?.active,
+      async (value) => {
+        if (value) {
+          await new Promise((resolve) => requestAnimationFrame(resolve))
+          contentEl.value = findContentElement()
+        } else {
+          contentEl.value = undefined
+        }
+      }
+    )
     // Manage cursor
     watch(isInsideTriangle, async (value, oldValue) => {
       if (value && !oldValue) {
@@ -237,8 +281,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     })
 
     // Reset once content is reached
-    watch(isOutsideContent, (value, oldValue) => {
-      if (!value && oldValue) {
+    watch(isInsideContent, (value, oldValue) => {
+      if (value && !oldValue) {
         cancelPointermove?.()
         resetState()
       }
@@ -246,6 +290,12 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
     // Reset once pointer leaves again
     watch(isOutside, (value, oldValue) => {
+      console.log(
+        isInsideTrigger.value,
+        isInsideContent.value,
+        isInsideTriangle.value
+      )
+
       if (!cancelPointermove) {
         return
       }
