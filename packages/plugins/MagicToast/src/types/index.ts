@@ -15,20 +15,6 @@ export type ToastInstance = {
   remove: (id: string) => void
 }
 
-export type ToastOptions = {
-  teleport?: {
-    target?: string
-    disabled?: boolean
-  }
-  transitions?: {
-    list: string
-  }
-  layout?: {
-    expand?: boolean | 'hover' | 'click'
-    max?: false | number
-  }
-}
-
 export type ActiveToast = {
   id: string
   height: number
@@ -49,3 +35,17 @@ export type ToastEvents = {
 
 export type AddArgs = Pick<Toast, 'component'> &
   PickPartial<Toast, 'props'> & { duration?: number }
+
+export type MagicToastOptions = {
+  teleport?: {
+    target?: string
+    disabled?: boolean
+  }
+  transitions?: {
+    list: string
+  }
+  layout?: {
+    expand?: boolean | 'hover' | 'click'
+    max?: false | number
+  }
+}
