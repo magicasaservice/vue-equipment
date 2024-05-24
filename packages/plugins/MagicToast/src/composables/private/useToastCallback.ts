@@ -1,6 +1,6 @@
 import { ref, toValue, type Ref, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import type { ActiveElement, ToastOptions, Toast } from './../../types'
+import type { ActiveToast, ToastOptions, Toast } from './../../types'
 
 type UseToastCallbackArgs = {
   id: MaybeRef<string>
@@ -12,7 +12,7 @@ type UseToastCallbackArgs = {
 export function useToastCallback(args: UseToastCallbackArgs) {
   const { id, mappedOptions, count, firstToast } = args
 
-  const activeElements = ref<ActiveElement[]>([])
+  const activeToasts = ref<ActiveToast[]>([])
   const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el: Element) {
@@ -36,8 +36,8 @@ export function useToastCallback(args: UseToastCallbackArgs) {
     const mappedEl = el as HTMLElement
     const style = window.getComputedStyle(mappedEl)
 
-    activeElements.value = [
-      ...activeElements.value,
+    activeToasts.value = [
+      ...activeToasts.value,
       {
         id: el.id,
         height: mappedEl.offsetHeight,
@@ -55,9 +55,7 @@ export function useToastCallback(args: UseToastCallbackArgs) {
 
   function onLeave(el: Element) {
     emitter.emit('leave', toValue(id))
-    activeElements.value = activeElements.value.filter(
-      (item) => item.id !== el.id
-    )
+    activeToasts.value = activeToasts.value.filter((item) => item.id !== el.id)
   }
 
   function onAfterLeave(_el: Element) {
@@ -71,6 +69,6 @@ export function useToastCallback(args: UseToastCallbackArgs) {
     onBeforeLeave,
     onLeave,
     onAfterLeave,
-    activeElements,
+    activeToasts,
   }
 }
