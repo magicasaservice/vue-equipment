@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-interface Props {
+interface MagicScrollTransformProps {
   as?: string
   scale?: number
   scaleX?: number
@@ -18,7 +18,7 @@ interface Props {
   translateY?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicScrollTransformProps>(), {
   as: 'div',
   scale: 1,
   scaleX: 1,

@@ -16,13 +16,13 @@ import {
 
 import type { FromTo } from '../types'
 
-interface Props {
+interface MagicScrollSceneProps {
   from?: FromTo
   to?: FromTo
   debug?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicScrollSceneProps>(), {
   from: 'top-bottom',
   to: 'bottom-top',
 })

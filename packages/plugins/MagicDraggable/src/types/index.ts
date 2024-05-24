@@ -24,7 +24,7 @@ export type DraggableSnapPoint =
     ]
   | Position
 
-export interface DraggableOptions {
+export interface MagicDraggableOptions {
   tag?: 'dialog' | 'div'
   threshold?: {
     distance?: number

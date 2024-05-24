@@ -99,5 +99,3 @@ export function useScrollApi(params: UseScrollApiParams) {
 
   return { getCalculations, getProgress }
 }
-
-export type UseScrollApiReturn = ReturnType<typeof useScrollApi>

@@ -71,7 +71,7 @@ import { useModalDOM } from '../composables/private/useModalDOM'
 import { useModalCallback } from '../composables/private/useModalCallback'
 import { useMagicModal } from '../composables/useMagicModal'
 
-import type { ModalOptions } from './../types/index'
+import type { MagicModalOptions } from './../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
@@ -89,7 +89,7 @@ interface MagicModalProps {
   class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
-  options?: ModalOptions
+  options?: MagicModalOptions
 }
 
 const props = withDefaults(defineProps<MagicModalProps>(), {

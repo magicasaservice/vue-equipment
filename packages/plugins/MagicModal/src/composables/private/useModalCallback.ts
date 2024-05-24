@@ -1,10 +1,10 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import type { ModalOptions } from '../../types'
+import type { MagicModalOptions } from '../../types'
 
 type UseModalCallbackArgs = {
   id: MaybeRef<string>
-  mappedOptions: ModalOptions
+  mappedOptions: MagicModalOptions
   addScrollLockPadding: () => void
   removeScrollLockPadding: () => void
   lockScroll: () => void

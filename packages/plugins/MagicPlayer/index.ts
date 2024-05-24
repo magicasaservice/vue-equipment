@@ -34,5 +34,3 @@ export {
   MagicPlayerTimeline,
   useMagicPlayer,
 }
-
-export type * from './src/types/index'

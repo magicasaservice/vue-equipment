@@ -2,11 +2,11 @@ import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useMagicDrawer } from './../useMagicDrawer'
-import type { DrawerOptions } from '../../types'
+import type { MagicDrawerOptions } from '../../types'
 
 type UseDrawerCallbackArgs = {
   id: MaybeRef<string>
-  mappedOptions: DrawerOptions
+  mappedOptions: MagicDrawerOptions
   addScrollLockPadding: () => void
   removeScrollLockPadding: () => void
   lockScroll: () => void

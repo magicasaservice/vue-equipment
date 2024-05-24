@@ -43,14 +43,14 @@ import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
 import { defaultOptions } from '../utils/defaultOptions'
 
-import type { DraggableOptions } from '../types'
+import type { MagicDraggableOptions } from '../types'
 
 interface MagicDrawerProps {
   id: MaybeRef<string>
   class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
-  options?: DraggableOptions
+  options?: MagicDraggableOptions
 }
 
 const props = withDefaults(defineProps<MagicDrawerProps>(), {

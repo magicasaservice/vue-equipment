@@ -15,7 +15,6 @@ import {
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
-import type { CommandEvents } from './src/types/index'
 
 const MagicCommandPlugin: Plugin = {
   install: (app: App) => {
@@ -37,4 +36,3 @@ export {
   MagicCommandInstanceId,
   MagicCommandOptions,
 }
-export type { CommandEvents }
