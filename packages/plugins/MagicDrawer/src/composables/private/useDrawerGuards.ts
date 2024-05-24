@@ -1,14 +1,14 @@
 import { computed, toValue, type Ref, type MaybeRef } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import { type MagicDrawerSnapPoint } from '../../types'
+import { type DrawerSnapPoint } from '../../types'
 
 interface UseDrawerGuardsArgs {
   elRef: Ref<HTMLElement | undefined>
   absDirectionX: MaybeRef<'with' | 'against' | undefined>
   absDirectionY: MaybeRef<'with' | 'against' | undefined>
   position: MaybeRef<DefaultOptions['position']>
-  activeSnapPoint: MaybeRef<MagicDrawerSnapPoint | undefined>
+  activeSnapPoint: MaybeRef<DrawerSnapPoint | undefined>
 }
 
 export function useDrawerGuards(args: UseDrawerGuardsArgs) {

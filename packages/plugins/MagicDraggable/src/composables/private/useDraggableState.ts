@@ -4,6 +4,7 @@ import type { MagicDraggableState } from '../../types/index'
 const drawerStateStore: Ref<MagicDraggableState[]> = ref([])
 
 export function useDraggableState(id: MaybeRef<string>) {
+  //Private functions
   function createState(id: string) {
     const state: MagicDraggableState = {
       id: id,
@@ -32,7 +33,8 @@ export function useDraggableState(id: MaybeRef<string>) {
     return instance
   }
 
-  function findState() {
+  // Public functions
+  function initializeState() {
     let instance = drawerStateStore.value.find((instance) => {
       return instance.id === id
     })
@@ -48,8 +50,7 @@ export function useDraggableState(id: MaybeRef<string>) {
   }
 
   return {
-    addState,
-    findState,
+    initializeState,
     deleteState,
   }
 }

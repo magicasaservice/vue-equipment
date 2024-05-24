@@ -9,12 +9,12 @@ type Position =
   | 'bottom-center'
   | 'bottom-right'
 
-export type MagicDraggableCoordinates = {
+export type Coordinates = {
   x: number
   y: number
 }
 
-export type MagicDraggableSnapPoint =
+export type DraggableSnapPoint =
   | [
       Position,
       offset?: {
@@ -39,17 +39,17 @@ export interface MagicDraggableOptions {
     }
   }
   initial?: {
-    snapPoint?: MagicDraggableSnapPoint
+    snapPoint?: DraggableSnapPoint
   }
-  snapPoints?: MagicDraggableSnapPoint[]
+  snapPoints?: DraggableSnapPoint[]
   disabled?: boolean
 }
 
-export interface MagicDraggableState {
+export interface DraggableState {
   id: string
   dragStart: Date | undefined
   dragging: boolean
-  interpolateTo: MagicDraggableCoordinates | undefined
+  interpolateTo: Coordinates | undefined
   originX: number
   originY: number
   lastDraggedX: number
@@ -60,4 +60,40 @@ export interface MagicDraggableState {
   draggedY: number
   elRect: DOMRect | undefined
   wrapperRect: DOMRect | undefined
+}
+
+export type DraggableEvents = {
+  beforeSnap: {
+    id: string
+    snapPoint: DraggableSnapPoint
+  }
+  snapTo: {
+    id: string
+    snapPoint: DraggableSnapPoint
+    duration?: number
+  }
+  afterSnap: {
+    id: string
+    snapPoint: DraggableSnapPoint
+  }
+  beforeDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  drag: {
+    id: string
+    x: number
+    y: number
+  }
+  afterDrag: {
+    id: string
+    x: number
+    y: number
+  }
+  dragCanceled: {
+    id: string
+    x: number
+    y: number
+  }
 }

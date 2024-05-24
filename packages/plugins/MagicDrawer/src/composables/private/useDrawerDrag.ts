@@ -60,7 +60,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   } = args
 
   // Private state
-  const { findState } = useDrawerState(toValue(id))
+  const { initializeState } = useDrawerState(toValue(id))
   const {
     dragStart,
     dragging,
@@ -79,7 +79,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     absDirectionY,
     elRect,
     wrapperRect,
-  } = findState()
+  } = initializeState()
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined

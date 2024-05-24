@@ -15,14 +15,14 @@ import {
 } from 'motion'
 import { MagicScrollProgress } from '../symbols'
 
-interface Props {
+interface MagicScrollMotionProps {
   keyframes?: MotionKeyframesDefinition
   offset?: number[]
   easing?: Easing
   progress?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicScrollMotionProps>(), {
   easing: 'linear',
 })
 

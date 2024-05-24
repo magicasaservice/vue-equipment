@@ -1,25 +1,27 @@
-import type { MagicCollisionEvents } from '../../../MagicScroll'
-import type { MagicCommandEvents } from '../../../MagicCommand'
-import type { MagicCookieEvents } from '../../../MagicCookie'
-import type { MagicDrawerEvents } from '../../../MagicDrawer'
-import type { MagicModalEvents } from '../../../MagicModal'
-import type { MagicToastEvents } from '../../../MagicToast'
+import type { ScrollEvents } from '../../../MagicScroll/src/types/index'
+import type { CommandEvents } from '../../../MagicCommand/src/types/index'
+import type { CookieEvents } from '../../../MagicCookie/src/types/index'
+import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
+import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
+import type { ModalEvents } from '../../../MagicModal/src/types/index'
+import type { ToastEvents } from '../../../MagicToast/src/types/index'
 
-type Merge<T extends any[]> = T extends [infer First, ...infer Rest]
+type MergeTypes<T, U> = {
+  [K in keyof T]: K extends keyof U ? T[K] | U[K] : T[K]
+} & Omit<U, keyof T>
+
+type Merge<T extends unknown[]> = T extends [infer First, ...infer Rest]
   ? MergeTypes<First, Merge<Rest>>
   : {}
 
-type MergeTypes<T, U> = {
-  [K in keyof T]: K extends keyof U ? U[K] : T[K]
-} & U
-
 export type MagicEmitterEvents = Merge<
   [
-    MagicCollisionEvents,
-    MagicCommandEvents,
-    MagicCookieEvents,
-    MagicDrawerEvents,
-    MagicModalEvents,
-    MagicToastEvents
+    ScrollEvents,
+    CommandEvents,
+    CookieEvents,
+    DraggableEvents,
+    DrawerEvents,
+    ModalEvents,
+    ToastEvents
   ]
 >

@@ -62,10 +62,31 @@
       </div>
     </div>
   </div>
+  <div class="w-full">
+    <magic-scroll-provider class="h-[50svh] flex items-center justify-center">
+      <magic-scroll-collision
+        :entries="[
+          {
+            data: { payload: 'test' },
+            offset: { top: 64 },
+            element: '.-collision',
+          },
+        ]"
+      >
+        <div class="-collision w-36 h-36 rounded-full shadow-md bg-blue" />
+      </magic-scroll-collision>
+    </magic-scroll-provider>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
+import type { ValueOf } from '@maas/vue-equipment/utils'
+
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const keyframes = ref<Record<string, any> | null | undefined>(undefined)
 
@@ -96,4 +117,14 @@ keyframes.value = presets[0]
 function toggleAnimations() {
   keyframes.value = presets[Math.floor(Math.random() * presets.length)]
 }
+
+function callback(payload: MagicEmitterEvents['collision']) {
+  console.log(payload)
+}
+
+useMagicEmitter().on('collision', callback)
+
+onBeforeUnmount(() => {
+  useMagicEmitter().off('collision', callback)
+})
 </script>

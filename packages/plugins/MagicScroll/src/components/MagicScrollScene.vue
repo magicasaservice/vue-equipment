@@ -16,13 +16,13 @@ import {
 
 import type { FromTo } from '../types'
 
-interface Props {
+interface MagicScrollSceneProps {
   from?: FromTo
   to?: FromTo
   debug?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicScrollSceneProps>(), {
   from: 'top-bottom',
   to: 'bottom-top',
 })
@@ -47,10 +47,6 @@ async function calculate() {
   progress.value = getProgress()
 }
 
-onMounted(() => {
-  calculate()
-})
-
 watch(
   () => scrollReturn?.y.value,
   () => {
@@ -58,6 +54,14 @@ watch(
       calculate()
     }
   }
+)
+
+watch(
+  () => scrollReturn?.y.value,
+  () => {
+    calculate()
+  },
+  { once: true }
 )
 
 useIntersectionObserver(

@@ -21,8 +21,8 @@ type UseDrawerWheelArgs = {
 export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const { id, elRef, position, disabled } = args
 
-  const { findState } = useDrawerState(toValue(id))
-  const { dragging, wheeling } = findState()
+  const { initializeState } = useDrawerState(toValue(id))
+  const { dragging, wheeling } = initializeState()
 
   let startEvent: PointerEvent
 

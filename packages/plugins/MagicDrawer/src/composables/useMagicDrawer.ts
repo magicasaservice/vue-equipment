@@ -3,14 +3,14 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerState } from './private/useDrawerState'
 
-import type { MagicDrawerSnapPoint } from '../types/index'
+import type { DrawerSnapPoint } from '../types/index'
 
 export function useMagicDrawer(id: MaybeRef<string>) {
   // Private methods
   const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-  const { deleteState, findState } = useDrawerState(toValue(id))
+  const { deleteState, initializeState } = useDrawerState(toValue(id))
 
-  const { progress } = findState()
+  const { progress } = initializeState()
 
   // Public state
   const isActive = computed(() => drawerStore.value.includes(toValue(id)))
@@ -25,7 +25,7 @@ export function useMagicDrawer(id: MaybeRef<string>) {
     deleteState()
   }
 
-  function snapTo(snapPoint: MagicDrawerSnapPoint, duration?: number) {
+  function snapTo(snapPoint: DrawerSnapPoint, duration?: number) {
     useMagicEmitter().emit('snapTo', {
       id: toValue(id),
       snapPoint,

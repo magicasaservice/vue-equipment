@@ -1,6 +1,6 @@
 import { type Options } from 'focus-trap'
 
-export type MagicDrawerSnapPoint = number | `${string}px`
+export type DrawerSnapPoint = number | `${string}px`
 
 export interface MagicDrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
@@ -8,7 +8,7 @@ export interface MagicDrawerOptions {
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | Options
   scrollLock?: boolean | { padding: boolean }
-  snapPoints?: MagicDrawerSnapPoint[]
+  snapPoints?: DrawerSnapPoint[]
   teleport?: {
     target?: string
     disabled?: boolean
@@ -31,7 +31,7 @@ export interface MagicDrawerOptions {
   initial?: {
     open?: boolean
     transition?: boolean
-    snapPoint?: MagicDrawerSnapPoint
+    snapPoint?: DrawerSnapPoint
   }
   keyListener?: {
     close?: string[] | false
@@ -42,7 +42,7 @@ export interface MagicDrawerOptions {
   disabled?: boolean
 }
 
-export interface MagicDrawerState {
+export interface DrawerState {
   id: string
   dragStart: Date | undefined
   dragging: boolean
@@ -67,7 +67,7 @@ export interface MagicDrawerState {
   wrapperRect: DOMRect | undefined
 }
 
-export type MagicDrawerEvents = {
+export type DrawerEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string
@@ -76,16 +76,16 @@ export type MagicDrawerEvents = {
   afterLeave: string
   beforeSnap: {
     id: string
-    snapPoint: MagicDrawerSnapPoint
+    snapPoint: DrawerSnapPoint
   }
   snapTo: {
     id: string
-    snapPoint: MagicDrawerSnapPoint
+    snapPoint: DrawerSnapPoint
     duration?: number
   }
   afterSnap: {
     id: string
-    snapPoint: MagicDrawerSnapPoint
+    snapPoint: DrawerSnapPoint
   }
   beforeDrag: {
     id: string

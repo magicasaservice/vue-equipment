@@ -62,8 +62,8 @@ const mappedOptions = defu(props.options, defaultOptions)
 const elRef = ref<HTMLElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
-const { findState } = useDraggableState(props.id)
-const { dragging } = findState()
+const { initializeState } = useDraggableState(props.id)
+const { dragging } = initializeState()
 
 // Make sure this is reactive
 const disabled = computed(() => {

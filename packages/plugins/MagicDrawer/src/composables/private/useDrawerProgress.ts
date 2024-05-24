@@ -27,7 +27,7 @@ interface UseDrawerProgressArgs {
 
 export function useDrawerProgress(args: UseDrawerProgressArgs) {
   const { id, drawerRef, elRef, position, overshoot } = args
-  const { findState } = useDrawerState(id)
+  const { initializeState } = useDrawerState(id)
 
   // Private state
   const drawerRect = useElementBounding(drawerRef)
@@ -41,7 +41,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   )
 
   // Public state
-  const { progress } = findState()
+  const { progress } = initializeState()
 
   // Private method
   function rafCallback() {

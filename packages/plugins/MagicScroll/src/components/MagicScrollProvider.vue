@@ -13,11 +13,11 @@ import {
 } from '@vueuse/core'
 import { MagicScrollReturn, MagicScrollParent } from '../symbols'
 
-interface Props {
+interface MagicScrollProviderProps {
   active?: Boolean
   el?: MaybeComputedElementRef<HTMLElement>
 }
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicScrollProviderProps>(), {
   active: () => true,
 })
 
