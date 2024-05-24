@@ -340,22 +340,14 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     activeSnapPoint.value = undefined
   }
 
-<<<<<<< HEAD
-  function afterLeaveCallback(payload: MagicDrawerEvents['afterLeave']) {
-=======
   function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
->>>>>>> main
     if (payload === toValue(id)) {
       resetState()
       resetSnapped()
     }
   }
 
-<<<<<<< HEAD
-  function snapToCallback(payload: MagicDrawerEvents['snapTo']) {
-=======
   function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
->>>>>>> main
     if (payload.id === toValue(id)) {
       if (!toValue(isActive)) {
         console.warn('Cannot snap to point when drawer is not open')
