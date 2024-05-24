@@ -35,7 +35,7 @@ export function useCommandStore() {
     const instance = findInstance(id)
     if (instance) {
       const itemElements: NodeListOf<HTMLElement> = parent.querySelectorAll(
-        '[magic-command-data-id]'
+        '[data-magic-command-item-id]'
       )
 
       itemElements.forEach((el, index) => {
