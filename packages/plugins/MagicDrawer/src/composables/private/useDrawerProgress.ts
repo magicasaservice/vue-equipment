@@ -10,10 +10,11 @@ import {
 } from 'vue'
 import { useElementBounding, useRafFn } from '@vueuse/core'
 import { clampValue, mapValue } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useDrawerState } from './useDrawerState'
-
-import type { DrawerEvents } from '../../types'
 import type { DefaultOptions } from '../../utils/defaultOptions'
 
 interface UseDrawerProgressArgs {
@@ -121,25 +122,29 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     })
   })
 
-  function beforeCallback(payload: DrawerEvents[keyof DrawerEvents]) {
+  function beforeCallback(
+    payload: MagicEmitterEvents[keyof MagicEmitterEvents]
+  ) {
     if (payload === toValue(id)) {
       resume()
     }
   }
 
-  function beforeSnapCallback(payload: DrawerEvents['beforeSnap']) {
+  function beforeSnapCallback(payload: MagicEmitterEvents['beforeSnap']) {
     if (payload.id === toValue(id)) {
       snapResume()
     }
   }
 
-  function beforeDragCallback(payload: DrawerEvents['beforeDrag']) {
+  function beforeDragCallback(payload: MagicEmitterEvents['beforeDrag']) {
     if (payload.id === toValue(id)) {
       dragResume()
     }
   }
 
-  async function afterCallback(payload: DrawerEvents[keyof DrawerEvents]) {
+  async function afterCallback(
+    payload: MagicEmitterEvents[keyof MagicEmitterEvents]
+  ) {
     await nextTick()
 
     if (payload === toValue(id)) {
@@ -149,7 +154,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     }
   }
 
-  async function afterSnapCallback(payload: DrawerEvents['afterSnap']) {
+  async function afterSnapCallback(payload: MagicEmitterEvents['afterSnap']) {
     await nextTick()
 
     if (payload.id === toValue(id)) {
@@ -159,7 +164,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     }
   }
 
-  async function afterDragCallback(payload: DrawerEvents['drag']) {
+  async function afterDragCallback(payload: MagicEmitterEvents['drag']) {
     await nextTick()
 
     if (payload.id === toValue(id)) {
