@@ -6,7 +6,7 @@ import { matchClass } from '@maas/vue-equipment/utils'
 
 import type { MagicDrawerOptions } from '../../types/index'
 
-export type UseDrawerDOMOptions = Pick<
+export type UseDrawerDOMArgs = Pick<
   MagicDrawerOptions,
   'scrollLock' | 'focusTrap'
 > & {
@@ -24,10 +24,10 @@ const scrollLock =
     ? useScrollLock(document?.documentElement)
     : ref(false)
 
-export function useDrawerDOM(options?: UseDrawerDOMOptions) {
+export function useDrawerDOM(args?: UseDrawerDOMArgs) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
-  const mappedOptions = defu(options, defaultOptions)
+  const mappedOptions = defu(args, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
     ? typeof mappedOptions.focusTrap === 'boolean'

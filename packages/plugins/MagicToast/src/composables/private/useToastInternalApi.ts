@@ -1,15 +1,11 @@
 import { uuid } from '@maas/vue-equipment/utils'
-import type {
-  MagicToastInstance,
-  MagicToast,
-  AddToastArgs,
-} from './../../types'
+import type { ToastInstance, Toast, AddToastArgs } from './../../types'
 
 export function useToastInternalApi() {
   function removeToastAfterTimeout(
     id: string,
     duration: number,
-    ctx: MagicToastInstance
+    ctx: ToastInstance
   ) {
     if (duration > 0) {
       setTimeout(() => {
@@ -18,11 +14,11 @@ export function useToastInternalApi() {
     }
   }
 
-  function addToast(args: AddToastArgs, ctx: MagicToastInstance) {
+  function addToast(args: AddToastArgs, ctx: ToastInstance) {
     const id = uuid()
     let { component, props, duration = 0 } = args
 
-    const toast: MagicToast = {
+    const toast: Toast = {
       component,
       props,
       id,
