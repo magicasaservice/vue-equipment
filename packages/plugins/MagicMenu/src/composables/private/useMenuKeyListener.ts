@@ -2,7 +2,7 @@ import { type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
-import type { MagicMenuView } from '../../types/index'
+import type { MenuView } from '../../types/index'
 
 export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
@@ -33,13 +33,13 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     }
   }
 
-  function getEnabledItems(view: MagicMenuView) {
+  function getEnabledItems(view: MenuView) {
     return view.items.filter((item) => !item.disabled)
   }
 
-  function selectFirstItem(view: MagicMenuView) {
+  function selectFirstItem(view: MenuView) {
     const { selectItem } = useMenuItem({ instanceId, viewId: view.id })
-    selectItem(getEnabledItems(view)[0].id)
+    selectItem(getEnabledItems(view)[0]?.id)
   }
 
   // Public functions
@@ -47,6 +47,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
+
+    if (!state.input.view) {
+      return
+    }
 
     const viewId = state.input.view
     const inputView = getView(viewId)
@@ -78,6 +82,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
+    if (!state.input.view) {
+      return
+    }
+
     const viewId = state.input.view
     const inputView = getView(viewId)
 
@@ -104,6 +112,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
+
+    if (!state.input.view) {
+      return
+    }
 
     const viewId = state.input.view
     const inputView = getView(viewId)
@@ -134,6 +146,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       keyStrokeGuard(e)
     } catch (_e: unknown) {}
 
+    if (!state.input.view) {
+      return
+    }
+
     const viewId = state.input.view
     const inputView = getView(viewId)
     if (!inputView) return
@@ -161,11 +177,46 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     unselectAllViews()
   }
 
+  async function onEnter(e: KeyboardEvent) {
+    try {
+      keyStrokeGuard(e)
+    } catch (_e: unknown) {}
+
+    if (!state.input.view) {
+      return
+    }
+
+    const viewId = state.input.view
+    const inputView = getView(viewId)
+
+    if (inputView) {
+      const activeItem = inputView.items.find((item) => item.active)
+      const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
+
+      if (nestedView) {
+        selectView(nestedView.id)
+        await new Promise((resolve) => requestAnimationFrame(resolve))
+        selectFirstItem(nestedView)
+        return
+      }
+    }
+  }
+
+  function onTab(e: KeyboardEvent) {
+    if (state.active) {
+      try {
+        keyStrokeGuard(e)
+      } catch (_e: unknown) {}
+    }
+  }
+
   return {
     onArrowRight,
     onArrowLeft,
     onArrowUp,
     onArrowDown,
     onEscape,
+    onEnter,
+    onTab,
   }
 }

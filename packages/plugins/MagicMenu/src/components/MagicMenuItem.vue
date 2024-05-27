@@ -80,7 +80,7 @@ function guardedSelect() {
 
 // Guarded unselect
 // Check for active nested views
-const { getNestedView } = useMenuView(instanceId)
+const { getNestedView, unselectAllViews } = useMenuView(instanceId)
 const nestedView = computed(() => getNestedView(mappedId.value))
 
 function guardedUnselect() {

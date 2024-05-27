@@ -1,11 +1,21 @@
-import { ref, computed, watch, type ComputedRef, type MaybeRef } from 'vue'
+import {
+  ref,
+  computed,
+  watch,
+  toValue,
+  type ComputedRef,
+  type MaybeRef,
+  type Ref,
+} from 'vue'
 import {
   useEventListener,
   useElementBounding,
   type MaybeElementRef,
   type MaybeElement,
+  useFocus,
+  onKeyStroke,
 } from '@vueuse/core'
-import type { MagicMenuTrigger, Coordinates } from '../../types/index'
+import type { MenuTrigger, Coordinates } from '../../types/index'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 
@@ -14,8 +24,8 @@ type UseMenuTriggerArgs = {
   viewId: string
   itemId?: string
   mappedDisabled: ComputedRef<boolean>
-  mappedTrigger: ComputedRef<MagicMenuTrigger[]>
-  elRef: MaybeElementRef<MaybeElement>
+  mappedTrigger: ComputedRef<MenuTrigger[]>
+  elRef: Ref<HTMLElement | undefined>
 }
 
 type IsPointInTriangleArgs = {
@@ -40,14 +50,15 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
   let cancelPointermove: (() => void) | undefined = undefined
 
-  const mouseleaveCoordinates = ref<Coordinates>({ x: 0, y: 0 })
-  const contentEl = ref<MaybeElement | undefined>(undefined)
+  const mouseleaveCoordinates = ref<Coordinates | undefined>(undefined)
 
   const { getView, selectView, unselectView } = useMenuView(instanceId)
   const view = getView(viewId)
 
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
+
+  const { focused } = useFocus(elRef)
 
   const isInsideTriangle = ref(false)
   const isInsideTrigger = ref(false)
@@ -63,15 +74,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
   // Private functions
   function resetState() {
-    mouseleaveCoordinates.value = { x: 0, y: 0 }
-    // contentElement.value = undefined
+    mouseleaveCoordinates.value = undefined
     isInsideTriangle.value = false
-  }
-
-  function findContentElement() {
-    return document.querySelector(
-      `[data-magic-menu-id="${viewId}-content"] .magic-menu-content__inner`
-    ) as MaybeElement
   }
 
   function disableCursor() {
@@ -159,8 +163,15 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   async function onPointermove(e: PointerEvent) {
+    if (!mouseleaveCoordinates.value || !view?.children.content) {
+      return
+    }
+
     const mouseCoordinates = { x: e.clientX, y: e.clientY }
-    const { top, left, bottom, right } = useElementBounding(contentEl.value)
+    const { top, left, bottom, right } = useElementBounding(
+      view.children.content
+    )
+
     const {
       top: topTrigger,
       left: leftTrigger,
@@ -210,6 +221,40 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     })
   }
 
+  function onRightClick(e: MouseEvent) {
+    switch (e.button) {
+      case 2:
+        selectView(viewId)
+        state.active = true
+
+        // Save coordinates, later used for float positioning
+        if (view) {
+          view.click = { x: e.clientX, y: e.clientY }
+        }
+
+        // If the trigger is not nested inside an item, focus the view
+        if (!itemId) {
+          state.input.view = viewId
+        }
+        break
+      default:
+        state.active = false
+        unselectView(viewId)
+    }
+  }
+
+  function onEnter(e: KeyboardEvent) {
+    if (focused.value && !mappedDisabled.value && !view?.active) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      state.active = true
+      state.input.type = 'keyboard'
+      state.input.view = viewId
+      selectView(viewId)
+    }
+  }
+
   // Public functions
   function onMouseenter() {
     // Reset mouseleave coordinates and content element
@@ -225,27 +270,31 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     ) {
       selectView(viewId)
 
-      // If the trigger is nested inside an item, don’t focus the view
+      // If the trigger is not nested inside an item, focus the view
       if (!itemId) {
         state.input.view = viewId
       }
     }
   }
 
-  function onClick() {
+  function onClick(e: MouseEvent) {
     if (
       mappedTrigger.value.includes('click') &&
-      view &&
       viewId &&
       !mappedDisabled.value
     ) {
       selectView(viewId)
       state.active = true
 
-      // If the trigger is nested inside an item, don’t focus the view
+      // If the trigger is not nested inside an item, focus the view
       if (!itemId) {
         state.input.view = viewId
       }
+    }
+
+    if (mappedTrigger.value.includes('right-click') && viewId) {
+      e.preventDefault()
+      onRightClick(e)
     }
   }
 
@@ -265,12 +314,11 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       async (value) => {
         if (value) {
           await new Promise((resolve) => requestAnimationFrame(resolve))
-          contentEl.value = findContentElement()
-        } else {
-          contentEl.value = undefined
+          toValue(elRef)?.blur()
         }
       }
     )
+
     // Manage cursor
     watch(isInsideTriangle, async (value, oldValue) => {
       if (value && !oldValue) {
@@ -290,12 +338,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
     // Reset once pointer leaves again
     watch(isOutside, (value, oldValue) => {
-      console.log(
-        isInsideTrigger.value,
-        isInsideContent.value,
-        isInsideTriangle.value
-      )
-
       if (!cancelPointermove) {
         return
       }
@@ -308,6 +350,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
         resetState()
       }
     })
+
+    onKeyStroke('Enter', onEnter)
   }
 
   return {

@@ -4,7 +4,9 @@
     ref="elRef"
     :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
     :data-magic-menu-id="`${viewId}-trigger`"
+    :tabindex="mappedTabindex"
     @click="onClick"
+    @contextmenu="onClick"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
   >
@@ -13,22 +15,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
+import { useMenuTrigger } from '../composables/private/useMenuTrigger'
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,
   MagicMenuItemId,
 } from '../symbols'
 
-import type { MagicMenuTrigger } from '../types'
-import { useMenuTrigger } from '../composables/private/useMenuTrigger'
+import type { MenuTrigger } from '../types'
 
 interface MagicMenuTriggerProps {
   disabled?: boolean
-  trigger?: MagicMenuTrigger[]
+  trigger?: MenuTrigger[]
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
@@ -46,8 +48,9 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
-const { getView } = useMenuView(instanceId)
+const { getView, getRelativeViewIndex } = useMenuView(instanceId)
 const view = getView(viewId)
+const viewIndex = getRelativeViewIndex(viewId)
 
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
@@ -57,7 +60,7 @@ const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
 
-const mappedTrigger = computed<MagicMenuTrigger[]>(() => {
+const mappedTrigger = computed<MenuTrigger[]>(() => {
   if (props.trigger?.length) {
     return props.trigger
   }
@@ -72,7 +75,17 @@ const mappedTrigger = computed<MagicMenuTrigger[]>(() => {
         ? ['mouseenter', 'mouseleave', 'click']
         : ['click']
     case 'context':
-      return ['right-click']
+      return view?.parent.item
+        ? ['mouseenter', 'mouseleave', 'click']
+        : ['right-click']
+  }
+})
+
+const mappedTabindex = computed(() => {
+  if (viewIndex === 0 && state.options.mode !== 'context' && !itemId) {
+    return 0
+  } else {
+    return undefined
   }
 })
 
@@ -87,6 +100,16 @@ const { initialize, onMouseenter, onClick, onMouseleave } = useMenuTrigger({
 
 // Initialize watcher
 initialize()
+
+watch(
+  elRef,
+  (value) => {
+    if (view && value) {
+      view.children.trigger = value
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style>

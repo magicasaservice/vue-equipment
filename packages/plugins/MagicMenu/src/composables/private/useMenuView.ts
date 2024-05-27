@@ -1,11 +1,11 @@
 import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
-import type { MagicMenuView } from '../../types/index'
+import type { MenuView } from '../../types/index'
 import { useMenuUtils } from './useMenuUtils'
 
-type CreateViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
-type AddViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
-type FindViewArgs = Pick<MagicMenuView, 'id' | 'parent'>
+type CreateViewArgs = Pick<MenuView, 'id' | 'parent'>
+type AddViewArgs = Pick<MenuView, 'id' | 'parent'>
+type FindViewArgs = Pick<MenuView, 'id' | 'parent'>
 
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
@@ -30,9 +30,13 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       parent.views.push(toValue(instanceId))
     }
 
-    const view: MagicMenuView = {
+    const view: MenuView = {
       id: id,
       parent: parent,
+      children: {
+        trigger: undefined,
+        content: undefined,
+      },
       active: false,
       items: [],
     }
@@ -64,6 +68,15 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     return state.views?.find((view) => {
       return view.id === id
     })
+  }
+
+  function getRelativeViewIndex(id: string) {
+    const view = getView(id)
+    const nestingLevel = view?.parent.views.length
+
+    return state.views
+      ?.filter((view) => view.parent.views.length === nestingLevel)
+      .findIndex((view) => view.id === id)
   }
 
   function getNextView(id: string) {
@@ -130,6 +143,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     initializeView,
     deleteView,
     getView,
+    getRelativeViewIndex,
     getNextView,
     getPreviousView,
     getTopLevelView,

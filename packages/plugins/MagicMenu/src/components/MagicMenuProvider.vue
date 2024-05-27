@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-menu-provider" ref="elRef" tabindex="0">
+  <div class="magic-menu-provider" ref="elRef">
     <slot />
   </div>
 </template>
@@ -55,14 +55,23 @@ watch([x, y], ([x, y]) => {
 })
 
 // Add key listener
-const { onArrowRight, onArrowLeft, onArrowUp, onArrowDown, onEscape } =
-  useMenuKeyListener(props.id)
+const {
+  onArrowRight,
+  onArrowLeft,
+  onArrowUp,
+  onArrowDown,
+  onEscape,
+  onEnter,
+  onTab,
+} = useMenuKeyListener(props.id)
 
 onKeyStroke('ArrowRight', onArrowRight)
 onKeyStroke('ArrowLeft', onArrowLeft)
 onKeyStroke('ArrowDown', onArrowDown)
 onKeyStroke('ArrowUp', onArrowUp)
 onKeyStroke('Escape', onEscape)
+onKeyStroke('Enter', onEnter)
+onKeyStroke('Tab', onTab)
 
 // Handle off-click
 const { unselectAllViews } = useMenuView(props.id)
@@ -95,5 +104,6 @@ provide(MagicMenuInstanceId, props.id)
 <style>
 .magic-menu-provider {
   outline: none;
+  user-select: none;
 }
 </style>

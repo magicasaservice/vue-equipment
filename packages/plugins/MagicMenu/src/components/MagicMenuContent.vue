@@ -1,13 +1,21 @@
 <template>
   <teleport to="body" v-if="wrapperActive">
-    <transition :name="mappedTransition">
+    <transition
+      :name="mappedTransition"
+      :on-before-enter="onBeforeEnter"
+      :on-enter="onEnter"
+      :on-after-enter="onAfterEnter"
+      :on-before-leave="onBeforeLeave"
+      :on-leave="onLeave"
+      :on-after-leave="onAfterLeave"
+    >
       <div
         class="magic-menu-content"
         :data-magic-menu-id="`${viewId}-content`"
         v-if="innerActive"
       >
         <magic-menu-float :placement="placement">
-          <div class="magic-menu-content__inner">
+          <div class="magic-menu-content__inner" ref="contentRef">
             <slot />
           </div>
         </magic-menu-float>
@@ -29,12 +37,16 @@ import {
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 import { useMenuState } from '../composables/private/useMenuState'
+import { useMenuCallback } from '../composables/private/useMenuCallback'
+import { useMenuDOM } from '../composables/private/useMenuDOM'
 
 interface MagicMenuContentProps {
   placement?: Placement
 }
 
 defineProps<MagicMenuContentProps>()
+
+const contentRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -64,6 +76,22 @@ const mappedTransition = computed(() => {
   }
 })
 
+const { lockScroll, unlockScroll } = useMenuDOM()
+const {
+  onBeforeEnter,
+  onEnter,
+  onAfterEnter,
+  onBeforeLeave,
+  onLeave,
+  onAfterLeave,
+} = useMenuCallback({
+  state,
+  instanceId,
+  viewId,
+  lockScroll,
+  unlockScroll,
+})
+
 // Split isActive into two values to animate content smoothly
 const innerActive = ref(false)
 const wrapperActive = ref(false)
@@ -73,6 +101,10 @@ async function onOpen() {
   wrapperActive.value = true
   await nextTick()
   innerActive.value = true
+  await nextTick()
+  if (view) {
+    view.children.content = contentRef.value
+  }
 }
 
 async function onClose() {
@@ -96,6 +128,15 @@ provide(MagicMenuContentId, `${viewId}-content`)
 </script>
 
 <style>
+.magic-menu-content {
+  user-select: none;
+}
+
+.magic-menu-content__inner {
+  padding: 0;
+  border: 0;
+}
+
 .magic-menu-content-leave-active {
   animation: fade-out 150ms ease;
 }

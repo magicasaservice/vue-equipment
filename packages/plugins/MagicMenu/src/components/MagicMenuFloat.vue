@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 import {
   useFloating,
   autoUpdate,
@@ -24,7 +24,6 @@ interface MagicMenuFloatProps {
 const props = defineProps<MagicMenuFloatProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
-const referenceEl = ref<HTMLElement | null>(null)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -50,21 +49,32 @@ const mappedPlacement = computed(() => {
   }
 })
 
+const referenceEl = computed(() => {
+  if (view?.click) {
+    return {
+      getBoundingClientRect() {
+        return {
+          width: 0,
+          height: 0,
+          x: view.click!.x,
+          y: view.click!.y,
+          top: view.click!.y,
+          left: view.click!.x,
+          right: view.click!.x,
+          bottom: view.click!.y,
+        }
+      },
+    }
+  } else {
+    return view?.children?.trigger
+  }
+})
+
 const { floatingStyles } = useFloating(referenceEl, elRef, {
   placement: mappedPlacement,
   whileElementsMounted: autoUpdate,
   middleware: [flip(), shift()],
 })
-
-watch(
-  () => viewId,
-  (value) => {
-    referenceEl.value = document.querySelector(
-      `[data-magic-menu-id="${value}-trigger"]`
-    )
-  },
-  { immediate: true }
-)
 </script>
 
 <style>

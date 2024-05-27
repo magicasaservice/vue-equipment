@@ -1,14 +1,14 @@
 import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { MagicMenuState, MagicMenuOptions } from '../../types/index'
+import type { MenuState, MagicMenuOptions } from '../../types/index'
 
-const menuStateStore: Ref<MagicMenuState[]> = ref([])
+const menuStateStore: Ref<MenuState[]> = ref([])
 
 export function useMenuState(instanceId: MaybeRef<string>) {
   // Private functions
   function createState(id: string) {
-    const state: MagicMenuState = {
+    const state: MenuState = {
       id: id,
       options: defaultOptions,
       views: [],
@@ -16,7 +16,7 @@ export function useMenuState(instanceId: MaybeRef<string>) {
       input: {
         type: 'pointer',
         disabled: [],
-        view: '',
+        view: undefined,
       },
     }
 
@@ -50,7 +50,7 @@ export function useMenuState(instanceId: MaybeRef<string>) {
 
   function deleteState() {
     menuStateStore.value = menuStateStore.value.filter(
-      (x: MagicMenuState) => x.id !== toValue(instanceId)
+      (x: MenuState) => x.id !== toValue(instanceId)
     )
   }
 

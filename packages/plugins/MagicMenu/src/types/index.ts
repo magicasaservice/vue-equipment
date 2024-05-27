@@ -1,41 +1,69 @@
-type MagicMenuMode = 'dropdown' | 'menubar' | 'context'
+type MenuMode = 'dropdown' | 'menubar' | 'context'
 
-export type MagicMenuTrigger =
-  | 'click'
-  | 'mouseenter'
-  | 'mouseleave'
-  | 'right-click'
+export interface MagicMenuOptions {
+  mode: MenuMode
+}
+
+export type MenuTrigger = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
 
 export type Coordinates = {
   x: number
   y: number
 }
 
-export interface MagicMenuItem {
+export interface MenuItem {
   id: string
   active: boolean
   disabled: boolean
 }
 
-export interface MagicMenuView {
+export interface MenuView {
   id: string
   active: boolean
-  items: MagicMenuItem[]
+  items: MenuItem[]
   parent: { item: string; views: string[] }
+  children: {
+    trigger?: HTMLElement
+    content?: HTMLElement
+  }
+  click?: Coordinates
 }
 
-export interface MagicMenuOptions {
-  mode: MagicMenuMode
-}
-
-export interface MagicMenuState {
+export interface MenuState {
   id: string
   active: boolean
-  views: MagicMenuView[]
+  views: MenuView[]
   options: MagicMenuOptions
   input: {
     type: 'keyboard' | 'pointer'
     disabled: ('keyboard' | 'pointer')[]
+    view: string | undefined
+  }
+}
+
+export type MenuEvents = {
+  beforeEnter: {
+    id: string
+    view: string
+  }
+  enter: {
+    id: string
+    view: string
+  }
+  afterEnter: {
+    id: string
+    view: string
+  }
+  beforeLeave: {
+    id: string
+    view: string
+  }
+  leave: {
+    id: string
+    view: string
+  }
+  afterLeave: {
+    id: string
     view: string
   }
 }
