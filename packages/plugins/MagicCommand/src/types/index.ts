@@ -11,7 +11,7 @@ export type MagicCommandOptions = {
   loop?: boolean
 }
 
-export type MagicCommandEvents = {
+export type CommandEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string

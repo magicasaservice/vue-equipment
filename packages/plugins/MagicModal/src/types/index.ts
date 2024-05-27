@@ -18,7 +18,7 @@ export interface MagicModalOptions {
   }
 }
 
-export type MagicModalEvents = {
+export type ModalEvents = {
   beforeEnter: string
   enter: string
   afterEnter: string

@@ -4,6 +4,7 @@ import type { CookieEvents } from '../../../MagicCookie/src/types/index'
 import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
 import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
 import type { ModalEvents } from '../../../MagicModal/src/types/index'
+import type { MenuEvents } from '../../../MagicMenu/src/types/index'
 import type { ToastEvents } from '../../../MagicToast/src/types/index'
 
 type MergeTypes<T, U> = {
@@ -22,6 +23,7 @@ export type MagicEmitterEvents = Merge<
     DraggableEvents,
     DrawerEvents,
     ModalEvents,
+    MenuEvents,
     ToastEvents
   ]
 >

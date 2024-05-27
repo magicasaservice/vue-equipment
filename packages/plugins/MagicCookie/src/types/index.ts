@@ -11,7 +11,7 @@ export type MagicCookieConsent = {
   cookies: Record<string, boolean>
 }
 
-export type MagicCookieEvents = {
+export type CookieEvents = {
   accept: MagicCookieConsent
   reject: MagicCookieConsent
   acceptSelected: MagicCookieConsent
