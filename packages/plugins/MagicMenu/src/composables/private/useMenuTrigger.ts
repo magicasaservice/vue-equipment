@@ -280,8 +280,9 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   function onClick(e: MouseEvent) {
     if (
       mappedTrigger.value.includes('click') &&
-      viewId &&
-      !mappedDisabled.value
+      !mappedDisabled.value &&
+      e.button === 0 &&
+      viewId
     ) {
       selectView(viewId)
       state.active = true

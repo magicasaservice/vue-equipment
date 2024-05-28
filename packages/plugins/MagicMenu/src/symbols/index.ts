@@ -1,4 +1,4 @@
-import type { InjectionKey, MaybeRef, Ref } from 'vue'
+import type { InjectionKey, MaybeRef } from 'vue'
 
 const MagicMenuInstanceId = Symbol() as InjectionKey<MaybeRef<string>>
 const MagicMenuParentTree = Symbol() as InjectionKey<string[]>

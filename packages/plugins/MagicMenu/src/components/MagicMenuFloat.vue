@@ -11,6 +11,7 @@ import {
   autoUpdate,
   flip,
   shift,
+  limitShift,
   type Placement,
 } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
@@ -73,7 +74,13 @@ const referenceEl = computed(() => {
 const { floatingStyles } = useFloating(referenceEl, elRef, {
   placement: mappedPlacement,
   whileElementsMounted: autoUpdate,
-  middleware: [flip(), shift()],
+  middleware: [
+    flip(),
+    shift({
+      crossAxis: true,
+      limiter: limitShift(),
+    }),
+  ],
 })
 </script>
 
