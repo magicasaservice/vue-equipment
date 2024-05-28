@@ -10,8 +10,7 @@ import {
 import {
   useEventListener,
   useElementBounding,
-  type MaybeElementRef,
-  type MaybeElement,
+  useMagicKeys,
   useFocus,
   onKeyStroke,
 } from '@vueuse/core'
@@ -71,6 +70,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       !isInsideTriangle.value
     )
   })
+
+  const { shift, control } = useMagicKeys()
 
   // Private functions
   function resetState() {
@@ -222,6 +223,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   function onRightClick(e: MouseEvent) {
+    console.log('e:', e)
     switch (e.button) {
       case 2:
         selectView(viewId)
@@ -295,7 +297,18 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
     if (mappedTrigger.value.includes('right-click') && viewId) {
       e.preventDefault()
-      onRightClick(e)
+      if (control.value || shift.value) {
+        onRightClick(
+          new MouseEvent(e.type, {
+            ...e,
+            button: 2,
+            clientX: e.clientX,
+            clientY: e.clientY,
+          })
+        )
+      } else {
+        onRightClick(e)
+      }
     }
   }
 
