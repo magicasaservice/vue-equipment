@@ -286,12 +286,21 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       e.button === 0 &&
       viewId
     ) {
-      selectView(viewId)
-      state.active = true
+      switch (true) {
+        case !state.active:
+          state.active = true
+          selectView(viewId)
 
-      // If the trigger is not nested inside an item, focus the view
-      if (!itemId) {
-        state.input.view = viewId
+          // If the trigger is not nested inside an item, focus the view
+          if (!itemId) {
+            state.input.view = viewId
+          }
+          break
+        case state.active && !itemId:
+          state.active = false
+          unselectView(viewId)
+
+          break
       }
     }
 

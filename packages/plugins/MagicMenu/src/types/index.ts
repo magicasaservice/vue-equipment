@@ -1,7 +1,14 @@
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
+
 type MenuMode = 'dropdown' | 'menubar' | 'context'
 
 export interface MagicMenuOptions {
-  mode: MenuMode
+  mode?: MenuMode
+  transition?: {
+    initial?: string
+    final?: string
+    nested?: string
+  }
 }
 
 export type MenuTrigger = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
@@ -33,7 +40,7 @@ export interface MenuState {
   id: string
   active: boolean
   views: MenuView[]
-  options: MagicMenuOptions
+  options: RequireAllNested<MagicMenuOptions>
   input: {
     type: 'keyboard' | 'pointer'
     disabled: ('keyboard' | 'pointer')[]

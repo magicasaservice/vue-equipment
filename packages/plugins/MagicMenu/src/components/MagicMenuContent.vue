@@ -72,13 +72,15 @@ const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
 const mappedTransition = computed(() => {
-  switch (state.options.mode) {
-    case 'menubar':
-      return state.active ? '' : 'magic-menu-content'
-    case 'dropdown':
-      return state.active ? '' : 'magic-menu-content'
+  switch (true) {
+    case !!view?.parent.item:
+      return state.options.transition?.nested
+    case state.active:
+      return state.options.transition?.initial
+    case !state.active:
+      return state.options.transition?.final
     default:
-      return state.active ? '' : 'magic-menu-content'
+      return ''
   }
 })
 
@@ -143,7 +145,11 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
-.magic-menu-content-leave-active {
+.magic-menu-content__final-leave-active {
   animation: fade-out 150ms ease;
+}
+
+.magic-menu-content__nested-enter-active {
+  animation: fade-in 100ms ease;
 }
 </style>

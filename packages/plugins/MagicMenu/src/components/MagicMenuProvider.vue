@@ -79,10 +79,10 @@ const { unselectAllViews } = useMenuView(props.id)
 onClickOutside(
   elRef,
   () => {
-    unselectAllViews()
     if (state) {
       state.active = false
     }
+    unselectAllViews()
   },
   {
     ignore: [
