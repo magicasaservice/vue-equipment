@@ -2,7 +2,7 @@
   <div
     class="magic-command-item"
     ref="elRef"
-    :data-item-id="mappedId"
+    :data-id="mappedId"
     :aria-selected="isActive"
   >
     <slot :is-active="isActive" />
@@ -25,15 +25,15 @@ import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { MagicCommandInstanceId } from '../symbols'
 
-interface Props {
+interface MagicCommandItemProps {
   id?: string
   default?: boolean
   callback: Function | false
-  listener?: ('click' | 'hover')[]
+  listener?: ('click' | 'mouseenter' | 'touchstart')[]
   keys?: string[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicCommandItemProps>(), {
   listener: () => ['click'],
   keys: () => ['Enter'],
 })

@@ -11,14 +11,14 @@
 import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
-import type { NoiseOptions } from '../types'
+import type { MagicNoiseOptions } from '../types'
 
-interface Props {
-  options?: NoiseOptions
+interface MagicNoiseProps {
+  options?: MagicNoiseOptions
   pause?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicNoiseProps>(), {
   pause: false,
 })
 

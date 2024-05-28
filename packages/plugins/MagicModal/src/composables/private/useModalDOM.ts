@@ -6,7 +6,7 @@ import { matchClass } from '@maas/vue-equipment/utils'
 
 import type { MagicModalOptions } from '../../types/index'
 
-export type useModalApiOptions = Pick<
+export type useModalDOMArgs = Pick<
   MagicModalOptions,
   'scrollLock' | 'focusTrap'
 > & {
@@ -24,10 +24,10 @@ const scrollLock =
     ? useScrollLock(document?.documentElement)
     : ref(false)
 
-export function useModalDOM(options?: useModalApiOptions) {
+export function useModalDOM(args?: useModalDOMArgs) {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
-  const mappedOptions = defu(options, defaultOptions)
+  const mappedOptions = defu(args, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
     ? typeof mappedOptions.focusTrap === 'boolean'

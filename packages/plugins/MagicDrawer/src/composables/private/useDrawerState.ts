@@ -50,9 +50,7 @@ export function useDrawerState(id: MaybeRef<string>) {
   }
 
   function deleteState() {
-    drawerStateStore.value = drawerStateStore.value.filter(
-      (x: DrawerState) => x.id !== id
-    )
+    drawerStateStore.value = drawerStateStore.value.filter((x) => x.id !== id)
   }
 
   return {

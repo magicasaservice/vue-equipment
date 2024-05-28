@@ -76,9 +76,9 @@ import type { MagicModalOptions } from './../types/index'
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
-// Prevent keys array from being merged with default
+// Prevent keyListener array from being merged with default
 const customDefu = createDefu((obj, key, value) => {
-  if (key === 'keys') {
+  if (key === 'close') {
     obj[key] = value
     return true
   }

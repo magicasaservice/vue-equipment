@@ -10,9 +10,9 @@ import { createDefu } from 'defu'
 import { useMagicKeys } from '@vueuse/core'
 import { defaultOptions } from '../utils/defaultOptions'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { MagicCommandInstanceId, MagicCommandOptions } from '../symbols'
+import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
-import type { CommandOptions } from './../types/index'
+import type { MagicCommandOptions } from './../types/index'
 
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {
@@ -24,7 +24,7 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicCommandProps {
   id: MaybeRef<string>
-  options?: CommandOptions
+  options?: MagicCommandOptions
 }
 
 const props = withDefaults(defineProps<MagicCommandProps>(), {
@@ -62,5 +62,5 @@ onBeforeUnmount(() => {
 })
 
 provide(MagicCommandInstanceId, props.id)
-provide(MagicCommandOptions, mappedOptions)
+provide(MagicCommandProviderOptions, mappedOptions)
 </script>

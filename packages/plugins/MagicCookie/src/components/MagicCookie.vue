@@ -82,27 +82,26 @@
 </template>
 
 <script lang="ts" setup>
-import { defineCookieApi } from '../composables/private/defineCookieApi'
+import { useCookieApi } from '../composables/private/useCookieApi'
 import { useMagicCookie } from '../composables/useMagicCookie'
-import type { CookieRecord } from '../types'
+import type { MagicCookieRecord } from '../types'
 
 // Define the props and their default values
-type Props = {
-  cookies: CookieRecord[]
+type MagicCookieProps = {
+  cookies: MagicCookieRecord[]
   maxAge?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicCookieProps>(), {
   maxAge: 60 * 60 * 24 * 30,
 })
 
 // Initialize the Cookie API
-defineCookieApi({
+useCookieApi({
   cookies: props.cookies,
   maxAge: props.maxAge,
 })
 
-// Use the Cookie API
 const {
   preferencesVisible,
   selectedCookies,

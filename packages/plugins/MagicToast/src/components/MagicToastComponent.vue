@@ -15,14 +15,14 @@
 import { ref, computed, onMounted, watchEffect } from 'vue'
 import { type ActiveToast } from './../types'
 
-interface Props {
+interface MagicToastComponentProps {
   index: number
   total: number
   id: string
   siblings: ActiveToast[]
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicToastComponentProps>()
 const emit = defineEmits<{
   mouseenter: [event: Event]
 }>()

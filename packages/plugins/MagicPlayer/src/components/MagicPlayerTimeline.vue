@@ -38,11 +38,11 @@
 <script setup lang="ts">
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
-interface Props {
+interface MagicPlayerTimelineProps {
   id: string
 }
 
-const props = defineProps<Props>()
+const props = defineProps<MagicPlayerTimelineProps>()
 
 const {
   mouseEntered,

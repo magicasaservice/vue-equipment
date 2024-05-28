@@ -8,25 +8,14 @@ export type Toast = {
   remove: Function
 }
 
+export type AddToastArgs = Pick<Toast, 'component'> &
+  PickPartial<Toast, 'props'> & { duration?: number }
+
 export type ToastInstance = {
   id: string
   toasts: Toast[]
-  add: (args: AddArgs) => string
+  add: (args: AddToastArgs) => string
   remove: (id: string) => void
-}
-
-export type ToastOptions = {
-  teleport?: {
-    target?: string
-    disabled?: boolean
-  }
-  transitions?: {
-    list: string
-  }
-  layout?: {
-    expand?: boolean | 'hover' | 'click'
-    max?: false | number
-  }
 }
 
 export type ActiveToast = {
@@ -47,5 +36,16 @@ export type ToastEvents = {
   afterLeave: string
 }
 
-export type AddArgs = Pick<Toast, 'component'> &
-  PickPartial<Toast, 'props'> & { duration?: number }
+export type MagicToastOptions = {
+  teleport?: {
+    target?: string
+    disabled?: boolean
+  }
+  transitions?: {
+    list: string
+  }
+  layout?: {
+    expand?: boolean | 'hover' | 'click'
+    max?: false | number
+  }
+}

@@ -20,12 +20,14 @@ import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandView } from '../composables/private/useCommandView'
 import { MagicCommandInstanceId } from '../symbols'
 
-interface Props {
+interface MagicCommandViewProps {
   id?: string
   default?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { default: false })
+const props = withDefaults(defineProps<MagicCommandViewProps>(), {
+  default: false,
+})
 const commandId = inject(MagicCommandInstanceId, '')
 const elRef = ref<HTMLElement | undefined>(undefined)
 

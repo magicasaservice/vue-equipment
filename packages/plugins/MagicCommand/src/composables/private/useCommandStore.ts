@@ -35,7 +35,7 @@ export function useCommandStore() {
     const instance = findInstance(id)
     if (instance) {
       const itemElements: NodeListOf<HTMLElement> =
-        parent.querySelectorAll('[data-item-id]')
+        parent.querySelectorAll('[data-id]')
 
       itemElements.forEach((el, index) => {
         const itemId = el.dataset.itemId

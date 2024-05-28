@@ -1,4 +1,4 @@
-export type SourceType = 'native' | 'hls'
+export type MagicPlayerSourceType = 'native' | 'hls'
 
 type API = 'media' | 'player' | 'controls' | 'runtime' | 'player'
 

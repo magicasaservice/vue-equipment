@@ -61,7 +61,7 @@ import { useMagicToast } from '../composables/useMagicToast'
 
 import MagicToastComponent from './MagicToastComponent.vue'
 
-import type { ToastOptions } from './../types/index'
+import type { MagicToastOptions } from './../types/index'
 
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css'
@@ -72,7 +72,7 @@ import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css'
 interface MagicToastProps {
   id: MaybeRef<string>
   class: MaybeRef<string>
-  options?: ToastOptions
+  options?: MagicToastOptions
 }
 
 const props = defineProps<MagicToastProps>()

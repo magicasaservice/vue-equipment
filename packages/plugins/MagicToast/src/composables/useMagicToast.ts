@@ -1,6 +1,6 @@
 import { computed, toValue, markRaw, type MaybeRef } from 'vue'
 import { useToastStore } from './private/useToastStore'
-import type { AddArgs } from './../types'
+import type { AddToastArgs } from './../types'
 
 export function useMagicToast(id: MaybeRef<string>) {
   const { findInstance } = useToastStore()
@@ -15,7 +15,7 @@ export function useMagicToast(id: MaybeRef<string>) {
   const lastToast = computed(() => toasts.value?.[toasts.value.length - 1])
 
   // Public methods
-  async function add(options: AddArgs) {
+  async function add(options: AddToastArgs) {
     const { component, props, duration } = options
     const toastId = instance.value?.add({
       props,

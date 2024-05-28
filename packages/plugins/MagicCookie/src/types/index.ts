@@ -1,23 +1,18 @@
-export type CookieApiDefinition = {
-  cookies: CookieRecord[]
-  maxAge?: number
-}
-
-export type CookieRecord = {
+export type MagicCookieRecord = {
   key: string
   optional?: boolean
   title?: string
   text?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
-export type CookieConsent = {
+export type MagicCookieConsent = {
   timestamp: number | undefined
   cookies: Record<string, boolean>
 }
 
 export type CookieEvents = {
-  accept: CookieConsent
-  reject: CookieConsent
-  acceptSelected: CookieConsent
+  accept: MagicCookieConsent
+  reject: MagicCookieConsent
+  acceptSelected: MagicCookieConsent
 }

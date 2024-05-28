@@ -19,12 +19,12 @@
 import { ref, computed, onMounted } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 
-interface Props {
+interface MagicMarqueeProps {
   direction?: 'reverse' | 'normal'
   speed?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MagicMarqueeProps>(), {
   direction: 'normal',
   speed: 1,
 })

@@ -9,14 +9,14 @@ import { useMagicKeys } from '@vueuse/core'
 
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
-import { MagicCommandInstanceId, MagicCommandOptions } from '../symbols'
+import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
-import type { CommandOptions } from '../types'
+import type { MagicCommandOptions } from '../types'
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const commandId = inject(MagicCommandInstanceId, '')
-const options = inject(MagicCommandOptions, {} as CommandOptions)
+const options = inject(MagicCommandProviderOptions, {} as MagicCommandOptions)
 
 const { activeItem, nextItem, prevItem } = useCommandItem(commandId)
 const {

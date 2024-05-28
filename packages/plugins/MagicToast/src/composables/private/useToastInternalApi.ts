@@ -1,5 +1,5 @@
 import { uuid } from '@maas/vue-equipment/utils'
-import type { ToastInstance, Toast, AddArgs } from './../../types'
+import type { ToastInstance, Toast, AddToastArgs } from './../../types'
 
 export function useToastInternalApi() {
   function removeToastAfterTimeout(
@@ -14,7 +14,7 @@ export function useToastInternalApi() {
     }
   }
 
-  function addToast(args: AddArgs, ctx: ToastInstance) {
+  function addToast(args: AddToastArgs, ctx: ToastInstance) {
     const id = uuid()
     let { component, props, duration = 0 } = args
 

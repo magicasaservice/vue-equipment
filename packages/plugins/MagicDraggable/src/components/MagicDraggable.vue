@@ -45,7 +45,7 @@ import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicDraggableOptions } from '../types'
 
-interface MagicDrawerProps {
+interface MagicDraggableProps {
   id: MaybeRef<string>
   class?: MaybeRef<string>
   component?: Component
@@ -53,7 +53,7 @@ interface MagicDrawerProps {
   options?: MagicDraggableOptions
 }
 
-const props = withDefaults(defineProps<MagicDrawerProps>(), {
+const props = withDefaults(defineProps<MagicDraggableProps>(), {
   options: () => defaultOptions,
 })
 

@@ -31,9 +31,9 @@ app.use(MagicModalPlugin)
 </template>
 
 <script setup>
-  import { useModalApi } from '@maas/vue-equipment/plugins'
+  import { useMagicModal } from '@maas/vue-equipment/plugins'
 
-  const modalApi = useModalApi('magic-modal--demo')
+  const modalApi = useMagicModal('magic-modal--demo')
   const { open } = modalApi
 </script>
 ```

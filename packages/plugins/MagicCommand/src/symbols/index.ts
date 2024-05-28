@@ -1,7 +1,8 @@
 import type { InjectionKey, MaybeRef } from 'vue'
-import type { CommandOptions } from '../types'
+import type { MagicCommandOptions } from '../types'
 
 const MagicCommandInstanceId = Symbol() as InjectionKey<MaybeRef<string>>
-const MagicCommandOptions = Symbol() as InjectionKey<CommandOptions>
+const MagicCommandProviderOptions =
+  Symbol() as InjectionKey<MagicCommandOptions>
 
-export { MagicCommandInstanceId, MagicCommandOptions }
+export { MagicCommandInstanceId, MagicCommandProviderOptions }

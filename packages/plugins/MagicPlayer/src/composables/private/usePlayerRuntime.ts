@@ -2,12 +2,12 @@ import { ref, watch, toValue, type MaybeRef } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 import type Hls from 'hls.js'
-import type { SourceType } from '../../types'
+import type { MagicPlayerSourceType } from '../../types'
 
 export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
   mediaRef?: MaybeRef<HTMLVideoElement | undefined>
-  srcType?: SourceType
+  srcType?: MagicPlayerSourceType
   src?: string
 }
 

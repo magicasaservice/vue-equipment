@@ -13,9 +13,20 @@
 </template>
 
 <script setup lang="ts">
+import {
+  defineAsyncComponent,
+  ref,
+  computed,
+  unref,
+  onBeforeUnmount,
+} from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { defineAsyncComponent, ref, computed, unref } from 'vue'
-import { useMagicToast, useMagicEmitter } from '@maas/vue-equipment/plugins'
+import {
+  useMagicToast,
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
+import { type ValueOf } from '@maas/vue-equipment/utils'
 
 const count = ref(0)
 const props = computed(() => {
@@ -42,7 +53,16 @@ function onClick() {
   add({ component, props: unref(props) })
 }
 
-useMagicEmitter().on('*', (event, id) => {
-  console.log(event, id)
+function callback(
+  id: keyof MagicEmitterEvents,
+  payload: ValueOf<MagicEmitterEvents>
+) {
+  console.log(id, payload)
+}
+
+useMagicEmitter().on('*', callback)
+
+onBeforeUnmount(() => {
+  useMagicEmitter().off('*', callback)
 })
 </script>

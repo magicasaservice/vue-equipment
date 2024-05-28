@@ -7,12 +7,12 @@ import {
   useRafFn,
 } from '@vueuse/core'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { NoiseOptions, Pixel, RafControls } from '../../types'
+import type { MagicNoiseOptions, Pixel, RafControls } from '../../types'
 
 type UseNoiseApiArgs = {
   canvasRef: Ref<HTMLCanvasElement | undefined>
   offCanvasRef: Ref<HTMLCanvasElement | undefined>
-  options?: MaybeRef<NoiseOptions>
+  options?: MaybeRef<MagicNoiseOptions>
 }
 
 export function useNoiseApi({
