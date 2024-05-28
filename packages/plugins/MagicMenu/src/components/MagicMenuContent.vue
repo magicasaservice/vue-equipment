@@ -145,6 +145,10 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
+.magic-menu-content__initial-enter-active {
+  animation: fade-in 50ms ease;
+}
+
 .magic-menu-content__final-leave-active {
   animation: fade-out 150ms ease;
 }

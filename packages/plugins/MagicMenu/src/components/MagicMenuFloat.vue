@@ -13,7 +13,9 @@
     >
       <slot name="arrow">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="50,50 100,100 0,100" fill="currentColor" />
+          <!-- <polygon points="50,50 100,100 0,100" fill="currentColor" /> -->
+          <polygon :points="polygonPoints" fill="currentColor" />
+          <!-- <polygon points="100,50 25,100 25,0" fill="black" /> -->
         </svg>
       </slot>
     </div>
@@ -142,6 +144,21 @@ const placementClasses = computed(() => {
     .split('-')
     .map((value) => `-${value}`)
     .join(' ')
+})
+
+const polygonPoints = computed(() => {
+  const position = placement.value.split('-')[0]
+
+  switch (position) {
+    case 'bottom':
+      return '50,50 100,100 0,100'
+    case 'top':
+      return '50,50 100,0 0,0'
+    case 'right':
+      return '50,50 100,100 100,0'
+    case 'left':
+      return '50,50 0,100 0,0'
+  }
 })
 </script>
 
