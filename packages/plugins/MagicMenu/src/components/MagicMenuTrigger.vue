@@ -3,7 +3,7 @@
     class="magic-menu-trigger"
     ref="elRef"
     :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
-    :data-magic-menu-id="`${viewId}-trigger`"
+    :data-id="`${viewId}-trigger`"
     :tabindex="mappedTabindex"
     @click="onClick"
     @contextmenu="onClick"

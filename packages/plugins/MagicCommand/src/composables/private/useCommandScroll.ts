@@ -38,9 +38,7 @@ export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
   }
 
   function findElement(id: string): HTMLElement | null {
-    return mappedParent.value.querySelector(
-      `[data-magic-command-item-id="${id}"]`
-    )
+    return mappedParent.value.querySelector(`[data-id="${id}"]`)
   }
 
   function scrollInFromTop(element: HTMLElement) {

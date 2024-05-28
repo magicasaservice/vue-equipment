@@ -59,7 +59,6 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
         unlockScroll()
         break
     }
-    console.log('onAfterLeave')
   }
 
   return {

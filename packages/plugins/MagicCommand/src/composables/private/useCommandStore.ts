@@ -34,9 +34,8 @@ export function useCommandStore() {
   function sortItems(id: string, parent: HTMLElement) {
     const instance = findInstance(id)
     if (instance) {
-      const itemElements: NodeListOf<HTMLElement> = parent.querySelectorAll(
-        '[data-magic-command-item-id]'
-      )
+      const itemElements: NodeListOf<HTMLElement> =
+        parent.querySelectorAll('[data-id]')
 
       itemElements.forEach((el, index) => {
         const itemId = el.dataset.itemId

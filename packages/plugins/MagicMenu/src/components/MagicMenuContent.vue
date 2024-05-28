@@ -11,7 +11,7 @@
     >
       <div
         class="magic-menu-content"
-        :data-magic-menu-id="`${viewId}-content`"
+        :data-id="`${viewId}-content`"
         v-if="innerActive"
       >
         <magic-menu-float :placement="placement" :arrow="arrow">

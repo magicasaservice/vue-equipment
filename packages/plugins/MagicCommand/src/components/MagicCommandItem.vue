@@ -2,7 +2,7 @@
   <div
     class="magic-command-item"
     ref="elRef"
-    :data-magic-command-item-id="mappedId"
+    :data-id="mappedId"
     :aria-selected="isActive"
   >
     <slot :is-active="isActive" />
