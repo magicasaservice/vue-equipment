@@ -14,10 +14,15 @@
         :data-magic-menu-id="`${viewId}-content`"
         v-if="innerActive"
       >
-        <magic-menu-float :placement="placement">
-          <div class="magic-menu-content__inner" ref="contentRef">
-            <slot />
-          </div>
+        <magic-menu-float :placement="placement" :arrow="arrow">
+          <template #arrow v-if="$slots.arrow && arrow">
+            <slot name="arrow" />
+          </template>
+          <template #default>
+            <div class="magic-menu-content__inner" ref="contentRef">
+              <slot />
+            </div>
+          </template>
         </magic-menu-float>
       </div>
     </transition>
@@ -42,6 +47,7 @@ import { useMenuDOM } from '../composables/private/useMenuDOM'
 
 interface MagicMenuContentProps {
   placement?: Placement
+  arrow?: boolean
 }
 
 defineProps<MagicMenuContentProps>()
