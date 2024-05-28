@@ -77,7 +77,11 @@ const hasArrow = computed(
 )
 
 const mappedMiddleware = computed(() => {
-  const middleware = [flip(), shift({ crossAxis: true, limiter: limitShift() })]
+  const middleware = [flip()]
+
+  if (view?.parent.item) {
+    middleware.push(shift({ crossAxis: true, limiter: limitShift() }))
+  }
 
   if (hasArrow.value) {
     middleware.push(arrow({ element: arrowRef }))
