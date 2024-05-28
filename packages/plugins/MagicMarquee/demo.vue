@@ -1,18 +1,14 @@
 <template>
   <div class="flex flex-col gap-8 font-bold">
     <magic-marquee class="bg-gray-500/5 py-4">
-      <div class="flex gap-4">
-        <span>Magic Marquee</span>
-        <span>News Update</span>
-        <span>Loud Headline</span>
-      </div>
+      <span>Magic Marquee</span>
+      <span>News Update</span>
+      <span>Loud Headline</span>
     </magic-marquee>
     <magic-marquee :speed="5" class="bg-gray-500/5 py-4">
-      <div class="flex gap-4">
-        <span>Fast Marquee</span>
-        <span>Instant Update</span>
-        <span>Noisy Headline</span>
-      </div>
+      <span>Fast Marquee</span>
+      <span>Instant Update</span>
+      <span>Noisy Headline</span>
     </magic-marquee>
     <magic-marquee class="bg-gray-500/5 py-4" id="magic-marquee--full">
       <span class="w-screen">Magic Marquee with full width content</span>
@@ -22,27 +18,21 @@
       :speed="speed"
       @click="increaseSpeed"
     >
-      <div class="flex gap-4">
-        <span>Click me to increase my speed!</span>
-      </div>
+      <span>Click me to increase my speed!</span>
     </magic-marquee>
     <magic-marquee
       class="bg-gray-500/5 py-4 cursor-pointer"
       ref="toggleDemo"
       @click="togglePlay"
     >
-      <div class="flex gap-4">
-        <span>Click me to toggle playback</span>
-      </div>
+      <span>Click me to toggle playback</span>
     </magic-marquee>
     <magic-marquee
       class="bg-gray-500/5 py-4 cursor-pointer"
       :direction="direction"
       @click="toggleDirection"
     >
-      <div class="flex gap-4">
-        <span>Click me to switch direction</span>
-      </div>
+      <span>Click me to switch direction</span>
     </magic-marquee>
   </div>
 </template>
