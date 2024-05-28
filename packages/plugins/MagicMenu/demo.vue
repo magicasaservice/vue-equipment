@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
 }
 
 .magic-menu-item.-active {
-  background-color: blueviolet;
+  background-color: lightgrey;
 }
 
 .magic-menu-item.-disabled {
@@ -185,8 +185,9 @@ onBeforeUnmount(() => {
 }
 
 .magic-menu-content__inner {
-  width: 200px;
-  background: lightcoral;
+  width: 220px;
+  background: white;
+  color: black;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

@@ -223,7 +223,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   function onRightClick(e: MouseEvent) {
-    console.log('e:', e)
     switch (e.button) {
       case 2:
         selectView(viewId)
