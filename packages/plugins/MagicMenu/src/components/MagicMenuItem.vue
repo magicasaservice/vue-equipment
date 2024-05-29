@@ -8,6 +8,7 @@
     @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"
     @mouseleave="guardedUnselect"
+    @click="onClick"
   >
     <slot :is-active="item.active" :is-disabled="disabled" />
   </div>
@@ -33,6 +34,9 @@ interface MagicMenuItemProps {
 }
 
 const props = defineProps<MagicMenuItemProps>()
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -59,7 +63,7 @@ const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
 })
 
 // Guarded select
-// Check for mode as well as active state
+// Check for mode and active state
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 const item = initializeItem({
@@ -99,6 +103,22 @@ function guardedUnselect() {
       },
       { once: true }
     )
+  }
+}
+
+function onClick(event: MouseEvent) {
+  emit('click', event)
+
+  state.input.type = 'pointer'
+  state.input.disabled = []
+
+  if (!item.disabled && !item.active) {
+    selectItem(mappedId.value)
+  }
+
+  if (!nestedView.value) {
+    state.active = false
+    unselectAllViews()
   }
 }
 
