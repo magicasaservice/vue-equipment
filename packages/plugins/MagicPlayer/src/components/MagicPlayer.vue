@@ -2,7 +2,6 @@
   <div
     ref="playerRef"
     class="magic-player"
-    :style="computedStyle"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
   >
@@ -32,8 +31,6 @@ interface MagicPlayerProps {
   id: string
   srcType?: MagicPlayerSourceType
   src: string
-  ratio?: string
-  fill?: boolean
   autoplay?: boolean
   loop?: boolean
 }
@@ -41,8 +38,6 @@ interface MagicPlayerProps {
 const props = withDefaults(defineProps<MagicPlayerProps>(), {
   srcType: 'native',
   src: '',
-  ratio: '16:9',
-  fill: false,
   autoplay: false,
   loop: false,
 })
@@ -82,24 +77,6 @@ useIntersectionObserver(
   }
 )
 
-const computedRatio = computed(() => {
-  if (props.ratio) {
-    return props.ratio.split(':')
-  } else {
-    return undefined
-  }
-})
-
-const computedStyle = computed(() => {
-  return {
-    height: props.fill ? '100%' : undefined,
-    'aspect-ratio':
-      computedRatio.value && !props.fill
-        ? `${computedRatio.value[0]}/${computedRatio.value[1]}`
-        : undefined,
-  }
-})
-
 onMounted(() => {
   initialize()
   if (props.autoplay) {
@@ -115,21 +92,24 @@ onBeforeUnmount(() => {
 <style lang="css">
 :root {
   --magic-player-aspect-ratio: 16 / 9;
+  --magic-player-background: #000000;
+  --magic-player-height: auto;
 }
 
 .magic-player {
   position: relative;
   width: 100%;
   overflow: hidden;
+  height: var(--magic-player-height);
   aspect-ratio: var(--magic-player-aspect-ratio);
+  background: var(--magic-player-background);
 }
 
 .magic-player__video {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
+  inset: 0;
   object-fit: cover;
 }
 </style>

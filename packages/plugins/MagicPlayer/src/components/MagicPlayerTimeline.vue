@@ -54,7 +54,6 @@ const {
   onPointerdown,
   onPointerup,
   onPointermove,
-  trackRect,
 } = usePlayerControlsApi({
   id: props.id,
 })
