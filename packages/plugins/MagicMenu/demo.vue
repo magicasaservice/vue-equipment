@@ -176,6 +176,21 @@ onBeforeUnmount(() => {
   outline-color: rgba(100, 200, 20);
 }
 
+.magic-menu-item {
+  position: relative;
+  height: 2.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.magic-menu-item .magic-menu-trigger {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+
 .magic-menu-item.-active {
   background-color: lightgrey;
 }
@@ -190,6 +205,5 @@ onBeforeUnmount(() => {
   color: black;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 </style>
