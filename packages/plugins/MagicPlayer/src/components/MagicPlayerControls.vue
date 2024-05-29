@@ -12,67 +12,70 @@
       '-not-idle': !idle,
       '-hover': mouseEntered,
       '-not-hover': !mouseEntered,
+      '-standalone': standalone,
     }"
   >
-    <div class="magic-player-controls__bar">
-      <div
-        v-if="$slots.seekPopover"
-        v-show="!!seekedTime && touched"
-        ref="popoverRef"
-        class="magic-player-controls__popover"
-        :style="{ marginLeft: `${popoverOffsetX}%` }"
-      >
-        <slot name="seekPopover" />
-      </div>
-      <div class="magic-player-controls__bar--inner" ref="barRef">
-        <div class="magic-player-controls__item -shrink-0">
-          <button v-if="!playing" @click="play">
-            <slot name="playIcon">
-              <icon-play />
-            </slot>
-          </button>
-          <button v-else @click="pause">
-            <slot name="pauseIcon">
-              <icon-pause />
-            </slot>
-          </button>
+    <transition :name="transition">
+      <div class="magic-player-controls__bar" v-show="!hidden">
+        <div
+          v-if="$slots.seekPopover"
+          v-show="!!seekedTime && touched"
+          ref="popoverRef"
+          class="magic-player-controls__popover"
+          :style="{ marginLeft: `${popoverOffsetX}%` }"
+        >
+          <slot name="seekPopover" />
         </div>
-        <div class="magic-player-controls__item -grow">
-          <div class="magic-player-controls__timeline" ref="trackRef">
-            <magic-player-timeline :id="id" />
+        <div class="magic-player-controls__bar--inner" ref="barRef">
+          <div class="magic-player-controls__item -shrink-0">
+            <button v-if="!playing" @click="play">
+              <slot name="playIcon">
+                <icon-play />
+              </slot>
+            </button>
+            <button v-else @click="pause">
+              <slot name="pauseIcon">
+                <icon-pause />
+              </slot>
+            </button>
+          </div>
+          <div class="magic-player-controls__item -grow">
+            <div class="magic-player-controls__timeline" ref="trackRef">
+              <magic-player-timeline :id="id" />
+            </div>
+          </div>
+          <div class="magic-player-controls__item -shrink-0">
+            <button v-if="muted" @click="unmute">
+              <slot name="volumeOffIcon">
+                <icon-volume-off />
+              </slot>
+            </button>
+            <button v-else @click="mute">
+              <slot name="volumeOnIcon">
+                <icon-volume-on />
+              </slot>
+            </button>
+          </div>
+          <div class="magic-player-controls__item -shrink-0">
+            <button v-if="isFullscreen" @click="exitFullscreen">
+              <slot name="fullscreenExitIcon">
+                <icon-fullscreen-exit />
+              </slot>
+            </button>
+            <button v-else @click="enterFullscreen">
+              <slot name="fullscreenEnterIcon">
+                <icon-fullscreen-enter />
+              </slot>
+            </button>
           </div>
         </div>
-        <div class="magic-player-controls__item -shrink-0">
-          <button v-if="muted" @click="unmute">
-            <slot name="volumeOffIcon">
-              <icon-volume-off />
-            </slot>
-          </button>
-          <button v-else @click="mute">
-            <slot name="volumeOnIcon">
-              <icon-volume-on />
-            </slot>
-          </button>
-        </div>
-        <div class="magic-player-controls__item -shrink-0">
-          <button v-if="isFullscreen" @click="exitFullscreen">
-            <slot name="fullscreenExitIcon">
-              <icon-fullscreen-exit />
-            </slot>
-          </button>
-          <button v-else @click="enterFullscreen">
-            <slot name="fullscreenEnterIcon">
-              <icon-fullscreen-enter />
-            </slot>
-          </button>
-        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -84,11 +87,18 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
+import '@maas/vue-equipment/utils/css/animations/fade-up-in.css'
+import '@maas/vue-equipment/utils/css/animations/fade-up-out.css'
+
 interface MagicPlayerControlsProps {
   id: string
+  standalone?: boolean
+  transition?: string
 }
 
-const props = defineProps<MagicPlayerControlsProps>()
+const props = withDefaults(defineProps<MagicPlayerControlsProps>(), {
+  transition: 'magic-player-controls',
+})
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
@@ -118,6 +128,21 @@ const { popoverOffsetX, seekedTime } = usePlayerControlsApi({
 })
 
 const { idle } = useIdle(3000)
+
+const hidden = computed(() => {
+  switch (true) {
+    case props.standalone:
+      return false
+    case playing.value && idle.value:
+      return true
+    case playing.value && !mouseEntered.value:
+      return true
+    case !touched.value:
+      return true
+    default:
+      return false
+  }
+})
 </script>
 
 <style lang="css">
@@ -136,8 +161,6 @@ const { idle } = useIdle(3000)
   --magic-player-controls-color: rgba(255, 255, 255, 1);
   --magic-player-controls-button-width: 3rem;
   --magic-player-controls-icon-width: 1.25rem;
-  --magic-player-controls-transition-duration: 300ms;
-  --magic-player-controls-transition-timing-function: ease;
 }
 
 @media (max-width: 640px) {
@@ -155,6 +178,14 @@ const { idle } = useIdle(3000)
   pointer-events: none;
 }
 
+.magic-player-controls-enter-active {
+  animation: fade-up-in 150ms ease;
+}
+
+.magic-player-controls-leave-active {
+  animation: fade-up-out 150ms ease;
+}
+
 .magic-player-controls__bar {
   position: absolute;
   width: var(--magic-player-controls-width);
@@ -165,11 +196,6 @@ const { idle } = useIdle(3000)
   flex-direction: column;
   align-items: flex-start;
   gap: var(--magic-player-controls-gap);
-  transition-duration: var(--magic-player-controls-transition-duration);
-  transition-timing-function: var(
-    --magic-player-controls-transition-timing-function
-  );
-  transition-property: opacity, transform;
   pointer-events: auto;
 }
 
@@ -224,16 +250,6 @@ const { idle } = useIdle(3000)
 
 .magic-player-controls__timeline {
   width: 100%;
-}
-
-.magic-player-controls:not(.-standalone).-playing.-idle
-  .magic-player-controls__bar,
-.magic-player-controls:not(.-standalone).-playing.-not-hover
-  .magic-player-controls__bar,
-.magic-player-controls:not(.-standalone).-untouched
-  .magic-player-controls__bar {
-  opacity: 0;
-  transform: translateY(25%);
 }
 
 .magic-player-controls.-standalone {

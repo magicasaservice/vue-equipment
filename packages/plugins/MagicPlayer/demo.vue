@@ -91,7 +91,8 @@
     <div class="relative w-full pt-4 flex items-center">
       <magic-player-controls
         id="standalone-controls"
-        class="-standalone bg-black"
+        class="bg-black"
+        :standalone="true"
       />
     </div>
   </div>
@@ -100,7 +101,8 @@
   <div class="relative w-full pb-4 flex items-center">
     <magic-player-controls
       id="standalone-controls-before"
-      class="-standalone bg-black"
+      class="bg-black"
+      :standalone="true"
     />
   </div>
   <div class="w-full aspect-[16/9]">
