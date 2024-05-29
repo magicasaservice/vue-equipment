@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref, watch } from 'vue'
+import { computed, inject, onBeforeUnmount, ref, watch } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -89,14 +89,15 @@ const mappedTabindex = computed(() => {
   }
 })
 
-const { initialize, onMouseenter, onClick, onMouseleave } = useMenuTrigger({
-  instanceId,
-  viewId,
-  itemId,
-  mappedDisabled,
-  mappedTrigger,
-  elRef,
-})
+const { initialize, destroy, onMouseenter, onClick, onMouseleave } =
+  useMenuTrigger({
+    instanceId,
+    viewId,
+    itemId,
+    mappedDisabled,
+    mappedTrigger,
+    elRef,
+  })
 
 // Initialize watcher
 initialize()
@@ -110,6 +111,10 @@ watch(
   },
   { immediate: true }
 )
+
+onBeforeUnmount(() => {
+  destroy()
+})
 </script>
 
 <style>

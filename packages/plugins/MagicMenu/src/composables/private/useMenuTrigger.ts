@@ -275,6 +275,11 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       if (!itemId) {
         state.input.view = viewId
       }
+
+      // Temporarily disable cursor for nested triggers
+      if (itemId) {
+        disableCursor()
+      }
     }
   }
 
@@ -355,6 +360,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       if (value && !oldValue) {
         cancelPointermove?.()
         resetState()
+        enableCursor()
       }
     })
 
@@ -376,10 +382,15 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     onKeyStroke('Enter', onEnter)
   }
 
+  function destroy() {
+    cancelPointermove?.()
+  }
+
   return {
     onMouseenter,
     onClick,
     onMouseleave,
     initialize,
+    destroy,
   }
 }

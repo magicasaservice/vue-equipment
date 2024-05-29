@@ -13,9 +13,7 @@
     >
       <slot name="arrow">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- <polygon points="50,50 100,100 0,100" fill="currentColor" /> -->
           <polygon :points="polygonPoints" fill="currentColor" />
-          <!-- <polygon points="100,50 25,100 25,0" fill="black" /> -->
         </svg>
       </slot>
     </div>
