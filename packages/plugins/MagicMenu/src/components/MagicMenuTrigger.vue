@@ -41,11 +41,11 @@ const viewId = inject(MagicMenuViewId, undefined)
 const itemId = inject(MagicMenuItemId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuProvider')
+  throw new Error('MagicMenuTrigger must be nested inside MagicMenuProvider')
 }
 
 if (!viewId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuView')
+  throw new Error('MagicMenuTrigger must be nested inside MagicMenuView')
 }
 
 const { getView, getRelativeViewIndex } = useMenuView(instanceId)

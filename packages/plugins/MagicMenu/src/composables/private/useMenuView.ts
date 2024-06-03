@@ -21,8 +21,6 @@ export function useMenuView(instanceId: MaybeRef<string>) {
   )
 
   // Private functions
-  const { arraysAreEqual } = useMenuUtils()
-
   function createView(args: CreateViewArgs) {
     const { id, parent } = args
 
