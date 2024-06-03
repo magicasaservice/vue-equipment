@@ -1,11 +1,16 @@
 <template>
   <magic-drawer
-    :id="commandId"
+    :id="instanceId"
     class="magic-command-drawer"
     :class="props.class"
     :options="options"
   >
-    <slot />
+    <div
+      class="magic-command-drawer__teleport"
+      :data-id="`magic-command-teleport-${instanceId}`"
+    >
+      <slot />
+    </div>
   </magic-drawer>
 </template>
 
@@ -25,15 +30,15 @@ interface MagicCommandProps {
 
 const props = defineProps<MagicCommandProps>()
 
-const commandId = inject(MagicCommandInstanceId, '')
+const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
 function afterLeaveCallback() {
   close()
 }
 
-const { close, isActive } = useMagicCommand(commandId)
-const drawerApi = useMagicDrawer(commandId)
+const { close, isActive } = useMagicCommand(instanceId)
+const drawerApi = useMagicDrawer(instanceId)
 
 watch(isActive, (value) => {
   if (value) {
@@ -50,3 +55,9 @@ onBeforeUnmount(() => {
   close()
 })
 </script>
+
+<style>
+.magic-command-drawer__teleport {
+  display: contents;
+}
+</style>

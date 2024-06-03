@@ -11,13 +11,29 @@ export type MagicCommandOptions = {
   loop?: boolean
 }
 
-export type CommandEvents = {
-  beforeEnter: string
-  enter: string
-  afterEnter: string
-  beforeLeave: string
-  leave: string
-  afterLeave: string
+export type CommandTrigger = 'click' | 'mouseenter'
+
+export interface CommandItem {
+  id: string
+  active: boolean
+  disabled: boolean
+}
+
+export type CommandView = {
+  id: string
+  active: boolean
+  children: {
+    trigger?: HTMLElement
+    content?: HTMLElement
+  }
+  items: CommandItem[]
+}
+
+export type CommandState = {
+  id: string
+  options: MagicCommandOptions
+  views: CommandView[]
+  active: boolean
 }
 
 export interface MagicCommandModalOptions extends MagicModalOptions {}

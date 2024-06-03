@@ -1,36 +1,35 @@
-import { computed, toValue, type MaybeRef } from 'vue'
-import { useCommandStore } from './private/useCommandStore'
+import { computed, type MaybeRef } from 'vue'
+import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
 
 export function useMagicCommand(id: MaybeRef<string>) {
-  // Public state
-  const isActive = computed(() =>
-    commandStore.value.map((item) => item.id).includes(toValue(id))
-  )
-
   // Private methods
-  const { commandStore, addInstance, removeInstance } = useCommandStore()
+  const { initializeState, deleteState } = useCommandState(id)
+
+  // Public state
+  const state = initializeState()
+  const isActive = computed(() => state.active)
 
   // Public methods
   function open() {
-    addInstance(toValue(id))
+    state.active = true
   }
 
   function close() {
-    removeInstance(toValue(id))
+    state.active = false
   }
 
-  const { selectItem, selectLastItem } = useCommandItem(toValue(id))
-  const { selectView, selectLastView } = useCommandView()
+  // const { selectItem, selectLastItem } = useCommandItem(toValue(id))
+  // const { selectView, selectLastView } = useCommandView()
 
   return {
     isActive,
     open,
     close,
-    selectItem,
-    selectLastItem,
-    selectView,
-    selectLastView,
+    // selectItem,
+    // selectLastItem,
+    // selectView,
+    // selectLastView,
   }
 }

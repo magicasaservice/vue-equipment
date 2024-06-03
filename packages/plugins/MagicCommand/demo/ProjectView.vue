@@ -7,11 +7,11 @@
     }"
     class="bg-neutral-800 border border-solid border-neutral-600 overflow-hidden flex flex-col"
   >
-    <magic-command-head class="p-2">
+    <div class="p-2">
       <div class="w-full border border-neutral-600 p-3 border-b-solid">
         <input type="text" placeholder="Search Projects" />
       </div>
-    </magic-command-head>
+    </div>
     <magic-command-body class="h-full pb-2">
       <magic-command-group>
         <magic-command-item
@@ -25,7 +25,7 @@
         </magic-command-item>
       </magic-command-group>
     </magic-command-body>
-    <magic-command-footer class="px-2">
+    <div class="px-2">
       <div
         class="w-full border border-neutral-600 p-2 border-t-solid flex items-center"
       >
@@ -36,7 +36,7 @@
           Go Back
         </button>
       </div>
-    </magic-command-footer>
+    </div>
   </magic-command-view>
 </template>
 

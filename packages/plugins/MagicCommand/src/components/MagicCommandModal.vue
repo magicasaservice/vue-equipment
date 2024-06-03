@@ -1,11 +1,16 @@
 <template>
   <magic-modal
-    :id="commandId"
+    :id="instanceId"
     class="magic-command-modal"
     :class="props.class"
     :options="options"
   >
-    <slot />
+    <div
+      class="magic-command-modal__teleport"
+      :data-id="`magic-command-teleport-${instanceId}`"
+    >
+      <slot />
+    </div>
   </magic-modal>
 </template>
 
@@ -25,15 +30,15 @@ interface MagicCommandProps {
 
 const props = defineProps<MagicCommandProps>()
 
-const commandId = inject(MagicCommandInstanceId, '')
+const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
 function afterLeaveCallback() {
   close()
 }
 
-const { close, isActive } = useMagicCommand(commandId)
-const modalApi = useMagicModal(commandId)
+const { close, isActive } = useMagicCommand(instanceId)
+const modalApi = useMagicModal(instanceId)
 
 watch(isActive, (value) => {
   if (value) {
@@ -50,3 +55,9 @@ onBeforeUnmount(() => {
   close()
 })
 </script>
+
+<style>
+.magic-command-modal__teleport {
+  display: contents;
+}
+</style>

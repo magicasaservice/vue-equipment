@@ -13,12 +13,12 @@
   </div>
   <magic-command-provider :id="id">
     <magic-command-modal v-if="wrapper === 'modal'">
-      <default-view :is-modal="true" />
-      <project-view :is-modal="true" />
+      <default-view
+        class="w-[40rem] max-h-[30rem] rounded-xl overflow-hidden"
+      />
     </magic-command-modal>
     <magic-command-drawer v-if="wrapper === 'drawer'">
-      <default-view :is-modal="false" />
-      <project-view :is-modal="false" />
+      <default-view class="w-full h-full" />
     </magic-command-drawer>
   </magic-command-provider>
 </template>
@@ -33,7 +33,6 @@ import {
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
 import DefaultView from './demo/DefaultView.vue'
-import ProjectView from './demo/ProjectView.vue'
 
 const id = 'magic-command-demo'
 const commandApi = useMagicCommand(id)

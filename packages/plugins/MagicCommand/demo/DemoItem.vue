@@ -10,9 +10,8 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  isActive: boolean
-}
+import { inject } from 'vue'
+import { MagicCommandItemActive } from '../src/symbols'
 
-defineProps<Props>()
+const isActive = inject(MagicCommandItemActive, false)
 </script>
