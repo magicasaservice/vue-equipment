@@ -1,16 +1,16 @@
 import { reactive, type MaybeRef } from 'vue'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
-import type { MagicMenuItem } from '../../types/index'
+import type { MenuItem } from '../../types/index'
 
 type UseMenuItemArgs = {
   instanceId: MaybeRef<string>
   viewId: string
 }
 
-type InitializeItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
-type CreateItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
-type AddItemArgs = Pick<MagicMenuItem, 'id' | 'disabled'>
+type InitializeItemArgs = Pick<MenuItem, 'id' | 'disabled'>
+type CreateItemArgs = Pick<MenuItem, 'id' | 'disabled'>
+type AddItemArgs = Pick<MenuItem, 'id' | 'disabled'>
 
 export function useMenuItem(args: UseMenuItemArgs) {
   const { instanceId, viewId } = args
@@ -29,7 +29,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
   function createItem(args: CreateItemArgs) {
     const { id, disabled } = args
 
-    const item: MagicMenuItem = {
+    const item: MenuItem = {
       id: id,
       active: false,
       disabled: disabled,
