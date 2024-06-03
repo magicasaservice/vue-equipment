@@ -1,10 +1,9 @@
-import type { ScrollEvents } from '../../../MagicScroll/src/types/index'
-import type { CommandEvents } from '../../../MagicCommand/src/types/index'
 import type { CookieEvents } from '../../../MagicCookie/src/types/index'
 import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
 import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
 import type { ModalEvents } from '../../../MagicModal/src/types/index'
 import type { MenuEvents } from '../../../MagicMenu/src/types/index'
+import type { ScrollEvents } from '../../../MagicScroll/src/types/index'
 import type { ToastEvents } from '../../../MagicToast/src/types/index'
 
 type MergeTypes<T, U> = {
@@ -17,13 +16,12 @@ type Merge<T extends unknown[]> = T extends [infer First, ...infer Rest]
 
 export type MagicEmitterEvents = Merge<
   [
-    ScrollEvents,
-    CommandEvents,
     CookieEvents,
     DraggableEvents,
     DrawerEvents,
     ModalEvents,
     MenuEvents,
+    ScrollEvents,
     ToastEvents
   ]
 >
