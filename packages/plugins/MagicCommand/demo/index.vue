@@ -32,8 +32,8 @@ import {
 } from '@maas/vue-equipment/plugins'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
-import DefaultView from './demo/DefaultView.vue'
-import ProjectView from './demo/ProjectView.vue'
+import DefaultView from './DefaultView.vue'
+import ProjectView from './ProjectView.vue'
 
 const id = 'magic-command-demo'
 const commandApi = useMagicCommand(id)

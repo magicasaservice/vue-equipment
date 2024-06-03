@@ -5,11 +5,18 @@ import { plugins, composables } from './../../../packages/metadata'
 const mappedComposables = getComposables()
 const mappedPlugins = getPlugins()
 
+import { componentPreview } from './plugins/componentPreview'
+
 export default defineConfig({
   title: 'Vue Equipment',
   description:
     'A magic collection of Vue composables, plugins, components and directives',
   head: [['link', { rel: 'icon', href: '/apps/docs/public/favicon.svg' }]], // TODO: fix this
+  markdown: {
+    preConfig(md) {
+      md.use(componentPreview)
+    },
+  },
   themeConfig: {
     nav: [
       { text: 'Docs', link: '/overview/introduction' },
