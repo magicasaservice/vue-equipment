@@ -1,7 +1,6 @@
 import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
-import { useMenuUtils } from './useMenuUtils'
 
 type CreateViewArgs = Pick<MenuView, 'id' | 'parent'>
 type AddViewArgs = Pick<MenuView, 'id' | 'parent'>
