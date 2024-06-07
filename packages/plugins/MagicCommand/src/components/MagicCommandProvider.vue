@@ -5,14 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { watch, provide, onBeforeUnmount, type MaybeRef } from 'vue'
+import { ref, watch, provide, onBeforeUnmount, type MaybeRef } from 'vue'
 import { createDefu } from 'defu'
-import { useMagicKeys } from '@vueuse/core'
+import { useMagicKeys, usePointer } from '@vueuse/core'
 import { defaultOptions } from '../utils/defaultOptions'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
 import type { MagicCommandOptions } from './../types/index'
+import { useCommandState } from '../composables/private/useCommandState'
 
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {
@@ -57,8 +58,38 @@ if (mappedOptions.keys?.close) {
   }
 }
 
+const { initializeState, deleteState } = useCommandState(props.id)
+const state = initializeState(mappedOptions)
+
+// If the input type changes to "keyboard", save the current pointer position
+// If the pointer moves and the input state is not "disabled", switch to pointer mode
+const lastX = ref(0)
+const lastY = ref(0)
+
+const { x, y } = usePointer()
+
+watch(
+  () => state?.input.type,
+  (value) => {
+    if (value === 'keyboard') {
+      lastX.value = x.value
+      lastY.value = y.value
+    }
+  }
+)
+
+watch([x, y], ([x, y]) => {
+  if (
+    state &&
+    (x !== lastX.value || y !== lastY.value) &&
+    state?.input.type === 'keyboard'
+  ) {
+    state.input.type = 'pointer'
+  }
+})
+
 onBeforeUnmount(() => {
-  close()
+  deleteState()
 })
 
 provide(MagicCommandInstanceId, props.id)

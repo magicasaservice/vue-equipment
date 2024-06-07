@@ -5,12 +5,7 @@
     :class="props.class"
     :options="options"
   >
-    <div
-      class="magic-command-modal__teleport"
-      :data-id="`magic-command-teleport-${instanceId}`"
-    >
-      <slot />
-    </div>
+    <slot />
   </magic-modal>
 </template>
 
@@ -32,6 +27,12 @@ const props = defineProps<MagicCommandProps>()
 
 const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
+
+if (!instanceId) {
+  throw new Error(
+    'MagicCommandModal must be nested inside MagicCommandProvider'
+  )
+}
 
 function afterLeaveCallback() {
   close()
@@ -57,7 +58,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.magic-command-modal__teleport {
-  display: contents;
+.magic-command-modal {
+  --magic-modal-content-overflow-y: hidden;
 }
 </style>

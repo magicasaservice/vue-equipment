@@ -1,7 +1,8 @@
 <template>
-  <teleport :to="`[data-id='magic-command-teleport-${instanceId}']`">
+  <teleport :to="state.teleportTarget" v-if="isActive">
     <div
       class="magic-command-content"
+      :class="[props.class, { '-idle': isIdle }]"
       :data-id="`${viewId}-content`"
       ref="elRef"
     >
@@ -11,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, watch, nextTick, provide } from 'vue'
+import { ref, inject, watch, nextTick, provide, computed } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
@@ -21,6 +22,14 @@ import {
   MagicCommandContentId,
   MagicCommandProviderOptions,
 } from '../symbols'
+import { useCommandView } from '../composables/private/useCommandView'
+import { useCommandState } from '../composables/private/useCommandState'
+
+interface MagicCommandContentProps {
+  class?: string
+}
+
+const props = defineProps<MagicCommandContentProps>()
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
@@ -36,6 +45,15 @@ if (!instanceId) {
 if (!viewId) {
   throw new Error('MagicCommandContent must be nested inside MagicCommandView')
 }
+
+const { getView } = useCommandView(instanceId)
+const view = getView(viewId)
+
+const { initializeState } = useCommandState(instanceId)
+const state = initializeState()
+
+const isActive = computed(() => view?.active && state.teleportTarget)
+const isIdle = computed(() => state.input.view !== viewId)
 
 const options = inject(MagicCommandProviderOptions, undefined)
 
@@ -62,7 +80,13 @@ const prevInterval = ref<ReturnType<typeof setInterval> | undefined>(undefined)
 if (options?.keys?.next) {
   for (const key of options.keys.next) {
     watch(keys[key], (value) => {
+      if (isIdle.value) {
+        return
+      }
+
       if (value) {
+        state.input.type === 'keyboard'
+
         selectNextItem(options.loop)
         nextTimeout.value = setTimeout(() => {
           nextInterval.value = setInterval(() => {
@@ -80,7 +104,13 @@ if (options?.keys?.next) {
 if (options?.keys?.prev) {
   for (const key of options.keys.prev) {
     watch(keys[key], (value) => {
+      if (isIdle.value) {
+        return
+      }
+
       if (value) {
+        state.input.type === 'keyboard'
+
         selectPrevItem(options.loop)
         prevTimeout.value = setTimeout(() => {
           prevInterval.value = setInterval(() => {
@@ -98,7 +128,7 @@ if (options?.keys?.prev) {
 watch(
   activeItem,
   async (value) => {
-    if (!value) return
+    if (!value || isIdle.value) return
 
     nextTick(() => {
       const element = findElement(value.id)
@@ -116,3 +146,14 @@ watch(
 
 provide(MagicCommandContentId, `${viewId}-content`)
 </script>
+
+<style>
+.magic-command-content {
+  position: absolute;
+  inset: 0;
+  &.-idle {
+    opacity: var(--magic-command-content-idle-opacity, 0);
+    pointer-events: none;
+  }
+}
+</style>

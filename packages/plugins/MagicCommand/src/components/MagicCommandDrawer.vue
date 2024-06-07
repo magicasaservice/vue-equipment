@@ -5,12 +5,7 @@
     :class="props.class"
     :options="options"
   >
-    <div
-      class="magic-command-drawer__teleport"
-      :data-id="`magic-command-teleport-${instanceId}`"
-    >
-      <slot />
-    </div>
+    <slot />
   </magic-drawer>
 </template>
 
@@ -32,6 +27,12 @@ const props = defineProps<MagicCommandProps>()
 
 const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
+
+if (!instanceId) {
+  throw new Error(
+    'MagicCommandDrawer must be nested inside MagicCommandProvider'
+  )
+}
 
 function afterLeaveCallback() {
   close()

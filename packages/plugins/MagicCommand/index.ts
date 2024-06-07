@@ -3,6 +3,7 @@ import MagicCommandDrawer from './src/components/MagicCommandDrawer.vue'
 import MagicCommandItem from './src/components/MagicCommandItem.vue'
 import MagicCommandModal from './src/components/MagicCommandModal.vue'
 import MagicCommandProvider from './src/components/MagicCommandProvider.vue'
+import MagicCommandRenderer from './src/components/MagicCommandRenderer.vue'
 import MagicCommandTrigger from './src/components/MagicCommandTrigger.vue'
 import MagicCommandView from './src/components/MagicCommandView.vue'
 
@@ -21,6 +22,7 @@ const MagicCommandPlugin: Plugin = {
     app.component('MagicCommandItem', MagicCommandItem)
     app.component('MagicCommandModal', MagicCommandModal)
     app.component('MagicCommandProvider', MagicCommandProvider)
+    app.component('MagicCommandRenderer', MagicCommandRenderer)
     app.component('MagicCommandTrigger', MagicCommandTrigger)
     app.component('MagicCommandView', MagicCommandView)
   },

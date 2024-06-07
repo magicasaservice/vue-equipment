@@ -1,19 +1,23 @@
-import { computed, type MaybeRef } from 'vue'
+import { computed, nextTick, type MaybeRef } from 'vue'
 import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
 
 export function useMagicCommand(id: MaybeRef<string>) {
   // Private methods
-  const { initializeState, deleteState } = useCommandState(id)
+  const { initializeState } = useCommandState(id)
 
   // Public state
   const state = initializeState()
   const isActive = computed(() => state.active)
 
   // Public methods
-  function open() {
+  const { selectView, unselectView, selectInitialView } = useCommandView(id)
+
+  async function open() {
     state.active = true
+    await nextTick()
+    selectInitialView()
   }
 
   function close() {
@@ -21,15 +25,13 @@ export function useMagicCommand(id: MaybeRef<string>) {
   }
 
   // const { selectItem, selectLastItem } = useCommandItem(toValue(id))
-  // const { selectView, selectLastView } = useCommandView()
 
   return {
     isActive,
     open,
     close,
     // selectItem,
-    // selectLastItem,
-    // selectView,
-    // selectLastView,
+    selectView,
+    unselectView,
   }
 }

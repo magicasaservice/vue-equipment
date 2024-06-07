@@ -1,4 +1,4 @@
-import { ref, reactive, toValue, type MaybeRef } from 'vue'
+import { ref, computed, reactive, toValue, type MaybeRef, type Ref } from 'vue'
 import { defu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
 
@@ -9,11 +9,23 @@ let commandStateStore = ref<CommandState[]>([])
 export function useCommandState(instanceId: MaybeRef<string>) {
   // Private functions
   function createState(id: string) {
+    const view = computed(
+      () =>
+        commandStateStore.value
+          .find((state) => state.id === id)
+          ?.views.findLast((view) => view.active)?.id
+    )
+
     const state: CommandState = {
       id,
       views: [],
       options: defaultOptions,
       active: false,
+      teleportTarget: undefined,
+      input: {
+        type: 'pointer',
+        view: view,
+      },
     }
     return reactive(state)
   }
@@ -45,7 +57,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
 
   function deleteState() {
     commandStateStore.value = commandStateStore.value.filter(
-      (x: CommandState) => x.id !== toValue(instanceId)
+      (x) => x.id !== toValue(instanceId)
     )
   }
 

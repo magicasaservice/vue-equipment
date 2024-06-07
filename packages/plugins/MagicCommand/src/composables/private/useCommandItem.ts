@@ -1,5 +1,4 @@
-import { reactive, computed, type MaybeRef } from 'vue'
-import { useCommandState } from './useCommandState'
+import { reactive, computed, nextTick, type MaybeRef } from 'vue'
 import { useCommandView } from './useCommandView'
 
 import type { CommandItem } from '../../types/index'
@@ -16,18 +15,11 @@ type AddItemArgs = Pick<CommandItem, 'id' | 'disabled'>
 export function useCommandItem(args: UseCommandItemArgs) {
   const { instanceId, viewId } = args
 
-  const { initializeState } = useCommandState(instanceId)
-  const state = initializeState()
-
   const { getView } = useCommandView(instanceId)
   const view = getView(viewId)
 
-  if (!view) {
-    throw new Error(`View ${viewId} not found`)
-  }
-
   // Public state
-  const activeItem = computed(() => view.items.find((item) => item.active))
+  const activeItem = computed(() => view?.items.find((item) => item.active))
 
   // Private functions
   function createItem(args: CreateItemArgs) {

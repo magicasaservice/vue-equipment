@@ -1,28 +1,28 @@
 <template>
-  <div class="magic-command-view" :id="mappedId">
-    <slot />
-  </div>
+  <slot />
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide } from 'vue'
+import { computed, inject, onBeforeUnmount, provide, watch } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
   MagicCommandViewId,
   MagicCommandViewActive,
+  MagicCommandParentTree,
 } from '../symbols'
 
 interface MagicCommandViewProps {
   id?: string
-  default?: boolean
+  initial?: boolean
 }
 
 const props = withDefaults(defineProps<MagicCommandViewProps>(), {
-  default: false,
+  initial: false,
 })
 
+const parentTree = inject(MagicCommandParentTree, [])
 const instanceId = inject(MagicCommandInstanceId, undefined)
 
 if (!instanceId) {
@@ -31,16 +31,26 @@ if (!instanceId) {
 
 // Register view
 const mappedId = computed(() => props.id ?? `magic-command-view-${uuid()}`)
-const { initializeView, deleteView } = useCommandView(instanceId)
+const { initializeView, deleteView, sortItems } = useCommandView(instanceId)
+
 const view = initializeView({
   id: mappedId.value,
+  parent: { views: parentTree },
+  initial: props.initial,
 })
 
 // Pass id, active state and parent tree to children
 provide(MagicCommandViewId, mappedId.value)
 provide(MagicCommandViewActive, view.active)
+provide(MagicCommandParentTree, [...parentTree, mappedId.value])
 
 // Lifecycle
+watch(
+  () => view?.items,
+  () => {
+    sortItems(mappedId.value)
+  }
+)
 onBeforeUnmount(() => {
   deleteView(mappedId.value)
 })

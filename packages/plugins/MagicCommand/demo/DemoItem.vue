@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { MagicCommandItemActive } from '../src/symbols'
 
-const isActive = inject(MagicCommandItemActive, false)
+const isActive = inject(MagicCommandItemActive, undefined)
 </script>

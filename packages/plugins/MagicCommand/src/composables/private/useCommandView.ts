@@ -1,30 +1,33 @@
-import { reactive, watch, computed, type MaybeRef } from 'vue'
+import { reactive, nextTick, toValue, type MaybeRef } from 'vue'
 import { useCommandState } from './useCommandState'
 
 import type { CommandView } from '../../types/index'
 
-type CreateViewArgs = Pick<CommandView, 'id'>
-type AddViewArgs = Pick<CommandView, 'id'>
-type FindViewArgs = Pick<CommandView, 'id'>
+type CreateViewArgs = Pick<CommandView, 'id' | 'parent' | 'initial'>
+type AddViewArgs = Pick<CommandView, 'id' | 'parent' | 'initial'>
+type FindViewArgs = Pick<CommandView, 'id' | 'parent' | 'initial'>
 
 export function useCommandView(instanceId: MaybeRef<string>) {
   const { initializeState } = useCommandState(instanceId)
   const state = initializeState()
 
-  // Public state
-  const currentView = computed(() => state.views.filter((view) => view.active))
-
   // Private functions
   function createView(args: CreateViewArgs) {
-    const { id } = args
+    const { id, parent, initial } = args
+
+    if (parent.views.length === 0) {
+      parent.views.push(toValue(instanceId))
+    }
 
     const view: CommandView = {
       id: id,
-      // children: {
-      //   trigger: undefined,
-      //   content: undefined,
-      // },
+      parent: parent,
+      initial: initial,
       active: false,
+      children: {
+        trigger: undefined,
+        content: undefined,
+      },
       items: [],
     }
 
@@ -61,8 +64,15 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     const instance = getView(id)
 
     if (instance) {
-      unselectAllViews()
       instance.active = true
+    }
+  }
+
+  function selectInitialView() {
+    const initialView = state.views?.find((view) => view.initial)
+
+    if (initialView) {
+      initialView.active = true
     }
   }
 
@@ -80,17 +90,29 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     })
   }
 
+  function sortItems(viewId: string) {
+    const parent = document.querySelector(`[data-id="${viewId}-content"]`)
+    const view = getView(viewId)
+
+    const elements: HTMLElement[] = Array.from(
+      parent?.querySelectorAll('.magic-menu-item') ?? []
+    )
+
+    function getIndex(id: string) {
+      return elements.findIndex((el) => el.dataset.id === id)
+    }
+
+    view?.items?.sort((a, b) => getIndex(a.id) - getIndex(b.id))
+  }
+
   return {
-    currentView,
     initializeView,
     deleteView,
     getView,
     selectView,
+    selectInitialView,
     unselectView,
     unselectAllViews,
-    // selectView,
-    // selectLastView,
-    // activeView,
-    // lastActiveView,
+    sortItems,
   }
 }

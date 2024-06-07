@@ -1,3 +1,4 @@
+import type { ComputedRef } from 'vue'
 import type { MagicModalOptions } from '../../../MagicModal'
 import type { MagicDrawerOptions } from '../../../MagicDrawer'
 
@@ -22,6 +23,10 @@ export interface CommandItem {
 export type CommandView = {
   id: string
   active: boolean
+  initial: boolean
+  parent: {
+    views: string[]
+  }
   children: {
     trigger?: HTMLElement
     content?: HTMLElement
@@ -34,6 +39,11 @@ export type CommandState = {
   options: MagicCommandOptions
   views: CommandView[]
   active: boolean
+  teleportTarget: HTMLElement | undefined
+  input: {
+    type: 'pointer' | 'keyboard'
+    view: ComputedRef<string | undefined>
+  }
 }
 
 export interface MagicCommandModalOptions extends MagicModalOptions {}

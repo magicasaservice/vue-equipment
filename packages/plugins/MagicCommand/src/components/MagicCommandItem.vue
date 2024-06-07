@@ -2,7 +2,7 @@
   <div
     class="magic-menu-item"
     ref="elRef"
-    :id="mappedId"
+    :data-id="mappedId"
     :class="{ '-active': item.active, '-disabled': disabled }"
     :aria-selected="item.active"
     @mouseenter="guardedSelect"
@@ -16,7 +16,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, provide, onBeforeUnmount, onMounted } from 'vue'
+import {
+  computed,
+  inject,
+  provide,
+  onBeforeUnmount,
+  onMounted,
+  toRefs,
+} from 'vue'
 import { useEventListener, onKeyStroke } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandState } from '../composables/private/useCommandState'
@@ -32,7 +39,7 @@ import {
 interface MagicMenuItemProps {
   id?: string
   disabled?: boolean
-  default?: boolean
+  initial?: boolean
 }
 
 const props = defineProps<MagicMenuItemProps>()
@@ -58,6 +65,9 @@ if (!contentId) {
 
 const mappedId = computed(() => props.id ?? `magic-command-item-${uuid()}`)
 
+const { initializeState } = useCommandState(instanceId)
+const state = initializeState()
+
 // Register item
 const { initializeItem, deleteItem, selectItem, unselectItem } = useCommandItem(
   {
@@ -68,22 +78,21 @@ const { initializeItem, deleteItem, selectItem, unselectItem } = useCommandItem(
 
 // Guarded select
 // Check for mode and active state
-
 const item = initializeItem({
   id: mappedId.value,
   disabled: props.disabled ?? false,
 })
 
 function guardedSelect() {
-  if (!item.active && !item.disabled) {
+  if (!item.active && !item.disabled && state.input.type === 'pointer') {
     selectItem(mappedId.value)
   }
 }
 
 function guardedUnselect() {
-  if (item.active) {
-    unselectItem(mappedId.value)
-  }
+  // if (item.active) {
+  //   unselectItem(mappedId.value)
+  // }
 }
 
 function onClick(event: MouseEvent) {
@@ -95,12 +104,14 @@ function onClick(event: MouseEvent) {
 }
 
 // Pass id and active state to children
+const isActive = computed(() => item.active)
+
 provide(MagicCommandItemId, mappedId.value)
-provide(MagicCommandItemActive, item.active)
+provide(MagicCommandItemActive, isActive)
 
 // Lifecycle
 onMounted(() => {
-  if (props.default) {
+  if (props.initial) {
     selectItem(mappedId.value)
   }
 })
@@ -111,7 +122,7 @@ onBeforeUnmount(() => {
 
 // interface MagicCommandItemProps {
 //   id?: string
-//   default?: boolean
+//   initial?: boolean
 //   callback: Function | false
 //   listener?: ('click' | 'mouseenter' | 'touchstart')[]
 //   keys?: string[]
@@ -157,7 +168,7 @@ onBeforeUnmount(() => {
 //   }
 
 //   nextTick(() => {
-//     if (props.default) {
+//     if (props.initial) {
 //       selectItem(mappedId.value)
 //     }
 //   })
