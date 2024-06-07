@@ -38,7 +38,7 @@ const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 const { initializeView, deleteView } = useMenuView(instanceId)
 const view = initializeView({
   id: mappedId.value,
-  parent: { views: parentTree, item: itemId ?? '' },
+  parent: { views: parentTree, item: itemId },
 })
 
 // Pass id, active state and parent tree to children

@@ -28,7 +28,10 @@ export interface MenuView {
   id: string
   active: boolean
   items: MenuItem[]
-  parent: { item: string; views: string[] }
+  parent: {
+    views: string[]
+    item: string | undefined
+  }
   children: {
     trigger?: HTMLElement
     content?: HTMLElement
