@@ -80,11 +80,11 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   function disableCursor() {
-    state.input.disabled = [...state.input.disabled, 'pointer']
+    state.input.type = 'disabled'
   }
 
   function enableCursor() {
-    state.input.disabled = state.input.disabled.filter((x) => x !== 'pointer')
+    state.input.type = 'pointer'
   }
 
   function extendTriangle(
@@ -252,6 +252,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       state.active = true
       state.input.type = 'keyboard'
       state.input.view = viewId
+
       selectView(viewId)
     }
   }
@@ -276,7 +277,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
         state.input.view = viewId
       }
 
-      // Temporarily disable cursor for nested triggers
+      // Temporarily disable pointer for nested triggers
       if (itemId) {
         disableCursor()
       }
@@ -346,7 +347,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       }
     )
 
-    // Manage cursor
+    // Manage pointer
     watch(isInsideTriangle, async (value, oldValue) => {
       if (value && !oldValue) {
         disableCursor()

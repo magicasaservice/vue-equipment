@@ -42,8 +42,7 @@ export interface MenuState {
   views: MenuView[]
   options: RequireAllNested<MagicMenuOptions>
   input: {
-    type: 'keyboard' | 'pointer'
-    disabled: ('keyboard' | 'pointer')[]
+    type: 'keyboard' | 'pointer' | 'disabled'
     view: string | undefined
   }
 }

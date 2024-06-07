@@ -72,12 +72,7 @@ const item = initializeItem({
 })
 
 function guardedSelect() {
-  if (
-    state.input.type === 'pointer' &&
-    !state.input.disabled.includes('pointer') &&
-    !item.active &&
-    !item.disabled
-  ) {
+  if (state.input.type === 'pointer' && !item.active && !item.disabled) {
     selectItem(mappedId.value)
   }
 }
@@ -110,7 +105,6 @@ function onClick(event: MouseEvent) {
   emit('click', event)
 
   state.input.type = 'pointer'
-  state.input.disabled = []
 
   if (!item.disabled && !item.active) {
     selectItem(mappedId.value)
