@@ -9,7 +9,7 @@
     "@types/node": "^20.10.4",
     "@vue/tsconfig": "^0.5.1",
     "release-it": "^17.0.1",
-    "turbo": "^1.11.2"
+    "turbo": "^2.0.3"
   },
   "exports": {
     "./nuxt": {
@@ -43,8 +43,8 @@
   "license": "MIT",
   "peerDependencies": {
     "@floating-ui/vue": "^1.0.6",
-    "@nuxt/kit": "^3.9.3",
     "@maas/magic-timer": "^1.0.0",
+    "@nuxt/kit": "^3.9.3",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "defu": "^6.1.2",
