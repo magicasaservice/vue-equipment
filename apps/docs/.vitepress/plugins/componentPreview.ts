@@ -75,7 +75,7 @@ export function componentPreview(markdownRenderer: MarkdownRenderer) {
     const env = state.env as MarkdownEnv
 
     // Replace matched patterns with the actual component previews
-    state.src = state.src.replace(componentPreviewRegEx, (match, src) => {
+    state.src = state.src.replace(componentPreviewRegEx, (_match, src) => {
       const componentPath = resolve(dirname(env.realPath || ''), src)
       const componentName = generateComponentName(src)
 
@@ -103,7 +103,7 @@ export function componentPreview(markdownRenderer: MarkdownRenderer) {
       // Replace the token content with the actual component preview
       if (matchIndex !== -1) {
         state.tokens[matchIndex].content =
-          `<ComponentPreview code="${encodeURI(sourceCode)}" highlightedCode="${encodeURIComponent(compiledHighlightedCode)}"><${componentName} /></ComponentPreview>`
+          `<ComponentPreview code="${encodeURIComponent(compiledHighlightedCode)}"><${componentName} /></ComponentPreview>`
       }
 
       // Return an empty string to remove the original tag
