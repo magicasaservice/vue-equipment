@@ -36,7 +36,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     const el = toValue(mediaRef)
     if (!el) return
     const { default: Hls } = await import('hls.js')
-    hls = new Hls()
+    hls = new Hls({ autoStartLoad: false })
     if (!Hls.isSupported()) {
       useNative()
     } else if (src) {

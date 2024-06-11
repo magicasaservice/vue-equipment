@@ -8,10 +8,10 @@
     <video
       ref="videoRef"
       class="magic-player__video"
-      preload="auto"
       playsinline
       disablePictureInPicture
-      :loop="props.loop"
+      :preload="preload"
+      :loop="loop"
       :muted="muted"
     />
     <slot />
@@ -32,6 +32,7 @@ interface MagicPlayerProps {
   srcType?: MagicPlayerSourceType
   src: string
   autoplay?: boolean
+  preload?: 'auto' | 'metadata' | 'none'
   loop?: boolean
 }
 
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
   srcType: 'native',
   src: '',
   autoplay: false,
+  preload: 'metadata',
   loop: false,
 })
 
