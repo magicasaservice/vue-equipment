@@ -35,6 +35,19 @@
     </magic-player>
   </div>
 
+  <p>Autoplay [hls]</p>
+  <div class="w-full aspect-[16/9]">
+    <magic-player
+      loop
+      src-type="hls"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks.m3u8"
+      id="autoplay-player-hls"
+    >
+      <magic-player-overlay id="autoplay-player-hls" />
+      <magic-player-controls id="autoplay-player-hls" />
+    </magic-player>
+  </div>
+
   <p>File [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player

@@ -142,6 +142,10 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     stalled.value = true
   })
 
+  useEventListener(mediaRef, 'suspend', () => {
+    waiting.value = false
+  })
+
   useEventListener(mediaRef, 'ended', () => {
     ended.value = true
   })
