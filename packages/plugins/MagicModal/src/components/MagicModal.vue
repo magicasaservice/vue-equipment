@@ -9,7 +9,7 @@
       ref="modalRef"
       class="magic-modal"
       :id="toValue(id)"
-      :class="toValue(props.class)"
+      v-bind="$attrs"
       @click.self="close"
       aria-modal="true"
     >
@@ -76,6 +76,10 @@ import type { MagicModalOptions } from './../types/index'
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 // Prevent keyListener array from being merged with default
 const customDefu = createDefu((obj, key, value) => {
   if (key === 'close') {
@@ -86,7 +90,6 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicModalProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
   options?: MagicModalOptions

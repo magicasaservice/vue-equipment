@@ -71,7 +71,7 @@ const mappedPlacement = computed(() => {
 })
 
 const hasArrow = computed(
-  () => props.arrow || (state.options.mode === 'dropdown' && !view?.parent.item)
+  () => props.arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
 )
 
 const mappedMiddleware = computed(() => {

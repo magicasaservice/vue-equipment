@@ -2,8 +2,8 @@
   <magic-drawer
     :id="commandId"
     class="magic-command-drawer"
-    :class="props.class"
     :options="options"
+    v-bind="$attrs"
   >
     <slot />
   </magic-drawer>
@@ -18,8 +18,11 @@ import { MagicCommandInstanceId } from './../symbols'
 
 import type { MagicCommandDrawerOptions } from '../types'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicCommandProps {
-  class?: MaybeRef<string>
   options?: MagicCommandDrawerOptions
 }
 

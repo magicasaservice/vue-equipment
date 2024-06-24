@@ -12,6 +12,7 @@
       <div
         class="magic-menu-content"
         :data-id="`${viewId}-content`"
+        v-bind="$attrs"
         v-if="innerActive"
       >
         <magic-menu-float :placement="placement" :arrow="arrow">
@@ -45,13 +46,16 @@ import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuCallback } from '../composables/private/useMenuCallback'
 import { useMenuDOM } from '../composables/private/useMenuDOM'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicMenuContentProps {
   placement?: Placement
   arrow?: boolean
 }
 
 defineProps<MagicMenuContentProps>()
-
 const contentRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)

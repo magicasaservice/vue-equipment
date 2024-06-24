@@ -1,16 +1,15 @@
 <template>
   <div
     ref="drawerRef"
-    class="magic-draggable"
     :id="toValue(id)"
     :class="[
-      toValue(props.class),
-
+      'magic-draggable',
       {
         '-dragging': dragging,
         '-disabled': disabled,
       },
     ]"
+    v-bind="$attrs"
   >
     <div class="magic-draggable__wrapper" ref="wrapperRef">
       <component
@@ -45,11 +44,13 @@ import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicDraggableOptions } from '../types'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicDraggableProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
-  props?: Record<string, unknown>
   options?: MagicDraggableOptions
 }
 

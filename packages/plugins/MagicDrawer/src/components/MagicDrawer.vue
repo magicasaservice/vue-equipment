@@ -6,10 +6,9 @@
   >
     <div
       ref="drawerRef"
-      class="magic-drawer"
       :id="toValue(id)"
       :class="[
-        toValue(props.class),
+        'magic-drawer',
         `-${mappedOptions.position}`,
         {
           '-dragging': dragging,
@@ -17,6 +16,7 @@
           '-disabled': disabled,
         },
       ]"
+      v-bind="$attrs"
       aria-modal="true"
     >
       <transition
@@ -105,6 +105,10 @@ import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
 import { useMagicDrawer } from '../composables/useMagicDrawer'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 // Prevent deep merge of certain options
 // In this case, don’t merge the `close` and `points` options
 const customDefu = createDefu((obj, key, value) => {
@@ -116,9 +120,7 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicDrawerProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
-  props?: Record<string, unknown>
   options?: MagicDrawerOptions
 }
 
