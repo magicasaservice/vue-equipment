@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.29.4",
+  "version": "0.29.5",
   "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "type": "module",
