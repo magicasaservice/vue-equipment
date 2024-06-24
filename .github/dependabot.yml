@@ -1,0 +1,56 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore'
+  - package-ecosystem: 'npm'
+    directory: '/apps/docs'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(docs)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/config'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(cli)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/composables'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(composables)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/config'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(config)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/metadata'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(metadata)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/nuxt'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(nuxt)'
+   - package-ecosystem: 'npm'
+    directory: '/packages/plugins'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(plugins)'
+  - package-ecosystem: 'npm'
+    directory: '/packages/utils'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(utils)'
