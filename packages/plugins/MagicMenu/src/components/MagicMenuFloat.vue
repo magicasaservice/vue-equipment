@@ -75,14 +75,53 @@ const hasArrow = computed(
 )
 
 const mappedMiddleware = computed(() => {
-  const middleware = [flip()]
+  const middleware = []
 
-  if (view?.parent.item) {
-    middleware.push(shift({ crossAxis: true, limiter: limitShift() }))
-  }
-
-  if (hasArrow.value) {
-    middleware.push(arrow({ element: arrowRef }))
+  switch (state.options.mode) {
+    case 'menubar':
+      if (!view?.parent.item) {
+        middleware.push(
+          flip({
+            crossAxis: true,
+          })
+        )
+      } else if (!!view?.parent.item) {
+        middleware.push(
+          flip({
+            crossAxis: false,
+          })
+        )
+        middleware.push(
+          shift({
+            crossAxis: true,
+            limiter: limitShift(),
+          })
+        )
+      }
+      break
+    case 'dropdown':
+      middleware.push(
+        flip({
+          mainAxis: true,
+          crossAxis: false,
+        })
+      )
+      middleware.push(
+        shift({
+          mainAxis: true,
+          crossAxis: false,
+          limiter: limitShift(),
+        })
+      )
+      break
+    case 'context':
+      middleware.push(
+        flip({
+          mainAxis: true,
+          crossAxis: true,
+        })
+      )
+      break
   }
 
   return middleware
