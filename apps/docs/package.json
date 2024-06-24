@@ -3,6 +3,7 @@
   "version": "0.29.3",
   "private": true,
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "type": "module",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/sanitize-html": "^2.9.5",

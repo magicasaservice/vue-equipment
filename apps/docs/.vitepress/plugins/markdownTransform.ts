@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
+import { existsSync } from 'node:fs'
 import type { Plugin } from 'vite'
-import { existsSync } from 'fs-extra'
 import { getTypeDefinition, replacer } from './../utils'
 import { functionNames } from '../../../../packages/metadata'
 

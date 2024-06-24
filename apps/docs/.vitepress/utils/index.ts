@@ -1,5 +1,7 @@
 import { join, resolve } from 'node:path'
-import fs from 'fs-extra'
+import { existsSync } from 'node:fs'
+import { writeFile, readFile } from 'node:fs/promises'
+import { remove } from 'fs-extra'
 import type { PackageIndexes } from './../../../../packages/metadata'
 
 const DIR_TYPES = resolve(__dirname, '../../../types/')
@@ -14,10 +16,10 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
       .sort()
       .map((name) => `export * from './${name}'`)
 
-    await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
+    await writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
 
     // temporary file for export-size
-    await fs.remove(join(dir, 'index.mjs'))
+    await remove(join(dir, 'index.mjs'))
   }
 }
 
@@ -48,9 +50,9 @@ export async function getTypeDefinition(
 ): Promise<string | undefined> {
   const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
-  if (!fs.existsSync(typingFilepath)) return
+  if (!existsSync(typingFilepath)) return
 
-  let types = await fs.readFile(typingFilepath, 'utf-8')
+  let types = await readFile(typingFilepath, 'utf-8')
 
   if (!types) return
 

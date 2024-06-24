@@ -42,7 +42,7 @@ export default defineConfig({
   srcDir: './../..',
   srcExclude: ['**/*.json'],
   vite: {
-    configFile: './vite.config.ts',
+    configFile: './vite.config.mts',
     publicDir: './apps/docs/public',
   },
   rewrites: {
