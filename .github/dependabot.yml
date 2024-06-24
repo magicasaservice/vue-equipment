@@ -42,7 +42,7 @@ updates:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(nuxt)'
-   - package-ecosystem: 'npm'
+  - package-ecosystem: 'npm'
     directory: '/packages/plugins'
     schedule:
       interval: 'weekly'
