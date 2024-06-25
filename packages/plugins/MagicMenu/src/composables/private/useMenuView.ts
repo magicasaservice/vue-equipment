@@ -63,9 +63,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
   }
 
   function getView(id: string) {
-    return state.views?.find((view) => {
-      return view.id === id
-    })
+    return state.views?.find((view) => view.id === id)
   }
 
   function getRelativeViewIndex(id: string) {

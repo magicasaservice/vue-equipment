@@ -65,11 +65,12 @@ defineOptions({
 
 interface MagicMenuContentProps {
   placement?: Placement
-  arrow?: boolean
+  arrow?: boolean | undefined
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-defineProps<MagicMenuContentProps>()
+withDefaults(defineProps<MagicMenuContentProps>(), { arrow: undefined })
+
 const contentRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)

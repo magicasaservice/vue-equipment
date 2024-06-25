@@ -5,7 +5,7 @@ import MagicMenuProvider from './src/components/MagicMenuProvider.vue'
 import MagicMenuTrigger from './src/components/MagicMenuTrigger.vue'
 import MagicMenuView from './src/components/MagicMenuView.vue'
 
-// import { useMagicMenu } from './src/old/composables/useMagicMenu'
+import { useMagicMenu } from './src/composables/useMagicMenu'
 
 import {
   MagicMenuInstanceId,
@@ -28,7 +28,7 @@ const MagicMenuPlugin: Plugin = {
 
 export {
   MagicMenuPlugin,
-  // useMagicMenu,
+  useMagicMenu,
   MagicMenuInstanceId,
   MagicMenuItemActive,
   MagicMenuParentTree,

@@ -100,7 +100,7 @@
       id="magic-menu--dropdown"
       :options="{ mode: 'dropdown' }"
     >
-      <magic-menu-view class="flex justify-center">
+      <magic-menu-view class="flex justify-center" id="dropdown-view">
         <magic-menu-trigger
           class="inline w-16 h-16 rounded-full border-dashed flex items-center justify-center"
         >
@@ -146,6 +146,7 @@
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
+    <button @click="selectView('dropdown-view')">Open Menu</button>
   </div>
 </template>
 
@@ -153,6 +154,7 @@
 import { onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,
+  useMagicMenu,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
 import type { ValueOf } from '@maas/vue-equipment/utils'
@@ -163,6 +165,8 @@ function callback(
 ) {
   console.log(id, payload)
 }
+
+const { selectView } = useMagicMenu('magic-menu--dropdown')
 
 useMagicEmitter().on('*', callback)
 
