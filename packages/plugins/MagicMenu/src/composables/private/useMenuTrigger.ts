@@ -269,7 +269,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       view
     ) {
       // If mouseenter is the first trigger, set active to true
-      if (!mappedTrigger.value[0].includes('mouseenter')) {
+      if (mappedTrigger.value[0].includes('mouseenter')) {
         state.active = true
       }
 
