@@ -263,8 +263,6 @@ const hidden = computed(() => {
   --magic-player-controls-border-radius: unset;
   --magic-player-controls-background: transparent;
   --magic-player-controls-backdrop-filter: none;
-  --magic-player-controls-transition-duration: unset;
-  --magic-player-controls-transition-timing-function: unset;
 }
 
 .magic-player-controls.-standalone .magic-player-controls__bar {
