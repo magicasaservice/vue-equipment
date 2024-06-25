@@ -26,11 +26,11 @@ import {
   MagicMenuItemId,
 } from '../symbols'
 
-import type { MenuTrigger } from '../types'
+import type { Interaction } from '../types'
 
 interface MagicMenuTriggerProps {
   disabled?: boolean
-  trigger?: MenuTrigger[]
+  trigger?: Interaction[]
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
@@ -60,7 +60,7 @@ const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
 
-const mappedTrigger = computed<MenuTrigger[]>(() => {
+const mappedTrigger = computed<Interaction[]>(() => {
   if (props.trigger?.length) {
     return props.trigger
   }

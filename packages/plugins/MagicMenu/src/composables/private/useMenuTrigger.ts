@@ -14,7 +14,7 @@ import {
   useFocus,
   onKeyStroke,
 } from '@vueuse/core'
-import type { MenuTrigger, Coordinates } from '../../types/index'
+import type { Interaction, Coordinates } from '../../types/index'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 
@@ -23,7 +23,7 @@ type UseMenuTriggerArgs = {
   viewId: string
   itemId?: string
   mappedDisabled: ComputedRef<boolean>
-  mappedTrigger: ComputedRef<MenuTrigger[]>
+  mappedTrigger: ComputedRef<Interaction[]>
   elRef: Ref<HTMLElement | undefined>
 }
 
@@ -264,21 +264,27 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
     if (
       mappedTrigger.value.includes('mouseenter') &&
-      view &&
+      !mappedDisabled.value &&
       viewId &&
-      state.active &&
-      !mappedDisabled.value
+      view
     ) {
-      selectView(viewId)
-
-      // If the trigger is not nested inside an item, focus the view
-      if (!itemId) {
-        state.input.view = viewId
+      // If mouseenter is the first trigger, set active to true
+      if (!mappedTrigger.value[0].includes('mouseenter')) {
+        state.active = true
       }
 
-      // Temporarily disable cursor for nested triggers
-      if (itemId) {
-        disableCursor()
+      if (state.active) {
+        selectView(viewId)
+
+        // If the trigger is not nested inside an item, focus the view
+        if (!itemId) {
+          state.input.view = viewId
+        }
+
+        // Temporarily disable cursor for nested triggers
+        if (itemId) {
+          disableCursor()
+        }
       }
     }
   }

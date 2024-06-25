@@ -22,7 +22,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from 'vue'
+import {
+  ref,
+  computed,
+  inject,
+  toValue,
+  type MaybeRef,
+  type ComponentPublicInstance,
+} from 'vue'
 import {
   useFloating,
   autoUpdate,
@@ -39,6 +46,7 @@ import { useMenuState } from '../composables/private/useMenuState'
 interface MagicMenuFloatProps {
   placement?: Placement
   arrow?: boolean
+  referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
 const props = defineProps<MagicMenuFloatProps>()
@@ -113,6 +121,13 @@ const mappedMiddleware = computed(() => {
           limiter: limitShift(),
         })
       )
+      if (hasArrow.value) {
+        middleware.push(
+          arrow({
+            element: arrowRef.value,
+          })
+        )
+      }
       break
     case 'context':
       middleware.push(
@@ -127,8 +142,10 @@ const mappedMiddleware = computed(() => {
   return middleware
 })
 
-const referenceEl = computed(() => {
-  if (view?.click) {
+const mappedReferenceEl = computed(() => {
+  if (props.referenceEl) {
+    return toValue(props.referenceEl)
+  } else if (view?.click) {
     return {
       getBoundingClientRect() {
         return {
@@ -149,7 +166,7 @@ const referenceEl = computed(() => {
 })
 
 const { floatingStyles, placement, middlewareData } = useFloating(
-  referenceEl,
+  mappedReferenceEl,
   elRef,
   {
     placement: mappedPlacement,

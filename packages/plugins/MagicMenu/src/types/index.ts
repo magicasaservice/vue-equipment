@@ -11,7 +11,7 @@ export interface MagicMenuOptions {
   }
 }
 
-export type MenuTrigger = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
+export type Interaction = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
 
 export type Coordinates = {
   x: number

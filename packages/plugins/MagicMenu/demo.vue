@@ -103,8 +103,9 @@
       <magic-menu-view class="flex justify-center">
         <magic-menu-trigger
           class="inline w-16 h-16 rounded-full border-dashed flex items-center justify-center"
-          >Menu</magic-menu-trigger
         >
+          Menu
+        </magic-menu-trigger>
         <magic-menu-content>
           <magic-menu-item>New Tab</magic-menu-item>
           <magic-menu-item>New Window</magic-menu-item>

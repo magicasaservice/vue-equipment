@@ -15,7 +15,11 @@
         v-bind="$attrs"
         v-if="innerActive"
       >
-        <magic-menu-float :placement="placement" :arrow="arrow">
+        <magic-menu-float
+          :placement="placement"
+          :arrow="arrow"
+          :reference-el="referenceEl"
+        >
           <template #arrow v-if="$slots.arrow && arrow">
             <slot name="arrow" />
           </template>
@@ -31,7 +35,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, provide, nextTick, watch, computed } from 'vue'
+import {
+  ref,
+  inject,
+  provide,
+  nextTick,
+  watch,
+  computed,
+  type MaybeRef,
+  type ComponentPublicInstance,
+} from 'vue'
 import type { Placement } from '@floating-ui/vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import {
@@ -53,6 +66,7 @@ defineOptions({
 interface MagicMenuContentProps {
   placement?: Placement
   arrow?: boolean
+  referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
 defineProps<MagicMenuContentProps>()
