@@ -21,10 +21,6 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
   const { getView } = useMenuView(instanceId)
   const view = getView(viewId)
 
-  if (!view) {
-    throw new Error(`View ${viewId} not found`)
-  }
-
   // Private functions
   function createChannel(args: CreateChannelArgs) {
     const { id } = args
