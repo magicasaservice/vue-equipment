@@ -11,7 +11,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const {
     selectView,
     unselectView,
-    unselectNonTreeViews,
+    unselectUnrelatedViews,
     unselectAllViews,
     getView,
     getNextView,
@@ -130,14 +130,14 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       selectItem(enabledItems[prevIndex]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     } else if (prevIndex !== -1) {
       // Select last item
       const { selectItem } = useMenuItem({ instanceId, viewId })
       selectItem(enabledItems[enabledItems.length - 1]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     }
   }
 
@@ -163,7 +163,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       selectItem(enabledItems[nextIndex]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     }
   }
 

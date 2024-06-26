@@ -100,10 +100,13 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     return getView(parentId ?? '')
   }
 
-  function getNonTreeViews(id: string) {
-    const currentView = getView(id)
+  function getUnrelatedViews(id: string) {
+    const argView = getView(id)
     return state.views?.filter(
-      (view) => !currentView?.parent.views.includes(view.id) && view.id !== id
+      (view) =>
+        !view.parent.views.includes(id) &&
+        !argView?.parent.views.includes(view.id) &&
+        view.id !== id
     )
   }
 
@@ -112,7 +115,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
     if (instance) {
       instance.active = true
-      unselectNonTreeViews(id)
+      unselectUnrelatedViews(id)
     }
   }
 
@@ -124,9 +127,9 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     }
   }
 
-  function unselectNonTreeViews(id: string) {
-    const nonTreeViews = getNonTreeViews(id)
-    nonTreeViews.forEach((view) => (view.active = false))
+  function unselectUnrelatedViews(id: string) {
+    const unrelatedViews = getUnrelatedViews(id)
+    unrelatedViews.forEach((view) => (view.active = false))
   }
 
   function unselectAllViews() {
@@ -148,7 +151,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     getParentView,
     selectView,
     unselectView,
-    unselectNonTreeViews,
+    unselectUnrelatedViews,
     unselectAllViews,
   }
 }

@@ -18,7 +18,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
-  const { getView, unselectNonTreeViews } = useMenuView(instanceId)
+  const { getView, unselectUnrelatedViews } = useMenuView(instanceId)
   const view = getView(viewId)
 
   if (!view) {
@@ -86,7 +86,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
 
       // Deactivate all siblings and non tree views
       unselectSiblings(id)
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
 
       // Set view in focus
       if (view) {
