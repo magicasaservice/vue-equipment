@@ -110,6 +110,13 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     )
   }
 
+  function getDescendingViews(id: string) {
+    const argView = getView(id)
+    return state.views?.filter(
+      (view) => view.id !== id && !argView?.parent.views.includes(view.id)
+    )
+  }
+
   function selectView(id: string) {
     const instance = getView(id)
 
@@ -132,6 +139,11 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     unrelatedViews.forEach((view) => (view.active = false))
   }
 
+  function unselectDescendingViews(id: string) {
+    const descendingViews = getDescendingViews(id)
+    descendingViews.forEach((view) => (view.active = false))
+  }
+
   function unselectAllViews() {
     state.views?.forEach((view) => {
       view.active = false
@@ -152,6 +164,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     selectView,
     unselectView,
     unselectUnrelatedViews,
+    unselectDescendingViews,
     unselectAllViews,
   }
 }
