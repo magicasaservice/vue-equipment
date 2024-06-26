@@ -1,6 +1,7 @@
+import type { Placement } from '@floating-ui/vue'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
-type MenuMode = 'dropdown' | 'menubar' | 'context'
+type MenuMode = 'dropdown' | 'menubar' | 'context' | 'navigation'
 
 export interface MagicMenuOptions {
   mode?: MenuMode
@@ -24,15 +25,22 @@ export interface MenuItem {
   disabled: boolean
 }
 
+export interface MenuChannel {
+  id: string
+  active: boolean
+}
+
 export interface MenuView {
   id: string
   active: boolean
   items: MenuItem[]
+  channels: MenuChannel[]
   parent: { item: string; views: string[] }
   children: {
     trigger?: HTMLElement
     content?: HTMLElement
   }
+  placement: Placement
   click?: Coordinates
 }
 

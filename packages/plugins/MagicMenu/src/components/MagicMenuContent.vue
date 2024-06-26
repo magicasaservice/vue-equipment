@@ -16,7 +16,7 @@
         v-if="innerActive"
       >
         <magic-menu-float
-          :placement="placement"
+          :placement="view?.placement"
           :arrow="arrow"
           :reference-el="referenceEl"
         >
@@ -45,7 +45,6 @@ import {
   type MaybeRef,
   type ComponentPublicInstance,
 } from 'vue'
-import type { Placement } from '@floating-ui/vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import {
   MagicMenuInstanceId,
@@ -64,7 +63,6 @@ defineOptions({
 })
 
 interface MagicMenuContentProps {
-  placement?: Placement
   arrow?: boolean | undefined
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }

@@ -16,9 +16,12 @@ import {
   MagicMenuItemId,
   MagicMenuViewActive,
 } from '../symbols'
+import type { Placement } from '@floating-ui/vue'
+import { useMenuState } from '../composables/private/useMenuState'
 
 interface MagicMenuViewProps {
   id?: string
+  placement?: Placement
 }
 
 const props = defineProps<MagicMenuViewProps>()
@@ -36,9 +39,32 @@ const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
 // Register view
 const { initializeView, deleteView } = useMenuView(instanceId)
+const { initializeState } = useMenuState(instanceId)
+const state = initializeState()
+
+const mappedPlacement = computed(() => {
+  if (props.placement) {
+    return props.placement
+  }
+
+  switch (state.options.mode) {
+    case 'navigation':
+      return 'bottom'
+    case 'menubar':
+      return !itemId ? 'bottom-start' : 'right-start'
+    case 'dropdown':
+      return !itemId ? 'bottom' : 'right-start'
+    case 'context':
+      return 'right-start'
+    default:
+      return 'bottom'
+  }
+})
+
 const view = initializeView({
   id: mappedId.value,
   parent: { views: parentTree, item: itemId ?? '' },
+  placement: mappedPlacement.value,
 })
 
 // Pass id, active state and parent tree to children

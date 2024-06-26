@@ -55,12 +55,13 @@ const mappedSize = computed(() => {
 useMutationObserver(
   elRef,
   (mutations) => {
-    const addedNodes: HTMLElement[] = mutations
+    const filtered = mutations
       .flatMap((m) => [...m.addedNodes])
-      .filter((n) => n instanceof HTMLElement)
-      .map((n) => n as HTMLElement)
+      .find((n) => n instanceof HTMLElement)
 
-    content.value = addedNodes[0]
+    if (!!filtered && filtered instanceof HTMLElement) {
+      content.value = filtered
+    }
   },
   {
     childList: true,
@@ -78,11 +79,15 @@ useResizeObserver(content, () => {
 
 onMounted(() => {
   if (elRef.value) {
-    const content = elRef.value.querySelector('*')
-    if (content instanceof HTMLElement) {
+    const content = elRef.value.querySelectorAll('*')
+    const filtered = Array.from(content).find(
+      (node) => node instanceof HTMLElement
+    )
+
+    if (!!filtered && filtered instanceof HTMLElement) {
       size.value = {
-        width: content.offsetWidth,
-        height: content.offsetHeight,
+        width: filtered.offsetWidth,
+        height: filtered.offsetHeight,
       }
     }
   }

@@ -1,11 +1,10 @@
 import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
-import { useMenuUtils } from './useMenuUtils'
 
-type CreateViewArgs = Pick<MenuView, 'id' | 'parent'>
-type AddViewArgs = Pick<MenuView, 'id' | 'parent'>
-type FindViewArgs = Pick<MenuView, 'id' | 'parent'>
+type InitializeViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
+type CreateViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
+type AddViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
 
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
@@ -22,7 +21,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   // Private functions
   function createView(args: CreateViewArgs) {
-    const { id, parent } = args
+    const { id, parent, placement } = args
 
     if (parent.views.length === 0) {
       parent.views.push(toValue(instanceId))
@@ -37,6 +36,8 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       },
       active: false,
       items: [],
+      channels: [],
+      placement: placement,
     }
 
     return reactive(view)
@@ -50,7 +51,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
   }
 
   // Public functions
-  function initializeView(args: FindViewArgs) {
+  function initializeView(args: InitializeViewArgs) {
     const { id } = args
     let instance = getView(id)
 

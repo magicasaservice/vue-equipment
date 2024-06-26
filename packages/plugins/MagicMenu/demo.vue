@@ -146,7 +146,37 @@
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
-    <button @click="selectView('dropdown-view')">Open Menu</button>
+
+    <magic-menu-provider
+      id="magic-menu--navigation"
+      :options="{ mode: 'navigation' }"
+      class="mx-auto"
+    >
+      <magic-menu-view>
+        <magic-menu-trigger class="flex">
+          <magic-menu-remote channel-id="a">Home</magic-menu-remote>
+          <magic-menu-remote channel-id="b">Events</magic-menu-remote>
+          <magic-menu-remote channel-id="c">Projects</magic-menu-remote>
+          <magic-menu-remote channel-id="d">FAQ</magic-menu-remote>
+        </magic-menu-trigger>
+        <magic-menu-content>
+          <magic-auto-size>
+            <magic-menu-channel id="a" class="w-[20rem] h-[20rem]"
+              >Home Channel</magic-menu-channel
+            >
+            <magic-menu-channel id="b" class="w-[30rem] h-[20rem]"
+              >Events Channel</magic-menu-channel
+            >
+            <magic-menu-channel id="c" class="w-[40rem] h-[20rem]"
+              >Projects Channel</magic-menu-channel
+            >
+            <magic-menu-channel id="d" class="w-[50rem] h-[20rem]"
+              >FAQ Channel</magic-menu-channel
+            >
+          </magic-auto-size>
+        </magic-menu-content>
+      </magic-menu-view>
+    </magic-menu-provider>
   </div>
 </template>
 
@@ -154,7 +184,6 @@
 import { onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,
-  useMagicMenu,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
 import type { ValueOf } from '@maas/vue-equipment/utils'
@@ -165,8 +194,6 @@ function callback(
 ) {
   console.log(id, payload)
 }
-
-const { selectView } = useMagicMenu('magic-menu--dropdown')
 
 useMagicEmitter().on('*', callback)
 
@@ -187,13 +214,19 @@ onBeforeUnmount(() => {
   width: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .magic-menu-item .magic-menu-trigger {
-  position: absolute;
-  inset: 0;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
+}
+
+.magic-menu-item .magic-menu-view {
+  height: 100%;
+  width: 100%;
 }
 
 .magic-menu-item.-active {
@@ -205,10 +238,14 @@ onBeforeUnmount(() => {
 }
 
 .magic-menu-content__inner {
-  width: 220px;
+  min-width: 220px;
   background: white;
   color: black;
   display: flex;
   flex-direction: column;
+}
+
+.magic-menu-remote {
+  padding: 0 1rem;
 }
 </style>

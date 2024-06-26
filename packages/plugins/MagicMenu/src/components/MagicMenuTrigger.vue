@@ -69,7 +69,9 @@ const mappedTrigger = computed<Interaction[]>(() => {
     case 'menubar':
       return view?.parent.item
         ? ['mouseenter', 'mouseleave', 'click']
-        : ['mouseenter', 'click']
+        : state.active
+        ? ['mouseenter', 'click']
+        : ['click']
     case 'dropdown':
       return view?.parent.item
         ? ['mouseenter', 'mouseleave', 'click']
@@ -78,6 +80,8 @@ const mappedTrigger = computed<Interaction[]>(() => {
       return view?.parent.item
         ? ['mouseenter', 'mouseleave', 'click']
         : ['right-click']
+    case 'navigation':
+      return ['mouseenter', 'mouseleave']
   }
 })
 

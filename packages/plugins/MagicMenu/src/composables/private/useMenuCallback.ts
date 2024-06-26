@@ -32,6 +32,8 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
         break
       case 'menubar':
         break
+      case 'navigation':
+        break
       case 'context':
         lockScroll()
         break
@@ -54,6 +56,8 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
         unlockScroll()
         break
       case 'menubar':
+        break
+      case 'navigation':
         break
       case 'context':
         unlockScroll()

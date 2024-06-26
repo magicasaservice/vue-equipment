@@ -1,13 +1,27 @@
 import { type MaybeRef } from 'vue'
 import { useMenuView } from './private/useMenuView'
+import { useMenuChannel } from './private/useMenuChannel'
 
-export function useMagicMenu(instanceId: MaybeRef<string>) {
+interface UseMagicMenuArgs {
+  instanceId: MaybeRef<string>
+  viewId?: string
+}
+
+export function useMagicMenu(args: UseMagicMenuArgs) {
+  const { instanceId, viewId } = args
+
   // Public functions
   const { selectView, unselectView } = useMenuView(instanceId)
+  const { selectChannel, unselectChannel } = useMenuChannel({
+    instanceId,
+    viewId: viewId ?? '',
+  })
 
   return {
     selectView,
     unselectView,
+    selectChannel,
+    unselectChannel,
   }
 }
 
