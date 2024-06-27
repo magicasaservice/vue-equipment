@@ -1,13 +1,13 @@
 <template>
   <div class="w-full max-w-screen flex flex-col gap-24 items-center">
     <magic-menu-provider id="magic-menu--menubar" class="flex">
-      <magic-menu-view>
+      <magic-menu-view id="test">
         <magic-menu-trigger class="px-4">Edit</magic-menu-trigger>
         <magic-menu-content>
           <magic-menu-item>Undo</magic-menu-item>
           <magic-menu-item>Redo</magic-menu-item>
           <magic-menu-item>
-            <magic-menu-view>
+            <magic-menu-view id="nested">
               <magic-menu-trigger>Find ></magic-menu-trigger>
               <magic-menu-content>
                 <magic-menu-item>Search the web…</magic-menu-item>
@@ -161,18 +161,18 @@
         </magic-menu-trigger>
         <magic-menu-content>
           <magic-auto-size>
-            <magic-menu-channel id="a" class="w-[20rem] h-[20rem]"
-              >Home Channel</magic-menu-channel
-            >
-            <magic-menu-channel id="b" class="w-[30rem] h-[20rem]"
-              >Events Channel</magic-menu-channel
-            >
-            <magic-menu-channel id="c" class="w-[40rem] h-[20rem]"
-              >Projects Channel</magic-menu-channel
-            >
-            <magic-menu-channel id="d" class="w-[50rem] h-[20rem]"
-              >FAQ Channel</magic-menu-channel
-            >
+            <magic-menu-channel id="a" class="w-[20rem] h-[20rem]">
+              Home Channel
+            </magic-menu-channel>
+            <magic-menu-channel id="b" class="w-[30rem] h-[20rem]">
+              Events Channel
+            </magic-menu-channel>
+            <magic-menu-channel id="c" class="w-[40rem] h-[20rem]">
+              Projects Channel
+            </magic-menu-channel>
+            <magic-menu-channel id="d" class="w-[50rem] h-[20rem]">
+              FAQ Channel
+            </magic-menu-channel>
           </magic-auto-size>
         </magic-menu-content>
       </magic-menu-view>
@@ -247,5 +247,10 @@ onBeforeUnmount(() => {
 
 .magic-menu-remote {
   padding: 0 1rem;
+}
+
+.magic-menu-remote.-active {
+  outline: solid 1px;
+  outline-color: red;
 }
 </style>

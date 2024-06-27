@@ -93,7 +93,7 @@ function guardedUnselect() {
     unselectItem(mappedId.value)
   } else {
     // If there is a nested active view,
-    // unselect the item once it is closed
+    //  unselect the item once it is closed
     watch(
       () => nestedView.value?.active,
       (value) => {

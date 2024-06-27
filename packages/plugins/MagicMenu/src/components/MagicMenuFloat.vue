@@ -161,7 +161,7 @@ const mappedReferenceEl = computed(() => {
       },
     }
   } else {
-    return view?.children?.trigger
+    return document.querySelector(`[data-id="${viewId}-trigger"]`)
   }
 })
 
@@ -222,7 +222,6 @@ const polygonPoints = computed(() => {
 
 <style>
 .magic-menu-float {
-  z-index: var(--magic-menu-float-z-index, 999);
   display: flex;
 }
 

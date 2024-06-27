@@ -1,4 +1,4 @@
-import { toValue, type MaybeRef } from 'vue'
+import { toValue, type MaybeRef, type Ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { MenuState } from '../../types'
 
@@ -8,10 +8,12 @@ type UseMenuCallbackArgs = {
   viewId: string
   lockScroll: () => void
   unlockScroll: () => void
+  wrapperActive: Ref<boolean>
 }
 
 export function useMenuCallback(args: UseMenuCallbackArgs) {
-  const { state, instanceId, viewId, lockScroll, unlockScroll } = args
+  const { state, instanceId, viewId, lockScroll, unlockScroll, wrapperActive } =
+    args
 
   const emitter = useMagicEmitter()
 
@@ -63,6 +65,8 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
         unlockScroll()
         break
     }
+
+    wrapperActive.value = false
   }
 
   return {

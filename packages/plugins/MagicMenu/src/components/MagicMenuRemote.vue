@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed, inject, watch } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
@@ -56,11 +56,11 @@ const mappedTrigger = computed<Interaction[]>(
 const { getView } = useMenuView(instanceId)
 const view = getView(viewId)
 
-const { getChannel } = useMenuChannel({
+const { initializeChannel, deleteChannel } = useMenuChannel({
   instanceId,
   viewId,
 })
-const channel = getChannel(mappedChannelId.value)
+let channel = initializeChannel({ id: mappedChannelId.value })
 
 const { onClick, onMouseenter } = useMenuRemote({
   viewId,
@@ -68,6 +68,15 @@ const { onClick, onMouseenter } = useMenuRemote({
   mappedChannelId,
   mappedTrigger,
 })
+
+watch(
+  () => view?.active,
+  () => {
+    // Reset if parent view changes
+    deleteChannel(mappedChannelId.value)
+    channel = initializeChannel({ id: mappedChannelId.value })
+  }
+)
 </script>
 
 <style>

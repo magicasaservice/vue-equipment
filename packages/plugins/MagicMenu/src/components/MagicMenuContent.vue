@@ -44,8 +44,13 @@ import {
   computed,
   type MaybeRef,
   type ComponentPublicInstance,
+  onBeforeUnmount,
 } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
+import { useMenuState } from '../composables/private/useMenuState'
+import { useMenuCallback } from '../composables/private/useMenuCallback'
+import { useMenuDOM } from '../composables/private/useMenuDOM'
+import { useMenuCursor } from '../composables/private/useMenuCursor'
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,
@@ -54,9 +59,6 @@ import {
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-import { useMenuState } from '../composables/private/useMenuState'
-import { useMenuCallback } from '../composables/private/useMenuCallback'
-import { useMenuDOM } from '../composables/private/useMenuDOM'
 
 defineOptions({
   inheritAttrs: false,
@@ -101,6 +103,10 @@ const mappedTransition = computed(() => {
   }
 })
 
+// Split isActive into two values to animate content smoothly
+const innerActive = ref(false)
+const wrapperActive = ref(false)
+
 const { lockScroll, unlockScroll } = useMenuDOM()
 const {
   onBeforeEnter,
@@ -115,11 +121,22 @@ const {
   viewId,
   lockScroll,
   unlockScroll,
+  wrapperActive,
 })
 
-// Split isActive into two values to animate content smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
+// Handle cursor
+const mappedClick = computed(() => view?.click)
+const mappedPlacement = computed(() => view?.placement ?? 'bottom')
+const mappedTrigger = computed(
+  () => document.querySelector(`[data-id="${viewId}-trigger"]`) as HTMLElement
+)
+
+const { destroy, initialize, isInsideTriangle, isInsideTo } = useMenuCursor({
+  from: mappedTrigger,
+  to: contentRef,
+  placement: mappedPlacement,
+  click: mappedClick,
+})
 
 // Handle state
 async function onOpen() {
@@ -127,15 +144,20 @@ async function onOpen() {
   await nextTick()
   innerActive.value = true
   await nextTick()
-  if (view) {
-    view.children.content = contentRef.value
-  }
+  initialize()
 }
 
-async function onClose() {
+function onClose() {
+  destroy()
   innerActive.value = false
-  await nextTick()
-  wrapperActive.value = false
+}
+
+function disableCursor() {
+  state.input.disabled = [...state.input.disabled, 'pointer']
+}
+
+function enableCursor() {
+  state.input.disabled = state.input.disabled.filter((x) => x !== 'pointer')
 }
 
 watch(
@@ -148,6 +170,31 @@ watch(
     }
   }
 )
+
+watch(isInsideTriangle, (value) => {
+  if (value) {
+    disableCursor()
+  } else {
+    enableCursor()
+  }
+})
+
+watch(isInsideTo, (value) => {
+  if (value) {
+    enableCursor()
+  } else {
+    switch (state.options.mode) {
+      case 'navigation':
+        if (!isInsideTriangle.value) {
+          view!.active = false
+        }
+    }
+  }
+})
+
+onBeforeUnmount(async () => {
+  destroy()
+})
 
 provide(MagicMenuContentId, `${viewId}-content`)
 </script>
@@ -162,15 +209,15 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
-.magic-menu-content__initial-enter-active {
-  animation: fade-in 50ms ease;
+.magic-menu-content--initial-enter-active {
+  animation: fade-in 0ms ease;
 }
 
-.magic-menu-content__final-leave-active {
-  animation: fade-out 150ms ease;
+.magic-menu-content--final-leave-active {
+  animation: fade-out 200ms ease;
 }
 
-.magic-menu-content__nested-enter-active {
-  animation: fade-in 100ms ease;
+.magic-menu-content--nested-enter-active {
+  animation: fade-in 300ms ease;
 }
 </style>

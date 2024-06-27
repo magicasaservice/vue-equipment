@@ -4,7 +4,7 @@ import { useMenuChannel } from './private/useMenuChannel'
 
 interface UseMagicMenuArgs {
   instanceId: MaybeRef<string>
-  viewId?: string
+  viewId: string
 }
 
 export function useMagicMenu(args: UseMagicMenuArgs) {
@@ -14,7 +14,7 @@ export function useMagicMenu(args: UseMagicMenuArgs) {
   const { selectView, unselectView } = useMenuView(instanceId)
   const { selectChannel, unselectChannel } = useMenuChannel({
     instanceId,
-    viewId: viewId ?? '',
+    viewId,
   })
 
   return {

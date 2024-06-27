@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { Placement } from '@floating-ui/vue'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
@@ -12,7 +13,7 @@ export interface MagicMenuOptions {
   }
 }
 
-export type Interaction = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
+export type Interaction = 'click' | 'mouseenter' | 'right-click'
 
 export type Coordinates = {
   x: number
@@ -36,10 +37,6 @@ export interface MenuView {
   items: MenuItem[]
   channels: MenuChannel[]
   parent: { item: string; views: string[] }
-  children: {
-    trigger?: HTMLElement
-    content?: HTMLElement
-  }
   placement: Placement
   click?: Coordinates
 }

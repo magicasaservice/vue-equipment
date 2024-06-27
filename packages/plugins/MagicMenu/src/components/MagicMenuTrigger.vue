@@ -8,14 +8,13 @@
     @click="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
-    @mouseleave="onMouseleave"
   >
     <slot :is-active="view?.active" :is-disabled="mappedDisabled" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, onBeforeUnmount, ref, toValue, watch } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -27,6 +26,7 @@ import {
 } from '../symbols'
 
 import type { Interaction } from '../types'
+import { onKeyStroke } from '@vueuse/core'
 
 interface MagicMenuTriggerProps {
   disabled?: boolean
@@ -68,20 +68,16 @@ const mappedTrigger = computed<Interaction[]>(() => {
   switch (state.options.mode) {
     case 'menubar':
       return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
+        ? ['mouseenter', 'click']
         : state.active
         ? ['mouseenter', 'click']
         : ['click']
     case 'dropdown':
-      return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
-        : ['click']
+      return view?.parent.item ? ['mouseenter', 'click'] : ['click']
     case 'context':
-      return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
-        : ['right-click']
+      return view?.parent.item ? ['mouseenter', 'click'] : ['right-click']
     case 'navigation':
-      return ['mouseenter', 'mouseleave']
+      return ['mouseenter']
   }
 })
 
@@ -93,32 +89,26 @@ const mappedTabindex = computed(() => {
   }
 })
 
-const { initialize, destroy, onMouseenter, onClick, onMouseleave } =
-  useMenuTrigger({
-    instanceId,
-    viewId,
-    itemId,
-    mappedDisabled,
-    mappedTrigger,
-    elRef,
-  })
-
-// Initialize watcher
-initialize()
+const { onMouseenter, onClick, onEnter } = useMenuTrigger({
+  instanceId,
+  viewId,
+  itemId,
+  mappedDisabled,
+  mappedTrigger,
+  elRef,
+})
 
 watch(
-  elRef,
-  (value) => {
-    if (view && value) {
-      view.children.trigger = value
+  () => view?.active,
+  async (value) => {
+    if (value) {
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      toValue(elRef)?.blur()
     }
-  },
-  { immediate: true }
+  }
 )
 
-onBeforeUnmount(() => {
-  destroy()
-})
+onKeyStroke('Enter', onEnter)
 </script>
 
 <style>

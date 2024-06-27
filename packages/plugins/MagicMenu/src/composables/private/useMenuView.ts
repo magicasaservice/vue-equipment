@@ -1,4 +1,12 @@
-import { reactive, computed, toValue, type MaybeRef } from 'vue'
+import {
+  reactive,
+  computed,
+  toValue,
+  type MaybeRef,
+  ref,
+  shallowReactive,
+  shallowRef,
+} from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
 
@@ -30,10 +38,6 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     const view: MenuView = {
       id: id,
       parent: parent,
-      children: {
-        trigger: undefined,
-        content: undefined,
-      },
       active: false,
       items: [],
       channels: [],
