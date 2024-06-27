@@ -1,19 +1,22 @@
-import { nextTick, ref, toValue, type MaybeRef } from 'vue'
-import {
-  useEventListener,
-  useElementBounding,
-  useResizeObserver,
-  usePointer,
-} from '@vueuse/core'
-import type { Coordinates } from '../../types'
-import type { Placement } from '@floating-ui/vue'
+import { ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import type { Coordinates, MenuView } from '../../types'
 
-interface UseMenuCursorArgs {
-  from: MaybeRef<HTMLElement | undefined>
-  to: MaybeRef<HTMLElement | undefined>
-  placement: MaybeRef<Placement>
-  click: MaybeRef<Coordinates | undefined>
-}
+// Used for debugging, can be visualized by adding to MagicMenuContent
+// <span
+//     v-for="point in coords"
+//     :style="{
+//       background: 'red',
+//       position: 'fixed',
+//       top: point.y + 'px',
+//       left: point.x + 'px',
+//       width: '4px',
+//       height: '4px',
+//       zIndex: 1000,
+//       pointerEvents: 'none',
+//       transform: 'translate(-50%, -50%)',
+//     }"
+//   />
 
 type IsPointInTriangleArgs = {
   p: Coordinates
@@ -30,27 +33,9 @@ type IsPointInRectangleArgs = {
   right: number
 }
 
-export function useMenuCursor(args: UseMenuCursorArgs) {
+export function useMenuCursor(view: MenuView) {
   // Private state
-  const cancelListener = ref(new AbortController())
-  const { x, y } = usePointer()
-  const { from, to, placement, click } = args
-
-  // Used for debugging, can be visualized by adding to MagicMenuContent
-  // <span
-  //     v-for="point in coords"
-  //     :style="{
-  //       background: 'red',
-  //       position: 'fixed',
-  //       top: point.y + 'px',
-  //       left: point.x + 'px',
-  //       width: '4px',
-  //       height: '4px',
-  //       zIndex: 1000,
-  //       pointerEvents: 'none',
-  //       transform: 'translate(-50%, -50%)',
-  //     }"
-  //   />
+  let cancelListener = new AbortController()
   const coords = ref<Coordinates[]>([
     { x: 0, y: 0 },
     { x: 0, y: 0 },
@@ -69,7 +54,7 @@ export function useMenuCursor(args: UseMenuCursorArgs) {
   ): [Coordinates, Coordinates, Coordinates] {
     const [a, b, c] = vertices
 
-    switch (toValue(placement)) {
+    switch (view?.placement) {
       case 'bottom':
       case 'bottom-start':
       case 'bottom-end':
@@ -150,39 +135,32 @@ export function useMenuCursor(args: UseMenuCursorArgs) {
 
   function triangleOverlap(
     cursor: Coordinates,
-    from: MaybeRef<HTMLElement | undefined>,
-    to: MaybeRef<HTMLElement | undefined>
+    fromBounding: DOMRect,
+    toBounding: DOMRect
   ) {
-    const fromBounding = useElementBounding(from, {
-      windowScroll: false,
-      windowResize: false,
-    })
-    const toBounding = useElementBounding(to, {
-      windowScroll: false,
-      windowResize: false,
-    })
-
     const { top, left, bottom, right } = toBounding
 
-    const centerPoint = toValue(click) ?? {
-      x: (fromBounding.left.value + fromBounding.right.value) / 2,
-      y: (fromBounding.top.value + fromBounding.bottom.value) / 2,
-    }
+    const centerPoint = view.click
+      ? view.click
+      : {
+          x: (fromBounding.left + fromBounding.right) / 2,
+          y: (fromBounding.top + fromBounding.bottom) / 2,
+        }
 
     const sidePoints: Coordinates[] = []
 
-    switch (toValue(placement)) {
+    switch (view.placement) {
       case 'top':
       case 'top-start':
       case 'top-end':
       case 'bottom':
       case 'bottom-start':
       case 'bottom-end':
-        const topDist = Math.abs(top.value - centerPoint.y)
-        const bottomDist = Math.abs(bottom.value - centerPoint.y)
+        const topDist = Math.abs(top - centerPoint.y)
+        const bottomDist = Math.abs(bottom - centerPoint.y)
         const mappedY = topDist < bottomDist ? top : bottom
-        sidePoints.push({ x: left.value, y: mappedY.value })
-        sidePoints.push({ x: right.value, y: mappedY.value })
+        sidePoints.push({ x: left, y: mappedY })
+        sidePoints.push({ x: right, y: mappedY })
         break
       case 'right':
       case 'right-start':
@@ -190,11 +168,11 @@ export function useMenuCursor(args: UseMenuCursorArgs) {
       case 'left':
       case 'left-start':
       case 'left-end':
-        const rightDist = Math.abs(right.value - centerPoint.x)
-        const leftDist = Math.abs(left.value - centerPoint.x)
+        const rightDist = Math.abs(right - centerPoint.x)
+        const leftDist = Math.abs(left - centerPoint.x)
         const mappedX = rightDist < leftDist ? right : left
-        sidePoints.push({ x: mappedX.value, y: top.value })
-        sidePoints.push({ x: mappedX.value, y: bottom.value })
+        sidePoints.push({ x: mappedX, y: top })
+        sidePoints.push({ x: mappedX, y: bottom })
         break
     }
 
@@ -211,78 +189,45 @@ export function useMenuCursor(args: UseMenuCursorArgs) {
     })
   }
 
-  function elementOverlap(
-    cursor: Coordinates,
-    element: MaybeRef<HTMLElement | undefined>
-  ) {
-    const { top, left, bottom, right } = useElementBounding(element, {
-      windowScroll: false,
-      windowResize: false,
-    })
+  function elementOverlap(cursor: Coordinates, bounding: DOMRect) {
+    const { top, left, bottom, right } = bounding
 
     return isPointInRectangle({
       p: cursor,
-      top: top.value,
-      left: left.value,
-      bottom: bottom.value,
-      right: right.value,
+      top: top,
+      left: left,
+      bottom: bottom,
+      right: right,
     })
   }
 
   function onMousemove(e: PointerEvent) {
-    const cursor = { x: e.clientX, y: e.clientY }
+    const from = document.querySelector(
+      `[data-id="${view?.id}-trigger"]`
+    ) as HTMLElement
 
-    isInsideFrom.value = elementOverlap(cursor, from)
-    isInsideTo.value = elementOverlap(cursor, to)
-    isInsideTriangle.value = triangleOverlap(cursor, from, to)
-  }
+    const to = document.querySelector(
+      `[data-id="${view?.id}-content"] .magic-menu-content__inner`
+    ) as HTMLElement
 
-  function fromMouseenter() {
-    isInsideFrom.value = true
-  }
+    if (from && to) {
+      const cursor = { x: e.clientX, y: e.clientY }
+      const fromBounding = from.getBoundingClientRect()
+      const toBounding = to.getBoundingClientRect()
 
-  function fromMouseleave() {
-    isInsideFrom.value = false
-  }
-
-  function toMouseenter() {
-    isInsideTo.value = true
-  }
-
-  function toMouseleave(e: PointerEvent) {
-    isInsideTo.value = false
-  }
-
-  function onResize() {
-    const cursor = { x: x.value, y: y.value }
-
-    isInsideFrom.value = elementOverlap(cursor, from)
-    isInsideTo.value = elementOverlap(cursor, to)
-    isInsideTriangle.value = triangleOverlap(cursor, from, to)
+      isInsideFrom.value = elementOverlap(cursor, fromBounding)
+      isInsideTo.value = elementOverlap(cursor, toBounding)
+      isInsideTriangle.value = triangleOverlap(cursor, fromBounding, toBounding)
+    }
   }
 
   function initialize() {
-    cancelListener.value.abort()
-    cancelListener.value = new AbortController()
-
-    useEventListener(from, 'mouseenter', fromMouseenter, {
-      signal: cancelListener.value.signal,
-    })
-    useEventListener(from, 'mouseleave', fromMouseleave, {
-      signal: cancelListener.value.signal,
-    })
-    useEventListener(to, 'mouseenter', toMouseenter, {
-      signal: cancelListener.value.signal,
-    })
-    useEventListener(to, 'mouseleave', toMouseleave, {
-      signal: cancelListener.value.signal,
-    })
+    cancelListener.abort()
+    cancelListener = new AbortController()
 
     useEventListener(document, 'mousemove', onMousemove, {
-      signal: cancelListener.value.signal,
+      signal: cancelListener.signal,
     })
-
-    useResizeObserver(to, onResize)
   }
 
   function destroy() {
@@ -291,7 +236,7 @@ export function useMenuCursor(args: UseMenuCursorArgs) {
     isInsideTo.value = false
     isInsideTriangle.value = false
 
-    cancelListener.value.abort()
+    cancelListener.abort()
   }
 
   return {

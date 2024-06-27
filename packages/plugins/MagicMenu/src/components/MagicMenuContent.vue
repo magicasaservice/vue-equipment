@@ -31,6 +31,20 @@
         </magic-menu-float>
       </div>
     </transition>
+    <span
+      v-for="point in coords"
+      :style="{
+        background: 'red',
+        position: 'fixed',
+        top: point.y + 'px',
+        left: point.x + 'px',
+        width: '4px',
+        height: '4px',
+        zIndex: 1000,
+        pointerEvents: 'none',
+        transform: 'translate(-50%, -50%)',
+      }"
+    />
   </teleport>
 </template>
 
@@ -124,20 +138,6 @@ const {
   wrapperActive,
 })
 
-// Handle cursor
-const mappedClick = computed(() => view?.click)
-const mappedPlacement = computed(() => view?.placement ?? 'bottom')
-const mappedTrigger = computed(
-  () => document.querySelector(`[data-id="${viewId}-trigger"]`) as HTMLElement
-)
-
-const { destroy, initialize, isInsideTriangle, isInsideTo } = useMenuCursor({
-  from: mappedTrigger,
-  to: contentRef,
-  placement: mappedPlacement,
-  click: mappedClick,
-})
-
 // Handle state
 async function onOpen() {
   wrapperActive.value = true
@@ -152,14 +152,6 @@ function onClose() {
   innerActive.value = false
 }
 
-function disableCursor() {
-  state.input.disabled = [...state.input.disabled, 'pointer']
-}
-
-function enableCursor() {
-  state.input.disabled = state.input.disabled.filter((x) => x !== 'pointer')
-}
-
 watch(
   () => view?.active,
   async (value) => {
@@ -170,6 +162,24 @@ watch(
     }
   }
 )
+
+// Handle cursor
+const {
+  coords,
+  destroy,
+  initialize,
+  isInsideTriangle,
+  isInsideTo,
+  isInsideFrom,
+} = useMenuCursor(view!)
+
+function disableCursor() {
+  state.input.disabled = [...state.input.disabled, 'pointer']
+}
+
+function enableCursor() {
+  state.input.disabled = state.input.disabled.filter((x) => x !== 'pointer')
+}
 
 watch(isInsideTriangle, (value) => {
   if (value) {
@@ -182,17 +192,23 @@ watch(isInsideTriangle, (value) => {
 watch(isInsideTo, (value) => {
   if (value) {
     enableCursor()
-  } else {
+  }
+})
+
+const isOutside = computed(
+  () => !isInsideTo.value && !isInsideFrom.value && !isInsideTriangle.value
+)
+
+watch(isOutside, (value, oldValue) => {
+  if (value && !oldValue) {
     switch (state.options.mode) {
       case 'navigation':
-        if (!isInsideTriangle.value) {
-          view!.active = false
-        }
+        view!.active = false
     }
   }
 })
 
-onBeforeUnmount(async () => {
+onBeforeUnmount(() => {
   destroy()
 })
 

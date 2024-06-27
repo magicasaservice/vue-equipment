@@ -34,7 +34,7 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const { activeView, selectView } = useCommandView()
 
 const mappedId = computed(() => {
-  return props.id || uuid()
+  return props.id ?? uuid()
 })
 
 const isActive = computed(() => {

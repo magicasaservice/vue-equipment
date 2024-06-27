@@ -8,7 +8,6 @@
 import { computed, inject, onBeforeUnmount, provide } from 'vue'
 import { uuid } from '@maas/vue-equipment/utils'
 import { useMenuView } from '../composables/private/useMenuView'
-
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,

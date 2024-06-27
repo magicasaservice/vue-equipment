@@ -1,13 +1,13 @@
 <template>
   <div class="w-full max-w-screen flex flex-col gap-24 items-center">
     <magic-menu-provider id="magic-menu--menubar" class="flex">
-      <magic-menu-view id="test">
+      <magic-menu-view>
         <magic-menu-trigger class="px-4">Edit</magic-menu-trigger>
         <magic-menu-content>
           <magic-menu-item>Undo</magic-menu-item>
           <magic-menu-item>Redo</magic-menu-item>
           <magic-menu-item>
-            <magic-menu-view id="nested">
+            <magic-menu-view>
               <magic-menu-trigger>Find ></magic-menu-trigger>
               <magic-menu-content>
                 <magic-menu-item>Search the web…</magic-menu-item>
@@ -192,7 +192,7 @@ function callback(
   id: keyof MagicEmitterEvents,
   payload: ValueOf<MagicEmitterEvents>
 ) {
-  console.log(id, payload)
+  // console.log(id, payload)
 }
 
 useMagicEmitter().on('*', callback)
@@ -203,6 +203,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+.magic-menu-trigger {
+  height: 2.5rem;
+  border: 1px solid darkslategray;
+  display: flex;
+  align-items: center;
+}
 .magic-menu-trigger.-active {
   outline: solid 1px;
   outline-color: rgba(100, 200, 20);

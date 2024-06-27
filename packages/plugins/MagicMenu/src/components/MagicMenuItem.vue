@@ -53,7 +53,6 @@ if (!viewId) {
 if (!contentId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuContent')
 }
-
 const mappedId = computed(() => props.id ?? `magic-menu-item-${uuid()}`)
 
 // Register item

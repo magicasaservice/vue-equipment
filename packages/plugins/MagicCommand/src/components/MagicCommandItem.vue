@@ -19,8 +19,8 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
-import { useEventListener, onKeyStroke } from '@vueuse/core'
 import { uuid } from '@maas/vue-equipment/utils'
+import { useEventListener, onKeyStroke } from '@vueuse/core'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { MagicCommandInstanceId } from '../symbols'
@@ -43,7 +43,7 @@ const commandId = inject(MagicCommandInstanceId, '')
 const { selectItem, activeItem } = useCommandItem(commandId)
 
 const mappedId = computed(() => {
-  return props.id || uuid()
+  return props.id ?? uuid()
 })
 
 const isActive = computed(() => {
