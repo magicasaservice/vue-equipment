@@ -39,4 +39,5 @@ dist
 .vercel
 
 # tokens
-.maas
+.maas/tokens
+.maas/tailwind.preset.js
