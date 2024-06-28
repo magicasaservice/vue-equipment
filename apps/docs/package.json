@@ -7,13 +7,16 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/sanitize-html": "^2.9.5",
+    "autoprefixer": "^10.4.19",
+    "fonts": "workspace:fonts@*",
     "fs-extra": "^11.2.0",
-    "unocss": "^0.61.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
     "unplugin-icons": "^0.19.0",
-    "unplugin-vue-components": "^0.27.0",
-    "vite": "^5.0.10",
+    "unplugin-vue-components": "^0.27.2",
+    "vite": "^5.3.2",
     "vitepress": "1.2.3",
-    "vue": "^3.3.12"
+    "vue": "^3.4.31"
   },
   "scripts": {
     "dev": "vitepress dev",
@@ -21,8 +24,9 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "@maas/vue-equipment/metadata": "workspace:metadata@*",
+    "@maas/mirror": "^0.0.70",
     "@maas/vue-equipment/composables": "workspace:composables@*",
+    "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "prettier": "^3.1.1"

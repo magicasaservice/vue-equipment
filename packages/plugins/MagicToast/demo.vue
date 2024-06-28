@@ -1,13 +1,11 @@
 <template>
   <div class="w-full flex items-center justify-center gap-4">
-    <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-      <button @click="onClick" class="w-full h-full px-6 py-4">
-        Add toast
-      </button>
-    </div>
-    <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-      <button @click="clear" class="w-full h-full px-6 py-4">Clear all</button>
-    </div>
+    <m-button @click="onClick" class="w-full h-full px-6 py-4">
+      Add toast
+    </m-button>
+    <m-button @click="clear" class="w-full h-full px-6 py-4">
+      Clear all
+    </m-button>
   </div>
   <magic-toast :id="id" :class="position" />
 </template>
@@ -21,6 +19,7 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
+import { MButton } from '@maas/mirror/vue'
 import {
   useMagicToast,
   useMagicEmitter,

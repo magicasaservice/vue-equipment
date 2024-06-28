@@ -8,6 +8,7 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
+    "@maas/mirror": "^0.0.70",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
     "tsup": "^8.0.1",

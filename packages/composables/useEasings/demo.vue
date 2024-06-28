@@ -1,28 +1,34 @@
 <template>
   <div class="flex flex-col gap-8">
-    <div class="flex flex-col p-8 gap-4 bg-gray-500/5 rounded">
+    <div
+      class="flex flex-col p-8 gap-4 bg-surface-elevation-base rounded-surface-md"
+    >
       <div class="flex gap-2" v-for="easing in mappedEasings" :key="easing">
         <div class="w-40">{{ easing.name }}</div>
-        <div class="w-full h-4 flex bg-gray-300/5 rounded-full pr-4">
+        <div
+          class="w-full h-4 flex bg-surface-elevation-high rounded-full pr-4"
+        >
           <div class="w-full h-full">
             <div
-              class="w-4 h-4 bg-black rounded-full text-center"
+              class="w-4 h-4 bg-surface-elevation-low rounded-full text-center"
               :style="easing.style"
             />
           </div>
         </div>
       </div>
     </div>
-    <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-      <button @click="toggle" class="w-full h-full px-6 py-4">
+
+    <div class="w-full flex justify-center">
+      <m-button @click="toggle">
         {{ isActive ? 'Reset' : 'Start' }}
-      </button>
+      </m-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { MButton } from '@maas/mirror/vue'
 import { useEasings } from '@maas/vue-equipment/composables'
 import { useRafFn } from '@vueuse/core'
 

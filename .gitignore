@@ -36,3 +36,6 @@ dist
 # types
 /types
 .vercel
+
+# tokens
+.maas

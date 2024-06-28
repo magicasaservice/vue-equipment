@@ -1,0 +1,11 @@
+{
+  "name": "fonts",
+  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "type": "module",
+  "exports": {
+    "./index/*": "./dist/index/*",
+    "./interface/*": "./dist/interface/*",
+    "./mirage/*": "./dist/mirage/*"
+  },
+  "version": "0.0.70"
+}

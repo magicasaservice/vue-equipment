@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
-import UnoCSS from 'unocss/vite'
 
 export default defineConfig(async () => {
   return {
@@ -13,7 +12,6 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
-      UnoCSS(),
       MarkdownTransform(),
       Components({
         dirs: [resolve(__dirname, '.vitepress/theme/components')],

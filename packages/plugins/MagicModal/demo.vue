@@ -1,14 +1,18 @@
 <template>
-  <div class="m-auto rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-    <button @click="open" class="w-full h-full px-6 py-4">Open modal</button>
+  <div class="w-full flex justify-center">
+    <m-button @click="open">Open modal</m-button>
   </div>
   <magic-modal :id="id" :class="className">
-    <div tabindex="1" class="bg-gray-100 w-[40rem] h-[30rem] rounded-lg" />
+    <div
+      tabindex="1"
+      class="bg-surface-elevation-high w-[40rem] h-[30rem] rounded-surface-md"
+    />
   </magic-modal>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue'
+import { MButton } from '@maas/mirror/vue'
 import {
   useMagicEmitter,
   useMagicModal,

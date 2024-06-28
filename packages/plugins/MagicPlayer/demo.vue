@@ -132,11 +132,7 @@
       id="player-api"
     />
   </div>
-  <div class="m-auto mt-4 rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-    <button @click="togglePlay" class="w-full h-full px-6 py-4">
-      Toggle Play
-    </button>
-  </div>
+  <m-button @click="togglePlay">Toggle Play</m-button>
 
   <p>Audio Player</p>
   <div class="w-full">
@@ -158,6 +154,7 @@
 </template>
 
 <script lang="ts" setup>
+import { MButton } from '@maas/mirror/vue'
 import { useMagicPlayer } from '@maas/vue-equipment/plugins'
 
 const playerApi = useMagicPlayer({ id: 'player-api' })
