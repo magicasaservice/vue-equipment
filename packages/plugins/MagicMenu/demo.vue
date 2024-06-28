@@ -2,6 +2,7 @@
   <div class="w-full max-w-screen flex flex-col gap-24 items-center">
     <magic-menu-provider
       id="magic-menu--menubar"
+      :options="{ debug: true }"
       class="flex gap-2 rounded-2xl bg-surface-elevation-base"
     >
       <magic-menu-view>
