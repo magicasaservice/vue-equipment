@@ -3,6 +3,7 @@
   "description": "A magic collection of Vue composables, plugins, components and directives",
   "version": "0.30.3",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "type": "module",
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
     "@release-it/bumper": "^6.0.1",
