@@ -38,7 +38,10 @@ export interface MenuView {
   channels: MenuChannel[]
   parent: { item: string; views: string[] }
   placement: Placement
-  click?: Coordinates
+  state: {
+    activeTimeout: NodeJS.Timeout
+    clicked?: Coordinates
+  }
 }
 
 export interface MenuState {

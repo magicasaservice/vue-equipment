@@ -140,8 +140,8 @@ export function useMenuCursor(view: MenuView) {
   ) {
     const { top, left, bottom, right } = toBounding
 
-    const centerPoint = view.click
-      ? view.click
+    const centerPoint = view.state.clicked
+      ? view.state.clicked
       : {
           x: (fromBounding.left + fromBounding.right) / 2,
           y: (fromBounding.top + fromBounding.bottom) / 2,

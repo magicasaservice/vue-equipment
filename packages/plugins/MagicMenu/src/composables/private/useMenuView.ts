@@ -1,12 +1,4 @@
-import {
-  reactive,
-  computed,
-  toValue,
-  type MaybeRef,
-  ref,
-  shallowReactive,
-  shallowRef,
-} from 'vue'
+import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
 
@@ -42,6 +34,9 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       items: [],
       channels: [],
       placement: placement,
+      state: {
+        activeTimeout: setTimeout(() => {}, 0),
+      },
     }
 
     return reactive(view)
@@ -126,15 +121,20 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
     if (instance) {
       instance.active = true
+      if (instance.state.activeTimeout) {
+        clearTimeout(instance.state.activeTimeout)
+      }
       unselectUnrelatedViews(id)
     }
   }
 
-  function unselectView(id: string) {
+  function unselectView(id: string, delay = 0) {
     const instance = getView(id)
 
     if (instance) {
-      instance.active = false
+      instance.state.activeTimeout = setTimeout(() => {
+        instance.active = false
+      }, delay)
     }
   }
 

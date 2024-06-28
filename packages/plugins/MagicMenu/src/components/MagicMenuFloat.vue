@@ -145,18 +145,18 @@ const mappedMiddleware = computed(() => {
 const mappedReferenceEl = computed(() => {
   if (props.referenceEl) {
     return toValue(props.referenceEl)
-  } else if (view?.click) {
+  } else if (view?.state.clicked) {
     return {
       getBoundingClientRect() {
         return {
           width: 0,
           height: 0,
-          x: view.click!.x,
-          y: view.click!.y,
-          top: view.click!.y,
-          left: view.click!.x,
-          right: view.click!.x,
-          bottom: view.click!.y,
+          x: view.state.clicked!.x,
+          y: view.state.clicked!.y,
+          top: view.state.clicked!.y,
+          left: view.state.clicked!.x,
+          right: view.state.clicked!.x,
+          bottom: view.state.clicked!.y,
         }
       },
     }

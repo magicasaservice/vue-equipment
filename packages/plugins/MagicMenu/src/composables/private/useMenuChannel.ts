@@ -81,11 +81,6 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
       // Deactivate all siblings
       unselectSiblings(id)
-
-      // Set view in focus
-      if (view) {
-        state.input.view = view.id
-      }
     }
   }
 

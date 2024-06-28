@@ -37,7 +37,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
         // Save coordinates, later used for float positioning
         if (view) {
-          view.click = { x: e.clientX, y: e.clientY }
+          view.state.clicked = { x: e.clientX, y: e.clientY }
         }
 
         // If the trigger is not nested inside an item, focus the view

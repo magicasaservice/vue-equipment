@@ -98,7 +98,7 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
-const { getView } = useMenuView(instanceId)
+const { getView, unselectView } = useMenuView(instanceId)
 const view = getView(viewId)
 
 const { initializeState } = useMenuState(instanceId)
@@ -203,7 +203,7 @@ watch(isOutside, (value, oldValue) => {
   if (value && !oldValue) {
     switch (state.options.mode) {
       case 'navigation':
-        view!.active = false
+        unselectView(viewId, 150)
     }
   }
 })
