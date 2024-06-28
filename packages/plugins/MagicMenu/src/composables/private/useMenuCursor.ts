@@ -33,7 +33,7 @@ type IsPointInRectangleArgs = {
   right: number
 }
 
-export function useMenuCursor(view: MenuView) {
+export function useMenuCursor(view: MenuView, debug = false) {
   // Private state
   let cancelListener = new AbortController()
   const coords = ref<Coordinates[]>([
@@ -99,8 +99,6 @@ export function useMenuCursor(view: MenuView) {
         break
     }
 
-    coords.value = [a, b, c]
-
     return [a, b, c]
   }
 
@@ -133,11 +131,7 @@ export function useMenuCursor(view: MenuView) {
     return p.x >= left && p.x <= right && p.y >= top && p.y <= bottom
   }
 
-  function triangleOverlap(
-    cursor: Coordinates,
-    fromBounding: DOMRect,
-    toBounding: DOMRect
-  ) {
+  function getTriangle(fromBounding: DOMRect, toBounding: DOMRect) {
     const { top, left, bottom, right } = toBounding
 
     const centerPoint = view.state.clicked
@@ -181,6 +175,16 @@ export function useMenuCursor(view: MenuView) {
       16
     )
 
+    return [a, b, c]
+  }
+
+  function triangleOverlap(
+    cursor: Coordinates,
+    fromBounding: DOMRect,
+    toBounding: DOMRect
+  ) {
+    const [a, b, c] = getTriangle(fromBounding, toBounding)
+
     return isPointInTriangle({
       p: cursor,
       a,
@@ -202,22 +206,45 @@ export function useMenuCursor(view: MenuView) {
   }
 
   function onMousemove(e: PointerEvent) {
-    const from = document.querySelector(
-      `[data-id="${view?.id}-trigger"]`
-    ) as HTMLElement
+    const from = Array.from(
+      document.querySelectorAll(`[data-id="${view?.id}-trigger"]`)
+    ) as HTMLElement[]
 
     const to = document.querySelector(
       `[data-id="${view?.id}-content"] .magic-menu-content__inner`
     ) as HTMLElement
 
-    if (from && to) {
+    if (from.length && to) {
       const cursor = { x: e.clientX, y: e.clientY }
-      const fromBounding = from.getBoundingClientRect()
       const toBounding = to.getBoundingClientRect()
-
-      isInsideFrom.value = elementOverlap(cursor, fromBounding)
       isInsideTo.value = elementOverlap(cursor, toBounding)
-      isInsideTriangle.value = triangleOverlap(cursor, fromBounding, toBounding)
+
+      isInsideFrom.value = from.some((trigger) => {
+        const fromBounding = trigger.getBoundingClientRect()
+        const overlap = elementOverlap(cursor, fromBounding)
+
+        return overlap
+      })
+
+      isInsideTriangle.value = from.some((trigger) => {
+        const fromBounding = trigger.getBoundingClientRect()
+        const overlap = triangleOverlap(cursor, fromBounding, toBounding)
+
+        return overlap
+      })
+
+      // Debugging
+      if (debug) {
+        const allCoords: Coordinates[] = []
+        from.forEach((trigger) => {
+          const fromBounding = trigger.getBoundingClientRect()
+          const [a, b, c] = getTriangle(fromBounding, toBounding)
+
+          allCoords.push(a, b, c)
+        })
+
+        coords.value = allCoords
+      }
     }
   }
 

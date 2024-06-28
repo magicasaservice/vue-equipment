@@ -24,7 +24,11 @@
             <slot name="arrow" />
           </template>
           <template #default>
-            <div class="magic-menu-content__inner" ref="contentRef">
+            <div
+              class="magic-menu-content__inner"
+              ref="contentRef"
+              :class="{ '-disabled': pointerDisabled }"
+            >
               <slot />
             </div>
           </template>
@@ -104,6 +108,8 @@ const view = getView(viewId)
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
+const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
+
 const mappedTransition = computed(() => {
   switch (true) {
     case !!view?.parent.item:
@@ -171,7 +177,7 @@ const {
   isInsideTriangle,
   isInsideTo,
   isInsideFrom,
-} = useMenuCursor(view!)
+} = useMenuCursor(view!, state.options.debug)
 
 function disableCursor() {
   state.input.disabled = [...state.input.disabled, 'pointer']
@@ -203,7 +209,7 @@ watch(isOutside, (value, oldValue) => {
   if (value && !oldValue) {
     switch (state.options.mode) {
       case 'navigation':
-        unselectView(viewId, 150)
+        unselectView(viewId, 200)
     }
   }
 })
@@ -223,6 +229,10 @@ provide(MagicMenuContentId, `${viewId}-content`)
 .magic-menu-content__inner {
   padding: 0;
   border: 0;
+}
+
+.magic-menu-content__inner.-disabled {
+  pointer-events: none;
 }
 
 .magic-menu-content--initial-enter-active {

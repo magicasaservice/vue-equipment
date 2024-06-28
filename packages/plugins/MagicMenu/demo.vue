@@ -300,27 +300,33 @@
 
     <magic-menu-provider
       id="magic-menu--navigation"
-      :options="{ mode: 'navigation' }"
+      :options="{ mode: 'navigation', debug: true }"
       class="mx-auto"
     >
       <magic-menu-view>
-        <magic-menu-trigger
-          class="flex bg-gray rounded-2xl bg-surface-elevation-base"
+        <div
+          class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
+          ref="navigationRef"
         >
-          <magic-menu-remote channel-id="a">
-            <m-button mode="ghost"> Home </m-button>
-          </magic-menu-remote>
-          <magic-menu-remote channel-id="b">
-            <m-button mode="ghost">Events</m-button>
-          </magic-menu-remote>
-          <magic-menu-remote channel-id="c">
-            <m-button mode="ghost">Projects</m-button>
-          </magic-menu-remote>
-          <magic-menu-remote channel-id="d">
-            <m-button mode="ghost">FAQ</m-button>
-          </magic-menu-remote>
-        </magic-menu-trigger>
-        <magic-menu-content>
+          <magic-menu-trigger class="flex">
+            <magic-menu-remote channel-id="a">
+              <m-button mode="ghost"> Home </m-button>
+            </magic-menu-remote>
+            <magic-menu-remote channel-id="b">
+              <m-button mode="ghost">Events</m-button>
+            </magic-menu-remote>
+            <magic-menu-remote channel-id="c">
+              <m-button mode="ghost">Projects</m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+          <m-button mode="ghost">External Link</m-button>
+          <magic-menu-trigger class="flex">
+            <magic-menu-remote channel-id="d">
+              <m-button mode="ghost">FAQ</m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+        </div>
+        <magic-menu-content :reference-el="navigationRef">
           <div class="p-1">
             <magic-auto-size class="bg-surface-elevation-base rounded-2xl">
               <magic-menu-channel id="a" class="w-[40rem] h-[20rem]">
@@ -344,13 +350,12 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuItem, MButton } from '@maas/mirror/vue'
-
-import { onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { MMenuItem, MButton } from '@maas/mirror/vue'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
@@ -368,9 +373,7 @@ onBeforeUnmount(() => {
   useMagicEmitter().off('*', callback)
 })
 
-function onEnter() {
-  console.log('enter')
-}
+const navigationRef = ref<HTMLElement | null>(null)
 </script>
 
 <style>
