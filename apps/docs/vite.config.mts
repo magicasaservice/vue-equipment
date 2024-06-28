@@ -41,6 +41,10 @@ export default defineConfig(async () => {
           find: '@maas/vue-equipment/utils',
           replacement: resolve(__dirname, '../../packages/utils'),
         },
+        {
+          find: 'fonts',
+          replacement: resolve(__dirname, '../../packages/fonts/dist'),
+        },
       ],
       dedupe: ['vue'],
     },
