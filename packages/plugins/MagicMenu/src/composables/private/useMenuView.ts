@@ -35,7 +35,8 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       channels: [],
       placement: placement,
       state: {
-        abortController: new AbortController(),
+        selectAbortController: new AbortController(),
+        unselectAbortController: new AbortController(),
       },
     }
 
@@ -126,17 +127,32 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     )
   }
 
-  function selectView(id: string) {
+  async function selectView(id: string, delayMs = 0) {
     const instance = getView(id)
 
     if (instance) {
       // Cancel any scheduled closing
-      if (instance.state.abortController) {
-        instance.state.abortController.abort()
+      if (instance.state.unselectAbortController) {
+        instance.state.unselectAbortController.abort()
       }
 
-      instance.active = true
-      unselectUnrelatedViews(id)
+      // Schedule opening
+      const abortController = new AbortController()
+      instance.state.selectAbortController = abortController
+
+      try {
+        await delay(delayMs, abortController.signal)
+        instance.active = true
+        unselectUnrelatedViews(id)
+      } catch (err: any) {
+        if (err.name === 'AbortError') {
+          console.log(
+            `selectView() was interrupted by a call to unselectView()`
+          )
+        } else {
+          throw err
+        }
+      }
     }
   }
 
@@ -144,8 +160,14 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     const instance = getView(id)
 
     if (instance) {
+      // Cancel any scheduled closing
+      if (instance.state.selectAbortController) {
+        instance.state.selectAbortController.abort()
+      }
+
+      // Schedule closing
       const abortController = new AbortController()
-      instance.state.abortController = abortController
+      instance.state.unselectAbortController = abortController
 
       try {
         await delay(delayMs, abortController.signal)

@@ -65,6 +65,7 @@ useMutationObserver(
   },
   {
     childList: true,
+    subtree: true,
   }
 )
 

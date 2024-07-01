@@ -3,10 +3,13 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAllNested<MagicMenuOptions> = {
   mode: 'menubar',
+  debug: false,
   transition: {
-    initial: 'magic-menu-content--initial',
-    final: 'magic-menu-content--final',
-    nested: 'magic-menu-content--nested',
+    content: {
+      default: 'magic-menu-content--default',
+      nested: 'magic-menu-content--nested',
+    },
+    channel: 'magic-menu-channel',
   },
 }
 

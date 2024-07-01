@@ -5,7 +5,7 @@
     :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
     :data-id="`${viewId}-trigger`"
     :tabindex="mappedTabindex"
-    @click="onClick"
+    @pointerdown="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
   >
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, ref, toValue, watch } from 'vue'
+import { computed, inject, ref, toValue, watch } from 'vue'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -58,7 +58,7 @@ const state = initializeState()
 const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
-const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
+const mappedDisabled = computed(() => props.disabled ?? item?.disabled ?? false)
 
 const mappedTrigger = computed<Interaction[]>(() => {
   if (props.trigger?.length) {
@@ -114,5 +114,9 @@ onKeyStroke('Enter', onEnter)
 <style>
 .magic-menu-trigger {
   cursor: var(--magic-menu-trigger-cursor, pointer);
+}
+
+.magic-menu-trigger.-disabled {
+  pointer-events: none;
 }
 </style>

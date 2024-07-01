@@ -3,7 +3,7 @@
     class="magic-menu-remote"
     :class="{ '-active': channel?.active, '-disabled': disabled }"
     :data-id="`${channelId}-remote`"
-    @click="onClick"
+    @pointerdown="onClick"
     @mouseenter="onMouseenter"
   >
     <slot :is-active="view?.active" :is-disabled="disabled" />
@@ -49,6 +49,7 @@ if (!props.channelId) {
 }
 
 const mappedChannelId = computed(() => `magic-menu-channel-${props.channelId}`)
+
 const mappedTrigger = computed<Interaction[]>(
   () => props.trigger ?? ['mouseenter']
 )
@@ -60,7 +61,6 @@ const { initializeChannel, deleteChannel } = useMenuChannel({
   instanceId,
   viewId,
 })
-let channel = initializeChannel({ id: mappedChannelId.value })
 
 const { onClick, onMouseenter } = useMenuRemote({
   viewId,
@@ -69,12 +69,16 @@ const { onClick, onMouseenter } = useMenuRemote({
   mappedTrigger,
 })
 
+let channel = initializeChannel({ id: mappedChannelId.value })
+
 watch(
   () => view?.active,
-  () => {
-    // Reset if parent view changes
-    deleteChannel(mappedChannelId.value)
-    channel = initializeChannel({ id: mappedChannelId.value })
+  (value) => {
+    // Reset if parent view is inactive
+    if (!value) {
+      deleteChannel(mappedChannelId.value)
+      channel = initializeChannel({ id: mappedChannelId.value })
+    }
   }
 )
 </script>
@@ -82,5 +86,9 @@ watch(
 <style>
 .magic-menu-remote {
   cursor: var(--magic-menu-remote-cursor, pointer);
+}
+
+.magic-menu-remote.-disabled {
+  pointer-events: none;
 }
 </style>

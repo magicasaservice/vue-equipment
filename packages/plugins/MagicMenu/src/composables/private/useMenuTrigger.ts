@@ -72,12 +72,19 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       view
     ) {
       // If mouseenter is the first trigger, set active to true
-      if (mappedTrigger.value[0].includes('mouseenter')) {
+      if (mappedTrigger.value[0] === 'mouseenter') {
         state.active = true
       }
 
+      let delay = 0
+      switch (state.options.mode) {
+        case 'navigation':
+          delay = 200
+          break
+      }
+
       if (state.active) {
-        selectView(viewId)
+        selectView(viewId, delay)
 
         // If the trigger is not nested inside an item, focus the view
         if (!itemId) {
@@ -94,10 +101,17 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       e.button === 0 &&
       viewId
     ) {
+      let delay = 0
+      switch (state.options.mode) {
+        case 'navigation':
+          delay = 200
+          break
+      }
+
       switch (true) {
         case !state.active:
           state.active = true
-          selectView(viewId)
+          selectView(viewId, delay)
 
           // If the trigger is not nested inside an item, focus the view
           if (!itemId) {
@@ -107,7 +121,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
         case state.active && !itemId:
           state.active = false
           unselectView(viewId)
-
           break
       }
     }

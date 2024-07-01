@@ -1,4 +1,4 @@
-import { reactive, type MaybeRef } from 'vue'
+import { reactive, nextTick, type MaybeRef } from 'vue'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 import type { MenuChannel } from '../../types'
@@ -14,9 +14,6 @@ type InitializeChannelArgs = Pick<MenuChannel, 'id'>
 
 export function useMenuChannel(args: UseMenuChannelArgs) {
   const { instanceId, viewId } = args
-
-  const { initializeState } = useMenuState(instanceId)
-  const state = initializeState()
 
   const { getView } = useMenuView(instanceId)
   const view = getView(viewId)

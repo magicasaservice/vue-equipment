@@ -113,13 +113,9 @@ const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
 const mappedTransition = computed(() => {
   switch (true) {
     case !!view?.parent.item:
-      return state.options.transition?.nested
-    case state.active:
-      return state.options.transition?.initial
-    case !state.active:
-      return state.options.transition?.final
+      return state.options.transition.content.nested
     default:
-      return ''
+      return state.options.transition.content.default
   }
 })
 
@@ -235,15 +231,19 @@ provide(MagicMenuContentId, `${viewId}-content`)
   pointer-events: none;
 }
 
-.magic-menu-content--initial-enter-active {
-  animation: fade-in 0ms ease;
+.magic-menu-content--default-enter-active {
+  animation: none;
 }
 
-.magic-menu-content--final-leave-active {
-  animation: fade-out 200ms ease;
+.magic-menu-content--default-leave-active {
+  animation: none;
 }
 
 .magic-menu-content--nested-enter-active {
-  animation: fade-in 300ms ease;
+  animation: fade-in 200ms ease;
+}
+
+.magic-menu-content--nested-leave-active {
+  animation: fade-out 200ms ease;
 }
 </style>

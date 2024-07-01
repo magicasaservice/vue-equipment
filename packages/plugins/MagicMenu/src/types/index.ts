@@ -8,9 +8,11 @@ export interface MagicMenuOptions {
   mode?: MenuMode
   debug?: boolean
   transition?: {
-    initial?: string
-    final?: string
-    nested?: string
+    content?: {
+      default?: string
+      nested?: string
+    }
+    channel: string
   }
 }
 
@@ -40,7 +42,8 @@ export interface MenuView {
   parent: { item: string; views: string[] }
   placement: Placement
   state: {
-    abortController: AbortController
+    selectAbortController: AbortController
+    unselectAbortController: AbortController
     clicked?: Coordinates
   }
 }

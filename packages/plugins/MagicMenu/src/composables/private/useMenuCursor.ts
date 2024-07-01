@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { Coordinates, MenuView } from '../../types'
 
-// Used for debugging, can be visualized by adding to MagicMenuContent
+// Useful for debugging, add to MagicMenuContent
 // <span
 //     v-for="point in coords"
 //     :style="{
