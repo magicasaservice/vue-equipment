@@ -6,8 +6,8 @@ const defaultOptions: RequireAllNested<MagicMenuOptions> = {
   debug: false,
   transition: {
     content: {
-      default: 'magic-menu-content--default',
-      nested: 'magic-menu-content--nested',
+      default: '',
+      nested: 'magic-menu-content--fade',
     },
     channel: 'magic-menu-channel',
   },

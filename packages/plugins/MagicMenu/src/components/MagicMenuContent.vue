@@ -77,6 +77,7 @@ import {
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
+import { ModeTransitions } from '../utils/modeTransitions'
 
 defineOptions({
   inheritAttrs: false,
@@ -114,8 +115,10 @@ const mappedTransition = computed(() => {
   switch (true) {
     case !!view?.parent.item:
       return state.options.transition.content.nested
-    default:
+    case !!state.options.transition.content.default:
       return state.options.transition.content.default
+    default:
+      return ModeTransitions[state.options.mode]
   }
 })
 
@@ -239,11 +242,11 @@ provide(MagicMenuContentId, `${viewId}-content`)
   animation: none;
 }
 
-.magic-menu-content--nested-enter-active {
+.magic-menu-content--fade-enter-active {
   animation: fade-in 200ms ease;
 }
 
-.magic-menu-content--nested-leave-active {
+.magic-menu-content--fade-leave-active {
   animation: fade-out 200ms ease;
 }
 </style>
