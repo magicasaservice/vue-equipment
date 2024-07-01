@@ -1,4 +1,4 @@
-import mirrorPreset from '../../../apps/docs/.maas/tailwind.preset.js'
+import mirrorPreset from '../../../.maas/tailwind.preset.js'
 
 /** @type {import('tailwindcss').Config} */
 export default {
