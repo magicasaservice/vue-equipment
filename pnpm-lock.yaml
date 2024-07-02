@@ -76,8 +76,8 @@ importers:
   apps/docs:
     dependencies:
       '@maas/mirror':
-        specifier: ^0.0.70
-        version: 0.0.70(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
+        specifier: ^0.0.72
+        version: 0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
       '@maas/vue-equipment/composables':
         specifier: workspace:composables@*
         version: link:../../packages/composables
@@ -150,8 +150,8 @@ importers:
         version: 3.4.31(typescript@5.5.2)
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.0.70
-        version: 0.0.70(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
+        specifier: ^0.0.72
+        version: 0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
       '@types/fontkit':
         specifier: ^2.0.3
         version: 2.0.7
@@ -298,8 +298,8 @@ importers:
         version: 2.2.5
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.0.70
-        version: 0.0.70(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
+        specifier: ^0.0.72
+        version: 0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
       '@nuxt/schema':
         specifier: ^3.9.3
         version: 3.12.2(rollup@4.18.0)
@@ -1198,8 +1198,8 @@ packages:
     peerDependencies:
       eventemitter3: ^5.0.1
 
-  '@maas/mirror@0.0.70':
-    resolution: {integrity: sha512-IJyZtyCMJVKgA9tXSL1MJs4rge7//KXwFnRXHsg8lTOfsEoQOXIQxEFsY6SbhM0mW8jK/OqW2zm/Do9A3IGtcQ==}
+  '@maas/mirror@0.0.72':
+    resolution: {integrity: sha512-jYTpklNXZxJtqkpgRw4h1RDKdgSHMWSfOItD2VWbGSId43N3yNh0ELf5PKxIuJZxCAiPfkA81SaAshVGfR8jIw==}
     hasBin: true
     peerDependencies:
       '@clack/prompts': ^0.7.0
@@ -7692,7 +7692,7 @@ snapshots:
     dependencies:
       eventemitter3: 5.0.1
 
-  '@maas/mirror@0.0.70(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)':
+  '@maas/mirror@0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)':
     dependencies:
       '@clack/prompts': 0.7.0
       '@prettier/sync': 0.3.0(prettier@3.3.2)

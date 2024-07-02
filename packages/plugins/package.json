@@ -4,7 +4,7 @@
   "version": "0.30.4",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.0.70",
+    "@maas/mirror": "^0.0.72",
     "@nuxt/schema": "^3.9.3",
     "@nuxt/types": "^2.17.1",
     "esno": "^4.0.0",

@@ -10,44 +10,44 @@
         <magic-menu-content>
           <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
             <magic-menu-item>
-              <m-menu-item class="w-full">Undo</m-menu-item>
+              <m-menu-item>Undo</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Redo </m-menu-item>
+              <m-menu-item>Redo </m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
               <magic-menu-view>
                 <magic-menu-trigger>
-                  <m-menu-item class="w-full"> Find </m-menu-item>
+                  <m-menu-item> Find </m-menu-item>
                 </magic-menu-trigger>
                 <magic-menu-content>
                   <div
                     class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                   >
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Search the web…</m-menu-item>
+                      <m-menu-item>Search the web…</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Find…</m-menu-item>
+                      <m-menu-item>Find…</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Find Next</m-menu-item>
+                      <m-menu-item>Find Next</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Find Previous</m-menu-item>
+                      <m-menu-item>Find Previous</m-menu-item>
                     </magic-menu-item>
                   </div>
                 </magic-menu-content>
               </magic-menu-view>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Cut</m-menu-item>
+              <m-menu-item>Cut</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Copy</m-menu-item>
+              <m-menu-item>Copy</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Paste</m-menu-item>
+              <m-menu-item>Paste</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -58,57 +58,49 @@
         <magic-menu-content>
           <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
             <magic-menu-item>
-              <m-menu-item class="w-full">New Tab</m-menu-item>
+              <m-menu-item>New Tab</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">New Window</m-menu-item>
+              <m-menu-item>New Window</m-menu-item>
             </magic-menu-item>
             <magic-menu-item :disabled="true">
-              <m-menu-item class="w-full"> New Incognito Window </m-menu-item>
+              <m-menu-item> New Incognito Window </m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
               <magic-menu-view>
                 <magic-menu-trigger>
-                  <m-menu-item class="w-full">Share</m-menu-item>
+                  <m-menu-item>Share</m-menu-item>
                 </magic-menu-trigger>
                 <magic-menu-content>
                   <div
                     class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                   >
                     <magic-menu-item :disabled="true">
-                      <m-menu-item class="w-full" :disabled="true">
-                        Email Link
-                      </m-menu-item>
+                      <m-menu-item :disabled="true"> Email Link </m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Messages</m-menu-item>
+                      <m-menu-item>Messages</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Notes</m-menu-item>
+                      <m-menu-item>Notes</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
                       <magic-menu-view>
                         <magic-menu-trigger>
-                          <m-menu-item class="w-full">Socials</m-menu-item>
+                          <m-menu-item>Socials</m-menu-item>
                         </magic-menu-trigger>
                         <magic-menu-content>
                           <div
                             class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                           >
                             <magic-menu-item>
-                              <m-menu-item class="w-full">
-                                Instagram
-                              </m-menu-item>
+                              <m-menu-item> Instagram </m-menu-item>
                             </magic-menu-item>
                             <magic-menu-item>
-                              <m-menu-item class="w-full">
-                                Threads
-                              </m-menu-item>
+                              <m-menu-item> Threads </m-menu-item>
                             </magic-menu-item>
                             <magic-menu-item>
-                              <m-menu-item class="w-full">
-                                Twitter
-                              </m-menu-item>
+                              <m-menu-item> Twitter </m-menu-item>
                             </magic-menu-item>
                           </div>
                         </magic-menu-content>
@@ -119,7 +111,7 @@
               </magic-menu-view>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Print</m-menu-item>
+              <m-menu-item>Print</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -130,22 +122,22 @@
         <magic-menu-content>
           <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
             <magic-menu-item>
-              <m-menu-item class="w-full">Show Bookmarks</m-menu-item>
+              <m-menu-item>Show Bookmarks</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Show Full URLs</m-menu-item>
+              <m-menu-item>Show Full URLs</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Reload</m-menu-item>
+              <m-menu-item>Reload</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Force Reload</m-menu-item>
+              <m-menu-item>Force Reload</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">ToggleFullscreen</m-menu-item>
+              <m-menu-item>ToggleFullscreen</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Hide Sidebar</m-menu-item>
+              <m-menu-item>Hide Sidebar</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -160,20 +152,20 @@
             <magic-menu-item>
               <magic-menu-view>
                 <magic-menu-trigger>
-                  <m-menu-item class="w-full">Christoph Jeworutzki</m-menu-item>
+                  <m-menu-item>Christoph Jeworutzki</m-menu-item>
                 </magic-menu-trigger>
                 <magic-menu-content>
                   <div
                     class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                   >
                     <magic-menu-item>
-                      <m-menu-item class="w-full">User Settings</m-menu-item>
+                      <m-menu-item>User Settings</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Edit Profile</m-menu-item>
+                      <m-menu-item>Edit Profile</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Subscribtions</m-menu-item>
+                      <m-menu-item>Subscribtions</m-menu-item>
                     </magic-menu-item>
                   </div>
                 </magic-menu-content>
@@ -182,30 +174,30 @@
             <magic-menu-item>
               <magic-menu-view>
                 <magic-menu-trigger>
-                  <m-menu-item class="w-full"> Robin Scholz</m-menu-item>
+                  <m-menu-item> Robin Scholz</m-menu-item>
                 </magic-menu-trigger>
                 <magic-menu-content>
                   <div
                     class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                   >
                     <magic-menu-item>
-                      <m-menu-item class="w-full">User Settings</m-menu-item>
+                      <m-menu-item>User Settings</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Edit Profile</m-menu-item>
+                      <m-menu-item>Edit Profile</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Subscribtions</m-menu-item>
+                      <m-menu-item>Subscribtions</m-menu-item>
                     </magic-menu-item>
                   </div>
                 </magic-menu-content>
               </magic-menu-view>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Edit…</m-menu-item>
+              <m-menu-item>Edit…</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Add Profile…</m-menu-item>
+              <m-menu-item>Add Profile…</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -223,47 +215,47 @@
         <magic-menu-content :arrow="false">
           <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
             <magic-menu-item>
-              <m-menu-item class="w-full">New Tab</m-menu-item>
+              <m-menu-item>New Tab</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">New Window</m-menu-item>
+              <m-menu-item>New Window</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">New Private Window</m-menu-item>
+              <m-menu-item>New Private Window</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
               <magic-menu-view>
                 <magic-menu-trigger>
-                  <m-menu-item class="w-full"> More Tools </m-menu-item>
+                  <m-menu-item> More Tools </m-menu-item>
                 </magic-menu-trigger>
                 <magic-menu-content>
                   <div
                     class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
                   >
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Bookmark Manager</m-menu-item>
+                      <m-menu-item>Bookmark Manager</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">History</m-menu-item>
+                      <m-menu-item>History</m-menu-item>
                     </magic-menu-item>
                     <magic-menu-item>
-                      <m-menu-item class="w-full">Downloads</m-menu-item>
+                      <m-menu-item>Downloads</m-menu-item>
                     </magic-menu-item>
                   </div>
                 </magic-menu-content>
               </magic-menu-view>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Show Bookmarks</m-menu-item>
+              <m-menu-item>Show Bookmarks</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Show Full URLs</m-menu-item>
+              <m-menu-item>Show Full URLs</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Christoph Jeworutzki</m-menu-item>
+              <m-menu-item>Christoph Jeworutzki</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Robin Scholz</m-menu-item>
+              <m-menu-item>Robin Scholz</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -286,13 +278,13 @@
         <magic-menu-content>
           <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
             <magic-menu-item>
-              <m-menu-item class="w-full">Item 1</m-menu-item>
+              <m-menu-item>Item 1</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Item 2</m-menu-item>
+              <m-menu-item>Item 2</m-menu-item>
             </magic-menu-item>
             <magic-menu-item>
-              <m-menu-item class="w-full">Item 3</m-menu-item>
+              <m-menu-item>Item 3</m-menu-item>
             </magic-menu-item>
           </div>
         </magic-menu-content>
@@ -330,8 +322,25 @@
         <magic-menu-content :reference-el="navigationRef">
           <div class="p-1">
             <magic-auto-size class="bg-surface-elevation-base rounded-2xl">
-              <magic-menu-channel id="a" class="w-[40rem] h-[20rem]">
-                Home Channel
+              <magic-menu-channel id="a" class="w-[40rem]">
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
               </magic-menu-channel>
               <magic-menu-channel id="b" class="w-[50rem] h-[20rem]">
                 Events Channel
@@ -356,7 +365,7 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
-import { MMenuItem, MButton } from '@maas/mirror/vue'
+import { MMenuItem, MMenuCard, MMenuCardChild, MButton } from '@maas/mirror/vue'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
@@ -365,7 +374,7 @@ function callback(
   id: keyof MagicEmitterEvents,
   payload: ValueOf<MagicEmitterEvents>
 ) {
-  // console.log(id, payload)
+  console.log(id, payload)
 }
 
 useMagicEmitter().on('*', callback)
