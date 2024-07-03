@@ -104,7 +104,7 @@
     }
   },
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --parallel",
     "dev:docs": "turbo run dev --filter=docs",
     "dev:nuxt": "turbo run dev --filter=nuxt",
     "build": "turbo run build",
