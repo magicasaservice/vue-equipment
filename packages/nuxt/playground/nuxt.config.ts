@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   alias: {
     '@maas/mirror/tokens': path.resolve(__dirname, '../../../.maas/tokens/css'),
     '@maas/vue-equipment/nuxt': path.resolve(__dirname, '../../../dist/nuxt'),
+    '@maas/vue-equipment/utils': path.resolve(__dirname, '../../../dist/utils'),
   },
   css: [
     'fonts/index/stylesheet.css',
