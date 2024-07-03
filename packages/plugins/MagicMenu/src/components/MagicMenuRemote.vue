@@ -1,17 +1,21 @@
 <template>
-  <div
-    class="magic-menu-remote"
-    :class="{ '-active': channel?.active, '-disabled': disabled }"
+  <primitive
+    :class="[
+      'magic-menu-remote',
+      { '-active': channel?.active, '-disabled': disabled },
+    ]"
     :data-id="`${channelId}-remote`"
+    :as-child="asChild"
     @pointerdown="onClick"
     @mouseenter="onMouseenter"
   >
-    <slot :is-active="view?.active" :is-disabled="disabled" />
-  </div>
+    <slot :channel-active="channel?.active" :remote-disabled="disabled" />
+  </primitive>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject, watch } from 'vue'
+import { Primitive } from '@maas/vue-equipment/utils'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
@@ -25,6 +29,7 @@ interface MagicMenuRemoteProps {
   instanceId?: string
   disabled?: boolean
   trigger?: Interaction[]
+  asChild?: boolean
 }
 
 const props = defineProps<MagicMenuRemoteProps>()

@@ -1,20 +1,24 @@
 <template>
-  <div
-    class="magic-menu-trigger"
+  <primitive
     ref="elRef"
-    :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
+    :class="[
+      'magic-menu-trigger',
+      { '-active': view?.active, '-disabled': mappedDisabled },
+    ]"
     :data-id="`${viewId}-trigger`"
     :tabindex="mappedTabindex"
+    :as-child="asChild"
     @pointerdown="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
   >
-    <slot :is-active="view?.active" :is-disabled="mappedDisabled" />
-  </div>
+    <slot :view-active="view?.active" :trigger-disabled="mappedDisabled" />
+  </primitive>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject, ref, toValue, watch } from 'vue'
+import { Primitive } from '@maas/vue-equipment/utils'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -31,6 +35,7 @@ import { onKeyStroke } from '@vueuse/core'
 interface MagicMenuTriggerProps {
   disabled?: boolean
   trigger?: Interaction[]
+  asChild?: boolean
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
@@ -98,15 +103,15 @@ const { onMouseenter, onClick, onEnter } = useMenuTrigger({
   elRef,
 })
 
-watch(
-  () => view?.active,
-  async (value) => {
-    if (value) {
-      await new Promise((resolve) => requestAnimationFrame(resolve))
-      toValue(elRef)?.blur()
-    }
-  }
-)
+// watch(
+//   () => view?.active,
+//   async (value) => {
+//     if (value) {
+//       await new Promise((resolve) => requestAnimationFrame(resolve))
+//       toValue(elRef)?.blur()
+//     }
+//   }
+// )
 
 onKeyStroke('Enter', onEnter)
 </script>

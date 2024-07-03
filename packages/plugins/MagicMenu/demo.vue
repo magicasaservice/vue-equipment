@@ -301,20 +301,28 @@
           class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
           ref="navigationRef"
         >
-          <magic-menu-trigger class="flex">
-            <magic-menu-remote channel-id="a">
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="a" as-child>
               <m-button mode="ghost"> Home </m-button>
             </magic-menu-remote>
-            <magic-menu-remote channel-id="b">
+          </magic-menu-trigger>
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="b" as-child>
               <m-button mode="ghost">Events</m-button>
             </magic-menu-remote>
-            <magic-menu-remote channel-id="c">
+          </magic-menu-trigger>
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="c" as-child>
               <m-button mode="ghost">Projects</m-button>
             </magic-menu-remote>
           </magic-menu-trigger>
+
           <m-button mode="ghost">External Link</m-button>
-          <magic-menu-trigger class="flex">
-            <magic-menu-remote channel-id="d">
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="d" as-child>
               <m-button mode="ghost">FAQ</m-button>
             </magic-menu-remote>
           </magic-menu-trigger>
@@ -374,7 +382,7 @@ function callback(
   id: keyof MagicEmitterEvents,
   payload: ValueOf<MagicEmitterEvents>
 ) {
-  console.log(id, payload)
+  // console.log(id, payload)
 }
 
 useMagicEmitter().on('*', callback)
