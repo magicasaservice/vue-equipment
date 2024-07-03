@@ -10,7 +10,7 @@
     "@types/node": "^20.10.4",
     "@vue/tsconfig": "^0.5.1",
     "release-it": "^17.0.1",
-    "turbo": "^2.0.3"
+    "turbo": "^2.0.6"
   },
   "exports": {
     "./nuxt": {
@@ -138,5 +138,5 @@
       }
     }
   },
-  "packageManager": "pnpm@9.2.0"
+  "packageManager": "pnpm@9.4.0"
 }
