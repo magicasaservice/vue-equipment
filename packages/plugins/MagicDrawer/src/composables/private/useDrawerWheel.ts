@@ -6,7 +6,7 @@ import {
   type ComputedRef,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import WheelGestures, { type WheelEventState } from 'wheel-gestures'
+import WheelGestures, { type WheelEventState } from '@maas/wheel-gestures'
 import { useDrawerState } from './useDrawerState'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'

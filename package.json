@@ -45,6 +45,7 @@
   "peerDependencies": {
     "@floating-ui/vue": "^1.0.6",
     "@maas/magic-timer": "^1.0.0",
+    "@maas/wheel-gestures": "^1.0.0",
     "@nuxt/kit": "^3.9.3",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
@@ -56,8 +57,7 @@
     "motion": "^10.16.2",
     "nuxt": "^3.5.1",
     "universal-cookie": "^7.1.0",
-    "vue": "^3.4.26",
-    "wheel-gestures": "^2.2.5"
+    "vue": "^3.4.26"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
@@ -99,7 +99,7 @@
     "vue": {
       "optional": false
     },
-    "wheel-gestures": {
+    "@maas/wheel-gestures": {
       "optional": false
     }
   },
