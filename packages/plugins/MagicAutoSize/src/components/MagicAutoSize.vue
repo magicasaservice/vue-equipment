@@ -52,6 +52,19 @@ const mappedSize = computed(() => {
   }
 })
 
+const padding = computed(() => {
+  if (elRef.value) {
+    const style = getComputedStyle(elRef.value, null)
+    const top = parseFloat(style.getPropertyValue('padding-top'))
+    const left = parseFloat(style.getPropertyValue('padding-left'))
+    const right = parseFloat(style.getPropertyValue('padding-right'))
+    const bottom = parseFloat(style.getPropertyValue('padding-bottom'))
+    return { x: right + left, y: top + bottom }
+  } else {
+    return { x: 0, y: 0 }
+  }
+})
+
 useMutationObserver(
   elRef,
   (mutations) => {
@@ -72,8 +85,8 @@ useMutationObserver(
 useResizeObserver(content, () => {
   if (content.value) {
     size.value = {
-      width: content.value.offsetWidth,
-      height: content.value.offsetHeight,
+      width: content.value.offsetWidth + padding.value.x,
+      height: content.value.offsetHeight + padding.value.y,
     }
   }
 })

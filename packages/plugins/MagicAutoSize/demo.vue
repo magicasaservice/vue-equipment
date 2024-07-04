@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col items-center gap-8">
     <magic-auto-size
+      class="p-6"
       :class="{ 'bg-[red]': current === 'a', 'bg-[blue]': current === 'b' }"
     >
       <div class="w-[30rem] aspect-[2/1]" v-if="current === 'a'" />
