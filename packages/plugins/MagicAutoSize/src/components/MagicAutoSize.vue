@@ -100,8 +100,8 @@ onMounted(() => {
 
     if (!!filtered && filtered instanceof HTMLElement) {
       size.value = {
-        width: filtered.offsetWidth,
-        height: filtered.offsetHeight,
+        width: filtered.offsetWidth + padding.value.x,
+        height: filtered.offsetHeight + padding.value.y,
       }
     }
   }
