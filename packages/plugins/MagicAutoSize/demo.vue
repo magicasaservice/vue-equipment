@@ -4,7 +4,9 @@
       :class="{ 'bg-[red]': current === 'a', 'bg-[blue]': current === 'b' }"
     >
       <div class="w-[30rem] aspect-[2/1]" v-if="current === 'a'" />
-      <div class="w-[15rem] aspect-[1/2]" v-if="current === 'b'" />
+      <div class="inline-block" v-if="current === 'b'">
+        <div class="w-[15rem] aspect-[1/2]" />
+      </div>
     </magic-auto-size>
 
     <m-button @click="toggleContent"> Change Content </m-button>
