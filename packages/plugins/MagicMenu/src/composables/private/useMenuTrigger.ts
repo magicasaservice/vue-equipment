@@ -1,4 +1,5 @@
 import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
+import { Primitive } from '@maas/vue-primitive'
 import { useMagicKeys, useFocus } from '@vueuse/core'
 import type { Interaction } from '../../types/index'
 import { useMenuView } from './useMenuView'
@@ -10,7 +11,7 @@ type UseMenuTriggerArgs = {
   itemId?: string
   mappedDisabled: ComputedRef<boolean>
   mappedTrigger: ComputedRef<Interaction[]>
-  elRef: Ref<HTMLElement | undefined>
+  elRef: Ref<InstanceType<typeof Primitive> | undefined>
 }
 
 export function useMenuTrigger(args: UseMenuTriggerArgs) {

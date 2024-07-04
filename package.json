@@ -45,6 +45,7 @@
   "peerDependencies": {
     "@floating-ui/vue": "^1.0.6",
     "@maas/magic-timer": "^1.0.0",
+    "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
     "@nuxt/kit": "^3.9.3",
     "@vueuse/core": "^10.3.0",
@@ -67,6 +68,12 @@
       "optional": false
     },
     "@maas/magic-timer": {
+      "optional": false
+    },
+    "@maas/vue-primitive": {
+      "optional": false
+    },
+    "@maas/wheel-gestures": {
       "optional": false
     },
     "@vueuse/core": {
@@ -97,9 +104,6 @@
       "optional": false
     },
     "vue": {
-      "optional": false
-    },
-    "@maas/wheel-gestures": {
       "optional": false
     }
   },

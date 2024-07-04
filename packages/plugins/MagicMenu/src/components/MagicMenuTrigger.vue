@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { computed, inject, ref, toValue, watch } from 'vue'
-import { Primitive } from '@maas/vue-equipment/utils'
+import { Primitive } from '@maas/vue-primitive'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -39,7 +39,7 @@ interface MagicMenuTriggerProps {
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -103,15 +103,15 @@ const { onMouseenter, onClick, onEnter } = useMenuTrigger({
   elRef,
 })
 
-// watch(
-//   () => view?.active,
-//   async (value) => {
-//     if (value) {
-//       await new Promise((resolve) => requestAnimationFrame(resolve))
-//       toValue(elRef)?.blur()
-//     }
-//   }
-// )
+watch(
+  () => view?.active,
+  async (value) => {
+    if (value) {
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      toValue(elRef)?.$el?.blur()
+    }
+  }
+)
 
 onKeyStroke('Enter', onEnter)
 </script>

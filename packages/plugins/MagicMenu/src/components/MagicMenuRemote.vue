@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { computed, inject, watch } from 'vue'
-import { Primitive } from '@maas/vue-equipment/utils'
+import { Primitive } from '@maas/vue-primitive'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'

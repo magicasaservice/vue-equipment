@@ -14,6 +14,9 @@ importers:
       '@maas/magic-timer':
         specifier: ^1.0.0
         version: 1.0.1(eventemitter3@5.0.1)
+      '@maas/vue-primitive':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@maas/wheel-gestures':
         specifier: ^1.0.0
         version: 1.0.0
@@ -266,6 +269,9 @@ importers:
       '@maas/vue-equipment/utils':
         specifier: workspace:utils@*
         version: link:../utils
+      '@maas/vue-primitive':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@maas/wheel-gestures':
         specifier: ^1.0.0
         version: 1.0.0
@@ -1353,6 +1359,9 @@ packages:
       scule: ^1.0.0
       style-dictionary: v4.0.0-prerelease.34
       tailwindcss: ^3.4.4
+
+  '@maas/vue-primitive@1.1.0':
+    resolution: {integrity: sha512-BKnvusRFtk7IwxVKH9HbywPNcnqFlYj8Y9VSeSKkfulLm8T2E91qTeLYqdSeW0fn9kMo/jiE15IJ86IWremLiA==}
 
   '@maas/wheel-gestures@1.0.0':
     resolution: {integrity: sha512-L5UuqHmfLXEUdu08xMnS1DJCSrfwBU/YgjmECRD5pvWMMemSGGehp4qyV3Q7uSQM42Du9farIfzuNg3r1m+O/g==}
@@ -7856,6 +7865,8 @@ snapshots:
       scule: 1.3.0
       style-dictionary: 4.0.0-prerelease.34
       tailwindcss: 3.4.4
+
+  '@maas/vue-primitive@1.1.0': {}
 
   '@maas/wheel-gestures@1.0.0': {}
 

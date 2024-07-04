@@ -10,6 +10,4 @@ export * from './src/functions/slugify'
 export * from './src/functions/uuid'
 export * from './src/functions/uniq'
 
-export * from './src/components/Primitive'
-
 export type * from './src/types'

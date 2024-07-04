@@ -16,6 +16,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@floating-ui/vue": "^1.0.6",
+    "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
     "@nuxt/kit": "^3.9.3",
     "@vueuse/core": "^10.3.0",
@@ -28,6 +29,12 @@
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
+      "optional": false
+    },
+    "@maas/wheel-gestures": {
+      "optional": false
+    },
+    "@maas/vue-primitive": {
       "optional": false
     },
     "@nuxt/kit": {
@@ -52,9 +59,6 @@
       "optional": false
     },
     "universal-cookie": {
-      "optional": false
-    },
-    "@maas/wheel-gestures": {
       "optional": false
     }
   },
