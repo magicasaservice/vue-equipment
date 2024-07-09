@@ -1,7 +1,7 @@
 import { toValue, type MaybeRef, type Ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { MenuState } from '../../types'
-import { ModeScrollLock } from '../../utils/modeScrollLock'
+import { ModeScrollLock } from '../../utils/modeScrollLockDefaults'
 
 type UseMenuCallbackArgs = {
   state: MenuState

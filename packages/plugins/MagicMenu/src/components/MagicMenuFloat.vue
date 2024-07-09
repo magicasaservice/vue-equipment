@@ -42,7 +42,7 @@ import {
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
-import { ModeFloatingStrategy } from '../utils/modeFloatingStrategy'
+import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 
 interface MagicMenuFloatProps {
   placement?: Placement

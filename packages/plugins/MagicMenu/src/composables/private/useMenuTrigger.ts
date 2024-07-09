@@ -4,7 +4,10 @@ import { useMagicKeys, useFocus } from '@vueuse/core'
 import type { Interaction } from '../../types/index'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
-import { ModeDelayClick, ModeDelayMouseenter } from '../../utils/modeDelay'
+import {
+  ModeDelayClick,
+  ModeDelayMouseenter,
+} from '../../utils/modeDelayDefaults'
 
 type UseMenuTriggerArgs = {
   instanceId: MaybeRef<string>

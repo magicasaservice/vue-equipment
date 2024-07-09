@@ -70,6 +70,8 @@ import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuCallback } from '../composables/private/useMenuCallback'
 import { useMenuDOM } from '../composables/private/useMenuDOM'
 import { useMenuCursor } from '../composables/private/useMenuCursor'
+import { ModeTransitions } from '../utils/modeTransitionDefaults'
+import { ModeDelayMouseleave } from '../utils/modeDelayDefaults'
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,
@@ -78,8 +80,6 @@ import {
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-import { ModeTransitions } from '../utils/modeTransitions'
-import { ModeDelayMouseleave } from '../utils/modeDelay'
 
 defineOptions({
   inheritAttrs: false,
