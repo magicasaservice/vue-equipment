@@ -1,19 +1,30 @@
 import { toValue, type MaybeRef, type Ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { MenuState } from '../../types'
+import { ModeScrollLock } from '../../utils/modeScrollLock'
 
 type UseMenuCallbackArgs = {
   state: MenuState
   instanceId: MaybeRef<string>
   viewId: string
+  wrapperActive: Ref<boolean>
   lockScroll: () => void
   unlockScroll: () => void
-  wrapperActive: Ref<boolean>
+  addScrollLockPadding: () => void
+  removeScrollLockPadding: () => void
 }
 
 export function useMenuCallback(args: UseMenuCallbackArgs) {
-  const { state, instanceId, viewId, lockScroll, unlockScroll, wrapperActive } =
-    args
+  const {
+    state,
+    instanceId,
+    viewId,
+    wrapperActive,
+    lockScroll,
+    unlockScroll,
+    addScrollLockPadding,
+    removeScrollLockPadding,
+  } = args
 
   const emitter = useMagicEmitter()
 
@@ -28,17 +39,15 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
   function onAfterEnter(_el: Element) {
     emitter.emit('afterEnter', { id: toValue(instanceId), view: viewId })
 
-    switch (state.options.mode) {
-      case 'dropdown':
-        lockScroll()
-        break
-      case 'menubar':
-        break
-      case 'navigation':
-        break
-      case 'context':
-        lockScroll()
-        break
+    const scrollLock =
+      state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
+
+    if (!!scrollLock) {
+      lockScroll()
+
+      if (typeof scrollLock === 'object' && scrollLock.padding) {
+        addScrollLockPadding()
+      }
     }
   }
 
@@ -53,17 +62,15 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
   function onAfterLeave(_el: Element) {
     emitter.emit('afterLeave', { id: toValue(instanceId), view: viewId })
 
-    switch (state.options.mode) {
-      case 'dropdown':
-        unlockScroll()
-        break
-      case 'menubar':
-        break
-      case 'navigation':
-        break
-      case 'context':
-        unlockScroll()
-        break
+    const scrollLock =
+      state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
+
+    if (!!scrollLock) {
+      unlockScroll()
+
+      if (typeof scrollLock === 'object' && scrollLock.padding) {
+        removeScrollLockPadding()
+      }
     }
 
     wrapperActive.value = false

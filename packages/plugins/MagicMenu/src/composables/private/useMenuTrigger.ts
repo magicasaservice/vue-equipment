@@ -4,6 +4,7 @@ import { useMagicKeys, useFocus } from '@vueuse/core'
 import type { Interaction } from '../../types/index'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
+import { ModeDelayClick, ModeDelayMouseenter } from '../../utils/modeDelay'
 
 type UseMenuTriggerArgs = {
   instanceId: MaybeRef<string>
@@ -33,7 +34,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   function onRightClick(e: MouseEvent) {
     switch (e.button) {
       case 2:
-        selectView(viewId)
+        const delay = state.options.delay?.rightClick ?? 0
+        selectView(viewId, delay)
         state.active = true
 
         // Save coordinates, later used for float positioning
@@ -77,14 +79,10 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
         state.active = true
       }
 
-      let delay = 0
-      switch (state.options.mode) {
-        case 'navigation':
-          delay = 200
-          break
-      }
-
       if (state.active) {
+        const delay =
+          state.options.delay?.mouseenter ??
+          ModeDelayMouseenter[state.options.mode]
         selectView(viewId, delay)
 
         // If the trigger is not nested inside an item, focus the view
@@ -102,15 +100,10 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       e.button === 0 &&
       viewId
     ) {
-      let delay = 0
-      switch (state.options.mode) {
-        case 'navigation':
-          delay = 200
-          break
-      }
-
       switch (true) {
         case !state.active:
+          const delay =
+            state.options.delay?.click ?? ModeDelayClick[state.options.mode]
           state.active = true
           selectView(viewId, delay)
 
@@ -128,6 +121,8 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
 
     if (mappedTrigger.value.includes('right-click') && viewId) {
       e.preventDefault()
+      e.stopPropagation()
+
       if (control.value || shift.value) {
         onRightClick(
           new MouseEvent(e.type, {

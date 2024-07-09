@@ -42,6 +42,7 @@ import {
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
+import { ModeFloatingStrategy } from '../utils/modeFloatingStrategy'
 
 interface MagicMenuFloatProps {
   placement?: Placement
@@ -165,11 +166,18 @@ const mappedReferenceEl = computed(() => {
   }
 })
 
+const mappedStrategy = computed(() => {
+  return (
+    state.options.floating?.strategy ?? ModeFloatingStrategy[state.options.mode]
+  )
+})
+
 const { floatingStyles, placement, middlewareData } = useFloating(
   mappedReferenceEl,
   elRef,
   {
     placement: mappedPlacement,
+    strategy: mappedStrategy,
     whileElementsMounted: autoUpdate,
     middleware: mappedMiddleware,
   }

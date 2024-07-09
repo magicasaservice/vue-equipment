@@ -1,4 +1,3 @@
-import type { ShallowRef } from 'vue'
 import type { Placement } from '@floating-ui/vue'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
@@ -7,12 +6,22 @@ type MenuMode = 'dropdown' | 'menubar' | 'context' | 'navigation'
 export interface MagicMenuOptions {
   mode?: MenuMode
   debug?: boolean
+  scrollLock?: boolean | { padding: boolean }
   transition?: {
     content?: {
       default?: string
       nested?: string
     }
     channel?: string
+  }
+  floating?: {
+    strategy: 'fixed' | 'absolute'
+  }
+  delay?: {
+    mouseenter?: number
+    mouseleave?: number
+    click?: number
+    rightClick?: number
   }
 }
 

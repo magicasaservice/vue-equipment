@@ -37,6 +37,7 @@
     </transition>
     <span
       v-for="point in coords"
+      v-if="state.options.debug"
       :style="{
         background: 'red',
         position: 'fixed',
@@ -78,6 +79,7 @@ import {
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 import { ModeTransitions } from '../utils/modeTransitions'
+import { ModeDelayMouseleave } from '../utils/modeDelay'
 
 defineOptions({
   inheritAttrs: false,
@@ -126,7 +128,12 @@ const mappedTransition = computed(() => {
 const innerActive = ref(false)
 const wrapperActive = ref(false)
 
-const { lockScroll, unlockScroll } = useMenuDOM()
+const {
+  lockScroll,
+  unlockScroll,
+  addScrollLockPadding,
+  removeScrollLockPadding,
+} = useMenuDOM()
 const {
   onBeforeEnter,
   onEnter,
@@ -138,9 +145,11 @@ const {
   state,
   instanceId,
   viewId,
+  wrapperActive,
   lockScroll,
   unlockScroll,
-  wrapperActive,
+  addScrollLockPadding,
+  removeScrollLockPadding,
 })
 
 // Handle state
@@ -208,7 +217,9 @@ watch(isOutside, (value, oldValue) => {
   if (value && !oldValue) {
     switch (state.options.mode) {
       case 'navigation':
-        unselectView(viewId, 200)
+        const delay =
+          state.options.delay?.mouseleave ?? ModeDelayMouseleave.navigation
+        unselectView(viewId, delay)
     }
   }
 })
