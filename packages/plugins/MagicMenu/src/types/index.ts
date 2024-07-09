@@ -12,7 +12,7 @@ export interface MagicMenuOptions {
       default?: string
       nested?: string
     }
-    channel: string
+    channel?: string
   }
 }
 
