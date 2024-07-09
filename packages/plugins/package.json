@@ -1,7 +1,7 @@
 {
   "name": "plugins",
   "description": "A magic collection of Vue plugins",
-  "version": "0.30.7",
+  "version": "0.31.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@maas/mirror": "^0.0.78",
