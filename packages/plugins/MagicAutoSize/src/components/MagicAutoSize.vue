@@ -74,6 +74,12 @@ useMutationObserver(
 
     if (!!filtered && filtered instanceof HTMLElement) {
       content.value = filtered
+    } else {
+      content.value = undefined
+      size.value = {
+        width: 0,
+        height: 0,
+      }
     }
   },
   {
@@ -103,16 +109,23 @@ onMounted(() => {
         width: filtered.offsetWidth + padding.value.x,
         height: filtered.offsetHeight + padding.value.y,
       }
+    } else {
+      size.value = {
+        width: 0,
+        height: 0,
+      }
     }
   }
 })
 </script>
 
 <style>
-.magic-auto-size {
+:root {
   --magic-auto-size-transition-function: ease;
   --magic-auto-size-transition-duration: 100ms;
+}
 
+.magic-auto-size {
   transition: all var(--magic-auto-size-transition-duration)
     var(--magic-auto-size-transition-function);
   width: var(--magic-auto-size-width);

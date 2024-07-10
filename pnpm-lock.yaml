@@ -153,8 +153,8 @@ importers:
         version: 3.4.31(typescript@5.5.3)
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.0.72
-        version: 0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
+        specifier: ^0.0.78
+        version: 0.0.78(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
       '@types/fontkit':
         specifier: ^2.0.3
         version: 2.0.7
@@ -304,8 +304,8 @@ importers:
         version: 3.4.31(typescript@5.5.3)
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.0.72
-        version: 0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
+        specifier: ^0.0.78
+        version: 0.0.78(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)
       '@nuxt/schema':
         specifier: ^3.9.3
         version: 3.12.3(rollup@4.18.0)
@@ -317,10 +317,10 @@ importers:
         version: 4.7.0
       mkdist:
         specifier: ^1.5.1
-        version: 1.5.3(typescript@5.5.3)(vue-tsc@2.0.24(typescript@5.5.3))
+        version: 1.5.3(typescript@5.5.3)(vue-tsc@2.0.26(typescript@5.5.3))
       vue-tsc:
-        specifier: ^2.0.7
-        version: 2.0.24(typescript@5.5.3)
+        specifier: ^2.0.26
+        version: 2.0.26(typescript@5.5.3)
 
   packages/utils:
     devDependencies:
@@ -1335,30 +1335,6 @@ packages:
     resolution: {integrity: sha512-wjuK0bnMQZCi7cRgAeDq6w9n+q1011gnuNdXe41Gw32hCPAVCl4JRKQp6YJdYEA4zQW4YsJ/ooE6j5B6FNtr9g==}
     peerDependencies:
       eventemitter3: ^5.0.1
-
-  '@maas/mirror@0.0.72':
-    resolution: {integrity: sha512-jYTpklNXZxJtqkpgRw4h1RDKdgSHMWSfOItD2VWbGSId43N3yNh0ELf5PKxIuJZxCAiPfkA81SaAshVGfR8jIw==}
-    hasBin: true
-    peerDependencies:
-      '@clack/prompts': ^0.7.0
-      '@prettier/sync': ^0.3.0
-      c12: ^1.5.1
-      camelcase-keys: ^8.0.2
-      citty: ^0.1.5
-      colorjs.io: ^0.4.3
-      deepmerge: ^4.3.1
-      defu: ^6.1.3
-      giget: ^1.1.3
-      glob: ^10.2.2
-      jiti: ^1.21.0
-      lodash-es: ^4.17.21
-      multimatch: ^6.0.0
-      picocolors: ^1.0.0
-      reduce-css-calc: ^2.1.8
-      rimraf: ^5.0.5
-      scule: ^1.0.0
-      style-dictionary: v4.0.0-prerelease.34
-      tailwindcss: ^3.4.4
 
   '@maas/mirror@0.0.78':
     resolution: {integrity: sha512-Qg0hv9UG5pkvdEueP9nHl3xsQlzIe5n95ebZtZAhWj5jYE4TYY0DXLFVOPikrHQ9dSwAPx8VrjfqX3TgKCAgug==}
@@ -2410,26 +2386,17 @@ packages:
   '@volar/language-core@2.3.4':
     resolution: {integrity: sha512-wXBhY11qG6pCDAqDnbBRFIDSIwbqkWI7no+lj5+L7IlA7HRIjRP7YQLGzT0LF4lS6eHkMSsclXqy9DwYJasZTQ==}
 
-  '@volar/language-core@2.4.0-alpha.12':
-    resolution: {integrity: sha512-Dj9qTifcGGgzFLfMbU5dCo13kHyNuEyvPJhtWDnoVBBmgwW3GMwFmgWnNxBhjf63m5x0gux1okaxX2CLN7qSww==}
-
   '@volar/language-core@2.4.0-alpha.15':
     resolution: {integrity: sha512-mt8z4Fm2WxfQYoQHPcKVjLQV6PgPqyKLbkCVY2cr5RSaamqCHjhKEpsFX66aL4D/7oYguuaUw9Bx03Vt0TpIIA==}
 
   '@volar/source-map@2.3.4':
     resolution: {integrity: sha512-C+t63nwcblqLIVTYXaVi/+gC8NukDaDIQI72J3R7aXGvtgaVB16c+J8Iz7/VfOy7kjYv7lf5GhBny6ACw9fTGQ==}
 
-  '@volar/source-map@2.4.0-alpha.12':
-    resolution: {integrity: sha512-LXATFSj4D7T9sEm7FFj6iBgHjKjrdhAgRPcechVKiNCMQdr3r3GVkkeu8aM+1peaMH3LsCqoDxVZEmh2r7CHiw==}
-
   '@volar/source-map@2.4.0-alpha.15':
     resolution: {integrity: sha512-8Htngw5TmBY4L3ClDqBGyfLhsB8EmoEXUH1xydyEtEoK0O6NX5ur4Jw8jgvscTlwzizyl/wsN1vn0cQXVbbXYg==}
 
   '@volar/typescript@2.3.4':
     resolution: {integrity: sha512-acCvt7dZECyKcvO5geNybmrqOsu9u8n5XP1rfiYsOLYGPxvHRav9BVmEdRyZ3vvY6mNyQ1wLL5Hday4IShe17w==}
-
-  '@volar/typescript@2.4.0-alpha.12':
-    resolution: {integrity: sha512-mLg+OQauMTv/+08a7WBWJo1sev/wc8t2is0zhBZIlFU+j5mG89FM4+4089c2p/zoUFZ400Q/VNg2BPfhpZ8wSA==}
 
   '@volar/typescript@2.4.0-alpha.15':
     resolution: {integrity: sha512-U3StRBbDuxV6Woa4hvGS4kz3XcOzrWUKgFdEFN+ba1x3eaYg7+ytau8ul05xgA+UNGLXXsKur7fTUhDFyISk0w==}
@@ -2488,14 +2455,6 @@ packages:
 
   '@vue/devtools-shared@7.3.5':
     resolution: {integrity: sha512-Rqii3VazmWTi67a86rYopi61n5Ved05EybJCwyrfoO9Ok3MaS/4yRFl706ouoISMlyrASJFEzM0/AiDA6w4f9A==}
-
-  '@vue/language-core@2.0.24':
-    resolution: {integrity: sha512-997YD6Lq/66LXr3ZOLNxDCmyn13z9NP8LU1UZn9hGCDWhzlbXAIP0hOgL3w3x4RKEaWTaaRtsHP9DzHvmduruQ==}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   '@vue/language-core@2.0.26':
     resolution: {integrity: sha512-/lt6SfQ3O1yDAhPsnLv9iSUgXd1dMHqUm/t3RctfqjuwQf1LnftZ414X3UBn6aXT4MiwXWtbNJ4Z0NZWwDWgJQ==}
@@ -6752,12 +6711,6 @@ packages:
   vue-template-compiler@2.7.16:
     resolution: {integrity: sha512-AYbUWAJHLGGQM7+cNTELw+KsOG9nl2CnSv467WobS5Cv9uk3wFcnr1Etsz2sEIHEZvw1U+o9mRlEO6QbZvUPGQ==}
 
-  vue-tsc@2.0.24:
-    resolution: {integrity: sha512-1qi4P8L7yS78A7OJ7CDDxUIZPD6nVxoQEgX3DkRZNi1HI1qOfzOJwQlNpmwkogSVD6S/XcanbW9sktzpSxz6rA==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=5.0.0'
-
   vue-tsc@2.0.26:
     resolution: {integrity: sha512-tOhuwy2bIXbMhz82ef37qeiaQHMXKQkD6mOF6CCPl3/uYtST3l6fdNyfMxipudrQTxTfXVPlgJdMENBFfC1CfQ==}
     hasBin: true
@@ -7789,28 +7742,6 @@ snapshots:
   '@maas/magic-timer@1.0.1(eventemitter3@5.0.1)':
     dependencies:
       eventemitter3: 5.0.1
-
-  '@maas/mirror@0.0.72(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)':
-    dependencies:
-      '@clack/prompts': 0.7.0
-      '@prettier/sync': 0.3.0(prettier@3.3.2)
-      c12: 1.11.1(magicast@0.3.4)
-      camelcase-keys: 8.0.2
-      citty: 0.1.6
-      colorjs.io: 0.4.5
-      deepmerge: 4.3.1
-      defu: 6.1.4
-      giget: 1.2.3
-      glob: 10.4.2
-      jiti: 1.21.6
-      lodash-es: 4.17.21
-      multimatch: 6.0.0
-      picocolors: 1.0.1
-      reduce-css-calc: 2.1.8
-      rimraf: 3.0.2
-      scule: 1.3.0
-      style-dictionary: 4.0.0-prerelease.34
-      tailwindcss: 3.4.4
 
   '@maas/mirror@0.0.78(@clack/prompts@0.7.0)(@prettier/sync@0.3.0(prettier@3.3.2))(c12@1.11.1(magicast@0.3.4))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.2)(jiti@1.21.6)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.0.1)(reduce-css-calc@2.1.8)(rimraf@3.0.2)(scule@1.3.0)(style-dictionary@4.0.0-prerelease.34)(tailwindcss@3.4.4)':
     dependencies:
@@ -9287,31 +9218,17 @@ snapshots:
     dependencies:
       '@volar/source-map': 2.3.4
 
-  '@volar/language-core@2.4.0-alpha.12':
-    dependencies:
-      '@volar/source-map': 2.4.0-alpha.12
-
   '@volar/language-core@2.4.0-alpha.15':
     dependencies:
       '@volar/source-map': 2.4.0-alpha.15
-    optional: true
 
   '@volar/source-map@2.3.4': {}
 
-  '@volar/source-map@2.4.0-alpha.12': {}
-
-  '@volar/source-map@2.4.0-alpha.15':
-    optional: true
+  '@volar/source-map@2.4.0-alpha.15': {}
 
   '@volar/typescript@2.3.4':
     dependencies:
       '@volar/language-core': 2.3.4
-      path-browserify: 1.0.1
-      vscode-uri: 3.0.8
-
-  '@volar/typescript@2.4.0-alpha.12':
-    dependencies:
-      '@volar/language-core': 2.4.0-alpha.12
       path-browserify: 1.0.1
       vscode-uri: 3.0.8
 
@@ -9320,7 +9237,6 @@ snapshots:
       '@volar/language-core': 2.4.0-alpha.15
       path-browserify: 1.0.1
       vscode-uri: 3.0.8
-    optional: true
 
   '@vue-macros/common@1.10.4(rollup@4.18.0)(vue@3.4.31(typescript@5.5.3))':
     dependencies:
@@ -9435,19 +9351,6 @@ snapshots:
     dependencies:
       rfdc: 1.4.1
 
-  '@vue/language-core@2.0.24(typescript@5.5.3)':
-    dependencies:
-      '@volar/language-core': 2.4.0-alpha.12
-      '@vue/compiler-dom': 3.4.31
-      '@vue/shared': 3.4.31
-      computeds: 0.0.1
-      minimatch: 9.0.5
-      muggle-string: 0.4.1
-      path-browserify: 1.0.1
-      vue-template-compiler: 2.7.16
-    optionalDependencies:
-      typescript: 5.5.3
-
   '@vue/language-core@2.0.26(typescript@5.5.3)':
     dependencies:
       '@volar/language-core': 2.4.0-alpha.15
@@ -9460,7 +9363,6 @@ snapshots:
       vue-template-compiler: 2.7.16
     optionalDependencies:
       typescript: 5.5.3
-    optional: true
 
   '@vue/reactivity@3.4.31':
     dependencies:
@@ -12049,27 +11951,6 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mkdist@1.5.3(typescript@5.5.3)(vue-tsc@2.0.24(typescript@5.5.3)):
-    dependencies:
-      autoprefixer: 10.4.19(postcss@8.4.39)
-      citty: 0.1.6
-      cssnano: 7.0.3(postcss@8.4.39)
-      defu: 6.1.4
-      esbuild: 0.21.5
-      fs-extra: 11.2.0
-      globby: 14.0.2
-      jiti: 1.21.6
-      mlly: 1.7.1
-      mri: 1.2.0
-      pathe: 1.1.2
-      pkg-types: 1.1.3
-      postcss: 8.4.39
-      postcss-nested: 6.0.1(postcss@8.4.39)
-      semver: 7.6.2
-    optionalDependencies:
-      typescript: 5.5.3
-      vue-tsc: 2.0.24(typescript@5.5.3)
-
   mkdist@1.5.3(typescript@5.5.3)(vue-tsc@2.0.26(typescript@5.5.3)):
     dependencies:
       autoprefixer: 10.4.19(postcss@8.4.39)
@@ -14392,20 +14273,12 @@ snapshots:
       de-indent: 1.0.2
       he: 1.2.0
 
-  vue-tsc@2.0.24(typescript@5.5.3):
-    dependencies:
-      '@volar/typescript': 2.4.0-alpha.12
-      '@vue/language-core': 2.0.24(typescript@5.5.3)
-      semver: 7.6.2
-      typescript: 5.5.3
-
   vue-tsc@2.0.26(typescript@5.5.3):
     dependencies:
       '@volar/typescript': 2.4.0-alpha.15
       '@vue/language-core': 2.0.26(typescript@5.5.3)
       semver: 7.6.2
       typescript: 5.5.3
-    optional: true
 
   vue@3.4.31(typescript@5.5.3):
     dependencies:
