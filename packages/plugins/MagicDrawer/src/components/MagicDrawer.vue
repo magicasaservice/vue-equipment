@@ -193,7 +193,7 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   disabled,
 })
 
-const { initializeState } = useDrawerState(props.id)
+const { initializeState, deleteState } = useDrawerState(props.id)
 const { dragging, wheeling } = initializeState()
 
 // Split isActive into two values to animate drawer smoothly
@@ -368,6 +368,8 @@ onUnmounted(() => {
   if (!mappedOptions.preventZoom) {
     resetMetaViewport()
   }
+
+  deleteState()
 })
 </script>
 
