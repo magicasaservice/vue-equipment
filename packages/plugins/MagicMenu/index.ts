@@ -11,8 +11,14 @@ import { useMagicMenu } from './src/composables/useMagicMenu'
 
 import {
   MagicMenuInstanceId,
+  MagicMenuViewId,
+  MagicMenuViewActive,
+  MagicMenuItemId,
   MagicMenuItemActive,
   MagicMenuParentTree,
+  MagicMenuChannelId,
+  MagicMenuChannelActive,
+  MagicMenuContentId,
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
@@ -34,6 +40,12 @@ export {
   MagicMenuPlugin,
   useMagicMenu,
   MagicMenuInstanceId,
+  MagicMenuViewId,
+  MagicMenuViewActive,
+  MagicMenuItemId,
   MagicMenuItemActive,
   MagicMenuParentTree,
+  MagicMenuChannelId,
+  MagicMenuChannelActive,
+  MagicMenuContentId,
 }

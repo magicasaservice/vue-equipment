@@ -33,7 +33,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   const { shift, control } = useMagicKeys()
 
   // Private functions
-
   function onRightClick(e: MouseEvent) {
     switch (e.button) {
       case 2:
