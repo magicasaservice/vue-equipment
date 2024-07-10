@@ -1,10 +1,6 @@
-import type { MagicMenuOptions } from '../types'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { RequiredMagicMenuOptions } from '../types'
 
-const defaultOptions: Omit<
-  RequireAllNested<MagicMenuOptions>,
-  'scrollLock' | 'floating' | 'delay'
-> = {
+const defaultOptions: RequiredMagicMenuOptions = {
   mode: 'menubar',
   debug: false,
   transition: {

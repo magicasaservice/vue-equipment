@@ -1,5 +1,4 @@
 import type { Placement } from '@floating-ui/vue'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 type MenuMode = 'dropdown' | 'menubar' | 'context' | 'navigation'
 
@@ -24,6 +23,24 @@ export interface MagicMenuOptions {
     rightClick?: number
   }
 }
+
+export interface RequiredMagicMenuOptions {
+  mode: MenuMode
+  debug: boolean
+  transition: {
+    content: {
+      default: string
+      nested: string
+    }
+    channel: string
+  }
+}
+
+export interface OptionalMagicMenuOptions
+  extends Pick<MagicMenuOptions, 'scrollLock' | 'floating' | 'delay'> {}
+
+export type CombinedMagicMenuOptions = RequiredMagicMenuOptions &
+  OptionalMagicMenuOptions
 
 export type Interaction = 'click' | 'mouseenter' | 'right-click'
 
@@ -61,7 +78,7 @@ export interface MenuState {
   id: string
   active: boolean
   views: MenuView[]
-  options: RequireAllNested<MagicMenuOptions>
+  options: CombinedMagicMenuOptions
   input: {
     type: 'keyboard' | 'pointer'
     disabled: ('keyboard' | 'pointer')[]
