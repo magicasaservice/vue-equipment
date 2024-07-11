@@ -7,7 +7,7 @@
     @mouseeenter="onMouseenter"
     @click="onClick"
   >
-    <slot />
+    <slot :is-active="view?.active" />
   </primitive>
 </template>
 
@@ -19,6 +19,7 @@ import { useAccordionTrigger } from '../composables/private/useAccordionTrigger'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 import type { Interaction } from '../types'
 import { useAccordionState } from '../composables/private/useAccordionState'
+import { useAccordionView } from '../composables/private/useAccordionView'
 
 interface MagicAccordionTriggerProps {
   disabled?: MaybeRef<boolean>
@@ -50,6 +51,9 @@ if (!viewId) {
 
 const { initializeState } = useAccordionState(instanceId)
 const state = initializeState()
+
+const { getView } = useAccordionView(instanceId)
+const view = getView(viewId)
 
 const mappedDisabled = computed(
   () => toValue(props.disabled) || state.options.disabled

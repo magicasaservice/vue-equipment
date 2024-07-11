@@ -3,7 +3,7 @@
     :as-child="asChild"
     :class="['magic-accordion-view', { '-active': view.active }]"
   >
-    <slot />
+    <slot :is-active="view?.active" />
   </primitive>
 </template>
 

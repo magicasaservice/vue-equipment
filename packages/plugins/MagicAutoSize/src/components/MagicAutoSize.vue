@@ -78,7 +78,6 @@ const child = computed(() => {
 useMutationObserver(
   elRef,
   (mutations) => {
-    console.log('mutations:', mutations)
     const addedNode = mutations
       .flatMap((m) => [...m.addedNodes])
       .find((n) => n instanceof HTMLElement)

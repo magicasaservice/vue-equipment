@@ -1,5 +1,5 @@
 <template>
-  <div :class="['magic-accordion-content', { '-active': isActive }]">
+  <div :class="['magic-accordion-content', { '-active': view?.active }]">
     <magic-auto-size :immediate="true" :width="false">
       <transition
         :name="state.options.transition"
@@ -10,8 +10,8 @@
         :on-leave="onLeave"
         :on-after-leave="onAfterLeave"
       >
-        <primitive :as-child="asChild" v-if="isActive">
-          <slot />
+        <primitive :as-child="asChild" v-if="view?.active">
+          <slot :is-active="view?.active" />
         </primitive>
       </transition>
     </magic-auto-size>
@@ -51,8 +51,6 @@ const state = initializeState()
 
 const { getView } = useAccordionView(instanceId)
 const view = getView(viewId)
-
-const isActive = computed(() => view?.active)
 
 const {
   onBeforeEnter,
