@@ -20,7 +20,7 @@ interface MagicAccordionProviderProps {
 const props = defineProps<MagicAccordionProviderProps>()
 
 const { deleteState, initializeState } = useAccordionState(props.id)
-initializeState()
+initializeState(props.options)
 
 // Lifecycle
 onBeforeUnmount(() => {

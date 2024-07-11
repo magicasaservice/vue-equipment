@@ -41,7 +41,11 @@ export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
       e.preventDefault()
       e.stopPropagation()
 
-      selectView(viewId)
+      if (view?.active) {
+        unselectView(viewId)
+      } else {
+        selectView(viewId)
+      }
     }
   }
 
