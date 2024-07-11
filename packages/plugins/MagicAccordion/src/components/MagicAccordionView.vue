@@ -1,5 +1,8 @@
 <template>
-  <primitive :as-child="asChild" class="magic-accordion-view">
+  <primitive
+    :as-child="asChild"
+    :class="['magic-accordion-view', { '-active': view.active }]"
+  >
     <slot />
   </primitive>
 </template>
@@ -18,6 +21,7 @@ import { useAccordionView } from '../composables/private/useAccordionView'
 interface MagicAccordionViewProps {
   asChild?: boolean
   id?: string
+  activeOnMounted?: boolean
 }
 
 const props = defineProps<MagicAccordionViewProps>()
@@ -37,6 +41,7 @@ const { initializeView, deleteView } = useAccordionView(instanceId)
 
 const view = initializeView({
   id: mappedId.value,
+  active: props.activeOnMounted ?? false,
 })
 
 // Pass id and active state to children

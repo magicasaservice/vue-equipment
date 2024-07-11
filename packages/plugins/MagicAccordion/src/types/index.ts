@@ -3,6 +3,7 @@ type AccordionMode = 'single' | 'multiple'
 export interface MagicAccordionOptions {
   mode?: AccordionMode
   transition?: string
+  disabled?: boolean
 }
 
 export interface AccordionView {

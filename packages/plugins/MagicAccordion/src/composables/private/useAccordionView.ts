@@ -2,9 +2,9 @@ import { reactive, type MaybeRef } from 'vue'
 import { useAccordionState } from './useAccordionState'
 import { type AccordionView } from '../../types'
 
-type CreateViewArgs = Pick<AccordionView, 'id'>
-type AddViewArgs = Pick<AccordionView, 'id'>
-type InitializeViewArgs = Pick<AccordionView, 'id'>
+type CreateViewArgs = Pick<AccordionView, 'id' | 'active'>
+type AddViewArgs = Pick<AccordionView, 'id' | 'active'>
+type InitializeViewArgs = Pick<AccordionView, 'id' | 'active'>
 
 export function useAccordionView(instanceId: MaybeRef<string>) {
   const { initializeState } = useAccordionState(instanceId)
@@ -12,11 +12,11 @@ export function useAccordionView(instanceId: MaybeRef<string>) {
 
   // Private functions
   function createView(args: CreateViewArgs) {
-    const { id } = args
+    const { id, active = false } = args
 
     const view: AccordionView = {
-      id: id,
-      active: false,
+      id,
+      active,
     }
 
     return reactive(view)
@@ -31,10 +31,15 @@ export function useAccordionView(instanceId: MaybeRef<string>) {
 
   // Public functions
   function initializeView(args: InitializeViewArgs) {
-    const { id } = args
+    const { id, active } = args
     let instance = getView(id)
 
     if (!instance) instance = addView(args)
+
+    // Select view if active was passed as argument
+    // Useful if the view is initialized multiple times with different active states
+    if (active) selectView(id)
+
     return instance
   }
 

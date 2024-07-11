@@ -1,6 +1,6 @@
 <template>
   <primitive
-    :class="['magic-accordion-trigger', { '-disabled': toValue(disabled) }]"
+    :class="['magic-accordion-trigger', { '-disabled': mappedDisabled }]"
     :as-child="asChild"
     as="button"
     ref="elRef"
@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, toValue, watch, type MaybeRef } from 'vue'
+import { inject, ref, computed, toValue, type MaybeRef } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { onKeyStroke } from '@vueuse/core'
-import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionTrigger } from '../composables/private/useAccordionTrigger'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 import type { Interaction } from '../types'
+import { useAccordionState } from '../composables/private/useAccordionState'
 
 interface MagicAccordionTriggerProps {
   disabled?: MaybeRef<boolean>
@@ -48,6 +48,13 @@ if (!viewId) {
   )
 }
 
+const { initializeState } = useAccordionState(instanceId)
+const state = initializeState()
+
+const mappedDisabled = computed(
+  () => toValue(props.disabled) || state.options.disabled
+)
+
 const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
   instanceId,
   viewId,
@@ -58,3 +65,13 @@ const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
 
 onKeyStroke('Enter', onEnter)
 </script>
+
+<style>
+:root {
+  --magic-accordion-trigger-cursor-disabled: not-allowed;
+}
+
+.magic-accordion-trigger.-disabled {
+  cursor: var(--magic-accordion-trigger-cursor-disabled);
+}
+</style>
