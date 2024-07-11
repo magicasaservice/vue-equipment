@@ -1,3 +1,4 @@
+import type { AccordionEvents } from '../../../MagicAccordion/src/types/index'
 import type { CookieEvents } from '../../../MagicCookie/src/types/index'
 import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
 import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
@@ -16,6 +17,7 @@ type Merge<T extends unknown[]> = T extends [infer First, ...infer Rest]
 
 export type MagicEmitterEvents = Merge<
   [
+    AccordionEvents,
     CookieEvents,
     DraggableEvents,
     DrawerEvents,

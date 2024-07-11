@@ -26,6 +26,8 @@ import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionCallback } from '../composables/private/useAccordionCallback'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
+import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+
 interface MagicAccordionContentProps {
   asChild?: boolean
 }
@@ -59,43 +61,21 @@ const {
   onLeave,
   onAfterLeave,
 } = useAccordionCallback({
+  instanceId,
   viewId,
 })
-
-// Handle state
-// async function onOpen() {
-//   wrapperActive.value = true
-//   await nextTick()
-//   innerActive.value = true
-//   await nextTick()
-//   initialize()
-// }
-
-// function onClose() {
-//   destroy()
-//   innerActive.value = false
-// }
-
-// watch(
-//   () => view?.active,
-//   async (value) => {
-//     if (value) {
-//       await onOpen()
-//     } else {
-//       onClose()
-//     }
-//   }
-// )
 </script>
 
 <style>
 :root {
-  --magic-accordion-enter-animation: none 100ms ease;
-  --magic-accordion-leave-animation: none 100ms ease;
+  --magic-accordion-enter-animation: fade-in 150ms ease;
+  --magic-accordion-leave-animation: none 200ms cubic-bezier(0.83, 0, 0.17, 1);
+  --magic-accordion-size-transition: all 200ms cubic-bezier(0.83, 0, 0.17, 1);
   --magic-accordion-content-clip-path: inset(0);
 }
 
 .magic-accordion-content {
+  --magic-auto-size-transition: var(--magic-accordion-size-transition);
   clip-path: var(--magic-accordion-content-clip-path);
 }
 

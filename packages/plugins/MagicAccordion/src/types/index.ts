@@ -17,3 +17,30 @@ export interface AccordionState {
 }
 
 export type Interaction = 'click' | 'mouseenter'
+
+export type AccordionEvents = {
+  beforeEnter: {
+    id: string
+    viewId: string
+  }
+  enter: {
+    id: string
+    viewId: string
+  }
+  afterEnter: {
+    id: string
+    viewId: string
+  }
+  beforeLeave: {
+    id: string
+    viewId: string
+  }
+  leave: {
+    id: string
+    viewId: string
+  }
+  afterLeave: {
+    id: string
+    viewId: string
+  }
+}
