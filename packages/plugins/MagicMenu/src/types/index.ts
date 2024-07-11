@@ -89,26 +89,26 @@ export interface MenuState {
 export type MenuEvents = {
   beforeEnter: {
     id: string
-    view: string
+    viewId: string
   }
   enter: {
     id: string
-    view: string
+    viewId: string
   }
   afterEnter: {
     id: string
-    view: string
+    viewId: string
   }
   beforeLeave: {
     id: string
-    view: string
+    viewId: string
   }
   leave: {
     id: string
-    view: string
+    viewId: string
   }
   afterLeave: {
     id: string
-    view: string
+    viewId: string
   }
 }

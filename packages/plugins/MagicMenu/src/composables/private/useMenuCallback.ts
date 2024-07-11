@@ -29,15 +29,15 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
   const emitter = useMagicEmitter()
 
   function onBeforeEnter(_el: Element) {
-    emitter.emit('beforeEnter', { id: toValue(instanceId), view: viewId })
+    emitter.emit('beforeEnter', { id: toValue(instanceId), viewId })
   }
 
   function onEnter(_el: Element) {
-    emitter.emit('enter', { id: toValue(instanceId), view: viewId })
+    emitter.emit('enter', { id: toValue(instanceId), viewId })
   }
 
   function onAfterEnter(_el: Element) {
-    emitter.emit('afterEnter', { id: toValue(instanceId), view: viewId })
+    emitter.emit('afterEnter', { id: toValue(instanceId), viewId })
 
     const scrollLock =
       state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
@@ -52,15 +52,15 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
   }
 
   function onBeforeLeave(_el: Element) {
-    emitter.emit('beforeLeave', { id: toValue(instanceId), view: viewId })
+    emitter.emit('beforeLeave', { id: toValue(instanceId), viewId })
   }
 
   function onLeave(_el: Element) {
-    emitter.emit('leave', { id: toValue(instanceId), view: viewId })
+    emitter.emit('leave', { id: toValue(instanceId), viewId })
   }
 
   function onAfterLeave(_el: Element) {
-    emitter.emit('afterLeave', { id: toValue(instanceId), view: viewId })
+    emitter.emit('afterLeave', { id: toValue(instanceId), viewId })
 
     const scrollLock =
       state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
