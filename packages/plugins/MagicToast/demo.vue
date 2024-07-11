@@ -39,8 +39,7 @@ const props = computed(() => {
 const component = defineAsyncComponent(() => import('./demo/DemoToast.vue'))
 
 const id = 'magic-toast-demo'
-const toastApi = useMagicToast(id)
-const { add, clear } = toastApi
+const { add, clear } = useMagicToast(id)
 
 const isSmallScreen = useMediaQuery('(max-width: 1024px)')
 const position = computed(() =>
