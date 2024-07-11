@@ -126,12 +126,13 @@ useResizeObserver(content, () => {
 
 onMounted(() => {
   if (elRef.value) {
-    const content = elRef.value.querySelectorAll('*')
-    const filtered = Array.from(content).find(
+    const elements = elRef.value.querySelectorAll('*')
+    const filtered = Array.from(elements).find(
       (node) => node instanceof HTMLElement
     )
 
     if (!!filtered && filtered instanceof HTMLElement) {
+      content.value = filtered
       size.value = {
         width: filtered.offsetWidth + padding.value.x,
         height: filtered.offsetHeight + padding.value.y,

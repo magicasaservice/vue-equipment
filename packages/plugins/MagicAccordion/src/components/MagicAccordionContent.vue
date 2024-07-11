@@ -2,6 +2,7 @@
   <div :class="['magic-accordion-content', { '-active': view?.active }]">
     <magic-auto-size :immediate="true" :width="false">
       <transition
+        mode="out-in"
         :name="state.options.transition"
         :on-before-enter="onBeforeEnter"
         :on-enter="onEnter"
@@ -10,7 +11,7 @@
         :on-leave="onLeave"
         :on-after-leave="onAfterLeave"
       >
-        <primitive :as-child="asChild" v-if="view?.active">
+        <primitive :as-child="asChild" v-show="view?.active">
           <slot :is-active="view?.active" />
         </primitive>
       </transition>
@@ -19,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { inject } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
@@ -67,8 +68,8 @@ const {
 
 <style>
 :root {
-  --magic-accordion-enter-animation: fade-in 150ms var(--ease-in-out);
-  --magic-accordion-leave-animation: none 200ms var(--ease-in-out-sharp);
+  --magic-accordion-enter-transition: fade-in 150ms var(--ease-in-out);
+  --magic-accordion-leave-transition: all 200ms var(--ease-in-out-sharp);
   --magic-accordion-size-transition: all 200ms var(--ease-in-out-sharp);
   --magic-accordion-content-clip-path: inset(0);
 }
@@ -80,10 +81,11 @@ const {
 
 .magic-accordion-enter-active {
   position: relative;
-  animation: var(--magic-accordion-enter-animation);
+  transition: var(--magic-accordion-enter-transition);
 }
 
 .magic-accordion-leave-active {
-  animation: var(--magic-accordion-leave-animation);
+  transition: var(--magic-accordion-leave-transition);
+  height: 0;
 }
 </style>
