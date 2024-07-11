@@ -1,0 +1,4 @@
+:root {
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-in-out-sharp: cubic-bezier(0.83, 0, 0.17, 1);
+}

@@ -27,6 +27,7 @@ import { useAccordionCallback } from '../composables/private/useAccordionCallbac
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {
   asChild?: boolean
@@ -68,9 +69,9 @@ const {
 
 <style>
 :root {
-  --magic-accordion-enter-animation: fade-in 150ms ease;
-  --magic-accordion-leave-animation: none 200ms cubic-bezier(0.83, 0, 0.17, 1);
-  --magic-accordion-size-transition: all 200ms cubic-bezier(0.83, 0, 0.17, 1);
+  --magic-accordion-enter-animation: fade-in 150ms var(--ease-in-out);
+  --magic-accordion-leave-animation: none 200ms var(--ease-in-out-sharp);
+  --magic-accordion-size-transition: all 200ms var(--ease-in-out-sharp);
   --magic-accordion-content-clip-path: inset(0);
 }
 
