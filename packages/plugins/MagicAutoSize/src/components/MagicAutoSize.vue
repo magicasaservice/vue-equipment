@@ -15,14 +15,18 @@
 import { ref, computed, onMounted } from 'vue'
 import { useResizeObserver, useMutationObserver } from '@vueuse/core'
 
+import '@maas/vue-equipment/utils/css/easings.css'
+
 interface MagicAutoSizeProps {
   width?: boolean
   height?: boolean
+  immediate?: boolean
 }
 
 const props = withDefaults(defineProps<MagicAutoSizeProps>(), {
   width: true,
   height: true,
+  immediate: false,
 })
 
 const elRef = ref<HTMLElement | undefined>(undefined)
@@ -65,16 +69,40 @@ const padding = computed(() => {
   }
 })
 
+const child = computed(() => {
+  return Array.from(elRef.value?.childNodes ?? []).find(
+    (n) => n instanceof HTMLElement
+  )
+})
+
 useMutationObserver(
   elRef,
   (mutations) => {
-    const filtered = mutations
+    console.log('mutations:', mutations)
+    const addedNode = mutations
       .flatMap((m) => [...m.addedNodes])
       .find((n) => n instanceof HTMLElement)
 
-    if (!!filtered && filtered instanceof HTMLElement) {
-      content.value = filtered
-    } else {
+    const addedComment = mutations
+      .flatMap((m) => [...m.addedNodes])
+      .find((n) => n instanceof Comment)
+
+    if (!!addedNode && addedNode instanceof HTMLElement) {
+      content.value = addedNode
+    }
+
+    // If immediate is true, reset the size when a comment is added
+    // Vue sets a placeholder comment for a v-if
+    if (props.immediate && !!addedComment) {
+      content.value = undefined
+      size.value = {
+        width: 0,
+        height: 0,
+      }
+    }
+
+    // If the node is removed, reset the size
+    if (!child.value) {
       content.value = undefined
       size.value = {
         width: 0,
@@ -121,7 +149,7 @@ onMounted(() => {
 
 <style>
 :root {
-  --magic-auto-size-transition: all 100ms ease;
+  --magic-auto-size-transition: all 150ms var(--ease-in-out);
 }
 
 .magic-auto-size {

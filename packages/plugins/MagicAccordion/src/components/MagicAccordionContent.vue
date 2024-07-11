@@ -1,6 +1,6 @@
 <template>
   <div :class="['magic-accordion-content', { '-active': isActive }]">
-    <magic-auto-size>
+    <magic-auto-size :immediate="true">
       <transition
         :name="state.options.transition"
         :on-before-enter="onBeforeEnter"
