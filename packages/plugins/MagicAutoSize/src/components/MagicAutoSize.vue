@@ -121,13 +121,11 @@ onMounted(() => {
 
 <style>
 :root {
-  --magic-auto-size-transition-function: ease;
-  --magic-auto-size-transition-duration: 100ms;
+  --magic-auto-size-transition: all 100ms ease;
 }
 
 .magic-auto-size {
-  transition: all var(--magic-auto-size-transition-duration)
-    var(--magic-auto-size-transition-function);
+  transition: var(--magic-auto-size-transition);
   width: var(--magic-auto-size-width);
   height: var(--magic-auto-size-height);
 }
