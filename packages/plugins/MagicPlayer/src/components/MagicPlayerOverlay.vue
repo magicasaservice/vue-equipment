@@ -64,6 +64,7 @@ const { idle } = useIdle(3000)
   --magic-player-overlay-background: rgba(0, 0, 0, 0.3);
   --magic-player-overlay-color: rgba(255, 255, 255, 1);
   --magic-player-overlay-button-size: 2.5rem;
+  --magic-player-overlay-transition: opacity 300ms ease;
 }
 
 .magic-player-overlay {
@@ -71,9 +72,7 @@ const { idle } = useIdle(3000)
   inset: 0;
   background-color: var(--magic-player-overlay-background);
   color: var(--magic-player-overlay-color);
-  transition-duration: 300ms;
-  transition-property: opacity;
-  transition-timing-function: ease;
+  transition: var(--magic-player-overlay-transition);
   display: flex;
   align-items: center;
   justify-content: center;
