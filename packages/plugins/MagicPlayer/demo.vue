@@ -106,7 +106,14 @@
         id="standalone-controls"
         class="bg-black"
         :standalone="true"
-      />
+      >
+        <template #timelineBefore>
+          <magic-player-display-time id="standalone-controls" type="current" />
+        </template>
+        <template #timelineAfter>
+          <magic-player-display-time id="standalone-controls" type="duration" />
+        </template>
+      </magic-player-controls>
     </div>
   </div>
 

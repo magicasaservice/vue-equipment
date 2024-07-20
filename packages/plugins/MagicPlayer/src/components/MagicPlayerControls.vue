@@ -40,9 +40,11 @@
             </button>
           </div>
           <div class="magic-player-controls__item -grow">
+            <slot name="timelineBefore" />
             <div class="magic-player-controls__timeline" ref="trackRef">
               <magic-player-timeline :id="id" />
             </div>
+            <slot name="timelineAfter" />
           </div>
           <div class="magic-player-controls__item -shrink-0">
             <button v-if="muted" @click="unmute">
