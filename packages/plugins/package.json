@@ -8,7 +8,7 @@
     "@nuxt/schema": "^3.9.3",
     "@nuxt/types": "^2.17.1",
     "esno": "^4.0.0",
-    "mkdist": "^1.5.1",
+    "mkdist": "^1.5.4",
     "vue-tsc": "^2.0.26"
   },
   "exports": "./index.ts",
