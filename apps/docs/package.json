@@ -11,7 +11,7 @@
     "fonts": "workspace:fonts@*",
     "fs-extra": "^11.2.0",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
+    "tailwindcss": "^3.4.6",
     "unplugin-icons": "^0.19.0",
     "unplugin-vue-components": "^0.27.2",
     "vite": "^5.3.2",
