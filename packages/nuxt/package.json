@@ -16,7 +16,7 @@
     "@nuxt/test-utils": "^3.11.0",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "nuxt": "^3.9.3",
-    "vitest": "^1.2.2"
+    "vitest": "^2.0.3"
   },
   "scripts": {
     "build": "nuxt-module-build --outDir ../../dist/nuxt && nlx nuxi prepare ./playground",
