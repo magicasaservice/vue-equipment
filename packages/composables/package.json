@@ -1,17 +1,17 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.32.3",
+  "version": "0.32.4",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "vue": "^3.4.15"
+    "vue": "^3.4.33"
   },
   "devDependencies": {
-    "@maas/mirror": "^0.0.78",
+    "@maas/mirror": "^0.0.79",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
-    "tsup": "^8.0.1",
+    "tsup": "^8.2.1",
     "typescript": "^5.3.3"
   },
   "exports": "./index.ts",

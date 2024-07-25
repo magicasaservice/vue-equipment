@@ -1,14 +1,14 @@
 {
   "name": "plugins",
   "description": "A magic collection of Vue plugins",
-  "version": "0.32.3",
+  "version": "0.32.4",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.0.78",
-    "@nuxt/schema": "^3.9.3",
+    "@maas/mirror": "^0.0.79",
+    "@nuxt/schema": "^3.12.4",
     "@nuxt/types": "^2.17.1",
     "esno": "^4.0.0",
-    "mkdist": "^1.5.1",
+    "mkdist": "^1.5.4",
     "vue-tsc": "^2.0.26"
   },
   "exports": "./index.ts",
@@ -72,6 +72,6 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "^6.1.2",
-    "vue": "^3.4.26"
+    "vue": "^3.4.33"
   }
 }
