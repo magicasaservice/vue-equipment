@@ -5,7 +5,6 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      :is="mappedOptions.tag"
       ref="modalRef"
       class="magic-modal"
       :id="toValue(id)"
