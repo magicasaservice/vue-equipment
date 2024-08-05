@@ -5,7 +5,7 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
     "@types/node": "^20.14.11",
-    "tsup": "^8.2.3",
+    "tsup": "^8.2.4",
     "typescript": "^5.3.3"
   },
   "exports": {
