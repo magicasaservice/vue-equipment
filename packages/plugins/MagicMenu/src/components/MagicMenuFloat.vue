@@ -231,6 +231,7 @@ const polygonPoints = computed(() => {
 <style>
 .magic-menu-float {
   display: flex;
+  z-index: var(--magic-menu-float-z-index, 999);
 }
 
 .magic-menu-float.-top {

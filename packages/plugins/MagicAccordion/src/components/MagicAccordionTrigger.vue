@@ -71,11 +71,7 @@ onKeyStroke('Enter', onEnter)
 </script>
 
 <style>
-:root {
-  --magic-accordion-trigger-cursor-disabled: not-allowed;
-}
-
 .magic-accordion-trigger.-disabled {
-  cursor: var(--magic-accordion-trigger-cursor-disabled);
+  cursor: var(--magic-accordion-trigger-cursor-disabled, not-allowed);
 }
 </style>

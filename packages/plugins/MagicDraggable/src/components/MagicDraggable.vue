@@ -107,20 +107,12 @@ onMounted(() => {
 </script>
 
 <style>
-:root {
-  --magic-draggable-z-index: 999;
-  --magic-draggable-position: fixed;
-  --magic-draggable-height: 100%;
-  --magic-draggable-width: 100%;
-  --magic-draggable-inset: 0;
-}
-
 .magic-draggable {
-  position: var(--magic-draggable-position);
-  width: var(--magic-draggable-width);
-  height: var(--magic-draggable-height);
-  z-index: var(--magic-draggable-z-index);
-  inset: var(--magic-draggable-inset);
+  position: var(--magic-draggable-position, fixed);
+  width: var(--magic-draggable-width, 100%);
+  height: var(--magic-draggable-height, 100%);
+  z-index: var(--magic-draggable-z-index, 999);
+  inset: var(--magic-draggable-inset, 0);
   pointer-events: none;
   background: transparent;
   color: inherit;

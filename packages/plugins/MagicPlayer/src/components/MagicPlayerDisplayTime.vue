@@ -37,21 +37,17 @@ const stringifiedTime = computed(() => {
 </script>
 
 <style>
-:root {
-  --magic-player-time-display-font-size: 0.875rem;
-  --magic-player-time-display-color: inherit;
-  --magic-player-time-display-width: 4rem;
-  --magic-player-time-display-justify-content: center;
-  --magic-player-time-display-font-variant-numeric: tabular-nums;
-}
 .magic-player-time-display {
   height: 100%;
-  width: var(--magic-player-time-display-width);
-  font-size: var(--magic-player-time-display-font-size);
-  color: var(--magic-player-time-display-color);
+  width: var(--magic-player-time-display-width, 4rem);
+  font-size: var(--magic-player-time-display-font-size, 0.875rem);
+  color: var(--magic-player-time-display-color, inherit);
   display: flex;
   align-items: center;
-  justify-content: var(--magic-player-time-display-justify-content);
-  font-variant-numeric: var(--magic-player-time-display-font-variant-numeric);
+  justify-content: var(--magic-player-time-display-justify-content, center);
+  font-variant-numeric: var(
+    --magic-player-time-display-font-variant-numeric,
+    tabular-nums
+  );
 }
 </style>

@@ -67,25 +67,27 @@ const {
 </script>
 
 <style>
-:root {
-  --magic-accordion-enter-transition: fade-in 150ms var(--ease-in-out);
-  --magic-accordion-leave-transition: all 200ms var(--ease-in-out-sharp);
-  --magic-accordion-size-transition: all 200ms var(--ease-in-out-sharp);
-  --magic-accordion-content-clip-path: inset(0);
-}
-
 .magic-accordion-content {
-  --magic-auto-size-transition: var(--magic-accordion-size-transition);
-  clip-path: var(--magic-accordion-content-clip-path);
+  --magic-auto-size-transition: var(
+    --magic-accordion-size-transition,
+    all 200ms var(--ease-in-out-sharp) ;
+  );
+  clip-path: var(--magic-accordion-content-clip-path, inset(0));
 }
 
 .magic-accordion-enter-active {
   position: relative;
-  transition: var(--magic-accordion-enter-transition);
+  transition: var(
+    --magic-accordion-enter-transition,
+    fade-in 150ms var(--ease-in-out)
+  );
 }
 
 .magic-accordion-leave-active {
-  transition: var(--magic-accordion-leave-transition);
+  transition: var(
+    --magic-accordion-leave-transition,
+    all 200ms var(--ease-in-out-sharp)
+  );
   height: 0;
 }
 </style>

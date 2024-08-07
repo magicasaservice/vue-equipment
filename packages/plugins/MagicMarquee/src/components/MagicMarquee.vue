@@ -53,12 +53,6 @@ defineExpose({
 </script>
 
 <style lang="css">
-:root {
-  --magic-marquee-gap: 1rem;
-  --magic-marquee-content-width: unset;
-  --magic-marquee-transform-target-x: -100%;
-}
-
 @keyframes magicMarqueeScrollX {
   0% {
     transform: translate3d(0, 0, 0);
@@ -94,8 +88,8 @@ defineExpose({
 .magic-marquee__content {
   white-space: nowrap;
   backface-visibility: hidden;
-  padding-right: var(--magic-marquee-gap);
-  width: var(--magic-marquee-content-width);
+  padding-right: var(--magic-marquee-gap, 1rem);
+  width: var(--magic-marquee-content-width, unset);
   animation-name: var(--magic-marquee-animation-name);
   animation-duration: var(--magic-marquee-animation-duration);
   animation-play-state: var(--magic-marquee-animation-play-state, running);
@@ -103,7 +97,7 @@ defineExpose({
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   display: flex;
-  gap: var(--magic-marquee-gap);
+  gap: var(--magic-marquee-gap, 1rem);
   flex-shrink: 0;
   flex-grow: 0;
 }

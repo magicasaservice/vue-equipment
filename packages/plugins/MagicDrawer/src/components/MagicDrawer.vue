@@ -377,13 +377,8 @@ onUnmounted(() => {
 :root {
   --magic-drawer-height: 75svh;
   --magic-drawer-width: 100%;
-  --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
-  --magic-drawer-backdrop-color: rgba(0, 0, 0, 0.5);
-  --magic-drawer-backdrop-filter: unset;
-  --magic-drawer-content-overflow-x: hidden;
-  --magic-drawer-content-overflow-y: hidden;
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
@@ -401,7 +396,7 @@ onUnmounted(() => {
   pointer-events: none;
   justify-content: var(--magic-drawer-justify-content);
   align-items: var(--magic-drawer-align-items);
-  z-index: var(--magic-drawer-z-index);
+  z-index: var(--magic-drawer-z-index, 999);
   background: transparent;
   color: inherit;
   padding: 0;
@@ -495,8 +490,8 @@ onUnmounted(() => {
   pointer-events: auto;
   align-items: var(--magic-drawer-align-items);
   justify-content: var(--magic-drawer-justify-content);
-  overflow-x: var(--magic-drawer-content-overflow-x);
-  overflow-y: var(--magic-drawer-content-overflow-y);
+  overflow-x: var(--magic-drawer-content-overflow-x, hidden);
+  overflow-y: var(--magic-drawer-content-overflow-y, hidden);
   cursor: grab;
 }
 
@@ -545,8 +540,8 @@ dialog.magic-drawer__drag::backdrop {
   width: 100%;
   height: 100%;
   pointer-events: auto;
-  background-color: var(--magic-drawer-backdrop-color);
-  backdrop-filter: var(--magic-drawer-backdrop-filter);
+  background-color: var(--magic-drawer-backdrop-color, rgba(0, 0, 0, 0.5));
+  backdrop-filter: var(--magic-drawer-backdrop-filter, unset);
   z-index: -1;
 }
 

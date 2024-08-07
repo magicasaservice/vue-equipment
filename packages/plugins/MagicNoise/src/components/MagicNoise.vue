@@ -69,7 +69,6 @@ onUnmounted(() => {
 
 <style lang="css">
 :root {
-  --magic-noise-loading-background: #000;
   --magic-noise-loading-transition: color 300ms ease, opacity 300ms ease;
 }
 
@@ -77,8 +76,9 @@ onUnmounted(() => {
   position: relative;
   user-select: none;
   transition: var(--magic-noise-loading-transition);
+  background: var(--magic-noise-background, transparent);
   &.-loading {
-    background: var(--magic-noise-loading-background);
+    background: var(--magic-noise-loading-background, #000);
   }
 }
 

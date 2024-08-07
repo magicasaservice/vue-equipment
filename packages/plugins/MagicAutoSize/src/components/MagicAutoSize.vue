@@ -148,12 +148,8 @@ onMounted(() => {
 </script>
 
 <style>
-:root {
-  --magic-auto-size-transition: all 150ms var(--ease-in-out);
-}
-
 .magic-auto-size {
-  transition: var(--magic-auto-size-transition);
+  transition: var(--magic-auto-size-transition, all 150ms var(--ease-in-out));
   width: var(--magic-auto-size-width);
   height: var(--magic-auto-size-height);
 }

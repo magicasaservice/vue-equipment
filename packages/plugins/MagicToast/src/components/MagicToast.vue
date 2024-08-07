@@ -138,14 +138,8 @@ onUnmounted(() => {
 
 <style lang="css">
 :root {
-  --magic-toast-enter-animation: unset;
-  --magic-toast-leave-animation: fade-out 300ms ease;
-  --magic-toast-scale: 0.1;
   --magic-toast-transform-x: 0;
   --magic-toast-transform-y: 0;
-  --magic-toast-transition: transform 300ms ease;
-  --magic-toast-z-index: 999;
-  --magic-toast-gap: 0.75rem;
   --magic-toast-padding-x: 1rem;
   --magic-toast-padding-y: 1rem;
 
@@ -240,10 +234,10 @@ onUnmounted(() => {
 }
 
 .magic-toast--list-enter-active {
-  animation: var(--magic-toast-enter-animation);
+  animation: var(--magic-toast-enter-animation, unset);
 }
 
 .magic-toast--list-leave-active {
-  animation: var(--magic-toast-leave-animation);
+  animation: var(--magic-toast-leave-animation, fade-out 300ms ease);
 }
 </style>
