@@ -1,6 +1,6 @@
 {
   "name": "config",
-  "version": "0.32.4",
+  "version": "0.33.0",
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
