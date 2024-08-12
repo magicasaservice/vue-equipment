@@ -72,6 +72,6 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "^6.1.2",
-    "vue": "^3.4.35"
+    "vue": "^3.4.37"
   }
 }
