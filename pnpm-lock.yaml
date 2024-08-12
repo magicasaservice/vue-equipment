@@ -58,8 +58,8 @@ importers:
         version: 3.4.34(typescript@5.5.4)
     devDependencies:
       '@antfu/ni':
-        specifier: ^0.21.12
-        version: 0.21.12
+        specifier: ^0.22.1
+        version: 0.22.1
       '@release-it/bumper':
         specifier: ^6.0.1
         version: 6.0.1(release-it@17.6.0(typescript@5.5.4))
@@ -418,8 +418,8 @@ packages:
   '@antfu/install-pkg@0.3.3':
     resolution: {integrity: sha512-nHHsk3NXQ6xkCfiRRC8Nfrg8pU5kkr3P3Y9s9dKqiuRmBD0Yap7fymNDjGFKeWhZQHqqbCS5CfeMy9wtExM24w==}
 
-  '@antfu/ni@0.21.12':
-    resolution: {integrity: sha512-2aDL3WUv8hMJb2L3r/PIQWsTLyq7RQr3v9xD16fiz6O8ys1xEyLhhTOv8gxtZvJiTzjTF5pHoArvRdesGL1DMQ==}
+  '@antfu/ni@0.22.1':
+    resolution: {integrity: sha512-5STu7QHsLYWpt+K/+zRcMOIUnG51lOhnqPInImXGyC6PMHtkrZQjbqZ/R3GW8XdTYOnKiT77+R09Tl4fzuFK5w==}
     hasBin: true
 
   '@antfu/utils@0.7.10':
@@ -7380,7 +7380,7 @@ snapshots:
     dependencies:
       '@jsdevtools/ez-spawn': 3.0.4
 
-  '@antfu/ni@0.21.12': {}
+  '@antfu/ni@0.22.1': {}
 
   '@antfu/utils@0.7.10': {}
 
