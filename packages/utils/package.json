@@ -4,7 +4,7 @@
   "version": "0.33.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@types/node": "^20.14.11",
+    "@types/node": "^22.4.1",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4"
   },
