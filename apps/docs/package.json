@@ -6,7 +6,7 @@
   "type": "module",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/sanitize-html": "^2.9.5",
+    "@types/sanitize-html": "^2.13.0",
     "autoprefixer": "^10.4.20",
     "fonts": "workspace:fonts@*",
     "fs-extra": "^11.2.0",
