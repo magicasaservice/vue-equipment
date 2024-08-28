@@ -6,51 +6,87 @@ updates:
       interval: 'weekly'
     commit-message:
       prefix: 'chore'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/apps/docs'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(docs)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/apps/cli'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(cli)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/composables'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(composables)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/config'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(config)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/metadata'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(metadata)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/nuxt'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(nuxt)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/plugins'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(plugins)'
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: 'npm'
     directory: '/packages/utils'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'chore(utils)'
+    groups:
+      all:
+        patterns:
+          - '*'
