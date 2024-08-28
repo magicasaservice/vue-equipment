@@ -7,6 +7,7 @@ type UseMenuCallbackArgs = {
   state: MenuState
   instanceId: MaybeRef<string>
   viewId: string
+  innerActive: Ref<boolean>
   wrapperActive: Ref<boolean>
   lockScroll: () => void
   unlockScroll: () => void
@@ -19,6 +20,7 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
     state,
     instanceId,
     viewId,
+    innerActive,
     wrapperActive,
     lockScroll,
     unlockScroll,
@@ -73,7 +75,10 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
       }
     }
 
-    wrapperActive.value = false
+    // Only disable wrapperActive if innerActive is false
+    if (!innerActive.value) {
+      wrapperActive.value = false
+    }
   }
 
   return {

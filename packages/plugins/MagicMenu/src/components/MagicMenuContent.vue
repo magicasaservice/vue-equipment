@@ -145,6 +145,7 @@ const {
   state,
   instanceId,
   viewId,
+  innerActive,
   wrapperActive,
   lockScroll,
   unlockScroll,

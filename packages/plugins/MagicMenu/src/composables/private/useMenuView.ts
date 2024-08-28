@@ -145,7 +145,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
         instance.active = true
         unselectUnrelatedViews(id)
       } catch (error: any) {
-        if (error.name === 'AbortError') {
+        if (error.name === 'AbortError' && state.options.debug) {
           console.log(
             `selectView() was interrupted by a call to unselectView()`
           )
@@ -173,7 +173,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
         await delay(delayMs, abortController.signal)
         instance.active = false
       } catch (error: any) {
-        if (error.name === 'AbortError') {
+        if (error.name === 'AbortError' && state.options.debug) {
           console.log(
             `unselectView() was interrupted by a call to selectView()`
           )
