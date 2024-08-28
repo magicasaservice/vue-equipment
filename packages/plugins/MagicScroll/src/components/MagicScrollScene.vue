@@ -19,7 +19,6 @@ import type { FromTo } from '../types'
 interface MagicScrollSceneProps {
   from?: FromTo
   to?: FromTo
-  debug?: boolean
 }
 
 const props = withDefaults(defineProps<MagicScrollSceneProps>(), {

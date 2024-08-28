@@ -2,22 +2,6 @@ import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { Coordinates, MenuView } from '../../types'
 
-// Useful for debugging, add to MagicMenuContent
-// <span
-//     v-for="point in coords"
-//     :style="{
-//       background: 'red',
-//       position: 'fixed',
-//       top: point.y + 'px',
-//       left: point.x + 'px',
-//       width: '4px',
-//       height: '4px',
-//       zIndex: 1000,
-//       pointerEvents: 'none',
-//       transform: 'translate(-50%, -50%)',
-//     }"
-//   />
-
 type IsPointInTriangleArgs = {
   p: Coordinates
   a: Coordinates

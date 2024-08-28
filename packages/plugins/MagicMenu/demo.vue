@@ -382,7 +382,7 @@ function callback(
   id: keyof MagicEmitterEvents,
   payload: ValueOf<MagicEmitterEvents>
 ) {
-  // console.log(id, payload)
+  console.log(id, payload)
 }
 
 useMagicEmitter().on('*', callback)
