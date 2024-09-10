@@ -19,7 +19,7 @@
     "vitest": "^2.0.5"
   },
   "scripts": {
-    "build": "nuxt-module-build --outDir ../../dist/nuxt && nlx nuxi prepare ./playground",
+    "build": "nuxt-module-build --outDir ../../dist/nuxt && pnpm dlx nuxi prepare ./playground",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",

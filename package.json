@@ -118,7 +118,7 @@
     "update:metadata": "nr -C packages/metadata update",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
-    "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
+    "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
     "release": "turbo run t:release && release-it"
   },
   "volta": {
