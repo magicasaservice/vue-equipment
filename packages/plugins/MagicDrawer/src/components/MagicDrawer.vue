@@ -309,7 +309,12 @@ function guardedClose() {
 
 function saveOvershoot() {
   const element = unrefElement(drawerRef)
-  const overshootVar = getComputedStyle(element!).getPropertyValue(
+
+  if (!element) {
+    return
+  }
+
+  const overshootVar = getComputedStyle(element, null).getPropertyValue(
     '--magic-drawer-drag-overshoot'
   )
   overshoot.value = convertToPixels(overshootVar) || 0
