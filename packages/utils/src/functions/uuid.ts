@@ -3,6 +3,8 @@
 // It should not replace crypto.randomUUID() or window.crypto.randomUUID().
 
 export function uuid() {
+  console.warn('uuid() is deprecated, use vue.useId() instead')
+
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
     .split('')
     .reduce(
@@ -13,6 +15,6 @@ export function uuid() {
           : i === 'y'
           ? Math.floor(Math.random() * 4 + 8).toString(16)
           : i),
-      '',
+      ''
     )
 }

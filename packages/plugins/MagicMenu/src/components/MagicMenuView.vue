@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide } from 'vue'
-import { uuid } from '@maas/vue-equipment/utils'
+import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import {
   MagicMenuInstanceId,
@@ -33,7 +32,7 @@ if (!instanceId) {
   throw new Error('MagicMenuView must be nested inside MagicMenuProvider')
 }
 
-const mappedId = computed(() => props.id ?? `magic-menu-view-${uuid()}`)
+const mappedId = computed(() => props.id ?? `magic-menu-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
 // Register view

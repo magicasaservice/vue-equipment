@@ -14,8 +14,8 @@ import {
   onUnmounted,
   watch,
   nextTick,
+  useId,
 } from 'vue'
-import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandView } from '../composables/private/useCommandView'
 import { MagicCommandInstanceId } from '../symbols'
@@ -34,7 +34,7 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const { activeView, selectView } = useCommandView()
 
 const mappedId = computed(() => {
-  return props.id ?? uuid()
+  return props.id ?? useId() ?? ''
 })
 
 const isActive = computed(() => {

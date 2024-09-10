@@ -56,9 +56,9 @@
     "luxon": "^3.4.2",
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
-    "nuxt": "^3.5.1",
+    "nuxt": "^3.13.1",
     "universal-cookie": "^7.1.0",
-    "vue": "^3.4.26"
+    "vue": "^3.5.3"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {

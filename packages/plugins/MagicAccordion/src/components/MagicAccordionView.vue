@@ -8,9 +8,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide } from 'vue'
+import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
-import { uuid } from '@maas/vue-equipment/utils'
 import {
   MagicAccordionInstanceId,
   MagicAccordionViewActive,
@@ -34,7 +33,7 @@ if (!instanceId) {
   )
 }
 
-const mappedId = computed(() => props.id ?? `magic-accordion-view-${uuid()}`)
+const mappedId = computed(() => props.id ?? `magic-accordion-view-${useId()}`)
 
 // Register view
 const { initializeView, deleteView } = useAccordionView(instanceId)

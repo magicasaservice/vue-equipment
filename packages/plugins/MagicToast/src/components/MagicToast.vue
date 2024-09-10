@@ -49,11 +49,11 @@ import {
   watch,
   onBeforeMount,
   onUnmounted,
+  useId,
   type MaybeRef,
 } from 'vue'
 import { defu } from 'defu'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
-import { uuid } from '@maas/vue-equipment/utils'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from '../composables/private/useToastApi'
 import { useToastCallback } from './../composables/private/useToastCallback'
@@ -82,7 +82,7 @@ const { toasts, count, firstToast } = useMagicToast(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
-const teleportKey = ref(uuid())
+const teleportKey = ref(useId())
 const listRef = ref<MaybeElement>()
 
 const {
@@ -124,7 +124,7 @@ onClickOutside(listRef, outsideClickCallback)
 // Lifecycle hooks and listeners
 watch(
   () => props.id,
-  () => (teleportKey.value = uuid())
+  () => (teleportKey.value = useId())
 )
 
 onBeforeMount(() => {

@@ -1,4 +1,4 @@
-import { uuid } from '@maas/vue-equipment/utils'
+import { useId } from 'vue'
 import type { ToastInstance, Toast, AddToastArgs } from './../../types'
 
 export function useToastInternalApi() {
@@ -15,7 +15,7 @@ export function useToastInternalApi() {
   }
 
   function addToast(args: AddToastArgs, ctx: ToastInstance) {
-    const id = uuid()
+    const id = useId() ?? 'magic-toast'
     let { component, props, duration = 0 } = args
 
     const toast: Toast = {
