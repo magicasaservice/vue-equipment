@@ -52,7 +52,7 @@ defineExpose({
 })
 </script>
 
-<style lang="css">
+<style>
 @keyframes magicMarqueeScrollX {
   0% {
     transform: translate3d(0, 0, 0);
@@ -82,7 +82,8 @@ defineExpose({
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: var(--magic-marquee-jusrify-content, flex-start);
+  align-items: var(--magic-marquee-align-items, baseline);
 }
 
 .magic-marquee__content {
