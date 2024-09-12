@@ -441,9 +441,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (hasDragged.value) {
       e.preventDefault()
     }
+
+    // Release pointer capture
+    elRef.value?.releasePointerCapture(e.pointerId)
   }
 
   function onPointermove(e: PointerEvent) {
+    console.log('onPointermove', e)
     // Prevent real mousemove while wheeling
     if (e.isTrusted && wheeling.value) {
       return
@@ -453,6 +457,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (e.isTrusted && !e.isPrimary) {
       return
     }
+
+    // Prevent scrolling on iOS
+    e.stopImmediatePropagation()
+    e.stopPropagation()
+    e.preventDefault()
 
     // Reset shouldClose before checking
     shouldClose.value = false
@@ -496,6 +505,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (dragging.value) {
       return
     } else {
+      // Capture pointer, save state
+      elRef.value?.setPointerCapture(e.pointerId)
       dragging.value = true
 
       emitter.emit('beforeDrag', {
@@ -512,7 +523,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
+    cancelPointermove = useEventListener(
+      document,
+      'pointermove',
+      onPointermove,
+      { passive: false }
+    )
 
     // Pointerup doesn’t fire on iOS, so we need to use touchend
     cancelTouchend = isIOS()
