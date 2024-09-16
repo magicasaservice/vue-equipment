@@ -9,14 +9,14 @@
     "@nuxt/kit": "^3.13.2"
   },
   "devDependencies": {
-    "@nuxt/devtools": "1.4.1",
-    "@nuxt/eslint-config": "^0.5.6",
-    "@nuxt/module-builder": "^0.8.3",
-    "@nuxt/schema": "^3.13.1",
-    "@nuxt/test-utils": "^3.14.1",
+    "@nuxt/devtools": "1.4.2",
+    "@nuxt/eslint-config": "^0.5.7",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.13.2",
+    "@nuxt/test-utils": "^3.14.2",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "nuxt": "^3.13.1",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   },
   "scripts": {
     "build": "nuxt-module-build --outDir ../../dist/nuxt && pnpm dlx nuxi prepare ./playground",
