@@ -1,55 +1,27 @@
-import {
-  ref,
-  computed,
-  watch,
-  toValue,
-  type ComputedRef,
-  type MaybeRef,
-  type Ref,
-} from 'vue'
-import {
-  useEventListener,
-  useElementBounding,
-  useMagicKeys,
-  useFocus,
-  onKeyStroke,
-} from '@vueuse/core'
-import type { MenuTrigger, Coordinates } from '../../types/index'
+import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
+import { Primitive } from '@maas/vue-primitive'
+import { useMagicKeys, useFocus } from '@vueuse/core'
+import type { Interaction } from '../../types/index'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
+import {
+  ModeDelayClick,
+  ModeDelayMouseenter,
+} from '../../utils/modeDelayDefaults'
 
 type UseMenuTriggerArgs = {
   instanceId: MaybeRef<string>
   viewId: string
   itemId?: string
   mappedDisabled: ComputedRef<boolean>
-  mappedTrigger: ComputedRef<MenuTrigger[]>
-  elRef: Ref<HTMLElement | undefined>
-}
-
-type IsPointInTriangleArgs = {
-  p: Coordinates
-  a: Coordinates
-  b: Coordinates
-  c: Coordinates
-}
-
-type IsPointInRectangleArgs = {
-  p: Coordinates
-  top: number
-  left: number
-  bottom: number
-  right: number
+  mappedTrigger: ComputedRef<Interaction[]>
+  elRef: Ref<InstanceType<typeof Primitive> | undefined>
 }
 
 export function useMenuTrigger(args: UseMenuTriggerArgs) {
   // Private state
   const { instanceId, viewId, itemId, mappedTrigger, mappedDisabled, elRef } =
     args
-
-  let cancelPointermove: (() => void) | undefined = undefined
-
-  const mouseleaveCoordinates = ref<Coordinates | undefined>(undefined)
 
   const { getView, selectView, unselectView } = useMenuView(instanceId)
   const view = getView(viewId)
@@ -58,22 +30,10 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   const state = initializeState()
 
   const { focused } = useFocus(elRef)
-
-  const isInsideTriangle = ref(false)
-  const isInsideTrigger = ref(false)
-  const isInsideContent = ref(false)
-
-  const isOutside = computed(() => {
-    return (
-      !isInsideTrigger.value &&
-      !isInsideContent.value &&
-      !isInsideTriangle.value
-    )
-  })
-
   const { shift, control } = useMagicKeys()
 
   // Private functions
+<<<<<<< HEAD
   function resetState() {
     mouseleaveCoordinates.value = undefined
     isInsideTriangle.value = false
@@ -222,15 +182,18 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     })
   }
 
+=======
+>>>>>>> main
   function onRightClick(e: MouseEvent) {
     switch (e.button) {
       case 2:
-        selectView(viewId)
+        const delay = state.options.delay?.rightClick ?? 0
+        selectView(viewId, delay)
         state.active = true
 
         // Save coordinates, later used for float positioning
         if (view) {
-          view.click = { x: e.clientX, y: e.clientY }
+          view.state.clicked = { x: e.clientX, y: e.clientY }
         }
 
         // If the trigger is not nested inside an item, focus the view
@@ -244,6 +207,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     }
   }
 
+  // Public functions
   function onEnter(e: KeyboardEvent) {
     if (focused.value && !mappedDisabled.value && !view?.active) {
       e.preventDefault()
@@ -257,29 +221,34 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     }
   }
 
-  // Public functions
   function onMouseenter() {
-    // Reset mouseleave coordinates and content element
-    cancelPointermove?.()
-    resetState()
-
     if (
       mappedTrigger.value.includes('mouseenter') &&
-      view &&
+      !mappedDisabled.value &&
       viewId &&
-      state.active &&
-      !mappedDisabled.value
+      view
     ) {
-      selectView(viewId)
-
-      // If the trigger is not nested inside an item, focus the view
-      if (!itemId) {
-        state.input.view = viewId
+      // If mouseenter is the first trigger, set active to true
+      if (mappedTrigger.value[0] === 'mouseenter') {
+        state.active = true
       }
 
+<<<<<<< HEAD
       // Temporarily disable pointer for nested triggers
       if (itemId) {
         disableCursor()
+=======
+      if (state.active) {
+        const delay =
+          state.options.delay?.mouseenter ??
+          ModeDelayMouseenter[state.options.mode]
+        selectView(viewId, delay)
+
+        // If the trigger is not nested inside an item, focus the view
+        if (!itemId) {
+          state.input.view = viewId
+        }
+>>>>>>> main
       }
     }
   }
@@ -293,8 +262,10 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     ) {
       switch (true) {
         case !state.active:
+          const delay =
+            state.options.delay?.click ?? ModeDelayClick[state.options.mode]
           state.active = true
-          selectView(viewId)
+          selectView(viewId, delay)
 
           // If the trigger is not nested inside an item, focus the view
           if (!itemId) {
@@ -304,13 +275,14 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
         case state.active && !itemId:
           state.active = false
           unselectView(viewId)
-
           break
       }
     }
 
     if (mappedTrigger.value.includes('right-click') && viewId) {
       e.preventDefault()
+      e.stopPropagation()
+
       if (control.value || shift.value) {
         onRightClick(
           new MouseEvent(e.type, {
@@ -326,6 +298,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     }
   }
 
+<<<<<<< HEAD
   function onMouseleave(e: MouseEvent) {
     if (mappedTrigger.value.includes('mouseleave') && viewId) {
       // Save mouse coordinates and content element
@@ -387,11 +360,11 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
     cancelPointermove?.()
   }
 
+=======
+>>>>>>> main
   return {
     onMouseenter,
     onClick,
-    onMouseleave,
-    initialize,
-    destroy,
+    onEnter,
   }
 }

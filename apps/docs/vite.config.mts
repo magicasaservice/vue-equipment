@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
-import UnoCSS from 'unocss/vite'
 
 export default defineConfig(async () => {
   return {
@@ -13,7 +12,6 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
-      UnoCSS(),
       MarkdownTransform(),
       Components({
         dirs: [resolve(__dirname, '.vitepress/theme/components')],
@@ -42,6 +40,10 @@ export default defineConfig(async () => {
         {
           find: '@maas/vue-equipment/utils',
           replacement: resolve(__dirname, '../../packages/utils'),
+        },
+        {
+          find: 'fonts',
+          replacement: resolve(__dirname, '../../packages/fonts/dist'),
         },
       ],
       dedupe: ['vue'],

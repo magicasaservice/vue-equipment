@@ -2,9 +2,9 @@ import { reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
 
-type CreateViewArgs = Pick<MenuView, 'id' | 'parent'>
-type AddViewArgs = Pick<MenuView, 'id' | 'parent'>
-type FindViewArgs = Pick<MenuView, 'id' | 'parent'>
+type InitializeViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
+type CreateViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
+type AddViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
 
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
@@ -21,7 +21,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   // Private functions
   function createView(args: CreateViewArgs) {
-    const { id, parent } = args
+    const { id, parent, placement } = args
 
     if (parent.views.length === 0) {
       parent.views.push(toValue(instanceId))
@@ -30,12 +30,14 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     const view: MenuView = {
       id: id,
       parent: parent,
-      children: {
-        trigger: undefined,
-        content: undefined,
-      },
       active: false,
       items: [],
+      channels: [],
+      placement: placement,
+      state: {
+        selectAbortController: new AbortController(),
+        unselectAbortController: new AbortController(),
+      },
     }
 
     return reactive(view)
@@ -48,8 +50,18 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     return view
   }
 
+  function delay(ms: number, signal: AbortSignal): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(resolve, ms)
+      signal.addEventListener('abort', () => {
+        clearTimeout(timer)
+        reject(new DOMException('Aborted', 'AbortError'))
+      })
+    })
+  }
+
   // Public functions
-  function initializeView(args: FindViewArgs) {
+  function initializeView(args: InitializeViewArgs) {
     const { id } = args
     let instance = getView(id)
 
@@ -62,9 +74,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
   }
 
   function getView(id: string) {
-    return state.views?.find((view) => {
-      return view.id === id
-    })
+    return state.views?.find((view) => view.id === id)
   }
 
   function getRelativeViewIndex(id: string) {
@@ -100,33 +110,88 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     return getView(parentId ?? '')
   }
 
-  function getNonTreeViews(id: string) {
-    const currentView = getView(id)
+  function getUnrelatedViews(id: string) {
+    const argView = getView(id)
     return state.views?.filter(
-      (view) => !currentView?.parent.views.includes(view.id) && view.id !== id
+      (view) =>
+        !view.parent.views.includes(id) &&
+        !argView?.parent.views.includes(view.id) &&
+        view.id !== id
     )
   }
 
-  function selectView(id: string) {
+  function getDescendingViews(id: string) {
+    const argView = getView(id)
+    return state.views?.filter(
+      (view) => view.id !== id && !argView?.parent.views.includes(view.id)
+    )
+  }
+
+  async function selectView(id: string, delayMs = 0) {
     const instance = getView(id)
 
     if (instance) {
-      instance.active = true
-      unselectNonTreeViews(id)
+      // Cancel any scheduled closing
+      if (instance.state.unselectAbortController) {
+        instance.state.unselectAbortController.abort()
+      }
+
+      // Schedule opening
+      const abortController = new AbortController()
+      instance.state.selectAbortController = abortController
+
+      try {
+        await delay(delayMs, abortController.signal)
+        instance.active = true
+        unselectUnrelatedViews(id)
+      } catch (error: any) {
+        if (error.name === 'AbortError' && state.options.debug) {
+          console.log(
+            `selectView() was interrupted by a call to unselectView()`
+          )
+        } else {
+          throw error
+        }
+      }
     }
   }
 
-  function unselectView(id: string) {
+  async function unselectView(id: string, delayMs = 0) {
     const instance = getView(id)
 
     if (instance) {
-      instance.active = false
+      // Cancel any scheduled closing
+      if (instance.state.selectAbortController) {
+        instance.state.selectAbortController.abort()
+      }
+
+      // Schedule closing
+      const abortController = new AbortController()
+      instance.state.unselectAbortController = abortController
+
+      try {
+        await delay(delayMs, abortController.signal)
+        instance.active = false
+      } catch (error: any) {
+        if (error.name === 'AbortError' && state.options.debug) {
+          console.log(
+            `unselectView() was interrupted by a call to selectView()`
+          )
+        } else {
+          throw error
+        }
+      }
     }
   }
 
-  function unselectNonTreeViews(id: string) {
-    const nonTreeViews = getNonTreeViews(id)
-    nonTreeViews.forEach((view) => (view.active = false))
+  function unselectUnrelatedViews(id: string) {
+    const unrelatedViews = getUnrelatedViews(id)
+    unrelatedViews.forEach((view) => (view.active = false))
+  }
+
+  function unselectDescendingViews(id: string) {
+    const descendingViews = getDescendingViews(id)
+    descendingViews.forEach((view) => (view.active = false))
   }
 
   function unselectAllViews() {
@@ -148,7 +213,8 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     getParentView,
     selectView,
     unselectView,
-    unselectNonTreeViews,
+    unselectUnrelatedViews,
+    unselectDescendingViews,
     unselectAllViews,
   }
 }

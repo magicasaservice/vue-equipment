@@ -303,7 +303,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     return closestSnapPoint
   }
 
-  function onPointerup(_e: PointerEvent) {
+  function onPointerup(e: PointerEvent) {
     // Snap to the closest snap point if the user did not drag with enough momentum
     if (!momentumThresholdReached.value && distanceThresholdReached.value) {
       interpolateTo.value = findClosestSnapPoint()
@@ -345,6 +345,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Unlock scroll
     unlockScroll()
     removeScrollLockPadding()
+
+    // Release pointer capture
+    elRef.value?.releasePointerCapture(e.pointerId)
   }
 
   function onPointermove(e: PointerEvent) {
@@ -413,6 +416,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     if (dragging.value) {
       return
     } else {
+      // Capture pointer, save state
+      elRef.value?.setPointerCapture(e.pointerId)
       dragging.value = true
 
       emitter.emit('beforeDrag', {
@@ -432,7 +437,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
+    cancelPointermove = useEventListener(
+      document,
+      'pointermove',
+      onPointermove,
+      { passive: false }
+    )
 
     // Pointerup doesn’t fire on iOS, so we need to use touchend
     cancelTouchend = isIOS()

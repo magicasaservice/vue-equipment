@@ -44,6 +44,7 @@ export interface MagicDrawerOptions {
 
 export interface DrawerState {
   id: string
+  active: boolean
   dragStart: Date | undefined
   dragging: boolean
   wheeling: boolean

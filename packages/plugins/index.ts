@@ -1,3 +1,5 @@
+export * from './MagicAccordion/index'
+export * from './MagicAutoSize/index'
 export * from './MagicCommand/index'
 export * from './MagicCookie/index'
 export * from './MagicDraggable/index'

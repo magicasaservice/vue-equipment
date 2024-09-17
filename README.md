@@ -8,7 +8,10 @@
 
 # Vue Equipment
 
-> A _magic_ collection of essential Vue composables, plugins, components and directives
+A _magic_ collection of essential Vue plugins and composables.
+
+> “Any sufficiently advanced technology is indistinguishable from magic.”
+> – Arthur C. Clarke
 
 ## 🚧 Disclaimer
 

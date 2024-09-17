@@ -63,7 +63,9 @@ watchEffect(() => {
 .magic-toast-component {
   --mt-index: 0;
   --mt-offset: 0;
-  --mt-matrix-scale: calc(1 - (var(--magic-toast-scale) * var(--mt-index, 0)));
+  --mt-matrix-scale: calc(
+    1 - (var(--magic-toast-scale, 0.1) * var(--mt-index, 0))
+  );
   --mt-matrix-transform-x: calc(
     var(--magic-toast-transform-x) * var(--mt-index, 0) * var(--mt-multiplier-x)
   );
@@ -95,8 +97,8 @@ watchEffect(() => {
   --mt-matrix-transform-x: 0;
   &:not(:last-child) {
     & .magic-toast-component__inner {
-      padding-bottom: calc(var(--magic-toast-gap) * var(--mt-index));
-      padding-top: calc(var(--magic-toast-gap) * var(--mt-index));
+      padding-bottom: calc(var(--magic-toast-gap, 0.75rem) * var(--mt-index));
+      padding-top: calc(var(--magic-toast-gap, 0.75rem) * var(--mt-index));
     }
   }
 }

@@ -1,6 +1,6 @@
 # Introduction
 
-<div class="tip custom-block" style="padding-top: 8px">
+<div class="tip custom-block flex" style="padding-top: 8px">
 
 Just want to try it out? Skip to the [Quickstart](./getting-started).
 

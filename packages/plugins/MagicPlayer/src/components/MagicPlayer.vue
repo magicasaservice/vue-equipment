@@ -92,19 +92,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="css">
-:root {
-  --magic-player-aspect-ratio: 16 / 9;
-  --magic-player-background: #000000;
-  --magic-player-height: auto;
-}
-
 .magic-player {
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: var(--magic-player-height);
-  aspect-ratio: var(--magic-player-aspect-ratio);
-  background: var(--magic-player-background);
+  height: var(--magic-player-height, auto);
+  aspect-ratio: var(--magic-player-aspect-ratio, 16 / 9);
+  background: var(--magic-player-background, #000);
 }
 
 .magic-player__video {

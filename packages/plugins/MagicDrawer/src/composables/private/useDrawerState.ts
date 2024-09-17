@@ -4,9 +4,11 @@ import type { DrawerState } from '../../types/index'
 const drawerStateStore: Ref<DrawerState[]> = ref([])
 
 export function useDrawerState(id: MaybeRef<string>) {
+  // Private functions
   function createState(id: string) {
     const state: DrawerState = {
       id: id,
+      active: false,
       dragStart: undefined,
       dragging: false,
       wheeling: false,
@@ -40,6 +42,7 @@ export function useDrawerState(id: MaybeRef<string>) {
     return instance
   }
 
+  // Public functions
   function initializeState() {
     let instance = drawerStateStore.value.find((instance) => {
       return instance.id === id
@@ -54,8 +57,8 @@ export function useDrawerState(id: MaybeRef<string>) {
   }
 
   return {
-    addState,
     initializeState,
     deleteState,
+    drawerStateStore,
   }
 }

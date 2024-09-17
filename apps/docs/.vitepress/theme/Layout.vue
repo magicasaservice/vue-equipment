@@ -1,5 +1,5 @@
 <template>
-  <Layout></Layout>
+  <Layout class="flex"></Layout>
 </template>
 
 <script lang="ts" setup>

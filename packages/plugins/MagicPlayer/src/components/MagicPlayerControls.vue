@@ -40,9 +40,11 @@
             </button>
           </div>
           <div class="magic-player-controls__item -grow">
+            <slot name="timelineBefore" />
             <div class="magic-player-controls__timeline" ref="trackRef">
               <magic-player-timeline :id="id" />
             </div>
+            <slot name="timelineAfter" />
           </div>
           <div class="magic-player-controls__item -shrink-0">
             <button v-if="muted" @click="unmute">
@@ -263,8 +265,6 @@ const hidden = computed(() => {
   --magic-player-controls-border-radius: unset;
   --magic-player-controls-background: transparent;
   --magic-player-controls-backdrop-filter: none;
-  --magic-player-controls-transition-duration: unset;
-  --magic-player-controls-transition-timing-function: unset;
 }
 
 .magic-player-controls.-standalone .magic-player-controls__bar {

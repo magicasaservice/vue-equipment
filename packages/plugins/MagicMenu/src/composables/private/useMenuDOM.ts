@@ -11,7 +11,7 @@ export function useMenuDOM() {
   // Private state
   const positionFixedElements = ref<HTMLElement[]>([])
 
-  // Public methods
+  // Public functions
 
   function lockScroll() {
     scrollLock.value = true

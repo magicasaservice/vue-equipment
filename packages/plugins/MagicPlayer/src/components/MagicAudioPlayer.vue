@@ -82,33 +82,29 @@ onBeforeUnmount(() => {
 
 <style>
 :root {
-  --magic-audio-player-color: rgba(255, 255, 255, 1);
-  --magic-audio-player-background: rgba(32, 32, 32, 0.8);
-  --magic-audio-player-background-slot: rgba(250, 250, 250, 0.15);
-  --magic-audio-player-backdrop-filter: blur(80px);
   --magic-audio-player-border-radius: 1.25rem;
   --magic-audio-player-padding: 0.25rem;
-  --magic-audio-player-gap: 0.25rem;
-  --magic-audio-player-slot-padding: 0.75rem 1rem;
   --magic-audio-player-slot-radius: calc(
     var(--magic-audio-player-border-radius) - var(--magic-audio-player-padding)
   );
-  --magic-audio-player-slot-background: rgba(32, 32, 32, 0.8);
 }
 
 .magic-audio-player {
   position: relative;
   width: 100%;
-  color: var(--magic-audio-player-color);
-  background: var(--magic-audio-player-background);
-  backdrop-filter: var(--magic-audio-player-backdrop-filter);
+  color: var(--magic-audio-player-color, rgba(255, 255, 255, 1));
+  background: var(--magic-audio-player-background, rgba(32, 32, 32, 0.8));
+  backdrop-filter: var(--magic-audio-player-backdrop-filter, blur(80px));
   border-radius: var(--magic-audio-player-border-radius);
   padding: var(--magic-audio-player-padding);
   container-type: inline-size;
 }
 
 .magic-audio-player.-slot {
-  background: var(--magic-audio-player-background-slot);
+  background: var(
+    --magic-audio-player-background-slot,
+    rgba(250, 250, 250, 0.15)
+  );
 }
 
 .magic-audio-player__container {
@@ -117,12 +113,15 @@ onBeforeUnmount(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--magic-audio-player-gap);
+  gap: var(--magic-audio-player-gap, 0.25rem);
 }
 
 .magic-audio-player__slot {
-  padding: var(--magic-audio-player-slot-padding);
-  background-color: var(--magic-audio-player-background);
+  padding: var(--magic-audio-player-slot-padding, 0.75rem 1rem);
+  background-color: var(
+    --magic-audio-player-slot-background,
+    rgba(32, 32, 32, 0.8)
+  );
   border-radius: var(--magic-audio-player-slot-radius);
   color: inherit;
 }

@@ -1,12 +1,14 @@
-import type { MagicMenuOptions } from '../types'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { RequiredMagicMenuOptions } from '../types'
 
-const defaultOptions: RequireAllNested<MagicMenuOptions> = {
+const defaultOptions: RequiredMagicMenuOptions = {
   mode: 'menubar',
+  debug: false,
   transition: {
-    initial: 'magic-menu-content__initial',
-    final: 'magic-menu-content__final',
-    nested: 'magic-menu-content__nested',
+    content: {
+      default: '',
+      nested: 'magic-menu-content--fade',
+    },
+    channel: 'magic-menu-channel',
   },
 }
 

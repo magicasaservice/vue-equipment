@@ -1,28 +1,25 @@
 import { computed, toValue, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { useDrawerStore } from './private/useDrawerStore'
 import { useDrawerState } from './private/useDrawerState'
 
 import type { DrawerSnapPoint } from '../types/index'
 
 export function useMagicDrawer(id: MaybeRef<string>) {
   // Private methods
-  const { drawerStore, addInstance, removeInstance } = useDrawerStore()
-  const { deleteState, initializeState } = useDrawerState(toValue(id))
+  const { initializeState } = useDrawerState(toValue(id))
 
-  const { progress } = initializeState()
+  const { progress, active } = initializeState()
 
   // Public state
-  const isActive = computed(() => drawerStore.value.includes(toValue(id)))
+  const isActive = computed(() => active.value)
 
   // Public methods
   function open() {
-    addInstance(toValue(id))
+    active.value = true
   }
 
   function close() {
-    removeInstance(toValue(id))
-    deleteState()
+    active.value = false
   }
 
   function snapTo(snapPoint: DrawerSnapPoint, duration?: number) {

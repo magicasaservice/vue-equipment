@@ -7,7 +7,6 @@ export * from './src/functions/isWithinRange'
 export * from './src/functions/mapValue'
 export * from './src/functions/matchClass'
 export * from './src/functions/slugify'
-export * from './src/functions/uuid'
 export * from './src/functions/uniq'
 
 export type * from './src/types'

@@ -93,10 +93,6 @@ const { idle } = useIdle(3000)
 <style lang="css">
 :root {
   --magic-audio-player-controls-height: 3rem;
-  --magic-audio-player-controls-padding: 0rem;
-  --magic-audio-player-controls-color: inherit;
-  --magic-audio-player-controls-icon-width: 1.25rem;
-  --magic-audio-player-controls-button-width: 4rem;
 }
 
 .magic-audio-player-controls {
@@ -117,8 +113,8 @@ const { idle } = useIdle(3000)
   width: 100%;
   box-sizing: border-box;
   height: var(--magic-audio-player-controls-height);
-  padding: 0 var(--magic-audio-player-controls-padding);
-  color: var(--magic-audio-player-controls-color);
+  padding: 0 var(--magic-audio-player-controls-padding-x, 0);
+  color: var(--magic-audio-player-controls-color, inherit);
   display: flex;
   align-items: center;
 }
@@ -146,7 +142,7 @@ const { idle } = useIdle(3000)
   padding: 0;
   border-radius: 0;
   cursor: pointer;
-  width: var(--magic-audio-player-controls-button-width);
+  width: var(--magic-audio-player-controls-button-width, 4rem);
   height: var(--magic-audio-player-controls-height);
   display: flex;
   align-items: center;
@@ -155,7 +151,7 @@ const { idle } = useIdle(3000)
 
 .magic-audio-player-controls__item button svg {
   display: block;
-  width: var(--magic-audio-player-controls-icon-width);
+  width: var(--magic-audio-player-controls-icon-width, 1.25rem);
   height: auto;
 }
 

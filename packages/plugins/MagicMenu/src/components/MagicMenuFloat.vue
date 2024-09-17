@@ -22,7 +22,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from 'vue'
+import {
+  ref,
+  computed,
+  inject,
+  toValue,
+  type MaybeRef,
+  type ComponentPublicInstance,
+} from 'vue'
 import {
   useFloating,
   autoUpdate,
@@ -35,10 +42,12 @@ import {
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
+import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 
 interface MagicMenuFloatProps {
   placement?: Placement
   arrow?: boolean
+  referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
 const props = defineProps<MagicMenuFloatProps>()
@@ -71,49 +80,104 @@ const mappedPlacement = computed(() => {
 })
 
 const hasArrow = computed(
-  () => props.arrow || (state.options.mode === 'dropdown' && !view?.parent.item)
+  () => props.arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
 )
 
 const mappedMiddleware = computed(() => {
-  const middleware = [flip()]
+  const middleware = []
 
-  if (view?.parent.item) {
-    middleware.push(shift({ crossAxis: true, limiter: limitShift() }))
-  }
-
-  if (hasArrow.value) {
-    middleware.push(arrow({ element: arrowRef }))
+  switch (state.options.mode) {
+    case 'menubar':
+      if (!view?.parent.item) {
+        middleware.push(
+          flip({
+            crossAxis: true,
+          })
+        )
+      } else if (!!view?.parent.item) {
+        middleware.push(
+          flip({
+            crossAxis: false,
+          })
+        )
+        middleware.push(
+          shift({
+            crossAxis: true,
+            limiter: limitShift(),
+          })
+        )
+      }
+      break
+    case 'dropdown':
+      middleware.push(
+        flip({
+          mainAxis: true,
+          crossAxis: false,
+        })
+      )
+      middleware.push(
+        shift({
+          mainAxis: true,
+          crossAxis: false,
+          limiter: limitShift(),
+        })
+      )
+      if (hasArrow.value) {
+        middleware.push(
+          arrow({
+            element: arrowRef.value,
+          })
+        )
+      }
+      break
+    case 'context':
+      middleware.push(
+        flip({
+          mainAxis: true,
+          crossAxis: true,
+        })
+      )
+      break
   }
 
   return middleware
 })
 
-const referenceEl = computed(() => {
-  if (view?.click) {
+const mappedReferenceEl = computed(() => {
+  if (props.referenceEl) {
+    return toValue(props.referenceEl)
+  } else if (view?.state.clicked) {
     return {
       getBoundingClientRect() {
         return {
           width: 0,
           height: 0,
-          x: view.click!.x,
-          y: view.click!.y,
-          top: view.click!.y,
-          left: view.click!.x,
-          right: view.click!.x,
-          bottom: view.click!.y,
+          x: view.state.clicked!.x,
+          y: view.state.clicked!.y,
+          top: view.state.clicked!.y,
+          left: view.state.clicked!.x,
+          right: view.state.clicked!.x,
+          bottom: view.state.clicked!.y,
         }
       },
     }
   } else {
-    return view?.children?.trigger
+    return document.querySelector(`[data-id="${viewId}-trigger"]`)
   }
 })
 
+const mappedStrategy = computed(() => {
+  return (
+    state.options.floating?.strategy ?? ModeFloatingStrategy[state.options.mode]
+  )
+})
+
 const { floatingStyles, placement, middlewareData } = useFloating(
-  referenceEl,
+  mappedReferenceEl,
   elRef,
   {
     placement: mappedPlacement,
+    strategy: mappedStrategy,
     whileElementsMounted: autoUpdate,
     middleware: mappedMiddleware,
   }
@@ -166,8 +230,8 @@ const polygonPoints = computed(() => {
 
 <style>
 .magic-menu-float {
-  z-index: var(--magic-menu-float-z-index, 999);
   display: flex;
+  z-index: var(--magic-menu-float-z-index, 999);
 }
 
 .magic-menu-float.-top {

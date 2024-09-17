@@ -116,12 +116,8 @@ watch(() => seekedTime?.value, drawFrame)
 </script>
 
 <style lang="css">
-:root {
-  --magic-player-popover-border-radius: 0.25rem;
-}
-
 .magic-player-mux-popover {
-  border-radius: var(--magic-player-popover-border-radius);
+  border-radius: var(--magic-player-popover-border-radius, 0.25rem);
   overflow: hidden;
 }
 

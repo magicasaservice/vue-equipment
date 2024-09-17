@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { useToastInternalApi } from './useToastInternalApi'
-import type { MagicToastInstance, AddToastArgs } from '../../types'
+import type { ToastInstance, AddToastArgs } from '../../types'
 
-const toastStore = ref<MagicToastInstance[]>([])
+const toastStore = ref<ToastInstance[]>([])
 
 export function useToastStore() {
   // Private methods
   const { addToast } = useToastInternalApi()
 
-  function createInstance(id: string): MagicToastInstance {
-    const instance: MagicToastInstance = {
+  function createInstance(id: string): ToastInstance {
+    const instance: ToastInstance = {
       id: id,
       toasts: [],
       add: function (args: AddToastArgs) {
@@ -23,15 +23,15 @@ export function useToastStore() {
   }
 
   // Public methods
-  function findInstance(id: string): MagicToastInstance | undefined {
+  function findInstance(id: string): ToastInstance | undefined {
     const instance = toastStore.value.find(
-      (instance: MagicToastInstance) => instance.id === id
+      (instance: ToastInstance) => instance.id === id
     )
 
     return instance
   }
 
-  function addInstance(id: string): MagicToastInstance {
+  function addInstance(id: string): ToastInstance {
     const instance = createInstance(id)
     toastStore.value.push(instance)
     return instance
@@ -39,7 +39,7 @@ export function useToastStore() {
 
   function removeInstance(id: string) {
     toastStore.value = toastStore.value.filter(
-      (instance: MagicToastInstance) => instance.id !== id
+      (instance: ToastInstance) => instance.id !== id
     )
   }
 

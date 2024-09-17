@@ -1,34 +1,40 @@
 <template>
   <div class="flex flex-col gap-8 font-bold">
-    <magic-marquee class="bg-gray-500/5 py-4">
+    <magic-marquee class="bg-surface-elevation-base text-surface py-4">
       <span>Magic Marquee</span>
       <span>News Update</span>
       <span>Loud Headline</span>
     </magic-marquee>
-    <magic-marquee :speed="5" class="bg-gray-500/5 py-4">
+    <magic-marquee
+      :speed="5"
+      class="bg-surface-elevation-base text-surface py-4"
+    >
       <span>Fast Marquee</span>
       <span>Instant Update</span>
       <span>Noisy Headline</span>
     </magic-marquee>
-    <magic-marquee class="bg-gray-500/5 py-4" id="magic-marquee--full">
+    <magic-marquee
+      class="bg-surface-elevation-base text-surface py-4"
+      id="magic-marquee--full"
+    >
       <span class="w-screen">Magic Marquee with full width content</span>
     </magic-marquee>
     <magic-marquee
-      class="bg-gray-500/5 py-4 cursor-pointer"
+      class="bg-surface-elevation-base text-surface py-4 cursor-pointer"
       :speed="speed"
       @click="increaseSpeed"
     >
       <span>Click me to increase my speed!</span>
     </magic-marquee>
     <magic-marquee
-      class="bg-gray-500/5 py-4 cursor-pointer"
+      class="bg-surface-elevation-base text-surface py-4 cursor-pointer"
       ref="toggleDemo"
       @click="togglePlay"
     >
       <span>Click me to toggle playback</span>
     </magic-marquee>
     <magic-marquee
-      class="bg-gray-500/5 py-4 cursor-pointer"
+      class="bg-surface-elevation-base text-surface py-4 cursor-pointer"
       :direction="direction"
       @click="toggleDirection"
     >
