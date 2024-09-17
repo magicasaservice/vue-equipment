@@ -14,8 +14,9 @@ export function useMenuState(instanceId: MaybeRef<string>) {
       views: [],
       active: false,
       input: {
-        view: undefined,
         type: 'pointer',
+        disabled: [],
+        view: undefined,
       },
     }
 

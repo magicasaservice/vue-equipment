@@ -61,7 +61,8 @@ const mappedPlacement = computed(() => {
 
 const view = initializeView({
   id: mappedId.value,
-  parent: { views: parentTree, item: itemId },
+  parent: { views: parentTree, item: itemId ?? '' },
+  placement: mappedPlacement.value,
 })
 
 // Pass id, active state and parent tree to children

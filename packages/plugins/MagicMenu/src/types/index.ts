@@ -80,7 +80,8 @@ export interface MenuState {
   views: MenuView[]
   options: CombinedMagicMenuOptions
   input: {
-    type: 'keyboard' | 'pointer' | 'disabled'
+    type: 'keyboard' | 'pointer'
+    disabled: ('keyboard' | 'pointer')[]
     view: string | undefined
   }
 }

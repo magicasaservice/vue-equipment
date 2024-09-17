@@ -29,8 +29,8 @@ const mappedOptions = defu(props.options, defaultOptions)
 const { initializeState, deleteState } = useMenuState(props.id)
 const state = initializeState(mappedOptions)
 
-// If the input type changes to "keyboard", save the current pointer position
-// If the pointer moves and the input state is not "disabled", switch to pointer mode
+// If the mode changes, save the current pointer position
+// If the pointer moves, switch to mouse mode
 const lastX = ref(0)
 const lastY = ref(0)
 
@@ -47,12 +47,10 @@ watch(
 )
 
 watch([x, y], ([x, y]) => {
-  if (
-    state &&
-    (x !== lastX.value || y !== lastY.value) &&
-    state?.input.type === 'keyboard'
-  ) {
-    state.input.type = 'pointer'
+  if (x !== lastX.value || y !== lastY.value) {
+    if (state) {
+      state.input.type = 'pointer'
+    }
   }
 })
 

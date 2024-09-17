@@ -65,7 +65,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       state.active = true
       state.input.type = 'keyboard'
       state.input.view = viewId
-
       selectView(viewId)
     }
   }
