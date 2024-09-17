@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
