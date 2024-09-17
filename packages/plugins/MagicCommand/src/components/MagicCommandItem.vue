@@ -22,10 +22,8 @@ import {
   provide,
   onBeforeUnmount,
   onMounted,
-  toRefs,
+  useId,
 } from 'vue'
-import { useEventListener, onKeyStroke } from '@vueuse/core'
-import { uuid } from '@maas/vue-equipment/utils'
 import { useCommandState } from '../composables/private/useCommandState'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import {
@@ -63,7 +61,7 @@ if (!contentId) {
   throw new Error('MagicCommandItem must be nested inside MagicCommandContent')
 }
 
-const mappedId = computed(() => props.id ?? `magic-command-item-${uuid()}`)
+const mappedId = computed(() => props.id ?? `magic-command-item-${useId()}`)
 
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()

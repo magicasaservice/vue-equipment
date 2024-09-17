@@ -3,8 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide, watch } from 'vue'
-import { uuid } from '@maas/vue-equipment/utils'
+import { computed, inject, onBeforeUnmount, provide, watch, useId } from 'vue'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
@@ -30,7 +29,7 @@ if (!instanceId) {
 }
 
 // Register view
-const mappedId = computed(() => props.id ?? `magic-command-view-${uuid()}`)
+const mappedId = computed(() => props.id ?? `magic-command-view-${useId()}`)
 const { initializeView, deleteView, sortItems } = useCommandView(instanceId)
 
 const view = initializeView({
