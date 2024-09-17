@@ -7,6 +7,7 @@ export default {
     './pages/**/*.vue',
     './app.vue',
     './error.vue',
+    '!**/node_modules/**',
   ],
   presets: [mirrorPreset],
   theme: {
