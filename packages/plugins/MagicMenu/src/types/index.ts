@@ -64,15 +64,6 @@ export interface MenuView {
   id: string
   active: boolean
   items: MenuItem[]
-<<<<<<< HEAD
-  parent: {
-    views: string[]
-    item: string | undefined
-  }
-  children: {
-    trigger?: HTMLElement
-    content?: HTMLElement
-=======
   channels: MenuChannel[]
   parent: { item: string; views: string[] }
   placement: Placement
@@ -80,7 +71,6 @@ export interface MenuView {
     selectAbortController: AbortController
     unselectAbortController: AbortController
     clicked?: Coordinates
->>>>>>> main
   }
 }
 
