@@ -5,14 +5,14 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "vue": "^3.5.3"
+    "vue": "^3.5.5"
   },
   "devDependencies": {
     "@maas/mirror": "^0.0.86",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   },
   "exports": "./index.ts",
   "keywords": [],
