@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { inject, watch, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useMagicDrawer } from '../../../MagicDrawer'
 import { useMagicCommand } from '../composables/useMagicCommand'
@@ -26,7 +26,7 @@ interface MagicCommandProps {
   options?: MagicCommandDrawerOptions
 }
 
-const props = defineProps<MagicCommandProps>()
+defineProps<MagicCommandProps>()
 
 const commandId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()

@@ -90,6 +90,7 @@ import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
+import { useMagicDrawer } from '../composables/useMagicDrawer'
 
 import type { MagicDrawerOptions } from '../types/index'
 
@@ -103,7 +104,6 @@ import '@maas/vue-equipment/utils/css/animations/slide-ltr-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
-import { useMagicDrawer } from '../composables/useMagicDrawer'
 
 defineOptions({
   inheritAttrs: false,
