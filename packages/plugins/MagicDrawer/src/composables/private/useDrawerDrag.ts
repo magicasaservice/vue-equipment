@@ -16,7 +16,12 @@ import {
   useThrottleFn,
   useScrollLock,
 } from '@vueuse/core'
-import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import {
+  guardedReleasePointerCapture,
+  guardedSetPointerCapture,
+  isIOS,
+  isWithinRange,
+} from '@maas/vue-equipment/utils'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
@@ -443,7 +448,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Release pointer capture
-    elRef.value?.releasePointerCapture(e.pointerId)
+    guardedReleasePointerCapture({ event: e, element: elRef.value })
   }
 
   function onPointermove(e: PointerEvent) {
@@ -506,7 +511,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     } else {
       // Capture pointer, save state
-      elRef.value?.setPointerCapture(e.pointerId)
+      guardedSetPointerCapture({ event: e, element: elRef.value })
       dragging.value = true
 
       emitter.emit('beforeDrag', {
