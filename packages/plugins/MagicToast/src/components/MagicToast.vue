@@ -166,13 +166,19 @@ onUnmounted(() => {
 
 .magic-toast__inner {
   position: relative;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 100%;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: var(--mt-align-items);
   justify-content: var(--mt-justify-content);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .magic-toast__inner * {
