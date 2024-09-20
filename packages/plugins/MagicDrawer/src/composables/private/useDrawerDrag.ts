@@ -452,7 +452,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointermove(e: PointerEvent) {
-    console.log('onPointermove', e)
     // Prevent real mousemove while wheeling
     if (e.isTrusted && wheeling.value) {
       return
