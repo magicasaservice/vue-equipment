@@ -5,7 +5,7 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "vue": "^3.5.6"
+    "vue": "^3.5.8"
   },
   "devDependencies": {
     "@maas/mirror": "^0.1.0",
