@@ -9,7 +9,7 @@
     "fast-glob": "^3.3.1",
     "fs-extra": "^11.2.0",
     "gray-matter": "^4.0.3",
-    "simple-git": "^3.26.0"
+    "simple-git": "^3.27.0"
   },
   "exports": {
     ".": "./index.ts",
