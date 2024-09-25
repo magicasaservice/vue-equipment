@@ -34,6 +34,7 @@ import {
   computed,
   toValue,
   onMounted,
+  onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -77,16 +78,15 @@ const disabled = computed(() => {
 
 const { snapPoints, animation, initial, threshold } = mappedOptions
 
-const { initialize, onPointerdown, onClick, style, hasDragged } =
-  useDraggableDrag({
-    id: props.id,
-    elRef,
-    wrapperRef,
-    threshold,
-    snapPoints,
-    animation,
-    initial,
-  })
+const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
+  id: props.id,
+  elRef,
+  wrapperRef,
+  threshold,
+  snapPoints,
+  animation,
+  initial,
+})
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
@@ -100,10 +100,6 @@ function guardedClick(event: PointerEvent) {
     onClick(event)
   }
 }
-
-onMounted(() => {
-  initialize()
-})
 </script>
 
 <style>

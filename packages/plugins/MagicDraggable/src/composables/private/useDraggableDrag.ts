@@ -4,8 +4,10 @@ import {
   toValue,
   nextTick,
   watch,
+  onBeforeUnmount,
   type Ref,
   type MaybeRef,
+  onMounted,
 } from 'vue'
 import {
   useEventListener,
@@ -20,13 +22,16 @@ import {
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { Coordinates } from '../../types'
+import type { Coordinates, DraggableSnapPoint } from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
@@ -135,6 +140,16 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
+  }
+
+  function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
+    if (payload.id === toValue(id)) {
+      snapTo({
+        snapPoint: payload.snapPoint as DraggableSnapPoint,
+        interpolate: true,
+        duration: payload.duration,
+      })
+    }
   }
 
   function detectCollision() {
@@ -475,6 +490,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     await getSizes()
 
     if (elRect.value && wrapperRect.value) {
+      // Initialize listener for programmatic snapping
+      emitter.on('snapTo', snapToCallback)
+
       if (
         elRect.value.width > wrapperRect.value.width ||
         elRect.value.height > wrapperRect.value.height
@@ -499,6 +517,15 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       }
     }
   }
+
+  function destroy() {
+    emitter.off('snapTo', snapToCallback)
+  }
+
+  // Lifecycle hooks and listeners
+  onMounted(() => {
+    initialize()
+  })
 
   // Make sure the element keeps the correct position when the container is resized
   // To achieve this, we update the snapPointsMap after the element has snapped
@@ -536,8 +563,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   })
 
+  onBeforeUnmount(() => {
+    destroy()
+  })
+
   return {
     initialize,
+    destroy,
     onPointerdown,
     onClick,
     style,
