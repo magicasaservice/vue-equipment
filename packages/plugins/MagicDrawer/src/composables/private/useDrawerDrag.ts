@@ -367,6 +367,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  async function initialize() {
+    await getSizes()
+    emitter.on('snapTo', snapToCallback)
+    emitter.on('afterLeave', afterLeaveCallback)
+  }
+
+  function destroy() {
+    emitter.off('snapTo', snapToCallback)
+    emitter.off('afterLeave', afterLeaveCallback)
+  }
+
   function onCancel() {
     switch (position) {
       case 'bottom':
@@ -558,9 +569,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Lifecycle hooks and listeners
   onMounted(async () => {
-    await getSizes()
-    emitter.on('snapTo', snapToCallback)
-    emitter.on('afterLeave', afterLeaveCallback)
+    await initialize()
   })
 
   watch(
@@ -604,8 +613,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   onBeforeUnmount(() => {
-    emitter.off('snapTo', snapToCallback)
-    emitter.off('afterLeave', afterLeaveCallback)
+    destroy()
   })
 
   return {
