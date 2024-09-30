@@ -3,10 +3,10 @@
   "version": "0.36.0",
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@typescript-eslint/eslint-plugin": "^8.6.0",
-    "@typescript-eslint/parser": "^8.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
     "@vue/tsconfig": "^0.5.1",
-    "eslint": "^9.11.0",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
