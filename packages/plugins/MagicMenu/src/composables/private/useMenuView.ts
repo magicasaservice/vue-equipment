@@ -149,8 +149,6 @@ export function useMenuView(instanceId: MaybeRef<string>) {
           console.log(
             `selectView() was interrupted by a call to unselectView()`
           )
-        } else {
-          throw error
         }
       }
     }
@@ -177,8 +175,6 @@ export function useMenuView(instanceId: MaybeRef<string>) {
           console.log(
             `unselectView() was interrupted by a call to selectView()`
           )
-        } else {
-          throw error
         }
       }
     }
