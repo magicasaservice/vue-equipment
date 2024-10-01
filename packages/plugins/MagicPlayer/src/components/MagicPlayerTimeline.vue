@@ -150,7 +150,7 @@ const {
 }
 
 .magic-player-timeline:hover .magic-player-timeline__slider-thumb-handle {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 .magic-player-timeline__seek-popover {
