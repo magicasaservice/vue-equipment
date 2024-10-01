@@ -4,10 +4,10 @@
   "version": "0.36.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.1.0",
+    "@maas/mirror": "^0.2.2",
     "@nuxt/schema": "^3.13.2",
     "@nuxt/types": "^2.17.1",
-    "esno": "^4.0.0",
+    "esno": "^4.8.0",
     "mkdist": "^1.5.9",
     "vue-tsc": "^2.1.6"
   },
@@ -72,6 +72,6 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "^6.1.2",
-    "vue": "^3.5.8"
+    "vue": "^3.5.10"
   }
 }
