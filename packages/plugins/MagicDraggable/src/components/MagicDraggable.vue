@@ -76,7 +76,7 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial, threshold } = mappedOptions
+const { snapPoints, animation, initial, threshold, scrollLock } = mappedOptions
 
 const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
   id: props.id,
@@ -86,6 +86,7 @@ const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
   snapPoints,
   animation,
   initial,
+  scrollLock,
 })
 
 // Public functions

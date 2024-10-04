@@ -42,6 +42,7 @@ export interface MagicDraggableOptions {
     snapPoint?: DraggableSnapPoint
   }
   snapPoints?: DraggableSnapPoint[]
+  scrollLock?: boolean | { padding: boolean }
   disabled?: boolean
 }
 

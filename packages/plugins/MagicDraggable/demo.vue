@@ -7,6 +7,9 @@
         initial: {
           snapPoint: 'top-left',
         },
+        scrollLock: {
+          padding: false,
+        },
       }"
     >
       <div class="bg-[red] aspect-square w-40 rounded-md" />

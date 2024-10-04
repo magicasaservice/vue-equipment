@@ -41,11 +41,20 @@ type UseDraggableDragArgs = {
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   animation: MaybeRef<DefaultOptions['animation']>
   initial: MaybeRef<DefaultOptions['initial']>
+  scrollLock: MaybeRef<DefaultOptions['scrollLock']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
-  const { id, elRef, wrapperRef, threshold, snapPoints, initial, animation } =
-    args
+  const {
+    id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    initial,
+    animation,
+    scrollLock,
+  } = args
 
   // Private state
   const { initializeState } = useDraggableState(toValue(id))
@@ -363,8 +372,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     resetStateAndListeners()
 
     // Unlock scroll
-    unlockScroll()
-    removeScrollLockPadding()
+    const scrollLockValue = toValue(scrollLock)
+    if (scrollLockValue) {
+      unlockScroll()
+      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
+        removeScrollLockPadding()
+      }
+    }
 
     // Release pointer capture
     guardedReleasePointerCapture({ event: e, element: elRef.value })
@@ -429,8 +443,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // Public functions
   function onPointerdown(e: PointerEvent) {
     // Lock scroll as soon as the user starts dragging
-    lockScroll()
-    addScrollLockPadding()
+    const scrollLockValue = toValue(scrollLock)
+    if (scrollLockValue) {
+      lockScroll()
+      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
+        addScrollLockPadding()
+      }
+    }
 
     // Prevent dragging if we’re already dragging
     if (dragging.value) {
