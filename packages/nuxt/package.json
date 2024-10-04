@@ -20,9 +20,10 @@
   },
   "scripts": {
     "build": "nuxt-module-build --outDir ../../dist/nuxt && pnpm dlx nuxi prepare ./playground",
+    "prepack": "nuxt-module-build build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"

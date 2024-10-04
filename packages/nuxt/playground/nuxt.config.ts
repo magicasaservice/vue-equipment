@@ -9,25 +9,32 @@ export default defineNuxtConfig({
     '@maas/mirror/nuxt',
     '@nuxtjs/tailwindcss',
   ],
+
   vueEquipment: {
     plugins: true,
     composables: true,
   },
+
   mirror: {
     components: true,
   },
+
   devtools: { enabled: false },
+
   typescript: {
     includeWorkspace: true,
   },
+
   tailwindcss: {
     viewer: false,
   },
+
   alias: {
     '@maas/mirror/tokens': path.resolve(__dirname, '../../../.maas/tokens/css'),
     '@maas/vue-equipment/nuxt': path.resolve(__dirname, '../../../dist/nuxt'),
     '@maas/vue-equipment/utils': path.resolve(__dirname, '../../../dist/utils'),
   },
+
   css: [
     'fonts/index/stylesheet.css',
     'fonts/interface/stylesheet.css',
@@ -37,6 +44,7 @@ export default defineNuxtConfig({
     '@maas/mirror/tokens/application.css',
     '@maas/mirror/tokens/theme/dark/application.css',
   ],
+
   // Load demo files as routes
   hooks: {
     'pages:extend'(pages) {
@@ -57,8 +65,11 @@ export default defineNuxtConfig({
       }
     },
   },
+
   // Use public folder from docs
   dir: {
     public: path.resolve(__dirname, '../../../apps/docs/public'),
   },
+
+  compatibilityDate: '2024-10-04',
 })
