@@ -19,8 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import {
+  useElementVisibility,
+  useEventListener,
+  defaultWindow,
+} from '@vueuse/core'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
@@ -47,6 +51,8 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
+const isVisible = useElementVisibility(playerRef)
+
 const { playing, muted } = usePlayerMediaApi({
   id: props.id,
   mediaRef: videoRef,
@@ -65,13 +71,23 @@ const { onMouseenter, onMouseleave, play, pause } = usePlayerVideoApi({
   playerRef: playerRef,
 })
 
-useIntersectionObserver(
-  playerRef,
-  ([{ isIntersecting }]) => {
-    if (!isIntersecting && playing.value) {
-      pause()
-    } else if (isIntersecting && !playing.value && props.autoplay) {
+function onWindowFocus() {
+  if (isVisible.value && !playing.value && props.autoplay) {
+    play()
+  }
+}
+
+// Auto play when window is focused
+useEventListener(defaultWindow, 'focus', onWindowFocus)
+
+// Auto play when element is visible
+watch(
+  isVisible,
+  (value) => {
+    if (value && !playing.value && props.autoplay) {
       play()
+    } else if (!value && playing.value) {
+      pause()
     }
   },
   {

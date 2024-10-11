@@ -86,10 +86,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
       if (isPlaying) {
         const playPromise = el.play()
-        if (playPromise !== undefined)
-          playPromise.catch((error) => {
-            console.warn('Playback error:', error)
-          })
+        if (playPromise !== undefined) playPromise.catch((error) => {})
       } else {
         el.pause()
       }
