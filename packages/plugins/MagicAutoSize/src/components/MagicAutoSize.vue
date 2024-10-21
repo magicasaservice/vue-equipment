@@ -90,9 +90,9 @@ useMutationObserver(
       content.value = addedNode
     }
 
-    // If immediate is true, reset the size when a comment is added
+    // If immediate is true, reset the size when a comment is added and no children are present
     // Vue sets a placeholder comment for a v-if
-    if (props.immediate && !!addedComment) {
+    if (props.immediate && !!addedComment && !child.value) {
       content.value = undefined
       size.value = {
         width: 0,
