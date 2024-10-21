@@ -11919,16 +11919,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@8.8.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint@9.12.0(jiti@2.3.3)):
-    dependencies:
-      debug: 3.2.7
-    optionalDependencies:
-      '@typescript-eslint/parser': 8.8.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2)
-      eslint: 9.12.0(jiti@2.3.3)
-      eslint-import-resolver-node: 0.3.9
-    transitivePeerDependencies:
-      - supports-color
-
   eslint-plugin-es@3.0.1(eslint@9.12.0(jiti@2.3.3)):
     dependencies:
       eslint: 9.12.0(jiti@2.3.3)
@@ -11968,7 +11958,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.12.0(jiti@2.3.3)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.8.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint@9.12.0(jiti@2.3.3))
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-plugin-import@2.29.1)(eslint@9.12.0(jiti@2.3.3)))(eslint@9.12.0(jiti@2.3.3))
       hasown: 2.0.2
       is-core-module: 2.14.0
       is-glob: 4.0.3
@@ -11995,7 +11985,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.12.0(jiti@2.3.3)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.8.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint@9.12.0(jiti@2.3.3))
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@9.12.0(jiti@2.3.3))(typescript@5.6.2))(eslint-plugin-import@2.29.1)(eslint@9.12.0(jiti@2.3.3)))(eslint@9.12.0(jiti@2.3.3))
       hasown: 2.0.2
       is-core-module: 2.14.0
       is-glob: 4.0.3
