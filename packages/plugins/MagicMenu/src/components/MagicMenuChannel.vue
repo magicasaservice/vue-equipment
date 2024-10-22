@@ -41,16 +41,18 @@ if (!viewId) {
   throw new Error('MagicMenuChannel must be nested inside MagicMenuView')
 }
 
-if (!contentId) {
-  throw new Error('MagicMenuChannel must be nested inside MagicMenuContent')
-}
-
 if (!props.id) {
   throw new Error('MagicMenuChannel requires an id')
 }
 
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
+
+if (!contentId) {
+  if (state.options.debug) {
+    console.warn('MagicMenuChannel is not nested inside MagicMenuContent')
+  }
+}
 
 const mappedId = computed(() => `magic-menu-channel-${props.id}`)
 const mappedTransition = computed(() => state.options.transition.channel)
