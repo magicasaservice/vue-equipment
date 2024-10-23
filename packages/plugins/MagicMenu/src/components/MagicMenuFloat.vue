@@ -17,7 +17,9 @@
         </svg>
       </slot>
     </div>
-    <slot />
+    <transition name="fade">
+      <slot v-if="view?.active" />
+    </transition>
   </div>
 </template>
 
