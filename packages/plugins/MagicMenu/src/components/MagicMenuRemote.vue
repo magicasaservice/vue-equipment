@@ -6,7 +6,7 @@
     ]"
     :data-id="`${channelId}-remote`"
     :as-child="asChild"
-    @pointerdown="onClick"
+    @click="onClick"
     @mouseenter="onMouseenter"
   >
     <slot :channel-active="channel?.active" :remote-disabled="disabled" />

@@ -8,7 +8,7 @@
     :data-id="`${viewId}-trigger`"
     :tabindex="mappedTabindex"
     :as-child="asChild"
-    @pointerdown="onClick"
+    @click="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
   >
