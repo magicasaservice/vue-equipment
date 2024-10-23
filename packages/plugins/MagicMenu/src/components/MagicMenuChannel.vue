@@ -73,7 +73,7 @@ provide(MagicMenuChannelActive, channel.active)
 </script>
 
 <style>
-/* .magic-menu-channel-enter-active {
+.magic-menu-channel-enter-active {
   animation: fade-in 300ms ease;
   &.-initialized {
     position: absolute;
@@ -85,5 +85,5 @@ provide(MagicMenuChannelActive, channel.active)
   &.-initialized {
     position: absolute;
   }
-} */
+}
 </style>
