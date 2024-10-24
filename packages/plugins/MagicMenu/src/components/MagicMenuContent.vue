@@ -87,10 +87,11 @@ defineOptions({
 
 interface MagicMenuContentProps {
   arrow?: boolean | undefined
+  transition?: string
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-withDefaults(defineProps<MagicMenuContentProps>(), { arrow: undefined })
+const { arrow = undefined, transition } = defineProps<MagicMenuContentProps>()
 
 const contentRef = ref<HTMLElement | undefined>(undefined)
 
@@ -115,6 +116,8 @@ const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
 
 const mappedTransition = computed(() => {
   switch (true) {
+    case !!transition:
+      return transition
     case !!view?.parent.item:
       return state.options.transition.content.nested
     case !!state.options.transition.content.default:
