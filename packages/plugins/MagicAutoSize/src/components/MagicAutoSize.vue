@@ -150,6 +150,7 @@ onMounted(() => {
 <style>
 .magic-auto-size {
   transition: var(--magic-auto-size-transition, all 150ms var(--ease-in-out));
+  transition-delay: var(--magic-auto-size-transition-delay, 0ms);
   width: var(--magic-auto-size-width);
   height: var(--magic-auto-size-height);
 }
