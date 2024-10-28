@@ -4,12 +4,12 @@
   "version": "0.38.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.4.0",
+    "@maas/mirror": "^0.4.2",
     "@nuxt/schema": "^3.13.2",
     "@nuxt/types": "^2.17.1",
     "esno": "^4.8.0",
     "mkdist": "^1.6.0",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^2.1.8"
   },
   "exports": "./index.ts",
   "keywords": [],
