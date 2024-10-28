@@ -24,7 +24,7 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "@maas/mirror": "^0.4.0",
+    "@maas/mirror": "^0.4.2",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
