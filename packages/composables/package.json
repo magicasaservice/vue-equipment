@@ -8,10 +8,10 @@
     "vue": "^3.5.12"
   },
   "devDependencies": {
-    "@maas/mirror": "^0.4.0",
+    "@maas/mirror": "^0.4.2",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
-    "tsup": "^8.3.0",
+    "tsup": "^8.3.5",
     "typescript": "^5.6.3"
   },
   "exports": "./index.ts",
