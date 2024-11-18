@@ -15,12 +15,19 @@
         "nuxt#build"
       ]
     },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "docs#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["//#update:metadata", "build:types", "^build"]
+    },
+    "nuxt#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
     },
     "build": {
       "outputs": ["./dist/**"]
@@ -29,27 +36,15 @@
       "cache": false,
       "outputs": ["./types/**"]
     },
-    "composables#build": {
-      "outputs": ["./dist/composables/**"]
-    },
-    "docs#dev": {
-      "dependsOn": ["//#update:metadata", "build:types", "^build"]
-    },
     "docs#build": {
+      "cache": false,
       "dependsOn": ["//#update:metadata", "^build:types", "^build"]
     },
     "plugins#build": {
       "dependsOn": ["utils#build"]
     },
     "nuxt#build": {
-      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"],
-      "outputs": ["./dist/nuxt/**"]
-    },
-    "nuxt#dev": {
       "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
-    },
-    "utils#build": {
-      "outputs": ["./dist/utils/**"]
     }
   }
 }
