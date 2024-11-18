@@ -33,7 +33,6 @@
       "outputs": ["./dist/composables/**"]
     },
     "docs#dev": {
-      "cache": false,
       "dependsOn": ["//#update:metadata", "build:types", "^build"]
     },
     "docs#build": {
