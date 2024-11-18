@@ -18,7 +18,7 @@
     "@floating-ui/vue": "^1.0.6",
     "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.13.1",
+    "@nuxt/kit": "^3.14.159",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "defu": "^6.1.2",
