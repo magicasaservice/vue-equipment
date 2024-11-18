@@ -4,8 +4,8 @@
   "version": "0.38.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@types/node": "^22.7.7",
-    "tsup": "^8.3.0",
+    "@types/node": "^22.9.0",
+    "tsup": "^8.3.5",
     "typescript": "^5.6.3"
   },
   "exports": {
