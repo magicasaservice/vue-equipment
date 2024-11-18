@@ -29,6 +29,9 @@
       "cache": false,
       "outputs": ["./types/**"]
     },
+    "composables#build": {
+      "outputs": ["./dist/composables/**"]
+    },
     "docs#dev": {
       "cache": false,
       "dependsOn": ["//#update:metadata", "build:types", "^build"]
@@ -40,10 +43,14 @@
       "dependsOn": ["utils#build"]
     },
     "nuxt#build": {
-      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
+      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"],
+      "outputs": ["./dist/nuxt/**"]
     },
     "nuxt#dev": {
       "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
+    },
+    "utils#build": {
+      "outputs": ["./dist/utils/**"]
     }
   }
 }
