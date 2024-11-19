@@ -4,7 +4,7 @@
     :as-child="asChild"
     as="button"
     ref="elRef"
-    @mouseeenter="onMouseenter"
+    @mouseenter="onMouseenter"
     @click="onClick"
   >
     <slot :is-active="view?.active" />
