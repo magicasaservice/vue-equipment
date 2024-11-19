@@ -10,13 +10,13 @@
     "autoprefixer": "^10.4.20",
     "fonts": "workspace:fonts@*",
     "fs-extra": "^11.2.0",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
-    "unplugin-icons": "^0.19.3",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "unplugin-icons": "^0.20.1",
     "unplugin-vue-components": "^0.27.4",
-    "vite": "^5.4.9",
-    "vitepress": "1.4.1",
-    "vue": "^3.5.12"
+    "vite": "^5.4.11",
+    "vitepress": "1.5.0",
+    "vue": "^3.5.13"
   },
   "scripts": {
     "dev": "vitepress dev",
@@ -24,7 +24,7 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "@maas/mirror": "^0.4.0",
+    "@maas/mirror": "^0.4.2",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",

@@ -4,12 +4,12 @@
   "version": "0.38.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.4.0",
-    "@nuxt/schema": "^3.13.2",
+    "@maas/mirror": "^0.4.2",
+    "@nuxt/schema": "^3.14.159",
     "@nuxt/types": "^2.17.1",
     "esno": "^4.8.0",
     "mkdist": "^1.6.0",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^2.1.10"
   },
   "exports": "./index.ts",
   "keywords": [],
@@ -18,7 +18,7 @@
     "@floating-ui/vue": "^1.0.6",
     "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.13.1",
+    "@nuxt/kit": "^3.14.159",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "defu": "^6.1.2",
@@ -72,6 +72,6 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "^6.1.2",
-    "vue": "^3.5.12"
+    "vue": "^3.5.13"
   }
 }
