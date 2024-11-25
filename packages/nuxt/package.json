@@ -6,7 +6,7 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "@nuxt/kit": "^3.14.159"
+    "@nuxt/kit": "^3.14.1592"
   },
   "devDependencies": {
     "@nuxt/devtools": "1.6.0",
