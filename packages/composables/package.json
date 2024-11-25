@@ -12,7 +12,7 @@
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
     "tsup": "^8.3.5",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "exports": "./index.ts",
   "keywords": [],
