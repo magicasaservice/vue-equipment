@@ -1,4 +1,5 @@
 import * as path from 'path'
+// @ts-ignore
 import { kebabCase } from 'scule'
 
 import { plugins, composables } from '../../metadata'

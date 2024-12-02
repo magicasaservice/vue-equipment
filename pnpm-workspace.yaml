@@ -1,5 +1,5 @@
 packages:
   - packages/*
   - apps/*
-  - '!packages/nuxt/playground'
+  - 'packages/nuxt/playground'
   - '!packages/nuxt/test'

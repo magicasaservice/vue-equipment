@@ -111,7 +111,7 @@
     "dev": "turbo run dev --parallel",
     "dev:docs": "turbo run dev --filter=docs",
     "dev:nuxt": "turbo run dev --filter=nuxt",
-    "build": "turbo run build",
+    "build": "turbo run build --filter=!playground",
     "build:types": "turbo run build:types",
     "build:docs": "turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
@@ -122,7 +122,7 @@
     "release": "turbo run t:release && release-it"
   },
   "volta": {
-    "node": "20.17.0"
+    "node": "20.18.1"
   },
   "release-it": {
     "git": {
