@@ -1,7 +1,6 @@
 {
   "extends": "../config/tsconfig/vue-base.json",
   "compilerOptions": {
-    "noEmit": false,
     "paths": {
       "@maas/vue-equipment/plugins": ["./index.ts"]
     }
