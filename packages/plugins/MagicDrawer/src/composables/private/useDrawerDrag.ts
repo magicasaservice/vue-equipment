@@ -89,6 +89,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     wrapperRect,
   } = initializeState()
 
+  let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
@@ -459,7 +460,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Release pointer capture
-    guardedReleasePointerCapture({ event: e, element: elRef.value })
+    guardedReleasePointerCapture({ event: e, element: pointerdownTarget })
   }
 
   function onPointermove(e: PointerEvent) {
@@ -520,9 +521,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (dragging.value) {
       return
     } else {
-      // Capture pointer, save state
-      guardedSetPointerCapture({ event: e, element: elRef.value })
+      // Save state
       dragging.value = true
+
+      // Save pointerdown target and capture pointer
+      // Capture the target, not the elRef, since this would break canDrag
+      // canDrag traverses up the DOM tree, so we need the actual target
+      pointerdownTarget = e.target as HTMLElement
+      guardedSetPointerCapture({
+        event: e,
+        element: e.target as HTMLElement,
+      })
 
       emitter.emit('beforeDrag', {
         id: toValue(id),
