@@ -29,6 +29,6 @@
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "prettier": "^3.3.3"
+    "prettier": "^3.4.1"
   }
 }
