@@ -59,7 +59,7 @@ const { mouseEntered, togglePlay } = usePlayerVideoApi({
 const { idle } = useIdle(3000)
 </script>
 
-<style lang="css">
+<style>
 .magic-player-overlay {
   position: absolute;
   inset: 0;

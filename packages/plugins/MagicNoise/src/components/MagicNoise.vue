@@ -67,7 +67,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-noise-loading-transition: color 300ms ease, opacity 300ms ease;
 }

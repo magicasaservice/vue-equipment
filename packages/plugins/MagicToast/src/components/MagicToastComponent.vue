@@ -59,7 +59,7 @@ watchEffect(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 .magic-toast-component {
   --mt-index: 0;
   --mt-offset: 0;

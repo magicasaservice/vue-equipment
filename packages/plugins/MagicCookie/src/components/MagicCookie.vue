@@ -112,7 +112,7 @@ const {
 } = useMagicCookie()
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-cookie-preferences-mask: linear-gradient(
     to top,

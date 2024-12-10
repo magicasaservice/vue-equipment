@@ -115,7 +115,7 @@ onMounted(init)
 watch(() => seekedTime?.value, drawFrame)
 </script>
 
-<style lang="css">
+<style>
 .magic-player-mux-popover {
   border-radius: var(--magic-player-popover-border-radius, 0.25rem);
   overflow: hidden;

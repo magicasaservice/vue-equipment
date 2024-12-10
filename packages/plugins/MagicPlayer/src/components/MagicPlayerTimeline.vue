@@ -59,7 +59,7 @@ const {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-player-track-height: 0.25rem;
 }

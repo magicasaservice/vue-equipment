@@ -147,7 +147,7 @@ const hidden = computed(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-player-controls-height: 3rem;
   --magic-player-controls-padding: 0.75rem;

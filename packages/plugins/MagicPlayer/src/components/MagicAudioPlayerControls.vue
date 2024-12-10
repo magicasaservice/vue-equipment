@@ -90,7 +90,7 @@ usePlayerControlsApi({
 const { idle } = useIdle(3000)
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-audio-player-controls-height: 3rem;
 }

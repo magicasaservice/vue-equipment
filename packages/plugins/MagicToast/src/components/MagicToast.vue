@@ -136,7 +136,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
   --magic-toast-transform-x: 0;
   --magic-toast-transform-y: 0;
