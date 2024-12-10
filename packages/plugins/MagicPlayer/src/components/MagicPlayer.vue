@@ -1,9 +1,21 @@
 <template>
   <div
     ref="playerRef"
-    class="magic-player"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
+    :class="[
+      'magic-player',
+      {
+        '-fullscreen': isFullscreen,
+        '-touched': touched,
+        '-untouched': !touched,
+        '-playing': playing,
+        '-paused': !playing,
+        '-waiting': waiting,
+        '-loaded': loaded,
+        '-muted': muted,
+      },
+    ]"
   >
     <video
       ref="videoRef"
@@ -53,23 +65,24 @@ const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
 const isVisible = useElementVisibility(playerRef)
 
-const { playing, muted } = usePlayerMediaApi({
+const { playing, waiting, muted } = usePlayerMediaApi({
   id: props.id,
   mediaRef: videoRef,
 })
 
-const { initialize, destroy } = usePlayerRuntime({
+const { initialize, loaded, destroy } = usePlayerRuntime({
   id: props.id,
   mediaRef: videoRef,
   src: props.src,
   srcType: props.srcType,
 })
 
-const { onMouseenter, onMouseleave, play, pause } = usePlayerVideoApi({
-  id: props.id,
-  videoRef: videoRef,
-  playerRef: playerRef,
-})
+const { onMouseenter, onMouseleave, isFullscreen, touched, play, pause } =
+  usePlayerVideoApi({
+    id: props.id,
+    videoRef: videoRef,
+    playerRef: playerRef,
+  })
 
 function onWindowFocus() {
   if (isVisible.value && !playing.value && props.autoplay) {
@@ -107,7 +120,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 .magic-player {
   position: relative;
   width: 100%;
@@ -115,6 +128,10 @@ onBeforeUnmount(() => {
   height: var(--magic-player-height, auto);
   aspect-ratio: var(--magic-player-aspect-ratio, 16 / 9);
   background: var(--magic-player-background, #000);
+}
+
+.magic-player.-loaded {
+  --magic-player-background: transparent;
 }
 
 .magic-player__video {
