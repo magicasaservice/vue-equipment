@@ -21,6 +21,7 @@ export function useMagicCookie() {
     },
     set: (value: MagicCookieConsent) => {
       universalCookies.set('cookie_consent', value, {
+        path: '/',
         maxAge: cookieApiStore.value?.maxAge,
       })
     },
