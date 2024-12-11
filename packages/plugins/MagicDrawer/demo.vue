@@ -29,7 +29,7 @@
     >
       <a href="/plugins/MagicModal/">MagicModal</a>
       <m-checkbox v-model="checkbox" />
-      <m-input type="text" v-model="text" />
+      <m-input type="text" v-model="text" label="Label" />
     </div>
   </magic-drawer>
 
@@ -52,7 +52,7 @@
         </m-button>
       </div>
       <div class="bg-surface-elevation-higher p-2.5">
-        <m-input v-model="text" />
+        <m-input v-model="text" label="Label" />
         <div v-for="i in 25" :key="i" class="p-4 text-surface w-full">
           {{ i }}
         </div>
@@ -108,10 +108,10 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { MButton, MCheckbox, MInput } from '@maas/mirror/vue'
 import {
-  useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from './src/composables/useMagicDrawer'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
 const className = 'magic-drawer--test-class'

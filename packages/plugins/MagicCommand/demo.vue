@@ -26,10 +26,10 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import {
-  useMagicCommand,
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicCommand } from './src/composables/useMagicCommand'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
 import DefaultView from './demo/DefaultView.vue'

@@ -11,6 +11,7 @@
     "fonts": "workspace:fonts@*",
     "fs-extra": "^11.2.0",
     "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
     "tailwindcss": "^3.4.16",
     "unplugin-icons": "^0.21.0",
     "unplugin-vue-components": "^0.27.5",
@@ -28,7 +29,6 @@
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*",
-    "prettier": "^3.4.2"
+    "@maas/vue-equipment/utils": "workspace:utils@*"
   }
 }

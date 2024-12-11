@@ -48,9 +48,9 @@ import { onBeforeUnmount } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import {
   useMagicEmitter,
-  useMagicDraggable,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicDraggable } from './src/composables/useMagicDraggable'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
 function callback(
