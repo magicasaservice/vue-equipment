@@ -47,7 +47,7 @@ const defaultOptions: DefaultOptions = {
     close: ['Escape'],
   },
   enableMousewheel: false,
-  preventZoom: false,
+  preventZoom: true,
   preventDragClose: false,
   disabled: false,
 }
