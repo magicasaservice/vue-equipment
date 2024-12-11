@@ -474,10 +474,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       return
     }
 
-    // Prevent scrolling on iOS
+    // Prevent event bubbling, helpful on iOS
     e.stopImmediatePropagation()
     e.stopPropagation()
-    e.preventDefault()
 
     // Reset shouldClose before checking
     shouldClose.value = false
