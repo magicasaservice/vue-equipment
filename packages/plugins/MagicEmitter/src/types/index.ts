@@ -13,7 +13,7 @@ type MergeTypes<T, U> = {
 
 type Merge<T extends unknown[]> = T extends [infer First, ...infer Rest]
   ? MergeTypes<First, Merge<Rest>>
-  : {}
+  : object
 
 export type MagicEmitterEvents = Merge<
   [
@@ -24,6 +24,6 @@ export type MagicEmitterEvents = Merge<
     ModalEvents,
     MenuEvents,
     ScrollEvents,
-    ToastEvents
+    ToastEvents,
   ]
 >

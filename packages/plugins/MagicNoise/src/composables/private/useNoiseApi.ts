@@ -24,8 +24,8 @@ export function useNoiseApi({
   const pixels = shallowRef<Pixel[]>([])
   const isReady = ref(false)
 
-  let context = shallowRef<CanvasRenderingContext2D | null>(null)
-  let offContext = shallowRef<CanvasRenderingContext2D | null>(null)
+  const context = shallowRef<CanvasRenderingContext2D | null>(null)
+  const offContext = shallowRef<CanvasRenderingContext2D | null>(null)
 
   const { width, height } = useElementSize(canvasRef)
   const { pixelRatio } = useDevicePixelRatio()

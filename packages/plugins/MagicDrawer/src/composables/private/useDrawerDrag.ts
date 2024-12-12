@@ -163,7 +163,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     switch (position) {
       case 'bottom':
-      case 'top':
+      case 'top': {
         if (distanceY > toValue(threshold).distance) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
@@ -181,9 +181,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         }
 
         break
+      }
 
       case 'right':
-      case 'left':
+      case 'left': {
         if (distanceX > toValue(threshold).distance) {
           const snapPointX = findClosestSnapPoint({
             draggedX,
@@ -200,6 +201,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
     }
   }
 
@@ -214,7 +216,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     switch (position) {
       case 'bottom':
-      case 'top':
+      case 'top': {
         if (velocityY > toValue(threshold).momentum) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
@@ -230,9 +232,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
 
       case 'right':
-      case 'left':
+      case 'left': {
         if (velocityX > toValue(threshold).momentum) {
           const snapPointX = findClosestSnapPoint({
             draggedX,
@@ -249,42 +252,47 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
     }
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
     switch (position) {
-      case 'bottom':
+      case 'bottom': {
         const newDraggedB = clamp(y - originY.value, 0, toValue(overshoot) * -1)
         if (newDraggedB === draggedY.value) break
 
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
         break
+      }
 
-      case 'top':
+      case 'top': {
         const newDraggedT = clamp(y - originY.value, 0, toValue(overshoot))
         if (newDraggedT === draggedY.value) break
 
         relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
         break
+      }
 
-      case 'right':
+      case 'right': {
         const newDraggedR = clamp(x - originX.value, 0, toValue(overshoot) * -1)
         if (newDraggedR === draggedX.value) break
 
         relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
         break
+      }
 
-      case 'left':
+      case 'left': {
         const newDraggedL = clamp(x - originX.value, 0, toValue(overshoot))
         if (newDraggedL === draggedX.value) break
 
         relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
         break
+      }
     }
   }
 

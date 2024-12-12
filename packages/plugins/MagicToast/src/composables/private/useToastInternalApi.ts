@@ -19,7 +19,7 @@ export function useToastInternalApi() {
 
   function addToast(args: AddToastArgs, ctx: ToastInstance) {
     const id = uuid()
-    let { component, props, duration = 0 } = args
+    const { component, props, duration = 0 } = args
 
     const toast: Toast = {
       component,

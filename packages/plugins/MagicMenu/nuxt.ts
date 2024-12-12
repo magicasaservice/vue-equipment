@@ -10,7 +10,7 @@ export default defineNuxtModule({
   meta: {
     name: '@maas/vue-equipment/nuxt/MagicMenu',
   },
-  setup(_options, _nuxt) {
+  setup() {
     const resolver = createResolver(import.meta.url)
 
     addComponentsDir({

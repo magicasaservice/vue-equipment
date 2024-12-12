@@ -124,20 +124,20 @@ export async function readMetadata() {
     )
   }
 
-  indexes.functions.sort((a: any, b: any) => a.name.localeCompare(b.name))
+  indexes.functions.sort((a, b) => a.name.localeCompare(b.name))
 
   // interop related
-  indexes.functions.forEach((fn: any) => {
+  indexes.functions.forEach((fn) => {
     if (!fn.related) return
 
     fn.related.forEach((name: string) => {
-      const target = indexes.functions.find((f: any) => f.name === name)
+      const target = indexes.functions.find((f) => f.name === name)
       if (!target) throw new Error(`Unknown related function: ${name}`)
       if (!target.related) target.related = []
       if (!target.related.includes(fn.name)) target.related.push(fn.name)
     })
   })
-  indexes.functions.forEach((fn: any) => fn.related?.sort())
+  indexes.functions.forEach((fn) => fn.related?.sort())
 
   return indexes
 }

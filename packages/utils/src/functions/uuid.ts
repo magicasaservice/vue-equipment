@@ -13,8 +13,8 @@ export function uuid() {
         (i === 'x'
           ? Math.floor(Math.random() * 0xf).toString(16)
           : i === 'y'
-          ? Math.floor(Math.random() * 4 + 8).toString(16)
-          : i),
+            ? Math.floor(Math.random() * 4 + 8).toString(16)
+            : i),
       ''
     )
 }

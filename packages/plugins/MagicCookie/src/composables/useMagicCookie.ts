@@ -46,10 +46,13 @@ export function useMagicCookie() {
   function accept() {
     // Create an object representing all cookies as accepted
     const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce((result, cookie) => {
-        result[cookie.key] = true
-        return result
-      }, {} as { [key: string]: boolean })
+      cookieApiStore.value?.cookies?.reduce(
+        (result, cookie) => {
+          result[cookie.key] = true
+          return result
+        },
+        {} as { [key: string]: boolean }
+      )
 
     // Set the selectedCookies value to include all cookies
     selectedCookies.value = cookies
@@ -83,10 +86,13 @@ export function useMagicCookie() {
   function reject() {
     // Create an object representing all cookies as rejected (optional cookies as accepted)
     const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce((result, cookie) => {
-        result[cookie.key] = cookie.optional === false ? true : false
-        return result
-      }, {} as { [key: string]: boolean })
+      cookieApiStore.value?.cookies?.reduce(
+        (result, cookie) => {
+          result[cookie.key] = cookie.optional === false ? true : false
+          return result
+        },
+        {} as { [key: string]: boolean }
+      )
 
     // Set the selectedCookies value to include all cookies
     selectedCookies.value = cookies

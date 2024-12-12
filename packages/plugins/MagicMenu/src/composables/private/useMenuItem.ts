@@ -42,7 +42,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
     const item = createItem(args)
 
     if (view?.items) {
-      view.items = [...view?.items, item]
+      view.items = [...view.items, item]
     }
 
     return item

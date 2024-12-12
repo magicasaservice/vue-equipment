@@ -11,27 +11,27 @@ export function useAccordionCallback(args: UseModalCallbackArgs) {
 
   const emitter = useMagicEmitter()
 
-  function onBeforeEnter(_el?: Element) {
+  function onBeforeEnter() {
     emitter.emit('beforeEnter', { id: toValue(instanceId), viewId })
   }
 
-  function onEnter(_el?: Element) {
+  function onEnter() {
     emitter.emit('enter', { id: toValue(instanceId), viewId })
   }
 
-  async function onAfterEnter(_el?: Element) {
+  async function onAfterEnter() {
     emitter.emit('afterEnter', { id: toValue(instanceId), viewId })
   }
 
-  function onBeforeLeave(_el?: Element) {
+  function onBeforeLeave() {
     emitter.emit('beforeLeave', { id: toValue(instanceId), viewId })
   }
 
-  function onLeave(_el?: Element) {
+  function onLeave() {
     emitter.emit('leave', { id: toValue(instanceId), viewId })
   }
 
-  function onAfterLeave(_el?: Element) {
+  function onAfterLeave() {
     emitter.emit('afterLeave', { id: toValue(instanceId), viewId })
   }
 

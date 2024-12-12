@@ -23,6 +23,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update": "esno scripts/update.ts"
+    "update": "esno scripts/update.ts",
+    "lint": "eslint ."
   }
 }

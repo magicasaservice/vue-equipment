@@ -35,7 +35,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   // Private functions
   function onRightClick(e: MouseEvent) {
     switch (e.button) {
-      case 2:
+      case 2: {
         const delay = state.options.delay?.rightClick ?? 0
         selectView(viewId, delay)
         state.active = true
@@ -50,6 +50,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
           state.input.view = viewId
         }
         break
+      }
       default:
         state.active = false
         unselectView(viewId)
@@ -103,7 +104,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       viewId
     ) {
       switch (true) {
-        case !state.active:
+        case !state.active: {
           const delay =
             state.options.delay?.click ?? ModeDelayClick[state.options.mode]
           state.active = true
@@ -114,10 +115,12 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
             state.input.view = viewId
           }
           break
-        case state.active && !itemId:
+        }
+        case state.active && !itemId: {
           state.active = false
           unselectView(viewId)
           break
+        }
       }
     }
 

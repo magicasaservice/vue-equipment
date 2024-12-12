@@ -65,7 +65,8 @@
   "private": true,
   "scripts": {
     "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "sideEffects": false,
   "dependencies": {

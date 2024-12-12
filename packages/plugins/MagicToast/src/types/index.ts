@@ -3,9 +3,9 @@ import type { PickPartial } from '@maas/vue-equipment/utils'
 
 export type Toast = {
   id: string
-  component: Object
-  props?: MaybeRef<Record<string, any>>
-  remove: Function
+  component: object
+  props?: MaybeRef<Record<string, unknown>>
+  remove: () => void
 }
 
 export type AddToastArgs = Pick<Toast, 'component'> &

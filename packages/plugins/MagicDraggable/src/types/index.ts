@@ -20,7 +20,7 @@ export type DraggableSnapPoint =
       offset?: {
         x?: number
         y?: number
-      }
+      },
     ]
   | Position
 

@@ -131,7 +131,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     const instance = getView(id)
 
     if (instance) {
-      // Cancel any scheduled closing
+      // Cancel all scheduled closings
       if (instance.state.unselectAbortController) {
         instance.state.unselectAbortController.abort()
       }
@@ -144,6 +144,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
         await delay(delayMs, abortController.signal)
         instance.active = true
         unselectUnrelatedViews(id)
+        // eslint-disable-next-line
       } catch (error: any) {
         if (error.name === 'AbortError' && state.options.debug) {
           console.log(
@@ -158,7 +159,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     const instance = getView(id)
 
     if (instance) {
-      // Cancel any scheduled closing
+      // Cancel all scheduled closings
       if (instance.state.selectAbortController) {
         instance.state.selectAbortController.abort()
       }
@@ -170,6 +171,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       try {
         await delay(delayMs, abortController.signal)
         instance.active = false
+        // eslint-disable-next-line
       } catch (error: any) {
         if (error.name === 'AbortError' && state.options.debug) {
           console.log(

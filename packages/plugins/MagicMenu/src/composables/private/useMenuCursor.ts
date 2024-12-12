@@ -46,18 +46,22 @@ export function useMenuCursor(view: MenuView, debug = false) {
       case 'top-start':
       case 'top-end':
         switch (true) {
-          case a.y < b.y && a.y < c.y: // content is beneath trigger
+          case a.y < b.y && a.y < c.y: {
+            // content is beneath trigger
             b.y += pixelAmount
             b.x -= pixelAmount
             c.y += pixelAmount
             c.x += pixelAmount
             break
-          case a.y > b.y && a.y > c.y: // content is above trigger
+          }
+          case a.y > b.y && a.y > c.y: {
+            // content is above trigger
             b.y -= pixelAmount
             b.x -= pixelAmount
             c.y -= pixelAmount
             c.x += pixelAmount
             break
+          }
         }
         break
       case 'right':
@@ -67,18 +71,22 @@ export function useMenuCursor(view: MenuView, debug = false) {
       case 'left-start':
       case 'left-end':
         switch (true) {
-          case a.x < b.x && a.x < c.x: // content is to the right of trigger
+          case a.x < b.x && a.x < c.x: {
+            // content is to the right of trigger
             b.x += pixelAmount
             b.y -= pixelAmount
             c.x += pixelAmount
             c.y += pixelAmount
             break
-          case a.x > b.x && a.x > c.x: // content is to the left of trigger
+          }
+          case a.x > b.x && a.x > c.x: {
+            // content is to the left of trigger
             b.x -= pixelAmount
             b.y -= pixelAmount
             c.x -= pixelAmount
             c.y += pixelAmount
             break
+          }
         }
         break
     }
@@ -133,25 +141,27 @@ export function useMenuCursor(view: MenuView, debug = false) {
       case 'top-end':
       case 'bottom':
       case 'bottom-start':
-      case 'bottom-end':
+      case 'bottom-end': {
         const topDist = Math.abs(top - centerPoint.y)
         const bottomDist = Math.abs(bottom - centerPoint.y)
         const mappedY = topDist < bottomDist ? top : bottom
         sidePoints.push({ x: left, y: mappedY })
         sidePoints.push({ x: right, y: mappedY })
         break
+      }
       case 'right':
       case 'right-start':
       case 'right-end':
       case 'left':
       case 'left-start':
-      case 'left-end':
+      case 'left-end': {
         const rightDist = Math.abs(right - centerPoint.x)
         const leftDist = Math.abs(left - centerPoint.x)
         const mappedX = rightDist < leftDist ? right : left
         sidePoints.push({ x: mappedX, y: top })
         sidePoints.push({ x: mappedX, y: bottom })
         break
+      }
     }
 
     const [a, b, c] = extendTriangle(

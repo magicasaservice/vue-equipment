@@ -20,5 +20,5 @@ export type CommandEvents = {
   afterLeave: string
 }
 
-export interface MagicCommandModalOptions extends MagicModalOptions {}
-export interface MagicCommandDrawerOptions extends MagicDrawerOptions {}
+export type { MagicModalOptions as MagicCommandModalOptions }
+export type { MagicDrawerOptions as MagicCommandDrawerOptions }

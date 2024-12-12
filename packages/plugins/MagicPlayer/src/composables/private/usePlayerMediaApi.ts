@@ -86,6 +86,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
       if (isPlaying) {
         const playPromise = el.play()
+        //eslint-disable-next-line
         if (playPromise !== undefined) playPromise.catch((error) => {})
       } else {
         el.pause()

@@ -1,6 +1,5 @@
-import { reactive, nextTick, type MaybeRef } from 'vue'
+import { reactive, type MaybeRef } from 'vue'
 import { useMenuView } from './useMenuView'
-import { useMenuState } from './useMenuState'
 import type { MenuChannel } from '../../types'
 
 type UseMenuChannelArgs = {
@@ -34,7 +33,7 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
     const channel = createChannel(args)
 
     if (view?.channels) {
-      view.channels = [...view?.channels, channel]
+      view.channels = [...view.channels, channel]
     }
 
     return channel

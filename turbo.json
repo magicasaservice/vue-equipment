@@ -29,6 +29,10 @@
       "persistent": true,
       "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
     },
+    "lint": {
+      "cache": true,
+      "outputs": []
+    },
     "build": {
       "outputs": ["./dist/**"]
     },

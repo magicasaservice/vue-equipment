@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-let modalStore = ref<string[]>([])
+const modalStore = ref<string[]>([])
 
 export function useModalStore() {
   function addInstance(id: string) {

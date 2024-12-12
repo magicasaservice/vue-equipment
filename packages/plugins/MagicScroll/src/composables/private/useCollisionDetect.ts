@@ -62,7 +62,7 @@ export function useCollisionDetect(args: UseCollisionDetectArgs) {
           vh: toValue(windowDimensions.height),
           vw: toValue(windowDimensions.width),
         })
-      : payload ?? 0
+      : (payload ?? 0)
   }
 
   function initialize() {

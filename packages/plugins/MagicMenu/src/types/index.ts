@@ -36,8 +36,10 @@ export interface RequiredMagicMenuOptions {
   }
 }
 
-export interface OptionalMagicMenuOptions
-  extends Pick<MagicMenuOptions, 'scrollLock' | 'floating' | 'delay'> {}
+export type OptionalMagicMenuOptions = Pick<
+  MagicMenuOptions,
+  'scrollLock' | 'floating' | 'delay'
+>
 
 export type CombinedMagicMenuOptions = RequiredMagicMenuOptions &
   OptionalMagicMenuOptions

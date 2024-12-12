@@ -2,7 +2,7 @@ import { useClipboard } from '@vueuse/core'
 import { unref } from 'vue'
 
 import type { Ref } from 'vue'
-import type { Font } from 'fontkit'
+import type { Font, Glyph } from 'fontkit'
 
 export type useGlyphToSvgOptions = {
   fontSize: Ref<number> | number
@@ -21,14 +21,13 @@ export function useGlyphToSvg({
   const mappedFontWeight = unref(fontWeight)
 
   const loadVariableFont = () => {
-    // @ts-ignore
     const variableFont = mappedFontFile.getVariation({
       wght: mappedFontWeight,
     })
     return variableFont
   }
 
-  const convertToSvg = (glyph: any) => {
+  const convertToSvg = (glyph: Glyph) => {
     // Scale according to current font size
     const scale = mappedFontSize / mappedFontFile.unitsPerEm
     const path = glyph.path.scale(scale, scale).scale(-1, 1).rotate(Math.PI)
