@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore'
     rebase-strategy: 'auto'
@@ -15,7 +15,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/apps/docs'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(docs)'
     rebase-strategy: 'auto'
@@ -27,7 +27,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/apps/cli'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(cli)'
     rebase-strategy: 'auto'
@@ -39,7 +39,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/composables'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(composables)'
     rebase-strategy: 'auto'
@@ -51,7 +51,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/config'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(config)'
     rebase-strategy: 'auto'
@@ -63,7 +63,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/metadata'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(metadata)'
     rebase-strategy: 'auto'
@@ -75,7 +75,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/nuxt'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(nuxt)'
     rebase-strategy: 'auto'
@@ -87,7 +87,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/plugins'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(plugins)'
     rebase-strategy: 'auto'
@@ -99,7 +99,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/packages/utils'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
     commit-message:
       prefix: 'chore(utils)'
     rebase-strategy: 'auto'
