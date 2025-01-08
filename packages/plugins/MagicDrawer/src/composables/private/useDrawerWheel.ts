@@ -6,7 +6,7 @@ import {
   type ComputedRef,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import WheelGestures, { type WheelEventState } from 'wheel-gestures'
+import WheelGestures, { type WheelEventState } from '@maas/wheel-gestures'
 import { useDrawerState } from './useDrawerState'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
@@ -52,8 +52,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
     type: 'pointermove' | 'pointerup',
     state: WheelEventState
   ) {
-    let moveX, moveY
-    ;[moveX, moveY] = state.axisMovement
+    const [moveX, moveY] = state.axisMovement
 
     if (!startEvent) {
       return new PointerEvent(type)
@@ -81,6 +80,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       dispatchEvent(startEvent)
       wheeling.value = true
     } catch (e) {
+      console.error(e)
       return destroyWheelListener()
     }
   }

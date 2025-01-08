@@ -12,27 +12,66 @@
       <div
         class="magic-menu-content"
         :data-id="`${viewId}-content`"
+        v-bind="$attrs"
         v-if="innerActive"
       >
-        <magic-menu-float :placement="placement" :arrow="arrow">
+        <magic-menu-float
+          :placement="view?.placement"
+          :arrow="arrow"
+          :reference-el="referenceEl"
+        >
           <template #arrow v-if="$slots.arrow && arrow">
             <slot name="arrow" />
           </template>
           <template #default>
-            <div class="magic-menu-content__inner" ref="contentRef">
+            <div
+              class="magic-menu-content__inner"
+              ref="contentRef"
+              :class="{ '-disabled': pointerDisabled }"
+            >
               <slot />
             </div>
           </template>
         </magic-menu-float>
       </div>
     </transition>
+    <span
+      v-for="point in coords"
+      v-if="state.options.debug"
+      :style="{
+        background: 'red',
+        position: 'fixed',
+        top: point.y + 'px',
+        left: point.x + 'px',
+        width: '4px',
+        height: '4px',
+        zIndex: 1000,
+        pointerEvents: 'none',
+        transform: 'translate(-50%, -50%)',
+      }"
+    />
   </teleport>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, provide, nextTick, watch, computed } from 'vue'
-import type { Placement } from '@floating-ui/vue'
+import {
+  ref,
+  inject,
+  provide,
+  nextTick,
+  watch,
+  computed,
+  type MaybeRef,
+  type ComponentPublicInstance,
+  onBeforeUnmount,
+} from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
+import { useMenuState } from '../composables/private/useMenuState'
+import { useMenuCallback } from '../composables/private/useMenuCallback'
+import { useMenuDOM } from '../composables/private/useMenuDOM'
+import { useMenuCursor } from '../composables/private/useMenuCursor'
+import { ModeTransitions } from '../utils/modeTransitionDefaults'
+import { ModeDelayMouseleave } from '../utils/modeDelayDefaults'
 import {
   MagicMenuInstanceId,
   MagicMenuViewId,
@@ -41,16 +80,18 @@ import {
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-import { useMenuState } from '../composables/private/useMenuState'
-import { useMenuCallback } from '../composables/private/useMenuCallback'
-import { useMenuDOM } from '../composables/private/useMenuDOM'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 interface MagicMenuContentProps {
-  placement?: Placement
-  arrow?: boolean
+  arrow?: boolean | undefined
+  transition?: string
+  referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-defineProps<MagicMenuContentProps>()
+const { arrow = undefined, transition } = defineProps<MagicMenuContentProps>()
 
 const contentRef = ref<HTMLElement | undefined>(undefined)
 
@@ -65,26 +106,37 @@ if (!viewId) {
   throw new Error('MagicMenuContent must be nested inside MagicMenuView')
 }
 
-const { getView } = useMenuView(instanceId)
+const { getView, unselectView } = useMenuView(instanceId)
 const view = getView(viewId)
 
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
+const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
+
 const mappedTransition = computed(() => {
   switch (true) {
+    case !!transition:
+      return transition
     case !!view?.parent.item:
-      return state.options.transition?.nested
-    case state.active:
-      return state.options.transition?.initial
-    case !state.active:
-      return state.options.transition?.final
+      return state.options.transition.content.nested
+    case !!state.options.transition.content.default:
+      return state.options.transition.content.default
     default:
-      return ''
+      return ModeTransitions[state.options.mode]
   }
 })
 
-const { lockScroll, unlockScroll } = useMenuDOM()
+// Split isActive into two values to animate content smoothly
+const innerActive = ref(false)
+const wrapperActive = ref(false)
+
+const {
+  lockScroll,
+  unlockScroll,
+  addScrollLockPadding,
+  removeScrollLockPadding,
+} = useMenuDOM()
 const {
   onBeforeEnter,
   onEnter,
@@ -96,13 +148,13 @@ const {
   state,
   instanceId,
   viewId,
+  innerActive,
+  wrapperActive,
   lockScroll,
   unlockScroll,
+  addScrollLockPadding,
+  removeScrollLockPadding,
 })
-
-// Split isActive into two values to animate content smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
 
 // Handle state
 async function onOpen() {
@@ -110,15 +162,12 @@ async function onOpen() {
   await nextTick()
   innerActive.value = true
   await nextTick()
-  if (view) {
-    view.children.content = contentRef.value
-  }
+  initialize()
 }
 
-async function onClose() {
+function onClose() {
+  destroy()
   innerActive.value = false
-  await nextTick()
-  wrapperActive.value = false
 }
 
 watch(
@@ -131,6 +180,57 @@ watch(
     }
   }
 )
+
+// Handle cursor
+const {
+  coords,
+  destroy,
+  initialize,
+  isInsideTriangle,
+  isInsideTo,
+  isInsideFrom,
+} = useMenuCursor(view!, state.options.debug)
+
+function disableCursor() {
+  state.input.disabled = [...state.input.disabled, 'pointer']
+}
+
+function enableCursor() {
+  state.input.disabled = state.input.disabled.filter((x) => x !== 'pointer')
+}
+
+watch(isInsideTriangle, (value) => {
+  if (value) {
+    disableCursor()
+  } else {
+    enableCursor()
+  }
+})
+
+watch(isInsideTo, (value) => {
+  if (value) {
+    enableCursor()
+  }
+})
+
+const isOutside = computed(
+  () => !isInsideTo.value && !isInsideFrom.value && !isInsideTriangle.value
+)
+
+watch(isOutside, (value, oldValue) => {
+  if (value && !oldValue) {
+    switch (state.options.mode) {
+      case 'navigation':
+        const delay =
+          state.options.delay?.mouseleave ?? ModeDelayMouseleave.navigation
+        unselectView(viewId, delay)
+    }
+  }
+})
+
+onBeforeUnmount(() => {
+  destroy()
+})
 
 provide(MagicMenuContentId, `${viewId}-content`)
 </script>
@@ -145,15 +245,23 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
-.magic-menu-content__initial-enter-active {
-  animation: fade-in 50ms ease;
+.magic-menu-content__inner.-disabled {
+  pointer-events: none;
 }
 
-.magic-menu-content__final-leave-active {
-  animation: fade-out 150ms ease;
+.magic-menu-content--default-enter-active {
+  animation: none;
 }
 
-.magic-menu-content__nested-enter-active {
-  animation: fade-in 100ms ease;
+.magic-menu-content--default-leave-active {
+  animation: none;
+}
+
+.magic-menu-content--fade-enter-active {
+  animation: fade-in 200ms ease;
+}
+
+.magic-menu-content--fade-leave-active {
+  animation: fade-out 200ms ease;
 }
 </style>

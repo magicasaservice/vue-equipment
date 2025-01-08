@@ -1,21 +1,24 @@
 <template>
-  <div
-    class="magic-menu-trigger"
+  <primitive
     ref="elRef"
-    :class="{ '-active': view?.active, '-disabled': mappedDisabled }"
+    :class="[
+      'magic-menu-trigger',
+      { '-active': view?.active, '-disabled': mappedDisabled },
+    ]"
     :data-id="`${viewId}-trigger`"
     :tabindex="mappedTabindex"
+    :as-child="asChild"
     @click="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
-    @mouseleave="onMouseleave"
   >
-    <slot :is-active="view?.active" :is-disabled="mappedDisabled" />
-  </div>
+    <slot :view-active="view?.active" :trigger-disabled="mappedDisabled" />
+  </primitive>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, ref, toValue, watch } from 'vue'
+import { Primitive } from '@maas/vue-primitive'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -26,15 +29,17 @@ import {
   MagicMenuItemId,
 } from '../symbols'
 
-import type { MenuTrigger } from '../types'
+import type { Interaction } from '../types'
+import { onKeyStroke } from '@vueuse/core'
 
 interface MagicMenuTriggerProps {
   disabled?: boolean
-  trigger?: MenuTrigger[]
+  trigger?: Interaction[]
+  asChild?: boolean
 }
 
 const props = defineProps<MagicMenuTriggerProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -58,9 +63,9 @@ const state = initializeState()
 const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
-const mappedDisabled = computed(() => props.disabled ?? item?.disabled)
+const mappedDisabled = computed(() => props.disabled ?? item?.disabled ?? false)
 
-const mappedTrigger = computed<MenuTrigger[]>(() => {
+const mappedTrigger = computed<Interaction[]>(() => {
   if (props.trigger?.length) {
     return props.trigger
   }
@@ -68,16 +73,16 @@ const mappedTrigger = computed<MenuTrigger[]>(() => {
   switch (state.options.mode) {
     case 'menubar':
       return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
-        : ['mouseenter', 'click']
-    case 'dropdown':
-      return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
+        ? ['mouseenter', 'click']
+        : state.active
+        ? ['mouseenter', 'click']
         : ['click']
+    case 'dropdown':
+      return view?.parent.item ? ['mouseenter', 'click'] : ['click']
     case 'context':
-      return view?.parent.item
-        ? ['mouseenter', 'mouseleave', 'click']
-        : ['right-click']
+      return view?.parent.item ? ['mouseenter', 'click'] : ['right-click']
+    case 'navigation':
+      return ['mouseenter']
   }
 })
 
@@ -89,36 +94,34 @@ const mappedTabindex = computed(() => {
   }
 })
 
-const { initialize, destroy, onMouseenter, onClick, onMouseleave } =
-  useMenuTrigger({
-    instanceId,
-    viewId,
-    itemId,
-    mappedDisabled,
-    mappedTrigger,
-    elRef,
-  })
-
-// Initialize watcher
-initialize()
+const { onMouseenter, onClick, onEnter } = useMenuTrigger({
+  instanceId,
+  viewId,
+  itemId,
+  mappedDisabled,
+  mappedTrigger,
+  elRef,
+})
 
 watch(
-  elRef,
-  (value) => {
-    if (view && value) {
-      view.children.trigger = value
+  () => view?.active,
+  async (value) => {
+    if (value) {
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      toValue(elRef)?.$el?.blur()
     }
-  },
-  { immediate: true }
+  }
 )
 
-onBeforeUnmount(() => {
-  destroy()
-})
+onKeyStroke('Enter', onEnter)
 </script>
 
 <style>
 .magic-menu-trigger {
   cursor: var(--magic-menu-trigger-cursor, pointer);
+}
+
+.magic-menu-trigger.-disabled {
+  pointer-events: none;
 }
 </style>

@@ -1,15 +1,17 @@
 {
   "name": "@maas/vue-equipment",
   "description": "A magic collection of Vue composables, plugins, components and directives",
-  "version": "0.29.2",
+  "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "type": "module",
   "devDependencies": {
-    "@antfu/ni": "^0.21.12",
+    "@antfu/ni": "^0.23.0",
     "@release-it/bumper": "^6.0.1",
-    "@types/node": "^20.10.4",
-    "@vue/tsconfig": "^0.5.1",
+    "@types/node": "^22.4.1",
+    "@vue/tsconfig": "^0.7.0",
     "release-it": "^17.0.1",
-    "turbo": "^1.11.2"
+    "tailwindcss": "^3.4.16",
+    "turbo": "^2.0.6"
   },
   "exports": {
     "./nuxt": {
@@ -43,8 +45,10 @@
   "license": "MIT",
   "peerDependencies": {
     "@floating-ui/vue": "^1.0.6",
-    "@nuxt/kit": "^3.9.3",
     "@maas/magic-timer": "^1.0.0",
+    "@maas/vue-primitive": "^1.1.0",
+    "@maas/wheel-gestures": "^1.0.0",
+    "@nuxt/kit": "^3.14.1592",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "defu": "^6.1.2",
@@ -53,10 +57,9 @@
     "luxon": "^3.4.2",
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
-    "nuxt": "^3.5.1",
+    "nuxt": "^3.14.1592",
     "universal-cookie": "^7.1.0",
-    "vue": "^3.4.26",
-    "wheel-gestures": "^2.2.5"
+    "vue": "^3.5.3"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
@@ -66,6 +69,12 @@
       "optional": false
     },
     "@maas/magic-timer": {
+      "optional": false
+    },
+    "@maas/vue-primitive": {
+      "optional": false
+    },
+    "@maas/wheel-gestures": {
       "optional": false
     },
     "@vueuse/core": {
@@ -97,27 +106,24 @@
     },
     "vue": {
       "optional": false
-    },
-    "wheel-gestures": {
-      "optional": false
     }
   },
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --parallel",
     "dev:docs": "turbo run dev --filter=docs",
     "dev:nuxt": "turbo run dev --filter=nuxt",
-    "build": "turbo run build",
+    "build": "turbo run build --filter=!playground",
     "build:types": "turbo run build:types",
     "build:docs": "turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
     "update:metadata": "nr -C packages/metadata update",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
-    "uninstall": "nlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
+    "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
     "release": "turbo run t:release && release-it"
   },
   "volta": {
-    "node": "18.16.1"
+    "node": "20.18.1"
   },
   "release-it": {
     "git": {
@@ -135,6 +141,12 @@
           "apps/*/package.json"
         ]
       }
+    }
+  },
+  "packageManager": "pnpm@9.4.0",
+  "pnpm": {
+    "overrides": {
+      "typescript": "5.6.3"
     }
   }
 }

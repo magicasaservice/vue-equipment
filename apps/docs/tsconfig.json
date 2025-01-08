@@ -1,6 +1,6 @@
 {
   "extends": "../../packages/config/tsconfig/vue-base.json",
   "compilerOptions": {
-    "noEmit": false
+    "noEmit": true
   }
 }

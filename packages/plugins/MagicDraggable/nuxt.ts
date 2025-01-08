@@ -1,4 +1,9 @@
-import { defineNuxtModule, createResolver, addComponent } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponent,
+  addImports,
+} from '@nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
@@ -10,6 +15,10 @@ export default defineNuxtModule({
       filePath: resolver.resolve('src/components/MagicDraggable.vue'),
       name: 'MagicDraggable',
       global: true,
+    })
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicDraggable',
+      name: 'useMagicDraggable',
     })
   },
 })

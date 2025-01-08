@@ -2,15 +2,15 @@
   <magic-modal
     :id="commandId"
     class="magic-command-modal"
-    :class="props.class"
     :options="options"
+    v-bind="$attrs"
   >
     <slot />
   </magic-modal>
 </template>
 
 <script setup lang="ts">
-import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { inject, watch, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useMagicModal } from '../../../MagicModal'
 import { useMagicCommand } from '../composables/useMagicCommand'
@@ -18,12 +18,15 @@ import { MagicCommandInstanceId } from './../symbols'
 
 import type { MagicCommandModalOptions } from '../types'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicCommandProps {
-  class?: MaybeRef<string>
   options?: MagicCommandModalOptions
 }
 
-const props = defineProps<MagicCommandProps>()
+defineProps<MagicCommandProps>()
 
 const commandId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()

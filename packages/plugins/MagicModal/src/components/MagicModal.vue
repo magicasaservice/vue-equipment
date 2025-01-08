@@ -5,11 +5,10 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      :is="mappedOptions.tag"
       ref="modalRef"
       class="magic-modal"
       :id="toValue(id)"
-      :class="toValue(props.class)"
+      v-bind="$attrs"
       @click.self="close"
       aria-modal="true"
     >
@@ -76,6 +75,10 @@ import type { MagicModalOptions } from './../types/index'
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 // Prevent keyListener array from being merged with default
 const customDefu = createDefu((obj, key, value) => {
   if (key === 'close') {
@@ -86,7 +89,6 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicModalProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
   props?: Record<string, unknown>
   options?: MagicModalOptions
@@ -186,23 +188,14 @@ onUnmounted(() => {
 </script>
 
 <style>
-:root {
-  --magic-modal-z-index: 999;
-  --magic-modal-backdrop-color: rgba(0, 0, 0, 0.5);
-  --magic-modal-backdrop-filter: unset;
-  --magic-modal-content-align-items: center;
-  --magic-modal-content-justify-content: center;
-  --magic-modal-content-overflow-y: auto;
-}
-
 @keyframes magic-modal-content-enter {
   0% {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translate3d(0, 2rem, 0);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -225,7 +218,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: var(--magic-modal-z-index);
+  z-index: var(--magic-modal-z-index, 999);
   background: transparent;
   color: inherit;
   padding: 0;
@@ -238,9 +231,9 @@ onUnmounted(() => {
   max-height: 100%;
   width: 100%;
   display: flex;
-  align-items: var(--magic-modal-content-align-items);
-  justify-content: var(--magic-modal-content-justify-content);
-  overflow-y: var(--magic-modal-content-overflow-y);
+  align-items: var(--magic-modal-content-align-items, center);
+  justify-content: var(--magic-modal-content-justify-content, center);
+  overflow-y: var(--magic-modal-content-overflow-y, auto);
 }
 
 /* Reset default dialog styles */
@@ -264,8 +257,8 @@ dialog.magic-modal__content::backdrop {
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--magic-modal-backdrop-color);
-  backdrop-filter: var(--magic-modal-backdrop-filter);
+  background-color: var(--magic-modal-backdrop-color, rgba(0, 0, 0, 0.5));
+  backdrop-filter: var(--magic-modal-backdrop-filter, unset);
   z-index: -1;
 }
 

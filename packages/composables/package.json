@@ -1,17 +1,18 @@
 {
   "name": "composables",
   "description": "Collection of essential Vue Composition Utilities",
-  "version": "0.29.2",
+  "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "dependencies": {
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "vue": "^3.4.15"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@maas/mirror": "^0.8.0",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
   },
   "exports": "./index.ts",
   "keywords": [],
@@ -36,7 +37,8 @@
   "scripts": {
     "build": "tsup --config tsup.config.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:types": "tsup --config tsup.config.types.ts --dts-only"
+    "build:types": "tsup --config tsup.config.types.ts --dts-only",
+    "lint": "eslint ."
   },
   "sideEffects": false
 }

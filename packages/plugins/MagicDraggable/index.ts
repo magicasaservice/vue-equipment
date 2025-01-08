@@ -1,6 +1,7 @@
 import type { App, Plugin } from 'vue'
 
 import MagicDraggable from './src/components/MagicDraggable.vue'
+import { useMagicDraggable } from './src/composables/useMagicDraggable'
 
 import type { MagicDraggableOptions } from './src/types'
 
@@ -10,5 +11,5 @@ const MagicDraggablePlugin: Plugin = {
   },
 }
 
-export { MagicDraggablePlugin, MagicDraggable }
+export { MagicDraggablePlugin, MagicDraggable, useMagicDraggable }
 export type { MagicDraggableOptions }

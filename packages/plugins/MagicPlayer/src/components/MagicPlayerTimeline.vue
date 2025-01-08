@@ -59,13 +59,9 @@ const {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
-  --magic-player-target-height: 56px;
-  --magic-player-track-height: 4px;
-  --magic-player-track-background: rgba(250, 250, 250, 0.15);
-  --magic-player-thumb-size: 1rem;
-  --magic-player-thumb-background: rgba(250, 250, 250, 1);
+  --magic-player-track-height: 0.25rem;
 }
 
 .magic-player-timeline {
@@ -79,7 +75,7 @@ const {
 .magic-player-timeline__target {
   position: relative;
   width: 100%;
-  height: var(--magic-player-target-height);
+  height: var(--magic-player-target-height, 3.5rem);
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -89,7 +85,7 @@ const {
   position: relative;
   width: 100%;
   height: var(--magic-player-track-height);
-  background: var(--magic-player-track-background);
+  background: var(--magic-player-track-background, rgba(250, 250, 250, 0.15));
   border-radius: 50rem;
 }
 
@@ -113,14 +109,17 @@ const {
 
 .magic-player-timeline__slider-thumb-handle {
   position: absolute;
-  width: var(--magic-player-thumb-size);
-  height: var(--magic-player-thumb-size);
+  width: var(--magic-player-thumb-size, 1rem);
+  height: var(--magic-player-thumb-size, 1rem);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
   transition: transform 300ms ease;
   z-index: 10;
-  background-color: var(--magic-player-thumb-background);
+  background-color: var(
+    --magic-player-thumb-background,
+    rgba(250, 250, 250, 1)
+  );
   border-radius: 50rem;
 }
 
@@ -151,7 +150,7 @@ const {
 }
 
 .magic-player-timeline:hover .magic-player-timeline__slider-thumb-handle {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 .magic-player-timeline__seek-popover {

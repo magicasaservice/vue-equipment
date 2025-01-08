@@ -175,8 +175,8 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     defaultWindow,
     'resize',
     () => {
-      getTimelineTrackSize
-      getPopoverSizes
+      getTimelineTrackSize()
+      getPopoverSizes()
     },
     {
       passive: true,

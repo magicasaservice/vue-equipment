@@ -54,20 +54,24 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   const snapPointsMap = computedWithControl(
     () => toValue(snapPoints),
     () => {
-      const mapped = toValue(snapPoints).reduce((acc, current) => {
-        const key = mapSnapPoint(current)
-        if (key) {
-          const mappedKey = `x${key.x}y${key.y}`
-          acc[mappedKey] = current
-        }
-        return acc
-      }, {} as Record<string, DraggableSnapPoint>)
+      const mapped = toValue(snapPoints).reduce(
+        (acc, current) => {
+          const key = mapSnapPoint(current)
+          if (key) {
+            const mappedKey = `x${key.x}y${key.y}`
+            acc[mappedKey] = current
+          }
+          return acc
+        },
+        {} as Record<string, DraggableSnapPoint>
+      )
 
       return mapped
     }
   )
   // Private functions
   const emitter = useMagicEmitter()
+
   function mapSnapPoint(
     snapPoint: DraggableSnapPoint
   ): Coordinates | undefined {
@@ -160,7 +164,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     const {
       x,
       y,
-      duration = toValue(animation).snap?.duration!,
+      duration = toValue(animation)?.snap?.duration || 300,
       easing = toValue(animation).snap?.easing,
     } = args
     const snapPoint = snapPointsMap.value[`x${x}y${y}`]

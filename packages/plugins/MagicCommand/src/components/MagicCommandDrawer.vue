@@ -2,28 +2,31 @@
   <magic-drawer
     :id="commandId"
     class="magic-command-drawer"
-    :class="props.class"
     :options="options"
+    v-bind="$attrs"
   >
     <slot />
   </magic-drawer>
 </template>
 
 <script setup lang="ts">
-import { inject, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { inject, watch, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { useMagicDrawer } from '../../../MagicDrawer'
+import { useMagicDrawer } from '../../../MagicDrawer/src/composables/useMagicDrawer'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from './../symbols'
 
 import type { MagicCommandDrawerOptions } from '../types'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicCommandProps {
-  class?: MaybeRef<string>
   options?: MagicCommandDrawerOptions
 }
 
-const props = defineProps<MagicCommandProps>()
+defineProps<MagicCommandProps>()
 
 const commandId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()

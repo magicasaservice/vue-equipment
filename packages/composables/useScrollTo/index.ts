@@ -183,9 +183,9 @@ export function useScrollTo() {
     speed = 500,
     easing = easeOutQuad,
   }: scrollToTargetParams) {
-    let parentEl = unwrapParent(parent)
+    const parentEl = unwrapParent(parent)
     if (!parentEl) return
-    let targetEl = unwrapTarget(target, parentEl)
+    const targetEl = unwrapTarget(target, parentEl)
     if (!targetEl) return
 
     disableScrollSnap(parentEl)

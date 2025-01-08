@@ -11,7 +11,7 @@ const defaultOptions: RequireAll<MagicToastOptions> = {
   },
   layout: {
     expand: 'click',
-    max: 4,
+    max: 5,
   },
 }
 

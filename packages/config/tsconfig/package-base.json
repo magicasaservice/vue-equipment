@@ -1,10 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "skipLibCheck": true,
-    "strict": true,
-    "module": "ESNext",
-    "moduleResolution": "node"
+    "noUncheckedIndexedAccess": true,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": true,
+    "module": "Preserve",
+    "strict": true
   },
   "exclude": ["node_modules", "**/*.md", "**/dist", ".test"]
 }

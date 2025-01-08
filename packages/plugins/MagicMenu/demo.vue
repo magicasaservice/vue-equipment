@@ -1,97 +1,205 @@
 <template>
   <div class="w-full max-w-screen flex flex-col gap-24 items-center">
-    <magic-menu-provider id="magic-menu--menubar" class="flex">
+    <magic-menu-provider
+      id="magic-menu--menubar"
+      :options="{ debug: true }"
+      class="flex gap-2 rounded-2xl bg-surface-elevation-base"
+    >
       <magic-menu-view>
-        <magic-menu-trigger class="px-4">Edit</magic-menu-trigger>
+        <magic-menu-trigger class="m-button -ghost">Edit</magic-menu-trigger>
         <magic-menu-content>
-          <magic-menu-item>Undo</magic-menu-item>
-          <magic-menu-item>Redo</magic-menu-item>
-          <magic-menu-item>
-            <magic-menu-view>
-              <magic-menu-trigger>Find ></magic-menu-trigger>
-              <magic-menu-content>
-                <magic-menu-item>Search the web…</magic-menu-item>
-                <magic-menu-item>Find…</magic-menu-item>
-                <magic-menu-item>Find Next</magic-menu-item>
-                <magic-menu-item>Find Previous</magic-menu-item>
-              </magic-menu-content>
-            </magic-menu-view>
-          </magic-menu-item>
-          <magic-menu-item>Cut</magic-menu-item>
-          <magic-menu-item>Copy</magic-menu-item>
-          <magic-menu-item>Paste</magic-menu-item>
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <m-menu-item>Undo</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Redo </m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <magic-menu-view>
+                <magic-menu-trigger>
+                  <m-menu-item> Find </m-menu-item>
+                </magic-menu-trigger>
+                <magic-menu-content>
+                  <div
+                    class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                  >
+                    <magic-menu-item>
+                      <m-menu-item>Search the web…</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Find…</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Find Next</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Find Previous</m-menu-item>
+                    </magic-menu-item>
+                  </div>
+                </magic-menu-content>
+              </magic-menu-view>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Cut</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Copy</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Paste</m-menu-item>
+            </magic-menu-item>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
 
       <magic-menu-view>
-        <magic-menu-trigger class="px-4">File</magic-menu-trigger>
+        <magic-menu-trigger class="m-button -ghost">File</magic-menu-trigger>
         <magic-menu-content>
-          <magic-menu-item>New Tab</magic-menu-item>
-          <magic-menu-item>New Window</magic-menu-item>
-          <magic-menu-item :disabled="true">
-            New Incognito Window
-          </magic-menu-item>
-          <magic-menu-item>
-            <magic-menu-view>
-              <magic-menu-trigger>Share ></magic-menu-trigger>
-              <magic-menu-content>
-                <magic-menu-item :disabled="true">Email Link</magic-menu-item>
-                <magic-menu-item>Messages</magic-menu-item>
-                <magic-menu-item>Notes</magic-menu-item>
-                <magic-menu-item>
-                  <magic-menu-view>
-                    <magic-menu-trigger>Socials ></magic-menu-trigger>
-                    <magic-menu-content>
-                      <magic-menu-item>Instagram</magic-menu-item>
-                      <magic-menu-item>Threads</magic-menu-item>
-                      <magic-menu-item>Twitter</magic-menu-item>
-                    </magic-menu-content>
-                  </magic-menu-view>
-                </magic-menu-item>
-              </magic-menu-content>
-            </magic-menu-view>
-          </magic-menu-item>
-          <magic-menu-item>Print</magic-menu-item>
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <m-menu-item>New Tab</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>New Window</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item :disabled="true">
+              <m-menu-item> New Incognito Window </m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <magic-menu-view>
+                <magic-menu-trigger>
+                  <m-menu-item>Share</m-menu-item>
+                </magic-menu-trigger>
+                <magic-menu-content>
+                  <div
+                    class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                  >
+                    <magic-menu-item :disabled="true">
+                      <m-menu-item :disabled="true"> Email Link </m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Messages</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Notes</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <magic-menu-view>
+                        <magic-menu-trigger>
+                          <m-menu-item>Socials</m-menu-item>
+                        </magic-menu-trigger>
+                        <magic-menu-content>
+                          <div
+                            class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                          >
+                            <magic-menu-item>
+                              <m-menu-item> Instagram </m-menu-item>
+                            </magic-menu-item>
+                            <magic-menu-item>
+                              <m-menu-item> Threads </m-menu-item>
+                            </magic-menu-item>
+                            <magic-menu-item>
+                              <m-menu-item> Twitter </m-menu-item>
+                            </magic-menu-item>
+                          </div>
+                        </magic-menu-content>
+                      </magic-menu-view>
+                    </magic-menu-item>
+                  </div>
+                </magic-menu-content>
+              </magic-menu-view>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Print</m-menu-item>
+            </magic-menu-item>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
 
       <magic-menu-view>
-        <magic-menu-trigger class="px-4">View</magic-menu-trigger>
+        <magic-menu-trigger class="m-button -ghost">View</magic-menu-trigger>
         <magic-menu-content>
-          <magic-menu-item>Show Bookmarks</magic-menu-item>
-          <magic-menu-item>Show Full URLs</magic-menu-item>
-          <magic-menu-item>Reload</magic-menu-item>
-          <magic-menu-item>Force Reload</magic-menu-item>
-          <magic-menu-item>ToggleFullscreen</magic-menu-item>
-          <magic-menu-item>Hide Sidebar</magic-menu-item>
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <m-menu-item>Show Bookmarks</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Show Full URLs</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Reload</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Force Reload</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>ToggleFullscreen</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Hide Sidebar</m-menu-item>
+            </magic-menu-item>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
 
       <magic-menu-view>
-        <magic-menu-trigger class="px-4">Profiles</magic-menu-trigger>
+        <magic-menu-trigger>
+          <m-button mode="ghost">Profiles</m-button>
+        </magic-menu-trigger>
         <magic-menu-content>
-          <magic-menu-item>
-            <magic-menu-view>
-              <magic-menu-trigger>Christoph Jeworutzki ></magic-menu-trigger>
-              <magic-menu-content>
-                <magic-menu-item>User Settings</magic-menu-item>
-                <magic-menu-item>Edit Profile</magic-menu-item>
-                <magic-menu-item>Subscribtions</magic-menu-item>
-              </magic-menu-content>
-            </magic-menu-view>
-          </magic-menu-item>
-          <magic-menu-item :disabled="true">
-            <magic-menu-view>
-              <magic-menu-trigger>Robin Scholz ></magic-menu-trigger>
-              <magic-menu-content>
-                <magic-menu-item>User Settings</magic-menu-item>
-                <magic-menu-item>Edit Profile</magic-menu-item>
-                <magic-menu-item>Subscribtions</magic-menu-item>
-              </magic-menu-content>
-            </magic-menu-view>
-          </magic-menu-item>
-          <magic-menu-item>Edit…</magic-menu-item>
-          <magic-menu-item>Add Profile…</magic-menu-item>
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <magic-menu-view>
+                <magic-menu-trigger>
+                  <m-menu-item>Christoph Jeworutzki</m-menu-item>
+                </magic-menu-trigger>
+                <magic-menu-content>
+                  <div
+                    class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                  >
+                    <magic-menu-item>
+                      <m-menu-item>User Settings</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Edit Profile</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Subscribtions</m-menu-item>
+                    </magic-menu-item>
+                  </div>
+                </magic-menu-content>
+              </magic-menu-view>
+            </magic-menu-item>
+            <magic-menu-item>
+              <magic-menu-view>
+                <magic-menu-trigger>
+                  <m-menu-item> Robin Scholz</m-menu-item>
+                </magic-menu-trigger>
+                <magic-menu-content>
+                  <div
+                    class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                  >
+                    <magic-menu-item>
+                      <m-menu-item>User Settings</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Edit Profile</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Subscribtions</m-menu-item>
+                    </magic-menu-item>
+                  </div>
+                </magic-menu-content>
+              </magic-menu-view>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Edit…</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Add Profile…</m-menu-item>
+            </magic-menu-item>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
@@ -100,29 +208,56 @@
       id="magic-menu--dropdown"
       :options="{ mode: 'dropdown' }"
     >
-      <magic-menu-view class="flex justify-center">
-        <magic-menu-trigger
-          class="inline w-16 h-16 rounded-full border-dashed flex items-center justify-center"
-          >Menu</magic-menu-trigger
-        >
-        <magic-menu-content>
-          <magic-menu-item>New Tab</magic-menu-item>
-          <magic-menu-item>New Window</magic-menu-item>
-          <magic-menu-item>New Private Window</magic-menu-item>
-          <magic-menu-item>
-            <magic-menu-view>
-              <magic-menu-trigger>More Tools ></magic-menu-trigger>
-              <magic-menu-content>
-                <magic-menu-item>Bookmark Manager</magic-menu-item>
-                <magic-menu-item>History</magic-menu-item>
-                <magic-menu-item>Downloads</magic-menu-item>
-              </magic-menu-content>
-            </magic-menu-view>
-          </magic-menu-item>
-          <magic-menu-item>Show Bookmarks</magic-menu-item>
-          <magic-menu-item>Show Full URLs</magic-menu-item>
-          <magic-menu-item>Christoph Jeworutzki</magic-menu-item>
-          <magic-menu-item>Robin Scholz</magic-menu-item>
+      <magic-menu-view class="flex justify-center" id="dropdown-view">
+        <magic-menu-trigger>
+          <m-button>Menu</m-button>
+        </magic-menu-trigger>
+        <magic-menu-content :arrow="false">
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <m-menu-item>New Tab</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>New Window</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>New Private Window</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <magic-menu-view>
+                <magic-menu-trigger>
+                  <m-menu-item> More Tools </m-menu-item>
+                </magic-menu-trigger>
+                <magic-menu-content>
+                  <div
+                    class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]"
+                  >
+                    <magic-menu-item>
+                      <m-menu-item>Bookmark Manager</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>History</m-menu-item>
+                    </magic-menu-item>
+                    <magic-menu-item>
+                      <m-menu-item>Downloads</m-menu-item>
+                    </magic-menu-item>
+                  </div>
+                </magic-menu-content>
+              </magic-menu-view>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Show Bookmarks</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Show Full URLs</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Christoph Jeworutzki</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Robin Scholz</m-menu-item>
+            </magic-menu-item>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
@@ -134,14 +269,98 @@
     >
       <magic-menu-view>
         <magic-menu-trigger
-          class="w-full h-36 border-dashed rounded-lg flex items-center justify-center"
+          class="w-full h-36 border-2 border-dashed border-surface rounded-lg flex items-center justify-center"
         >
-          Right click
+          <span class="type-control-text-sm text-surface-subtle">
+            Right click
+          </span>
         </magic-menu-trigger>
         <magic-menu-content>
-          <magic-menu-item>Item 1</magic-menu-item>
-          <magic-menu-item>Item 2</magic-menu-item>
-          <magic-menu-item>Item 3</magic-menu-item>
+          <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
+            <magic-menu-item>
+              <m-menu-item>Item 1</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Item 2</m-menu-item>
+            </magic-menu-item>
+            <magic-menu-item>
+              <m-menu-item>Item 3</m-menu-item>
+            </magic-menu-item>
+          </div>
+        </magic-menu-content>
+      </magic-menu-view>
+    </magic-menu-provider>
+
+    <magic-menu-provider
+      id="magic-menu--navigation"
+      :options="{ mode: 'navigation', debug: true }"
+      class="mx-auto"
+    >
+      <magic-menu-view>
+        <div
+          class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
+          ref="navigationRef"
+        >
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="a" as-child>
+              <m-button mode="ghost"> Home </m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="b" as-child>
+              <m-button mode="ghost">Events</m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="c" as-child>
+              <m-button mode="ghost">Projects</m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+
+          <m-button mode="ghost">External Link</m-button>
+
+          <magic-menu-trigger as-child>
+            <magic-menu-remote channel-id="d" as-child>
+              <m-button mode="ghost">FAQ</m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
+        </div>
+        <magic-menu-content :reference-el="navigationRef">
+          <div class="p-1">
+            <magic-auto-size class="bg-surface-elevation-base rounded-2xl">
+              <magic-menu-channel id="a" class="w-[40rem]">
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
+                <m-menu-card>
+                  <m-menu-card-child>
+                    <span>Title</span>
+                    <span>Subtitle</span>
+                  </m-menu-card-child>
+                </m-menu-card>
+              </magic-menu-channel>
+              <magic-menu-channel id="b" class="w-[50rem] h-[20rem]">
+                Events Channel
+              </magic-menu-channel>
+              <magic-menu-channel id="c" class="w-[40rem] h-[20rem]">
+                Projects Channel
+              </magic-menu-channel>
+              <magic-menu-channel id="d" class="w-[50rem] h-[20rem]">
+                FAQ Channel
+              </magic-menu-channel>
+            </magic-auto-size>
+          </div>
         </magic-menu-content>
       </magic-menu-view>
     </magic-menu-provider>
@@ -149,12 +368,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { MMenuItem, MMenuCard, MMenuCardChild, MButton } from '@maas/mirror/vue'
 import type { ValueOf } from '@maas/vue-equipment/utils'
+import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
 function callback(
   id: keyof MagicEmitterEvents,
@@ -168,42 +390,17 @@ useMagicEmitter().on('*', callback)
 onBeforeUnmount(() => {
   useMagicEmitter().off('*', callback)
 })
+
+const navigationRef = ref<HTMLElement | null>(null)
 </script>
 
 <style>
-.magic-menu-trigger.-active {
-  outline: solid 1px;
-  outline-color: rgba(100, 200, 20);
+.menu-enter-active {
+  animation: fadeIn 0.3s ease;
 }
 
-.magic-menu-item {
-  position: relative;
-  height: 2.5rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.magic-menu-item .magic-menu-trigger {
+.menu-leave-active {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-}
-
-.magic-menu-item.-active {
-  background-color: lightgrey;
-}
-
-.magic-menu-item.-disabled {
-  opacity: 0.5;
-}
-
-.magic-menu-content__inner {
-  width: 220px;
-  background: white;
-  color: black;
-  display: flex;
-  flex-direction: column;
+  animation: fadeOut 0.3s ease;
 }
 </style>

@@ -15,8 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, onBeforeUnmount, watch } from 'vue'
-import { uuid } from '@maas/vue-equipment/utils'
+import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -53,8 +52,7 @@ if (!viewId) {
 if (!contentId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuContent')
 }
-
-const mappedId = computed(() => props.id ?? `magic-menu-item-${uuid()}`)
+const mappedId = computed(() => props.id ?? `magic-menu-item-${useId()}`)
 
 // Register item
 const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
@@ -93,7 +91,7 @@ function guardedUnselect() {
     unselectItem(mappedId.value)
   } else {
     // If there is a nested active view,
-    // unselect the item once it is closed
+    //  unselect the item once it is closed
     watch(
       () => nestedView.value?.active,
       (value) => {

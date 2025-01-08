@@ -112,15 +112,8 @@ const {
 } = useMagicCookie()
 </script>
 
-<style lang="css">
+<style>
 :root {
-  --magic-cookie-max-width: 480px;
-  --magic-cookie-max-height: calc(100vh - 2rem);
-  --magic-cookie-background: rgba(75, 75, 75, 0.5);
-  --magic-cookie-backdrop-filter: blur(32px);
-  --magic-cookie-color: rgba(255, 255, 255);
-  --magic-cookie-border-radius: 0;
-  --magic-cookie-box-shadow: none;
   --magic-cookie-preferences-mask: linear-gradient(
     to top,
     rgb(255 255 255 / 0%),
@@ -151,19 +144,18 @@ const {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: var(--magic-cookie-max-width);
-  border-radius: var(--magic-cookie-border-radius);
-  background-color: var(--magic-cookie-background);
-  color: var(--magic-cookie-color);
-  box-shadow: var(--magic-cookie-box-shadow);
-  backdrop-filter: var(--magic-cookie-backdrop-filter);
-  -webkit-backdrop-filter: var(--magic-cookie-backdrop-filter);
+  max-width: var(--magic-cookie-max-width, 480px);
+  border-radius: var(--magic-cookie-border-radius, 0);
+  background-color: var(--magic-cookie-background, rgba(75, 75, 75, 0.5));
+  color: var(--magic-cookie-color, inherit);
+  box-shadow: var(--magic-cookie-box-shadow, unset);
+  backdrop-filter: var(--magic-cookie-backdrop-filter, unset);
   overflow: hidden;
 }
 
 .magic-cookie__container {
   width: 100%;
-  max-height: var(--magic-cookie-max-height);
+  max-height: var(--magic-cookie-max-height, calc(100vh - 2rem));
   display: flex;
   flex-direction: column;
 }

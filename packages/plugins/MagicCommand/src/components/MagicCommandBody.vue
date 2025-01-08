@@ -87,12 +87,8 @@ watch(activeItem, async (value) => {
 </script>
 
 <style>
-:root {
-  --magic-command-body-height: 100%;
-  --magic-command-body-overflow-y: auto;
-}
 .magic-command-body {
-  height: var(--magic-command-body-height);
-  overflow-y: var(--magic-command-body-overflow-y);
+  height: var(--magic-command-body-height, 100%);
+  overflow-y: var(--magic-command-body-overflow-y, auto);
 }
 </style>

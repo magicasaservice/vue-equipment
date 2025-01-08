@@ -1,17 +1,29 @@
 <template>
   <div
     ref="playerRef"
-    class="magic-player"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
+    :class="[
+      'magic-player',
+      {
+        '-fullscreen': isFullscreen,
+        '-touched': touched,
+        '-untouched': !touched,
+        '-playing': playing,
+        '-paused': !playing,
+        '-waiting': waiting,
+        '-loaded': loaded,
+        '-muted': muted,
+      },
+    ]"
   >
     <video
       ref="videoRef"
       class="magic-player__video"
-      preload="auto"
       playsinline
       disablePictureInPicture
-      :loop="props.loop"
+      :preload="preload"
+      :loop="loop"
       :muted="muted"
     />
     <slot />
@@ -19,8 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import {
+  useElementVisibility,
+  useEventListener,
+  defaultWindow,
+} from '@vueuse/core'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
@@ -32,6 +48,7 @@ interface MagicPlayerProps {
   srcType?: MagicPlayerSourceType
   src: string
   autoplay?: boolean
+  preload?: 'auto' | 'metadata' | 'none'
   loop?: boolean
 }
 
@@ -39,37 +56,51 @@ const props = withDefaults(defineProps<MagicPlayerProps>(), {
   srcType: 'native',
   src: '',
   autoplay: false,
+  preload: 'metadata',
   loop: false,
 })
 
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 
-const { playing, muted } = usePlayerMediaApi({
+const isVisible = useElementVisibility(playerRef)
+
+const { playing, waiting, muted } = usePlayerMediaApi({
   id: props.id,
   mediaRef: videoRef,
 })
 
-const { initialize, destroy } = usePlayerRuntime({
+const { initialize, loaded, destroy } = usePlayerRuntime({
   id: props.id,
   mediaRef: videoRef,
   src: props.src,
   srcType: props.srcType,
 })
 
-const { onMouseenter, onMouseleave, play, pause } = usePlayerVideoApi({
-  id: props.id,
-  videoRef: videoRef,
-  playerRef: playerRef,
-})
+const { onMouseenter, onMouseleave, isFullscreen, touched, play, pause } =
+  usePlayerVideoApi({
+    id: props.id,
+    videoRef: videoRef,
+    playerRef: playerRef,
+  })
 
-useIntersectionObserver(
-  playerRef,
-  ([{ isIntersecting }]) => {
-    if (!isIntersecting && playing.value) {
-      pause()
-    } else if (isIntersecting && !playing.value && props.autoplay) {
+function onWindowFocus() {
+  if (isVisible.value && !playing.value && props.autoplay) {
+    play()
+  }
+}
+
+// Auto play when window is focused
+useEventListener(defaultWindow, 'focus', onWindowFocus)
+
+// Auto play when element is visible
+watch(
+  isVisible,
+  (value) => {
+    if (value && !playing.value && props.autoplay) {
       play()
+    } else if (!value && playing.value) {
+      pause()
     }
   },
   {
@@ -89,20 +120,18 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="css">
-:root {
-  --magic-player-aspect-ratio: 16 / 9;
-  --magic-player-background: #000000;
-  --magic-player-height: auto;
-}
-
+<style>
 .magic-player {
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: var(--magic-player-height);
-  aspect-ratio: var(--magic-player-aspect-ratio);
-  background: var(--magic-player-background);
+  height: var(--magic-player-height, auto);
+  aspect-ratio: var(--magic-player-aspect-ratio, 16 / 9);
+  background: var(--magic-player-background, #000);
+}
+
+.magic-player.-loaded {
+  --magic-player-background: transparent;
 }
 
 .magic-player__video {

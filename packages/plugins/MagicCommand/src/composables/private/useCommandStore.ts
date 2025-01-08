@@ -11,7 +11,7 @@ type CommandInstance = {
   views: string[]
 }
 
-let commandStore = ref<CommandInstance[]>([])
+const commandStore = ref<CommandInstance[]>([])
 
 export function useCommandStore() {
   function addInstance(id: string) {

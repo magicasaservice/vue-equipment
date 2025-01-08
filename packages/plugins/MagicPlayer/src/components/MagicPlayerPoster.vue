@@ -22,7 +22,7 @@ const { touched } = usePlayerVideoApi({
 })
 </script>
 
-<style lang="css">
+<style>
 .magic-player-poster {
   position: absolute;
   inset: 0;

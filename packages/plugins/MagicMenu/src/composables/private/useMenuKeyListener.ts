@@ -11,7 +11,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const {
     selectView,
     unselectView,
-    unselectNonTreeViews,
+    unselectUnrelatedViews,
     unselectAllViews,
     getView,
     getNextView,
@@ -46,7 +46,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   async function onArrowRight(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     if (!state.input.view) {
       return
@@ -80,7 +82,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   function onArrowLeft(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     if (!state.input.view) {
       return
@@ -111,7 +115,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   function onArrowUp(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     if (!state.input.view) {
       return
@@ -130,21 +136,23 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       selectItem(enabledItems[prevIndex]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     } else if (prevIndex !== -1) {
       // Select last item
       const { selectItem } = useMenuItem({ instanceId, viewId })
       selectItem(enabledItems[enabledItems.length - 1]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     }
   }
 
   function onArrowDown(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     if (!state.input.view) {
       return
@@ -163,14 +171,16 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       selectItem(enabledItems[nextIndex]?.id)
 
       // Unselect all views that are nested deeper than the view in focus
-      unselectNonTreeViews(viewId)
+      unselectUnrelatedViews(viewId)
     }
   }
 
   function onEscape(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     state.active = false
     state.input.view = ''
@@ -180,7 +190,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   async function onEnter(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
-    } catch (_e: unknown) {}
+    } catch (e: unknown) {
+      console.error(e)
+    }
 
     if (!state.input.view) {
       return
@@ -206,7 +218,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     if (state.active) {
       try {
         keyStrokeGuard(e)
-      } catch (_e: unknown) {}
+      } catch (e: unknown) {
+        console.error(e)
+      }
     }
   }
 

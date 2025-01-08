@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useMagicCookie } from '@maas/vue-equipment/plugins'
+import { useMagicCookie } from './src/composables/useMagicCookie'
 
 const {
   preferencesVisible,

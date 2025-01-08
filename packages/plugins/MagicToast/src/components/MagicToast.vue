@@ -49,11 +49,11 @@ import {
   watch,
   onBeforeMount,
   onUnmounted,
+  useId,
   type MaybeRef,
 } from 'vue'
 import { defu } from 'defu'
 import { onClickOutside, type MaybeElement } from '@vueuse/core'
-import { uuid } from '@maas/vue-equipment/utils'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useToastApi } from '../composables/private/useToastApi'
 import { useToastCallback } from './../composables/private/useToastCallback'
@@ -82,7 +82,7 @@ const { toasts, count, firstToast } = useMagicToast(props.id)
 
 const mappedOptions = defu(props.options, defaultOptions)
 const isExpanded = ref(mappedOptions.layout?.expand === true)
-const teleportKey = ref(uuid())
+const teleportKey = ref(useId())
 const listRef = ref<MaybeElement>()
 
 const {
@@ -124,7 +124,7 @@ onClickOutside(listRef, outsideClickCallback)
 // Lifecycle hooks and listeners
 watch(
   () => props.id,
-  () => (teleportKey.value = uuid())
+  () => (teleportKey.value = useId())
 )
 
 onBeforeMount(() => {
@@ -136,16 +136,10 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="css">
+<style>
 :root {
-  --magic-toast-enter-animation: unset;
-  --magic-toast-leave-animation: fade-out 300ms ease;
-  --magic-toast-scale: 0.1;
   --magic-toast-transform-x: 0;
   --magic-toast-transform-y: 0;
-  --magic-toast-transition: transform 300ms ease;
-  --magic-toast-z-index: 999;
-  --magic-toast-gap: 0.75rem;
   --magic-toast-padding-x: 1rem;
   --magic-toast-padding-y: 1rem;
 
@@ -172,13 +166,19 @@ onUnmounted(() => {
 
 .magic-toast__inner {
   position: relative;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 100%;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: var(--mt-align-items);
   justify-content: var(--mt-justify-content);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .magic-toast__inner * {
@@ -240,10 +240,10 @@ onUnmounted(() => {
 }
 
 .magic-toast--list-enter-active {
-  animation: var(--magic-toast-enter-animation);
+  animation: var(--magic-toast-enter-animation, unset);
 }
 
 .magic-toast--list-leave-active {
-  animation: var(--magic-toast-leave-animation);
+  animation: var(--magic-toast-leave-animation, fade-out 300ms ease);
 }
 </style>

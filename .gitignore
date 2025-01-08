@@ -32,7 +32,12 @@ cache
 
 # dist
 dist
+!packages/fonts/dist
 
 # types
 /types
 .vercel
+
+# tokens
+.maas/tokens
+.maas/tailwind.preset.js

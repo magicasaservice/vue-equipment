@@ -67,7 +67,7 @@ const injectComponentImportScript = (
   }
 }
 
-// Export the plugin function takes the markdown renderer as an argument
+// Export the plugin function
 export function componentPreview(markdownRenderer: MarkdownRenderer) {
   // Register a new rule to parse the custom component preview tag
   markdownRenderer.core.ruler.after('inline', 'component-preview', (state) => {

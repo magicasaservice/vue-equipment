@@ -27,6 +27,7 @@ const defaultOptions: DefaultOptions = {
   },
   snapPoints: [],
   disabled: false,
+  scrollLock: { padding: true },
 }
 
 export { defaultOptions, type DefaultOptions }

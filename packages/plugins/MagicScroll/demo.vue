@@ -1,8 +1,6 @@
 <template>
-  <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-    <button class="w-full h-full px-6 py-4" @click="toggleAnimations">
-      Change Animation
-    </button>
+  <div class="w-full flex justify-center">
+    <m-button @click="toggleAnimations"> Change Animation </m-button>
   </div>
   <div class="flex gap-4">
     <div class="w-full">
@@ -16,14 +14,14 @@
             v-slot="{ progress }"
           >
             <div
-              class="w-full h-20 bg-gray-500/5 text-white sticky top-[5rem] flex items-center justify-center"
+              class="w-full h-20 bg-surface-elevation-base text-white sticky top-[5rem] flex items-center justify-center"
             >
               <span>{{ Math.round(progress * 100) }}%</span>
               <magic-scroll-motion
                 class="absolute w-full h-full -bottom-[100%] left-0 z-10 py-4"
                 :keyframes="keyframes"
               >
-                <div class="w-12 h-12 rounded-full shadow-md bg-red" />
+                <div class="w-12 h-12 rounded-full shadow-md bg-[red]" />
               </magic-scroll-motion>
             </div>
           </magic-scroll-scene>
@@ -33,7 +31,7 @@
     <div class="w-full">
       <p>Element</p>
       <div
-        class="relative w-full h-[300px] bg-gray-500/5 overflow-scroll sticky top-[5rem]"
+        class="relative w-full h-[300px] bg-surface-elevation-base overflow-scroll sticky top-[5rem]"
         ref="parentRef"
       >
         <magic-scroll-provider :el="parentRef">
@@ -53,7 +51,7 @@
                   class="absolute w-full h-full -bottom-[100%] left-0 z-10 py-4"
                   :keyframes="keyframes"
                 >
-                  <div class="w-12 h-12 rounded-full shadow-md bg-red" />
+                  <div class="w-12 h-12 rounded-full shadow-md bg-[red]" />
                 </magic-scroll-motion>
               </div>
             </magic-scroll-scene>
@@ -80,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+import { MButton } from '@maas/mirror/vue'
 import { ref, onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,

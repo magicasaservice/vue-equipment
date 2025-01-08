@@ -85,11 +85,7 @@ onClickOutside(
     unselectAllViews()
   },
   {
-    ignore: [
-      '.magic-menu-view',
-      '.magic-menu-item',
-      '.magic-menu-cursor-blocker',
-    ],
+    ignore: ['.magic-menu-trigger', '.magic-menu-item', 'magic-menu-float'],
   }
 )
 

@@ -15,11 +15,11 @@ export function useToastCallback(args: UseToastCallbackArgs) {
   const activeToasts = ref<ActiveToast[]>([])
   const emitter = useMagicEmitter()
 
-  function onBeforeEnter(_el: Element) {
+  function onBeforeEnter() {
     emitter.emit('beforeEnter', toValue(id))
   }
 
-  function onEnter(_el: Element) {
+  function onEnter() {
     emitter.emit('enter', toValue(id))
     if (
       count.value &&
@@ -49,7 +49,7 @@ export function useToastCallback(args: UseToastCallbackArgs) {
     ]
   }
 
-  function onBeforeLeave(_el: Element) {
+  function onBeforeLeave() {
     emitter.emit('beforeLeave', toValue(id))
   }
 
@@ -58,7 +58,7 @@ export function useToastCallback(args: UseToastCallbackArgs) {
     activeToasts.value = activeToasts.value.filter((item) => item.id !== el.id)
   }
 
-  function onAfterLeave(_el: Element) {
+  function onAfterLeave() {
     emitter.emit('afterLeave', toValue(id))
   }
 

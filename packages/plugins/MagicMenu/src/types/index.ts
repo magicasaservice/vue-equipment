@@ -1,17 +1,50 @@
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { Placement } from '@floating-ui/vue'
 
-type MenuMode = 'dropdown' | 'menubar' | 'context'
+type MenuMode = 'dropdown' | 'menubar' | 'context' | 'navigation'
 
 export interface MagicMenuOptions {
   mode?: MenuMode
+  debug?: boolean
+  scrollLock?: boolean | { padding: boolean }
   transition?: {
-    initial?: string
-    final?: string
-    nested?: string
+    content?: {
+      default?: string
+      nested?: string
+    }
+    channel?: string
+  }
+  floating?: {
+    strategy: 'fixed' | 'absolute'
+  }
+  delay?: {
+    mouseenter?: number
+    mouseleave?: number
+    click?: number
+    rightClick?: number
   }
 }
 
-export type MenuTrigger = 'click' | 'mouseenter' | 'mouseleave' | 'right-click'
+export interface RequiredMagicMenuOptions {
+  mode: MenuMode
+  debug: boolean
+  transition: {
+    content: {
+      default: string
+      nested: string
+    }
+    channel: string
+  }
+}
+
+export type OptionalMagicMenuOptions = Pick<
+  MagicMenuOptions,
+  'scrollLock' | 'floating' | 'delay'
+>
+
+export type CombinedMagicMenuOptions = RequiredMagicMenuOptions &
+  OptionalMagicMenuOptions
+
+export type Interaction = 'click' | 'mouseenter' | 'right-click'
 
 export type Coordinates = {
   x: number
@@ -24,23 +57,30 @@ export interface MenuItem {
   disabled: boolean
 }
 
+export interface MenuChannel {
+  id: string
+  active: boolean
+}
+
 export interface MenuView {
   id: string
   active: boolean
   items: MenuItem[]
+  channels: MenuChannel[]
   parent: { item: string; views: string[] }
-  children: {
-    trigger?: HTMLElement
-    content?: HTMLElement
+  placement: Placement
+  state: {
+    selectAbortController: AbortController
+    unselectAbortController: AbortController
+    clicked?: Coordinates
   }
-  click?: Coordinates
 }
 
 export interface MenuState {
   id: string
   active: boolean
   views: MenuView[]
-  options: RequireAllNested<MagicMenuOptions>
+  options: CombinedMagicMenuOptions
   input: {
     type: 'keyboard' | 'pointer'
     disabled: ('keyboard' | 'pointer')[]
@@ -51,26 +91,26 @@ export interface MenuState {
 export type MenuEvents = {
   beforeEnter: {
     id: string
-    view: string
+    viewId: string
   }
   enter: {
     id: string
-    view: string
+    viewId: string
   }
   afterEnter: {
     id: string
-    view: string
+    viewId: string
   }
   beforeLeave: {
     id: string
-    view: string
+    viewId: string
   }
   leave: {
     id: string
-    view: string
+    viewId: string
   }
   afterLeave: {
     id: string
-    view: string
+    viewId: string
   }
 }

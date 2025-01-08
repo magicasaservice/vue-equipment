@@ -1,63 +1,83 @@
-import { toValue, type MaybeRef } from 'vue'
+import { toValue, type MaybeRef, type Ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { MenuState } from '../../types'
+import { ModeScrollLock } from '../../utils/modeScrollLockDefaults'
 
 type UseMenuCallbackArgs = {
   state: MenuState
   instanceId: MaybeRef<string>
   viewId: string
+  innerActive: Ref<boolean>
+  wrapperActive: Ref<boolean>
   lockScroll: () => void
   unlockScroll: () => void
+  addScrollLockPadding: () => void
+  removeScrollLockPadding: () => void
 }
 
 export function useMenuCallback(args: UseMenuCallbackArgs) {
-  const { state, instanceId, viewId, lockScroll, unlockScroll } = args
+  const {
+    state,
+    instanceId,
+    viewId,
+    innerActive,
+    wrapperActive,
+    lockScroll,
+    unlockScroll,
+    addScrollLockPadding,
+    removeScrollLockPadding,
+  } = args
 
   const emitter = useMagicEmitter()
 
-  function onBeforeEnter(_el: Element) {
-    emitter.emit('beforeEnter', { id: toValue(instanceId), view: viewId })
+  function onBeforeEnter() {
+    emitter.emit('beforeEnter', { id: toValue(instanceId), viewId })
   }
 
-  function onEnter(_el: Element) {
-    emitter.emit('enter', { id: toValue(instanceId), view: viewId })
+  function onEnter() {
+    emitter.emit('enter', { id: toValue(instanceId), viewId })
   }
 
-  function onAfterEnter(_el: Element) {
-    emitter.emit('afterEnter', { id: toValue(instanceId), view: viewId })
+  function onAfterEnter() {
+    emitter.emit('afterEnter', { id: toValue(instanceId), viewId })
 
-    switch (state.options.mode) {
-      case 'dropdown':
-        lockScroll()
-        break
-      case 'menubar':
-        break
-      case 'context':
-        lockScroll()
-        break
+    const scrollLock =
+      state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
+
+    if (scrollLock) {
+      lockScroll()
+
+      if (typeof scrollLock === 'object' && scrollLock.padding) {
+        addScrollLockPadding()
+      }
     }
   }
 
-  function onBeforeLeave(_el: Element) {
-    emitter.emit('beforeLeave', { id: toValue(instanceId), view: viewId })
+  function onBeforeLeave() {
+    emitter.emit('beforeLeave', { id: toValue(instanceId), viewId })
   }
 
-  function onLeave(_el: Element) {
-    emitter.emit('leave', { id: toValue(instanceId), view: viewId })
+  function onLeave() {
+    emitter.emit('leave', { id: toValue(instanceId), viewId })
   }
 
-  function onAfterLeave(_el: Element) {
-    emitter.emit('afterLeave', { id: toValue(instanceId), view: viewId })
+  function onAfterLeave() {
+    emitter.emit('afterLeave', { id: toValue(instanceId), viewId })
 
-    switch (state.options.mode) {
-      case 'dropdown':
-        unlockScroll()
-        break
-      case 'menubar':
-        break
-      case 'context':
-        unlockScroll()
-        break
+    const scrollLock =
+      state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
+
+    if (scrollLock) {
+      unlockScroll()
+
+      if (typeof scrollLock === 'object' && scrollLock.padding) {
+        removeScrollLockPadding()
+      }
+    }
+
+    // Only disable wrapperActive if innerActive is false
+    if (!innerActive.value) {
+      wrapperActive.value = false
     }
   }
 

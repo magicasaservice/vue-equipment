@@ -1,16 +1,15 @@
 <template>
   <div
     ref="drawerRef"
-    class="magic-draggable"
     :id="toValue(id)"
     :class="[
-      toValue(props.class),
-
+      'magic-draggable',
       {
         '-dragging': dragging,
         '-disabled': disabled,
       },
     ]"
+    v-bind="$attrs"
   >
     <div class="magic-draggable__wrapper" ref="wrapperRef">
       <component
@@ -35,6 +34,7 @@ import {
   computed,
   toValue,
   onMounted,
+  onBeforeUnmount,
   type Component,
   type MaybeRef,
 } from 'vue'
@@ -45,11 +45,13 @@ import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicDraggableOptions } from '../types'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 interface MagicDraggableProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
-  props?: Record<string, unknown>
   options?: MagicDraggableOptions
 }
 
@@ -74,18 +76,18 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial, threshold } = mappedOptions
+const { snapPoints, animation, initial, threshold, scrollLock } = mappedOptions
 
-const { initialize, onPointerdown, onClick, style, hasDragged } =
-  useDraggableDrag({
-    id: props.id,
-    elRef,
-    wrapperRef,
-    threshold,
-    snapPoints,
-    animation,
-    initial,
-  })
+const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
+  id: props.id,
+  elRef,
+  wrapperRef,
+  threshold,
+  snapPoints,
+  animation,
+  initial,
+  scrollLock,
+})
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
@@ -99,27 +101,15 @@ function guardedClick(event: PointerEvent) {
     onClick(event)
   }
 }
-
-onMounted(() => {
-  initialize()
-})
 </script>
 
 <style>
-:root {
-  --magic-draggable-z-index: 999;
-  --magic-draggable-position: fixed;
-  --magic-draggable-height: 100%;
-  --magic-draggable-width: 100%;
-  --magic-draggable-inset: 0;
-}
-
 .magic-draggable {
-  position: var(--magic-draggable-position);
-  width: var(--magic-draggable-width);
-  height: var(--magic-draggable-height);
-  z-index: var(--magic-draggable-z-index);
-  inset: var(--magic-draggable-inset);
+  position: var(--magic-draggable-position, fixed);
+  width: var(--magic-draggable-width, 100%);
+  height: var(--magic-draggable-height, 100%);
+  z-index: var(--magic-draggable-z-index, 999);
+  inset: var(--magic-draggable-inset, 0);
   pointer-events: none;
   background: transparent;
   color: inherit;

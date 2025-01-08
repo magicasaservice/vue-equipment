@@ -1,4 +1,7 @@
 import { defineConfig } from 'vitepress'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
+
 // https://github.com/vitejs/vite/issues/5370
 import { plugins, composables } from './../../../packages/metadata'
 
@@ -43,14 +46,19 @@ export default defineConfig({
     ],
     footer: {
       message: 'Released under the MIT License.',
-      copyright: '© 2023 Magic as a Service™',
+      copyright: '© 2024 Magic as a Service™',
     },
   },
   srcDir: './../..',
   srcExclude: ['**/*.json'],
   vite: {
-    configFile: './vite.config.ts',
+    configFile: './vite.config.mts',
     publicDir: './apps/docs/public',
+    css: {
+      postcss: {
+        plugins: [tailwindcss, autoprefixer],
+      },
+    },
   },
   rewrites: {
     'apps/docs/src/content/index.md': 'index.md',

@@ -1,5 +1,7 @@
 import { join, relative, resolve } from 'node:path'
-import fs from 'fs-extra'
+import { readFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import { writeJSON } from 'fs-extra'
 import matter from 'gray-matter'
 import type {
   PackageIndexes,
@@ -71,7 +73,7 @@ export async function readMetadata() {
           lastUpdated: lastUpdated,
         }
 
-        if (!fs.existsSync(mdPath)) {
+        if (!existsSync(mdPath)) {
           fn.internal = true
           indexes.functions.push(fn)
           return
@@ -79,7 +81,7 @@ export async function readMetadata() {
 
         fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
 
-        const mdRaw = await fs.readFile(mdPath, 'utf-8')
+        const mdRaw = await readFile(mdPath, 'utf-8')
 
         const { content: md, data: frontmatter } = matter(mdRaw)
 
@@ -122,27 +124,27 @@ export async function readMetadata() {
     )
   }
 
-  indexes.functions.sort((a: any, b: any) => a.name.localeCompare(b.name))
+  indexes.functions.sort((a, b) => a.name.localeCompare(b.name))
 
   // interop related
-  indexes.functions.forEach((fn: any) => {
+  indexes.functions.forEach((fn) => {
     if (!fn.related) return
 
     fn.related.forEach((name: string) => {
-      const target = indexes.functions.find((f: any) => f.name === name)
+      const target = indexes.functions.find((f) => f.name === name)
       if (!target) throw new Error(`Unknown related function: ${name}`)
       if (!target.related) target.related = []
       if (!target.related.includes(fn.name)) target.related.push(fn.name)
     })
   })
-  indexes.functions.forEach((fn: any) => fn.related?.sort())
+  indexes.functions.forEach((fn) => fn.related?.sort())
 
   return indexes
 }
 
 async function run() {
   const indexes = await readMetadata()
-  await fs.writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
+  await writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
 }
 
 run()

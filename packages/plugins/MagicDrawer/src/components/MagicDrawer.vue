@@ -6,10 +6,9 @@
   >
     <div
       ref="drawerRef"
-      class="magic-drawer"
       :id="toValue(id)"
       :class="[
-        toValue(props.class),
+        'magic-drawer',
         `-${mappedOptions.position}`,
         {
           '-dragging': dragging,
@@ -17,6 +16,7 @@
           '-disabled': disabled,
         },
       ]"
+      v-bind="$attrs"
       aria-modal="true"
     >
       <transition
@@ -90,6 +90,7 @@ import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
+import { useMagicDrawer } from '../composables/useMagicDrawer'
 
 import type { MagicDrawerOptions } from '../types/index'
 
@@ -103,7 +104,10 @@ import '@maas/vue-equipment/utils/css/animations/slide-ltr-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
-import { useMagicDrawer } from '../composables/useMagicDrawer'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 // Prevent deep merge of certain options
 // In this case, don’t merge the `close` and `points` options
@@ -116,9 +120,7 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicDrawerProps {
   id: MaybeRef<string>
-  class?: MaybeRef<string>
   component?: Component
-  props?: Record<string, unknown>
   options?: MagicDrawerOptions
 }
 
@@ -191,7 +193,7 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   disabled,
 })
 
-const { initializeState } = useDrawerState(props.id)
+const { initializeState, deleteState } = useDrawerState(props.id)
 const { dragging, wheeling } = initializeState()
 
 // Split isActive into two values to animate drawer smoothly
@@ -307,7 +309,12 @@ function guardedClose() {
 
 function saveOvershoot() {
   const element = unrefElement(drawerRef)
-  const overshootVar = getComputedStyle(element!).getPropertyValue(
+
+  if (!element) {
+    return
+  }
+
+  const overshootVar = getComputedStyle(element, null).getPropertyValue(
     '--magic-drawer-drag-overshoot'
   )
   overshoot.value = convertToPixels(overshootVar) || 0
@@ -366,6 +373,8 @@ onUnmounted(() => {
   if (!mappedOptions.preventZoom) {
     resetMetaViewport()
   }
+
+  deleteState()
 })
 </script>
 
@@ -373,13 +382,8 @@ onUnmounted(() => {
 :root {
   --magic-drawer-height: 75svh;
   --magic-drawer-width: 100%;
-  --magic-drawer-z-index: 999;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
-  --magic-drawer-backdrop-color: rgba(0, 0, 0, 0.5);
-  --magic-drawer-backdrop-filter: unset;
-  --magic-drawer-content-overflow-x: hidden;
-  --magic-drawer-content-overflow-y: hidden;
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
@@ -397,7 +401,7 @@ onUnmounted(() => {
   pointer-events: none;
   justify-content: var(--magic-drawer-justify-content);
   align-items: var(--magic-drawer-align-items);
-  z-index: var(--magic-drawer-z-index);
+  z-index: var(--magic-drawer-z-index, 999);
   background: transparent;
   color: inherit;
   padding: 0;
@@ -491,8 +495,8 @@ onUnmounted(() => {
   pointer-events: auto;
   align-items: var(--magic-drawer-align-items);
   justify-content: var(--magic-drawer-justify-content);
-  overflow-x: var(--magic-drawer-content-overflow-x);
-  overflow-y: var(--magic-drawer-content-overflow-y);
+  overflow-x: var(--magic-drawer-content-overflow-x, hidden);
+  overflow-y: var(--magic-drawer-content-overflow-y, hidden);
   cursor: grab;
 }
 
@@ -541,8 +545,8 @@ dialog.magic-drawer__drag::backdrop {
   width: 100%;
   height: 100%;
   pointer-events: auto;
-  background-color: var(--magic-drawer-backdrop-color);
-  backdrop-filter: var(--magic-drawer-backdrop-filter);
+  background-color: var(--magic-drawer-backdrop-color, rgba(0, 0, 0, 0.5));
+  backdrop-filter: var(--magic-drawer-backdrop-filter, unset);
   z-index: -1;
 }
 

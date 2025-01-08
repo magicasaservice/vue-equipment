@@ -1,8 +1,8 @@
-import type { InjectionKey, Ref, MaybeRefOrGetter } from 'vue'
+import type { InjectionKey, Ref, MaybeRef } from 'vue'
 import type { UseScrollReturn } from '@vueuse/core'
 
 const MagicScrollParent = Symbol() as InjectionKey<
-  MaybeRefOrGetter<HTMLElement | undefined>
+  MaybeRef<HTMLElement | undefined>
 >
 const MagicScrollProgress = Symbol() as InjectionKey<Ref<number>>
 const MagicScrollReturn = Symbol() as InjectionKey<UseScrollReturn | undefined>

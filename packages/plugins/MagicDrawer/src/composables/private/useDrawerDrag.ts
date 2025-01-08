@@ -16,7 +16,12 @@ import {
   useThrottleFn,
   useScrollLock,
 } from '@vueuse/core'
-import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
+import {
+  guardedReleasePointerCapture,
+  guardedSetPointerCapture,
+  isIOS,
+  isWithinRange,
+} from '@maas/vue-equipment/utils'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
@@ -84,6 +89,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     wrapperRect,
   } = initializeState()
 
+  let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
@@ -157,7 +163,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     switch (position) {
       case 'bottom':
-      case 'top':
+      case 'top': {
         if (distanceY > toValue(threshold).distance) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
@@ -175,9 +181,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         }
 
         break
+      }
 
       case 'right':
-      case 'left':
+      case 'left': {
         if (distanceX > toValue(threshold).distance) {
           const snapPointX = findClosestSnapPoint({
             draggedX,
@@ -194,6 +201,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
     }
   }
 
@@ -208,7 +216,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     switch (position) {
       case 'bottom':
-      case 'top':
+      case 'top': {
         if (velocityY > toValue(threshold).momentum) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
@@ -224,9 +232,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
 
       case 'right':
-      case 'left':
+      case 'left': {
         if (velocityX > toValue(threshold).momentum) {
           const snapPointX = findClosestSnapPoint({
             draggedX,
@@ -243,42 +252,47 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           }
         }
         break
+      }
     }
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
     switch (position) {
-      case 'bottom':
+      case 'bottom': {
         const newDraggedB = clamp(y - originY.value, 0, toValue(overshoot) * -1)
         if (newDraggedB === draggedY.value) break
 
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
         break
+      }
 
-      case 'top':
+      case 'top': {
         const newDraggedT = clamp(y - originY.value, 0, toValue(overshoot))
         if (newDraggedT === draggedY.value) break
 
         relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
         break
+      }
 
-      case 'right':
+      case 'right': {
         const newDraggedR = clamp(x - originX.value, 0, toValue(overshoot) * -1)
         if (newDraggedR === draggedX.value) break
 
         relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
         break
+      }
 
-      case 'left':
+      case 'left': {
         const newDraggedL = clamp(x - originX.value, 0, toValue(overshoot))
         if (newDraggedL === draggedX.value) break
 
         relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
         break
+      }
     }
   }
 
@@ -362,6 +376,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  async function initialize() {
+    await getSizes()
+    emitter.on('snapTo', snapToCallback)
+    emitter.on('afterLeave', afterLeaveCallback)
+  }
+
+  function destroy() {
+    emitter.off('snapTo', snapToCallback)
+    emitter.off('afterLeave', afterLeaveCallback)
+  }
+
   function onCancel() {
     switch (position) {
       case 'bottom':
@@ -441,6 +466,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (hasDragged.value) {
       e.preventDefault()
     }
+
+    // Release pointer capture
+    guardedReleasePointerCapture({ event: e, element: pointerdownTarget })
   }
 
   function onPointermove(e: PointerEvent) {
@@ -453,6 +481,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (e.isTrusted && !e.isPrimary) {
       return
     }
+
+    // Prevent event bubbling, helpful on iOS
+    e.stopImmediatePropagation()
+    e.stopPropagation()
 
     // Reset shouldClose before checking
     shouldClose.value = false
@@ -496,7 +528,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (dragging.value) {
       return
     } else {
+      // Save state
       dragging.value = true
+
+      // Save pointerdown target and capture pointer
+      // Capture the target, not the elRef, since this would break canDrag
+      // canDrag traverses up the DOM tree, so we need the actual target
+      pointerdownTarget = e.target as HTMLElement
+      guardedSetPointerCapture({
+        event: e,
+        element: e.target as HTMLElement,
+      })
 
       emitter.emit('beforeDrag', {
         id: toValue(id),
@@ -512,7 +554,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
+    cancelPointermove = useEventListener(
+      document,
+      'pointermove',
+      onPointermove,
+      { passive: false }
+    )
 
     // Pointerup doesn’t fire on iOS, so we need to use touchend
     cancelTouchend = isIOS()
@@ -538,9 +585,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Lifecycle hooks and listeners
   onMounted(async () => {
-    await getSizes()
-    emitter.on('snapTo', snapToCallback)
-    emitter.on('afterLeave', afterLeaveCallback)
+    await initialize()
   })
 
   watch(
@@ -584,8 +629,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   })
 
   onBeforeUnmount(() => {
-    emitter.off('snapTo', snapToCallback)
-    emitter.off('afterLeave', afterLeaveCallback)
+    destroy()
   })
 
   return {

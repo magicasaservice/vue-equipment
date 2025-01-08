@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "ui": "tui",
+  "tasks": {
     "//#update:metadata": {
       "cache": false,
       "outputs": ["./packages/metadata/index.json"]
@@ -14,12 +15,23 @@
         "nuxt#build"
       ]
     },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "docs#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["//#update:metadata", "build:types", "^build"]
+    },
+    "nuxt#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
+    },
+    "lint": {
+      "cache": true,
+      "outputs": []
     },
     "build": {
       "outputs": ["./dist/**"]
@@ -28,20 +40,16 @@
       "cache": false,
       "outputs": ["./types/**"]
     },
-    "docs#dev": {
-      "cache": false,
-      "dependsOn": ["//#update:metadata", "build:types", "^build"]
-    },
     "docs#build": {
+      "cache": false,
       "dependsOn": ["//#update:metadata", "^build:types", "^build"]
     },
     "plugins#build": {
       "dependsOn": ["utils#build"]
     },
+    "composables#build": {},
+    "utils#build": {},
     "nuxt#build": {
-      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
-    },
-    "nuxt#dev": {
       "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
     }
   }

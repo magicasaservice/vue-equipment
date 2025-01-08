@@ -2,9 +2,8 @@
   <div class="component-preview">
     <slot />
     <div class="language-Vue vp-adaptive-theme">
-      <button title="Copy Code" class="copy"></button
-      ><span class="lang">{{ lang }}</span>
-      <div v-if="code" v-html="code" />
+      <button title="Copy Code" class="copy"></button>
+      <div v-if="mappedCode" v-html="mappedCode" />
     </div>
   </div>
 </template>
@@ -16,6 +15,6 @@ interface Props {
   code: string
 }
 
-const props = defineProps<Props>()
-const code = ref(decodeURIComponent(props.code ?? ''))
+const { code } = defineProps<Props>()
+const mappedCode = ref(decodeURIComponent(code ?? ''))
 </script>

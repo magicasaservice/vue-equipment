@@ -1,0 +1,10 @@
+{
+  "sourceType": "git",
+  "dist": ".maas",
+  "gitProvider": "github",
+  "repoName": "magicasaservice/mirror-tokens",
+  "repoBranch": "main",
+  "tailwind": {
+    "variables": true
+  }
+}

@@ -4,8 +4,10 @@ import {
   toValue,
   nextTick,
   watch,
+  onBeforeUnmount,
   type Ref,
   type MaybeRef,
+  onMounted,
 } from 'vue'
 import {
   useEventListener,
@@ -14,14 +16,22 @@ import {
   useThrottleFn,
   useIdle,
 } from '@vueuse/core'
-import { isIOS, isWithinRange } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import {
+  guardedReleasePointerCapture,
+  guardedSetPointerCapture,
+  isIOS,
+  isWithinRange,
+} from '@maas/vue-equipment/utils'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
 
 import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { Coordinates } from '../../types'
+import type { Coordinates, DraggableSnapPoint } from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
@@ -31,11 +41,20 @@ type UseDraggableDragArgs = {
   snapPoints: MaybeRef<DefaultOptions['snapPoints']>
   animation: MaybeRef<DefaultOptions['animation']>
   initial: MaybeRef<DefaultOptions['initial']>
+  scrollLock: MaybeRef<DefaultOptions['scrollLock']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
-  const { id, elRef, wrapperRef, threshold, snapPoints, initial, animation } =
-    args
+  const {
+    id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    initial,
+    animation,
+    scrollLock,
+  } = args
 
   // Private state
   const { initializeState } = useDraggableState(toValue(id))
@@ -130,6 +149,16 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
+  }
+
+  function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
+    if (payload.id === toValue(id)) {
+      snapTo({
+        snapPoint: payload.snapPoint as DraggableSnapPoint,
+        interpolate: true,
+        duration: payload.duration,
+      })
+    }
   }
 
   function detectCollision() {
@@ -303,7 +332,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     return closestSnapPoint
   }
 
-  function onPointerup(_e: PointerEvent) {
+  function onPointerup(e: PointerEvent) {
     // Snap to the closest snap point if the user did not drag with enough momentum
     if (!momentumThresholdReached.value && distanceThresholdReached.value) {
       interpolateTo.value = findClosestSnapPoint()
@@ -343,8 +372,16 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     resetStateAndListeners()
 
     // Unlock scroll
-    unlockScroll()
-    removeScrollLockPadding()
+    const scrollLockValue = toValue(scrollLock)
+    if (scrollLockValue) {
+      unlockScroll()
+      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
+        removeScrollLockPadding()
+      }
+    }
+
+    // Release pointer capture
+    guardedReleasePointerCapture({ event: e, element: elRef.value })
   }
 
   function onPointermove(e: PointerEvent) {
@@ -406,13 +443,20 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // Public functions
   function onPointerdown(e: PointerEvent) {
     // Lock scroll as soon as the user starts dragging
-    lockScroll()
-    addScrollLockPadding()
+    const scrollLockValue = toValue(scrollLock)
+    if (scrollLockValue) {
+      lockScroll()
+      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
+        addScrollLockPadding()
+      }
+    }
 
     // Prevent dragging if we’re already dragging
     if (dragging.value) {
       return
     } else {
+      // Capture pointer, save state
+      guardedSetPointerCapture({ event: e, element: elRef.value })
       dragging.value = true
 
       emitter.emit('beforeDrag', {
@@ -432,7 +476,12 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove)
+    cancelPointermove = useEventListener(
+      document,
+      'pointermove',
+      onPointermove,
+      { passive: false }
+    )
 
     // Pointerup doesn’t fire on iOS, so we need to use touchend
     cancelTouchend = isIOS()
@@ -460,6 +509,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     await getSizes()
 
     if (elRect.value && wrapperRect.value) {
+      // Initialize listener for programmatic snapping
+      emitter.on('snapTo', snapToCallback)
+
       if (
         elRect.value.width > wrapperRect.value.width ||
         elRect.value.height > wrapperRect.value.height
@@ -484,6 +536,15 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       }
     }
   }
+
+  function destroy() {
+    emitter.off('snapTo', snapToCallback)
+  }
+
+  // Lifecycle hooks and listeners
+  onMounted(() => {
+    initialize()
+  })
 
   // Make sure the element keeps the correct position when the container is resized
   // To achieve this, we update the snapPointsMap after the element has snapped
@@ -521,8 +582,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   })
 
+  onBeforeUnmount(() => {
+    destroy()
+  })
+
   return {
     initialize,
+    destroy,
     onPointerdown,
     onClick,
     style,

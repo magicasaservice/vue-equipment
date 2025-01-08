@@ -1,22 +1,19 @@
 <template>
   <div
-    class="bg-gray-300 text-black rounded-md p-3 w-[250px] max-w-sm text-sm pointer-events-auto cursor-pointer flex items-center"
+    class="bg-surface-elevation-high text-surface type-label-text-xl rounded-2xl p-3 w-[250px] max-w-sm pointer-events-auto cursor-pointer flex justify-between items-center"
   >
-    {{ message }}
-    <button
-      @click="emit('close')"
-      class="text-xs bg-gray-900/5 ml-auto p-2 rounded-full"
-    >
-      Close
-    </button>
+    <span>{{ message }}</span>
+    <m-button @click="emit('close')" size="xs"> Close </m-button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { MButton } from '@maas/mirror/vue'
+
 interface Props {
   message: string
 }
 
 const emit = defineEmits(['close'])
-const props = defineProps<Props>()
+defineProps<Props>()
 </script>
