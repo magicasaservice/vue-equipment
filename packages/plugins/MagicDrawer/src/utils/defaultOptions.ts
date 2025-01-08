@@ -5,7 +5,6 @@ type DefaultOptions = RequireAll<MagicDrawerOptions> & {
   scrollLock: RequireAll<MagicDrawerOptions['scrollLock']>
   threshold: RequireAll<MagicDrawerOptions['threshold']>
   animation: RequireAll<MagicDrawerOptions['animation']>
-  initial: RequireAll<MagicDrawerOptions['initial']>
   keyListener: RequireAll<MagicDrawerOptions['keyListener']>
 }
 
@@ -40,8 +39,6 @@ const defaultOptions: DefaultOptions = {
   },
   initial: {
     open: false,
-    transition: false,
-    snapPoint: 1,
   },
   keyListener: {
     close: ['Escape'],

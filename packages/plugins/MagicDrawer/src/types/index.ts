@@ -1,4 +1,4 @@
-import { type Options } from 'focus-trap'
+import { type Options as FocusTrapOptions } from 'focus-trap'
 
 export type DrawerSnapPoint = number | `${string}px`
 
@@ -6,7 +6,7 @@ export interface MagicDrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
   backdrop?: boolean
   tag?: 'dialog' | 'div'
-  focusTrap?: boolean | Options
+  focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }
   snapPoints?: DrawerSnapPoint[]
   teleport?: {

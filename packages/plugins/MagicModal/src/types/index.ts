@@ -1,9 +1,9 @@
-import { type Options } from 'focus-trap'
+import { type Options as FocusTrapOptions } from 'focus-trap'
 
 export interface MagicModalOptions {
   backdrop?: boolean
   tag?: 'dialog' | 'div'
-  focusTrap?: boolean | Options
+  focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string
