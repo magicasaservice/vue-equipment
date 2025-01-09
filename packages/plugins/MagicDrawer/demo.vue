@@ -1,12 +1,12 @@
 <template>
   <div class="m-auto rounded flex flex-wrap items-center md:w-120 gap-4">
     <div class="w-full flex flex-wrap gap-4">
-      <m-button class="flex-1" @click="drawerApi.open"
-        >Standard drawer</m-button
-      >
-      <m-button class="flex-1" @click="drawerSnapApi.open"
-        >Snap drawer</m-button
-      >
+      <m-button class="flex-1" @click="drawerApi.open">
+        Standard drawer
+      </m-button>
+      <m-button class="flex-1" @click="drawerSnapApi.open">
+        Snap drawer
+      </m-button>
     </div>
     <div class="w-full flex flex-wrap gap-4">
       <m-button class="flex-1" @click="drawerHorizontalApi.open">

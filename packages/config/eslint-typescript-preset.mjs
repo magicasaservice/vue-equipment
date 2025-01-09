@@ -7,5 +7,7 @@ export const typescriptPreset = [
   ...tseslint.configs.recommended,
   prettierRecommended,
   { rules: { '@typescript-eslint/no-duplicate-enum-values': 'off' } },
-  { ignores: ['node_modules'] },
+  {
+    ignores: ['node_modules', '.turbo', '**/dist', '**/cache'],
+  },
 ]

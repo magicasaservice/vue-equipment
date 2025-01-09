@@ -1,4 +1,4 @@
-import type { MarkdownEnv, MarkdownRenderer } from 'vitepress'
+import type { MarkdownEnv, MarkdownRenderer, SfcBlock } from 'vitepress'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 
@@ -26,7 +26,7 @@ const injectComponentImportScript = (
   const scriptsCode = env.sfcBlocks?.scripts
   if (!scriptsCode) return
 
-  const scriptsSetupIndex = scriptsCode.findIndex((script: any) => {
+  const scriptsSetupIndex = scriptsCode.findIndex((script: SfcBlock) => {
     if (
       scriptSetupRegEx.test(script.tagOpen) ||
       scriptLangTsRegEx.test(script.tagOpen)
