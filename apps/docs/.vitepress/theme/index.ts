@@ -1,4 +1,4 @@
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
 import * as VueEquipmentPlugins from '@maas/vue-equipment/plugins'
 import * as Mirror from '@maas/mirror/vue'
@@ -18,6 +18,8 @@ export default {
   extends: DefaultTheme,
   Layout,
   async enhanceApp({ app }) {
+    app.component('ProseTable')
+
     for (const plugin in VueEquipmentPlugins) {
       // Filter out composables, symbols, etc
       if (plugin.includes('Plugin')) {
