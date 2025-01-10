@@ -1,6 +1,6 @@
 import { type Options as FocusTrapOptions } from 'focus-trap'
 
-export type DrawerSnapPoint = number | `${string}px`
+export type DrawerSnapPoint = number | `${number}px`
 
 export interface MagicDrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
