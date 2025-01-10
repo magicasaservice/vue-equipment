@@ -15,7 +15,7 @@ export default defineConfig({
   title: 'Vue Equipment',
   description:
     'A magic collection of Vue composables, plugins, components and directives',
-  head: [['link', { rel: 'icon', href: '/apps/docs/public/favicon.svg' }]], // TODO: fix this
+  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   markdown: {
     preConfig(md) {
       md.use(componentPreview)

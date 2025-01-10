@@ -2,7 +2,7 @@
 
 ### CLI
 
-To get started add `@maas/vue-equipment` to your dependencies.
+Add `@maas/vue-equipment` to your dependencies.
 
 ::: code-group
 

@@ -13,7 +13,11 @@
             id="magic-menu--dropdown"
             :options="{ mode: 'dropdown' }"
           >
-            <magic-menu-view class="flex gap-2" :id="useId()" placement="top">
+            <magic-menu-view
+              class="flex gap-2 items-center"
+              :id="useId()"
+              placement="top"
+            >
               <code
                 v-if="cell.code?.includes('label')"
                 v-html="cell.label"
@@ -21,7 +25,9 @@
               />
               <span v-html="cell.label" v-else class="truncate" />
               <magic-menu-trigger as-child>
-                <span>i</span>
+                <m-button size="xs" square mode="plain">
+                  <i-maas-sign-info-oval-500 class="text-surface-subtle" />
+                </m-button>
               </magic-menu-trigger>
               <magic-menu-content :arrow="false" class="vp-doc">
                 <div
@@ -45,6 +51,7 @@
 
 <script lang="ts" setup>
 import { useId, computed } from 'vue'
+import { MButton } from '@maas/mirror/vue'
 
 interface Item {
   label: string

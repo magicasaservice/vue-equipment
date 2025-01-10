@@ -2,7 +2,7 @@
 
 Magic Drawer is a highly flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
 
-<component-preview src="./demo/DefaultDemo.vue" />
+<ComponentPreview src="./demo/DefaultDemo.vue" />
 
 #### Overview
 
@@ -92,7 +92,7 @@ const { open } = useMagicDrawer('your-drawer-id')
 
 The drawer comes with a simple set of props. Only the id is required.
 
-<prose-table
+<ProseTable
   :columns="[
     { label: 'Prop' },
     { label: 'Type' },
@@ -158,7 +158,7 @@ The drawer comes with a simple set of props. Only the id is required.
 
 To customize the drawer override the necessary settings. Any custom settings will be merged with the default settings.
 
-<prose-table 
+<ProseTable
   :columns="[
     { label: 'Option' },
     { label: 'Type' },
@@ -545,7 +545,7 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'preventZoom',
-          description: 'Prevent the browser from being zoomed when the drawer is open.',
+          description: 'Prevent viewport scaling when the drawer is open.',
           code: ['label']
         },
         {
@@ -562,7 +562,7 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'preventDragClose',
-          description: 'Prevent the drawer from being closed by dragging.',
+          description: 'Disables the drawer from being closed by dragging.',
           code: ['label']
         },
         {
@@ -588,6 +588,115 @@ To customize the drawer override the necessary settings. Any custom settings wil
         },
         {
           label: 'false',
+          code: ['label']
+        }
+      ]
+    }
+  ]"
+/>
+
+### CSS Variables
+
+In order to provide its basic functionality the drawer comes with some CSS. To ensure that the drawer is customizable, relevant values are available as CSS variables.
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-drawer-height',
+          code: ['label']
+        },
+        {
+          label: '75svh',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-width',
+          code: ['label']
+        },
+        {
+          label: '100%',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-justify-content',
+          code: ['label']
+        },
+        {
+          label: 'center',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-align-items',
+          code: ['label']
+        },
+        {
+          label: 'flex-end',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-enter-animation',
+          code: ['label']
+        },
+        {
+          label: 'slide-btt-in 300ms ease',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-enter-animation',
+          code: ['label']
+        },
+        {
+          label: 'slide-btt-out 300ms ease',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-drag-overshoot',
+          code: ['label']
+        },
+        {
+          label: '4rem',
+          code: ['label']
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-padding',
+          code: ['label']
+        },
+        {
+          label: '0px',
           code: ['label']
         }
       ]

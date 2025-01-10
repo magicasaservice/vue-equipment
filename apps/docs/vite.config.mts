@@ -1,6 +1,17 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
+
+import IconResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
+import Components from 'unplugin-vue-components/vite'
+
+function splitAtNumber(str: string) {
+  const match = str.match(/\d/)
+  if (!match) return str
+
+  const index = match.index
+  return str.slice(0, index) + '-' + str.slice(index)
+}
 
 export default defineConfig(async () => {
   return {
@@ -9,7 +20,22 @@ export default defineConfig(async () => {
         overlay: false,
       },
     },
-    plugins: [Icons()],
+    plugins: [
+      Components({
+        resolvers: [IconResolver({ customCollections: ['maas'] })],
+      }),
+      Icons({
+        compiler: 'vue3',
+        customCollections: {
+          maas: async (iconName) => {
+            console.log('iconName:', iconName)
+            return await fetch(
+              `https://symbols.maas.earth/maas/${splitAtNumber(iconName)}.svg`
+            ).then((res) => res.text())
+          },
+        },
+      }),
+    ],
     // We need this to resolve the aliases in the plugin files
     // CSS imports from utils need a higher priority than JS imports from utils
     resolve: {
