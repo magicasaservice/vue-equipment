@@ -16,7 +16,7 @@ To make the drawer accessible across your entire Vue application, import and add
 
 ```js
 import { createApp } from 'vue'
-import { MagicDrawerPlugin } from '@maas/vue-equipment/vue'
+import { MagicDrawerPlugin } from '@maas/vue-equipment/plugins'
 
 const app = createApp({})
 
@@ -42,7 +42,7 @@ If you prefer a more granular approach, the drawer can also be directly imported
 
 ```vue
 <script setup>
-import { MagicDrawer } from '@maas/vue-equipment/vue'
+import { MagicDrawer } from '@maas/vue-equipment/plugins'
 </script>
 
 <template>
@@ -58,7 +58,7 @@ In order to interact with the drawer from anywhere within your app, we provide a
 
 ```js
 import { onMounted } from 'vue'
-import { useMagicDrawer } from '@maas/vue-equipment'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 
 const { open } = useMagicDrawer('your-drawer-id')
 
@@ -80,7 +80,7 @@ onMounted(() => {
 </template>
 
 <script>
-import { MagicDrawer, useMagicDrawer } from '@maas/vue-equipment'
+import { MagicDrawer, useMagicDrawer } from '@maas/vue-equipment/plugins'
 
 const { open } = useMagicDrawer('your-drawer-id')
 </script>
