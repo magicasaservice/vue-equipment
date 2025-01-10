@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center py-12">
     <m-button @click="drawerApi.open"> Open Drawer </m-button>
   </div>
-  <magic-drawer :id="id">
+  <magic-drawer :id="id" :options="{ focusTrap: false }">
     <div class="bg-surface-elevation-base absolute inset-0" />
   </magic-drawer>
 </template>

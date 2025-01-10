@@ -92,7 +92,7 @@ const { open } = useMagicDrawer('your-drawer-id')
 
 The drawer comes with a simple set of props. Only the id is required.
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Prop' },
     { label: 'Type' },
@@ -158,7 +158,7 @@ The drawer comes with a simple set of props. Only the id is required.
 
 To customize the drawer override the necessary settings. Any custom settings will be merged with the default settings.
 
-<ProseTable 
+<prose-table 
   :columns="[
     { label: 'Option' },
     { label: 'Type' },
@@ -222,7 +222,7 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'focusTrap',
-          description: 'Pass focus-trap options or disable completely. A complete list of options can be found here',
+          description: 'Pass focus-trap options or disable completely. A complete list of options can be found [here](https://www.npmjs.com/package/focus-trap#createoptions). Make sure to disable this, if you do not have a focusable element in your drawer.',
           code: ['label']
         },
         {
@@ -256,7 +256,7 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'scrollLock.padding',
-          description: 'Locking the body scroll hides any permanently visible scrollbars. Adding a padding to fixed elements prevents them from shifting in such cases.',
+          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.',
           code: ['label']
         },
         {
