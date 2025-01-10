@@ -4,11 +4,12 @@ import autoprefixer from 'autoprefixer'
 
 // https://github.com/vitejs/vite/issues/5370
 import { plugins, composables } from './../../../packages/metadata'
+import { componentPreview } from './plugins/componentPreview'
 
 const mappedComposables = getComposables()
 const mappedPlugins = getPlugins()
 
-import { componentPreview } from './plugins/componentPreview'
+const currentYear = new Date().getFullYear()
 
 export default defineConfig({
   title: 'Vue Equipment',
@@ -46,7 +47,7 @@ export default defineConfig({
     ],
     footer: {
       message: 'Released under the MIT License.',
-      copyright: '© 2024 Magic as a Service™',
+      copyright: `© ${currentYear} Magic as a Service™`,
     },
   },
   srcDir: './../..',

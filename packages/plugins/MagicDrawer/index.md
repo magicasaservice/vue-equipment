@@ -1,26 +1,96 @@
 # Magic Drawer
 
-Magic Drawer is a highly flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, and other secondary content.
+Magic Drawer is a highly flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
 
-<component-preview src='./demo/DefaultDemo.vue' />
+<component-preview src="./demo/DefaultDemo.vue" />
+
+#### Overview
+
+[[toc]]
+
+<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+
+### Vue
+
+To make the drawer accessible across your entire Vue application, import and add the `MagicDrawerPlugin` to your app.
+
+```js
+import { createApp } from 'vue'
+import { MagicDrawerPlugin } from '@maas/vue-equipment/vue'
+
+const app = createApp({})
+
+app.use(MagicDrawerPlugin)
+```
+
+### Nuxt
+
+The drawer is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment` to your modules and add the `MagicDrawer` to the `plugins` list in your configuration.
+
+```js
+export default defineNuxtConfig({
+  modules: ['@maas/vue-equipment/nuxt'],
+  vueEquipment: {
+    plugins: ['MagicDrawer'],
+  },
+})
+```
+
+### Direct Import
+
+If you prefer a more granular approach, the drawer can also be directly imported into any Vue component.
+
+```vue
+<script setup>
+import { MagicDrawer } from '@maas/vue-equipment/vue'
+</script>
+
+<template>
+  <magic-drawer id="your-drawer-id">
+    <!-- your content -->
+  </magic-drawer>
+</template>
+```
+
+### Composable
+
+In order to interact with the drawer from anywhere within your app, we provide a `useMagicDrawer` composable. Import it directly when needed.
+
+```js
+import { onMounted } from 'vue'
+import { useMagicDrawer } from '@maas/vue-equipment'
+
+const { open } = useMagicDrawer('your-drawer-id')
+
+onMounted(() => {
+  open()
+})
+```
+
+> [!TIP]
+> If you have installed the drawer as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
 ## Anatomy
 
 ```vue
 <template>
-  <magic-drawer id="drawer-id">
-    <!-- Content -->
+  <magic-drawer id="your-drawer-id">
+    <!-- your content -->
   </magic-drawer>
 </template>
 
 <script>
-import { MagicDrawer } from '@maas/vue-equipment'
+import { MagicDrawer, useMagicDrawer } from '@maas/vue-equipment'
+
+const { open } = useMagicDrawer('your-drawer-id')
 </script>
 ```
 
 ## API Reference
 
 ### Props
+
+The drawer comes with a simple set of props. Only the id is required.
 
 <ProseTable
   :columns="[
@@ -86,7 +156,7 @@ import { MagicDrawer } from '@maas/vue-equipment'
 
 ### Options
 
-To ensure that the drawer’s behavior is fully customizable, we provide an extensive set of options.
+To customize the drawer override the necessary settings. Any custom settings will be merged with the default settings.
 
 <ProseTable 
   :columns="[
@@ -367,7 +437,7 @@ To ensure that the drawer’s behavior is fully customizable, we provide an exte
         {
           label: 'function',
           description: '(t) => t * (2 - t)',
-          code: ['label', 'description']
+          code: ['label']
         }
       ]
     },
@@ -433,7 +503,6 @@ To ensure that the drawer’s behavior is fully customizable, we provide an exte
         },
         {
           label: 'object',
-          description: 'See below.',
           code: ['label']
         }
       ]

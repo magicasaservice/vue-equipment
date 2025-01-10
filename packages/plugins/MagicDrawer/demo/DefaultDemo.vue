@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="m-auto rounded-md flex justify-center items-center md:w-120 bg-surface-elevation-base py-12"
-  >
+  <div class="flex justify-center items-center py-12">
     <m-button @click="drawerApi.open"> Open Drawer </m-button>
   </div>
   <magic-drawer :id="id">
@@ -10,9 +8,10 @@
 </template>
 
 <script setup lang="ts">
+import { useId } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 
-const id = 'magic-drawer-demo'
+const id = useId()
 const drawerApi = useMagicDrawer(id)
 </script>
