@@ -172,7 +172,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointY === drawerHeight.value) {
+          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -193,7 +193,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointX === drawerWidth.value) {
+          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -224,7 +224,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
             direction: relDirectionY.value,
           })
           // Close if last snap point is reached
-          if (snapPointY === drawerHeight.value) {
+          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -244,7 +244,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointX === drawerWidth.value) {
+          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
