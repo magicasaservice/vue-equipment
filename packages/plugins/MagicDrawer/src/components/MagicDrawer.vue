@@ -6,16 +6,12 @@
   >
     <div
       ref="drawerRef"
+      class="magic-drawer"
       :id="toValue(id)"
-      :class="[
-        'magic-drawer',
-        `-${mappedOptions.position}`,
-        {
-          '-dragging': dragging,
-          '-wheeling': wheeling,
-          '-disabled': disabled,
-        },
-      ]"
+      :data-dragging="dragging"
+      :data-wheeling="wheeling"
+      :data-disabled="disabled"
+      :data-position="mappedOptions.position"
       v-bind="$attrs"
       aria-modal="true"
     >
@@ -387,10 +383,10 @@ onUnmounted(() => {
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
-  --magic-drawer-padding: 0px;
 }
 
 .magic-drawer {
+  --magic-drawer-padding: 0px;
   --magic-drawer-drag-overshoot-x: 0px;
   --magic-drawer-drag-overshoot-y: 0px;
   position: fixed;
@@ -408,7 +404,7 @@ onUnmounted(() => {
   border: none;
 }
 
-.magic-drawer.-bottom {
+.magic-drawer[data-position='bottom'] {
   --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 0 var(--magic-drawer-drag-overshoot-y) 0;
 
@@ -419,7 +415,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-top {
+.magic-drawer[data-position='top'] {
   --magic-drawer-enter-animation: slide-ttb-in 300ms ease;
   --magic-drawer-leave-animation: slide-ttb-out 300ms ease;
   --magic-drawer-align-items: flex-start;
@@ -435,7 +431,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-right {
+.magic-drawer[data-position='right'] {
   --magic-drawer-enter-animation: slide-rtl-in 300ms ease;
   --magic-drawer-leave-animation: slide-rtl-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -450,7 +446,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-left {
+.magic-drawer[data-position='left'] {
   --magic-drawer-enter-animation: slide-ltr-in 300ms ease;
   --magic-drawer-leave-animation: slide-ltr-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -513,16 +509,16 @@ dialog.magic-drawer__drag::backdrop {
   background-color: transparent;
 }
 
-.magic-drawer.-dragging .magic-drawer__drag {
+.magic-drawer[data-dragging='true'] .magic-drawer__drag {
   cursor: grabbing;
   user-select: none;
 }
 
-.magic-drawer.-wheeling .magic-drawer__drag {
+.magic-drawer[data-wheeling='true'] .magic-drawer__drag {
   cursor: auto;
 }
 
-.magic-drawer.-disabled .magic-drawer__drag {
+.magic-drawer[data-disabled='true'] .magic-drawer__drag {
   cursor: auto;
 }
 
@@ -550,7 +546,7 @@ dialog.magic-drawer__drag::backdrop {
   z-index: -1;
 }
 
-.magic-drawer.-disabled .magic-drawer__backdrop {
+.magic-drawer[data-disabled='true'] .magic-drawer__backdrop {
   pointer-events: none;
 }
 

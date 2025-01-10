@@ -278,8 +278,8 @@ To customize the drawer override the necessary settings. Any custom settings wil
         },
         {
           label: 'DrawerSnapPoint[]',
-          description: 'Array<`${string}px` | number>',
-          code: ['label', 'description']
+          description: 'Array<`${number}px` | number>',
+          code: ['label']
         },
         {
           label: '[1]',
@@ -689,17 +689,5 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
         },
       ]
     },
-    {
-      items: [
-        {
-          label: '--magic-drawer-padding',
-          code: ['label']
-        },
-        {
-          label: '0px',
-          code: ['label']
-        }
-      ]
-    }
   ]"
 />
