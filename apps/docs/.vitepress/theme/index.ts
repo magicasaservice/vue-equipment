@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
+
 import ProseTable from './components/ProseTable.vue'
 import ComponentPreview from './components/ComponentPreview.vue'
 
@@ -21,8 +22,8 @@ export default {
   extends: DefaultTheme,
   Layout,
   async enhanceApp({ app }) {
-    app.component(ProseTable)
-    app.component(ComponentPreview)
+    app.component('ProseTable', ProseTable)
+    app.component('ComponentPreview', ComponentPreview)
 
     for (const plugin in VueEquipmentPlugins) {
       // Filter out composables, symbols, etc

@@ -1,7 +1,6 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import Icons from 'unplugin-icons/vite'
-import Components from 'unplugin-vue-components/vite'
 
 export default defineConfig(async () => {
   return {
@@ -10,15 +9,7 @@ export default defineConfig(async () => {
         overlay: false,
       },
     },
-    plugins: [
-      Components({
-        dirs: [resolve(__dirname, '.vitepress/theme/components')],
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-        dts: '../../docs/apps/.vitepress/components.d.ts',
-        transformer: 'vue3',
-      }),
-      Icons(),
-    ],
+    plugins: [Icons()],
     // We need this to resolve the aliases in the plugin files
     // CSS imports from utils need a higher priority than JS imports from utils
     resolve: {
@@ -42,6 +33,10 @@ export default defineConfig(async () => {
         {
           find: 'fonts',
           replacement: resolve(__dirname, '../../packages/fonts/dist'),
+        },
+        {
+          find: './theme/components',
+          replacement: resolve(__dirname, './.vitepress/theme/components'),
         },
       ],
       dedupe: ['vue'],

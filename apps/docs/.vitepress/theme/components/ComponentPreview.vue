@@ -15,13 +15,21 @@
       </div>
       <div class="blocks">
         <div
-          v-show="activeTab === 'preview'"
-          class="language-Vue vp-adaptive-theme"
+          :class="[
+            'language-Vue vp-adaptive-theme',
+            { active: activeTab === 'preview' },
+          ]"
         >
           <slot />
         </div>
-        <div v-show="activeTab === 'code'" class="w-full">
-          <div class="language-Vue vp-adaptive-theme !block" v-if="mappedCode">
+        <div class="w-full">
+          <div
+            :class="[
+              'language-Vue vp-adaptive-theme',
+              { active: activeTab === 'code' },
+            ]"
+            v-if="mappedCode"
+          >
             <button title="Copy Code" class="copy" />
             <div v-html="mappedCode" />
           </div>
