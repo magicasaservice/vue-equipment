@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-command-body" ref="elRef">
+  <div ref="elRef" class="magic-command-body">
     <slot />
   </div>
 </template>

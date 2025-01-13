@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-wrap gap-4 justify-center">
     <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-      <button @click="open" class="w-full h-full px-6 py-4">
+      <button class="w-full h-full px-6 py-4" @click="open">
         Open palette
       </button>
     </div>
     <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-      <button @click="toggleWrapper" class="w-full h-full px-6 py-4">
+      <button class="w-full h-full px-6 py-4" @click="toggleWrapper">
         Switch to {{ wrapper === 'modal' ? 'drawer' : 'modal' }}
       </button>
     </div>

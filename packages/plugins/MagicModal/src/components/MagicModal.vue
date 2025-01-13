@@ -5,12 +5,12 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
+      :id="toValue(id)"
       ref="modalRef"
       class="magic-modal"
-      :id="toValue(id)"
       v-bind="$attrs"
-      @click.self="close"
       aria-modal="true"
+      @click.self="close"
     >
       <transition
         v-if="mappedOptions.backdrop || !!$slots.backdrop"
@@ -40,9 +40,9 @@
           @click.self="close"
         >
           <component
-            v-if="component"
             v-bind="props"
             :is="component"
+            v-if="component"
             @close="close"
           />
           <slot v-else />

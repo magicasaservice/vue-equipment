@@ -14,8 +14,8 @@
       <span>Noisy Headline</span>
     </magic-marquee>
     <magic-marquee
-      class="bg-surface-elevation-base text-surface py-4"
       id="magic-marquee--full"
+      class="bg-surface-elevation-base text-surface py-4"
     >
       <span class="w-screen">Magic Marquee with full width content</span>
     </magic-marquee>
@@ -27,8 +27,8 @@
       <span>Click me to increase my speed!</span>
     </magic-marquee>
     <magic-marquee
-      class="bg-surface-elevation-base text-surface py-4 cursor-pointer"
       ref="toggleDemo"
+      class="bg-surface-elevation-base text-surface py-4 cursor-pointer"
       @click="togglePlay"
     >
       <span>Click me to toggle playback</span>

@@ -32,8 +32,8 @@
       <magic-command-group>
         <span class="p-4 text-xs text-neutral-600">Filter</span>
         <magic-command-item
-          v-slot="{ isActive }"
           v-if="dynamic"
+          v-slot="{ isActive }"
           :callback="() => itemCallback('dynamic')"
         >
           <demo-item :is-active="isActive">All</demo-item>
@@ -41,8 +41,8 @@
         <magic-command-item
           v-for="nth in 20"
           :key="nth"
-          :callback="() => itemCallback(nth)"
           v-slot="{ isActive }"
+          :callback="() => itemCallback(nth)"
         >
           <demo-item :is-active="isActive">{{ nth }}</demo-item>
         </magic-command-item>

@@ -34,6 +34,8 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       case 'top':
       case 'bottom':
         return 'y'
+      default:
+        return 'y'
     }
   })
 

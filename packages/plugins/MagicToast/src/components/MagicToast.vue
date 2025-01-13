@@ -4,10 +4,10 @@
     :to="mappedOptions.teleport?.target"
     :disabled="mappedOptions.teleport?.disabled"
   >
-    <div class="magic-toast" :id="toValue(id)" :class="toValue(props.class)">
+    <div :id="toValue(id)" class="magic-toast" :class="toValue(props.class)">
       <transition-group
-        tag="ol"
         ref="listRef"
+        tag="ol"
         class="magic-toast__inner"
         :name="mappedOptions.transitions!.list"
         :on-before-enter="onBeforeEnter"

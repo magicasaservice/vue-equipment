@@ -16,7 +16,7 @@
     }"
   >
     <transition :name="transition">
-      <div class="magic-player-controls__bar" v-show="!hidden">
+      <div v-show="!hidden" class="magic-player-controls__bar">
         <div
           v-if="$slots.seekPopover"
           v-show="!!seekedTime && touched"
@@ -26,7 +26,7 @@
         >
           <slot name="seekPopover" />
         </div>
-        <div class="magic-player-controls__bar--inner" ref="barRef">
+        <div ref="barRef" class="magic-player-controls__bar--inner">
           <div class="magic-player-controls__item -shrink-0">
             <button v-if="!playing" @click="play">
               <slot name="playIcon">
@@ -41,7 +41,7 @@
           </div>
           <div class="magic-player-controls__item -grow">
             <slot name="timelineBefore" />
-            <div class="magic-player-controls__timeline" ref="trackRef">
+            <div ref="trackRef" class="magic-player-controls__timeline">
               <magic-player-timeline :id="id" />
             </div>
             <slot name="timelineAfter" />

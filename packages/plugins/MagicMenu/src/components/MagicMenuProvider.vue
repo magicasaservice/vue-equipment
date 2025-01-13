@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-menu-provider" ref="elRef">
+  <div ref="elRef" class="magic-menu-provider">
     <slot />
   </div>
 </template>

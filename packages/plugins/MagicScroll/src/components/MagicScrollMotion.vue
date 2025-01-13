@@ -29,13 +29,13 @@ const props = withDefaults(defineProps<MagicScrollMotionProps>(), {
 const animation = ref<AnimationControls | undefined>(undefined)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const progress = inject(
+const injectedProgress = inject(
   MagicScrollProgress,
   computed(() => 0)
 )
 
 const mappedProgress = computed(() => {
-  return props.progress || progress.value || 0
+  return props.progress || injectedProgress.value || 0
 })
 
 function createAnimation() {

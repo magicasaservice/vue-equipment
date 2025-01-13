@@ -48,7 +48,7 @@
     "@maas/magic-timer": "^1.0.0",
     "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.14.1592",
+    "@nuxt/kit": "^3.15.0",
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "defu": "^6.1.2",
@@ -57,7 +57,7 @@
     "luxon": "^3.4.2",
     "mitt": "^3.0.1",
     "motion": "^10.16.2",
-    "nuxt": "^3.14.1592",
+    "nuxt": "^3.15.0",
     "universal-cookie": "^7.1.0",
     "vue": "^3.5.3"
   },

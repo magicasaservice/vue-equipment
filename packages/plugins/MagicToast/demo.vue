@@ -1,9 +1,9 @@
 <template>
   <div class="w-full flex items-center justify-center gap-4">
-    <m-button @click="onClick" class="w-full h-full px-6 py-4">
+    <m-button class="w-full h-full px-6 py-4" @click="onClick">
       Add toast
     </m-button>
-    <m-button @click="clear" class="w-full h-full px-6 py-4">
+    <m-button class="w-full h-full px-6 py-4" @click="clear">
       Clear all
     </m-button>
   </div>

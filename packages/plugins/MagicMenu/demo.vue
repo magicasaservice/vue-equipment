@@ -208,7 +208,7 @@
       id="magic-menu--dropdown"
       :options="{ mode: 'dropdown' }"
     >
-      <magic-menu-view class="flex justify-center" id="dropdown-view">
+      <magic-menu-view id="dropdown-view" class="flex justify-center">
         <magic-menu-trigger>
           <m-button>Menu</m-button>
         </magic-menu-trigger>
@@ -298,8 +298,8 @@
     >
       <magic-menu-view>
         <div
-          class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
           ref="navigationRef"
+          class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
         >
           <magic-menu-trigger as-child>
             <magic-menu-remote channel-id="a" as-child>

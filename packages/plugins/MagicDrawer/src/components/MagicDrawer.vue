@@ -5,9 +5,9 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
+      :id="toValue(id)"
       ref="drawerRef"
       class="magic-drawer"
-      :id="toValue(id)"
       :data-dragging="dragging"
       :data-wheeling="wheeling"
       :data-disabled="disabled"
@@ -28,7 +28,7 @@
         </div>
       </transition>
 
-      <div class="magic-drawer__wrapper" ref="wrapperRef">
+      <div ref="wrapperRef" class="magic-drawer__wrapper">
         <transition
           :name="contentTransition"
           @before-leave="onBeforeLeave"
@@ -48,9 +48,9 @@
               @click="guardedClick"
             >
               <component
-                v-if="component"
                 v-bind="props"
                 :is="component"
+                v-if="component"
                 @close="guardedClose"
               />
               <slot v-else />

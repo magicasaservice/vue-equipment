@@ -1,3 +1,4 @@
+import {} from '@nuxt/schema'
 import {
   defineNuxtModule,
   addImportsSources,
@@ -57,7 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     for (const plugin of mappedPlugins) {
       // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/nuxt`
+        `@maas/vue-equipment/plugins/${plugin}/nuxt.ts`
       )
 
       await installModule(nuxtPlugin)

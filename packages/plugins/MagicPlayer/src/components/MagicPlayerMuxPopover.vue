@@ -73,7 +73,7 @@ async function init() {
 
     context = canvasRef.value.getContext('2d')!
     context.drawImage(image, 0, 0)
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Can not initialize timeine preview.', e)
   }
 }

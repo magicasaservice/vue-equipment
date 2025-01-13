@@ -4,8 +4,8 @@
       class="p-6"
       :class="{ 'bg-[red]': current === 'a', 'bg-[blue]': current === 'b' }"
     >
-      <div class="w-[30rem] aspect-[2/1]" v-if="current === 'a'" />
-      <div class="inline-block" v-if="current === 'b'">
+      <div v-if="current === 'a'" class="w-[30rem] aspect-[2/1]" />
+      <div v-if="current === 'b'" class="inline-block">
         <div class="w-[15rem] aspect-[1/2]" />
       </div>
     </magic-auto-size>

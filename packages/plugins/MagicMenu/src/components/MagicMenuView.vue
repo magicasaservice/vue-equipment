@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-menu-view" :id="mappedId">
+  <div :id="mappedId" class="magic-menu-view">
     <slot />
   </div>
 </template>

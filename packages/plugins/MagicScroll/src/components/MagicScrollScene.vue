@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject, onMounted, watch, nextTick, readonly } from 'vue'
+import { ref, provide, inject, watch, nextTick, readonly } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/private/useScrollApi'
 import {

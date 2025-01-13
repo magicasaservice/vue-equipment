@@ -17,9 +17,9 @@
         <magic-command-item
           v-for="nth in 10"
           :key="nth"
+          v-slot="{ isActive }"
           :callback="() => itemCallback(nth)"
           :default="nth === 1"
-          v-slot="{ isActive }"
         >
           <demo-item :is-active="isActive">Project {{ nth }}</demo-item>
         </magic-command-item>
@@ -30,8 +30,8 @@
         class="w-full border border-neutral-600 p-2 border-t-solid flex items-center"
       >
         <button
-          @click="selectLastView"
           class="leading-none text-xs text-neutral-600"
+          @click="selectLastView"
         >
           Go Back
         </button>

@@ -1,2 +1,2 @@
-import { typescriptPreset } from '../config/eslint-typescript-preset.mjs'
-export default typescriptPreset
+import { vuePreset } from '../config/eslint-vue-preset.mjs'
+export default vuePreset

@@ -8,10 +8,10 @@
       <div class="relative w-full h-[300vh]">
         <magic-scroll-provider class="h-full">
           <magic-scroll-scene
+            v-slot="{ progress }"
             from="top-top"
             to="bottom-bottom"
             class="h-full"
-            v-slot="{ progress }"
           >
             <div
               class="w-full h-20 bg-surface-elevation-base text-white sticky top-[5rem] flex items-center justify-center"
@@ -31,16 +31,16 @@
     <div class="w-full">
       <p>Element</p>
       <div
-        class="relative w-full h-[300px] bg-surface-elevation-base overflow-scroll sticky top-[5rem]"
         ref="parentRef"
+        class="relative w-full h-[300px] bg-surface-elevation-base overflow-scroll sticky top-[5rem]"
       >
         <magic-scroll-provider :el="parentRef">
           <div class="w-full h-screen">
             <magic-scroll-scene
+              v-slot="{ progress }"
               from="top-top"
               to="bottom-bottom"
               class="h-full"
-              v-slot="{ progress }"
             >
               <div
                 class="w-full h-20 bg-gray-200/5 text-white sticky top-0 flex items-center justify-center"
@@ -84,10 +84,11 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
-import type { ValueOf } from '@maas/vue-equipment/utils'
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
-const keyframes = ref<Record<string, any> | null | undefined>(undefined)
+const keyframes = ref<Record<string, (string | number)[]> | null | undefined>(
+  undefined
+)
 
 const presets = [
   {

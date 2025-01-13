@@ -11,7 +11,7 @@
         :on-leave="onLeave"
         :on-after-leave="onAfterLeave"
       >
-        <primitive :as-child="asChild" v-show="view?.active">
+        <primitive v-show="view?.active" :as-child="asChild">
           <slot :is-active="view?.active" />
         </primitive>
       </transition>

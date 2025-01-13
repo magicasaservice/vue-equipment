@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body" v-if="wrapperActive">
+  <teleport v-if="wrapperActive" to="body">
     <transition
       :name="mappedTransition"
       :on-before-enter="onBeforeEnter"
@@ -10,23 +10,23 @@
       :on-after-leave="onAfterLeave"
     >
       <div
+        v-if="innerActive"
         class="magic-menu-content"
         :data-id="`${viewId}-content`"
         v-bind="$attrs"
-        v-if="innerActive"
       >
         <magic-menu-float
           :placement="view?.placement"
           :arrow="arrow"
           :reference-el="referenceEl"
         >
-          <template #arrow v-if="$slots.arrow && arrow">
+          <template v-if="$slots.arrow && arrow" #arrow>
             <slot name="arrow" />
           </template>
           <template #default>
             <div
-              class="magic-menu-content__inner"
               ref="contentRef"
+              class="magic-menu-content__inner"
               :class="{ '-disabled': pointerDisabled }"
             >
               <slot />
@@ -35,21 +35,23 @@
         </magic-menu-float>
       </div>
     </transition>
-    <span
-      v-for="point in coords"
-      v-if="state.options.debug"
-      :style="{
-        background: 'red',
-        position: 'fixed',
-        top: point.y + 'px',
-        left: point.x + 'px',
-        width: '4px',
-        height: '4px',
-        zIndex: 1000,
-        pointerEvents: 'none',
-        transform: 'translate(-50%, -50%)',
-      }"
-    />
+    <template v-if="state.options.debug">
+      <span
+        v-for="point in coords"
+        :key="`${point.x}${point.y}`"
+        :style="{
+          background: 'red',
+          position: 'fixed',
+          top: point.y + 'px',
+          left: point.x + 'px',
+          width: '4px',
+          height: '4px',
+          zIndex: 1000,
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%)',
+        }"
+      />
+    </template>
   </teleport>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
   <li
-    class="magic-toast-component"
-    ref="elRef"
-    @mouseenter="onMouseenter"
     :id="id"
+    ref="elRef"
+    class="magic-toast-component"
+    @mouseenter="onMouseenter"
   >
     <div class="magic-toast-component__inner">
       <slot />

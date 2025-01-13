@@ -2,15 +2,15 @@
   <p>Video Poster [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="video-poster-player"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     >
       <magic-player-poster id="video-poster-player">
         <magic-player
+          id="video-poster"
           autoplay
           loop
           src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
-          id="video-poster"
         >
           <magic-player-poster id="video-poster">
             <img
@@ -27,10 +27,10 @@
   <p>Autoplay [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
+      id="autoplay-player"
       autoplay
       loop
       src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
-      id="autoplay-player"
     >
     </magic-player>
   </div>
@@ -38,10 +38,10 @@
   <p>Autoplay [hls]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
+      id="autoplay-player-hls"
       loop
       src-type="hls"
       src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks.m3u8"
-      id="autoplay-player-hls"
     >
       <magic-player-overlay id="autoplay-player-hls" />
       <magic-player-controls id="autoplay-player-hls" />
@@ -51,8 +51,8 @@
   <p>File [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="default-player"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     >
       <magic-player-overlay id="default-player" />
       <magic-player-controls id="default-player" />
@@ -62,8 +62,8 @@
   <p>Popover [mux]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="popover-player"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     >
       <magic-player-overlay id="popover-player" />
       <magic-player-controls id="popover-player">
@@ -80,8 +80,8 @@
   <p>Image Poster [mp4]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="poster-player"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     >
       <magic-player-poster id="poster-player">
         <img
@@ -96,8 +96,8 @@
   <p>Standalone controls [after]</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="standalone-controls"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     >
       <magic-player-overlay id="standalone-controls" />
     </magic-player>
@@ -127,16 +127,16 @@
   </div>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="standalone-controls-before"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     />
   </div>
 
   <p>Api</p>
   <div class="w-full aspect-[16/9]">
     <magic-player
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
       id="player-api"
+      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
     />
   </div>
   <m-button @click="togglePlay">Toggle Play</m-button>
@@ -144,16 +144,16 @@
   <p>Audio Player</p>
   <div class="w-full">
     <magic-audio-player
-      src="/demo/magic-player/loveless.mp3"
       id="audio-player"
+      src="/demo/magic-player/loveless.mp3"
     />
   </div>
 
   <p>Audio Player [slot]</p>
   <div class="w-full">
     <magic-audio-player
-      src="/demo/magic-player/loveless.mp3"
       id="audio-player-slot"
+      src="/demo/magic-player/loveless.mp3"
     >
       <span>Loveless</span>
     </magic-audio-player>

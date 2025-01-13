@@ -1,7 +1,7 @@
 <template>
   <div
-    class="magic-command-item"
     ref="elRef"
+    class="magic-command-item"
     :data-id="mappedId"
     :aria-selected="isActive"
   >

@@ -20,8 +20,8 @@
                         ? true
                         : selectedCookies[cookie.key]
                     "
-                    @change="toggleSelection(cookie.key)"
                     :disabled="cookie.optional === false"
+                    @change="toggleSelection(cookie.key)"
                   />
                 </div>
                 <div>

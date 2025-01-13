@@ -1,7 +1,7 @@
 <template>
   <div
-    class="magic-menu-float"
     ref="elRef"
+    class="magic-menu-float"
     :style="floatingStyles"
     :class="placementClasses"
   >
@@ -36,7 +36,7 @@ import {
   flip,
   shift,
   limitShift,
-  arrow,
+  arrow as floatingArrow,
   type Placement,
 } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
@@ -76,6 +76,8 @@ const mappedPlacement = computed(() => {
       return !view?.parent.item ? 'bottom' : 'right-start'
     case 'context':
       return 'right-start'
+    default:
+      return 'bottom'
   }
 })
 
@@ -124,7 +126,7 @@ const mappedMiddleware = computed(() => {
       )
       if (hasArrow.value) {
         middleware.push(
-          arrow({
+          floatingArrow({
             element: arrowRef.value,
           })
         )
@@ -172,33 +174,31 @@ const mappedStrategy = computed(() => {
   )
 })
 
-const { floatingStyles, placement, middlewareData } = useFloating(
-  mappedReferenceEl,
-  elRef,
-  {
-    placement: mappedPlacement,
-    strategy: mappedStrategy,
-    whileElementsMounted: autoUpdate,
-    middleware: mappedMiddleware,
-  }
-)
+const {
+  floatingStyles,
+  placement: floatingPlacement,
+  middlewareData,
+} = useFloating(mappedReferenceEl, elRef, {
+  placement: mappedPlacement,
+  strategy: mappedStrategy,
+  whileElementsMounted: autoUpdate,
+  middleware: mappedMiddleware,
+})
 
 const arrowStyles = computed(() => {
   if (!hasArrow.value) {
     return {}
   }
 
-  let translate = 'translate3d('
-  ;(translate +=
+  const translate = `translate3d(${
     middlewareData.value.arrow?.x != null
       ? `${middlewareData.value.arrow.x}px`
-      : '0'),
-    (translate += ', ')
-  ;(translate +=
+      : '0'
+  }, ${
     middlewareData.value.arrow?.y != null
       ? `${middlewareData.value.arrow.y}px`
-      : '0'),
-    (translate += ', 0)')
+      : '0'
+  }, 0)`
 
   return {
     transform: translate,
@@ -206,14 +206,14 @@ const arrowStyles = computed(() => {
 })
 
 const placementClasses = computed(() => {
-  return placement.value
+  return floatingPlacement.value
     .split('-')
     .map((value) => `-${value}`)
     .join(' ')
 })
 
 const polygonPoints = computed(() => {
-  const position = placement.value.split('-')[0]
+  const position = floatingPlacement.value.split('-')[0]
 
   switch (position) {
     case 'bottom':
@@ -224,6 +224,8 @@ const polygonPoints = computed(() => {
       return '50,50 100,100 100,0'
     case 'left':
       return '50,50 0,100 0,0'
+    default:
+      return '50,50 100,100 0,100'
   }
 })
 </script>

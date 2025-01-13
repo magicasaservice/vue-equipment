@@ -1,10 +1,10 @@
 <template>
   <transition :name="mappedTransition">
     <div
-      :class="['magic-menu-channel', { '-initialized': state.active }]"
       v-if="channel.active"
-      :data-id="mappedId"
       :id="id"
+      :class="['magic-menu-channel', { '-initialized': state.active }]"
+      :data-id="mappedId"
     >
       <slot />
     </div>

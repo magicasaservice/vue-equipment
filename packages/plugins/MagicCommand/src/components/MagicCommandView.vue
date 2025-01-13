@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-command-view" v-if="isActive" ref="elRef">
+  <div v-if="isActive" ref="elRef" class="magic-command-view">
     <slot />
   </div>
 </template>

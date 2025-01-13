@@ -1,9 +1,9 @@
 <template>
   <div
-    class="magic-menu-item"
-    ref="elRef"
     :id="mappedId"
+    ref="elRef"
     :class="{ '-active': item.active, '-disabled': disabled }"
+    class="magic-menu-item"
     @mouseenter="guardedSelect"
     @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"

@@ -1,8 +1,6 @@
 <template>
   <div
     ref="playerRef"
-    @mouseenter="onMouseenter"
-    @mouseleave="onMouseleave"
     :class="[
       'magic-player',
       {
@@ -16,6 +14,8 @@
         '-muted': muted,
       },
     ]"
+    @mouseenter="onMouseenter"
+    @mouseleave="onMouseleave"
   >
     <video
       ref="videoRef"

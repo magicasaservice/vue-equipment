@@ -29,7 +29,7 @@
     >
       <a href="/plugins/MagicModal/">MagicModal</a>
       <m-checkbox v-model="checkbox" />
-      <m-input type="text" v-model="text" label="Label" />
+      <m-input v-model="text" type="text" label="Label" />
     </div>
   </magic-drawer>
 

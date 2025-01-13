@@ -1,7 +1,7 @@
 <template>
   <div
-    ref="drawerRef"
     :id="toValue(id)"
+    ref="drawerRef"
     :class="[
       'magic-draggable',
       {
@@ -11,7 +11,7 @@
     ]"
     v-bind="$attrs"
   >
-    <div class="magic-draggable__wrapper" ref="wrapperRef">
+    <div ref="wrapperRef" class="magic-draggable__wrapper">
       <component
         :is="mappedOptions.tag"
         ref="elRef"
@@ -20,7 +20,7 @@
         @pointerdown="guardedPointerdown"
         @click="guardedClick"
       >
-        <component v-if="component" v-bind="props" :is="component" />
+        <component v-bind="props" :is="component" v-if="component" />
         <slot v-else />
         <div v-if="hasDragged" class="magic-draggable__overlay" />
       </component>
@@ -29,15 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  toValue,
-  onMounted,
-  onBeforeUnmount,
-  type Component,
-  type MaybeRef,
-} from 'vue'
+import { ref, computed, toValue, type Component, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'

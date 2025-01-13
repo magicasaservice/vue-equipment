@@ -83,6 +83,8 @@ const mappedTrigger = computed<Interaction[]>(() => {
       return view?.parent.item ? ['mouseenter', 'click'] : ['right-click']
     case 'navigation':
       return ['mouseenter']
+    default:
+      return ['click']
   }
 })
 

@@ -1,7 +1,7 @@
 <template>
   <div
-    class="magic-auto-size"
     ref="elRef"
+    class="magic-auto-size"
     :style="{
       '--magic-auto-size-width': mappedSize?.width,
       '--magic-auto-size-height': mappedSize?.height,
@@ -50,6 +50,8 @@ const mappedSize = computed(() => {
         return {
           height: `${size.value.height}px`,
         }
+      default:
+        return undefined
     }
   } else {
     return undefined

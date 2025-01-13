@@ -14,7 +14,7 @@ import {
 import { MagicScrollReturn, MagicScrollParent } from '../symbols'
 
 interface MagicScrollProviderProps {
-  active?: Boolean
+  active?: boolean
   el?: MaybeComputedElementRef<HTMLElement>
 }
 const props = withDefaults(defineProps<MagicScrollProviderProps>(), {

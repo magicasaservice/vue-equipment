@@ -14,7 +14,7 @@
     }"
   >
     <div class="magic-audio-player-controls__bar">
-      <div class="magic-audio-player-controls__bar--inner" ref="barRef">
+      <div ref="barRef" class="magic-audio-player-controls__bar--inner">
         <div
           class="magic-audio-player-controls__item -shrink-0"
           data-slot="play-toggle"
@@ -40,7 +40,7 @@
           class="magic-audio-player-controls__item -grow"
           data-slot="timeline"
         >
-          <div class="magic-audio-player-controls__timeline" ref="trackRef">
+          <div ref="trackRef" class="magic-audio-player-controls__timeline">
             <magic-player-timeline :id="id" />
           </div>
         </div>

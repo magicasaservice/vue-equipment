@@ -1,11 +1,12 @@
 <template>
-  <div class="magic-marquee" ref="parentRef">
+  <div ref="parentRef" class="magic-marquee">
     <div class="magic-marquee__track">
-      <div class="magic-marquee__content" ref="childRef">
+      <div ref="childRef" class="magic-marquee__content">
         <slot />
       </div>
       <div
-        v-for="_duplicate in duplicates"
+        v-for="duplicate in duplicates"
+        :key="duplicate"
         class="magic-marquee__content"
         :aria-hidden="true"
       >

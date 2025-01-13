@@ -1,9 +1,9 @@
 <template>
   <primitive
+    ref="elRef"
     :class="['magic-accordion-trigger', { '-disabled': mappedDisabled }]"
     :as-child="asChild"
     as="button"
-    ref="elRef"
     @mouseenter="onMouseenter"
     @click="onClick"
   >
