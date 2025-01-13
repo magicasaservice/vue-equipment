@@ -478,7 +478,7 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'initial.snapPoint',
-          description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if <code>initial.open</code> is not set.',
+          description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.',
           code: ['label']
         },
         {
@@ -691,3 +691,13 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
     },
   ]"
 />
+
+## Examples
+
+### Horizontal
+
+<ComponentPreview src="./demo/HorizontalDemo.vue" />
+
+### Snap Points
+
+<ComponentPreview src="./demo/SnapPointsDemo.vue" />
