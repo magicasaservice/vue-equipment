@@ -77,7 +77,7 @@ const mappedPlacement = computed(() => {
     case 'context':
       return 'right-start'
     default:
-      return 'bottom'
+      return undefined
   }
 })
 
@@ -191,13 +191,9 @@ const arrowStyles = computed(() => {
   }
 
   const translate = `translate3d(${
-    middlewareData.value.arrow?.x != null
-      ? `${middlewareData.value.arrow.x}px`
-      : '0'
+    middlewareData.value.arrow?.x ? `${middlewareData.value.arrow.x}px` : '0'
   }, ${
-    middlewareData.value.arrow?.y != null
-      ? `${middlewareData.value.arrow.y}px`
-      : '0'
+    middlewareData.value.arrow?.y ? `${middlewareData.value.arrow.y}px` : '0'
   }, 0)`
 
   return {
@@ -225,7 +221,7 @@ const polygonPoints = computed(() => {
     case 'left':
       return '50,50 0,100 0,0'
     default:
-      return '50,50 100,100 0,100'
+      return undefined
   }
 })
 </script>
