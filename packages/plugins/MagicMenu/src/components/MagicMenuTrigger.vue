@@ -84,7 +84,7 @@ const mappedTrigger = computed<Interaction[]>(() => {
     case 'navigation':
       return ['mouseenter']
     default:
-      return ['click']
+      return []
   }
 })
 
