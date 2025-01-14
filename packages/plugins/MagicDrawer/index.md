@@ -84,7 +84,7 @@ onMounted(() => {
 
 ## Peer Dependencies
 
-If you haven’t installed Vue Equipment’s peer dependencies automatically, you’ll need to install the following packages manually to use the drawer.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the drawer.
 
 <ProseTable
   :columns="[
