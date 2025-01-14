@@ -28,7 +28,6 @@ export default defineConfig(async () => {
         compiler: 'vue3',
         customCollections: {
           maas: async (iconName) => {
-            console.log('iconName:', iconName)
             return await fetch(
               `https://symbols.maas.earth/maas/${splitAtNumber(iconName)}.svg`
             ).then((res) => res.text())

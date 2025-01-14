@@ -1,18 +1,30 @@
 # Magic Drawer
 
-Magic Drawer is a highly flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
+Magic Drawer is a flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
 
 <ComponentPreview src="./demo/DefaultDemo.vue" />
 
-#### Overview
+<!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
-[[toc]]
+## Anatomy
+
+```vue
+<template>
+  <magic-drawer id="your-drawer-id">
+    <!-- your content -->
+  </magic-drawer>
+</template>
+
+<script>
+const { open } = useMagicDrawer('your-drawer-id')
+</script>
+```
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
 ### Vue
 
-To make the drawer accessible across your entire Vue application, import and add the `MagicDrawerPlugin` to your app.
+To use the drawer in your Vue application, import and add the `MagicDrawerPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
@@ -70,21 +82,87 @@ onMounted(() => {
 > [!TIP]
 > If you have installed the drawer as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
-## Anatomy
+## Peer Dependencies
 
-```vue
-<template>
-  <magic-drawer id="your-drawer-id">
-    <!-- your content -->
-  </magic-drawer>
-</template>
+If you haven’t installed Vue Equipment’s peer dependencies automatically, you’ll need to install the following packages manually to use the drawer.
 
-<script>
-import { MagicDrawer, useMagicDrawer } from '@maas/vue-equipment/plugins'
+<ProseTable
+  :columns="[
+    { label: 'Package'},
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)',
+          code: ['label']
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)',
+          code: ['label']
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)',
+          code: ['label']
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)',
+          code: ['label']
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[defu](https://www.npmjs.com/package/defu)',
+          code: ['label']
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[focus-trap](https://www.npmjs.com/package/focus-trap)',
+          code: ['label']
+        }
+      ]
+    }
+  ]"
+/>
 
-const { open } = useMagicDrawer('your-drawer-id')
-</script>
+### Installation
+
+::: code-group
+
+```sh [pnpm]
+pnpm install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
 ```
+
+```sh [npm]
+npm install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+```
+
+```sh [yarn]
+yarn add @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+```
+
+```sh [bun]
+bun install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+```
+
+:::
 
 ## API Reference
 
@@ -693,6 +771,10 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
 />
 
 ## Examples
+
+### Vertical
+
+<ComponentPreview src="./demo/VerticalDemo.vue" />
 
 ### Horizontal
 

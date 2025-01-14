@@ -15,7 +15,7 @@ npm install @maas/vue-equipment
 ```
 
 ```sh [yarn]
-yarn install @maas/vue-equipment
+yarn add @maas/vue-equipment
 ```
 
 ```sh [bun]

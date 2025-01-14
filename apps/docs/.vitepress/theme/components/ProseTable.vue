@@ -2,7 +2,11 @@
   <table class="w-full table-fixed !table">
     <thead class="w-full">
       <tr>
-        <th v-for="{ label } in columns" :key="label">{{ label }}</th>
+        <th
+          v-for="{ label } in columns"
+          :key="label"
+          v-html="parseMarkdown(label)"
+        />
       </tr>
     </thead>
     <tbody class="w-full">
@@ -20,10 +24,10 @@
             >
               <code
                 v-if="cell.code?.includes('label')"
-                v-html="cell.label"
+                v-html="cell.parsedLabel"
                 class="truncate"
               />
-              <span v-html="cell.label" v-else class="truncate" />
+              <span v-html="cell.parsedLabel" v-else class="truncate" />
               <magic-menu-trigger as-child>
                 <m-button size="xs" square mode="plain">
                   <i-maas-sign-info-oval-500 class="text-surface-subtle" />
@@ -34,15 +38,18 @@
                   class="bg-surface-elevation-high border-2 border-surface rounded-md px-2 py-2 max-w-xs type-surface-body-sm"
                 >
                   <code size="xs" v-if="cell.code?.includes('description')">
-                    <span v-html="cell.description" />
+                    <span v-html="cell.parsedDescription" />
                   </code>
-                  <span v-else v-html="cell.description" />
+                  <span v-else v-html="cell.parsedDescription" />
                 </div>
               </magic-menu-content>
             </magic-menu-view>
           </magic-menu-provider>
-          <code v-else-if="cell.code?.includes('label')" v-html="cell.label" />
-          <span v-html="cell.label" v-else />
+          <code
+            v-else-if="cell.code?.includes('label')"
+            v-html="cell.parsedLabel"
+          />
+          <span v-html="cell.parsedLabel" v-else />
         </td>
       </tr>
     </tbody>
@@ -52,6 +59,13 @@
 <script lang="ts" setup>
 import { useId, computed } from 'vue'
 import { MButton } from '@maas/mirror/vue'
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  breaks: true,
+})
 
 interface Item {
   label: string
@@ -75,18 +89,24 @@ interface ProseTableProps {
 
 const { columns, rows } = defineProps<ProseTableProps>()
 
-// Escape any < or > characters in the label
+function parseMarkdown(content: string) {
+  if (!content) return ''
+  return md.renderInline(content)
+}
+
 const mappedRows = computed(() => {
   return rows.map((row) => ({
     items: row.items.map((item) => {
-      if (item.escape) {
-        return {
-          ...item,
-          label: escapeBrackets(item.label),
-        }
-      } else {
-        return item
+      const parsed = {
+        ...item,
+        parsedLabel: item.escape
+          ? escapeBrackets(item.label)
+          : parseMarkdown(item.label),
+        parsedDescription: item.description
+          ? parseMarkdown(item.description)
+          : undefined,
       }
+      return parsed
     }),
   }))
 })

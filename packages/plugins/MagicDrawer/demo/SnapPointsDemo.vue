@@ -1,7 +1,5 @@
 <template>
-  <div class="flex justify-center items-center py-12">
-    <m-button @click="drawerApi.open"> Open Drawer </m-button>
-  </div>
+  <m-button @click="drawerApi.open"> Open Drawer </m-button>
   <magic-drawer
     :id="id"
     :options="{

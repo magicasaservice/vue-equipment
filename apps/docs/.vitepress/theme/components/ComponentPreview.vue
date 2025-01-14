@@ -20,7 +20,9 @@
             { active: activeTab === 'preview' },
           ]"
         >
-          <slot />
+          <div class="flex justify-center items-center py-12 px-12">
+            <slot />
+          </div>
         </div>
         <div class="w-full">
           <div

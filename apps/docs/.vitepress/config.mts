@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
+import MarkdownIt from 'markdown-it'
 
 // https://github.com/vitejs/vite/issues/5370
 import { plugins, composables } from './../../../packages/metadata'
@@ -19,6 +20,9 @@ export default defineConfig({
   markdown: {
     preConfig(md) {
       md.use(componentPreview)
+    },
+    toc: {
+      level: [2],
     },
   },
   themeConfig: {

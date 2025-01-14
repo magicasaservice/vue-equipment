@@ -6,6 +6,7 @@
   "type": "module",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
+    "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.13.0",
     "autoprefixer": "^10.4.20",
     "fonts": "workspace:fonts@*",
@@ -30,6 +31,7 @@
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
+    "markdown-it": "^14.1.0",
     "unplugin-vue-components": "^28.0.0"
   }
 }
