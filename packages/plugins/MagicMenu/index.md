@@ -41,7 +41,7 @@ Magic Menu is a flexible collection of components intended to build various type
 
 ### Vue
 
-To use the menu in your Vue application, import and add the `MagicMenuPlugin` to your app.
+If you are using Vue, import and add `MagicMenuPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
@@ -54,7 +54,7 @@ app.use(MagicMenuPlugin)
 
 ### Nuxt
 
-The menu is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment` to your modules and add the `MagicMenu` to the `plugins` list in your configuration.
+The menu is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicMenu` to the plugins array in your configuration.
 
 ```js
 export default defineNuxtConfig({

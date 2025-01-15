@@ -6,6 +6,5 @@
     "./index/*": "./dist/index/*",
     "./interface/*": "./dist/interface/*",
     "./mirage/*": "./dist/mirage/*"
-  },
-  "version": "0.40.0"
+  }
 }

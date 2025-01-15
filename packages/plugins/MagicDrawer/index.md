@@ -24,7 +24,7 @@ const { open } = useMagicDrawer('your-drawer-id')
 
 ### Vue
 
-To use the drawer in your Vue application, import and add the `MagicDrawerPlugin` to your app.
+If you are using Vue, import and add `MagicDrawerPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
@@ -37,7 +37,7 @@ app.use(MagicDrawerPlugin)
 
 ### Nuxt
 
-The drawer is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment` to your modules and add the `MagicDrawer` to the `plugins` list in your configuration.
+The drawer is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicDrawer` to the plugins array in your configuration.
 
 ```js
 export default defineNuxtConfig({

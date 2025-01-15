@@ -7,6 +7,7 @@ import ComponentPreview from './components/ComponentPreview.vue'
 import * as VueEquipmentPlugins from '@maas/vue-equipment/plugins'
 import * as Mirror from '@maas/mirror/vue'
 
+import './styles/main.css'
 import './styles/style.css'
 import 'fonts/mirage/stylesheet.css'
 import 'fonts/interface/stylesheet.css'
