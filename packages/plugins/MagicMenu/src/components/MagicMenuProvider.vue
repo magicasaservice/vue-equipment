@@ -21,12 +21,12 @@ interface MagicMenuProviderProps {
   options?: MagicMenuOptions
 }
 
-const props = defineProps<MagicMenuProviderProps>()
+const { id, options } = defineProps<MagicMenuProviderProps>()
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const mappedOptions = defu(props.options, defaultOptions)
+const mappedOptions = defu(options, defaultOptions)
 
-const { initializeState, deleteState } = useMenuState(props.id)
+const { initializeState, deleteState } = useMenuState(id)
 const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
@@ -63,7 +63,7 @@ const {
   onEscape,
   onEnter,
   onTab,
-} = useMenuKeyListener(props.id)
+} = useMenuKeyListener(id)
 
 onKeyStroke('ArrowRight', onArrowRight)
 onKeyStroke('ArrowLeft', onArrowLeft)
@@ -74,7 +74,7 @@ onKeyStroke('Enter', onEnter)
 onKeyStroke('Tab', onTab)
 
 // Handle off-click
-const { unselectAllViews } = useMenuView(props.id)
+const { unselectAllViews } = useMenuView(id)
 
 onClickOutside(
   elRef,
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
   deleteState()
 })
 
-provide(MagicMenuInstanceId, props.id)
+provide(MagicMenuInstanceId, id)
 </script>
 
 <style>

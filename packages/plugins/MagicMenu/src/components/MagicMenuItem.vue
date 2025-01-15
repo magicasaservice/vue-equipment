@@ -2,8 +2,9 @@
   <div
     :id="mappedId"
     ref="elRef"
-    :class="{ '-active': item.active, '-disabled': disabled }"
     class="magic-menu-item"
+    :data-disabled="disabled"
+    :data-active="item.active"
     @mouseenter="guardedSelect"
     @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"
@@ -32,7 +33,7 @@ interface MagicMenuItemProps {
   disabled?: boolean
 }
 
-const props = defineProps<MagicMenuItemProps>()
+const { id, disabled } = defineProps<MagicMenuItemProps>()
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
@@ -52,7 +53,7 @@ if (!viewId) {
 if (!contentId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuContent')
 }
-const mappedId = computed(() => props.id ?? `magic-menu-item-${useId()}`)
+const mappedId = computed(() => id ?? `magic-menu-item-${useId()}`)
 
 // Register item
 const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
@@ -66,7 +67,7 @@ const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 const item = initializeItem({
   id: mappedId.value,
-  disabled: props.disabled ?? false,
+  disabled: disabled ?? false,
 })
 
 function guardedSelect() {
@@ -135,7 +136,7 @@ onBeforeUnmount(() => {
   cursor: var(--magic-menu-item-cursor, default);
 }
 
-.magic-menu-item.-disabled {
+.magic-menu-item[data-disabled='true'] {
   cursor: var(--magic-menu-item-cursor-disabled, not-allowed);
   & > * {
     pointer-events: none;

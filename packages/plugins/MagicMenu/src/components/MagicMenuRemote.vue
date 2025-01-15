@@ -1,16 +1,23 @@
 <template>
-  <primitive
-    :class="[
-      'magic-menu-remote',
-      { '-active': channel?.active, '-disabled': disabled },
-    ]"
-    :data-id="`${channelId}-remote`"
-    :as-child="asChild"
-    @click="onClick"
-    @mouseenter="onMouseenter"
+  <magic-menu-trigger
+    :view-id="mappedViewId"
+    :disabled="disabled"
+    :trigger="trigger"
+    as-child
   >
-    <slot :channel-active="channel?.active" :remote-disabled="disabled" />
-  </primitive>
+    <primitive
+      :class="[
+        'magic-menu-remote',
+        { '-active': channel?.active, '-disabled': disabled },
+      ]"
+      :data-id="`${channelId}-remote`"
+      :as-child="asChild"
+      @click="onClick"
+      @mouseenter="onMouseenter"
+    >
+      <slot :channel-active="channel?.active" :remote-disabled="disabled" />
+    </primitive>
+  </magic-menu-trigger>
 </template>
 
 <script lang="ts" setup>
@@ -32,44 +39,43 @@ interface MagicMenuRemoteProps {
   asChild?: boolean
 }
 
-const props = defineProps<MagicMenuRemoteProps>()
+const { channelId, instanceId, viewId, trigger } =
+  defineProps<MagicMenuRemoteProps>()
 
-const instanceId = inject(MagicMenuInstanceId, props.instanceId)
-const viewId = inject(MagicMenuViewId, props.viewId)
+const mappedInstanceId = inject(MagicMenuInstanceId, instanceId)
+const mappedViewId = inject(MagicMenuViewId, viewId)
 
-if (!instanceId) {
+if (!mappedInstanceId) {
   throw new Error(
     'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided'
   )
 }
 
-if (!viewId) {
+if (!mappedViewId) {
   throw new Error(
     'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided'
   )
 }
 
-if (!props.channelId) {
+if (!channelId) {
   throw new Error('MagicMenuRemote requires a channelId')
 }
 
-const mappedChannelId = computed(() => `magic-menu-channel-${props.channelId}`)
+const mappedChannelId = computed(() => `magic-menu-channel-${channelId}`)
 
-const mappedTrigger = computed<Interaction[]>(
-  () => props.trigger ?? ['mouseenter']
-)
+const mappedTrigger = computed<Interaction[]>(() => trigger ?? ['mouseenter'])
 
-const { getView } = useMenuView(instanceId)
-const view = getView(viewId)
+const { getView } = useMenuView(mappedInstanceId)
+const view = getView(mappedViewId)
 
 const { initializeChannel, deleteChannel } = useMenuChannel({
-  instanceId,
-  viewId,
+  instanceId: mappedInstanceId,
+  viewId: mappedViewId,
 })
 
 const { onClick, onMouseenter } = useMenuRemote({
-  viewId,
-  instanceId,
+  instanceId: mappedInstanceId,
+  viewId: mappedViewId,
   mappedChannelId,
   mappedTrigger,
 })

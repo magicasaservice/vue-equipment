@@ -22,7 +22,7 @@ interface MagicMenuViewProps {
   placement?: Placement
 }
 
-const props = defineProps<MagicMenuViewProps>()
+const { id, placement } = defineProps<MagicMenuViewProps>()
 
 const parentTree = inject(MagicMenuParentTree, [])
 const instanceId = inject(MagicMenuInstanceId, undefined)
@@ -32,7 +32,7 @@ if (!instanceId) {
   throw new Error('MagicMenuView must be nested inside MagicMenuProvider')
 }
 
-const mappedId = computed(() => props.id ?? `magic-menu-view-${useId()}`)
+const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
 // Register view
@@ -41,8 +41,8 @@ const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
 const mappedPlacement = computed(() => {
-  if (props.placement) {
-    return props.placement
+  if (placement) {
+    return placement
   }
 
   switch (state.options.mode) {

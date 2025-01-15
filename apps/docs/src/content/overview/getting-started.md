@@ -1,6 +1,6 @@
 # Getting Started
 
-Everything you need to know to start using Vue Equipment and its parts.
+Everything you need to know to start using Vue Equipment.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -69,128 +69,112 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
   {
     items: [
       {
-        label: '[@floating-ui/vue](https://www.npmjs.com/package/@floating-ui/vue)',
-        code: ['label']
+        label: '[@floating-ui/vue](https://www.npmjs.com/package/@floating-ui/vue)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@maas/magic-timer](https://www.npmjs.com/package/@maas/magic-timer)',
-        code: ['label']
+        label: '[@maas/magic-timer](https://www.npmjs.com/package/@maas/magic-timer)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)',
-        code: ['label']
+        label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)',
-        code: ['label']
+        label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)',
-        code: ['label']
+        label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)',
-        code: ['label']
+        label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)',
-        code: ['label']
+        label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[defu](https://www.npmjs.com/package/defu)',
-        code: ['label']
+        label: '[defu](https://www.npmjs.com/package/defu)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[focus-trap](https://www.npmjs.com/package/focus-trap)',
-        code: ['label']
+        label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[hls.js](https://www.npmjs.com/package/hls.js)',
-        code: ['label']
+        label: '[hls.js](https://www.npmjs.com/package/hls.js)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[luxon](https://www.npmjs.com/package/luxon)',
-        code: ['label']
+        label: '[luxon](https://www.npmjs.com/package/luxon)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[mitt](https://www.npmjs.com/package/mitt)',
-        code: ['label']
+        label: '[mitt](https://www.npmjs.com/package/mitt)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[motion](https://www.npmjs.com/package/motion)',
-        code: ['label']
+        label: '[motion](https://www.npmjs.com/package/motion)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[nuxt](https://www.npmjs.com/package/nuxt)',
-        code: ['label']
+        label: '[nuxt](https://www.npmjs.com/package/nuxt)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)',
-        code: ['label']
+        label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)'
       }
     ]
   },
   {
     items: [
       {
-        label: '[vue](https://www.npmjs.com/package/vue)',
-        code: ['label']
+        label: '[vue](https://www.npmjs.com/package/vue)'
       }
     ]
   }

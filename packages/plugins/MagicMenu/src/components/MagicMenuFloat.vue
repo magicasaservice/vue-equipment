@@ -50,7 +50,7 @@ interface MagicMenuFloatProps {
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-const props = defineProps<MagicMenuFloatProps>()
+const { placement, arrow, referenceEl } = defineProps<MagicMenuFloatProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const arrowRef = ref<HTMLElement | undefined>(undefined)
@@ -65,8 +65,8 @@ const { getView } = useMenuView(instanceId ?? '')
 const view = getView(viewId ?? '')
 
 const mappedPlacement = computed(() => {
-  if (props.placement) {
-    return props.placement
+  if (placement) {
+    return placement
   }
 
   switch (state.options.mode) {
@@ -82,7 +82,7 @@ const mappedPlacement = computed(() => {
 })
 
 const hasArrow = computed(
-  () => props.arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
+  () => arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
 )
 
 const mappedMiddleware = computed(() => {
@@ -146,8 +146,8 @@ const mappedMiddleware = computed(() => {
 })
 
 const mappedReferenceEl = computed(() => {
-  if (props.referenceEl) {
-    return toValue(props.referenceEl)
+  if (referenceEl) {
+    return toValue(referenceEl)
   } else if (view?.state.clicked) {
     return {
       getBoundingClientRect() {

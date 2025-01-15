@@ -94,48 +94,42 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)',
-          code: ['label']
+          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
         }
       ]
     },
     {
       items: [
         {
-          label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)',
-          code: ['label']
+          label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)'
         }
       ]
     },
     {
       items: [
         {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)',
-          code: ['label']
+          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
         }
       ]
     },
     {
       items: [
         {
-          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)',
-          code: ['label']
+          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
         }
       ]
     },
     {
       items: [
         {
-          label: '[defu](https://www.npmjs.com/package/defu)',
-          code: ['label']
+          label: '[defu](https://www.npmjs.com/package/defu)'
         }
       ]
     },
     {
       items: [
         {
-          label: '[focus-trap](https://www.npmjs.com/package/focus-trap)',
-          code: ['label']
+          label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
         }
       ]
     }
@@ -181,17 +175,14 @@ The drawer comes with a simple set of props. Only the id is required.
       items: [
         {
           label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.',
-          code: ['label']
+          description: 'Providing an id is required. Can either be a string or a ref.'
         },
         {
           label: 'MaybeRef\<string\>',
-          code: ['label'],
           escape: true
         },
         {
-          label: 'true',
-          code: ['label']
+          label: 'true'
         }
       ]
     },
@@ -199,16 +190,13 @@ The drawer comes with a simple set of props. Only the id is required.
       items: [
         {
           label: 'options',
-          description: 'Refer to the options table below for details.',
-          code: ['label']
+          description: 'Refer to the [options table](#options) for details.'
         },
         {
-          label: 'MagicDrawerOptions',
-          code: ['label']
+          label: 'MagicDrawerOptions'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     },
@@ -216,16 +204,13 @@ The drawer comes with a simple set of props. Only the id is required.
       items: [
         {
           label: 'component',
-          description: 'Optionally pass a Vue component instance. Renders in place of the drawer\’s slot.',
-          code: ['label']
+          description: 'Optionally pass a Vue component instance. Renders in place of the drawer\’s slot.'
         },
         {
-          label: 'Component',
-          code: ['label']
+          label: 'Component'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     }
@@ -247,17 +232,14 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'position',
-          description: 'Set the drawer\’s position relative to the viewport.',
-          code: ['label']
+          description: 'Set the drawer\’s position relative to the viewport.'
         },
         {
           label: 'string',
-          description: '\'top\' | \'right\' | \'bottom\' | \'left\'',
-          code: ['label']
+          description: '\'top\' | \'right\' | \'bottom\' | \'left\''
         },
         {
-          label: '\'bottom\'',
-          code: ['label']
+          label: '\'bottom\''
         }
       ]
     },
@@ -265,16 +247,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'backdrop',
-          description: 'Show or hide a backdrop element. Only visible when the drawer is open.',
-          code: ['label']
+          description: 'Show or hide a backdrop element. Only visible when the drawer is open.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'true',
-          code: ['label']
+          label: 'true'
         }
       ]
     },
@@ -282,17 +261,14 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'tag',
-          description: 'Specify the drawer\’s HTML element.',
-          code: ['label']
+          description: 'Specify the drawer\’s HTML element.'
         },
         {
           label: 'string',
-          description: '\'dialog\' | \'div\'',
-          code: ['label']
+          description: '\'dialog\' | \'div\''
         },
         {
-          label: '\'dialog\'',
-          code: ['label']
+          label: '\'dialog\''
         }
       ]
     },
@@ -300,16 +276,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'focusTrap',
-          description: 'Pass focus-trap options or disable completely. A complete list of options can be found [here](https://www.npmjs.com/package/focus-trap#createoptions). Make sure to disable this, if you do not have a focusable element in your drawer.',
-          code: ['label']
+          description: 'Pass focus-trap options or disable completely. A complete list of options can be found [here](https://www.npmjs.com/package/focus-trap#createoptions). Make sure to disable this, if you do not have a focusable element in your drawer.'
         },
         {
-          label: 'boolean | FocusTrapOptions',
-          code: ['label']
+          label: 'boolean | FocusTrapOptions'
         },
         {
-          label: 'object',
-          code: ['label']
+          label: 'object'
         }
       ]
     },
@@ -317,16 +290,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'scrollLock',
-          description: 'Lock body scroll when the drawer is open.',
-          code: ['label']
+          description: 'Lock body scroll when the drawer is open.'
         },
         {
-          label: 'boolean | object',
-          code: ['label']
+          label: 'boolean | object'
         },
         {
-          label: 'object',
-          code: ['label']
+          label: 'object'
         }
       ]
     },
@@ -334,16 +304,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'scrollLock.padding',
-          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.',
-          code: ['label']
+          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'true',
-          code: ['label']
+          label: 'true'
         }
       ]
     },
@@ -351,17 +318,14 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'snapPoints',
-          description: 'Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like \'768px\'.',
-          code: ['label']
+          description: 'Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like \'768px\'.'
         },
         {
           label: 'DrawerSnapPoint[]',
-          description: 'Array<`${number}px` | number>',
-          code: ['label']
+          description: 'Array<number + \'px\' | number>'
         },
         {
-          label: '[1]',
-          code: ['label']
+          label: '[1]'
         }
       ]
     },
@@ -369,16 +333,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'teleport.target',
-          description: 'Specify the teleport target or disable teleporting the drawer completely.',
-          code: ['label']
+          description: 'Specify the teleport target or disable teleporting the drawer completely.'
         },
         {
-          label: 'string',
-          code: ['label']
+          label: 'string'
         },
         {
-          label: '\'body\'',
-          code: ['label']
+          label: '\'body\''
         }
       ]
     },
@@ -386,16 +347,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'teleport.disabled',
-          description: 'Specify the teleport target or disable teleporting the drawer completely.',
-          code: ['label']
+          description: 'Specify the teleport target or disable teleporting the drawer completely.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     },
@@ -403,16 +361,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'transition.content',
-          description: 'Set CSS transition classes for the drawer itself.',
-          code: ['label']
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer itself.'
         },
         {
-          label: 'string',
-          code: ['label']
+          label: 'string'
         },
         {
-          label: '\'magic-drawer--content\'',
-          code: ['label']
+          label: '\'magic-drawer--content\''
         }
       ]
     },
@@ -420,16 +375,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'transition.backdrop',
-          description: 'Set CSS transition classes for the drawer\’s backdrop.',
-          code: ['label']
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer\’s backdrop.'
         },
         {
-          label: 'string',
-          code: ['label']
+          label: 'string'
         },
         {
-          label: '\'magic-drawer--backdrop\'',
-          code: ['label']
+          label: '\'magic-drawer--backdrop\''
         }
       ]
     },
@@ -437,16 +389,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'threshold.lock',
-          description: 'Configure the dragged distance before the drawer prevents other touch interactions.',
-          code: ['label']
+          description: 'Configure the dragged distance before the drawer prevents other touch interactions.'
         },
         {
-          label: 'number',
-          code: ['label']
+          label: 'number'
         },
         {
-          label: '0',
-          code: ['label']
+          label: '0'
         }
       ]
     },
@@ -454,16 +403,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'threshold.distance',
-          description: 'Configure the dragged distance before the drawer snaps.',
-          code: ['label']
+          description: 'Configure the dragged distance before the drawer snaps.'
         },
         {
-          label: 'number',
-          code: ['label']
+          label: 'number'
         },
         {
-          label: '128',
-          code: ['label']
+          label: '128'
         }
       ]
     },
@@ -471,16 +417,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'threshold.momentum',
-          description: 'Configure the momentum from when the drawer snaps.',
-          code: ['label']
+          description: 'Configure the momentum from when the drawer snaps.'
         },
         {
-          label: 'number',
-          code: ['label']
+          label: 'number'
         },
         {
-          label: '1',
-          code: ['label']
+          label: '1'
         }
       ]
     },
@@ -488,16 +431,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'animation.snap.duration',
-          description: 'Configure the drawer\’s snap animation duration.',
-          code: ['label']
+          description: 'Configure the drawer\’s snap animation duration.'
         },
         {
-          label: 'number',
-          code: ['label']
+          label: 'number'
         },
         {
-          label: '300',
-          code: ['label']
+          label: '300'
         }
       ]
     },
@@ -505,17 +445,14 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'animation.snap.easing',
-          description: 'Configure the drawer\’s snap animation easing.',
-          code: ['label']
+          description: 'Configure the drawer\’s snap animation easing.'
+        },
+        {
+          label: 'function'
         },
         {
           label: 'function',
-          code: ['label']
-        },
-        {
-          label: 'function',
-          description: '(t) => t * (2 - t)',
-          code: ['label']
+          description: '(t) => t * (2 - t)'
         }
       ]
     },
@@ -523,16 +460,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'initial.open',
-          description: 'Open the drawer as soon as the component is mounted.',
-          code: ['label']
+          description: 'Open the drawer as soon as the component is mounted.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     },
@@ -540,12 +474,10 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'initial.transition',
-          description: 'Animate the drawer when it opens initially. Ignored if <code>initial.open</code> is not set.',
-          code: ['label']
+          description: 'Animate the drawer when it opens initially. Ignored if <code>initial.open</code> is not set.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
           label: '—',
@@ -556,12 +488,11 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'initial.snapPoint',
-          description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.',
-          code: ['label']
+          description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.'
         },
         {
           label: 'DrawerSnapPoint',
-          code: ['label']
+          description: 'number + \'px\' | number'
         },
         {
           label: '—',
@@ -572,16 +503,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'keyListener',
-          description: 'Set to false to disable key listeners completely.',
-          code: ['label']
+          description: 'Set to false to disable key listeners completely.'
         },
         {
-          label: 'boolean | object',
-          code: ['label']
+          label: 'boolean | object'
         },
         {
-          label: 'object',
-          code: ['label']
+          label: 'object'
         }
       ]
     },
@@ -589,16 +517,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'keyListener.close',
-          description: 'Set keyboard keys to close the drawer.',
-          code: ['label']
+          description: 'Set keyboard keys to close the drawer.'
         },
         {
-          label: 'string[]',
-          code: ['label']
+          label: 'string[]'
         },
         {
-          label: '[\'Escape\']',
-          code: ['label']
+          label: '[\'Escape\']'
         }
       ]
     },
@@ -606,16 +531,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'enableMousewheel',
-          description: 'When set to true, the drawer will react to mousewheel input.',
-          code: ['label']
+          description: 'When set to true, the drawer will react to mousewheel input.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     },
@@ -623,16 +545,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'preventZoom',
-          description: 'Prevent viewport scaling when the drawer is open.',
-          code: ['label']
+          description: 'Prevent viewport scaling when the drawer is open.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'true',
-          code: ['label']
+          label: 'true'
         }
       ]
     },
@@ -640,16 +559,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'preventDragClose',
-          description: 'Disables the drawer from being closed by dragging.',
-          code: ['label']
+          description: 'Prevent the drawer from being closed by dragging.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     },
@@ -657,16 +573,13 @@ To customize the drawer override the necessary settings. Any custom settings wil
       items: [
         {
           label: 'disabled',
-          description: 'Disable the drawer completely.',
-          code: ['label']
+          description: 'Disable the drawer completely.'
         },
         {
-          label: 'boolean',
-          code: ['label']
+          label: 'boolean'
         },
         {
-          label: 'false',
-          code: ['label']
+          label: 'false'
         }
       ]
     }
@@ -686,84 +599,70 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
     {
       items: [
         {
-          label: '--magic-drawer-height',
-          code: ['label']
+          label: '--magic-drawer-height'
         },
         {
-          label: '75svh',
-          code: ['label']
+          label: '75svh'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-width',
-          code: ['label']
+          label: '--magic-drawer-width'
         },
         {
-          label: '100%',
-          code: ['label']
+          label: '100%'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-justify-content',
-          code: ['label']
+          label: '--magic-drawer-justify-content'
         },
         {
-          label: 'center',
-          code: ['label']
+          label: 'center'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-align-items',
-          code: ['label']
+          label: '--magic-drawer-align-items'
         },
         {
-          label: 'flex-end',
-          code: ['label']
+          label: 'flex-end'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-enter-animation',
-          code: ['label']
+          label: '--magic-drawer-enter-animation'
         },
         {
-          label: 'slide-btt-in 300ms ease',
-          code: ['label']
+          label: 'slide-btt-in 300ms ease'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-enter-animation',
-          code: ['label']
+          label: '--magic-drawer-enter-animation'
         },
         {
-          label: 'slide-btt-out 300ms ease',
-          code: ['label']
+          label: 'slide-btt-out 300ms ease'
         },
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-drag-overshoot',
-          code: ['label']
+          label: '--magic-drawer-drag-overshoot'
         },
         {
-          label: '4rem',
-          code: ['label']
+          label: '4rem'
         },
       ]
     },

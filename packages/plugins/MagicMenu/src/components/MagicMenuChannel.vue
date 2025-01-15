@@ -3,7 +3,8 @@
     <div
       v-if="channel.active"
       :id="id"
-      :class="['magic-menu-channel', { '-initialized': state.active }]"
+      class="magic-menu-channel"
+      :data-initialized="state.active"
       :data-id="mappedId"
     >
       <slot />
@@ -78,14 +79,14 @@ provide(MagicMenuChannelActive, channel.active)
 <style>
 .magic-menu-channel-enter-active {
   animation: fade-in 300ms ease;
-  &.-initialized {
+  &[data-initialized='true'] {
     position: absolute;
   }
 }
 
 .magic-menu-channel-leave-active {
   animation: fade-out 300ms ease;
-  &.-initialized {
+  &[data-initialized='true'] {
     position: absolute;
   }
 }

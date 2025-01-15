@@ -38,7 +38,7 @@ interface MagicMenuTriggerProps {
   asChild?: boolean
 }
 
-const props = defineProps<MagicMenuTriggerProps>()
+const { disabled, trigger } = defineProps<MagicMenuTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
@@ -63,11 +63,11 @@ const state = initializeState()
 const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
-const mappedDisabled = computed(() => props.disabled ?? item?.disabled ?? false)
+const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
 
 const mappedTrigger = computed<Interaction[]>(() => {
-  if (props.trigger?.length) {
-    return props.trigger
+  if (trigger?.length) {
+    return trigger
   }
 
   switch (state.options.mode) {
