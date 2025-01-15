@@ -2,7 +2,7 @@
 
 Magic Menu is a flexible collection of components intended to build various types of menus and navigation.
 
-[Show Examples](#examples)
+[Show Examples](#mode)
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -77,7 +77,7 @@ function handleClick() {
 
 #### MagicMenuProvider
 
-The provider wraps the menu and passes configures all child components according to the given `options`.
+The provider wraps the menu and configures all child components according to the provided [options](#options).
 
 <ProseTable 
   :columns="[
@@ -450,20 +450,146 @@ The provider wraps the menu and passes configures all child components according
 
 ### Options
 
-## Examples
+<ProseTable 
+  :columns="[
+    { label: 'Option' },
+    { label: 'Type' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { 
+          label: 'mode',
+          description: 'The menu includes four different modes which preconfigure its appeareance and behavior. Details [below](#mode)'
+        },
+        { label: 'MenuMode',
+          description: 'menubar | navigation |dropdown | context'
+        },
+        { label: 'menubar' }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'debug',
+          description: 'Set to true, to get visual feedback on positioning.'
+        },
+        { label: 'boolean' },
+        { label: 'false' }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'scrollLock',
+          description: 'Lock body scroll when the menu is open.'
+        },
+        {
+          label: 'boolean | object'
+        },
+        {
+          label: 'object'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'scrollLock.padding',
+          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        { label: 'transition.content.default' },
+        { label: 'string' },
+        { label: '-' }
+      ]
+    },
+    {
+      items: [
+        { label: 'transition.content.nested' },
+        { label: 'string' },
+        { label: 'magic-menu-content--fade' }
+      ]
+    },
+    {
+      items: [
+        { label: 'transition.channel' },
+        { label: 'string' },
+        { label: 'magic-menu-channel' }
+      ]
+    },
+    {
+      items: [
+        { label: 'floating.strategy' },
+        { label: 'fixed | absolute' },
+        { label: '-' }
+      ]
+    },
+    {
+      items: [
+        { label: 'delay.mouseenter' },
+        { label: 'number' },
+        { label: '-' }
+      ]
+    },
+    {
+      items: [
+        { label: 'delay.mouseleave' },
+        { label: 'number' },
+        { label: '-' }
+      ]
+    },
+    {
+      items: [
+        { label: 'delay.click' },
+        { label: 'number' },
+        { label: '-' }
+      ]
+    },
+    {
+      items: [
+        { label: 'delay.rightClick' },
+        { label: 'number' },
+        { label: '-' }
+      ]
+    }
+  ]"
+/>
+
+## Mode
+
+The menu includes four different modes which preconfigure its appeareance and behavior. You can set the mode via the `options.mode` prop on the `MagicMenuProvider`.
 
 ### Menu Bar
+
+A menu common in desktop applications which provides top-level as well as nested commands.
 
 <component-preview src="./demo/MenuBarDemo.vue" />
 
 ### Navigation Bar
 
+A collection of links for navigating websites.
+
 <component-preview src="./demo/NavigationBarDemo.vue" />
 
 ### Dropdown Menu
 
+A single top level menu which provides top-level as well as nested commands, triggered by a click, anchored at a reference element.
+
 <component-preview src="./demo/DropdownMenuDemo.vue" />
 
 ### Context Menu
+
+A single top level menu which provides top-level as well as nested commands, triggered by a right click, anchored at the click’s coordinates.
 
 <component-preview src="./demo/ContextMenuDemo.vue" />
