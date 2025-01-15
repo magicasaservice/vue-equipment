@@ -3,7 +3,6 @@
     :view-id="mappedViewId"
     :disabled="disabled"
     :trigger="trigger"
-    as-child
   >
     <primitive
       :class="[
