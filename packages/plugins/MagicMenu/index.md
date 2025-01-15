@@ -77,6 +77,8 @@ function handleClick() {
 
 #### MagicMenuProvider
 
+The provider wraps the menu and passes configures all child components according to the given `options`.
+
 <ProseTable 
   :columns="[
     { label: 'Prop' },
@@ -280,6 +282,7 @@ function handleClick() {
       items: [
         {
           label: 'trigger',
+          description: 'Override the interactions that activate the trigger.'
         },
         {
           label: 'Interaction[]',
@@ -417,7 +420,7 @@ function handleClick() {
       items: [
         {
           label: 'trigger',
-          description: 'Override the interactions that activate the trigger.'
+          description: 'Override the interactions that activate the remote.'
         },
         {
           label: 'Interaction[]',
