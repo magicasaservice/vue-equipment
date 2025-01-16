@@ -17,42 +17,62 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
   const { getView } = useMenuView(instanceId)
   const view = getView(viewId)
 
-  // Private functions
-  function createChannel(args: CreateChannelArgs) {
+  // Channel cache for faster lookups
+  const channelMap = new Map<string, MenuChannel>()
+
+  function createChannel(args: CreateChannelArgs): MenuChannel {
     const { id } = args
 
-    const channel: MenuChannel = {
-      id: id,
+    const channel: MenuChannel = reactive({
+      id,
       active: false,
-    }
+    })
 
-    return reactive(channel)
+    // Cache the channel
+    channelMap.set(id, channel)
+    return channel
   }
 
-  function addChannel(args: AddChannelArgs) {
+  function addChannel(args: AddChannelArgs): MenuChannel {
     const channel = createChannel(args)
 
     if (view?.channels) {
-      view.channels = [...view.channels, channel]
+      view.channels.push(channel) // Direct push instead of spread
     }
 
     return channel
   }
 
   function unselectSiblings(id: string) {
-    return view?.channels
-      .filter((channel) => channel.id !== id)
-      .forEach((channel) => (channel.active = false))
+    if (!view?.channels) return
+
+    // Direct array iteration is faster than filter + forEach
+    for (const channel of view.channels) {
+      if (channel.id !== id) {
+        channel.active = false
+      }
+    }
   }
 
-  // Public functions
-  function initializeChannel(args: InitializeChannelArgs) {
+  function getChannel(id: string): MenuChannel | undefined {
+    if (!view?.channels) return undefined
+
+    // Always check view first to ensure we have latest state
+    const channel = view.channels.find((ch) => ch.id === id)
+    if (channel) {
+      channelMap.set(id, channel) // Update cache
+      return channel
+    }
+
+    return undefined
+  }
+
+  function initializeChannel(args: InitializeChannelArgs): MenuChannel {
     const { id } = args
     const instance = getChannel(id)
 
     if (!instance) {
-      const channel = addChannel(args)
-      return channel
+      return addChannel(args)
     }
 
     return instance
@@ -60,32 +80,27 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function deleteChannel(id: string) {
     if (!view?.channels) return
-    view.channels = view.channels.filter((x) => x.id !== id)
-  }
 
-  function getChannel(id: string) {
-    return view?.channels.find((channel) => {
-      return channel.id === id
-    })
+    const index = view.channels.findIndex((channel) => channel.id === id)
+    if (index !== -1) {
+      view.channels.splice(index, 1)
+      channelMap.delete(id)
+    }
   }
 
   function selectChannel(id: string) {
-    const instance = getChannel(id)
+    const channel = getChannel(id)
+    if (!channel) return
 
-    if (instance) {
-      instance.active = true
-
-      // Deactivate all siblings
-      unselectSiblings(id)
-    }
+    channel.active = true
+    unselectSiblings(id)
   }
 
   function unselectChannel(id: string) {
-    const instance = getChannel(id)
+    const channel = getChannel(id)
+    if (!channel) return
 
-    if (instance) {
-      instance.active = false
-    }
+    channel.active = false
   }
 
   return {
