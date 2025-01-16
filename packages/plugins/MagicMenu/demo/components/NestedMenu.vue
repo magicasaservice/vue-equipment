@@ -13,20 +13,18 @@
       </template>
     </m-menu-item>
   </magic-menu-item>
-  <magic-menu-item v-else>
+  <magic-menu-item v-else v-slot="{ itemActive }">
     <magic-menu-view v-slot="{ viewActive }">
-      <magic-menu-item v-slot="{ itemActive }">
-        <magic-menu-trigger as-child>
-          <m-menu-item size="xs" :active="itemActive || viewActive">
-            <m-menu-item-child>{{ item.label }}</m-menu-item-child>
-            <template v-if="item.cmd" #end>
-              <m-menu-item-child end>
-                <span>{{ item.cmd }}</span>
-              </m-menu-item-child>
-            </template>
-          </m-menu-item>
-        </magic-menu-trigger>
-      </magic-menu-item>
+      <magic-menu-trigger as-child>
+        <m-menu-item size="xs" :active="itemActive ?? viewActive">
+          <m-menu-item-child>{{ item.label }}</m-menu-item-child>
+          <template v-if="item.cmd" #end>
+            <m-menu-item-child end>
+              <span>{{ item.cmd }}</span>
+            </m-menu-item-child>
+          </template>
+        </m-menu-item>
+      </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
         <div class="bg-surface-elevation-high p-1 rounded-2xl w-[220px]">
           <nested-menu

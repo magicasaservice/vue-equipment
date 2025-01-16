@@ -1,4 +1,6 @@
 import { reactive, type MaybeRef } from 'vue'
+import { usePointer, watchOnce } from '@vueuse/core'
+
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 import type { MenuItem } from '../../types/index'
@@ -78,7 +80,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
     })
   }
 
-  function selectItem(id: string) {
+  function selectItem(id: string, disablePointer?: boolean) {
     const instance = getItem(id)
 
     if (instance) {
@@ -91,6 +93,18 @@ export function useMenuItem(args: UseMenuItemArgs) {
       // Set view in focus
       if (view) {
         state.input.view = view.id
+      }
+
+      if (disablePointer) {
+        const { x, y } = usePointer()
+        state.input.disabled = [...state.input.disabled, 'pointer'] // Disable pointer
+
+        watchOnce([x, y], () => {
+          console.log(x, y)
+          state.input.disabled = state.input.disabled.filter(
+            (x) => x !== 'pointer'
+          ) // Enable pointer
+        })
       }
     }
   }

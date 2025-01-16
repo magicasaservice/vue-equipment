@@ -5,6 +5,7 @@
     class="magic-menu-item"
     :data-disabled="disabled"
     :data-active="item.active"
+    :data-pointer-disabled="pointerDisabled"
     @mouseenter="guardedSelect"
     @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"
@@ -12,11 +13,20 @@
     @click="onClick"
   >
     <slot :item-active="item.active" :is-disabled="disabled" />
+    <div v-if="pointerDisabled" class="magic-menu-item__pointer-guard" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
+import {
+  ref,
+  computed,
+  inject,
+  provide,
+  onBeforeUnmount,
+  watch,
+  useId,
+} from 'vue'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -41,6 +51,8 @@ const emit = defineEmits<{
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 const contentId = inject(MagicMenuContentId, undefined)
+
+const elRef = ref<HTMLElement | undefined>(undefined)
 
 if (!instanceId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuProvider')
@@ -69,6 +81,8 @@ const item = initializeItem({
   id: mappedId.value,
   disabled: disabled ?? false,
 })
+
+const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
 
 function guardedSelect() {
   if (
@@ -141,5 +155,11 @@ onBeforeUnmount(() => {
   & > * {
     pointer-events: none;
   }
+}
+
+.magic-menu-item__pointer-guard {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 </style>

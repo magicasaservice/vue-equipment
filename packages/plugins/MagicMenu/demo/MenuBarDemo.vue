@@ -88,7 +88,7 @@ const menu = [
       { label: 'Show Full URLs' },
       { label: 'Reload', cmd: '⌘ R' },
       { label: 'Force Reload', cmd: '⇧ ⌘ R' },
-      { label: 'ToggleFullscreen', cmd: '⌘ F' },
+      { label: 'Fullscreen', cmd: '⌘ F' },
       { label: 'Hide Sidebar' },
     ],
   },

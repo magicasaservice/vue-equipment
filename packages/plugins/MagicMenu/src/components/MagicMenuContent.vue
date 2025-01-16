@@ -28,7 +28,7 @@
             <div
               ref="contentRef"
               class="magic-menu-content__inner"
-              :class="{ '-disabled': pointerDisabled }"
+              :data-pointer-disabled="pointerDisabled"
             >
               <slot />
             </div>
@@ -251,7 +251,7 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
-.magic-menu-content__inner.-disabled {
+.magic-menu-content__inner[data-pointer-disabled='true'] {
   pointer-events: none;
 }
 
