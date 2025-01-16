@@ -69,11 +69,7 @@ const menu = [
           { label: 'Notes' },
           {
             label: 'Socials',
-            items: [
-              { label: 'Instagram' },
-              { label: 'Threads' },
-              { label: 'Twitter' },
-            ],
+            items: [{ label: 'Instagram' }, { label: 'Bluesky' }],
           },
         ],
       },

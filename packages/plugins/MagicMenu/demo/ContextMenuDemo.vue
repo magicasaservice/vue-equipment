@@ -13,16 +13,14 @@
         </span>
       </magic-menu-trigger>
       <magic-menu-content>
-        <div class="bg-surface-elevation-base p-1 rounded-2xl w-[220px]">
-          <magic-menu-item>
-            <m-menu-item>Item 1</m-menu-item>
-          </magic-menu-item>
-          <magic-menu-item>
-            <m-menu-item>Item 2</m-menu-item>
-          </magic-menu-item>
-          <magic-menu-item>
-            <m-menu-item>Item 3</m-menu-item>
-          </magic-menu-item>
+        <div
+          class="bg-surface-elevation-high text-black p-1 rounded-2xl w-[220px]"
+        >
+          <nested-menu
+            v-for="(item, itemIndex) in menu.items"
+            :key="itemIndex"
+            :item="item"
+          />
         </div>
       </magic-menu-content>
     </magic-menu-view>
@@ -30,5 +28,34 @@
 </template>
 
 <script setup lang="ts">
-import { MMenuItem } from '@maas/mirror/vue'
+import NestedMenu from './components/NestedMenu.vue'
+
+const menu = {
+  label: 'Menu',
+  type: 'button',
+  items: [
+    { label: 'New Tab', cmd: '⌘ T' },
+    { label: 'New Window', cmd: '⌘ W' },
+    { label: 'New Incognito Window', disabled: true },
+    {
+      label: 'Share',
+      items: [
+        { label: 'Email Link', disabled: true },
+        { label: 'Messages' },
+        { label: 'Notes' },
+        {
+          label: 'Socials',
+          items: [{ label: 'Instagram' }, { label: 'Bluesky' }],
+        },
+      ],
+    },
+    { label: 'Print', cmd: '⌘ P' },
+    { label: 'Show Bookmarks', cmd: '⇧ ⌘ B' },
+    { label: 'Show Full URLs' },
+    { label: 'Reload', cmd: '⌘ R' },
+    { label: 'Force Reload', cmd: '⇧ ⌘ R' },
+    { label: 'Fullscreen', cmd: '⌘ F' },
+    { label: 'Hide Sidebar' },
+  ],
+}
 </script>
