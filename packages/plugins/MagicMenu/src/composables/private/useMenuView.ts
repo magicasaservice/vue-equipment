@@ -6,196 +6,214 @@ type InitializeViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
 type CreateViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
 type AddViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
 
+function isAbortError(error: unknown): boolean {
+  return error instanceof DOMException && error.name === 'AbortError'
+}
+
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
-  // Public state
-  const currentView = computed(() =>
-    state.views
-      .filter((view) => view.active)
-      .reduce((a, b) =>
-        a.parent.views.length >= b.parent.views.length ? a : b
-      )
-  )
+  // Cache current instance ID
+  const currentInstanceId = toValue(instanceId)
 
-  // Private functions
-  function createView(args: CreateViewArgs) {
+  const currentView = computed(() => {
+    const activeViews = state.views.filter((view) => view.active)
+    if (activeViews.length === 0) return undefined
+    if (activeViews.length === 1) return activeViews[0]
+
+    return activeViews.reduce((a, b) =>
+      a.parent.views.length >= b.parent.views.length ? a : b
+    )
+  })
+
+  // Memoized view lookup map
+  const viewMap = new Map<string, MenuView>()
+
+  function createView(args: CreateViewArgs): MenuView {
     const { id, parent, placement } = args
 
     if (parent.views.length === 0) {
-      parent.views.push(toValue(instanceId))
+      parent.views.push(currentInstanceId)
     }
 
-    const view: MenuView = {
-      id: id,
-      parent: parent,
+    const view: MenuView = reactive({
+      id,
+      parent,
       active: false,
       items: [],
       channels: [],
-      placement: placement,
+      placement,
       state: {
         selectAbortController: new AbortController(),
         unselectAbortController: new AbortController(),
       },
-    }
+    })
 
-    return reactive(view)
+    // Cache the view
+    viewMap.set(id, view)
+    return view
   }
 
-  function addView(args: AddViewArgs) {
+  function addView(args: AddViewArgs): MenuView {
     const view = createView(args)
-    state.views = [...state.views, view]
-
+    state.views.push(view)
     return view
   }
 
   function delay(ms: number, signal: AbortSignal): Promise<void> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(resolve, ms)
-      signal.addEventListener('abort', () => {
+      const abortHandler = () => {
         clearTimeout(timer)
         reject(new DOMException('Aborted', 'AbortError'))
-      })
+      }
+      signal.addEventListener('abort', abortHandler, { once: true })
     })
   }
 
-  // Public functions
-  function initializeView(args: InitializeViewArgs) {
-    const { id } = args
-    let instance = getView(id)
-
-    if (!instance) instance = addView(args)
-    return instance
+  function getView(id: string): MenuView | undefined {
+    // Check cache first
+    let view = viewMap.get(id)
+    if (!view) {
+      view = state.views.find((v) => v.id === id)
+      if (view) viewMap.set(id, view)
+    }
+    return view
   }
 
-  function deleteView(id: string) {
-    state.views = state.views?.filter((view) => view.id !== id)
+  function deleteView(id: string): void {
+    const index = state.views.findIndex((view) => view.id === id)
+    if (index !== -1) {
+      state.views.splice(index, 1)
+      viewMap.delete(id)
+    }
   }
 
-  function getView(id: string) {
-    return state.views?.find((view) => view.id === id)
-  }
-
-  function getRelativeViewIndex(id: string) {
+  function getRelativeViewIndex(id: string): number {
     const view = getView(id)
-    const nestingLevel = view?.parent.views.length
+    if (!view) return -1
 
-    return state.views
-      ?.filter((view) => view.parent.views.length === nestingLevel)
-      .findIndex((view) => view.id === id)
-  }
-
-  function getNextView(id: string) {
-    const index = state.views?.findIndex((view) => view.id === id)
-    return state.views?.[index + 1]
-  }
-
-  function getPreviousView(id: string) {
-    const index = state.views?.findIndex((view) => view.id === id)
-    return state.views?.[index - 1]
-  }
-
-  function getTopLevelView() {
-    return state.views?.find((view) => view.active && !view.parent.item)
-  }
-
-  function getNestedView(itemId: string) {
-    return state.views?.find((view) => view.parent.item === itemId)
-  }
-
-  function getParentView(id: string) {
-    const view = getView(id)
-    const parentId = view?.parent.views[view.parent.views.length - 1]
-    return getView(parentId ?? '')
-  }
-
-  function getUnrelatedViews(id: string) {
-    const argView = getView(id)
-    return state.views?.filter(
-      (view) =>
-        !view.parent.views.includes(id) &&
-        !argView?.parent.views.includes(view.id) &&
-        view.id !== id
+    const nestingLevel = view.parent.views.length
+    return state.views.findIndex(
+      (v) => v.parent.views.length === nestingLevel && v.id === id
     )
   }
 
-  function getDescendingViews(id: string) {
-    const argView = getView(id)
-    return state.views?.filter(
-      (view) => view.id !== id && !argView?.parent.views.includes(view.id)
-    )
+  function getNextView(id: string): MenuView | undefined {
+    const index = state.views.findIndex((view) => view.id === id)
+    return index !== -1 ? state.views[index + 1] : undefined
   }
 
-  async function selectView(id: string, delayMs = 0) {
-    const instance = getView(id)
+  function getPreviousView(id: string): MenuView | undefined {
+    const index = state.views.findIndex((view) => view.id === id)
+    return index > 0 ? state.views[index - 1] : undefined
+  }
 
-    if (instance) {
-      // Cancel all scheduled closings
-      if (instance.state.unselectAbortController) {
-        instance.state.unselectAbortController.abort()
-      }
+  function getTopLevelView(): MenuView | undefined {
+    return state.views.find((view) => view.active && !view.parent.item)
+  }
 
-      // Schedule opening
-      const abortController = new AbortController()
-      instance.state.selectAbortController = abortController
+  function getNestedView(itemId: string): MenuView | undefined {
+    return state.views.find((view) => view.parent.item === itemId)
+  }
 
-      try {
+  function getParentView(id: string): MenuView | undefined {
+    const view = getView(id)
+    if (!view) return undefined
+
+    const parentId = view.parent.views[view.parent.views.length - 1]
+    return parentId ? getView(parentId) : undefined
+  }
+
+  function getUnrelatedViews(id: string): MenuView[] {
+    const view = getView(id)
+    if (!view) return []
+
+    const parentViewsSet = new Set(view.parent.views)
+    return state.views.filter((v) => v.id !== id && !parentViewsSet.has(v.id))
+  }
+
+  function getDescendingViews(id: string): MenuView[] {
+    const view = getView(id)
+    if (!view) return []
+
+    const parentViewsSet = new Set(view.parent.views)
+    return state.views.filter((v) => v.id !== id && !parentViewsSet.has(v.id))
+  }
+
+  async function selectView(id: string, delayMs = 0): Promise<void> {
+    const view = getView(id)
+    if (!view) return
+
+    if (view.state.unselectAbortController) {
+      view.state.unselectAbortController.abort()
+    }
+
+    const abortController = new AbortController()
+    view.state.selectAbortController = abortController
+
+    try {
+      if (delayMs > 0) {
         await delay(delayMs, abortController.signal)
-        instance.active = true
-        unselectUnrelatedViews(id)
-        // eslint-disable-next-line
-      } catch (error: any) {
-        if (error.name === 'AbortError' && state.options.debug) {
-          console.log(
-            `selectView() was interrupted by a call to unselectView()`
-          )
-        }
+      }
+      view.active = true
+      unselectUnrelatedViews(id)
+    } catch (error) {
+      if (isAbortError(error) && state.options.debug) {
+        console.log('selectView() was interrupted by a call to unselectView()')
       }
     }
   }
 
-  async function unselectView(id: string, delayMs = 0) {
-    const instance = getView(id)
+  async function unselectView(id: string, delayMs = 0): Promise<void> {
+    const view = getView(id)
+    if (!view) return
 
-    if (instance) {
-      // Cancel all scheduled closings
-      if (instance.state.selectAbortController) {
-        instance.state.selectAbortController.abort()
-      }
-
-      // Schedule closing
-      const abortController = new AbortController()
-      instance.state.unselectAbortController = abortController
-
-      try {
-        await delay(delayMs, abortController.signal)
-        instance.active = false
-        // eslint-disable-next-line
-      } catch (error: any) {
-        if (error.name === 'AbortError' && state.options.debug) {
-          console.log(
-            `unselectView() was interrupted by a call to selectView()`
-          )
-        }
-      }
+    if (view.state.selectAbortController) {
+      view.state.selectAbortController.abort()
     }
-  }
 
-  function unselectUnrelatedViews(id: string) {
-    const unrelatedViews = getUnrelatedViews(id)
-    unrelatedViews.forEach((view) => (view.active = false))
-  }
+    const abortController = new AbortController()
+    view.state.unselectAbortController = abortController
 
-  function unselectDescendingViews(id: string) {
-    const descendingViews = getDescendingViews(id)
-    descendingViews.forEach((view) => (view.active = false))
-  }
-
-  function unselectAllViews() {
-    state.views?.forEach((view) => {
+    try {
+      if (delayMs > 0) {
+        await delay(delayMs, abortController.signal)
+      }
       view.active = false
-    })
+    } catch (error) {
+      if (isAbortError(error) && state.options.debug) {
+        console.log('unselectView() was interrupted by a call to selectView()')
+      }
+    }
+  }
+
+  function unselectUnrelatedViews(id: string): void {
+    const views = getUnrelatedViews(id)
+    for (const view of views) {
+      view.active = false
+    }
+  }
+
+  function unselectDescendingViews(id: string): void {
+    const views = getDescendingViews(id)
+    for (const view of views) {
+      view.active = false
+    }
+  }
+
+  function unselectAllViews(): void {
+    for (const view of state.views) {
+      view.active = false
+    }
+  }
+
+  function initializeView(args: InitializeViewArgs): MenuView {
+    const { id } = args
+    let view = getView(id)
+    if (!view) view = addView(args)
+    return view
   }
 
   return {
