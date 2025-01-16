@@ -1,73 +1,252 @@
 <template>
-  <magic-menu-provider
-    id="magic-menu--navigation"
-    :options="{ mode: 'navigation' }"
+  <div
+    class="h-15 border-surface bg-surface-elevation-high relative flex items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
   >
-    <magic-menu-view>
-      <div
-        ref="navigationRef"
-        class="w-full flex bg-gray rounded-2xl bg-surface-elevation-base"
-      >
-        <magic-menu-remote channel-id="a" as-child>
-          <m-button mode="ghost"> Home </m-button>
-        </magic-menu-remote>
-
-        <magic-menu-remote channel-id="b" as-child>
-          <m-button mode="ghost">Events</m-button>
-        </magic-menu-remote>
-
-        <magic-menu-remote channel-id="c" as-child>
-          <m-button mode="ghost">Projects</m-button>
-        </magic-menu-remote>
-
-        <m-button mode="ghost">External Link</m-button>
-
-        <magic-menu-remote channel-id="d" as-child>
-          <m-button mode="ghost">FAQ</m-button>
-        </magic-menu-remote>
-      </div>
-      <magic-menu-content :reference-el="navigationRef">
-        <div class="p-1">
-          <magic-auto-size class="bg-surface-elevation-base rounded-2xl">
-            <magic-menu-channel id="a" class="w-[40rem]">
-              <m-menu-card>
-                <m-menu-card-child>
-                  <span>Title</span>
-                  <span>Subtitle</span>
-                </m-menu-card-child>
-              </m-menu-card>
-              <m-menu-card>
-                <m-menu-card-child>
-                  <span>Title</span>
-                  <span>Subtitle</span>
-                </m-menu-card-child>
-              </m-menu-card>
-              <m-menu-card>
-                <m-menu-card-child>
-                  <span>Title</span>
-                  <span>Subtitle</span>
-                </m-menu-card-child>
-              </m-menu-card>
-            </magic-menu-channel>
-            <magic-menu-channel id="b" class="w-[50rem] h-[20rem]">
-              Events Channel
-            </magic-menu-channel>
-            <magic-menu-channel id="c" class="w-[40rem] h-[20rem]">
-              Projects Channel
-            </magic-menu-channel>
-            <magic-menu-channel id="d" class="w-[50rem] h-[20rem]">
-              FAQ Channel
-            </magic-menu-channel>
-          </magic-auto-size>
+    <magic-menu-provider
+      v-if="menu"
+      id="navigation-bar-demo"
+      :options="{
+        mode: 'navigation',
+      }"
+      class="flex"
+    >
+      <magic-menu-view ref="viewRef">
+        <div class="flex gap-1">
+          <magic-menu-trigger
+            as-child
+            class="ui-menu-button"
+            v-for="(item, i) in menu"
+            :key="i"
+          >
+            <magic-menu-remote
+              v-slot="{ channelActive }"
+              :channel-id="item.id"
+              as-child
+            >
+              <m-button :mode="channelActive ? 'translucent' : 'ghost'">
+                <span class="flex items-center gap-2.5">
+                  <span>{{ item.label }}</span>
+                  <m-badge
+                    v-if="item.badge"
+                    mode="outline"
+                    variant="primary"
+                    size="sm"
+                  >
+                    {{ item.badge }}
+                  </m-badge>
+                </span>
+              </m-button>
+            </magic-menu-remote>
+          </magic-menu-trigger>
         </div>
-      </magic-menu-content>
-    </magic-menu-view>
-  </magic-menu-provider>
+        <magic-menu-content :reference-el="viewRef?.$el">
+          <div class="p-1 pt-2">
+            <m-menu-box class="navigation-bar__menu-box overflow-hidden">
+              <magic-auto-size>
+                <magic-menu-channel
+                  v-for="(item, i) in menu"
+                  :key="i"
+                  :id="item.id"
+                  class="relative inline-flex gap-4"
+                >
+                  <div
+                    class="w-[16rem]"
+                    v-for="(entry, j) in item.lists"
+                    :key="j"
+                  >
+                    <div
+                      v-if="entry.label"
+                      class="flex items-center gap-2 pb-2 pl-7 pt-4"
+                    >
+                      <span class="type-surface-callout-sm text-surface-muted">
+                        {{ entry.label }}
+                      </span>
+                      <m-badge v-if="'badge' in entry" size="xs" mode="tone">
+                        {{ entry.badge }}
+                      </m-badge>
+                    </div>
+
+                    <menu-card
+                      v-for="(data, k) in entry.list"
+                      :key="k"
+                      :data="data"
+                    />
+                  </div>
+                </magic-menu-channel>
+              </magic-auto-size>
+            </m-menu-box>
+          </div>
+        </magic-menu-content>
+      </magic-menu-view>
+    </magic-menu-provider>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { MMenuCard, MMenuCardChild, MButton } from '@maas/mirror/vue'
+<script lang="ts" setup>
+import { ref, type ComponentPublicInstance } from 'vue'
+import { MMenuBox, MBadge, MButton } from '@maas/mirror/vue'
 
-const navigationRef = ref<HTMLElement | null>(null)
+import { MagicAutoSize } from '../../MagicAutoSize'
+import MenuCard from './components/MenuCard.vue'
+
+const viewRef = ref<ComponentPublicInstance | null>(null)
+
+const menu = [
+  {
+    label: 'Catalogue',
+    id: 'catalogue-channel',
+    lists: [
+      {
+        label: 'Commercial',
+        list: [
+          {
+            label: 'Mirror Ui',
+            callout: 'Interface System',
+            icon: 'maas-mr',
+          },
+          {
+            label: 'Dreamtype™',
+            badge: 'Soon',
+
+            callout: 'Commercial Fonts',
+
+            icon: 'maas-dt',
+          },
+          {
+            label: 'Azzets',
+            badge: 'Soon',
+            callout: 'Visual Content App',
+            icon: 'maas-az',
+          },
+        ],
+      },
+      {
+        label: 'Open Source',
+        badge: 'OSS',
+
+        list: [
+          {
+            label: 'Vue Equipment',
+            callout: 'Open Source Plugins',
+            icon: 'maas-ve',
+          },
+
+          {
+            label: 'Open Foundry',
+            callout: 'Open Source Fonts',
+            icon: 'maas-of',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Resources',
+    id: 'resources-channel',
+    lists: [
+      {
+        label: 'Company',
+        list: [
+          {
+            label: 'Readme',
+            badge: 'Blog',
+
+            callout: 'Written by MaaS™',
+            icon: 'edit-alt',
+          },
+
+          {
+            label: 'About us',
+            callout: 'Who we Are',
+            icon: 'maas-robot',
+          },
+        ],
+      },
+      {
+        label: 'Community',
+        id: 'community-channel',
+        list: [
+          {
+            icon: 'brand-github',
+            label: 'GitHub',
+            callout: 'What we Code',
+          },
+
+          {
+            icon: 'brand-figma',
+            label: 'Figma',
+            badge: 'Soon',
+
+            callout: 'Design Resources',
+          },
+        ],
+      },
+      {
+        label: 'Packages',
+        badge: 'OSS',
+
+        list: [
+          {
+            icon: 'brand-vue',
+            label: 'Vue Primitive',
+            callout: '@maas/vue-primitive',
+          },
+
+          {
+            icon: 'brand-nuxt',
+            label: 'Magic Image',
+            callout: '@maas/magic-image',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Enterprise',
+    id: 'enterprise-channel',
+    badge: 'Pro',
+    lists: [
+      {
+        label: 'Solutions',
+        list: [
+          {
+            label: 'Mirror Ui',
+            callout: 'Interface System',
+            icon: 'maas-mr',
+          },
+          {
+            label: 'Vue Equipment',
+            callout: 'Frontend Toolkit',
+            icon: 'maas-ve',
+          },
+        ],
+      },
+      {
+        label: 'Group',
+        list: [
+          {
+            label: 'International Magic',
+            callout: 'Creative Studio',
+          },
+
+          {
+            label: 'ONE',
+            callout: 'Production Collective',
+          },
+        ],
+      },
+    ],
+  },
+]
 </script>
+
+<style>
+:root {
+  --magic-auto-size-transition: all 100ms var(--ease-in-out);
+}
+
+.navigation-bar__menu-box {
+  --menu-box-box-shadow: none;
+  --menu-box-color-bg: theme('backgroundColor.surface.elevation.high.DEFAULT');
+}
+</style>

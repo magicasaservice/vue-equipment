@@ -44,8 +44,6 @@ import NestedMenu from '../components/NestedMenu.vue'
 import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
 
-const offsetMiddleware = [offset({ crossAxis: -4, mainAxis: 8 })]
-
 interface RecursiveMenuItemProps {
   item: {
     label: string
@@ -56,4 +54,6 @@ interface RecursiveMenuItemProps {
 }
 
 defineProps<RecursiveMenuItemProps>()
+
+const offsetMiddleware = [offset({ crossAxis: -4, mainAxis: 8 })]
 </script>
