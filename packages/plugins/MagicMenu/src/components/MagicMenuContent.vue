@@ -17,6 +17,7 @@
       >
         <magic-menu-float
           :placement="view?.placement"
+          :middleware="middleware"
           :arrow="arrow"
           :reference-el="referenceEl"
         >
@@ -80,6 +81,8 @@ import {
   MagicMenuContentId,
 } from '../symbols'
 
+import type { Middleware } from '@floating-ui/vue'
+
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
@@ -89,6 +92,7 @@ defineOptions({
 
 interface MagicMenuContentProps {
   arrow?: boolean | undefined
+  middleware?: Middleware[]
   transition?: string
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }

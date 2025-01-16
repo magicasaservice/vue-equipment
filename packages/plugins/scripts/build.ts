@@ -17,8 +17,9 @@ mkdist({
     '!tsconfig.json',
     '!**/demo.vue',
     '!**/demo/*.vue',
+    '!**/demo/**/*.vue',
     '!**/index.md',
     '!scripts/*',
-    '!*.config.json',
+    '!*.config.*',
   ],
 })

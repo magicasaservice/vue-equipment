@@ -1,6 +1,6 @@
 <template>
   <div :id="mappedId" class="magic-menu-view">
-    <slot />
+    <slot :view-active="view.active" />
   </div>
 </template>
 

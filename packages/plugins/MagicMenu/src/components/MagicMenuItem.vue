@@ -11,7 +11,7 @@
     @mouseleave="guardedUnselect"
     @click="onClick"
   >
-    <slot :is-active="item.active" :is-disabled="disabled" />
+    <slot :item-active="item.active" :is-disabled="disabled" />
   </div>
 </template>
 

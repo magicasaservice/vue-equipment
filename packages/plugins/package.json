@@ -70,6 +70,7 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@floating-ui/dom": "^1.6.13",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "^6.1.2",

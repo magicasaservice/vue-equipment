@@ -55,6 +55,6 @@
   </magic-menu-provider>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { MMenuItem, MButton } from '@maas/mirror/vue'
 </script>

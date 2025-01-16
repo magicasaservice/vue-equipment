@@ -1,13 +1,12 @@
 <template>
   <primitive
     ref="elRef"
-    :class="[
-      'magic-menu-trigger',
-      { '-active': view?.active, '-disabled': mappedDisabled },
-    ]"
     :data-id="`${viewId}-trigger`"
+    :data-active="view?.active"
+    :data-disabled="mappedDisabled"
     :tabindex="mappedTabindex"
     :as-child="asChild"
+    class="magic-menu-trigger"
     @click="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"

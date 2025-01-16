@@ -38,6 +38,7 @@ import {
   limitShift,
   arrow as floatingArrow,
   type Placement,
+  type Middleware,
 } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -46,11 +47,13 @@ import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 
 interface MagicMenuFloatProps {
   placement?: Placement
+  middleware?: Middleware[]
   arrow?: boolean
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-const { placement, arrow, referenceEl } = defineProps<MagicMenuFloatProps>()
+const { placement, middleware, arrow, referenceEl } =
+  defineProps<MagicMenuFloatProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const arrowRef = ref<HTMLElement | undefined>(undefined)
@@ -86,23 +89,27 @@ const hasArrow = computed(
 )
 
 const mappedMiddleware = computed(() => {
-  const middleware = []
+  const combined = []
+
+  if (middleware) {
+    combined.push(...middleware)
+  }
 
   switch (state.options.mode) {
     case 'menubar':
       if (!view?.parent.item) {
-        middleware.push(
+        combined.push(
           flip({
             crossAxis: true,
           })
         )
       } else if (!!view?.parent.item) {
-        middleware.push(
+        combined.push(
           flip({
             crossAxis: false,
           })
         )
-        middleware.push(
+        combined.push(
           shift({
             crossAxis: true,
             limiter: limitShift(),
@@ -111,13 +118,13 @@ const mappedMiddleware = computed(() => {
       }
       break
     case 'dropdown':
-      middleware.push(
+      combined.push(
         flip({
           mainAxis: true,
           crossAxis: false,
         })
       )
-      middleware.push(
+      combined.push(
         shift({
           mainAxis: true,
           crossAxis: false,
@@ -125,7 +132,7 @@ const mappedMiddleware = computed(() => {
         })
       )
       if (hasArrow.value) {
-        middleware.push(
+        combined.push(
           floatingArrow({
             element: arrowRef.value,
           })
@@ -133,7 +140,7 @@ const mappedMiddleware = computed(() => {
       }
       break
     case 'context':
-      middleware.push(
+      combined.push(
         flip({
           mainAxis: true,
           crossAxis: true,

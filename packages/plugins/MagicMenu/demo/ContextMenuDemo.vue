@@ -29,6 +29,6 @@
   </magic-menu-provider>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { MMenuItem } from '@maas/mirror/vue'
 </script>
