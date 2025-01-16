@@ -149,7 +149,7 @@ const mappedMiddleware = computed(() => {
       break
   }
 
-  return middleware
+  return combined
 })
 
 const mappedReferenceEl = computed(() => {
