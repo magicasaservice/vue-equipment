@@ -509,7 +509,10 @@ The provider wraps the menu and configures all child components according to the
     },
     {
       items: [
-        { label: 'transition.content.default' },
+        { 
+          label: 'transition.content.default',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of top-level `MagicMenuContent` elements.'
+        },
         { label: 'string' },
         { 
           label: 'magic-menu-content--default | magic-menu-content--fade',
@@ -519,14 +522,20 @@ The provider wraps the menu and configures all child components according to the
     },
     {
       items: [
-        { label: 'transition.content.nested' },
+        { 
+          label: 'transition.content.nested',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of nested `MagicMenuContent` elements.'
+        },
         { label: 'string' },
         { label: 'magic-menu-content--fade' }
       ]
     },
     {
       items: [
-        { label: 'transition.channel' },
+        { 
+          label: 'transition.channel',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the `MagicMenuChannel`.'
+        },
         { label: 'string' },
         { label: 'magic-menu-channel' }
       ]
@@ -584,7 +593,7 @@ The menu includes four different modes which preconfigure its appeareance and be
 
 ### Menu Bar
 
-A menu common in desktop applications which provides top-level as well as nested commands.
+A menu common in desktop applications which provides top-level as well as nested commands. Its behavior is modeled after the MacOS Finder.
 
 <component-preview src="./demo/MenuBarDemo.vue" />
 
