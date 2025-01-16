@@ -511,7 +511,10 @@ The provider wraps the menu and configures all child components according to the
       items: [
         { label: 'transition.content.default' },
         { label: 'string' },
-        { label: '-' }
+        { 
+          label: 'magic-menu-content--default | magic-menu-content--fade',
+          description: 'Dependant on `options.mode`' 
+         }
       ]
     },
     {
@@ -532,35 +535,44 @@ The provider wraps the menu and configures all child components according to the
       items: [
         { label: 'floating.strategy' },
         { label: 'fixed | absolute' },
-        { label: '-' }
+        { 
+          label: 'fixed | absolute',
+          description: 'Dependant on `options.mode`' 
+         }
       ]
     },
     {
       items: [
         { label: 'delay.mouseenter' },
         { label: 'number' },
-        { label: '-' }
+        { 
+          label: '0 | 50', 
+          description: 'Dependant on `options.mode`' 
+        }
       ]
     },
     {
       items: [
         { label: 'delay.mouseleave' },
         { label: 'number' },
-        { label: '-' }
+        { 
+          label: '0 | 200',
+          description: 'Dependant on `options.mode`' 
+         }
       ]
     },
     {
       items: [
         { label: 'delay.click' },
         { label: 'number' },
-        { label: '-' }
+        { label: '0' }
       ]
     },
     {
       items: [
         { label: 'delay.rightClick' },
         { label: 'number' },
-        { label: '-' }
+        { label: '0' }
       ]
     }
   ]"
@@ -584,12 +596,12 @@ A collection of links for navigating websites.
 
 ### Dropdown Menu
 
-A single top level menu which provides top-level as well as nested commands, triggered by a click, anchored at a reference element.
+A single top level menu which provides top-level as well as nested commands, triggered by a click, anchored at a reference element, like a button.
 
 <component-preview src="./demo/DropdownMenuDemo.vue" />
 
 ### Context Menu
 
-A single top level menu which provides top-level as well as nested commands, triggered by a right click, anchored at the click’s coordinates.
+A single top level menu which provides top-level as well as nested commands, triggered by a right click, anchored at the pointer event coordinates.
 
 <component-preview src="./demo/ContextMenuDemo.vue" />
