@@ -10,11 +10,13 @@ import { easeOutBack } from '@maas/vue-equipment/utils'
 
 const defaultOptions: DefaultOptions = {
   tag: 'div',
+  scrollLock: { padding: true },
+  snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
   threshold: {
+    lock: 0,
     distance: 128,
     momentum: 1.5,
     idle: 250,
-    lock: 0,
   },
   animation: {
     snap: {
@@ -25,9 +27,7 @@ const defaultOptions: DefaultOptions = {
   initial: {
     snapPoint: 'center',
   },
-  snapPoints: [],
   disabled: false,
-  scrollLock: { padding: true },
 }
 
 export { defaultOptions, type DefaultOptions }

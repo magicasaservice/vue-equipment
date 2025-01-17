@@ -1,6 +1,6 @@
 # Magic Auto Size
 
-A container that automatically grows and shrinks to its child’s size.
+Magic Auto Size is a container that automatically grows and shrinks to its child’s size.
 
 <component-preview src="./demo/DefaultDemo.vue" />
 
@@ -82,7 +82,7 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
-          label: '[@maas/primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
         }
       ]
     },

@@ -20,17 +20,19 @@ export type DraggableSnapPoint =
       offset?: {
         x?: number
         y?: number
-      },
+      }
     ]
   | Position
 
 export interface MagicDraggableOptions {
   tag?: 'dialog' | 'div'
+  scrollLock?: boolean | { padding: boolean }
+  snapPoints?: DraggableSnapPoint[]
   threshold?: {
+    lock?: number
     distance?: number
     momentum?: number
     idle?: number
-    lock?: number
   }
   animation?: {
     snap?: {
@@ -41,8 +43,6 @@ export interface MagicDraggableOptions {
   initial?: {
     snapPoint?: DraggableSnapPoint
   }
-  snapPoints?: DraggableSnapPoint[]
-  scrollLock?: boolean | { padding: boolean }
   disabled?: boolean
 }
 

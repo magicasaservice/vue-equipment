@@ -204,7 +204,7 @@ The drawer comes with a simple set of props. Only the id is required.
       items: [
         {
           label: 'component',
-          description: 'Optionally pass a Vue component instance. Renders in place of the drawer\’s slot.'
+          description: 'Optionally pass a Vue component instance. Renders in place of the drawer’s slot.'
         },
         {
           label: 'Component'

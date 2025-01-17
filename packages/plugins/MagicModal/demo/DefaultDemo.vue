@@ -1,0 +1,14 @@
+<template>
+  <m-button @click="modalApi.open"> Open Modal </m-button>
+  <magic-modal :id="id" :options="{ focusTrap: false }">
+    <div class="bg-surface-elevation-high w-[40rem] aspect-[4/3] rounded-md" />
+  </magic-modal>
+</template>
+
+<script setup lang="ts">
+import { MButton } from '@maas/mirror/vue'
+import { useMagicModal } from '../src/composables/useMagicModal'
+
+const id = 'default-demo'
+const modalApi = useMagicModal(id)
+</script>
