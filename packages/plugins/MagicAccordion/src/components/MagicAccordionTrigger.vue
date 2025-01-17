@@ -7,7 +7,7 @@
     @mouseenter="onMouseenter"
     @click="onClick"
   >
-    <slot :is-active="view?.active" />
+    <slot :view-active="view?.active" />
   </primitive>
 </template>
 

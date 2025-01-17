@@ -12,7 +12,7 @@
         :on-after-leave="onAfterLeave"
       >
         <primitive v-show="view?.active" :as-child="asChild">
-          <slot :is-active="view?.active" />
+          <slot :view-active="view?.active" />
         </primitive>
       </transition>
     </magic-auto-size>

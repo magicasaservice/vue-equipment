@@ -1,9 +1,10 @@
 <template>
   <primitive
     :as-child="asChild"
-    :class="['magic-accordion-view', { '-active': view.active }]"
+    :data-active="view?.active"
+    class="magic-accordion-view"
   >
-    <slot :is-active="view?.active" />
+    <slot :view-active="view?.active" />
   </primitive>
 </template>
 
@@ -18,8 +19,8 @@ import {
 import { useAccordionView } from '../composables/private/useAccordionView'
 
 interface MagicAccordionViewProps {
-  asChild?: boolean
   id?: string
+  asChild?: boolean
   activeOnMounted?: boolean
 }
 
