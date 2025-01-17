@@ -478,7 +478,7 @@ The provider wraps the menu and configures all child components according to the
           description: 'The menu includes four different modes which preconfigure its appeareance and behavior. Details [below](#mode)'
         },
         { label: 'MenuMode',
-          description: 'menubar | navigation |dropdown | context'
+          description: '\'menubar\' | \'navigation\' |\'dropdown\' | \'context\''
         },
         { label: 'menubar' }
       ]
@@ -529,7 +529,7 @@ The provider wraps the menu and configures all child components according to the
         },
         { label: 'string' },
         { 
-          label: 'magic-menu-content--default | magic-menu-content--fade',
+          label: '\'magic-menu-content--default\' | \'magic-menu-content--fade\'',
           description: 'Dependant on `options.mode`' 
          }
       ]
@@ -557,9 +557,9 @@ The provider wraps the menu and configures all child components according to the
     {
       items: [
         { label: 'floating.strategy' },
-        { label: 'fixed | absolute' },
+        { label: '\'fixed\' | \'absolute\'' },
         { 
-          label: 'fixed | absolute',
+          label: '\'fixed\' | \'absolute\'',
           description: 'Dependant on `options.mode`' 
          }
       ]
