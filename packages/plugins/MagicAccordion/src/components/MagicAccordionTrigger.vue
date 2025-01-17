@@ -1,8 +1,9 @@
 <template>
   <primitive
     ref="elRef"
-    :class="['magic-accordion-trigger', { '-disabled': mappedDisabled }]"
     :as-child="asChild"
+    :data-disabled="mappedDisabled"
+    class="magic-accordion-trigger"
     as="button"
     @mouseenter="onMouseenter"
     @click="onClick"
@@ -71,7 +72,7 @@ onKeyStroke('Enter', onEnter)
 </script>
 
 <style>
-.magic-accordion-trigger.-disabled {
+.magic-accordion-trigger[data-disabled='true'] {
   cursor: var(--magic-accordion-trigger-cursor-disabled, not-allowed);
 }
 </style>

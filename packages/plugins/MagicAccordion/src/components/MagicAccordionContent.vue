@@ -1,9 +1,9 @@
 <template>
-  <div :class="['magic-accordion-content', { '-active': view?.active }]">
+  <div class="magic-accordion-content" :data-active="view?.active">
     <magic-auto-size :width="false">
       <transition
         mode="out-in"
-        :name="state.options.transition"
+        :name="mappedTransition"
         :on-before-enter="onBeforeEnter"
         :on-enter="onEnter"
         :on-after-enter="onAfterEnter"
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
@@ -32,9 +32,10 @@ import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {
   asChild?: boolean
+  transition?: string
 }
 
-defineProps<MagicAccordionContentProps>()
+const { transition } = defineProps<MagicAccordionContentProps>()
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)
@@ -52,6 +53,8 @@ const state = initializeState()
 
 const { getView } = useAccordionView(instanceId)
 const view = getView(viewId)
+
+const mappedTransition = computed(() => transition ?? state.options.transition)
 
 const {
   onBeforeEnter,

@@ -21,10 +21,10 @@ import { useAccordionView } from '../composables/private/useAccordionView'
 interface MagicAccordionViewProps {
   id?: string
   asChild?: boolean
-  activeOnMounted?: boolean
+  active?: boolean
 }
 
-const props = defineProps<MagicAccordionViewProps>()
+const { id, active } = defineProps<MagicAccordionViewProps>()
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 
@@ -34,14 +34,14 @@ if (!instanceId) {
   )
 }
 
-const mappedId = computed(() => props.id ?? `magic-accordion-view-${useId()}`)
+const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)
 
 // Register view
 const { initializeView, deleteView } = useAccordionView(instanceId)
 
 const view = initializeView({
   id: mappedId.value,
-  active: props.activeOnMounted ?? false,
+  active: active ?? false,
 })
 
 // Pass id and active state to children
