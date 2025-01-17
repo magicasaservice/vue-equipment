@@ -1,13 +1,8 @@
 <template>
   <div class="flex flex-col items-center gap-8">
-    <magic-auto-size
-      :class="{
-        'bg-[black]': current === 'a',
-        'bg-[white]': current === 'b',
-      }"
-    >
-      <div v-if="current === 'a'" class="w-[20rem] aspect-[16/9]" />
-      <div v-if="current === 'b'" class="w-[40rem] aspect-[2/1]" />
+    <magic-auto-size class="bg-surface-elevation-high inline-block">
+      <div v-if="current === 'a'" class="w-[20rem] aspect-[3/4]" />
+      <div v-if="current === 'b'" class="w-[35rem] aspect-[16/9]" />
     </magic-auto-size>
 
     <m-button @click="toggleContent">Resize</m-button>

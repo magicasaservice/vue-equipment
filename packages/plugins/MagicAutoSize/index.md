@@ -65,26 +65,55 @@ import { MagicAutoSize } from '@maas/vue-equipment/plugins'
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the `@vueuse/core` package manually to use the component.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the component.
+
+<ProseTable
+  :columns="[
+    { label: 'Package'},
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@maas/primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+        }
+      ]
+    },
+  ]"
+/>
 
 ### Installation
 
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @vueuse/core
+pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [npm]
-npm install @vueuse/core
+npm install @nuxt/kit @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [yarn]
-yarn add @vueuse/core
+yarn add @nuxt/kit @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [bun]
-bun install @vueuse/core
+bun install @nuxt/kit @maas/vue-primitive @vueuse/core
 ```
 
 :::
