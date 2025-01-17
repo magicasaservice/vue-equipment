@@ -104,6 +104,20 @@ The provider wraps the menu and configures all child components according to the
     {
       items: [
         {
+          label: 'asChild',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'options',
           description: 'Refer to the [options table](#options) for details.'
         },

@@ -1,13 +1,15 @@
 <template>
-  <div ref="elRef" class="magic-menu-provider">
+  <primitive ref="elRef" :as-child="asChild" class="magic-menu-provider">
     <slot />
-  </div>
+  </primitive>
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, watch, type MaybeRef, onBeforeUnmount } from 'vue'
+import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
+import { Primitive } from '@maas/vue-primitive'
 import { defu } from 'defu'
+
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
@@ -18,6 +20,7 @@ import type { MagicMenuOptions } from '../types'
 
 interface MagicMenuProviderProps {
   id: MaybeRef<string>
+  asChild?: boolean
   options?: MagicMenuOptions
 }
 
