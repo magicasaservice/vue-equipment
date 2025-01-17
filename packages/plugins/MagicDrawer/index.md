@@ -219,7 +219,7 @@ The drawer comes with a simple set of props. Only the id is required.
 
 ### Options
 
-To customize the drawer override the necessary settings. Any custom settings will be merged with the default settings.
+To customize the drawer override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[

@@ -464,6 +464,8 @@ The provider wraps the menu and configures all child components according to the
 
 ### Options
 
+To customize the menu, override the necessary options by passing them to the `MagicMenuProvider`. Any custom options will be merged with the default options.
+
 <ProseTable 
   :columns="[
     { label: 'Option' },
