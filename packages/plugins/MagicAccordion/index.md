@@ -1,5 +1,7 @@
 # Magic Accordion
 
+<component-preview src="./demo.vue"/>
+
 ## Usage
 
 ```vue

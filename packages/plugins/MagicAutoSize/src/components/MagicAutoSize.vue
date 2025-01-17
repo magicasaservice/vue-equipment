@@ -20,14 +20,9 @@ import '@maas/vue-equipment/utils/css/easings.css'
 interface MagicAutoSizeProps {
   width?: boolean
   height?: boolean
-  immediate?: boolean
 }
 
-const props = withDefaults(defineProps<MagicAutoSizeProps>(), {
-  width: true,
-  height: true,
-  immediate: false,
-})
+const { width = true, height = true } = defineProps<MagicAutoSizeProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 
@@ -37,16 +32,16 @@ const content = ref<HTMLElement | undefined>(undefined)
 const mappedSize = computed(() => {
   if (size.value) {
     switch (true) {
-      case props.width && props.height:
+      case width && height:
         return {
           width: `${size.value.width}px`,
           height: `${size.value.height}px`,
         }
-      case props.width:
+      case width:
         return {
           width: `${size.value.width}px`,
         }
-      case props.height:
+      case height:
         return {
           height: `${size.value.height}px`,
         }
@@ -92,9 +87,9 @@ useMutationObserver(
       content.value = addedNode
     }
 
-    // If immediate is true, reset the size when a comment is added and no children are present
+    // Reset the size when a comment is added and no children are present
     // Vue sets a placeholder comment for a v-if
-    if (props.immediate && !!addedComment && !child.value) {
+    if (!!addedComment && !child.value) {
       content.value = undefined
       size.value = {
         width: 0,
