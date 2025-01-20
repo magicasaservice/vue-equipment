@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { kebabCase } from 'scule'
 
-import { plugins, composables } from '../../metadata'
+import { composables } from '../../metadata'
 
 export default defineNuxtConfig({
   modules: [

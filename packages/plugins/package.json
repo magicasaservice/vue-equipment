@@ -4,64 +4,16 @@
   "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.8.1",
-    "@nuxt/schema": "^3.14.1592",
-    "@nuxt/types": "^2.17.1",
+    "@maas/mirror": "^0.9.0",
+    "@nuxt/schema": "^3.15.2",
+    "@nuxt/types": "^2.18.1",
     "esno": "^4.8.0",
     "mkdist": "^1.6.0",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   },
   "exports": "./index.ts",
   "keywords": [],
   "license": "MIT",
-  "peerDependencies": {
-    "@floating-ui/vue": "^1.0.6",
-    "@maas/vue-primitive": "^1.1.0",
-    "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.15.0",
-    "@vueuse/core": "^10.3.0",
-    "@vueuse/integrations": "^10.3.0",
-    "defu": "^6.1.2",
-    "focus-trap": "^7.5.2",
-    "hls.js": "^1.4.10",
-    "mitt": "^3.0.1",
-    "universal-cookie": "^7.1.0"
-  },
-  "peerDependenciesMeta": {
-    "@floating-ui/vue": {
-      "optional": false
-    },
-    "@maas/wheel-gestures": {
-      "optional": false
-    },
-    "@maas/vue-primitive": {
-      "optional": false
-    },
-    "@nuxt/kit": {
-      "optional": false
-    },
-    "@vueuse/core": {
-      "optional": false
-    },
-    "@vueuse/integrations": {
-      "optional": false
-    },
-    "defu": {
-      "optional": false
-    },
-    "focus-trap": {
-      "optional": false
-    },
-    "hls.js": {
-      "optional": false
-    },
-    "mitt": {
-      "optional": false
-    },
-    "universal-cookie": {
-      "optional": false
-    }
-  },
   "private": true,
   "scripts": {
     "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json",
@@ -73,7 +25,7 @@
     "@floating-ui/dom": "^1.6.13",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "defu": "^6.1.2",
+    "defu": "^6.1.4",
     "vue": "^3.5.13"
   }
 }

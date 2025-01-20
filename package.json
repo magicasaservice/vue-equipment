@@ -5,13 +5,14 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "type": "module",
   "devDependencies": {
-    "@antfu/ni": "^0.23.0",
+    "@antfu/ni": "^0.23.2",
     "@maas/config": "^1.4.1",
     "@release-it/bumper": "^6.0.1",
-    "@types/node": "^22.4.1",
-    "release-it": "^17.0.1",
-    "tailwindcss": "^3.4.16",
-    "turbo": "^2.0.6"
+    "@types/node": "^22.10.7",
+    "release-it": "^17.11.0",
+    "tailwindcss": "^3.4.17",
+    "turbo": "^2.3.3",
+    "typescript": "5.6.3"
   },
   "exports": {
     "./nuxt": {
@@ -49,8 +50,8 @@
     "@maas/vue-primitive": "^1.1.0",
     "@maas/wheel-gestures": "^1.0.0",
     "@nuxt/kit": "^3.15.0",
-    "@vueuse/core": "^10.3.0",
-    "@vueuse/integrations": "^10.3.0",
+    "@vueuse/core": ">=12.4.0",
+    "@vueuse/integrations": ">=12.4.0",
     "defu": "^6.1.2",
     "focus-trap": "^7.5.2",
     "hls.js": "^1.4.10",
@@ -63,49 +64,49 @@
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
-      "optional": false
+      "optional": true
     },
     "@nuxt/kit": {
-      "optional": false
+      "optional": true
     },
     "@maas/magic-timer": {
-      "optional": false
+      "optional": true
     },
     "@maas/vue-primitive": {
-      "optional": false
+      "optional": true
     },
     "@maas/wheel-gestures": {
-      "optional": false
+      "optional": true
     },
     "@vueuse/core": {
-      "optional": false
+      "optional": true
     },
     "@vueuse/integrations": {
-      "optional": false
+      "optional": true
     },
     "defu": {
-      "optional": false
+      "optional": true
     },
     "hls.js": {
-      "optional": false
+      "optional": true
     },
     "luxon": {
-      "optional": false
+      "optional": true
     },
     "mitt": {
-      "optional": false
+      "optional": true
     },
     "motion": {
-      "optional": false
+      "optional": true
     },
     "nuxt": {
-      "optional": false
+      "optional": true
     },
     "universal-cookie": {
-      "optional": false
+      "optional": true
     },
     "vue": {
-      "optional": false
+      "optional": true
     }
   },
   "scripts": {
@@ -120,7 +121,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
     "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "turbo run t:release && release-it"
+    "release": "turbo run t:release && release-it",
+    "update:deps": "pnpm dlx taze -r -w",
+    "update:deps:major": "pnpm dlx taze major -r -w"
   },
   "volta": {
     "node": "20.18.1"
@@ -143,7 +146,7 @@
       }
     }
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.15.4",
   "pnpm": {
     "overrides": {
       "typescript": "5.6.3"

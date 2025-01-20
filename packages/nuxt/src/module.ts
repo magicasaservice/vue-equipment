@@ -25,7 +25,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   async setup(options, nuxt) {
     let mappedPlugins: string[]
-    let mappedComposables: any[]
+    let mappedComposables: string[]
 
     const resolver = createResolver(import.meta.url)
 
