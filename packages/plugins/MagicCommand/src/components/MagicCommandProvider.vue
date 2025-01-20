@@ -1,66 +1,112 @@
 <template>
-  <div class="magic-command-provider">
+  <primitive ref="elRef" :as-child="asChild" class="magic-command-provider">
     <slot />
-  </div>
+  </primitive>
 </template>
 
-<script setup lang="ts">
-import { watch, provide, onBeforeUnmount, type MaybeRef } from 'vue'
-import { createDefu } from 'defu'
-import { useMagicKeys } from '@vueuse/core'
+<script lang="ts" setup>
+import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
+import { Primitive } from '@maas/vue-primitive'
+import { defu } from 'defu'
+
+import { useCommandState } from '../composables/private/useCommandState'
+import { useCommandView } from '../composables/private/useCommandView'
+// import { useCommandKeyListener } from '../composables/private/useCommandKeyListener'
+import { MagicCommandInstanceId } from '../symbols'
 import { defaultOptions } from '../utils/defaultOptions'
-import { useMagicCommand } from '../composables/useMagicCommand'
-import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
-import type { MagicCommandOptions } from './../types/index'
+import type { MagicCommandOptions } from '../types'
 
-// Prevent keys arrays from being merged with default
-const customDefu = createDefu((obj, key, value) => {
-  if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {
-    obj[key] = value
-    return true
-  }
-})
-
-interface MagicCommandProps {
+interface MagicCommandProviderProps {
   id: MaybeRef<string>
+  asChild?: boolean
   options?: MagicCommandOptions
 }
 
-const props = withDefaults(defineProps<MagicCommandProps>(), {
-  options: () => defaultOptions,
+const { id, options } = defineProps<MagicCommandProviderProps>()
+const elRef = ref<HTMLElement | undefined>(undefined)
+
+const mappedOptions = defu(options, defaultOptions)
+
+const { initializeState, deleteState } = useCommandState(id)
+const state = initializeState(mappedOptions)
+
+// If the mode changes, save the current pointer position
+// If the pointer moves, switch to mouse mode
+const lastX = ref(0)
+const lastY = ref(0)
+
+const { x, y } = usePointer()
+
+watch(
+  () => state?.input.type,
+  (value) => {
+    if (value === 'keyboard') {
+      lastX.value = x.value
+      lastY.value = y.value
+    }
+  }
+)
+
+watch([x, y], ([x, y]) => {
+  if (x !== lastX.value || y !== lastY.value) {
+    if (state) {
+      state.input.type = 'pointer'
+    }
+  }
 })
 
-const keys = useMagicKeys()
-const commandApi = useMagicCommand(props.id)
-const mappedOptions = customDefu(props.options, defaultOptions)
+// Add key listener
+// const {
+//   onArrowRight,
+//   onArrowLeft,
+//   onArrowUp,
+//   onArrowDown,
+//   onEscape,
+//   onEnter,
+//   onTab,
+// } = useCommandKeyListener(id)
 
-const { open, close } = commandApi
+// onKeyStroke('ArrowRight', onArrowRight)
+// onKeyStroke('ArrowLeft', onArrowLeft)
+// onKeyStroke('ArrowDown', onArrowDown)
+// onKeyStroke('ArrowUp', onArrowUp)
+// onKeyStroke('Escape', onEscape)
+// onKeyStroke('Enter', onEnter)
+// onKeyStroke('Tab', onTab)
 
-if (mappedOptions.keys?.open) {
-  for (const key of mappedOptions.keys.open) {
-    watch(keys[key], (value) => {
-      if (value) {
-        open()
-      }
-    })
+// Handle off-click
+const { unselectAllViews } = useCommandView(id)
+
+onClickOutside(
+  elRef,
+  () => {
+    if (state) {
+      state.active = false
+    }
+    unselectAllViews()
+  },
+  {
+    ignore: [
+      '.magic-command-trigger',
+      '.magic-command-item',
+      'magic-command-float',
+    ],
   }
-}
+)
 
-if (mappedOptions.keys?.close) {
-  for (const key of mappedOptions.keys.close) {
-    watch(keys[key], (value) => {
-      if (value) {
-        close()
-      }
-    })
-  }
-}
-
+// Lifecycle
 onBeforeUnmount(() => {
-  close()
+  deleteState()
 })
 
-provide(MagicCommandInstanceId, props.id)
-provide(MagicCommandProviderOptions, mappedOptions)
+provide(MagicCommandInstanceId, id)
 </script>
+
+<style>
+.magic-command-provider {
+  outline: none;
+  user-select: none;
+}
+</style>

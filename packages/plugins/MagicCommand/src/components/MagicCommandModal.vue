@@ -11,10 +11,10 @@
 
 <script setup lang="ts">
 import { inject, watch, onBeforeUnmount } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '../../../MagicEmitter'
 import { useMagicModal } from '../../../MagicModal'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { MagicCommandInstanceId } from './../symbols'
+import { MagicCommandInstanceId } from '../symbols'
 
 import type { MagicCommandModalOptions } from '../types'
 

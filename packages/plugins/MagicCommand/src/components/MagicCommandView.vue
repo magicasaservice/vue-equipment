@@ -1,77 +1,54 @@
 <template>
-  <div v-if="isActive" ref="elRef" class="magic-command-view">
-    <slot />
+  <div :id="mappedId" class="magic-menu-view">
+    <slot :view-active="view.active" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  inject,
-  toValue,
-  onMounted,
-  onUnmounted,
-  watch,
-  nextTick,
-  useId,
-} from 'vue'
-import { useCommandStore } from '../composables/private/useCommandStore'
+import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { useCommandView } from '../composables/private/useCommandView'
-import { MagicCommandInstanceId } from '../symbols'
+import {
+  MagicCommandInstanceId,
+  MagicCommandViewId,
+  MagicCommandParentTree,
+  MagicCommandItemId,
+  MagicCommandViewActive,
+} from '../symbols'
 
 interface MagicCommandViewProps {
   id?: string
-  default?: boolean
+  initial?: boolean
 }
 
-const props = withDefaults(defineProps<MagicCommandViewProps>(), {
-  default: false,
-})
-const commandId = inject(MagicCommandInstanceId, '')
-const elRef = ref<HTMLElement | undefined>(undefined)
+const { id, initial = false } = defineProps<MagicCommandViewProps>()
 
-const { activeView, selectView } = useCommandView()
+const parentTree = inject(MagicCommandParentTree, [])
+const instanceId = inject(MagicCommandInstanceId, undefined)
+const itemId = inject(MagicCommandItemId, undefined)
 
-const mappedId = computed(() => {
-  return props.id ?? useId() ?? ''
-})
+if (!instanceId) {
+  throw new Error('MagicCommandView must be nested inside MagicCommandProvider')
+}
 
-const isActive = computed(() => {
-  return toValue(mappedId) === activeView.value
-})
+const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
+const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
-const items = computed(() => {
-  return findInstance(toValue(commandId))?.items
-})
+// Register view
+const { initializeView, deleteView } = useCommandView(instanceId)
 
-const { addView, removeView, findInstance, sortItems } = useCommandStore()
-
-onMounted(() => {
-  if (toValue(commandId)) {
-    addView(toValue(commandId), mappedId.value)
-  }
-
-  if (props.default) {
-    selectView(mappedId.value)
-  }
+const view = initializeView({
+  id: mappedId.value,
+  parent: { views: parentTree, item: itemId ?? '' },
+  initial,
 })
 
-onUnmounted(() => {
-  if (toValue(commandId)) {
-    removeView(toValue(commandId), mappedId.value)
-  }
-})
+// Pass id, active state and parent tree to children
+provide(MagicCommandParentTree, mappedParentTree.value)
+provide(MagicCommandViewId, mappedId.value)
+provide(MagicCommandViewActive, view.active)
 
-// Update sorting for MagicCommandItems
-watch(
-  () => items.value?.length,
-  () => {
-    nextTick(() => {
-      if (elRef.value) {
-        sortItems(toValue(commandId), elRef.value)
-      }
-    })
-  }
-)
+// Lifecycle
+onBeforeUnmount(() => {
+  deleteView(mappedId.value)
+})
 </script>

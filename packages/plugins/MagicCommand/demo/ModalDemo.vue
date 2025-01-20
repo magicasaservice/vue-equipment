@@ -1,19 +1,12 @@
 <template>
-  <magic-command-provider :id="id">
-    <div class="flex flex-wrap gap-4 justify-center">
-      <div class="rounded flex flex-col w-60 gap-2 bg-gray-500/5">
-        <magic-command-trigger
-          view-id="initial-view"
-          class="w-full h-full px-6 py-4 text-center"
-        >
-          Open palette
-        </magic-command-trigger>
-      </div>
-    </div>
+  <magic-command-provider id="magic-command-modal-demo">
+    <magic-command-trigger view-id="initial-view" as-child>
+      <m-button> Open Modal </m-button>
+    </magic-command-trigger>
 
     <magic-command-modal>
       <magic-command-renderer
-        class="w-[40rem] h-[30rem] relative inset-0 border border-solid border-neutral-600 flex flex-col"
+        class="w-[40rem] h-[30rem] relative inset-0 bg-surface-elevation-high flex flex-col"
       />
     </magic-command-modal>
 
@@ -27,13 +20,11 @@
 
         <div class="py-2">
           <span class="p-4 text-xs text-neutral-600">Suggestions</span>
-          <magic-command-item @click="toggleDynamicItem" :initial="true">
-            <demo-item>{{ dynamic ? 'Remove' : 'Add ' }} Filter</demo-item>
-          </magic-command-item>
+
           <magic-command-item>
             <magic-command-view>
-              <magic-command-trigger>
-                <demo-item>View Projects</demo-item>
+              <magic-command-trigger as-child>
+                <m-menu-item>View Projects</m-menu-item>
               </magic-command-trigger>
               <magic-command-content
                 class="h-full w-full bg-neutral-800 overflow-auto"
@@ -49,7 +40,7 @@
                     :key="nth"
                     :initial="nth === 1"
                   >
-                    <demo-item>Project {{ nth }}</demo-item>
+                    <m-menu-item>Project {{ nth }}</m-menu-item>
                   </magic-command-item>
                 </div>
                 <div class="sticky bottom-0 px-2 bg-neutral-800">
@@ -70,15 +61,8 @@
         </div>
         <div>
           <span class="p-4 text-xs text-neutral-600">Filter</span>
-          <magic-command-item v-if="dynamic">
-            <demo-item>All</demo-item>
-          </magic-command-item>
-          <magic-command-item
-            v-for="nth in 20"
-            :key="nth"
-            @click="itemCallback(nth)"
-          >
-            <demo-item>{{ nth }}</demo-item>
+          <magic-command-item v-for="nth in 20" :key="nth">
+            <m-menu-item>{{ nth }}</m-menu-item>
           </magic-command-item>
         </div>
       </magic-command-content>
@@ -87,43 +71,5 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, nextTick } from 'vue'
-import {
-  useMagicCommand,
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
-import type { ValueOf } from '@maas/vue-equipment/utils'
-
-import DemoItem from './demo/DemoItem.vue'
-
-const id = 'magic-command-demo'
-const dynamic = ref(false)
-
-function toggleDynamicItem() {
-  dynamic.value = !dynamic.value
-}
-
-function itemCallback(nth: number | string) {
-  console.log(nth)
-}
-
-function callback(
-  id: keyof MagicEmitterEvents,
-  payload: ValueOf<MagicEmitterEvents>
-) {
-  // console.log(id, payload)
-}
-
-useMagicEmitter().on('*', callback)
-
-onBeforeUnmount(() => {
-  useMagicEmitter().off('*', callback)
-})
+import { MButton, MMenuItem } from '@maas/mirror/vue'
 </script>
-
-<style>
-#magic-command-demo {
-  --magic-drawer-drag-overshoot: 0rem;
-}
-</style>

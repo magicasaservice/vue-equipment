@@ -2,4 +2,4 @@
 
 ## Usage
 
-<component-preview src="./demo/index.vue" />
+<component-preview src="./demo/ModalDemo.vue" />

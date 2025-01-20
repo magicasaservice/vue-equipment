@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 interface Props {
-  isActive: boolean
+  isActive?: boolean
 }
 
 defineProps<Props>()
