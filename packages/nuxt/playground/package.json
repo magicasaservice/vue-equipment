@@ -16,7 +16,7 @@
     "scule": "^1.3.0"
   },
   "dependencies": {
-    "@maas/mirror": "^0.9.0",
+    "@maas/mirror": "^0.9.1",
     "@maas/vue-equipment/plugins": "workspace:plugins@*"
   }
 }

@@ -88,8 +88,8 @@ importers:
   apps/docs:
     dependencies:
       '@maas/mirror':
-        specifier: ^0.9.0
-        version: 0.9.0(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
+        specifier: ^0.9.1
+        version: 0.9.1(@clack/prompts@0.9.1)(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(rimraf@5.0.10)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
       '@maas/vue-equipment/composables':
         specifier: workspace:composables@*
         version: link:../../packages/composables
@@ -159,8 +159,8 @@ importers:
         version: 3.5.13(typescript@5.6.3)
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.9.0
-        version: 0.9.0(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
+        specifier: ^0.9.1
+        version: 0.9.1(@clack/prompts@0.9.1)(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(rimraf@5.0.10)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
       '@types/fontkit':
         specifier: ^2.0.7
         version: 2.0.7
@@ -237,8 +237,8 @@ importers:
   packages/nuxt/playground:
     dependencies:
       '@maas/mirror':
-        specifier: ^0.9.0
-        version: 0.9.0(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
+        specifier: ^0.9.1
+        version: 0.9.1(@clack/prompts@0.9.1)(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(rimraf@5.0.10)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
       '@maas/vue-equipment/plugins':
         specifier: workspace:plugins@*
         version: link:../../plugins
@@ -278,8 +278,8 @@ importers:
         version: 3.5.13(typescript@5.6.3)
     devDependencies:
       '@maas/mirror':
-        specifier: ^0.9.0
-        version: 0.9.0(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
+        specifier: ^0.9.1
+        version: 0.9.1(@clack/prompts@0.9.1)(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(rimraf@5.0.10)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)
       '@nuxt/schema':
         specifier: ^3.15.2
         version: 3.15.2
@@ -1347,8 +1347,8 @@ packages:
     peerDependencies:
       eventemitter3: ^5.0.1
 
-  '@maas/mirror@0.9.0':
-    resolution: {integrity: sha512-bG5sAt6Xb84MjAs8vm7tKfLxQpGfQeX2N8Co1Obp5Ry9slJBUo/0/4h+rmi3O7cWR0s++ALK/pVGanFyKVSL6g==}
+  '@maas/mirror@0.9.1':
+    resolution: {integrity: sha512-o7x+GPmqlc1gf+iT4SQsZv5+Z7OnLA7uG6j9JIdCQaMa1uaYq0LqULMY5MiSE9tmm+fZL1SR0uS2MsFkp2zMAg==}
     hasBin: true
     peerDependencies:
       '@clack/prompts': ^0.7.0
@@ -1369,43 +1369,6 @@ packages:
       scule: ^1.0.0
       style-dictionary: ^4.3.0
       tailwindcss: ^3.4.4
-    peerDependenciesMeta:
-      '@clack/prompts':
-        optional: true
-      '@prettier/sync':
-        optional: true
-      c12:
-        optional: true
-      camelcase-keys:
-        optional: true
-      citty:
-        optional: true
-      colorjs.io:
-        optional: true
-      deepmerge:
-        optional: true
-      defu:
-        optional: true
-      giget:
-        optional: true
-      glob:
-        optional: true
-      lodash-es:
-        optional: true
-      multimatch:
-        optional: true
-      picocolors:
-        optional: true
-      reduce-css-calc:
-        optional: true
-      rimraf:
-        optional: true
-      scule:
-        optional: true
-      style-dictionary:
-        optional: true
-      tailwindcss:
-        optional: true
 
   '@maas/vue-primitive@1.1.0':
     resolution: {integrity: sha512-BKnvusRFtk7IwxVKH9HbywPNcnqFlYj8Y9VSeSKkfulLm8T2E91qTeLYqdSeW0fn9kMo/jiE15IJ86IWremLiA==}
@@ -4629,9 +4592,8 @@ packages:
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
-  node-fetch-native@1.6.5:
-    resolution: {integrity: sha512-WvKUNz1fh7EjX9LzBAWgBQt+5BYbTtvElqkOlUsHZyr6yXlRPqfkXFyBwa7KN7LT0q07Uc+/ferkX0PUE9SiZw==}
-    deprecated: https://github.com/unjs/node-fetch-native/issues/135
+  node-fetch-native@1.6.6:
+    resolution: {integrity: sha512-8Mc2HhqPdlIfedsuZoc3yioPuzp6b+L5jRCRY1QzuWZh2EGJVQrGppC6V6cF0bLdbW0+O2YpqCA25aF/1lvipQ==}
 
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
@@ -7028,7 +6990,6 @@ snapshots:
   '@bundled-es-modules/deepmerge@4.3.1':
     dependencies:
       deepmerge: 4.3.1
-    optional: true
 
   '@bundled-es-modules/glob@10.4.2':
     dependencies:
@@ -7040,7 +7001,6 @@ snapshots:
       stream: 0.0.3
       string_decoder: 1.3.0
       url: 0.11.4
-    optional: true
 
   '@bundled-es-modules/memfs@4.9.4':
     dependencies:
@@ -7051,7 +7011,6 @@ snapshots:
       path: 0.12.7
       stream: 0.0.3
       util: 0.12.5
-    optional: true
 
   '@clack/core@0.4.1':
     dependencies:
@@ -7533,7 +7492,6 @@ snapshots:
   '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
     dependencies:
       tslib: 2.8.1
-    optional: true
 
   '@jsonjoy.com/json-pack@1.1.1(tslib@2.8.1)':
     dependencies:
@@ -7542,12 +7500,10 @@ snapshots:
       hyperdyperid: 1.2.0
       thingies: 1.21.0(tslib@2.8.1)
       tslib: 2.8.1
-    optional: true
 
   '@jsonjoy.com/util@1.5.0(tslib@2.8.1)':
     dependencies:
       tslib: 2.8.1
-    optional: true
 
   '@koa/router@12.0.2':
     dependencies:
@@ -7588,8 +7544,9 @@ snapshots:
     dependencies:
       eventemitter3: 5.0.1
 
-  '@maas/mirror@0.9.0(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)':
-    optionalDependencies:
+  '@maas/mirror@0.9.1(@clack/prompts@0.9.1)(@prettier/sync@0.3.0(prettier@3.4.2))(c12@2.0.1(magicast@0.3.5))(camelcase-keys@8.0.2)(citty@0.1.6)(colorjs.io@0.4.5)(deepmerge@4.3.1)(defu@6.1.4)(giget@1.2.3)(glob@10.4.5)(lodash-es@4.17.21)(multimatch@6.0.0)(picocolors@1.1.1)(reduce-css-calc@2.1.8)(rimraf@5.0.10)(scule@1.3.0)(style-dictionary@4.3.0)(tailwindcss@3.4.17)':
+    dependencies:
+      '@clack/prompts': 0.9.1
       '@prettier/sync': 0.3.0(prettier@3.4.2)
       c12: 2.0.1(magicast@0.3.5)
       camelcase-keys: 8.0.2
@@ -7603,6 +7560,7 @@ snapshots:
       multimatch: 6.0.0
       picocolors: 1.1.1
       reduce-css-calc: 2.1.8
+      rimraf: 5.0.10
       scule: 1.3.0
       style-dictionary: 4.3.0
       tailwindcss: 3.4.17
@@ -7966,7 +7924,7 @@ snapshots:
       h3: 1.13.1
       local-pkg: 1.0.0
       magic-string: 0.30.17
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       ofetch: 1.4.1
       pathe: 2.0.2
       perfect-debounce: 1.0.0
@@ -8248,7 +8206,6 @@ snapshots:
   '@prettier/sync@0.3.0(prettier@3.4.2)':
     dependencies:
       prettier: 3.4.2
-    optional: true
 
   '@redocly/ajv@8.11.2':
     dependencies:
@@ -8618,8 +8575,7 @@ snapshots:
 
   '@types/mime@1.3.5': {}
 
-  '@types/minimatch@3.0.5':
-    optional: true
+  '@types/minimatch@3.0.5': {}
 
   '@types/node@16.18.124': {}
 
@@ -9145,11 +9101,9 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@yarnpkg/lockfile@1.1.0':
-    optional: true
+  '@yarnpkg/lockfile@1.1.0': {}
 
-  '@zip.js/zip.js@2.7.54':
-    optional: true
+  '@zip.js/zip.js@2.7.54': {}
 
   abbrev@2.0.0: {}
 
@@ -9256,11 +9210,9 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  array-differ@4.0.0:
-    optional: true
+  array-differ@4.0.0: {}
 
-  array-union@3.0.1:
-    optional: true
+  array-union@3.0.1: {}
 
   assert@2.1.0:
     dependencies:
@@ -9269,7 +9221,6 @@ snapshots:
       object-is: 1.1.6
       object.assign: 4.1.7
       util: 0.12.5
-    optional: true
 
   assertion-error@2.0.1: {}
 
@@ -9319,7 +9270,6 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
-    optional: true
 
   b4a@1.6.7: {}
 
@@ -9441,7 +9391,6 @@ snapshots:
       es-define-property: 1.0.1
       get-intrinsic: 1.2.7
       set-function-length: 1.2.2
-    optional: true
 
   call-bound@1.0.3:
     dependencies:
@@ -9458,10 +9407,8 @@ snapshots:
       map-obj: 4.3.0
       quick-lru: 6.1.2
       type-fest: 2.19.0
-    optional: true
 
-  camelcase@7.0.1:
-    optional: true
+  camelcase@7.0.1: {}
 
   camelcase@8.0.0: {}
 
@@ -9521,8 +9468,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  ci-info@3.9.0:
-    optional: true
+  ci-info@3.9.0: {}
 
   ci-info@4.1.0: {}
 
@@ -9576,8 +9522,7 @@ snapshots:
 
   colorette@1.4.0: {}
 
-  colorjs.io@0.4.5:
-    optional: true
+  colorjs.io@0.4.5: {}
 
   comma-separated-tokens@2.0.3: {}
 
@@ -9597,8 +9542,7 @@ snapshots:
 
   compatx@0.1.8: {}
 
-  component-emitter@2.0.0:
-    optional: true
+  component-emitter@2.0.0: {}
 
   compress-commons@6.0.2:
     dependencies:
@@ -9705,8 +9649,7 @@ snapshots:
       mdn-data: 2.0.30
       source-map-js: 1.2.1
 
-  css-unit-converter@1.1.2:
-    optional: true
+  css-unit-converter@1.1.2: {}
 
   css-what@6.1.0: {}
 
@@ -9808,7 +9751,6 @@ snapshots:
       es-define-property: 1.0.1
       es-errors: 1.3.0
       gopd: 1.2.0
-    optional: true
 
   define-lazy-prop@2.0.0: {}
 
@@ -9819,7 +9761,6 @@ snapshots:
       define-data-property: 1.1.4
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
-    optional: true
 
   defu@6.1.4: {}
 
@@ -10419,7 +10360,6 @@ snapshots:
   find-yarn-workspace-root@2.0.0:
     dependencies:
       micromatch: 4.0.8
-    optional: true
 
   flat-cache@4.0.1:
     dependencies:
@@ -10435,7 +10375,6 @@ snapshots:
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
-    optional: true
 
   foreground-child@3.3.0:
     dependencies:
@@ -10519,7 +10458,7 @@ snapshots:
       citty: 0.1.6
       consola: 3.4.0
       defu: 6.1.4
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       nypm: 0.3.12
       ohash: 1.1.4
       pathe: 1.1.2
@@ -10647,7 +10586,6 @@ snapshots:
   has-property-descriptors@1.0.2:
     dependencies:
       es-define-property: 1.0.1
-    optional: true
 
   has-symbols@1.1.0: {}
 
@@ -10750,8 +10688,7 @@ snapshots:
 
   human-signals@5.0.0: {}
 
-  hyperdyperid@1.2.0:
-    optional: true
+  hyperdyperid@1.2.0: {}
 
   iconv-lite@0.4.24:
     dependencies:
@@ -10843,7 +10780,6 @@ snapshots:
     dependencies:
       call-bound: 1.0.3
       has-tostringtag: 1.0.2
-    optional: true
 
   is-arrayish@0.2.1: {}
 
@@ -10855,8 +10791,7 @@ snapshots:
     dependencies:
       builtin-modules: 3.3.0
 
-  is-callable@1.2.7:
-    optional: true
+  is-callable@1.2.7: {}
 
   is-core-module@2.16.1:
     dependencies:
@@ -10904,7 +10839,6 @@ snapshots:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
-    optional: true
 
   is-npm@6.0.0: {}
 
@@ -10912,8 +10846,7 @@ snapshots:
 
   is-path-inside@4.0.0: {}
 
-  is-plain-obj@4.1.0:
-    optional: true
+  is-plain-obj@4.1.0: {}
 
   is-reference@1.2.1:
     dependencies:
@@ -10937,7 +10870,6 @@ snapshots:
   is-typed-array@1.1.15:
     dependencies:
       which-typed-array: 1.1.18
-    optional: true
 
   is-unicode-supported@0.1.0: {}
 
@@ -10961,8 +10893,7 @@ snapshots:
 
   isarray@1.0.0: {}
 
-  isarray@2.0.5:
-    optional: true
+  isarray@2.0.5: {}
 
   isexe@2.0.0: {}
 
@@ -11026,7 +10957,6 @@ snapshots:
       isarray: 2.0.5
       jsonify: 0.0.1
       object-keys: 1.1.1
-    optional: true
 
   json5@2.2.3: {}
 
@@ -11036,8 +10966,7 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
-  jsonify@0.0.1:
-    optional: true
+  jsonify@0.0.1: {}
 
   keygrip@1.1.0:
     dependencies:
@@ -11052,7 +10981,6 @@ snapshots:
   klaw-sync@6.0.0:
     dependencies:
       graceful-fs: 4.2.11
-    optional: true
 
   kleur@3.0.3: {}
 
@@ -11255,8 +11183,7 @@ snapshots:
       '@babel/types': 7.26.5
       source-map-js: 1.2.1
 
-  map-obj@4.3.0:
-    optional: true
+  map-obj@4.3.0: {}
 
   mark.js@8.11.1: {}
 
@@ -11297,7 +11224,6 @@ snapshots:
       '@jsonjoy.com/util': 1.5.0(tslib@2.8.1)
       tree-dump: 1.0.2(tslib@2.8.1)
       tslib: 2.8.1
-    optional: true
 
   merge-stream@2.0.0: {}
 
@@ -11438,7 +11364,6 @@ snapshots:
       array-differ: 4.0.0
       array-union: 3.0.1
       minimatch: 3.1.2
-    optional: true
 
   mute-stream@1.0.0: {}
 
@@ -11510,7 +11435,7 @@ snapshots:
       magicast: 0.3.5
       mime: 4.0.6
       mlly: 1.7.4
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       ofetch: 1.4.1
       ohash: 1.1.4
       openapi-typescript: 7.5.2(typescript@5.6.3)
@@ -11563,7 +11488,7 @@ snapshots:
 
   node-addon-api@7.1.1: {}
 
-  node-fetch-native@1.6.5: {}
+  node-fetch-native@1.6.6: {}
 
   node-fetch@2.7.0:
     dependencies:
@@ -11868,17 +11793,14 @@ snapshots:
 
   object-hash@3.0.0: {}
 
-  object-inspect@1.13.3:
-    optional: true
+  object-inspect@1.13.3: {}
 
   object-is@1.1.6:
     dependencies:
       call-bind: 1.0.8
       define-properties: 1.2.1
-    optional: true
 
-  object-keys@1.1.1:
-    optional: true
+  object-keys@1.1.1: {}
 
   object.assign@4.1.7:
     dependencies:
@@ -11888,12 +11810,11 @@ snapshots:
       es-object-atoms: 1.1.1
       has-symbols: 1.1.0
       object-keys: 1.1.1
-    optional: true
 
   ofetch@1.4.1:
     dependencies:
       destr: 2.0.3
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       ufo: 1.5.4
 
   ohash@1.1.4: {}
@@ -12104,7 +12025,6 @@ snapshots:
       slash: 2.0.0
       tmp: 0.0.33
       yaml: 2.7.0
-    optional: true
 
   path-browserify@1.0.1: {}
 
@@ -12129,14 +12049,12 @@ snapshots:
 
   path-type@5.0.0: {}
 
-  path-unified@0.2.0:
-    optional: true
+  path-unified@0.2.0: {}
 
   path@0.12.7:
     dependencies:
       process: 0.11.10
       util: 0.10.4
-    optional: true
 
   pathe@1.1.2: {}
 
@@ -12172,8 +12090,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  possible-typed-array-names@1.0.0:
-    optional: true
+  possible-typed-array-names@1.0.0: {}
 
   postcss-calc@10.1.0(postcss@8.5.1):
     dependencies:
@@ -12374,8 +12291,7 @@ snapshots:
       postcss: 8.5.1
       postcss-selector-parser: 6.1.2
 
-  postcss-value-parser@3.3.1:
-    optional: true
+  postcss-value-parser@3.3.1: {}
 
   postcss-value-parser@4.2.0: {}
 
@@ -12429,8 +12345,7 @@ snapshots:
 
   punycode.js@2.3.1: {}
 
-  punycode@1.4.1:
-    optional: true
+  punycode@1.4.1: {}
 
   punycode@2.3.1: {}
 
@@ -12441,14 +12356,12 @@ snapshots:
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
-    optional: true
 
   queue-microtask@1.2.3: {}
 
   queue-tick@1.0.1: {}
 
-  quick-lru@6.1.2:
-    optional: true
+  quick-lru@6.1.2: {}
 
   radix3@1.1.2: {}
 
@@ -12535,7 +12448,6 @@ snapshots:
     dependencies:
       css-unit-converter: 1.1.2
       postcss-value-parser: 3.3.1
-    optional: true
 
   refa@0.12.1:
     dependencies:
@@ -12647,7 +12559,6 @@ snapshots:
   rimraf@2.7.1:
     dependencies:
       glob: 7.2.3
-    optional: true
 
   rimraf@5.0.10:
     dependencies:
@@ -12787,7 +12698,6 @@ snapshots:
       get-intrinsic: 1.2.7
       gopd: 1.2.0
       has-property-descriptors: 1.0.2
-    optional: true
 
   setprototypeof@1.1.0: {}
 
@@ -12822,7 +12732,6 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
       object-inspect: 1.13.3
-    optional: true
 
   side-channel-map@1.0.1:
     dependencies:
@@ -12830,7 +12739,6 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.2.7
       object-inspect: 1.13.3
-    optional: true
 
   side-channel-weakmap@1.0.2:
     dependencies:
@@ -12839,7 +12747,6 @@ snapshots:
       get-intrinsic: 1.2.7
       object-inspect: 1.13.3
       side-channel-map: 1.0.1
-    optional: true
 
   side-channel@1.1.0:
     dependencies:
@@ -12848,7 +12755,6 @@ snapshots:
       side-channel-list: 1.0.0
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
-    optional: true
 
   siginfo@2.0.0: {}
 
@@ -12872,8 +12778,7 @@ snapshots:
 
   sisteransi@1.0.5: {}
 
-  slash@2.0.0:
-    optional: true
+  slash@2.0.0: {}
 
   slash@4.0.0: {}
 
@@ -12957,7 +12862,6 @@ snapshots:
   stream@0.0.3:
     dependencies:
       component-emitter: 2.0.0
-    optional: true
 
   streamx@2.21.1:
     dependencies:
@@ -13045,7 +12949,6 @@ snapshots:
       path-unified: 0.2.0
       prettier: 3.4.2
       tinycolor2: 1.6.0
-    optional: true
 
   stylehacks@7.0.4(postcss@8.5.1):
     dependencies:
@@ -13192,14 +13095,12 @@ snapshots:
   thingies@1.21.0(tslib@2.8.1):
     dependencies:
       tslib: 2.8.1
-    optional: true
 
   tiny-invariant@1.3.3: {}
 
   tinybench@2.9.0: {}
 
-  tinycolor2@1.6.0:
-    optional: true
+  tinycolor2@1.6.0: {}
 
   tinyexec@0.3.2: {}
 
@@ -13235,7 +13136,6 @@ snapshots:
   tree-dump@1.0.2(tslib@2.8.1):
     dependencies:
       tslib: 2.8.1
-    optional: true
 
   tree-kill@1.2.2: {}
 
@@ -13406,7 +13306,7 @@ snapshots:
       consola: 3.4.0
       defu: 6.1.4
       mime: 3.0.0
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       pathe: 1.1.2
 
   unhead@1.11.18:
@@ -13547,7 +13447,7 @@ snapshots:
       destr: 2.0.3
       h3: 1.13.1
       lru-cache: 10.4.3
-      node-fetch-native: 1.6.5
+      node-fetch-native: 1.6.6
       ofetch: 1.4.1
       ufo: 1.5.4
     optionalDependencies:
@@ -13615,7 +13515,6 @@ snapshots:
     dependencies:
       punycode: 1.4.1
       qs: 6.14.0
-    optional: true
 
   urlpattern-polyfill@8.0.2: {}
 
@@ -13624,7 +13523,6 @@ snapshots:
   util@0.10.4:
     dependencies:
       inherits: 2.0.3
-    optional: true
 
   util@0.12.5:
     dependencies:
@@ -13633,7 +13531,6 @@ snapshots:
       is-generator-function: 1.1.0
       is-typed-array: 1.1.15
       which-typed-array: 1.1.18
-    optional: true
 
   validate-npm-package-license@3.0.4:
     dependencies:
@@ -14002,7 +13899,6 @@ snapshots:
       for-each: 0.3.3
       gopd: 1.2.0
       has-tostringtag: 1.0.2
-    optional: true
 
   which@2.0.2:
     dependencies:
