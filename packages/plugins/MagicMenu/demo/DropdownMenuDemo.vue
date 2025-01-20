@@ -1,6 +1,6 @@
 <template>
   <magic-menu-provider id="magic-menu-dropdown" :options="{ mode: 'dropdown' }">
-    <magic-menu-view v-slot="{ viewActive }">
+    <magic-menu-view>
       <magic-menu-trigger as-child>
         <m-button size="xs">
           {{ menu.label }}

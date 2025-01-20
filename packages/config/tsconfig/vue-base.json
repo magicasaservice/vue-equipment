@@ -1,4 +1,0 @@
-{
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "exclude": ["node_modules", "**/*.md", "**/dist", ".test"]
-}

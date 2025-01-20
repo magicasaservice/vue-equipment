@@ -1,2 +1,2 @@
-import { nuxtPreset } from '../config/eslint-nuxt-preset.mjs'
+import { nuxtPreset } from '@maas/config/eslint-nuxt-preset.mjs'
 export default nuxtPreset

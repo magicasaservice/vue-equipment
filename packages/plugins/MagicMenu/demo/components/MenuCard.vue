@@ -25,7 +25,12 @@
 import { MMenuCard, MMenuCardChild, MBadge, MAvatar } from '@maas/mirror/vue'
 
 interface MenuCardInternalProps {
-  data: any
+  data: {
+    icon?: string
+    label: string
+    badge: string
+    callout: string
+  }
 }
 
 defineProps<MenuCardInternalProps>()

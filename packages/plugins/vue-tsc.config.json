@@ -1,5 +1,5 @@
 {
-  "extends": "../config/tsconfig/vue-base.json",
+  "extends": "@maas/config/tsconfig/vue-base.json",
   "include": ["./../../dist/plugins"],
   "exclude": ["./../../packages"],
   "compilerOptions": {

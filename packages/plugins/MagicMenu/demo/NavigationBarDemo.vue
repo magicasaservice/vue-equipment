@@ -13,10 +13,10 @@
       <magic-menu-view ref="viewRef">
         <div class="flex gap-1">
           <magic-menu-trigger
-            as-child
-            class="ui-menu-button"
             v-for="(item, i) in menu"
             :key="i"
+            as-child
+            class="ui-menu-button"
           >
             <magic-menu-remote
               v-slot="{ channelActive }"
@@ -45,14 +45,14 @@
               <magic-auto-size>
                 <magic-menu-channel
                   v-for="(item, i) in menu"
-                  :key="i"
                   :id="item.id"
+                  :key="i"
                   class="relative inline-flex gap-4"
                 >
                   <div
-                    class="w-[16rem]"
                     v-for="(entry, j) in item.lists"
                     :key="j"
+                    class="w-[16rem]"
                   >
                     <div
                       v-if="entry.label"
