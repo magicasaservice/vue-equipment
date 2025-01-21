@@ -1,5 +1,7 @@
 # Magic Accordion
 
+Magic Accordion is a collection of components intended for building vertically stacked headlines where each reveals related content.
+
 <component-preview src="./demo.vue"/>
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
