@@ -34,6 +34,7 @@ if (!instanceId) {
 
 const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
+const mappedActive = computed(() => view.active)
 
 // Register view
 const { initializeView, deleteView } = useMenuView(instanceId)
@@ -68,7 +69,7 @@ const view = initializeView({
 // Pass id, active state and parent tree to children
 provide(MagicMenuParentTree, mappedParentTree.value)
 provide(MagicMenuViewId, mappedId.value)
-provide(MagicMenuViewActive, view.active)
+provide(MagicMenuViewActive, mappedActive)
 
 // Lifecycle
 onBeforeUnmount(() => {

@@ -35,6 +35,7 @@ if (!instanceId) {
 }
 
 const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)
+const mappedActive = computed(() => view.active)
 
 // Register view
 const { initializeView, deleteView } = useAccordionView(instanceId)
@@ -46,7 +47,7 @@ const view = initializeView({
 
 // Pass id and active state to children
 provide(MagicAccordionViewId, mappedId.value)
-provide(MagicAccordionViewActive, view.active)
+provide(MagicAccordionViewActive, mappedActive)
 
 // Lifecycle
 onBeforeUnmount(() => {

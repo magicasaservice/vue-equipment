@@ -66,6 +66,7 @@ if (!contentId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuContent')
 }
 const mappedId = computed(() => id ?? `magic-menu-item-${useId()}`)
+const mappedActive = computed(() => item.active)
 
 // Register item
 const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
@@ -137,7 +138,7 @@ function onClick(event: MouseEvent) {
 
 // Pass id and active state to children
 provide(MagicMenuItemId, mappedId.value)
-provide(MagicMenuItemActive, item.active)
+provide(MagicMenuItemActive, mappedActive)
 
 // Lifecycle
 onBeforeUnmount(() => {
