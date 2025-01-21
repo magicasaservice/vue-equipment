@@ -1,5 +1,5 @@
 <template>
-  <!-- Filter  -->
+  <!-- Filter -->
   <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
     <m-menu-item-child> Filter </m-menu-item-child>
   </m-menu-item>

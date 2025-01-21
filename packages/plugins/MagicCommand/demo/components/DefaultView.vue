@@ -5,11 +5,11 @@
         <m-menu-item-child>Navigation</m-menu-item-child>
       </m-menu-item>
 
-      <!-- Nested Views  -->
+      <!-- Nested Views -->
       <about-view />
       <project-view />
 
-      <!-- Lists  -->
+      <!-- Lists -->
       <filter-list />
       <disciplines-list />
     </magic-command-content>
