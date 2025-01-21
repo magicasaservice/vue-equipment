@@ -8,9 +8,9 @@
     "@antfu/ni": "^0.23.2",
     "@maas/config": "^1.4.1",
     "@release-it/bumper": "^6.0.1",
-    "@types/node": "^22.10.7",
+    "@types/node": "catalog:",
     "release-it": "^17.11.0",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "catalog:",
     "turbo": "^2.3.3",
     "typescript": "5.6.3"
   },
@@ -45,22 +45,22 @@
   "keywords": [],
   "license": "MIT",
   "peerDependencies": {
-    "@floating-ui/vue": "^1.0.6",
-    "@maas/magic-timer": "^1.0.0",
-    "@maas/vue-primitive": "^1.1.0",
-    "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.15.0",
-    "@vueuse/core": ">=12.4.0",
-    "@vueuse/integrations": ">=12.4.0",
-    "defu": "^6.1.2",
-    "focus-trap": "^7.5.2",
-    "hls.js": "^1.4.10",
-    "luxon": "^3.4.2",
-    "mitt": "^3.0.1",
-    "motion": "^10.16.2",
-    "nuxt": "^3.15.0",
-    "universal-cookie": "^7.1.0",
-    "vue": "^3.5.3"
+    "@floating-ui/vue": "catalog:",
+    "@maas/magic-timer": "catalog:",
+    "@maas/vue-primitive": "catalog:",
+    "@maas/wheel-gestures": "catalog:",
+    "@nuxt/kit": "catalog:",
+    "@vueuse/core": "catalog:",
+    "@vueuse/integrations": "catalog:",
+    "defu": "catalog:",
+    "focus-trap": "catalog:",
+    "hls.js": "catalog:",
+    "luxon": "catalog:",
+    "mitt": "catalog:",
+    "motion": "catalog:",
+    "nuxt": "catalog:",
+    "universal-cookie": "catalog:",
+    "vue": "catalog:"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
@@ -149,7 +149,7 @@
   "packageManager": "pnpm@9.15.4",
   "pnpm": {
     "overrides": {
-      "typescript": "5.6.3"
+      "typescript": "catalog:"
     }
   }
 }

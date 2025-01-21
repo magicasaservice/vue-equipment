@@ -4,10 +4,9 @@
   "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@maas/mirror": "^0.9.1",
-    "@nuxt/schema": "^3.15.2",
-    "@nuxt/types": "^2.18.1",
-    "esno": "^4.8.0",
+    "@maas/mirror": "catalog:",
+    "@nuxt/schema": "catalog:",
+    "esno": "catalog:",
     "mkdist": "^1.6.0",
     "vue-tsc": "^2.2.0"
   },
@@ -25,7 +24,7 @@
     "@floating-ui/dom": "^1.6.13",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
-    "defu": "^6.1.4",
-    "vue": "^3.5.13"
+    "defu": "catalog:",
+    "vue": "catalog:"
   }
 }

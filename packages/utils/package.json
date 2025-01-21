@@ -4,8 +4,8 @@
   "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@types/node": "^22.10.7",
-    "tsup": "^8.3.5"
+    "@types/node": "catalog:",
+    "tsup": "catalog:"
   },
   "exports": {
     ".": "./index.ts",
