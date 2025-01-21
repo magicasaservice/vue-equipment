@@ -100,7 +100,6 @@ export function useMenuItem(args: UseMenuItemArgs) {
         state.input.disabled = [...state.input.disabled, 'pointer'] // Disable pointer
 
         watchOnce([x, y], () => {
-          console.log(x, y)
           state.input.disabled = state.input.disabled.filter(
             (x) => x !== 'pointer'
           ) // Enable pointer

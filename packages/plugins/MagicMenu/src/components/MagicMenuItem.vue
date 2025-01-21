@@ -12,7 +12,7 @@
     @mouseleave="guardedUnselect"
     @click="onClick"
   >
-    <slot :item-active="item.active" :is-disabled="disabled" />
+    <slot :item-active="item.active" :item-disabled="disabled" />
     <div v-if="pointerDisabled" class="magic-menu-item__pointer-guard" />
   </div>
 </template>
@@ -150,16 +150,8 @@ onBeforeUnmount(() => {
   cursor: var(--magic-menu-item-cursor, default);
 }
 
-.magic-menu-item[data-disabled='true'] {
-  cursor: var(--magic-menu-item-cursor-disabled, not-allowed);
-  & > * {
-    pointer-events: none;
-  }
-}
-
 .magic-menu-item__pointer-guard {
   position: absolute;
   inset: 0;
-  pointer-events: none;
 }
 </style>
