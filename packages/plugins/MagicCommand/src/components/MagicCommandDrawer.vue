@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
-import { useMagicEmitter } from '../../../MagicEmitter'
+import { useMagicEmitter, type MagicEmitterEvents } from '../../../MagicEmitter'
 import { useMagicDrawer } from '../../../MagicDrawer'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from '../symbols'
@@ -37,8 +37,10 @@ if (!instanceId) {
   )
 }
 
-function afterLeaveCallback() {
-  close()
+function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
+  if (typeof payload === 'string' && payload === instanceId) {
+    close()
+  }
 }
 
 const { close, isActive } = useMagicCommand(instanceId)

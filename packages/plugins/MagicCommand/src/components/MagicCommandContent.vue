@@ -1,6 +1,14 @@
 <template>
   <teleport :to="state.renderer" v-if="state.renderer && state.active">
-    <transition :name="state.options.transition?.content">
+    <transition
+      :name="state.options.transition?.content"
+      :on-before-enter="onBeforeEnter"
+      :on-enter="onEnter"
+      :on-after-enter="onAfterEnter"
+      :on-before-leave="onBeforeLeave"
+      :on-leave="onLeave"
+      :on-after-leave="onAfterLeave"
+    >
       <div
         v-if="isActive"
         v-show="!isIdle"
@@ -22,6 +30,7 @@ import { ref, inject, watch, nextTick, provide, computed } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
+import { useCommandCallback } from '../composables/private/useCommandCallback'
 import {
   MagicCommandInstanceId,
   MagicCommandViewId,
@@ -65,6 +74,18 @@ const isIdle = computed(() => state.input.view !== viewId)
 const options = inject(MagicCommandProviderOptions, undefined)
 
 const { activeItem, selectNextItem, selectPrevItem } = useCommandItem({
+  instanceId,
+  viewId,
+})
+
+const {
+  onBeforeEnter,
+  onEnter,
+  onAfterEnter,
+  onBeforeLeave,
+  onLeave,
+  onAfterLeave,
+} = useCommandCallback({
   instanceId,
   viewId,
 })
