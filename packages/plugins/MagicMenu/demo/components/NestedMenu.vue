@@ -38,7 +38,7 @@
   </magic-menu-item>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import NestedMenu from '../components/NestedMenu.vue'
 
 import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'

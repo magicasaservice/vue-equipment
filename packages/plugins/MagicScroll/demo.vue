@@ -77,7 +77,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
 import { ref, onBeforeUnmount } from 'vue'
 import {

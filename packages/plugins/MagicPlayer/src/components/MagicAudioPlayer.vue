@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import MagicAudioPlayerControls from './MagicAudioPlayerControls.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'

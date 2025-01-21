@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, inject, computed, onMounted, watch } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import {

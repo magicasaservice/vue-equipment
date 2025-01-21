@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { formatTime } from '@maas/vue-equipment/utils'

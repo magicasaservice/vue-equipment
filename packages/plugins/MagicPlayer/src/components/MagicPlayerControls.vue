@@ -76,7 +76,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'

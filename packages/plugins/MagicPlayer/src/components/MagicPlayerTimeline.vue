@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 
 interface MagicPlayerTimelineProps {

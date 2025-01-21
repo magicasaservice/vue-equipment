@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'

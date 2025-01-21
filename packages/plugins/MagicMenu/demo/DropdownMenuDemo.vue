@@ -21,7 +21,7 @@
   </magic-menu-provider>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import NestedMenu from './components/NestedMenu.vue'
 import { MButton } from '@maas/mirror/vue'
 

@@ -10,7 +10,7 @@
   <magic-toast :id="id" :class="position" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
   defineAsyncComponent,
   ref,

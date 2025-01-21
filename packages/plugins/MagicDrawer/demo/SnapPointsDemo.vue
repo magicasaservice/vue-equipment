@@ -12,7 +12,7 @@
   </magic-drawer>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 

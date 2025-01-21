@@ -104,7 +104,7 @@
   </magic-drawer>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, onBeforeUnmount } from 'vue'
 import { MButton, MCheckbox, MInput } from '@maas/mirror/vue'
 import {

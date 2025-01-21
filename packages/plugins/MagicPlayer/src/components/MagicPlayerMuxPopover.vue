@@ -13,7 +13,7 @@
     />
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { shallowRef, onMounted, watch, computed, type Ref } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'

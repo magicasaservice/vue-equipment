@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, inject, computed, onMounted } from 'vue'
 import { toValue } from '@vueuse/core'
 import { useCollisionDetect } from '../composables/private/useCollisionDetect'

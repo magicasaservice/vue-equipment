@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useScrollTo } from '@maas/vue-equipment/composables'

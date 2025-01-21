@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 

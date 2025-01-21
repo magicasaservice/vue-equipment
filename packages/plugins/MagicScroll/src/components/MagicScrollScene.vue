@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, provide, inject, watch, nextTick, readonly } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/private/useScrollApi'

@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 
