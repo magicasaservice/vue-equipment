@@ -204,6 +204,12 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     }
   }
 
+  function unselectAllViews(): void {
+    for (const view of state.views) {
+      view.active = false
+    }
+  }
+
   function initializeView(args: InitializeViewArgs): CommandView {
     const { id } = args
     let view = getView(id)
@@ -241,6 +247,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     selectInitialView,
     unselectView,
     unselectUnrelatedViews,
+    unselectAllViews,
     sortViewItems,
   }
 }

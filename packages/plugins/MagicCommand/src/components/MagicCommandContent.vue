@@ -1,5 +1,5 @@
 <template>
-  <teleport :to="state.renderer" v-if="state.renderer">
+  <teleport :to="state.renderer" v-if="state.renderer && state.active">
     <transition :name="state.options.transition?.content">
       <div
         v-if="isActive"
@@ -59,7 +59,7 @@ const view = getView(viewId)
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()
 
-const isActive = computed(() => view?.active && state.renderer)
+const isActive = computed(() => view?.active && state.active && state.renderer)
 const isIdle = computed(() => state.input.view !== viewId)
 
 const options = inject(MagicCommandProviderOptions, undefined)
@@ -71,6 +71,7 @@ const { activeItem, selectNextItem, selectPrevItem } = useCommandItem({
 
 const {
   findElement,
+  findScrollableAncestor,
   isElementAbove,
   isElementBelow,
   scrollInFromBottom,
@@ -92,7 +93,7 @@ if (options?.keyListener?.next) {
       }
 
       if (value) {
-        state.input.type === 'keyboard'
+        state.input.type = 'keyboard'
 
         selectNextItem(options.loop)
         nextTimeout.value = setTimeout(() => {
@@ -116,7 +117,7 @@ if (options?.keyListener?.prev) {
       }
 
       if (value) {
-        state.input.type === 'keyboard'
+        state.input.type = 'keyboard'
 
         selectPrevItem(options.loop)
         prevTimeout.value = setTimeout(() => {
@@ -140,10 +141,15 @@ watch(
     nextTick(() => {
       const element = findElement(value.id)
       if (element) {
-        if (isElementAbove(element)) {
-          scrollInFromTop(element)
-        } else if (isElementBelow(element)) {
-          scrollInFromBottom(element)
+        const ancestor = findScrollableAncestor(element)
+
+        switch (true) {
+          case isElementAbove({ element, ancestor }):
+            scrollInFromTop({ element, ancestor })
+            break
+          case isElementBelow({ element, ancestor }):
+            scrollInFromBottom({ element, ancestor })
+            break
         }
       }
     })

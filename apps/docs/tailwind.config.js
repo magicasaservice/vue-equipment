@@ -7,6 +7,7 @@ export default {
     './src/content/**/*.md',
     '../../packages/**/demo.vue',
     '../../packages/**/demo/*.vue',
+    '../../packages/**/demo/**/*.vue',
     '!**/node_modules/**',
   ],
   presets: [mirrorPreset],

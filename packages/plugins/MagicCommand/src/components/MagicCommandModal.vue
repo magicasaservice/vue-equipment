@@ -9,7 +9,7 @@
   </magic-modal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '../../../MagicEmitter'
 import { useMagicModal } from '../../../MagicModal'

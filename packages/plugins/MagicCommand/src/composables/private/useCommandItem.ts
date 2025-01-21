@@ -1,5 +1,4 @@
 import { reactive, computed, type MaybeRef } from 'vue'
-import { usePointer, watchOnce } from '@vueuse/core'
 
 import { useCommandView } from './useCommandView'
 import { useCommandState } from './useCommandState'
@@ -17,15 +16,8 @@ type AddItemArgs = Pick<CommandItem, 'id' | 'disabled'>
 export function useCommandItem(args: UseCommandItemArgs) {
   const { instanceId, viewId } = args
 
-  const { initializeState } = useCommandState(instanceId)
-  const state = initializeState()
-
   const { getView } = useCommandView(instanceId)
   const view = getView(viewId)
-
-  // if (!view) {
-  //   throw new Error(`View ${viewId} not found`)
-  // }
 
   // Public state
   const activeItem = computed(() => view?.items.find((item) => item.active))
@@ -62,14 +54,14 @@ export function useCommandItem(args: UseCommandItemArgs) {
   // Public functions
   function initializeItem(args: InitializeItemArgs) {
     const { id } = args
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (!instance) {
+    if (!item) {
       const item = addItem(args)
       return item
     }
 
-    return instance
+    return item
   }
 
   function deleteItem(id: string) {
@@ -84,10 +76,10 @@ export function useCommandItem(args: UseCommandItemArgs) {
   }
 
   function selectItem(id: string) {
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = true
+    if (item) {
+      item.active = true
 
       // Deactivate all siblings
       unselectSiblings(id)
@@ -127,10 +119,10 @@ export function useCommandItem(args: UseCommandItemArgs) {
   }
 
   function unselectItem(id: string) {
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = false
+    if (item) {
+      item.active = false
     }
   }
 

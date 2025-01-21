@@ -1,8 +1,8 @@
 <template>
   <div
-    :id="mappedId"
     ref="elRef"
     class="magic-command-item"
+    :data-id="mappedId"
     :data-disabled="disabled"
     :data-active="item.active"
     :data-pointer-disabled="pointerDisabled"
@@ -11,7 +11,7 @@
     @touchstart.passive="guardedSelect"
     @click="onClick"
   >
-    <slot :item-active="item.active" :is-disabled="disabled" />
+    <slot :item-active="item.active" :item-disabled="disabled" />
     <div v-if="pointerDisabled" class="magic-command-item__pointer-guard" />
   </div>
 </template>
@@ -23,9 +23,8 @@ import {
   inject,
   provide,
   onBeforeUnmount,
-  watch,
   useId,
-  onBeforeMount,
+  onMounted,
 } from 'vue'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandState } from '../composables/private/useCommandState'
@@ -73,12 +72,10 @@ if (!contentId) {
 const mappedId = computed(() => id ?? `magic-command-item-${useId()}`)
 
 // Register item
-const { initializeItem, deleteItem, selectItem, unselectItem } = useCommandItem(
-  {
-    instanceId,
-    viewId,
-  }
-)
+const { initializeItem, deleteItem, selectItem } = useCommandItem({
+  instanceId,
+  viewId,
+})
 
 // Guarded select
 // Check for mode and active state
@@ -92,7 +89,7 @@ const item = initializeItem({
 const pointerDisabled = computed(() => state.input.type !== 'pointer')
 
 function guardedSelect() {
-  if (state.input.type === 'pointer' && !item.active && !item.disabled) {
+  if (state.input.type === 'pointer' && !item.disabled && !item.active) {
     selectItem(mappedId.value)
   }
 }
@@ -100,7 +97,6 @@ function guardedSelect() {
 function onClick(event: MouseEvent) {
   emit('click', event)
 
-  state.input.type = 'pointer'
   guardedSelect()
 }
 
@@ -109,7 +105,7 @@ provide(MagicCommandItemId, mappedId.value)
 provide(MagicCommandItemActive, item.active)
 
 // Lifecycle
-onBeforeMount(() => {
+onMounted(() => {
   if (initial) {
     selectItem(mappedId.value)
   }
@@ -122,19 +118,12 @@ onBeforeUnmount(() => {
 
 <style>
 .magic-command-item {
+  position: relative;
   cursor: var(--magic-command-item-cursor, default);
-}
-
-.magic-command-item[data-disabled='true'] {
-  cursor: var(--magic-command-item-cursor-disabled, not-allowed);
-  & > * {
-    pointer-events: none;
-  }
 }
 
 .magic-command-item__pointer-guard {
   position: absolute;
   inset: 0;
-  pointer-events: none;
 }
 </style>

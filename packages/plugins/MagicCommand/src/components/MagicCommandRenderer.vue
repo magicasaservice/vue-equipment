@@ -1,10 +1,8 @@
 <template>
-  <div class="magic-command-renderer">
-    <div ref="elRef" />
-  </div>
+  <div class="magic-command-renderer" ref="elRef" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, inject, onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,
@@ -42,8 +40,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.magic-command-renderer > div {
-  display: contents;
+.magic-command-renderer {
+  position: relative;
+  width: var(--magic-command-renderer-width, 100%);
+  height: var(--magic-command-renderer-height, 100%);
 }
 
 .magic-command-content--fade-enter-active {

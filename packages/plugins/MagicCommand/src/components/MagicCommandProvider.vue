@@ -6,15 +6,14 @@
 
 <script lang="ts" setup>
 import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
-import { onClickOutside, useMagicKeys, usePointer } from '@vueuse/core'
+import { useMagicKeys, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
 import { createDefu } from 'defu'
 
 import { useCommandState } from '../composables/private/useCommandState'
-import { useCommandView } from '../composables/private/useCommandView'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { defaultOptions } from '../utils/defaultOptions'
-import { MagicCommandInstanceId } from '../symbols'
+import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
 import type { MagicCommandOptions } from '../types'
 
@@ -58,6 +57,7 @@ watch(
 )
 
 watch([x, y], ([x, y]) => {
+  console.log(x, y, 'pointer moved')
   if (x !== lastX.value || y !== lastY.value) {
     if (state) {
       state.input.type = 'pointer'
@@ -97,6 +97,7 @@ onBeforeUnmount(() => {
 })
 
 provide(MagicCommandInstanceId, id)
+provide(MagicCommandProviderOptions, mappedOptions)
 </script>
 
 <style>

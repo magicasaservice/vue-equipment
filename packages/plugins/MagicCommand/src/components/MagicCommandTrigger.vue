@@ -1,7 +1,7 @@
 <template>
   <primitive
     ref="elRef"
-    :data-id="`${viewId}-trigger`"
+    :data-id="`${mappedViewId}-trigger`"
     :data-active="view?.active"
     :data-disabled="mappedDisabled"
     :as-child="asChild"
@@ -31,7 +31,7 @@ import { onKeyStroke } from '@vueuse/core'
 interface MagicCommandTriggerProps {
   viewId?: string
   disabled?: boolean
-  action: Action
+  action?: Action
   trigger?: Interaction[]
   asChild?: boolean
 }

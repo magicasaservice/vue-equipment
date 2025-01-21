@@ -12,7 +12,8 @@ export function useMagicCommand(id: MaybeRef<string>) {
   const isActive = computed(() => state.active)
 
   // Public methods
-  const { selectView, unselectView, selectInitialView } = useCommandView(id)
+  const { selectView, unselectView, selectInitialView, unselectAllViews } =
+    useCommandView(id)
 
   async function open() {
     state.active = true
@@ -22,6 +23,8 @@ export function useMagicCommand(id: MaybeRef<string>) {
 
   function close() {
     state.active = false
+    state.input.view = undefined
+    unselectAllViews()
   }
 
   // const { selectItem, selectLastItem } = useCommandItem(toValue(id))
