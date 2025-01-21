@@ -6,15 +6,15 @@
 
 <script lang="ts" setup>
 import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
-import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
+import { onClickOutside, useMagicKeys, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
-import { defu } from 'defu'
+import { createDefu } from 'defu'
 
 import { useCommandState } from '../composables/private/useCommandState'
 import { useCommandView } from '../composables/private/useCommandView'
-// import { useCommandKeyListener } from '../composables/private/useCommandKeyListener'
-import { MagicCommandInstanceId } from '../symbols'
+import { useMagicCommand } from '../composables/useMagicCommand'
 import { defaultOptions } from '../utils/defaultOptions'
+import { MagicCommandInstanceId } from '../symbols'
 
 import type { MagicCommandOptions } from '../types'
 
@@ -24,10 +24,18 @@ interface MagicCommandProviderProps {
   options?: MagicCommandOptions
 }
 
-const { id, options } = defineProps<MagicCommandProviderProps>()
+const { id, options = {} } = defineProps<MagicCommandProviderProps>()
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const mappedOptions = defu(options, defaultOptions)
+// Prevent keys arrays from being merged with default
+const customDefu = createDefu((obj, key, value) => {
+  if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {
+    obj[key] = value
+    return true
+  }
+})
+
+const mappedOptions = customDefu(options, defaultOptions)
 
 const { initializeState, deleteState } = useCommandState(id)
 const state = initializeState(mappedOptions)
@@ -58,43 +66,30 @@ watch([x, y], ([x, y]) => {
 })
 
 // Add key listener
-// const {
-//   onArrowRight,
-//   onArrowLeft,
-//   onArrowUp,
-//   onArrowDown,
-//   onEscape,
-//   onEnter,
-//   onTab,
-// } = useCommandKeyListener(id)
+const keys = useMagicKeys()
+const commandApi = useMagicCommand(id)
 
-// onKeyStroke('ArrowRight', onArrowRight)
-// onKeyStroke('ArrowLeft', onArrowLeft)
-// onKeyStroke('ArrowDown', onArrowDown)
-// onKeyStroke('ArrowUp', onArrowUp)
-// onKeyStroke('Escape', onEscape)
-// onKeyStroke('Enter', onEnter)
-// onKeyStroke('Tab', onTab)
+const { open, close } = commandApi
 
-// Handle off-click
-const { unselectAllViews } = useCommandView(id)
-
-onClickOutside(
-  elRef,
-  () => {
-    if (state) {
-      state.active = false
-    }
-    unselectAllViews()
-  },
-  {
-    ignore: [
-      '.magic-command-trigger',
-      '.magic-command-item',
-      'magic-command-float',
-    ],
+if (mappedOptions.keyListener?.open) {
+  for (const key of mappedOptions.keyListener.open) {
+    watch(keys[key], (value) => {
+      if (value) {
+        open()
+      }
+    })
   }
-)
+}
+
+if (mappedOptions.keyListener?.close) {
+  for (const key of mappedOptions.keyListener.close) {
+    watch(keys[key], (value) => {
+      if (value) {
+        close()
+      }
+    })
+  }
+}
 
 // Lifecycle
 onBeforeUnmount(() => {

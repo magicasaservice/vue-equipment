@@ -4,11 +4,7 @@ import type { MagicDrawerOptions } from '../../../MagicDrawer'
 export interface MagicCommandOptions {
   debug?: boolean
   transition?: {
-    content?: {
-      default?: string
-      nested?: string
-    }
-    channel?: string
+    content?: string
   }
   keyListener?: {
     open?: string[] | false
@@ -18,6 +14,8 @@ export interface MagicCommandOptions {
   }
   loop?: boolean
 }
+
+export type Action = 'open' | 'close'
 
 export type Interaction = 'click' | 'mouseenter'
 
@@ -53,7 +51,6 @@ export interface CommandState {
   options: MagicCommandOptions
   input: {
     type: 'keyboard' | 'pointer'
-    disabled: ('keyboard' | 'pointer')[]
     view: string | undefined
   }
 }

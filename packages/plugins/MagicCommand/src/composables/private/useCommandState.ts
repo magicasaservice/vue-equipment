@@ -7,7 +7,11 @@ const commandStateStore: Ref<CommandState[]> = ref([])
 
 export function useCommandState(instanceId: MaybeRef<string>) {
   // Private functions
-  function createState(id: string) {
+  function createState(id: string): CommandState {
+    const view = commandStateStore.value
+      .find((state) => state.id === id)
+      ?.views.findLast((view) => view.active)?.id
+
     const state: CommandState = {
       id: id,
       options: defaultOptions,
@@ -16,8 +20,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
       active: false,
       input: {
         type: 'pointer',
-        disabled: [],
-        view: undefined,
+        view: view,
       },
     }
 

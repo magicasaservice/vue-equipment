@@ -30,6 +30,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
   // Memoized view lookup map
   const viewMap = new Map<string, CommandView>()
 
+  // Private functions
   function createView(args: CreateViewArgs): CommandView {
     const { id, parent, initial } = args
 
@@ -72,6 +73,12 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     })
   }
 
+  function activateView() {
+    const view = state?.views.findLast((view) => view.active)?.id
+    state.input.view = view
+  }
+
+  // Public functions
   function getView(id: string): CommandView | undefined {
     // Check cache first
     let view = viewMap.get(id)
@@ -134,14 +141,6 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     return state.views.filter((v) => v.id !== id && !parentViewsSet.has(v.id))
   }
 
-  function getDescendingViews(id: string): CommandView[] {
-    const view = getView(id)
-    if (!view) return []
-
-    const parentViewsSet = new Set(view.parent.views)
-    return state.views.filter((v) => v.id !== id && !parentViewsSet.has(v.id))
-  }
-
   async function selectView(id: string, delayMs = 0): Promise<void> {
     const view = getView(id)
     if (!view) return
@@ -158,7 +157,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
         await delay(delayMs, abortController.signal)
       }
       view.active = true
-      unselectUnrelatedViews(id)
+      activateView()
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
         console.log('selectView() was interrupted by a call to unselectView()')
@@ -190,6 +189,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
         await delay(delayMs, abortController.signal)
       }
       view.active = false
+      activateView()
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
         console.log('unselectView() was interrupted by a call to selectView()')
@@ -204,24 +204,26 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     }
   }
 
-  function unselectDescendingViews(id: string): void {
-    const views = getDescendingViews(id)
-    for (const view of views) {
-      view.active = false
-    }
-  }
-
-  function unselectAllViews(): void {
-    for (const view of state.views) {
-      view.active = false
-    }
-  }
-
   function initializeView(args: InitializeViewArgs): CommandView {
     const { id } = args
     let view = getView(id)
     if (!view) view = addView(args)
     return view
+  }
+
+  function sortViewItems(viewId: string) {
+    const parent = document.querySelector(`[data-id="${viewId}-content"]`)
+    const view = getView(viewId)
+
+    const elements: HTMLElement[] = Array.from(
+      parent?.querySelectorAll('.magic-command-item') ?? []
+    )
+
+    function getIndex(id: string) {
+      return elements.findIndex((el) => el.dataset.id === id)
+    }
+
+    view?.items?.sort((a, b) => getIndex(a.id) - getIndex(b.id))
   }
 
   return {
@@ -239,7 +241,6 @@ export function useCommandView(instanceId: MaybeRef<string>) {
     selectInitialView,
     unselectView,
     unselectUnrelatedViews,
-    unselectDescendingViews,
-    unselectAllViews,
+    sortViewItems,
   }
 }

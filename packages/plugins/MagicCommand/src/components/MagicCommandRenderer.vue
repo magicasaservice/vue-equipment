@@ -1,5 +1,7 @@
 <template>
-  <div class="magic-command-renderer" ref="elRef" />
+  <div class="magic-command-renderer">
+    <div ref="elRef" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -40,7 +42,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.magic-command-renderer {
+.magic-command-renderer > div {
   display: contents;
+}
+
+.magic-command-content--fade-enter-active {
+  animation: fade-in 2000ms ease;
+}
+
+.magic-command-content--fade-leave-active {
+  animation: fade-out 2000ms ease;
 }
 </style>

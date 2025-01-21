@@ -12,7 +12,7 @@ export function useMagicCommand(id: MaybeRef<string>) {
   const isActive = computed(() => state.active)
 
   // Public methods
-  const { selectView, unselectView } = useCommandView(id)
+  const { selectView, unselectView, selectInitialView } = useCommandView(id)
 
   async function open() {
     state.active = true

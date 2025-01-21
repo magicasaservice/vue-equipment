@@ -4,11 +4,7 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 const defaultOptions: RequireAllNested<MagicCommandOptions> = {
   debug: false,
   transition: {
-    content: {
-      default: '',
-      nested: 'magic-command-content--fade',
-    },
-    channel: 'magic-command-channel',
+    content: 'magic-command-content',
   },
   keyListener: {
     open: ['Cmd+k'],

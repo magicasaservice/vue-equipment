@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
+import { computed, inject, onBeforeUnmount, provide, useId, watch } from 'vue'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
@@ -30,11 +30,11 @@ if (!instanceId) {
   throw new Error('MagicCommandView must be nested inside MagicCommandProvider')
 }
 
-const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
+const mappedId = computed(() => id ?? `magic-command-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 
 // Register view
-const { initializeView, deleteView } = useCommandView(instanceId)
+const { initializeView, deleteView, sortViewItems } = useCommandView(instanceId)
 
 const view = initializeView({
   id: mappedId.value,
@@ -48,6 +48,13 @@ provide(MagicCommandViewId, mappedId.value)
 provide(MagicCommandViewActive, view.active)
 
 // Lifecycle
+watch(
+  () => view?.items,
+  () => {
+    sortViewItems(mappedId.value)
+  }
+)
+
 onBeforeUnmount(() => {
   deleteView(mappedId.value)
 })

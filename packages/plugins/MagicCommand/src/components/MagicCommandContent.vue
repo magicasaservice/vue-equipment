@@ -1,13 +1,19 @@
 <template>
-  <teleport :to="state.renderer" v-if="isActive">
-    <div
-      :class="['magic-command-content', props.class]"
-      :data-id="`${viewId}-content`"
-      :data-idle="isIdle"
-      ref="elRef"
-    >
-      <slot />
-    </div>
+  <teleport :to="state.renderer" v-if="state.renderer">
+    <transition :name="state.options.transition?.content">
+      <div
+        v-if="isActive"
+        v-show="!isIdle"
+        ref="elRef"
+        class="magic-command-content"
+        :key="`${viewId}-content`"
+        :data-id="`${viewId}-content`"
+        :data-idle="isIdle"
+        v-bind="$attrs"
+      >
+        <slot />
+      </div>
+    </transition>
   </teleport>
 </template>
 
@@ -25,11 +31,12 @@ import {
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandState } from '../composables/private/useCommandState'
 
-interface MagicCommandContentProps {
-  class?: string
-}
+import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
-const props = defineProps<MagicCommandContentProps>()
+defineOptions({
+  inheritAttrs: false,
+})
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
@@ -154,7 +161,14 @@ provide(MagicCommandContentId, `${viewId}-content`)
 }
 
 .magic-command-content[data-idle='true'] {
-  opacity: var(--magic-command-content-idle-opacity, 0);
   pointer-events: none;
+}
+
+.magic-command-content-enter-active {
+  animation: fade-in 150ms ease;
+}
+
+.magic-command-content-leave-active {
+  animation: fade-out 150ms ease;
 }
 </style>

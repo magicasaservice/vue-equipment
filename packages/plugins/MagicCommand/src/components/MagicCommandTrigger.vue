@@ -25,12 +25,13 @@ import {
   MagicCommandItemId,
 } from '../symbols'
 
-import type { Interaction } from '../types'
+import type { Interaction, Action } from '../types'
 import { onKeyStroke } from '@vueuse/core'
 
 interface MagicCommandTriggerProps {
   viewId?: string
   disabled?: boolean
+  action: Action
   trigger?: Interaction[]
   asChild?: boolean
 }
@@ -39,6 +40,7 @@ const {
   viewId,
   disabled,
   trigger = ['click'] as Interaction[],
+  action = 'open' as Action,
 } = defineProps<MagicCommandTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
@@ -69,9 +71,9 @@ const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
 const { onMouseenter, onClick, onEnter } = useCommandTrigger({
   instanceId,
   viewId: mappedViewId.value,
-  itemId,
   mappedDisabled,
   trigger,
+  action,
   elRef,
 })
 

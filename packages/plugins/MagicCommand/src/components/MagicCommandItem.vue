@@ -9,7 +9,6 @@
     @mouseenter="guardedSelect"
     @mousemove="guardedSelect"
     @touchstart.passive="guardedSelect"
-    @mouseleave="guardedUnselect"
     @click="onClick"
   >
     <slot :item-active="item.active" :is-disabled="disabled" />
@@ -26,10 +25,10 @@ import {
   onBeforeUnmount,
   watch,
   useId,
+  onBeforeMount,
 } from 'vue'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandState } from '../composables/private/useCommandState'
-import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
   MagicCommandViewId,
@@ -40,10 +39,16 @@ import {
 
 interface MagicCommandItemProps {
   id?: string
+  initial?: boolean
   disabled?: boolean
 }
 
-const { id, disabled } = defineProps<MagicCommandItemProps>()
+const {
+  id,
+  initial = false,
+  disabled = false,
+} = defineProps<MagicCommandItemProps>()
+
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
@@ -84,40 +89,11 @@ const item = initializeItem({
   disabled: disabled ?? false,
 })
 
-const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
+const pointerDisabled = computed(() => state.input.type !== 'pointer')
 
 function guardedSelect() {
-  if (
-    state.input.type === 'pointer' &&
-    !state.input.disabled.includes('pointer') &&
-    !item.active &&
-    !item.disabled
-  ) {
+  if (state.input.type === 'pointer' && !item.active && !item.disabled) {
     selectItem(mappedId.value)
-  }
-}
-
-// Guarded unselect
-// Check for active nested views
-const { getNestedView, unselectAllViews } = useCommandView(instanceId)
-const nestedView = computed(() => getNestedView(mappedId.value))
-
-function guardedUnselect() {
-  // If there is no nested active view, unselect the item
-  if (!nestedView.value || !nestedView.value.active) {
-    unselectItem(mappedId.value)
-  } else {
-    // If there is a nested active view,
-    //  unselect the item once it is closed
-    watch(
-      () => nestedView.value?.active,
-      (value) => {
-        if (!value) {
-          unselectItem(mappedId.value)
-        }
-      },
-      { once: true }
-    )
   }
 }
 
@@ -125,16 +101,7 @@ function onClick(event: MouseEvent) {
   emit('click', event)
 
   state.input.type = 'pointer'
-  state.input.disabled = []
-
-  if (!item.disabled && !item.active) {
-    selectItem(mappedId.value)
-  }
-
-  if (!nestedView.value) {
-    state.active = false
-    unselectAllViews()
-  }
+  guardedSelect()
 }
 
 // Pass id and active state to children
@@ -142,6 +109,12 @@ provide(MagicCommandItemId, mappedId.value)
 provide(MagicCommandItemActive, item.active)
 
 // Lifecycle
+onBeforeMount(() => {
+  if (initial) {
+    selectItem(mappedId.value)
+  }
+})
+
 onBeforeUnmount(() => {
   deleteItem(mappedId.value)
 })

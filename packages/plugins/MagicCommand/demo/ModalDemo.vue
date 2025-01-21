@@ -4,7 +4,7 @@
       <m-button> Open Modal </m-button>
     </magic-command-trigger>
 
-    <magic-command-modal>
+    <magic-command-modal :options="{ focusTrap: false }">
       <magic-command-renderer
         class="w-[40rem] h-[30rem] relative inset-0 bg-surface-elevation-high flex flex-col"
       />
@@ -12,12 +12,6 @@
 
     <magic-command-view :initial="true" id="initial-view">
       <magic-command-content class="overflow-auto bg-neutral-800">
-        <div class="px-2 pt-2">
-          <div class="w-full border border-neutral-600 p-3 border-b-solid">
-            <input type="text" placeholder="Search" />
-          </div>
-        </div>
-
         <div class="py-2">
           <span class="p-4 text-xs text-neutral-600">Suggestions</span>
 
