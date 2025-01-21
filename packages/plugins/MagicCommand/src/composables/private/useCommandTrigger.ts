@@ -9,6 +9,7 @@ type UseCommandTriggerArgs = {
   instanceId: MaybeRef<string>
   viewId: string
   mappedDisabled: ComputedRef<boolean>
+  mappedActive?: ComputedRef<boolean>
   trigger: Interaction[]
   action: Action
   elRef: Ref<InstanceType<typeof Primitive> | undefined>
@@ -16,7 +17,15 @@ type UseCommandTriggerArgs = {
 
 export function useCommandTrigger(args: UseCommandTriggerArgs) {
   // Private state
-  const { instanceId, viewId, trigger, action, mappedDisabled, elRef } = args
+  const {
+    instanceId,
+    viewId,
+    trigger,
+    action,
+    mappedDisabled,
+    mappedActive,
+    elRef,
+  } = args
 
   const { getView, selectView, unselectView } = useCommandView(instanceId)
   const view = getView(viewId)
@@ -28,18 +37,29 @@ export function useCommandTrigger(args: UseCommandTriggerArgs) {
 
   // Public functions
   async function onEnter(e: KeyboardEvent) {
-    if (focused.value && !mappedDisabled.value && !view?.active) {
+    if (
+      (focused.value || mappedActive?.value) &&
+      !mappedDisabled.value &&
+      !view?.active
+    ) {
       e.preventDefault()
       e.stopPropagation()
 
       state.input.type = 'keyboard'
 
-      if (!state.active) {
-        state.active = true
-        await nextTick()
-      }
+      switch (action) {
+        case 'close':
+          unselectView(viewId)
+          break
+        case 'open':
+          if (!state.active) {
+            state.active = true
+            await nextTick()
+          }
 
-      selectView(viewId)
+          selectView(viewId)
+          break
+      }
     }
   }
 

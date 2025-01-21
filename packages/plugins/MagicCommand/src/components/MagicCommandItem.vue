@@ -34,6 +34,7 @@ import {
   MagicCommandContentId,
   MagicCommandItemId,
   MagicCommandItemActive,
+  MagicCommandItemDisabled,
 } from '../symbols'
 
 interface MagicCommandItemProps {
@@ -87,6 +88,8 @@ const item = initializeItem({
 })
 
 const pointerDisabled = computed(() => state.input.type !== 'pointer')
+const mappedDisabled = computed(() => disabled ?? item?.disabled)
+const mappedActive = computed(() => item?.active)
 
 function guardedSelect() {
   if (state.input.type === 'pointer' && !item.disabled && !item.active) {
@@ -100,9 +103,10 @@ function onClick(event: MouseEvent) {
   guardedSelect()
 }
 
-// Pass id and active state to children
+// Pass id and states to children
 provide(MagicCommandItemId, mappedId.value)
-provide(MagicCommandItemActive, item.active)
+provide(MagicCommandItemActive, mappedActive)
+provide(MagicCommandItemDisabled, mappedDisabled)
 
 // Lifecycle
 onMounted(() => {

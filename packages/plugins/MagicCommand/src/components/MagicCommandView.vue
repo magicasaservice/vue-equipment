@@ -32,6 +32,7 @@ if (!instanceId) {
 
 const mappedId = computed(() => id ?? `magic-command-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
+const mappedActive = computed(() => view.active)
 
 // Register view
 const { initializeView, deleteView, sortViewItems } = useCommandView(instanceId)
@@ -43,9 +44,9 @@ const view = initializeView({
 })
 
 // Pass id, active state and parent tree to children
-provide(MagicCommandParentTree, mappedParentTree.value)
 provide(MagicCommandViewId, mappedId.value)
-provide(MagicCommandViewActive, view.active)
+provide(MagicCommandViewActive, mappedActive)
+provide(MagicCommandParentTree, mappedParentTree.value)
 
 // Lifecycle
 watch(

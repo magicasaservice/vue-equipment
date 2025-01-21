@@ -57,7 +57,6 @@ watch(
 )
 
 watch([x, y], ([x, y]) => {
-  console.log(x, y, 'pointer moved')
   if (x !== lastX.value || y !== lastY.value) {
     if (state) {
       state.input.type = 'pointer'

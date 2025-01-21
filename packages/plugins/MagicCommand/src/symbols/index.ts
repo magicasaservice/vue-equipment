@@ -5,15 +5,13 @@ const MagicCommandInstanceId = Symbol() as InjectionKey<MaybeRef<string>>
 const MagicCommandParentTree = Symbol() as InjectionKey<string[]>
 
 const MagicCommandViewId = Symbol() as InjectionKey<string>
-const MagicCommandViewActive = Symbol() as InjectionKey<boolean>
+const MagicCommandViewActive = Symbol() as InjectionKey<MaybeRef<boolean>>
 
 const MagicCommandContentId = Symbol() as InjectionKey<string>
 
 const MagicCommandItemId = Symbol() as InjectionKey<string>
-const MagicCommandItemActive = Symbol() as InjectionKey<boolean>
-
-const MagicCommandChannelId = Symbol() as InjectionKey<string>
-const MagicCommandChannelActive = Symbol() as InjectionKey<boolean>
+const MagicCommandItemActive = Symbol() as InjectionKey<MaybeRef<boolean>>
+const MagicCommandItemDisabled = Symbol() as InjectionKey<MaybeRef<boolean>>
 
 const MagicCommandProviderOptions =
   Symbol() as InjectionKey<MagicCommandOptions>
@@ -26,7 +24,6 @@ export {
   MagicCommandContentId,
   MagicCommandItemId,
   MagicCommandItemActive,
-  MagicCommandChannelId,
-  MagicCommandChannelActive,
+  MagicCommandItemDisabled,
   MagicCommandProviderOptions,
 }
