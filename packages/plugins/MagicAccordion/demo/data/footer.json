@@ -1,0 +1,117 @@
+{
+  "footer": [
+    {
+      "label": "Catalogue",
+      "list": [
+        {
+          "url": "https://maas.engineering/mirror-ui",
+          "label": "Mirror Ui",
+          "badge": {
+            "name": "Pro",
+            "variant": "info",
+            "mode": "translucent"
+          },
+
+          "icon": "maas-mr"
+        },
+        {
+          "url": "https://maas.engineering/dreamtype",
+          "label": "Dreamtype™",
+          "badge": {
+            "name": "Soon",
+            "variant": "primary",
+            "mode": "outline"
+          },
+
+          "icon": "maas-dt"
+        },
+        {
+          "url": "https://maas.engineering/azzets",
+          "label": "Azzets",
+          "badge": {
+            "name": "Soon",
+            "variant": "primary",
+            "mode": "outline"
+          },
+          "icon": "maas-az"
+        }
+      ]
+    },
+    {
+      "label": "Open Source",
+      "list": [
+        {
+          "url": "https://maas.engineering/vue-equipment",
+          "label": "Vue Equipment",
+
+          "icon": "maas-ve"
+        },
+
+        {
+          "url": "https://maas.engineering/open-foundry",
+          "label": "Open Foundry",
+          "badge": {
+            "name": "Soon",
+            "variant": "primary",
+            "mode": "outline"
+          },
+          "icon": "maas-of"
+        }
+      ]
+    },
+    {
+      "label": "Company",
+      "list": [
+        {
+          "url": "https://maas.engineering/blog",
+          "label": "Readme",
+          "badge": {
+            "name": "Blog",
+            "variant": "primary",
+            "mode": "outline"
+          },
+          "icon": "edit-alt"
+        },
+        {
+          "url": "https://maas.engineering/about",
+          "label": "About us",
+          "icon": "maas-robot"
+        },
+
+        {
+          "url": "https://maas.engineering/contact",
+          "label": "Contact",
+          "icon": "maas-robot"
+        }
+      ]
+    },
+    {
+      "label": "Community",
+      "list": [
+        {
+          "url": "https://github.com/magicasaservice",
+          "label": "Github"
+        },
+
+        {
+          "url": "https://figma.com",
+          "label": "Figma"
+        }
+      ]
+    },
+    {
+      "label": "Legal",
+      "list": [
+        {
+          "url": "https://maas.engineering/legal-notice",
+          "label": "Legal Notice"
+        },
+
+        {
+          "url": "https://maas.engineering/privacy-policy",
+          "label": "Privacy Policy"
+        }
+      ]
+    }
+  ]
+}
