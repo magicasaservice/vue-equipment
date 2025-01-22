@@ -13,10 +13,10 @@
 import { inject, watch, onBeforeUnmount } from 'vue'
 import {
   useMagicDrawer,
-  useMagicCommand,
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from '../symbols'
 import type { MagicCommandDrawerOptions } from '../types'
 
