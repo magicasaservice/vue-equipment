@@ -36,14 +36,14 @@ export function useCommandTrigger(args: UseCommandTriggerArgs) {
   const { focused } = useFocus(elRef)
 
   // Public functions
-  async function onEnter(e: KeyboardEvent) {
+  async function onEnter(e?: KeyboardEvent) {
     if (
       (focused.value || mappedActive?.value) &&
       !mappedDisabled.value &&
       !view?.active
     ) {
-      e.preventDefault()
-      e.stopPropagation()
+      e?.preventDefault()
+      e?.stopPropagation()
 
       state.input.type = 'keyboard'
 

@@ -11,6 +11,7 @@ export interface MagicCommandOptions {
     close?: string[] | false
     next?: string[] | false
     prev?: string[] | false
+    enter?: string[] | false
   }
   loop?: boolean
 }

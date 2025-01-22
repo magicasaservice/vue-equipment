@@ -2,7 +2,7 @@
   <primitive
     ref="elRef"
     :data-id="`${mappedViewId}-trigger`"
-    :data-active="view?.active"
+    :data-active="mappedActive"
     :data-disabled="mappedDisabled"
     :as-child="asChild"
     class="magic-command-trigger"
@@ -21,34 +21,33 @@ import { useCommandTrigger } from '../composables/private/useCommandTrigger'
 import {
   MagicCommandInstanceId,
   MagicCommandViewId,
-  MagicCommandItemId,
   MagicCommandItemActive,
   MagicCommandItemDisabled,
+  MagicCommandProviderOptions,
 } from '../symbols'
 
 import type { Interaction, Action } from '../types'
-import { onKeyStroke } from '@vueuse/core'
+import { useMagicKeys } from '@vueuse/core'
 
 interface MagicCommandTriggerProps {
   viewId?: string
+  active?: boolean
   disabled?: boolean
   action?: Action
-  active?: boolean
   trigger?: Interaction[]
   asChild?: boolean
 }
 
 const {
   viewId,
-  trigger = ['click'] as Interaction[],
-  action = 'open' as Action,
   active = undefined,
   disabled = undefined,
+  action = 'open' as Action,
+  trigger = ['click'] as Interaction[],
 } = defineProps<MagicCommandTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
-const itemId = inject(MagicCommandItemId, undefined)
 const itemActive = inject(MagicCommandItemActive, undefined)
 const itemDisabled = inject(MagicCommandItemDisabled, undefined)
 
@@ -73,6 +72,8 @@ const mappedDisabled = computed(
   () => disabled ?? toValue(itemDisabled) ?? false
 )
 
+const options = inject(MagicCommandProviderOptions, undefined)
+
 const { onMouseenter, onClick, onEnter } = useCommandTrigger({
   instanceId,
   viewId: mappedViewId.value,
@@ -93,12 +94,19 @@ watch(
   }
 )
 
-function guardedEnter(e: KeyboardEvent) {
-  console.log('guarded', active, itemId, view)
-  onEnter(e)
-}
+// onKeyStroke('Enter', onEnter)
 
-onKeyStroke('Enter', guardedEnter)
+const keys = useMagicKeys()
+
+if (options?.keyListener?.enter) {
+  for (const key of options.keyListener.enter) {
+    watch(keys[key], (value) => {
+      if (value) {
+        onEnter()
+      }
+    })
+  }
+}
 </script>
 
 <style>

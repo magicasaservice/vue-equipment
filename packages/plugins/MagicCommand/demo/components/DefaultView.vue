@@ -1,6 +1,6 @@
 <template>
   <magic-command-view :initial="true" id="initial-view">
-    <magic-command-content class="overflow-auto">
+    <magic-command-content class="overflow-auto scrollbar-none">
       <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
         <m-menu-item-child>Navigation</m-menu-item-child>
       </m-menu-item>

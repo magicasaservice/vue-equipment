@@ -11,6 +11,7 @@ const defaultOptions: RequireAllNested<MagicCommandOptions> = {
     close: ['Escape'],
     next: ['ArrowDown'],
     prev: ['ArrowUp'],
+    enter: ['Enter'],
   },
   loop: false,
 }

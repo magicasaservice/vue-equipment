@@ -157,7 +157,9 @@ if (options?.keyListener?.prev) {
 watch(
   activeItem,
   async (value) => {
-    if (!value || isIdle.value) return
+    if (!value || isIdle.value || state.input.type !== 'keyboard') {
+      return
+    }
 
     nextTick(() => {
       const element = findElement(value.id)

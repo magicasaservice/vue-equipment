@@ -10,7 +10,7 @@
         <div class="flex gap-2">
           <m-input v-model="search" label="Search Projects" simple />
         </div>
-        <div class="pt-2 overflow-auto">
+        <div class="pt-2 overflow-auto scrollbar-none">
           <magic-command-item
             v-for="(project, i) in projects"
             :key="project.id"

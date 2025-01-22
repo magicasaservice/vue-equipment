@@ -489,7 +489,7 @@ To customize the menu, override the necessary options by passing them to the `Ma
       items: [
         { 
           label: 'debug',
-          description: 'Set to true, to get visual feedback on positioning.'
+          description: 'Set to true, to get visual feedback on positioning and verbose error logs.'
         },
         { label: 'boolean' },
         { label: 'false' }

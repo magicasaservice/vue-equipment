@@ -1,4 +1,5 @@
 import mirrorPreset from './../../.maas/tailwind.preset.js'
+import plugin from 'tailwindcss/plugin'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -18,4 +19,17 @@ export default {
       },
     },
   },
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-none::-webkit-scrollbar': {
+          display: 'none',
+        },
+        '.scrollbar-none': {
+          '-ms-overflow-style': 'none',
+          scrollbarWidth: 'none',
+        },
+      })
+    }),
+  ],
 }
