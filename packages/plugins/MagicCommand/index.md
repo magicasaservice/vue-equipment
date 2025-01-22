@@ -2,7 +2,7 @@
 
 Magic Command is a flexible collection of components intended to build command palette style menus, such as Spotlight, Raycast and the like.
 
-<component-preview src="./demo/ModalDemo.vue"/>
+<component-preview src="./demo/DefaultDemo.vue"/>
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -547,6 +547,83 @@ To customize the command palette, override the necessary options by passing them
     ],
   },
 ]"
+/>
+
+### CSS Variables
+
+In order to provide its basic functionality the components come with some CSS. To ensure that the they are customizable, relevant values are available as CSS variables.
+
+#### MagicCommandItem
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-command-item-cursor'
+        },
+        {
+          label: 'default'
+        },
+      ]
+    }
+  ]"
+/>
+
+#### MagicCommandRenderer
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-command-renderer-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-command-renderer-height'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    }
+  ]"
+/>
+
+#### MagicCommandTrigger
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-command-trigger-cursor'
+        },
+        {
+          label: 'pointer'
+        },
+      ]
+    }
+  ]"
 />
 
 ## Examples

@@ -111,7 +111,7 @@ if (options?.keyListener?.enter) {
 
 <style>
 .magic-menu-trigger {
-  cursor: var(--magic-menu-trigger-cursor, pointer);
+  cursor: var(--magic-command-trigger-cursor, pointer);
 }
 
 .magic-menu-trigger.-disabled {

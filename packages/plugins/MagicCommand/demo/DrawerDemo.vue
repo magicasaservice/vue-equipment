@@ -1,7 +1,7 @@
 <template>
   <magic-command-provider id="magic-command-drawer-demo">
-    <magic-command-trigger view-id="initial-view" as-child>
-      <m-button> Open Menu </m-button>
+    <magic-command-trigger :view-id="viewId" as-child>
+      <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
     <magic-command-drawer :options="{ focusTrap: false }">
@@ -14,13 +14,15 @@
       </div>
     </magic-command-drawer>
 
-    <default-view />
+    <default-view :id="viewId" />
   </magic-command-provider>
 </template>
 
 <script lang="ts" setup>
 import { MButton, MMenuBox } from '@maas/mirror/vue'
 import DefaultView from './components/DefaultView.vue'
+
+const viewId = 'initial-drawer-view'
 </script>
 
 <style>

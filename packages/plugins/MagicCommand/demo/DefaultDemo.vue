@@ -1,5 +1,5 @@
 <template>
-  <magic-command-provider id="magic-command-modal-demo">
+  <magic-command-provider id="magic-command-default-demo">
     <magic-command-trigger :view-id="viewId" as-child>
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
@@ -18,5 +18,5 @@
 import { MButton, MMenuBox } from '@maas/mirror/vue'
 import DefaultView from './components/DefaultView.vue'
 
-const viewId = 'initial-modal-view'
+const viewId = 'initial-default-view'
 </script>

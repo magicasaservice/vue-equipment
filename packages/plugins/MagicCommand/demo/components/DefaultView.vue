@@ -1,5 +1,5 @@
 <template>
-  <magic-command-view :initial="true" id="initial-view">
+  <magic-command-view :initial="true" :id="id">
     <magic-command-content class="overflow-auto scrollbar-none">
       <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
         <m-menu-item-child>Navigation</m-menu-item-child>
@@ -22,4 +22,10 @@ import ProjectView from './ProjectView.vue'
 import AboutView from './AboutView.vue'
 import FilterList from './FilterList.vue'
 import DisciplinesList from './DisciplinesList.vue'
+
+interface DefaultViewProps {
+  id: string
+}
+
+defineProps<DefaultViewProps>()
 </script>
