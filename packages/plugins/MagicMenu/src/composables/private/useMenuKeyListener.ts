@@ -24,8 +24,8 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   // Private functions
   function keyStrokeGuard(e: KeyboardEvent) {
     switch (true) {
-      case !state.active:
-        throw new Error('Menu is not active')
+      case !state.active && state.options.debug:
+        throw new Error(`'MagicMenu ${state.id} is not active'`)
       default:
         state.input.type = 'keyboard'
         e.preventDefault()
@@ -47,7 +47,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     if (!state.input.view) {
@@ -83,7 +83,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     if (!state.input.view) {
@@ -116,7 +116,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     if (!state.input.view) {
@@ -151,7 +151,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     if (!state.input.view) {
@@ -179,7 +179,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     state.active = false
@@ -191,7 +191,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.error(e)
+      console.warn(e)
     }
 
     if (!state.input.view) {
@@ -219,7 +219,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       try {
         keyStrokeGuard(e)
       } catch (e: unknown) {
-        console.error(e)
+        console.warn(e)
       }
     }
   }
