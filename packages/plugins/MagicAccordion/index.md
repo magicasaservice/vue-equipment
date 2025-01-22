@@ -91,7 +91,7 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
-          label: '[@maas/primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
         }
       ]
     },

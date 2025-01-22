@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
-import { useMagicDrawer } from '../src/composables/useMagicDrawer'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 
 const id = 'snap-points-demo'
 const snapPoints = ['320px', 0.75, 1]

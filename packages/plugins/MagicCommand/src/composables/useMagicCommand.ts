@@ -3,7 +3,17 @@ import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
 
-export function useMagicCommand(id: MaybeRef<string>, viewId?: string) {
+interface SelectItemArgs {
+  id: string
+  viewId: string
+}
+
+interface UnselectItemArgs {
+  id: string
+  viewId: string
+}
+
+export function useMagicCommand(id: MaybeRef<string>) {
   // Private methods
   const { initializeState } = useCommandState(id)
 
@@ -27,9 +37,15 @@ export function useMagicCommand(id: MaybeRef<string>, viewId?: string) {
     unselectAllViews()
   }
 
-  function selectItem(id: string) {
+  function selectItem(args: SelectItemArgs) {
+    const { id, viewId } = args
+
     if (!viewId) {
       throw new Error('viewId is required to select an item')
+    }
+
+    if (!id) {
+      throw new Error('id is required to select an item')
     }
 
     const { selectItem } = useCommandItem({
@@ -40,9 +56,15 @@ export function useMagicCommand(id: MaybeRef<string>, viewId?: string) {
     return selectItem(id)
   }
 
-  function unselectItem(id: string) {
+  function unselectItem(args: SelectItemArgs) {
+    const { id, viewId } = args
+
     if (!viewId) {
       throw new Error('viewId is required to select an item')
+    }
+
+    if (!id) {
+      throw new Error('id is required to select an item')
     }
 
     const { unselectItem } = useCommandItem({

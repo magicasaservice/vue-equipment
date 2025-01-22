@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
-import { useMagicModal } from '../src/composables/useMagicModal'
+import { useMagicModal } from '@maas/vue-equipment/plugins'
 
 const id = 'default-demo'
 const modalApi = useMagicModal(id)
