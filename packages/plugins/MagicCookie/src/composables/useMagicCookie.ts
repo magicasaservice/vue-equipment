@@ -89,8 +89,6 @@ export function useMagicCookie(id: MaybeRef<string>) {
     // Get the current timestamp
     const timestamp = new Date().getTime()
 
-    console.log(cookieState.cookies, mappedCookies.value)
-
     // Update cookieConsentData
     cookieConsent.value = {
       timestamp: timestamp,

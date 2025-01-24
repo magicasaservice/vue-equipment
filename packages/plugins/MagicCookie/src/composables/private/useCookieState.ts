@@ -1,7 +1,7 @@
 import { reactive, toValue, type MaybeRef, type Reactive } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { slugify } from '@maas/vue-equipment/utils'
-import type { MagicCookie } from '../../types'
+import type { MagicCookie, MappedCookies } from '../../types'
 
 type UseCookieStateArgs = {
   id: MaybeRef<string>
@@ -25,9 +25,10 @@ export function useCookieState(args: UseCookieStateArgs) {
 
   // @vueuse/integrations/useCookies
   const universalCookies = useCookies([toValue(id)])
-  const browserCookies = universalCookies.get(toValue(id))
+  const browserCookies: MappedCookies =
+    universalCookies.get(toValue(id))?.cookies ?? {}
 
-  if (!Array.isArray(cookies)) {
+  if (cookies && !Array.isArray(cookies)) {
     console.warn('Invalid configuration. ‘cookies‘ must be an array.')
   }
 
@@ -38,7 +39,7 @@ export function useCookieState(args: UseCookieStateArgs) {
     // Initialize cookies
     cookieState.cookies =
       cookies?.map((cookie) => {
-        const savedCookie = browserCookies.cookies[cookie.key]
+        const savedCookie = browserCookies[cookie.key]
         let value = cookie.value
 
         switch (true) {
