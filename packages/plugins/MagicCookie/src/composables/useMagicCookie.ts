@@ -1,70 +1,85 @@
-import { computed, ref } from 'vue'
+import { computed, ref, toValue, nextTick, type MaybeRef } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { toValue } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { cookieApiStore } from './private/useCookieApi'
+import { cookieStore } from './private/useCookieStore'
 
-import type { MagicCookieConsent } from '../types'
+import type {
+  CookieConsent,
+  MagicCookieCallbackArgs,
+  MappedCookies,
+} from '../types'
 
-// Reactive variables
+// Public state
 const preferencesVisible = ref(false)
-const selectedCookies = ref<{ [key: string]: boolean }>({})
 
-export function useMagicCookie() {
-  // Use universal cookies from the @vueuse/integrations/useCookies
-  const universalCookies = useCookies(['cookie_consent'])
+export function useMagicCookie(id: MaybeRef<string>) {
+  // @vueuse/integrations/useCookies
+  const universalCookies = useCookies([toValue(id)])
 
-  // Computed property to manage cookie consent data
+  // Private state
+  const emitter = useMagicEmitter()
+
+  const mappedCookies = computed(() =>
+    cookieStore?.cookies.reduce(
+      (acc, cookie) => ({
+        ...acc,
+        [cookie.key]: cookie.optional === false ? true : cookie.value,
+      }),
+      {} as MappedCookies
+    )
+  )
+
+  // Public state
   const cookieConsent = computed({
-    get: () => {
-      return universalCookies.get('cookie_consent') as MagicCookieConsent
+    get() {
+      return universalCookies.get<CookieConsent>(toValue(id))
     },
-    set: (value: MagicCookieConsent) => {
-      universalCookies.set('cookie_consent', value, {
+    set(value: CookieConsent) {
+      universalCookies.set(toValue(id), value, {
         path: '/',
-        maxAge: cookieApiStore.value?.maxAge,
+        maxAge: cookieStore?.maxAge,
       })
     },
   })
 
-  // Initialize an event emitter for custom events
-  const emitter = useMagicEmitter()
-
-  // Initial state: selectedCookies value is set based on the current cookie consent data
-  selectedCookies.value = cookieConsent.value?.cookies || {}
-
-  // Methods
-  // Toggle the selection of a specific cookie by key
-  function toggleSelection(key: string) {
-    selectedCookies.value = {
-      ...selectedCookies.value,
-      [key]: !selectedCookies.value[key],
-    }
+  // Public functions
+  function showPreferences() {
+    preferencesVisible.value = true
   }
 
-  // Accept all cookies
-  function accept() {
-    // Create an object representing all cookies as accepted
-    const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce(
-        (result, cookie) => {
-          result[cookie.key] = true
-          return result
-        },
-        {} as { [key: string]: boolean }
-      )
+  function hidePreferences() {
+    preferencesVisible.value = false
+  }
 
-    // Set the selectedCookies value to include all cookies
-    selectedCookies.value = cookies
+  function togglePreferences() {
+    preferencesVisible.value = !preferencesVisible.value
+  }
+
+  function toggleCookie(key: string) {
+    const cookie = cookieStore.cookies.find((cookie) => cookie.key === key)
+    if (cookie) {
+      cookie.value = !cookie.value
+    }
+
+    console.log(cookie?.key, cookie?.value)
+  }
+
+  async function acceptAll() {
+    // Set all cookies to true
+    for (const cookie of cookieStore.cookies) {
+      cookie.value = true
+    }
+
+    await nextTick()
 
     // Get the current timestamp
     const timestamp = new Date().getTime()
 
     // Update the cookieConsent with the accepted cookies and timestamp
-    cookieConsent.value = { timestamp, cookies }
+    cookieConsent.value = { timestamp, cookies: mappedCookies.value }
 
     // Emit the 'Accept' event with the updated cookieConsentData
-    emitter.emit('accept', cookieConsent.value)
+    emitter.emit('acceptAll', cookieConsent.value)
   }
 
   // Accept selected cookies
@@ -72,65 +87,57 @@ export function useMagicCookie() {
     // Get the current timestamp
     const timestamp = new Date().getTime()
 
-    // Update the cookieConsentData with the selected cookies and timestamp
+    console.log(cookieStore.cookies, mappedCookies.value)
+
+    // Update cookieConsentData
     cookieConsent.value = {
       timestamp: timestamp,
-      cookies: selectedCookies.value,
+      cookies: mappedCookies.value,
     }
 
-    // Emit the 'AcceptSelected' event with the updated cookieConsentData
     emitter.emit('acceptSelected', cookieConsent.value)
   }
 
   // Reject all cookies
-  function reject() {
-    // Create an object representing all cookies as rejected (optional cookies as accepted)
-    const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce(
-        (result, cookie) => {
-          result[cookie.key] = cookie.optional === false ? true : false
-          return result
-        },
-        {} as { [key: string]: boolean }
-      )
+  async function rejectAll() {
+    // Set all optional cookies to false
+    for (const cookie of cookieStore.cookies) {
+      cookie.value = cookie.optional === false ? true : false
+    }
 
-    // Set the selectedCookies value to include all cookies
-    selectedCookies.value = cookies
+    await nextTick()
 
     // Get the current timestamp
     const timestamp = new Date().getTime()
 
-    // Update the cookieConsentData with the rejected cookies and timestamp
-    cookieConsent.value = { timestamp, cookies }
+    // Update cookieConsentData
+    cookieConsent.value = { timestamp, cookies: mappedCookies.value }
 
-    // Emit the 'Reject' event with the updated cookieConsentData
-    emitter.emit('reject', cookieConsent.value)
+    emitter.emit('rejectAll', cookieConsent.value)
   }
 
-  // Events
-  function onAccept(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('accept', (args: MagicCookieConsent) => handler(toValue(args)))
+  function onAccept(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('acceptAll', callback)
   }
 
-  function onAcceptSelected(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('acceptSelected', (args: MagicCookieConsent) =>
-      handler(toValue(args))
-    )
+  function onAcceptSelected(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('acceptSelected', callback)
   }
 
-  function onReject(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('reject', (args: MagicCookieConsent) => handler(toValue(args)))
+  function onReject(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('rejectAll', callback)
   }
 
-  // Return the API functions and reactive variables
   return {
+    showPreferences,
+    hidePreferences,
+    togglePreferences,
     preferencesVisible,
-    selectedCookies,
     cookieConsent,
-    toggleSelection,
-    accept,
+    toggleCookie,
+    acceptAll,
     acceptSelected,
-    reject,
+    rejectAll,
     onAccept,
     onAcceptSelected,
     onReject,

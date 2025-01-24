@@ -1,6 +1,6 @@
 # Magic Cookie
 
-A magic plugin to manage cookies and user
+<component-preview src="./demo.vue" />
 
 ## Usage
 
