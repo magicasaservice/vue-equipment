@@ -47,13 +47,13 @@ import { ref, inject, nextTick, watch } from 'vue'
 import { useMagicCookie } from '../composables/useMagicCookie'
 import {
   MagicCookieId,
-  MagicCookieList,
+  MagicCookieCookies,
   MagicCookieOptionsKey,
 } from '../symbols'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 
 const id = inject(MagicCookieId, undefined)
-const cookies = inject(MagicCookieList, [])
+const cookies = inject(MagicCookieCookies, [])
 const options = inject(MagicCookieOptionsKey, undefined)
 
 if (!id || !options) {

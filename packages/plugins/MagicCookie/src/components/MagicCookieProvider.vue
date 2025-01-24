@@ -16,11 +16,11 @@
 <script lang="ts" setup>
 import { provide, type MaybeRef } from 'vue'
 import { defu } from 'defu'
-import { useCookieStore } from '../composables/private/useCookieStore'
+import { useCookieState } from '../composables/private/useCookieState'
 import { defaultOptions } from '../utils/defaultOptions'
 import {
   MagicCookieId,
-  MagicCookieList,
+  MagicCookieCookies,
   MagicCookieOptionsKey,
 } from '../symbols'
 
@@ -36,14 +36,16 @@ const { id, cookies, options } = defineProps<MagicCookieProviderProps>()
 
 const mappedOptions = defu(options, defaultOptions)
 
-const { cookieStore } = useCookieStore({
+const { cookieState, initializeState } = useCookieState({
   id,
   cookies,
   maxAge: mappedOptions.maxAge,
 })
 
+initializeState()
+
 provide(MagicCookieId, id)
-provide(MagicCookieList, cookieStore?.cookies)
+provide(MagicCookieCookies, cookieState?.cookies)
 provide(MagicCookieOptionsKey, mappedOptions)
 </script>
 

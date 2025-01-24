@@ -1,7 +1,7 @@
 import { computed, ref, toValue, nextTick, type MaybeRef } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { cookieStore } from './private/useCookieStore'
+import { useCookieState } from './private/useCookieState'
 
 import type {
   CookieConsent,
@@ -16,11 +16,13 @@ export function useMagicCookie(id: MaybeRef<string>) {
   // @vueuse/integrations/useCookies
   const universalCookies = useCookies([toValue(id)])
 
+  const { cookieState } = useCookieState({ id })
+
   // Private state
   const emitter = useMagicEmitter()
 
   const mappedCookies = computed(() =>
-    cookieStore?.cookies.reduce(
+    cookieState?.cookies.reduce(
       (acc, cookie) => ({
         ...acc,
         [cookie.key]: cookie.optional === false ? true : cookie.value,
@@ -37,7 +39,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
     set(value: CookieConsent) {
       universalCookies.set(toValue(id), value, {
         path: '/',
-        maxAge: cookieStore?.maxAge,
+        maxAge: cookieState?.maxAge,
       })
     },
   })
@@ -56,7 +58,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
   }
 
   function toggleCookie(key: string) {
-    const cookie = cookieStore.cookies.find((cookie) => cookie.key === key)
+    const cookie = cookieState.cookies.find((cookie) => cookie.key === key)
     if (cookie) {
       cookie.value = !cookie.value
     }
@@ -66,7 +68,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
 
   async function acceptAll() {
     // Set all cookies to true
-    for (const cookie of cookieStore.cookies) {
+    for (const cookie of cookieState.cookies) {
       cookie.value = true
     }
 
@@ -87,7 +89,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
     // Get the current timestamp
     const timestamp = new Date().getTime()
 
-    console.log(cookieStore.cookies, mappedCookies.value)
+    console.log(cookieState.cookies, mappedCookies.value)
 
     // Update cookieConsentData
     cookieConsent.value = {
@@ -101,7 +103,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
   // Reject all cookies
   async function rejectAll() {
     // Set all optional cookies to false
-    for (const cookie of cookieStore.cookies) {
+    for (const cookie of cookieState.cookies) {
       cookie.value = cookie.optional === false ? true : false
     }
 
