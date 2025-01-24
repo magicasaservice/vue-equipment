@@ -22,7 +22,7 @@ import {
   MagicCookieId,
   MagicCookieList,
   MagicCookieOptionsKey,
-} from '../../symbols'
+} from '../symbols'
 
 import type { MagicCookie, MagicCookieOptions } from '../types'
 

@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { inject } from 'vue'
 import { useMagicCookie } from '../composables/useMagicCookie'
-import { MagicCookieId } from '../../symbols'
+import { MagicCookieId } from '../symbols'
 
 const id = inject(MagicCookieId, undefined)
 

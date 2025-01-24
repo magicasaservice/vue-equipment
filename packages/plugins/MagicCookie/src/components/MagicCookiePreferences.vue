@@ -49,7 +49,7 @@ import {
   MagicCookieId,
   MagicCookieList,
   MagicCookieOptionsKey,
-} from '../../symbols'
+} from '../symbols'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 
 const id = inject(MagicCookieId, undefined)

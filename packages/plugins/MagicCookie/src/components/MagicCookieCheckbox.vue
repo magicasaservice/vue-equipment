@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { inject } from 'vue'
-import { MagicCookieId } from '../../symbols'
+import { MagicCookieId } from '../symbols'
 import type { MagicCookie } from '../types'
 
 const id = inject(MagicCookieId, undefined)
