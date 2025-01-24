@@ -54,68 +54,68 @@
   "keywords": [],
   "license": "MIT",
   "peerDependencies": {
-    "@floating-ui/vue": "catalog:",
-    "@maas/magic-timer": "catalog:",
-    "@maas/vue-primitive": "catalog:",
-    "@maas/wheel-gestures": "catalog:",
-    "@nuxt/kit": "catalog:",
-    "@vueuse/core": "catalog:",
-    "@vueuse/integrations": "catalog:",
-    "defu": "catalog:",
-    "focus-trap": "catalog:",
-    "hls.js": "catalog:",
-    "luxon": "catalog:",
-    "mitt": "catalog:",
-    "motion": "catalog:",
-    "nuxt": "catalog:",
-    "universal-cookie": "catalog:",
-    "vue": "catalog:"
+    "@floating-ui/vue": "^1",
+    "@maas/magic-timer": "^1",
+    "@maas/vue-primitive": "^1",
+    "@maas/wheel-gestures": "^1",
+    "@nuxt/kit": "^3",
+    "@vueuse/core": "^12",
+    "@vueuse/integrations": "^12",
+    "defu": "^6",
+    "focus-trap": "^7",
+    "hls.js": "^1",
+    "luxon": "^3",
+    "mitt": "^3",
+    "motion": "^10",
+    "nuxt": "^3.15",
+    "universal-cookie": "^7",
+    "vue": "^3.5"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
-      "optional": true
+      "optional": false
     },
     "@nuxt/kit": {
-      "optional": true
+      "optional": false
     },
     "@maas/magic-timer": {
-      "optional": true
+      "optional": false
     },
     "@maas/vue-primitive": {
-      "optional": true
+      "optional": false
     },
     "@maas/wheel-gestures": {
-      "optional": true
+      "optional": false
     },
     "@vueuse/core": {
-      "optional": true
+      "optional": false
     },
     "@vueuse/integrations": {
-      "optional": true
+      "optional": false
     },
     "defu": {
-      "optional": true
+      "optional": false
     },
     "hls.js": {
-      "optional": true
+      "optional": false
     },
     "luxon": {
-      "optional": true
+      "optional": false
     },
     "mitt": {
-      "optional": true
+      "optional": false
     },
     "motion": {
-      "optional": true
+      "optional": false
     },
     "nuxt": {
-      "optional": true
+      "optional": false
     },
     "universal-cookie": {
-      "optional": true
+      "optional": false
     },
     "vue": {
-      "optional": true
+      "optional": false
     }
   },
   "scripts": {

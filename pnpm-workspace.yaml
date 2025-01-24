@@ -6,11 +6,12 @@ packages:
 catalog:
   '@floating-ui/vue': ^1.1.6
   '@maas/magic-timer': ^1.0.1
-  '@maas/mirror': ^0.9.1
+  '@maas/mirror': ^0.11.0
   '@maas/vue-primitive': ^1.1.0
   '@maas/wheel-gestures': ^1.0.0
   '@nuxt/kit': ^3.15.2
   '@nuxt/schema': ^3.15.2
+  '@nuxtjs/tailwindcss': ^6.13.1
   '@types/fs-extra': ^11.0.4
   '@types/node': ^22.10.7
   '@vueuse/core': '>=12.4.0'

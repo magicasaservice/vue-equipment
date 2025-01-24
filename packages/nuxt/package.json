@@ -22,7 +22,7 @@
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "catalog:",
     "@nuxt/test-utils": "^3.15.4",
-    "@nuxtjs/tailwindcss": "^6.13.1",
+    "@nuxtjs/tailwindcss": "catalog:",
     "nuxt": "catalog:",
     "vitest": "^2.1.8"
   },
