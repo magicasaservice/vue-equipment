@@ -393,3 +393,60 @@ To customize the accordion, override the necessary options by passing them to th
     },
   ]"
 />
+
+### CSS
+
+In order to provide its basic functionality the components come with some CSS. To ensure that the components are customizable, relevant values are available as CSS variables.
+
+#### MagicAccordionContent
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-accordion-size-transition'
+        },
+        {
+          label: 'all 200ms var(--ease-in-out-sharp)',
+          description: '`var(--ease-in-out-sharp)` transpiles to `cubic-bezier(0.83, 0, 0.17, 1)` and can also be overridden.'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-accordion-content-clip-path'
+        },
+        {
+          label: 'inset(0)'
+        },
+      ]
+    }
+  ]"
+/>
+
+#### MagicAccordionTrigger
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-accordion-trigger-cursor-disabled'
+        },
+        {
+          label: 'not-allowed'
+        },
+      ]
+    }
+  ]"
+/>

@@ -381,3 +381,66 @@ To customize the component override the necessary options. Any custom options wi
     }
   ]"
 />
+
+### CSS Variables
+
+In order to provide its basic functionality the component comes with some CSS. To ensure that the component is customizable, relevant values are available as CSS variables.
+
+<ProseTable
+ :columns="[
+   { label: 'Variable' },
+   { label: 'Default' },
+ ]"
+ :rows="[
+   {
+     items: [
+       {
+         label: '--magic-draggable-position'
+       },
+       {
+         label: 'fixed'
+       },
+     ]
+   },
+   {
+     items: [
+       {
+         label: '--magic-draggable-width'
+       },
+       {
+         label: '100%'
+       },
+     ]
+   },
+   {
+     items: [
+       {
+         label: '--magic-draggable-height'
+       },
+       {
+         label: '100%'
+       },
+     ]
+   },
+   {
+     items: [
+       {
+         label: '--magic-draggable-z-index'
+       },
+       {
+         label: '999'
+       },
+     ]
+   },
+   {
+     items: [
+       {
+         label: '--magic-draggable-inset'
+       },
+       {
+         label: '0'
+       },
+     ]
+   }
+ ]"
+/>

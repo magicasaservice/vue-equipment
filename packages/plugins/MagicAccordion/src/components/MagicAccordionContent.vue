@@ -28,6 +28,7 @@ import { useAccordionCallback } from '../composables/private/useAccordionCallbac
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/squash-y.css'
 import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {
@@ -73,24 +74,17 @@ const {
 .magic-accordion-content {
   --magic-auto-size-transition: var(
     --magic-accordion-size-transition,
-    all 200ms var(--ease-in-out-sharp) ;
+    all 200ms var(--ease-in-out-sharp)
   );
   clip-path: var(--magic-accordion-content-clip-path, inset(0));
 }
 
 .magic-accordion-enter-active {
   position: relative;
-  transition: var(
-    --magic-accordion-enter-transition,
-    fade-in 150ms var(--ease-in-out)
-  );
+  animation: fade-in 150ms var(--ease-in-out);
 }
 
 .magic-accordion-leave-active {
-  transition: var(
-    --magic-accordion-leave-transition,
-    all 200ms var(--ease-in-out-sharp)
-  );
-  height: 0;
+  animation: squash-y 200ms var(--ease-in-out-sharp);
 }
 </style>
