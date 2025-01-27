@@ -4,9 +4,10 @@
     :cookies="cookies"
     class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-xl"
   >
-    <div class="type-surface-body-sm">
-      Vue Equipment does not use cookies to provide a personalized experience
-      based on your activity, but here is a cookie banner anyways.
+    <div class="type-surface-body-md">
+      Vue Equipment does not use cookies to provide you a personalized
+      experience based on your activity, but for good measure here is a cookie
+      banner anyways.
     </div>
     <magic-cookie-view>
       <div class="flex flex-col gap-6 pt-6">
@@ -31,11 +32,11 @@
     </magic-cookie-view>
     <div class="flex gap-4 pt-6">
       <template v-if="viewActive">
-        <m-button mode="ghost" block @click="toggleView">Close</m-button>
+        <m-button mode="plain" block @click="toggleView">Close</m-button>
         <m-button mode="translucent" block @click="onSave"> Save </m-button>
       </template>
       <template v-else>
-        <m-button mode="ghost" block @click="onRejectAll">
+        <m-button mode="plain" block @click="onRejectAll">
           Reject All
         </m-button>
         <m-button mode="translucent" block @click="toggleView">
