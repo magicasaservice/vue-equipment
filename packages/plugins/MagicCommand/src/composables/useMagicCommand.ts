@@ -56,7 +56,7 @@ export function useMagicCommand(id: MaybeRef<string>) {
     return selectItem(id)
   }
 
-  function unselectItem(args: SelectItemArgs) {
+  function unselectItem(args: UnselectItemArgs) {
     const { id, viewId } = args
 
     if (!viewId) {

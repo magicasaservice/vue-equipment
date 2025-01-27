@@ -1,71 +1,57 @@
-import { reactive, toValue, type MaybeRef, type Reactive } from 'vue'
-import { useCookies } from '@vueuse/integrations/useCookies'
-import { slugify } from '@maas/vue-equipment/utils'
-import type { MagicCookie, MappedCookies } from '../../types'
+import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { defu } from 'defu'
+import { defaultOptions } from '../../utils/defaultOptions'
+import type { CookieState, MagicCookieOptions } from '../../types/index'
 
-type UseCookieStateArgs = {
-  id: MaybeRef<string>
-  cookies?: MagicCookie[]
-  maxAge?: number
-}
+const cookieStateStore: Ref<CookieState[]> = ref([])
 
-type CookieState = Reactive<{
-  cookies: MagicCookie[]
-  maxAge: number | undefined
-}>
+export function useCookieState(instanceId: MaybeRef<string>) {
+  // Private functions
+  function createState(id: string) {
+    const state: CookieState = {
+      id: id,
+      items: [],
+      options: defaultOptions,
+      viewActive: false,
+    }
 
-// Global API state to manage cookies and maxAge
-const cookieState: CookieState = reactive({
-  cookies: [],
-  maxAge: undefined,
-})
-
-export function useCookieState(args: UseCookieStateArgs) {
-  const { id, cookies, maxAge } = args
-
-  // @vueuse/integrations/useCookies
-  const universalCookies = useCookies([toValue(id)])
-  const browserCookies: MappedCookies =
-    universalCookies.get(toValue(id))?.cookies ?? {}
-
-  if (cookies && !Array.isArray(cookies)) {
-    console.warn('Invalid configuration. ‘cookies‘ must be an array.')
+    return reactive(state)
   }
 
-  function initializeState() {
-    // Initialize maxAge
-    cookieState.maxAge = maxAge
+  function addState(id: string) {
+    const instance = createState(id)
+    cookieStateStore.value = [...cookieStateStore.value, instance]
 
-    // Initialize cookies
-    cookieState.cookies =
-      cookies?.map((cookie) => {
-        const savedCookie = browserCookies[cookie.key]
-        let value = cookie.value
+    return instance
+  }
 
-        switch (true) {
-          case cookie.optional === false:
-            value = true
-            break
-          default:
-            value = savedCookie ?? cookie.value
-        }
+  // Public functions
+  function initializeState(options?: MagicCookieOptions) {
+    let instance = cookieStateStore.value.find((instance) => {
+      return instance.id === toValue(instanceId)
+    })
 
-        const key = slugify(cookie.key, {
-          separator: '_',
-          lowercase: true,
-          strict: true,
-        })
+    if (!instance) {
+      instance = addState(toValue(instanceId))
+    }
 
-        return {
-          ...cookie,
-          value,
-          key,
-        }
-      }) ?? []
+    if (options) {
+      const mappedOptions = defu(options, defaultOptions)
+      instance.options = mappedOptions
+    }
+
+    return instance
+  }
+
+  function deleteState() {
+    cookieStateStore.value = cookieStateStore.value.filter(
+      (x: CookieState) => x.id !== toValue(instanceId)
+    )
   }
 
   return {
     initializeState,
-    cookieState,
+    deleteState,
+    cookieStateStore,
   }
 }

@@ -4,7 +4,7 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 const defaultOptions: RequireAll<MagicCookieOptions> = {
   maxAge: 24 * 60 * 60 * 60,
   transition: {
-    preferences: 'magic-cookie-preferences',
+    view: 'magic-cookie-view',
   },
 }
 

@@ -1,23 +1,24 @@
-export type MagicCookie = {
-  [key: string]: unknown
-  key: string
-  value: boolean
+export interface CookieItem {
+  id: string
+  active: boolean
   optional?: boolean
-  title?: string
-  text?: string
-}
-
-export type MappedCookies = Record<string, boolean>
-
-export type CookieConsent = {
+  maxAge?: number
   timestamp?: number
-  cookies: MappedCookies
 }
 
-export type MagicCookieOptions = {
+export interface CookieState {
+  id: string
+  options: MagicCookieOptions
+  items: CookieItem[]
+  viewActive: boolean
+}
+
+export type CookieConsent = Record<CookieItem['id'], CookieItem['active']>
+
+export interface MagicCookieOptions {
   maxAge?: number
   transition?: {
-    preferences?: string
+    view?: string
   }
 }
 

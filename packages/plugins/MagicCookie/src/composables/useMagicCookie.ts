@@ -1,98 +1,64 @@
-import { computed, ref, toValue, nextTick, type MaybeRef } from 'vue'
-import { useCookies } from '@vueuse/integrations/useCookies'
+import { computed, nextTick, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useCookieState } from './private/useCookieState'
+import { useCookieItem } from './private/useCookieItem'
 
-import type {
-  CookieConsent,
-  MagicCookieCallbackArgs,
-  MappedCookies,
-} from '../types'
-
-// Public state
-const preferencesVisible = ref(false)
+import type { CookieConsent, MagicCookieCallbackArgs } from '../types'
 
 export function useMagicCookie(id: MaybeRef<string>) {
-  // @vueuse/integrations/useCookies
-  const universalCookies = useCookies([toValue(id)])
-
-  const { cookieState } = useCookieState({ id })
+  const { selectItem, unselectItem, toggleItem, setItemCookie } = useCookieItem(
+    { instanceId: id }
+  )
 
   // Private state
   const emitter = useMagicEmitter()
 
-  const mappedCookies = computed(() =>
-    cookieState?.cookies.reduce(
+  const { initializeState } = useCookieState(id)
+  const state = initializeState()
+
+  // Public state
+  const cookieConsent = computed(() =>
+    state?.items.reduce(
       (acc, cookie) => ({
         ...acc,
-        [cookie.key]: cookie.optional === false ? true : cookie.value,
+        [cookie.id]: cookie.optional === false ? true : cookie.active,
       }),
-      {} as MappedCookies
+      {} as CookieConsent
     )
   )
 
-  // Public state
-  const cookieConsent = computed({
-    get() {
-      return universalCookies.get<CookieConsent>(toValue(id))
-    },
-    set(value: CookieConsent) {
-      universalCookies.set(toValue(id), value, {
-        path: '/',
-        maxAge: cookieState?.maxAge,
-      })
-    },
-  })
+  const viewActive = computed(() => state.viewActive)
 
   // Public functions
-  function showPreferences() {
-    preferencesVisible.value = true
+  function showView() {
+    state.viewActive = true
   }
 
-  function hidePreferences() {
-    preferencesVisible.value = false
+  function hideView() {
+    state.viewActive = false
   }
 
-  function togglePreferences() {
-    preferencesVisible.value = !preferencesVisible.value
-  }
-
-  function toggleCookie(key: string) {
-    const cookie = cookieState.cookies.find((cookie) => cookie.key === key)
-    if (cookie) {
-      cookie.value = !cookie.value
-    }
-
-    console.log(cookie?.key, cookie?.value)
+  function toggleView() {
+    state.viewActive = !state.viewActive
   }
 
   async function acceptAll() {
-    // Set all cookies to true
-    for (const cookie of cookieState.cookies) {
-      cookie.value = true
+    const timestamp = new Date().getTime()
+
+    for (const cookie of state.items) {
+      selectItem(cookie.id, timestamp)
+      setItemCookie(cookie.id)
     }
 
     await nextTick()
 
-    // Get the current timestamp
-    const timestamp = new Date().getTime()
-
-    // Update the cookieConsent with the accepted cookies and timestamp
-    cookieConsent.value = { timestamp, cookies: mappedCookies.value }
-
-    // Emit the 'Accept' event with the updated cookieConsentData
     emitter.emit('acceptAll', cookieConsent.value)
   }
 
   // Accept selected cookies
   function acceptSelected() {
-    // Get the current timestamp
-    const timestamp = new Date().getTime()
-
-    // Update cookieConsentData
-    cookieConsent.value = {
-      timestamp: timestamp,
-      cookies: mappedCookies.value,
+    for (const cookie of state.items) {
+      setItemCookie(cookie.id)
     }
 
     emitter.emit('acceptSelected', cookieConsent.value)
@@ -100,18 +66,14 @@ export function useMagicCookie(id: MaybeRef<string>) {
 
   // Reject all cookies
   async function rejectAll() {
+    const timestamp = new Date().getTime()
     // Set all optional cookies to false
-    for (const cookie of cookieState.cookies) {
-      cookie.value = cookie.optional === false ? true : false
+    for (const cookie of state.items) {
+      unselectItem(cookie.id, timestamp)
+      setItemCookie(cookie.id)
     }
 
     await nextTick()
-
-    // Get the current timestamp
-    const timestamp = new Date().getTime()
-
-    // Update cookieConsentData
-    cookieConsent.value = { timestamp, cookies: mappedCookies.value }
 
     emitter.emit('rejectAll', cookieConsent.value)
   }
@@ -129,12 +91,14 @@ export function useMagicCookie(id: MaybeRef<string>) {
   }
 
   return {
-    showPreferences,
-    hidePreferences,
-    togglePreferences,
-    preferencesVisible,
+    viewActive,
+    showView,
+    hideView,
+    toggleView,
     cookieConsent,
-    toggleCookie,
+    selectItem,
+    unselectItem,
+    toggleItem,
     acceptAll,
     acceptSelected,
     rejectAll,

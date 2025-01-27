@@ -59,14 +59,9 @@ export function useMenuItem(args: UseMenuItemArgs) {
   // Public functions
   function initializeItem(args: InitializeItemArgs) {
     const { id } = args
-    const instance = getItem(id)
+    const item = getItem(id) ?? addItem(args)
 
-    if (!instance) {
-      const item = addItem(args)
-      return item
-    }
-
-    return instance
+    return item
   }
 
   function deleteItem(id: string) {

@@ -1,8 +1,7 @@
 import type { InjectionKey, MaybeRef } from 'vue'
-import type { MagicCookie, MagicCookieOptions } from '../types'
 
-const MagicCookieId = Symbol() as InjectionKey<MaybeRef<string>>
-const MagicCookieCookies = Symbol() as InjectionKey<MagicCookie[]>
-const MagicCookieOptionsKey = Symbol() as InjectionKey<MagicCookieOptions>
+const MagicCookieInstanceId = Symbol() as InjectionKey<MaybeRef<string>>
+const MagicCookieItemId = Symbol() as InjectionKey<string>
+const MagicCookieItemActive = Symbol() as InjectionKey<MaybeRef<boolean>>
 
-export { MagicCookieId, MagicCookieCookies, MagicCookieOptionsKey }
+export { MagicCookieInstanceId, MagicCookieItemId, MagicCookieItemActive }

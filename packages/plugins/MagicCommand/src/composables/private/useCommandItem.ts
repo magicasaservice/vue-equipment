@@ -53,12 +53,7 @@ export function useCommandItem(args: UseCommandItemArgs) {
   // Public functions
   function initializeItem(args: InitializeItemArgs) {
     const { id } = args
-    const item = getItem(id)
-
-    if (!item) {
-      const item = addItem(args)
-      return item
-    }
+    const item = getItem(id) ?? addItem(args)
 
     return item
   }
