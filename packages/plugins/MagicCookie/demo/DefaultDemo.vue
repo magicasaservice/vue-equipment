@@ -2,7 +2,7 @@
   <magic-cookie-provider
     id="magic-cookie-demo"
     :cookies="cookies"
-    class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-md"
+    class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-xl"
   >
     <div class="type-surface-body-sm">
       Vue Equipment does not use cookies to provide a personalized experience
@@ -31,17 +31,15 @@
     </magic-cookie-view>
     <div class="flex gap-4 pt-6">
       <template v-if="viewActive">
-        <m-button mode="translucent" block @click="toggleView">Close</m-button>
+        <m-button mode="ghost" block @click="toggleView">Close</m-button>
         <m-button mode="translucent" block @click="acceptSelected">
-          Accept selected
+          Save
         </m-button>
       </template>
       <template v-else>
+        <m-button mode="ghost" block @click="rejectAll"> Reject All </m-button>
         <m-button mode="translucent" block @click="toggleView">
-          Select Cookies
-        </m-button>
-        <m-button mode="translucent" block @click="rejectAll">
-          Reject All
+          Settings
         </m-button>
       </template>
       <m-button block @click="acceptAll">Accept All</m-button>
@@ -72,6 +70,7 @@ const cookies = [
     optional: false,
     title: 'Strictly Necessary Cookies',
     text: 'These cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cookies, but some parts of the site will not then work. These cookies do not store any personally identifiable information.',
+    maxAge: 24 * 60 * 60 * 60 * 10,
   },
   {
     id: 'performance',

@@ -1,0 +1,5 @@
+@keyframes squash-y {
+  100% {
+    height: 0;
+  }
+}

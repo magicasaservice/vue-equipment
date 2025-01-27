@@ -1,5 +1,5 @@
 <template>
-  <div v-show="wrapperActive" class="magic-cookie-view">
+  <div v-if="wrapperActive" class="magic-cookie-view">
     <magic-auto-size :width="false">
       <transition
         :name="state.options.transition?.view"
@@ -25,6 +25,10 @@ import { useCookieState } from '../composables/private/useCookieState'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 
 import { MagicCookieInstanceId } from '../symbols'
+
+import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/squash-y.css'
+import '@maas/vue-equipment/utils/css/easings.css'
 
 const id = inject(MagicCookieInstanceId, undefined)
 
@@ -83,24 +87,25 @@ onMounted(() => {
   width: 100%;
   --magic-auto-size-transition: var(
     --magic-cookie-view-size-transition,
-    all 300ms var(--ease-in-out-sharp) ;
+    all 300ms var(--ease-in-out-sharp)
   );
   clip-path: var(--magic-cookie-view-clip-path, inset(0));
 }
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .magic-cookie-view-enter-active {
-  position: relative;
-  transition: var(
-    --magic-cookie-view-enter-transition,
-    fade-in 150ms var(--ease-in-out)
-  );
+  animation: fade-in 300ms var(--ease-in-out);
 }
 
 .magic-cookie-view-leave-active {
-  transition: var(
-    --magic-cookie-view-leave-transition,
-    all 200ms var(--ease-in-out-sharp)
-  );
-  height: 0;
+  animation: squash-y 300ms var(--ease-in-out-sharp);
 }
 </style>

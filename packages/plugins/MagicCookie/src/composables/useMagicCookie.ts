@@ -69,7 +69,10 @@ export function useMagicCookie(id: MaybeRef<string>) {
     const timestamp = new Date().getTime()
     // Set all optional cookies to false
     for (const cookie of state.items) {
-      unselectItem(cookie.id, timestamp)
+      if (cookie.optional !== false) {
+        unselectItem(cookie.id, timestamp)
+      }
+
       setItemCookie(cookie.id)
     }
 
