@@ -32,17 +32,17 @@
     <div class="flex gap-4 pt-6">
       <template v-if="viewActive">
         <m-button mode="ghost" block @click="toggleView">Close</m-button>
-        <m-button mode="translucent" block @click="acceptSelected">
-          Save
-        </m-button>
+        <m-button mode="translucent" block @click="onSave"> Save </m-button>
       </template>
       <template v-else>
-        <m-button mode="ghost" block @click="rejectAll"> Reject All </m-button>
+        <m-button mode="ghost" block @click="onRejectAll">
+          Reject All
+        </m-button>
         <m-button mode="translucent" block @click="toggleView">
           Settings
         </m-button>
       </template>
-      <m-button block @click="acceptAll">Accept All</m-button>
+      <m-button block @click="onAcceptAll">Accept All</m-button>
     </div>
   </magic-cookie-provider>
 </template>
@@ -83,6 +83,21 @@ const cookies = [
     text: 'These cookies enable the website to provide enhanced functionality and personalisation. They may be set by us or by third party providers whose services we have added to our pages. If you do not allow these cookies then some or all of these services may not function properly.',
   },
 ]
+
+function onRejectAll() {
+  rejectAll()
+  toggleView()
+}
+
+function onAcceptAll() {
+  acceptAll()
+  toggleView()
+}
+
+function onSave() {
+  acceptSelected()
+  toggleView()
+}
 
 function onAcceptCallback(args: MagicCookieCallbackArgs) {
   console.log('ACCEPT:', args)
