@@ -1,14 +1,11 @@
 <template>
   <div
     class="magic-player-overlay"
-    :class="{
-      '-playing': playing,
-      '-paused': !playing,
-      '-idle': idle,
-      '-not-idle': !idle,
-      '-hover': mouseEntered,
-      '-not-hover': !mouseEntered,
-    }"
+    :data-playing="playing"
+    :data-paused="!playing"
+    :data-waiting="waiting"
+    :data-idle="idle"
+    :data-hover="mouseEntered"
     @click.stop="togglePlay"
   >
     <slot>
@@ -48,7 +45,9 @@ import { MagicPlayerInstanceId } from '../symbols'
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicPlayerOverlay must be nested inside MagicPlayer.')
+  throw new Error(
+    'MagicPlayerOverlay must be nested inside MagicPlayerProvider.'
+  )
 }
 
 const { playing, waiting } = usePlayerMediaApi({
@@ -87,8 +86,11 @@ const { idle } = useIdle(3000)
   height: var(--magic-player-overlay-button-size, 2.5rem);
 }
 
-.magic-player-overlay.-playing.-idle,
-.magic-player-overlay.-playing.-not-hover {
+.magic-player-overlay.-playing[data-idle='true'] {
+  opacity: 0;
+}
+
+.magic-player-overlay.-playing[data-hover='false'] {
   opacity: 0;
 }
 </style>

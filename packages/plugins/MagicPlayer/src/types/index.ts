@@ -1,4 +1,6 @@
 export interface MagicPlayerOptions {
+  src: string
+  mode?: 'audio' | 'video'
   srcType?: 'native' | 'hls'
   preload?: 'auto' | 'metadata' | 'none'
   autoplay?: boolean

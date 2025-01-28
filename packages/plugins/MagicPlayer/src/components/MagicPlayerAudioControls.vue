@@ -1,22 +1,17 @@
 <template>
   <div
-    class="magic-audio-player-controls"
-    :class="{
-      '-touched': touched,
-      '-untouched': !touched,
-      '-playing': playing,
-      '-paused': !playing,
-      '-waiting': waiting,
-      '-idle': idle,
-      '-not-idle': !idle,
-      '-hover': mouseEntered,
-      '-not-hover': !mouseEntered,
-    }"
+    class="magic-player-audio-controls"
+    :data-touched="touched"
+    :data-playing="playing"
+    :data-paused="!playing"
+    :data-waiting="waiting"
+    :data-idle="idle"
+    :data-hover="mouseEntered"
   >
-    <div class="magic-audio-player-controls__bar">
-      <div ref="barRef" class="magic-audio-player-controls__bar--inner">
+    <div class="magic-player-audio-controls__bar">
+      <div ref="barRef" class="magic-player-audio-controls__bar--inner">
         <div
-          class="magic-audio-player-controls__item -shrink-0"
+          class="magic-player-audio-controls__item -shrink-0"
           data-slot="play-toggle"
         >
           <button v-if="!playing" @click="play">
@@ -31,21 +26,21 @@
           </button>
         </div>
         <div
-          class="magic-audio-player-controls__item -shrink-0"
+          class="magic-player-audio-controls__item -shrink-0"
           data-slot="display-time-current"
         >
           <magic-player-display-time :id="id" type="current" />
         </div>
         <div
-          class="magic-audio-player-controls__item -grow"
+          class="magic-player-audio-controls__item -grow"
           data-slot="timeline"
         >
-          <div ref="trackRef" class="magic-audio-player-controls__timeline">
+          <div ref="trackRef" class="magic-player-audio-controls__timeline">
             <magic-player-timeline :id="id" />
           </div>
         </div>
         <div
-          class="magic-audio-player-controls__item -shrink-0"
+          class="magic-player-audio-controls__item -shrink-0"
           data-slot="display-time-duration"
         >
           <magic-player-display-time :id="id" type="duration" />
@@ -104,15 +99,15 @@ provide(MagicPlayerInstanceId, mappedId.value)
 
 <style>
 :root {
-  --magic-audio-player-controls-height: 3rem;
+  --magic-player-audio-controls-height: 3rem;
 }
 
-.magic-audio-player-controls {
+.magic-player-audio-controls {
   width: 100%;
   pointer-events: none;
 }
 
-.magic-audio-player-controls__bar {
+.magic-player-audio-controls__bar {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -121,31 +116,31 @@ provide(MagicPlayerInstanceId, mappedId.value)
   pointer-events: auto;
 }
 
-.magic-audio-player-controls__bar--inner {
+.magic-player-audio-controls__bar--inner {
   width: 100%;
   box-sizing: border-box;
-  height: var(--magic-audio-player-controls-height);
-  padding: 0 var(--magic-audio-player-controls-padding-x, 0);
-  color: var(--magic-audio-player-controls-color, inherit);
+  height: var(--magic-player-audio-controls-height);
+  padding: 0 var(--magic-player-audio-controls-padding-x, 0);
+  color: var(--magic-player-audio-controls-color, inherit);
   display: flex;
   align-items: center;
 }
 
-.magic-audio-player-controls__item {
+.magic-player-audio-controls__item {
   display: inline-flex;
   align-items: center;
   user-select: none;
 }
 
-.magic-audio-player-controls__item.-shrink-0 {
+.magic-player-audio-controls__item.-shrink-0 {
   flex-shrink: 0;
 }
 
-.magic-audio-player-controls__item.-grow {
+.magic-player-audio-controls__item.-grow {
   flex-grow: 1;
 }
 
-.magic-audio-player-controls__item button {
+.magic-player-audio-controls__item button {
   background-color: transparent;
   color: inherit;
   border: 0;
@@ -154,43 +149,43 @@ provide(MagicPlayerInstanceId, mappedId.value)
   padding: 0;
   border-radius: 0;
   cursor: pointer;
-  width: var(--magic-audio-player-controls-button-width, 4rem);
-  height: var(--magic-audio-player-controls-height);
+  width: var(--magic-player-audio-controls-button-width, 3rem);
+  height: var(--magic-player-audio-controls-height);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.magic-audio-player-controls__item button svg {
+.magic-player-audio-controls__item button svg {
   display: block;
-  width: var(--magic-audio-player-controls-icon-width, 1.25rem);
+  width: var(--magic-player-audio-controls-icon-width, 1.25rem);
   height: auto;
 }
 
-.magic-audio-player-controls__timeline {
+.magic-player-audio-controls__timeline {
   width: 100%;
 }
 
 @container (max-width: 480px) {
-  .magic-audio-player-controls__item[data-slot='display-time-current'] {
+  .magic-player-audio-controls__item[data-slot='display-time-current'] {
     display: none;
   }
 }
 
 @container (max-width: 320px ) {
-  .magic-audio-player-controls__item[data-slot='display-time-duration'] {
+  .magic-player-audio-controls__item[data-slot='display-time-duration'] {
     display: none;
   }
-  .magic-audio-player-controls__item[data-slot='timeline'] {
+  .magic-player-audio-controls__item[data-slot='timeline'] {
     padding-right: 1rem;
   }
 }
 
 @container (max-width: 240px) {
-  .magic-audio-player-controls__item[data-slot='timeline'] {
+  .magic-player-audio-controls__item[data-slot='timeline'] {
     display: none;
   }
-  .magic-audio-player-controls__bar--inner {
+  .magic-player-audio-controls__bar--inner {
     justify-content: center;
   }
 }

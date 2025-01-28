@@ -20,7 +20,7 @@ const instanceId = inject(MagicPlayerInstanceId)
 
 if (!instanceId) {
   throw new Error(
-    'MagicPlayerDisplayTime must be nested inside MagicPlayerControls or MagicPlayerAudioControls.'
+    'MagicPlayerDisplayTime must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
   )
 }
 

@@ -13,7 +13,9 @@ import { MagicPlayerInstanceId } from '../symbols'
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicPlayerPoster must be nested inside MagicPlayer.')
+  throw new Error(
+    'MagicPlayerPoster must be nested inside MagicPlayerProvider.'
+  )
 }
 
 const { loaded } = usePlayerRuntime({

@@ -44,7 +44,7 @@ const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 if (!instanceId) {
   throw new Error(
-    'MagicPlayerPoster must be nested inside MagicPlayerControls or MagicPlayerAudioControls.'
+    'MagicPlayerPoster must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
   )
 }
 

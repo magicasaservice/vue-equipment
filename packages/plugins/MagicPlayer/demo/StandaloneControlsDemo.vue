@@ -1,14 +1,17 @@
 <template>
-  <div class="w-full aspect-[16/9]">
-    <magic-player
-      id="standalone-controls-demo"
-      src="https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4"
+  <div class="w-full flex flex-col">
+    <magic-player-provider
+      id="standalone-controls-demo-player"
+      :options="{
+        src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
+      }"
     >
+      <magic-player-video />
       <magic-player-overlay />
-    </magic-player>
+    </magic-player-provider>
     <div class="relative w-full pt-4 flex items-center">
-      <magic-player-controls
-        id="standalone-controls-demo"
+      <magic-player-video-controls
+        id="standalone-controls-demo-player"
         class="bg-black"
         standalone
       >
@@ -18,7 +21,7 @@
         <template #timeline-after>
           <magic-player-display-time type="duration" />
         </template>
-      </magic-player-controls>
+      </magic-player-video-controls>
     </div>
   </div>
 </template>

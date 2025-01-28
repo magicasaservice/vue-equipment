@@ -137,3 +137,21 @@ bun install @nuxt/kit @vueuse/core defu hls.js
 ### Props
 
 #### MagicPlayer
+
+## Examples
+
+### Audio Player
+
+<component-preview src="./demo/AudioPlayerDemo.vue" />
+
+### Autoplay
+
+<component-preview src="./demo/AutoplayDemo.vue" />
+
+### Poster Image
+
+<component-preview src="./demo/ImagePosterDemo.vue" />
+
+### Standalone Controls
+
+<component-preview src="./demo/StandaloneControlsDemo.vue" />

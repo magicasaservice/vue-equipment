@@ -1,33 +1,29 @@
 <template>
   <div
-    class="magic-player-controls"
-    :class="{
-      '-fullscreen': isFullscreen,
-      '-touched': touched,
-      '-untouched': !touched,
-      '-playing': playing,
-      '-paused': !playing,
-      '-waiting': waiting,
-      '-idle': idle,
-      '-not-idle': !idle,
-      '-hover': mouseEntered,
-      '-not-hover': !mouseEntered,
-      '-standalone': standalone,
-    }"
+    class="magic-player-video-controls"
+    :data-fullscreen="isFullscreen"
+    :data-touched="touched"
+    :data-playing="playing"
+    :data-paused="!playing"
+    :data-waiting="waiting"
+    :data-muted="muted"
+    :data-idle="idle"
+    :data-hover="mouseEntered"
+    :data-standalone="standalone"
   >
     <transition :name="transition">
-      <div v-show="!hidden" class="magic-player-controls__bar">
+      <div v-show="!hidden" class="magic-player-video-controls__bar">
         <div
           v-if="$slots.seekPopover"
           v-show="!!seekedTime && touched"
           ref="popoverRef"
-          class="magic-player-controls__popover"
+          class="magic-player-video-controls__popover"
           :style="{ marginLeft: `${popoverOffsetX}%` }"
         >
           <slot name="seekPopover" />
         </div>
-        <div ref="barRef" class="magic-player-controls__bar--inner">
-          <div class="magic-player-controls__item -shrink-0">
+        <div ref="barRef" class="magic-player-video-controls__bar--inner">
+          <div class="magic-player-video-controls__item -shrink-0">
             <button v-if="!playing" @click="play">
               <slot name="playIcon">
                 <icon-play />
@@ -39,14 +35,14 @@
               </slot>
             </button>
           </div>
-          <div class="magic-player-controls__item -grow">
+          <div class="magic-player-video-controls__item -grow">
             <slot name="timelineBefore" />
-            <div ref="trackRef" class="magic-player-controls__timeline">
+            <div ref="trackRef" class="magic-player-video-controls__timeline">
               <magic-player-timeline :id="id" />
             </div>
             <slot name="timelineAfter" />
           </div>
-          <div class="magic-player-controls__item -shrink-0">
+          <div class="magic-player-video-controls__item -shrink-0">
             <button v-if="muted" @click="unmute">
               <slot name="volumeOffIcon">
                 <icon-volume-off />
@@ -58,7 +54,7 @@
               </slot>
             </button>
           </div>
-          <div class="magic-player-controls__item -shrink-0">
+          <div class="magic-player-video-controls__item -shrink-0">
             <button v-if="isFullscreen" @click="exitFullscreen">
               <slot name="fullscreenExitIcon">
                 <icon-fullscreen-exit />
@@ -102,7 +98,7 @@ interface MagicPlayerControlsProps {
 const {
   id,
   standalone = false,
-  transition = 'magic-player-controls',
+  transition = 'magic-player-video-controls',
 } = defineProps<MagicPlayerControlsProps>()
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
@@ -110,7 +106,7 @@ const mappedId = computed(() => id ?? instanceId)
 
 if (!mappedId.value) {
   throw new Error(
-    'MagicPlayerControls must be nested inside MagicPlayer or be passed an id as a prop.'
+    'MagicPlayerControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
   )
 }
 
@@ -163,86 +159,86 @@ provide(MagicPlayerInstanceId, mappedId.value)
 
 <style>
 :root {
-  --magic-player-controls-height: 3rem;
-  --magic-player-controls-padding: 0.75rem;
-  --magic-player-controls-bottom: 1.5rem;
-  --magic-player-controls-left: 1.5rem;
-  --magic-player-controls-width: calc(
-    100% - (var(--magic-player-controls-left) * 2)
+  --magic-player-video-controls-height: 3rem;
+  --magic-player-video-controls-padding: 0.75rem;
+  --magic-player-video-controls-bottom: 1.5rem;
+  --magic-player-video-controls-left: 1.5rem;
+  --magic-player-video-controls-width: calc(
+    100% - (var(--magic-player-video-controls-left) * 2)
   );
-  --magic-player-controls-gap: 1rem;
-  --magic-player-controls-border-radius: 50rem;
-  --magic-player-controls-background: rgba(32, 32, 32, 0.8);
-  --magic-player-controls-backdrop-filter: blur(80px);
-  --magic-player-controls-color: rgba(255, 255, 255, 1);
-  --magic-player-controls-button-width: 3rem;
-  --magic-player-controls-icon-width: 1.25rem;
+  --magic-player-video-controls-gap: 1rem;
+  --magic-player-video-controls-border-radius: 50rem;
+  --magic-player-video-controls-background: rgba(32, 32, 32, 0.8);
+  --magic-player-video-controls-backdrop-filter: blur(80px);
+  --magic-player-video-controls-color: rgba(255, 255, 255, 1);
+  --magic-player-video-controls-button-width: 3rem;
+  --magic-player-video-controls-icon-width: 1.25rem;
 }
 
 @media (max-width: 640px) {
   :root {
-    --magic-player-controls-height: 2.5rem;
-    --magic-player-controls-bottom: 0.75rem;
-    --magic-player-controls-padding: 0.5rem;
+    --magic-player-video-controls-height: 2.5rem;
+    --magic-player-video-controls-bottom: 0.75rem;
+    --magic-player-video-controls-padding: 0.5rem;
   }
 }
 
-.magic-player-controls {
+.magic-player-video-controls {
   position: absolute;
   inset: 0;
   width: 100%;
   pointer-events: none;
 }
 
-.magic-player-controls-enter-active {
+.magic-player-video-controls-enter-active {
   animation: fade-up-in 150ms ease;
 }
 
-.magic-player-controls-leave-active {
+.magic-player-video-controls-leave-active {
   animation: fade-up-out 150ms ease;
 }
 
-.magic-player-controls__bar {
+.magic-player-video-controls__bar {
   position: absolute;
-  width: var(--magic-player-controls-width);
-  bottom: var(--magic-player-controls-bottom);
-  left: var(--magic-player-controls-left);
+  width: var(--magic-player-video-controls-width);
+  bottom: var(--magic-player-video-controls-bottom);
+  left: var(--magic-player-video-controls-left);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--magic-player-controls-gap);
+  gap: var(--magic-player-video-controls-gap);
   pointer-events: auto;
 }
 
-.magic-player-controls__bar--inner {
+.magic-player-video-controls__bar--inner {
   width: 100%;
   box-sizing: border-box;
-  height: var(--magic-player-controls-height);
-  padding: 0 var(--magic-player-controls-padding);
-  background-color: var(--magic-player-controls-background);
-  backdrop-filter: var(--magic-player-controls-backdrop-filter);
-  color: var(--magic-player-controls-color);
-  border-radius: var(--magic-player-controls-border-radius);
+  height: var(--magic-player-video-controls-height);
+  padding: 0 var(--magic-player-video-controls-padding);
+  background-color: var(--magic-player-video-controls-background);
+  backdrop-filter: var(--magic-player-video-controls-backdrop-filter);
+  color: var(--magic-player-video-controls-color);
+  border-radius: var(--magic-player-video-controls-border-radius);
   display: flex;
   align-items: center;
 }
 
-.magic-player-controls__item {
+.magic-player-video-controls__item {
   display: inline-flex;
   align-items: center;
   user-select: none;
 }
 
-.magic-player-controls__item.-shrink-0 {
+.magic-player-video-controls__item.-shrink-0 {
   flex-shrink: 0;
 }
 
-.magic-player-controls__item.-grow {
+.magic-player-video-controls__item.-grow {
   flex-grow: 1;
 }
 
-.magic-player-controls__item button {
+.magic-player-video-controls__item button {
   background-color: transparent;
   color: inherit;
   border: 0;
@@ -251,37 +247,38 @@ provide(MagicPlayerInstanceId, mappedId.value)
   padding: 0;
   border-radius: 0;
   cursor: pointer;
-  width: var(--magic-player-controls-button-width);
-  height: var(--magic-player-controls-height);
+  width: var(--magic-player-video-controls-button-width);
+  height: var(--magic-player-video-controls-height);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.magic-player-controls__item button svg {
+.magic-player-video-controls__item button svg {
   display: block;
-  width: var(--magic-player-controls-icon-width);
+  width: var(--magic-player-video-controls-icon-width);
   height: auto;
 }
 
-.magic-player-controls__timeline {
+.magic-player-video-controls__timeline {
   width: 100%;
 }
 
-.magic-player-controls.-standalone {
+.magic-player-video-controls[data-standalone='true'] {
   position: relative;
   inset: unset;
-  --magic-player-controls-width: 100%;
-  --magic-player-controls-bottom: 0;
-  --magic-player-controls-left: 0;
-  --magic-player-controls-padding: 0;
-  --magic-player-controls-background: unset;
-  --magic-player-controls-border-radius: unset;
-  --magic-player-controls-background: transparent;
-  --magic-player-controls-backdrop-filter: none;
+  --magic-player-video-controls-width: 100%;
+  --magic-player-video-controls-bottom: 0;
+  --magic-player-video-controls-left: 0;
+  --magic-player-video-controls-padding: 0;
+  --magic-player-video-controls-background: unset;
+  --magic-player-video-controls-border-radius: unset;
+  --magic-player-video-controls-background: transparent;
+  --magic-player-video-controls-backdrop-filter: none;
 }
 
-.magic-player-controls.-standalone .magic-player-controls__bar {
+.magic-player-video-controls[data-standalone='true']
+  .magic-player-video-controls__bar {
   position: relative;
 }
 </style>

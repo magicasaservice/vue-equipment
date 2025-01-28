@@ -43,7 +43,7 @@ const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 if (!instanceId) {
   throw new Error(
-    'MagicPlayerMuxPopover must be nested inside MagicPlayerControls.'
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.'
   )
 }
 
