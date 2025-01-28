@@ -10,7 +10,7 @@
       >
         Loveless
       </span>
-      <magic-player-audio-controls />
+      <magic-player-audio-controls class="px-4" />
       <magic-player-audio />
     </magic-player-provider>
   </div>
