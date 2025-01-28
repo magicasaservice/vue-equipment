@@ -5,6 +5,9 @@ export interface MagicPlayerOptions {
   preload?: 'auto' | 'metadata' | 'none'
   autoplay?: boolean
   loop?: boolean
+  transition?: {
+    videoControls: string
+  }
 }
 
 type API = 'media' | 'player' | 'controls' | 'runtime' | 'player'

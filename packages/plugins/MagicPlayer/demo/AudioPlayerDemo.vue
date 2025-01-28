@@ -6,7 +6,7 @@
       class="bg-surface-elevation-high rounded-surface-sm p-2 flex flex-col gap-2"
     >
       <span
-        class="w-full block p-4 bg-surface-elevation-base rounded-surface-sm-inset"
+        class="w-full block p-4 bg-surface-elevation-base rounded-surface-sm-inset type-surface-callout-md"
       >
         Loveless
       </span>

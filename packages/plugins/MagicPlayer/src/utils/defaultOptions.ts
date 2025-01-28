@@ -7,6 +7,9 @@ const defaultOptions: MagicPlayerOptions = {
   preload: 'metadata',
   autoplay: false,
   loop: false,
+  transition: {
+    videoControls: 'magic-player-video-controls',
+  },
 }
 
 export { defaultOptions }

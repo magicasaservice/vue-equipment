@@ -136,7 +136,130 @@ bun install @nuxt/kit @vueuse/core defu hls.js
 
 ### Props
 
-#### MagicPlayer
+#### MagicPlayerProvider
+
+The provider wraps the menu and configures all child components according to the provided [options](#options).
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is required. Can either be a string or a ref.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'options',
+          description: 'Refer to the [options table](#options) for details.'
+        },
+        {
+          label: 'MagicPlayerOptions'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### MagicPlayerVideoControls
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'standalone',
+          description: 'Set to true, if the component is not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### MagicPlayerAudioControls
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
 
 ## Examples
 

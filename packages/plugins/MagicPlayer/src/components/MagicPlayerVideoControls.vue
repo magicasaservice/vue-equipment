@@ -11,16 +11,16 @@
     :data-hover="mouseEntered"
     :data-standalone="standalone"
   >
-    <transition :name="transition">
+    <transition :name="mappedTransition">
       <div v-show="!hidden" class="magic-player-video-controls__bar">
         <div
-          v-if="$slots.seekPopover"
+          v-if="$slots.popover"
           v-show="!!seekedTime && touched"
           ref="popoverRef"
           class="magic-player-video-controls__popover"
           :style="{ marginLeft: `${popoverOffsetX}%` }"
         >
-          <slot name="seekPopover" />
+          <slot name="popover" />
         </div>
         <div ref="barRef" class="magic-player-video-controls__bar--inner">
           <div class="magic-player-video-controls__item -shrink-0">
@@ -84,7 +84,7 @@ import IconFullscreenExit from './icons/FullscreenExit.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
-import { MagicPlayerInstanceId } from '../symbols'
+import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-up-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-up-out.css'
@@ -98,7 +98,7 @@ interface MagicPlayerControlsProps {
 const {
   id,
   standalone = false,
-  transition = 'magic-player-video-controls',
+  transition,
 } = defineProps<MagicPlayerControlsProps>()
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
@@ -106,9 +106,15 @@ const mappedId = computed(() => id ?? instanceId)
 
 if (!mappedId.value) {
   throw new Error(
-    'MagicPlayerControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
+    'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
   )
 }
+
+const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+
+const mappedTransition = computed(
+  () => transition ?? injectedOptions?.transition?.videoControls
+)
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)

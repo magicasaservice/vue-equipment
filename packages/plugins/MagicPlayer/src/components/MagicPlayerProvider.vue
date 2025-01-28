@@ -18,20 +18,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, provide } from 'vue'
+import { ref, provide, type MaybeRef } from 'vue'
 import defu from 'defu'
 
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
-import { MagicPlayerInstanceId, MagicPlayerOptionsSymbol } from '../symbols'
+import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicPlayerOptions } from '../types'
 
 interface MagicPlayerProps {
-  id: string
+  id: MaybeRef<string>
   options?: MagicPlayerOptions
 }
 
@@ -58,7 +58,7 @@ const { onMouseenter, onMouseleave, isFullscreen, touched } = usePlayerVideoApi(
 )
 
 provide(MagicPlayerInstanceId, id)
-provide(MagicPlayerOptionsSymbol, mappedOptions)
+provide(MagicPlayerOptionsKey, mappedOptions)
 </script>
 
 <style>

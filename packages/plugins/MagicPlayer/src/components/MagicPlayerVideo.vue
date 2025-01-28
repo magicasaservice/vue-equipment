@@ -22,10 +22,10 @@ import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
-import { MagicPlayerInstanceId, MagicPlayerOptionsSymbol } from '../symbols'
+import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
 const injectedId = inject(MagicPlayerInstanceId, undefined)
-const injectedOptions = inject(MagicPlayerOptionsSymbol, undefined)
+const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 if (!injectedId) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')

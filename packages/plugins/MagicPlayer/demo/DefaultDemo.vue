@@ -27,10 +27,8 @@
       </magic-player-poster>
       <magic-player-overlay />
       <magic-player-video-controls>
-        <template #seek-popover>
-          <magic-player-mux-popover
-            playbackId="c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks"
-          />
+        <template #popover>
+          <magic-player-mux-popover />
         </template>
       </magic-player-video-controls>
     </magic-player-provider>
