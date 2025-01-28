@@ -28,7 +28,7 @@
           <div
             class="magic-player-timeline__slider-scrubbed"
             :style="{ left: `${scrubbedPercentage}%` }"
-          ></div>
+          />
         </div>
       </div>
     </div>
@@ -36,13 +36,17 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from 'vue'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
-interface MagicPlayerTimelineProps {
-  id: string
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+
+if (!instanceId) {
+  throw new Error(
+    'MagicPlayerPoster must be nested inside MagicPlayerControls or MagicPlayerAudioControls.'
+  )
 }
-
-const props = defineProps<MagicPlayerTimelineProps>()
 
 const {
   mouseEntered,
@@ -55,7 +59,7 @@ const {
   onPointerup,
   onPointermove,
 } = usePlayerControlsApi({
-  id: props.id,
+  id: instanceId,
 })
 </script>
 

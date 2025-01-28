@@ -56,38 +56,50 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref, inject, provide } from 'vue'
 import { useIdle } from '@vueuse/core'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
+import { MagicPlayerInstanceId } from '../symbols'
 
 interface MagicAudioPlayerControlsProps {
-  id: string
+  id?: string
 }
 
-const props = defineProps<MagicAudioPlayerControlsProps>()
+const { id } = defineProps<MagicAudioPlayerControlsProps>()
+
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+const mappedId = computed(() => id ?? instanceId)
+
+if (!mappedId.value) {
+  throw new Error(
+    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or be passed an id as a prop.'
+  )
+}
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 
 const { playing, waiting } = usePlayerMediaApi({
-  id: props.id,
+  id: mappedId.value,
 })
 
 const { play, pause, touched, mouseEntered } = usePlayerAudioApi({
-  id: props.id,
+  id: mappedId.value,
 })
 
 usePlayerControlsApi({
-  id: props.id,
+  id: mappedId.value,
   barRef: barRef,
   trackRef: trackRef,
 })
 
 const { idle } = useIdle(3000)
+
+provide(MagicPlayerInstanceId, mappedId.value)
 </script>
 
 <style>

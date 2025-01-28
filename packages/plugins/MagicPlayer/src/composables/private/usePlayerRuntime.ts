@@ -2,13 +2,13 @@ import { ref, watch, toValue, type MaybeRef } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 import type Hls from 'hls.js'
-import type { MagicPlayerSourceType } from '../../types'
+import type { MagicPlayerOptions } from '../../types'
 import { useEventListener } from '@vueuse/core'
 
 export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
   mediaRef?: MaybeRef<HTMLVideoElement | undefined>
-  srcType?: MagicPlayerSourceType
+  srcType?: MagicPlayerOptions['srcType']
   src?: string
 }
 
@@ -20,7 +20,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   const { mediaRef, srcType, src } = args
 
   // Private functions
-  const useNative = () => {
+  function useNative() {
     const el = toValue(mediaRef)
     if (!el || !src) return
     el.src = src
@@ -33,7 +33,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     )
   }
 
-  const useHlsJS = async () => {
+  async function useHlsJS() {
     const el = toValue(mediaRef)
     if (!el) return
 

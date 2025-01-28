@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="playerRef"
-    class="magic-audio-player"
-    :class="{ '-slot': $slots.default }"
-  >
+  <div ref="playerRef" class="magic-audio-player" :data-slot="$slots.default">
     <div class="magic-audio-player__container">
       <div v-if="$slots.default" class="magic-audio-player__slot">
         <slot />
@@ -16,22 +12,19 @@
 
 <script lang="ts" setup>
 import MagicAudioPlayerControls from './MagicAudioPlayerControls.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, provide } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
+import { MagicPlayerInstanceId } from '../symbols'
 
 interface MagicAudioPlayerProps {
   id: string
   src: string
-  loop?: boolean
 }
 
-const props = withDefaults(defineProps<MagicAudioPlayerProps>(), {
-  src: '',
-  loop: false,
-})
+const { id, src = '' } = defineProps<MagicAudioPlayerProps>()
 
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const audioRef = ref<HTMLVideoElement | undefined>(undefined)
@@ -39,19 +32,19 @@ const audioRef = ref<HTMLVideoElement | undefined>(undefined)
 const pausedByIntersection = ref(false)
 
 const { playing } = usePlayerMediaApi({
-  id: props.id,
+  id: id,
   mediaRef: audioRef,
 })
 
 const { initialize, destroy } = usePlayerRuntime({
-  id: props.id,
+  id: id,
   mediaRef: audioRef,
-  src: props.src,
+  src: src,
   srcType: 'native',
 })
 
 const { play, pause } = usePlayerAudioApi({
-  id: props.id,
+  id: id,
 })
 
 useIntersectionObserver(
@@ -78,6 +71,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   destroy()
 })
+
+provide(MagicPlayerInstanceId, id)
 </script>
 
 <style>
@@ -100,7 +95,7 @@ onBeforeUnmount(() => {
   container-type: inline-size;
 }
 
-.magic-audio-player.-slot {
+.magic-audio-player[data-slot='true'] {
   background: var(
     --magic-audio-player-background-slot,
     rgba(250, 250, 250, 0.15)

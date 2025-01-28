@@ -12,13 +12,11 @@ export type UsePlayerVideoApiArgs = {
 
 export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Private state
+  const { id, playerRef, videoRef } = args
+
   const fullscreenTarget = ref<HTMLElement | undefined>(undefined)
 
-  const { playing, currentTime, muted } = usePlayerMediaApi({
-    id: args.id,
-  })
-
-  const { playerRef, videoRef } = args
+  const { playing, currentTime, muted } = usePlayerMediaApi({ id })
 
   // Public state
   const touched = ref(false)
@@ -116,7 +114,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   // Listen to updates
   emitter.on('update', (payload) => {
-    if (payload.id !== toValue(args.id)) return
+    if (payload.id !== toValue(id)) return
 
     if (payload.api === 'player') {
       switch (payload.key) {
@@ -136,7 +134,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Emit updates
   watch(mouseEntered, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'player',
       key: 'mouseEntered',
       value,
@@ -145,7 +143,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   watch(touched, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'player',
       key: 'touched',
       value,
@@ -156,7 +154,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     if (!value) return
 
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'player',
       key: 'fullscreenTarget',
       value,

@@ -14,22 +14,22 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { shallowRef, onMounted, watch, computed, type Ref } from 'vue'
+import { shallowRef, onMounted, watch, computed, type Ref, inject } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
-type MagicPlayerMuxPopoverProps = {
-  id: string
+interface MagicPlayerMuxPopoverProps {
   playbackId: string
 }
 
-type Tile = {
+interface Tile {
   start: number
   x: number
   y: number
 }
 
-type MuxStoryboard = {
+interface MuxStoryboard {
   url: string
   tile_width: number
   tile_height: number
@@ -37,9 +37,17 @@ type MuxStoryboard = {
   tiles: Tile[]
 }
 
-const props = defineProps<MagicPlayerMuxPopoverProps>()
+const { playbackId } = defineProps<MagicPlayerMuxPopoverProps>()
 
-const { seekedTime } = usePlayerControlsApi({ id: props.id })
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+
+if (!instanceId) {
+  throw new Error(
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerControls.'
+  )
+}
+
+const { seekedTime } = usePlayerControlsApi({ id: instanceId })
 const { pixelRatio } = useDevicePixelRatio()
 
 const canvasRef = shallowRef() as Ref<HTMLCanvasElement>
@@ -58,11 +66,11 @@ const thumbHeight = computed(() => {
 })
 
 async function init() {
-  if (!props.playbackId) return
+  if (!playbackId) return
 
   try {
     storyboard.value = await fetch(
-      `https://image.mux.com/${props.playbackId}/storyboard.json`
+      `https://image.mux.com/${playbackId}/storyboard.json`
     ).then((res) => res.json())
 
     if (!storyboard.value) throw new Error()

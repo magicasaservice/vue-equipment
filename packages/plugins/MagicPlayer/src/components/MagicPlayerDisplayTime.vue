@@ -5,25 +5,31 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { formatTime } from '@maas/vue-equipment/utils'
+import { MagicPlayerInstanceId } from '../symbols'
 
 interface MagicPlayerDisplayTimeProps {
-  id: string
-  type: 'current' | 'remaining' | 'duration'
+  type?: 'current' | 'remaining' | 'duration'
 }
 
-const props = withDefaults(defineProps<MagicPlayerDisplayTimeProps>(), {
-  type: 'current',
-})
+const { type = 'current' } = defineProps<MagicPlayerDisplayTimeProps>()
+
+const instanceId = inject(MagicPlayerInstanceId)
+
+if (!instanceId) {
+  throw new Error(
+    'MagicPlayerDisplayTime must be nested inside MagicPlayerControls or MagicPlayerAudioControls.'
+  )
+}
 
 const { currentTime, remainingTime, duration } = usePlayerMediaApi({
-  id: props.id,
+  id: instanceId,
 })
 
 const stringifiedTime = computed(() => {
-  switch (props.type) {
+  switch (type) {
     case 'current':
       return formatTime(currentTime.value, currentTime.value)
     case 'remaining':

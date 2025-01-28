@@ -36,24 +36,26 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
-interface MagicPlayerOverlayProps {
-  id: string
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+
+if (!instanceId) {
+  throw new Error('MagicPlayerOverlay must be nested inside MagicPlayer.')
 }
 
-const props = defineProps<MagicPlayerOverlayProps>()
-
 const { playing, waiting } = usePlayerMediaApi({
-  id: props.id,
+  id: instanceId,
 })
 const { mouseEntered, togglePlay } = usePlayerVideoApi({
-  id: props.id,
+  id: instanceId,
 })
 
 const { idle } = useIdle(3000)

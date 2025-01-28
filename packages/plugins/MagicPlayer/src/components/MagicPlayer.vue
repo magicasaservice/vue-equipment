@@ -1,19 +1,14 @@
 <template>
   <div
     ref="playerRef"
-    :class="[
-      'magic-player',
-      {
-        '-fullscreen': isFullscreen,
-        '-touched': touched,
-        '-untouched': !touched,
-        '-playing': playing,
-        '-paused': !playing,
-        '-waiting': waiting,
-        '-loaded': loaded,
-        '-muted': muted,
-      },
-    ]"
+    class="magic-player"
+    :data-fullscreen="isFullscreen"
+    :data-touched="touched"
+    :data-playing="playing"
+    :data-paused="!playing"
+    :data-waiting="waiting"
+    :data-loaded="loaded"
+    :data-muted="muted"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
   >
@@ -22,8 +17,8 @@
       class="magic-player__video"
       playsinline
       disablePictureInPicture
-      :preload="preload"
-      :loop="loop"
+      :preload="mappedOptions.preload"
+      :loop="mappedOptions.loop"
       :muted="muted"
     />
     <slot />
@@ -31,34 +26,32 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, provide } from 'vue'
 import {
   useElementVisibility,
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
+import defu from 'defu'
+
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
-import type { MagicPlayerSourceType } from './../types'
+import { MagicPlayerInstanceId } from '../symbols'
+import { defaultOptions } from '../utils/defaultOptions'
+
+import type { MagicPlayerOptions } from './../types'
 
 interface MagicPlayerProps {
   id: string
-  srcType?: MagicPlayerSourceType
   src: string
-  autoplay?: boolean
-  preload?: 'auto' | 'metadata' | 'none'
-  loop?: boolean
+  options?: MagicPlayerOptions
 }
 
-const props = withDefaults(defineProps<MagicPlayerProps>(), {
-  srcType: 'native',
-  src: '',
-  autoplay: false,
-  preload: 'metadata',
-  loop: false,
-})
+const { id, src, options } = defineProps<MagicPlayerProps>()
+
+const mappedOptions = defu(options, defaultOptions)
 
 const playerRef = ref<HTMLDivElement | undefined>(undefined)
 const videoRef = ref<HTMLVideoElement | undefined>(undefined)
@@ -66,38 +59,38 @@ const videoRef = ref<HTMLVideoElement | undefined>(undefined)
 const isVisible = useElementVisibility(playerRef)
 
 const { playing, waiting, muted } = usePlayerMediaApi({
-  id: props.id,
+  id: id,
   mediaRef: videoRef,
 })
 
 const { initialize, loaded, destroy } = usePlayerRuntime({
-  id: props.id,
+  id: id,
   mediaRef: videoRef,
-  src: props.src,
-  srcType: props.srcType,
+  src: src,
+  srcType: mappedOptions.srcType,
 })
 
 const { onMouseenter, onMouseleave, isFullscreen, touched, play, pause } =
   usePlayerVideoApi({
-    id: props.id,
+    id: id,
     videoRef: videoRef,
     playerRef: playerRef,
   })
 
 function onWindowFocus() {
-  if (isVisible.value && !playing.value && props.autoplay) {
+  if (isVisible.value && !playing.value && mappedOptions.autoplay) {
     play()
   }
 }
 
-// Auto play when window is focused
+// Autoplay when window is focused
 useEventListener(defaultWindow, 'focus', onWindowFocus)
 
-// Auto play when element is visible
+// Autoplay when element is visible
 watch(
   isVisible,
   (value) => {
-    if (value && !playing.value && props.autoplay) {
+    if (value && !playing.value && mappedOptions.autoplay) {
       play()
     } else if (!value && playing.value) {
       pause()
@@ -110,7 +103,7 @@ watch(
 
 onMounted(() => {
   initialize()
-  if (props.autoplay) {
+  if (mappedOptions.autoplay) {
     muted.value = true
   }
 })
@@ -118,6 +111,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   destroy()
 })
+
+provide(MagicPlayerInstanceId, id)
 </script>
 
 <style>
@@ -130,7 +125,7 @@ onBeforeUnmount(() => {
   background: var(--magic-player-background, #000);
 }
 
-.magic-player.-loaded {
+.magic-player[data-loaded='true'] {
   --magic-player-background: transparent;
 }
 

@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, inject, provide } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -88,26 +88,38 @@ import IconFullscreenExit from './icons/FullscreenExit.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-up-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-up-out.css'
 
 interface MagicPlayerControlsProps {
-  id: string
+  id?: string
   standalone?: boolean
   transition?: string
 }
 
-const props = withDefaults(defineProps<MagicPlayerControlsProps>(), {
-  transition: 'magic-player-controls',
-})
+const {
+  id,
+  standalone = false,
+  transition = 'magic-player-controls',
+} = defineProps<MagicPlayerControlsProps>()
+
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+const mappedId = computed(() => id ?? instanceId)
+
+if (!mappedId.value) {
+  throw new Error(
+    'MagicPlayerControls must be nested inside MagicPlayer or be passed an id as a prop.'
+  )
+}
 
 const barRef = ref<HTMLDivElement | undefined>(undefined)
 const trackRef = ref<HTMLDivElement | undefined>(undefined)
 const popoverRef = ref<HTMLDivElement | undefined>(undefined)
 
 const { playing, waiting, muted } = usePlayerMediaApi({
-  id: props.id,
+  id: mappedId.value,
 })
 
 const {
@@ -120,10 +132,10 @@ const {
   unmute,
   enterFullscreen,
   exitFullscreen,
-} = usePlayerVideoApi({ id: props.id })
+} = usePlayerVideoApi({ id: mappedId.value })
 
 const { popoverOffsetX, seekedTime } = usePlayerControlsApi({
-  id: props.id,
+  id: mappedId.value,
   barRef: barRef,
   trackRef: trackRef,
   popoverRef: popoverRef,
@@ -133,7 +145,7 @@ const { idle } = useIdle(3000)
 
 const hidden = computed(() => {
   switch (true) {
-    case props.standalone:
+    case standalone:
       return false
     case playing.value && idle.value:
       return true
@@ -145,6 +157,8 @@ const hidden = computed(() => {
       return false
   }
 })
+
+provide(MagicPlayerInstanceId, mappedId.value)
 </script>
 
 <style>
