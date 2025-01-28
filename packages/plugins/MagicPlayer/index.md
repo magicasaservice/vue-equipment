@@ -10,9 +10,10 @@ Magic Player is a collection of components made to build a flexible, streaming r
 
 ```vue
 <template>
-  <magic-player id="your-player-id" src="your-video.m3u8">
+  <magic-player-provider id="your-player-id" src="your-video.m3u8">
+    <magic-player-video />
     <magic-player-poster>
-      <img src="your-image.jpg" alt="your poster image alt text" />
+      <!-- your content -->
     </magic-player-poster>
     <magic-player-overlay />
     <magic-player-controls>
@@ -20,7 +21,7 @@ Magic Player is a collection of components made to build a flexible, streaming r
         <magic-player-mux-popover playbackId="your-playback-id" />
       </template>
     </magic-player-controls>
-  </magic-player>
+  </magic-player-provider>
 </template>
 
 <script>
@@ -179,7 +180,7 @@ The provider wraps the menu and configures all child components according to the
   ]"
 />
 
-### MagicPlayerVideoControls
+#### MagicPlayerVideoControls
 
 <ProseTable 
   :columns="[
@@ -234,7 +235,33 @@ The provider wraps the menu and configures all child components according to the
   ]"
 />
 
-### MagicPlayerAudioControls
+#### MagicPlayerMuxPopover
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'playbackId',
+          'description': 'Neccessary if the ancestral `MagicPlayerVideoControls` component is set to `standalone`. '
+        },
+        { 
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### MagicPlayerAudioControls
 
 <ProseTable 
   :columns="[
@@ -252,6 +279,34 @@ The provider wraps the menu and configures all child components according to the
         {
           label: 'MaybeRef\<string\>',
           escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### MagicPlayerDisplayTime
+
+This component is used internally by both the video and audio controls components. You are most likely not going to need it unless you want to implement your own custom controls.
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'type',
+        },
+        { 
+          label: 'string',
+          description: '\'current\' | \'remaining\' | \'duration\''
         },
         {
           label: 'false'
