@@ -57,6 +57,7 @@ import type { MagicCookieCallbackArgs } from '../src/types'
 const {
   viewActive,
   toggleView,
+  hideView,
   acceptAll,
   rejectAll,
   acceptSelected,
@@ -87,17 +88,17 @@ const cookies = [
 
 function onRejectAll() {
   rejectAll()
-  toggleView()
+  hideView()
 }
 
 function onAcceptAll() {
   acceptAll()
-  toggleView()
+  hideView()
 }
 
 function onSave() {
   acceptSelected()
-  toggleView()
+  hideView()
 }
 
 function onAcceptCallback(args: MagicCookieCallbackArgs) {

@@ -367,7 +367,7 @@ To customize the modal override the necessary options. Any custom options will b
 
 ### CSS Variables
 
-The modal comes with some CSS variables for customization.
+In order to provide its basic functionality the modal comes with some CSS. To ensure that the modal is customizable, relevant values are available as CSS variables.
 
 <ProseTable
   :columns="[

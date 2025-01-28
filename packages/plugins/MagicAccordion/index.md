@@ -394,7 +394,7 @@ To customize the accordion, override the necessary options by passing them to th
   ]"
 />
 
-### CSS
+### CSS Variables
 
 In order to provide its basic functionality the components come with some CSS. To ensure that the components are customizable, relevant values are available as CSS variables.
 
