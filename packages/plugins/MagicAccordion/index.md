@@ -44,7 +44,7 @@ app.use(MagicAccordionPlugin)
 
 ### Nuxt
 
-The accordion is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicAccordion` to the plugins array in your configuration.
+The accordion is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicAccordion` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({

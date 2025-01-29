@@ -50,7 +50,7 @@ app.use(MagicPlayerPlugin)
 
 ### Nuxt
 
-The player is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicPlayer` to the plugins array in your configuration.
+The player is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicPlayer` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({
@@ -74,6 +74,9 @@ function handleClick() {
   playerApi.play()
 }
 ```
+
+> [!TIP]
+> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
 ## Peer Dependencies
 

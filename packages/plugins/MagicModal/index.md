@@ -37,7 +37,7 @@ app.use(MagicModalPlugin)
 
 ### Nuxt
 
-The modal is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicModal` to the plugins array in your configuration.
+The modal is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicModal` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({

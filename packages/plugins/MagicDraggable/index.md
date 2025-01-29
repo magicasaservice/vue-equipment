@@ -37,7 +37,7 @@ app.use(MagicDraggablePlugin)
 
 ### Nuxt
 
-The component is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicDraggable` to the plugins array in your configuration.
+The component is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicDraggable` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({

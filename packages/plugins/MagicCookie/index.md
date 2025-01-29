@@ -40,7 +40,7 @@ app.use(MagicCookiePlugin)
 
 ### Nuxt
 
-The cookie banner is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicCookie` to the plugins array in your configuration.
+The cookie banner is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicCookie` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({
@@ -64,6 +64,9 @@ function handleClick() {
   acceptAll()
 }
 ```
+
+> [!TIP]
+> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
 ## Peer Dependencies
 

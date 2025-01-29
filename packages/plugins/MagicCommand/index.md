@@ -71,7 +71,7 @@ app.use(MagicCommandPlugin)
 
 ### Nuxt
 
-The command palette is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicCommand` to the plugins array in your configuration.
+The command palette is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicCommand` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({

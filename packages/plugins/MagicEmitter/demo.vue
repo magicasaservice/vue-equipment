@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
@@ -18,8 +18,18 @@ function callback(
 }
 
 useMagicEmitter().on('*', callback)
+useMagicEmitter().on(
+  'beforeEnter',
+  (payload: MagicEmitterEvents['beforeEnter']) => {
+    console.log('beforeEnter', payload)
+  }
+)
 
 onBeforeUnmount(() => {
   useMagicEmitter().off('*', callback)
+})
+
+onMounted(() => {
+  useMagicEmitter().emit('beforeEnter', 'your-id')
 })
 </script>

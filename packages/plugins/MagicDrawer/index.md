@@ -37,7 +37,7 @@ app.use(MagicDrawerPlugin)
 
 ### Nuxt
 
-The drawer is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicDrawer` to the plugins array in your configuration.
+The drawer is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicDrawer` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({
