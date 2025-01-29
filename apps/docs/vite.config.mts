@@ -5,6 +5,8 @@ import IconResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 
+import { plugins } from '../../packages/metadata'
+
 function splitAtNumber(str: string) {
   const match = str.match(/\d/)
   if (!match) return str
@@ -43,6 +45,15 @@ export default defineConfig(async () => {
           find: '@maas/vue-equipment/composables',
           replacement: resolve(__dirname, '../../packages/composables'),
         },
+        ...plugins.map((plugin) => {
+          return {
+            find: `@maas/vue-equipment/plugins/${plugin.name}/css`,
+            replacement: resolve(
+              __dirname,
+              `../../packages/plugins/${plugin.name}/src/css`
+            ),
+          }
+        }),
         {
           find: '@maas/vue-equipment/plugins',
           replacement: resolve(__dirname, '../../packages/plugins'),

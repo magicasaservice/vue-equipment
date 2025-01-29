@@ -16,17 +16,21 @@ Magic Player is a collection of components made to build a flexible, streaming r
       <!-- your content -->
     </magic-player-poster>
     <magic-player-overlay />
-    <magic-player-controls>
+    <magic-player-video-controls>
       <template #seek-popover>
         <magic-player-mux-popover playbackId="your-playback-id" />
       </template>
-    </magic-player-controls>
+    </magic-player-video-controls>
   </magic-player-provider>
 </template>
 
 <script>
 const { playerApi } = useMagicPlayer('your-player-id')
 </script>
+
+<style>
+@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+</style>
 ```
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
@@ -311,6 +315,149 @@ This component is used internally by both the video and audio controls component
         {
           label: 'false'
         }
+      ]
+    }
+  ]"
+/>
+
+### CSS Variables
+
+#### MagicPlayerProvider
+
+<ProseTable 
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-player-provider-height' },
+        { label: 'auto' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-provider-aspect-ratio' },
+        { label: '16 / 9' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-provider-background' },
+        { label: '#000' }
+      ]
+    }
+  ]"
+/>
+
+#### MagicPlayerOverlay
+
+<ProseTable 
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-player-overlay-background' },
+        { label: 'rgba(0, 0, 0, 0.3)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-overlay-color' },
+        { label: 'rgba(255, 255, 255, 1)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-overlay-transition' },
+        { label: 'opacity 300ms ease' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-overlay-button-size' },
+        { label: '2.5rem' }
+      ]
+    }
+  ]"
+/>
+
+#### MagicPlayerMuxPopover
+
+<ProseTable 
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-player-popover-border-radius' },
+        { label: '0.25rem' }
+      ]
+    }
+  ]"
+/>
+
+<ProseTable 
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-player-display-time-width' },
+        { label: '4rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-display-time-font-size' },
+        { label: '0.875rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-display-time-color' },
+        { label: 'inherit' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-display-time-justify-content' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-display-time-font-variant-numeric' },
+        { label: 'tabular-nums' }
+      ]
+    }
+  ]"
+/>
+
+<ProseTable 
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-player-track-height' },
+        { label: '0.25rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-player-track-background' },
+        { label: 'rgba(250, 250, 250, 0.15)' }
       ]
     }
   ]"

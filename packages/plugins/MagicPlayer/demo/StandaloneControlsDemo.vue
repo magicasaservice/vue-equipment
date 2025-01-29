@@ -25,3 +25,7 @@
     </div>
   </div>
 </template>
+
+<style>
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-video-controls.css';
+</style>

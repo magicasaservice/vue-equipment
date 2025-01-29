@@ -38,6 +38,10 @@
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.mjs"
     },
+    "./plugins/*/css/*.css": {
+      "import": "./dist/plugins/*/src/css/*.css",
+      "require": "./dist/plugins/*/src/css/*.css"
+    },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
       "require": "./dist/utils/index.js",

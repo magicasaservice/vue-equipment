@@ -55,7 +55,7 @@ const menu = {
 }
 </script>
 
-<style lang="postcss">
+<style>
 :root {
   --magic-menu-float-arrow-color: theme(
     'backgroundColor.surface.elevation.high.DEFAULT'

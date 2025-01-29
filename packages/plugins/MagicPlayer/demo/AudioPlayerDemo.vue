@@ -15,3 +15,7 @@
     </magic-player-provider>
   </div>
 </template>
+
+<style>
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-audio-controls.css';
+</style>

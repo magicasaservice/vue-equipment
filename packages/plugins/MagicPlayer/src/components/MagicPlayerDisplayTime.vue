@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-player-time-display">
+  <div class="magic-player-display-time">
     {{ stringifiedTime }}
   </div>
 </template>
@@ -41,19 +41,3 @@ const stringifiedTime = computed(() => {
   }
 })
 </script>
-
-<style>
-.magic-player-time-display {
-  height: 100%;
-  width: var(--magic-player-time-display-width, 4rem);
-  font-size: var(--magic-player-time-display-font-size, 0.875rem);
-  color: var(--magic-player-time-display-color, inherit);
-  display: flex;
-  align-items: center;
-  justify-content: var(--magic-player-time-display-justify-content, center);
-  font-variant-numeric: var(
-    --magic-player-time-display-font-variant-numeric,
-    tabular-nums
-  );
-}
-</style>

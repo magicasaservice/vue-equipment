@@ -1,0 +1,10 @@
+.magic-player-display-time {
+  height: 100%;
+  width: 4rem;
+  font-size: 0.875rem;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
