@@ -129,11 +129,11 @@ bun install @nuxt/kit @maas/vue-primitive @vueuse/core
 
 ## API Reference
 
-### Props
-
-#### MagicAccordionProvider
+### MagicAccordionProvider
 
 The provider wraps the accordion and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -188,158 +188,9 @@ The provider wraps the accordion and configures all child components according t
   ]"
 />
 
-#### MagicAccordionView
+#### Options
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Can either be a string or a ref. Neccessary for interacting with the view through `useMagicAccordion`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'active',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
-
-#### MagicAccordionContent
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the inner component inside the `<transition>` from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'transition',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
-        },
-        { 
-          label: 'string' },
-        { 
-          label: 'false',
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicAccordionTrigger
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the trigger.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'trigger',
-          description: 'Override the interactions that activate the trigger.'
-        },
-        {
-          label: 'Interaction[]',
-          description: 'Array<\'click\' | \'mouseenter\'>',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
-
-### Options
-
-To customize the accordion, override the necessary options by passing them to the `MagicMenuProvider`. Any custom options will be merged with the default options.
+To customize the accordion, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[
@@ -394,11 +245,105 @@ To customize the accordion, override the necessary options by passing them to th
   ]"
 />
 
-### CSS Variables
+### MagicAccordionView
 
-In order to provide its basic functionality the components come with some CSS. To ensure that the components are customizable, relevant values are available as CSS variables.
+#### Props
 
-#### MagicAccordionContent
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary for interacting with the view through `useMagicAccordion`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'active',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### MagicAccordionContent
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the inner component inside the `<transition>` from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'transition',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+        },
+        { 
+          label: 'string' },
+        { 
+          label: 'false',
+        }
+      ]
+    }
+  ]"
+/>
+
+#### CSS Variables
 
 <ProseTable
   :columns="[
@@ -431,6 +376,63 @@ In order to provide its basic functionality the components come with some CSS. T
 />
 
 #### MagicAccordionTrigger
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the trigger.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'trigger',
+          description: 'Override the interactions that activate the trigger.'
+        },
+        {
+          label: 'Interaction[]',
+          description: 'Array<\'click\' | \'mouseenter\'>',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+#### CSS Variables
 
 <ProseTable
   :columns="[

@@ -163,11 +163,11 @@ bun install @nuxt/kit @maas/vue-primitive @vueuse/core defu
 
 ## API Reference
 
-### Props
-
-#### MagicCommandProvider
+### MagicCommandProvider
 
 The provider wraps the command palette and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -222,7 +222,105 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-#### MagicCommandView
+### Options
+
+To customize the command palette, override the necessary options. Any custom options will be merged with the default options.
+
+<ProseTable
+:columns="[
+{ label: 'Option' },
+{ label: 'Type' },
+{ label: 'Default' }
+]"
+:rows="[
+  {
+    items: [
+      {
+        label: 'debug',
+        description: 'Set to true to get verbose error logs.',
+      },
+      { label: 'boolean' },
+      { label: 'false' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'transition.content',
+        description: 'Override the transition name of the command content.',
+      },
+      { label: 'string' },
+      { label: 'magic-command-content' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'keyListener.open',
+        description: 'Key combinations that will open the command menu.',
+      },
+      { label: 'string[] | false' },
+      { label: '[\'Cmd+k\']' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'keyListener.close',
+        description: 'Key combinations that will close the command menu.',
+      },
+      { label: 'string[] | false' },
+      { label: '[\'Escape\']' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'keyListener.next',
+        description: 'Key combinations that will select the next item.',
+      },
+      { label: 'string[] | false' },
+      { label: '[\'ArrowDown\']' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'keyListener.prev',
+        description: 'Key combinations that will select the previous item.',
+      },
+      { label: 'string[] | false' },
+      { label: '[\'ArrowUp\']' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'keyListener.enter',
+        description:
+          'Key combinations that will trigger `MagicCommandTrigger` when active.',
+      },
+      { label: 'string[] | false' },
+      { label: '[\'Enter\']' },
+    ],
+  },
+  {
+    items: [
+      {
+        label: 'loop',
+        description:
+          'Whether to loop through items when reaching the end of the list.',
+      },
+      { label: 'boolean' },
+      { label: 'false' },
+    ],
+  },
+]"
+/>
+
+### MagicCommandView
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -235,7 +333,7 @@ The provider wraps the command palette and configures all child components accor
       items: [
         {
           label: 'id',
-          description: 'Providing an id is optional. Can either be a string or a ref. Neccessary for interacting with the view through `useMagicCommand`.'
+          description: 'Providing an id is optional. Neccessary for interacting with the view through `useMagicCommand`.'
         },
         {
           label: 'MaybeRef\<string\>',
@@ -263,7 +361,9 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-#### MagicCommandDrawer
+### MagicCommandDrawer
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -289,7 +389,9 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-#### MagicCommandModal
+### MagicCommandModal
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -315,7 +417,42 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-#### MagicCommandItem
+### MagicCommandRenderer
+
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-command-renderer-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-command-renderer-height'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    }
+  ]"
+/>
+
+### MagicCommandItem
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -355,7 +492,30 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-#### MagicMenuTrigger
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' },
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '--magic-command-item-cursor'
+        },
+        {
+          label: 'default'
+        },
+      ]
+    }
+  ]"
+/>
+
+### MagicCommandTrigger
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -453,108 +613,6 @@ The provider wraps the command palette and configures all child components accor
   ]"
 />
 
-### Options
-
-To customize the command palette, override the necessary options by passing them to the `MagicCommandProvider`. Any custom options will be merged with the default options.
-
-<ProseTable
-:columns="[
-{ label: 'Option' },
-{ label: 'Type' },
-{ label: 'Default' }
-]"
-:rows="[
-  {
-    items: [
-      {
-        label: 'debug',
-        description: 'Set to true to get verbose error logs.',
-      },
-      { label: 'boolean' },
-      { label: 'false' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'transition.content',
-        description: 'Override the transition name of the command content.',
-      },
-      { label: 'string' },
-      { label: 'magic-command-content' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.open',
-        description: 'Key combinations that will open the command menu.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Cmd+k\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.close',
-        description: 'Key combinations that will close the command menu.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Escape\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.next',
-        description: 'Key combinations that will select the next item.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'ArrowDown\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.prev',
-        description: 'Key combinations that will select the previous item.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'ArrowUp\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.enter',
-        description:
-          'Key combinations that will trigger `MagicCommandTrigger` when active.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Enter\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'loop',
-        description:
-          'Whether to loop through items when reaching the end of the list.',
-      },
-      { label: 'boolean' },
-      { label: 'false' },
-    ],
-  },
-]"
-/>
-
-### CSS Variables
-
-In order to provide its basic functionality the components come with some CSS. To ensure that the they are customizable, relevant values are available as CSS variables.
-
-#### MagicCommandItem
-
 <ProseTable
   :columns="[
     { label: 'Variable' },
@@ -564,48 +622,17 @@ In order to provide its basic functionality the components come with some CSS. T
     {
       items: [
         {
-          label: '--magic-command-item-cursor'
+          label: '--magic-command-trigger-cursor'
         },
         {
-          label: 'default'
+          label: 'pointer'
         },
       ]
     }
   ]"
 />
 
-#### MagicCommandRenderer
-
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '--magic-command-renderer-width'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-command-renderer-height'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    }
-  ]"
-/>
-
-#### MagicCommandTrigger
+#### CSS Variables
 
 <ProseTable
   :columns="[

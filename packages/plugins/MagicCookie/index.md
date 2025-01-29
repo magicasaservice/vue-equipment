@@ -136,11 +136,11 @@ bun install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
 
 ## API Reference
 
-### Props
-
-#### MagicCookieProvider
+### MagicCookieProvider
 
 The provider wraps the cookie banner and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -175,6 +175,51 @@ The provider wraps the cookie banner and configures all child components accordi
         },
         {
           label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### MagicCookieItem
+
+The item registers and set the cookie with the given props.
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'maxAge',
+          description: 'Maximum age of the cookie in seconds. Overrides '
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '–'
         }
       ]
     },

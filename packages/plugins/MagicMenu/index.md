@@ -73,11 +73,11 @@ function handleClick() {
 
 ## API Reference
 
-### Props
-
-#### MagicMenuProvider
+### MagicMenuProvider
 
 The provider wraps the menu and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -132,339 +132,9 @@ The provider wraps the menu and configures all child components according to the
   ]"
 />
 
-#### MagicMenuView
+#### Options
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Can either be a string or a ref. Neccessary for interacting with the view through `useMagicMenu`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'placement',
-          description: 'Override the placement of the MenuView.'
-        },
-       {
-          label: 'Placement',
-          description: 'Please refer to the [Floating UI docs](https://floating-ui.com/docs/tutorial#placements).'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
-
-#### MagicMenuContent
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'arrow',
-          description: 'Show or hide an arrow pointing at the trigger element.'
-        },
-        {
-          label: 'boolean',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
-        },
-        {
-          label: 'string',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'referenceEl',
-          description: 'Override the reference element used for positioning the content element.'
-        },
-        {
-          label: 'HTMLElement | ComponentPublicInstance',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicMenuItem
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the menu item.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicMenuTrigger
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the trigger.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'trigger',
-          description: 'Override the interactions that activate the trigger.'
-        },
-        {
-          label: 'Interaction[]',
-          description: 'Array<\'click\' | \'mouseenter\' | \'right-click\'>',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicMenuChannel
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Can either be a string or a ref. Neccessary for interacting with the channel through `useMagicMenu`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-     {
-      items: [
-        {
-          label: 'transition',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
-        },
-        {
-          label: 'string',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
-
-#### MagicMenuRemote
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'channelId',
-          description: 'Provide a channel id, for the remote to communicate with.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'viewId',
-          description: 'Provide the id of the view, the channel is nested in. This is only neccessary if the triger isn’t nested inside `MagicMenuView`.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'instanceId',
-          description: 'Provide the menu id. This is only neccessary if the trigger isn’t nested inside `MagicMenuProvider`.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the remote.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'trigger',
-          description: 'Override the interactions that activate the remote.'
-        },
-        {
-          label: 'Interaction[]',
-          description: 'Array<\'click\' | \'mouseenter\' | \'right-click\'>'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-### Options
-
-To customize the menu, override the necessary options by passing them to the `MagicMenuProvider`. Any custom options will be merged with the default options.
+To customize the menu, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable 
   :columns="[
@@ -598,6 +268,348 @@ To customize the menu, override the necessary options by passing them to the `Ma
         { label: 'delay.rightClick' },
         { label: 'number' },
         { label: '0' }
+      ]
+    }
+  ]"
+/>
+
+### MagicMenuView
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary for interacting with the view through `useMagicMenu`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'placement',
+          description: 'Override the placement of the MenuView.'
+        },
+       {
+          label: 'Placement',
+          description: 'Please refer to the [Floating UI docs](https://floating-ui.com/docs/tutorial#placements).'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### MagicMenuContent
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'arrow',
+          description: 'Show or hide an arrow pointing at the trigger element.'
+        },
+        {
+          label: 'boolean',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+        },
+        {
+          label: 'string',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'referenceEl',
+          description: 'Override the reference element used for positioning the content element.'
+        },
+        {
+          label: 'HTMLElement | ComponentPublicInstance',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### MagicMenuItem
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional.'
+        },
+        {
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the menu item.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### MagicMenuChannel
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary for interacting with the channel through `useMagicMenu`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+     {
+      items: [
+        {
+          label: 'transition',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+        },
+        {
+          label: 'string',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### MagicMenuRemote
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'channelId',
+          description: 'Provide a channel id, for the remote to communicate with.'
+        },
+        {
+          label: 'string'
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'viewId',
+          description: 'Provide the id of the view, the channel is nested in. This is only neccessary if the triger isn’t nested inside `MagicMenuView`.'
+        },
+        {
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'instanceId',
+          description: 'Provide the menu id. This is only neccessary if the trigger isn’t nested inside `MagicMenuProvider`.'
+        },
+        {
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the remote.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'trigger',
+          description: 'Override the interactions that activate the remote.'
+        },
+        {
+          label: 'Interaction[]',
+          description: 'Array<\'click\' | \'mouseenter\' | \'right-click\'>'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### MagicMenuTrigger
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the trigger.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'trigger',
+          description: 'Override the interactions that activate the trigger.'
+        },
+        {
+          label: 'Interaction[]',
+          description: 'Array<\'click\' | \'mouseenter\' | \'right-click\'>',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
       ]
     }
   ]"

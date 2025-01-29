@@ -33,9 +33,6 @@ const { playerApi } = useMagicPlayer('your-player-id')
 </style>
 ```
 
-> [!TIP]
-> Due to their opinionated nature and complexity, we have externalized the styles for both the `MagicPlayerVideoControls` and `MagicPlayerAudioControls` components. Make sure to import them if needed. Otherwise style these components seperately.
-
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
 ### Vue
@@ -142,11 +139,11 @@ bun install @nuxt/kit @vueuse/core defu hls.js
 
 ## API Reference
 
-### Props
-
-#### MagicPlayerProvider
+### MagicPlayerProvider
 
 The provider wraps the menu and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable 
   :columns="[
@@ -187,143 +184,7 @@ The provider wraps the menu and configures all child components according to the
   ]"
 />
 
-#### MagicPlayerVideoControls
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'standalone',
-          description: 'Set to true, if the component is not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicPlayerMuxPopover
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'playbackId',
-          'description': 'Neccessary if the ancestral `MagicPlayerVideoControls` component is set to `standalone`. '
-        },
-        { 
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicPlayerAudioControls
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-#### MagicPlayerDisplayTime
-
-This component is used internally by both the video and audio controls components. You are most likely not going to need it unless you want to implement your own custom controls.
-
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'type',
-        },
-        { 
-          label: 'string',
-          description: '\'current\' | \'remaining\' | \'duration\''
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
-
-### Options
+#### Options
 
 To customize the player override the necessary options. Any custom options will be merged with the default options.
 
@@ -435,9 +296,7 @@ To customize the player override the necessary options. Any custom options will 
   ]"
 />
 
-### CSS Variables
-
-#### MagicPlayerProvider
+#### CSS Variables
 
 <ProseTable 
   :columns="[
@@ -466,7 +325,9 @@ To customize the player override the necessary options. Any custom options will 
   ]"
 />
 
-#### MagicPlayerOverlay
+### MagicPlayerOverlay
+
+#### CSS Variables
 
 <ProseTable 
   :columns="[
@@ -501,7 +362,100 @@ To customize the player override the necessary options. Any custom options will 
   ]"
 />
 
-#### MagicPlayerMuxPopover
+### MagicPlayerVideoControls
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'standalone',
+          description: 'Set to true, if the component is not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### CSS
+
+Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
+
+```css
+@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+```
+
+### MagicPlayerMuxPopover
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'playbackId',
+          'description': 'Neccessary if the ancestral `MagicPlayerVideoControls` component is set to `standalone`. '
+        },
+        { 
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### CSS Variables
 
 <ProseTable 
   :columns="[
@@ -513,6 +467,73 @@ To customize the player override the necessary options. Any custom options will 
       items: [
         { label: '--magic-player-popover-border-radius' },
         { label: '0.25rem' }
+      ]
+    }
+  ]"
+/>
+
+### MagicPlayerAudioControls
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### CSS
+
+Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
+
+```css
+@import '@maas/vue-equipment/MagicPlayer/css/magic-player-audio-controls.css';
+```
+
+### MagicPlayerDisplayTime
+
+This component is used internally by both the video and audio controls components. You are most likely not going to need it directly, unless you want to implement your own custom controls.
+
+#### Props
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'type',
+        },
+        { 
+          label: 'string',
+          description: '\'current\' | \'remaining\' | \'duration\''
+        },
+        {
+          label: 'false'
+        }
       ]
     }
   ]"
