@@ -1,4 +1,4 @@
-# Magic Accordion
+# MagicAccordion
 
 Magic Accordion is a collection of components intended for building vertically stacked headlines where each reveals related content.
 

@@ -1,6 +1,6 @@
-# Magic Modal
+# MagicModal
 
-Magic Modal is a flexible, unstyled modal component. Useful for things like confirmation dialogs, detail views, and forms.
+MagicModal is a flexible, unstyled modal component. Useful for things like confirmation dialogs, detail views, and forms.
 
 <ComponentPreview src="./demo/DefaultDemo.vue" />
 

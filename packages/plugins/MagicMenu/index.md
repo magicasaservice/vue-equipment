@@ -1,6 +1,6 @@
-# Magic Menu
+# MagicMenu
 
-Magic Menu is a flexible collection of components intended to build various types of menus and navigation.
+MagicMenu is a flexible collection of components intended to build various types of menus and navigation.
 
 [Show Examples](#mode)
 

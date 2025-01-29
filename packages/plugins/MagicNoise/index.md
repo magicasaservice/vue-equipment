@@ -1,6 +1,6 @@
-# Magic Noise
+# MagicNoise
 
-Magic Noise is a rendition of pixelated static noise, as seen on TV in the 90s.
+MagicNoise is a rendition of pixelated static noise, as seen on TV in the 90s.
 
 <ComponentPreview src="./demo/DefaultDemo.vue" />
 

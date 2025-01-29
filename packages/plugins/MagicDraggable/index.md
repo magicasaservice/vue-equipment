@@ -1,6 +1,6 @@
-# Magic Draggable
+# MagicDraggable
 
-Magic Draggable is a touch enabled, draggable component that can snap to configurable points inside its container.
+MagicDraggable is a touch enabled, draggable component that can snap to configurable points inside its container.
 
 <component-preview src="./demo/DefaultDemo.vue" />
 

@@ -1,6 +1,6 @@
-# Magic Drawer
+# MagicDrawer
 
-Magic Drawer is a flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
+MagicDrawer is a flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
 
 <ComponentPreview src="./demo/DefaultDemo.vue" />
 

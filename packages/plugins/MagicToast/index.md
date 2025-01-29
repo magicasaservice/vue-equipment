@@ -1,6 +1,6 @@
-# Magic Toast
+# MagicToast
 
-A simple component and api to trigger toasts from anywhere
+MagicToast is a flexible collection of components paird with an API to trigger toasts from anywhere.
 
 ## Usage
 

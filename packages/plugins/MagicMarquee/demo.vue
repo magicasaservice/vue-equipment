@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-8 font-bold">
     <magic-marquee class="bg-surface-elevation-base text-surface py-4">
-      <span>Magic Marquee</span>
+      <span>MagicMarquee</span>
       <span>News Update</span>
       <span>Loud Headline</span>
     </magic-marquee>
@@ -17,7 +17,7 @@
       id="magic-marquee--full"
       class="bg-surface-elevation-base text-surface py-4"
     >
-      <span class="w-screen">Magic Marquee with full width content</span>
+      <span class="w-screen">MagicMarquee with full width content</span>
     </magic-marquee>
     <magic-marquee
       class="bg-surface-elevation-base text-surface py-4 cursor-pointer"

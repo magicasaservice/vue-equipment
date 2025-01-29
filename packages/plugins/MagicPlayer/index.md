@@ -1,6 +1,6 @@
-# Magic Player
+# MagicPlayer
 
-Magic Player is a collection of components made to build a flexible, streaming ready media player for video as well as audio playback.
+MagicPlayer is a collection of components made to build a flexible, streaming ready media player for video as well as audio playback.
 
 <ComponentPreview src="./demo/DefaultDemo.vue" />
 

@@ -25,20 +25,20 @@ interface MagicMarqueeProps {
   speed?: number
 }
 
-const props = withDefaults(defineProps<MagicMarqueeProps>(), {
-  direction: 'normal',
-  speed: 1,
-})
+const { direction = 'normal', speed = 1 } = defineProps<MagicMarqueeProps>()
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const childRef = ref<HTMLElement | undefined>(undefined)
+
+const mappedSpeed = computed(() => speed)
+const mappedDirection = computed(() => direction)
 
 const { duplicates, playing, play, pause, initialize } = useMarqueeApi({
   child: childRef,
   parent: parentRef,
   options: {
-    speed: computed(() => props.speed),
-    direction: computed(() => props.direction),
+    speed: mappedSpeed,
+    direction: mappedDirection,
   },
 })
 
@@ -92,7 +92,7 @@ defineExpose({
   backface-visibility: hidden;
   padding-right: var(--magic-marquee-gap, 1rem);
   width: var(--magic-marquee-content-width, unset);
-  animation-name: var(--magic-marquee-animation-name);
+  animation-name: var(--magic-marquee-animation-name, magicMarqueeScrollX);
   animation-duration: var(--magic-marquee-animation-duration);
   animation-play-state: var(--magic-marquee-animation-play-state, running);
   animation-direction: var(--magic-marquee-animation-direction, normal);

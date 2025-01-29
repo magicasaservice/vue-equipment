@@ -1,6 +1,6 @@
-# Magic Auto Size
+# MagicAutoSize
 
-Magic Auto Size is a container that automatically grows and shrinks to its child’s size.
+MagicAutoSize is a container that automatically grows and shrinks to its child’s size.
 
 <component-preview src="./demo/DefaultDemo.vue" />
 

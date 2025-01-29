@@ -1,4 +1,6 @@
-# Magic Cookie
+# MagicCookie
+
+MagicCookie is a flexible collection of components intended to build cookie banners.
 
 <component-preview src="./demo/DefaultDemo.vue" />
 

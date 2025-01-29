@@ -1,6 +1,6 @@
-# Magic Command
+# MagicCommand
 
-Magic Command is a flexible collection of components intended to build command palette style menus, such as Spotlight, Raycast and the like.
+MagicCommand is a flexible collection of components intended to build command palette style menus, such as Spotlight, Raycast and the like.
 
 <component-preview src="./demo/DefaultDemo.vue"/>
 

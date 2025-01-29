@@ -194,7 +194,7 @@ const menu = [
 
           {
             icon: 'brand-nuxt',
-            label: 'Magic Image',
+            label: 'MagicImage',
             callout: '@maas/magic-image',
           },
         ],

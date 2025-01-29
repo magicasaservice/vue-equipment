@@ -1,4 +1,4 @@
-# Magic Scroll
+# MagicScroll
 
 A magic plugin for scroll based interactivity
 

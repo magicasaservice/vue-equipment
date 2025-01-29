@@ -1,20 +1,21 @@
-# Magic Marquee
+# MagicMarquee
 
-A magic plugin for marquee animations
+MagicMarquee is a flexible, unstyled, CSS driven marquee component.
 
-## Usage
+<ComponentPreview src="./demo/DefaultDemo.vue" />
 
-```js
-import { MagicMarqueePlugin } from '@maas/vue-equipment/plugins'
-import { createApp } from 'vue'
+<!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
-const app = createApp({})
-
-app.use(MagicMarqueePlugin)
-```
+## Anatomy
 
 ```vue
-<magic-marquee>
-  <span>Content</span>
-</magic-marquee>
+<template>
+  <magic-marquee>
+    <!-- your content -->
+  </magic-marquee>
+</template>
+
+<script setup>
+const { open } = useMagicModal('your-modal-id')
+</script>
 ```
