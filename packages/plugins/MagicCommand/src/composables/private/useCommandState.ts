@@ -7,7 +7,7 @@ const commandStateStore: Ref<CommandState[]> = ref([])
 
 export function useCommandState(instanceId: MaybeRef<string>) {
   // Private functions
-  function createState(id: string): CommandState {
+  function createState(id: string) {
     const view = commandStateStore.value
       .find((state) => state.id === id)
       ?.views.findLast((view) => view.active)?.id

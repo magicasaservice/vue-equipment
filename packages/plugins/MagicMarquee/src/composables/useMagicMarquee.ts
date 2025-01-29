@@ -19,20 +19,20 @@ export function useMagicMarquee(id: MaybeRef<string>) {
   }
 
   function increaseSpeed(factor = 1) {
-    if (!state.options.speed) {
+    if (state.options.speed === undefined) {
       return
     }
 
     state.options.speed += factor
-    console.log(state.id)
   }
 
   function decreaseSpeed(factor = 1) {
-    if (!state.options.speed) {
+    if (state.options.speed === undefined) {
       return
     }
 
     state.options.speed -= factor
+    state.options.speed = Math.max(0, state.options.speed)
   }
 
   function reverse() {
