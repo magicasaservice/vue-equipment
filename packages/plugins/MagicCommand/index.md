@@ -49,7 +49,7 @@ Magic Command is a flexible collection of components intended to build command p
   </magic-command-provider>
 </template>
 
-<script>
+<script setup>
 const { open, close } = useMagicCommand('your-command-id')
 </script>
 ```

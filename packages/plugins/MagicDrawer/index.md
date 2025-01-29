@@ -15,7 +15,7 @@ Magic Drawer is a flexible, touch enabled, unstyled drawer component. Useful for
   </magic-drawer>
 </template>
 
-<script>
+<script setup>
 const { open } = useMagicDrawer('your-drawer-id')
 </script>
 ```

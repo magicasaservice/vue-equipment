@@ -15,7 +15,7 @@ Magic Draggable is a touch enabled, draggable component that can snap to configu
   </magic-draggable>
 </template>
 
-<script>
+<script setup>
 const { open } = useMagicDraggable('your-draggable-id')
 </script>
 ```

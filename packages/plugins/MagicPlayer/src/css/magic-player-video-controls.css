@@ -99,14 +99,17 @@
   inset: unset;
   width: 100%;
   --magic-player-video-controls-left: 0;
-}
+  & .magic-player-video-controls__bar--inner {
+    background-color: transparent;
+    backdrop-filter: none;
+  }
 
-.magic-player-video-controls[data-standalone='true']
-  .magic-player-video-controls__bar {
-  position: relative;
-  bottom: 0;
-  padding: 0;
-  background-color: transparent;
-  border-radius: unset;
-  backdrop-filter: none;
+  & .magic-player-video-controls__bar {
+    position: relative;
+    bottom: 0;
+    padding: 0;
+    background-color: transparent;
+    border-radius: unset;
+    backdrop-filter: none;
+  }
 }

@@ -1,7 +1,6 @@
 <template>
   <magic-cookie-provider
     id="magic-cookie-demo"
-    :cookies="cookies"
     class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-xl"
   >
     <div class="type-surface-body-md">

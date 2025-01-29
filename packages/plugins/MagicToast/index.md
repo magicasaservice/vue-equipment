@@ -21,7 +21,7 @@ app.use(MagicToastPlugin)
 </template>
 ```
 
-### Trigger
+### Anatomy
 
 ```vue
 <template>

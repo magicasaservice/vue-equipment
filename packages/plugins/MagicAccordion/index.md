@@ -22,7 +22,7 @@ Magic Accordion is a collection of components intended for building vertically s
   </magic-accordion-provider>
 </template>
 
-<script>
+<script setup>
 const { selectView } = useMagicAccordion('your-accordion-id')
 </script>
 ```

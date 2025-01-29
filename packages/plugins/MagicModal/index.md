@@ -15,7 +15,7 @@ Magic Modal is a flexible, unstyled modal component. Useful for things like conf
   </magic-modal>
 </template>
 
-<script>
+<script setup>
 const { open } = useMagicModal('your-modal-id')
 </script>
 ```

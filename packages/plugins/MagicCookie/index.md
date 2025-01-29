@@ -7,9 +7,20 @@
 ## Anatomy
 
 ```vue
-<template></template>
+<template>
+  <magic-cookie-provider id="your-cookie-id">
+    <magic-cookie-view>
+      <magic-cookie-item v-slot="{ item }">
+        <!-- your content -->
+      </magic-cookie-item>
+    </magic-cookie-view>
+    <!-- your content -->
+  </magic-cookie-provider>
+</template>
 
-<script></script>
+<script setup>
+const { acceptAll } = useMagicCookie('your-cookie-id')
+</script>
 ```
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
@@ -54,4 +65,150 @@ function handleClick() {
 }
 ```
 
+## Peer Dependencies
+
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the modal.
+
+<ProseTable
+  :columns="[
+    { label: 'Package'},
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+        }
+      ]
+    },
+     {
+      items: [
+        {
+          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[defu](https://www.npmjs.com/package/defu)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)'
+        }
+      ]
+    }
+  ]"
+/>
+
+### Installation
+
+::: code-group
+
+```sh [pnpm]
+pnpm install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+```
+
+```sh [npm]
+npm install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+```
+
+```sh [yarn]
+yarn add @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+```
+
+```sh [bun]
+bun install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+```
+
+:::
+
 ## API Reference
+
+### Props
+
+#### MagicCookieProvider
+
+The provider wraps the cookie banner and configures all child components according to the provided [options](#options).
+
+<ProseTable 
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is required. Can either be a string or a ref.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'options',
+          description: 'Refer to the [options table](#options) for details.'
+        },
+        {
+          label: 'MagicCookieOptions'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+  ]"
+/>
+
+### Options
+
+<ProseTable 
+  :columns="[
+    { label: 'Option' },
+    { label: 'Type' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { 
+          label: 'maxAge',
+          description: 'Maximum age of the cookie in seconds.'
+        },
+        { label: 'number' },
+        { label: '86400' }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition.view',
+          description: 'Override the transition name of the cookie view.'
+        },
+        { label: 'string' },
+        { label: 'magic-cookie-view' }
+      ]
+    }
+  ]"
+/>

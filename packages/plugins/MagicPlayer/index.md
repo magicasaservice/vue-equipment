@@ -10,7 +10,7 @@ Magic Player is a collection of components made to build a flexible, streaming r
 
 ```vue
 <template>
-  <magic-player-provider id="your-player-id" src="your-video.m3u8">
+  <magic-player-provider id="your-player-id" src="your-src.m3u8">
     <magic-player-video />
     <magic-player-poster>
       <!-- your content -->
@@ -18,7 +18,7 @@ Magic Player is a collection of components made to build a flexible, streaming r
     <magic-player-overlay />
     <magic-player-video-controls>
       <template #seek-popover>
-        <magic-player-mux-popover playbackId="your-playback-id" />
+        <magic-player-mux-popover />
       </template>
     </magic-player-video-controls>
   </magic-player-provider>
@@ -32,6 +32,9 @@ const { playerApi } = useMagicPlayer('your-player-id')
 @import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
 </style>
 ```
+
+> [!TIP]
+> Due to their opinionated nature and complexity, we have externalized the styles for both the `MagicPlayerVideoControls` and `MagicPlayerAudioControls` components. Make sure to import them if needed. Otherwise style these components seperately.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -314,6 +317,118 @@ This component is used internally by both the video and audio controls component
         },
         {
           label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### Options
+
+To customize the player override the necessary options. Any custom options will be merged with the default options.
+
+<ProseTable 
+  :columns="[
+    { label: 'Option' },
+    { label: 'Type' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { 
+          label: 'src',
+          description: 'Can be a video file, a streaming link (.m3u8 or an audio file.'
+        },
+        { 
+          label: 'string'
+        },
+        { 
+          label: '–' 
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'mode',
+        },
+        { 
+          label: 'string',
+          description:  '\'audio\' | \'video\''
+        },
+        { 
+          label: 'video'
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'srcType',
+          description: 'Set this to `hls` to enable straming links.'
+        },
+        { 
+          label: 'string',
+          description: '\'native\' | \'hls\'' 
+        },
+        { 
+          label: 'native' 
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'preload',
+        },
+        { 
+          label: 'string',
+          description: '\'auto\' | \'metadata\' | \'none\''
+        },
+        { 
+          label: 'metadata' 
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'autoplay',
+        },
+        { 
+          label: 'boolean' 
+        },
+        { 
+          label: 'false' 
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'loop',
+          description: 'Ignored for players with type `audio`.'
+        },
+        { 
+          label: 'boolean'
+         },
+        { 
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition.videoControls',
+          description: 'Override the transition name of the video controls.'
+        },
+        { 
+          label: 'string' 
+        },
+        { 
+          label: 'magic-player-video-controls' 
         }
       ]
     }

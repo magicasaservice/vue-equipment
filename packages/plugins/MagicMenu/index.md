@@ -24,7 +24,7 @@ Magic Menu is a flexible collection of components intended to build various type
   </magic-menu-provider>
 </template>
 
-<script>
+<script setup>
 const { selectView } = useMagicMenu('your-menu-id')
 </script>
 ```
