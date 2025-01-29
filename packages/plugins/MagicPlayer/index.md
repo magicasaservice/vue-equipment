@@ -403,66 +403,6 @@ This component is used internally by both the video and audio controls component
   ]"
 />
 
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-player-display-time-width' },
-        { label: '4rem' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-display-time-font-size' },
-        { label: '0.875rem' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-display-time-color' },
-        { label: 'inherit' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-display-time-justify-content' },
-        { label: 'center' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-display-time-font-variant-numeric' },
-        { label: 'tabular-nums' }
-      ]
-    }
-  ]"
-/>
-
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-player-track-height' },
-        { label: '0.25rem' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-track-background' },
-        { label: 'rgba(250, 250, 250, 0.15)' }
-      ]
-    }
-  ]"
-/>
-
 ## Examples
 
 ### Audio Player
