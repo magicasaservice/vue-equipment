@@ -1,6 +1,6 @@
 <template>
   <m-button @click="drawerApi.open"> Open Drawer </m-button>
-  <magic-drawer :id="id" :options="{ focusTrap: false }">
+  <magic-drawer id="magic-drawer-vertical-demo" :options="{ focusTrap: false }">
     <div class="bg-surface-elevation-base absolute inset-0" />
   </magic-drawer>
 </template>
@@ -9,6 +9,5 @@
 import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 
-const id = 'vertical-demo'
-const drawerApi = useMagicDrawer(id)
+const drawerApi = useMagicDrawer('magic-drawer-vertical-demo')
 </script>

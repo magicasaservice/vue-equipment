@@ -17,39 +17,38 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
+import { useMarqueeState } from '../composables/private/useMarqueeState'
+
+import type { MagicMarqueeOptions } from '../types'
 
 interface MagicMarqueeProps {
-  direction?: 'reverse' | 'normal'
-  speed?: number
+  id: MaybeRef<string>
+  options?: MagicMarqueeOptions
 }
 
-const { direction = 'normal', speed = 1 } = defineProps<MagicMarqueeProps>()
+const { id, options } = defineProps<MagicMarqueeProps>()
+
+const { deleteState, initializeState } = useMarqueeState(id)
+initializeState(options)
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const childRef = ref<HTMLElement | undefined>(undefined)
 
-const mappedSpeed = computed(() => speed)
-const mappedDirection = computed(() => direction)
-
-const { duplicates, playing, play, pause, initialize } = useMarqueeApi({
+const { duplicates, initialize } = useMarqueeApi({
   child: childRef,
   parent: parentRef,
-  options: {
-    speed: mappedSpeed,
-    direction: mappedDirection,
-  },
+  instanceId: id,
 })
 
 onMounted(() => {
   initialize()
 })
 
-defineExpose({
-  playing,
-  play,
-  pause,
+// Lifecycle
+onBeforeUnmount(() => {
+  deleteState()
 })
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <teleport :to="state.renderer" v-if="state.renderer && state.active">
+  <teleport v-if="state.renderer && state.active" :to="state.renderer">
     <transition
       :name="state.options.transition?.content"
       :on-before-enter="onBeforeEnter"
@@ -13,8 +13,8 @@
         v-if="isActive"
         v-show="!isIdle"
         ref="elRef"
-        class="magic-command-content"
         :key="`${viewId}-content`"
+        class="magic-command-content"
         :data-id="`${viewId}-content`"
         :data-idle="isIdle"
         v-bind="$attrs"

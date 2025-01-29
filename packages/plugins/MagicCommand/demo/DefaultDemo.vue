@@ -1,6 +1,6 @@
 <template>
-  <magic-command-provider id="magic-command-default-demo">
-    <magic-command-trigger :view-id="viewId" as-child>
+  <magic-command-provider id="magic-command-demo">
+    <magic-command-trigger view-id="initial-default-view" as-child>
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
@@ -10,13 +10,11 @@
       </m-menu-box>
     </magic-command-modal>
 
-    <default-view :id="viewId" />
+    <default-view id="initial-default-view" />
   </magic-command-provider>
 </template>
 
 <script lang="ts" setup>
 import { MButton, MMenuBox } from '@maas/mirror/vue'
 import DefaultView from './components/DefaultView.vue'
-
-const viewId = 'initial-default-view'
 </script>

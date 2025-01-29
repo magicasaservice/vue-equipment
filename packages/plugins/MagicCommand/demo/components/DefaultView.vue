@@ -1,5 +1,5 @@
 <template>
-  <magic-command-view :initial="true" :id="id">
+  <magic-command-view :id="id" :initial="true">
     <magic-command-content class="overflow-auto scrollbar-none">
       <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
         <m-menu-item-child>Navigation</m-menu-item-child>

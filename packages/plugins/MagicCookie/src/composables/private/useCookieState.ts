@@ -11,7 +11,7 @@ export function useCookieState(instanceId: MaybeRef<string>) {
     const state: CookieState = {
       id: id,
       items: [],
-      options: defaultOptions,
+      options: { ...defaultOptions },
       viewActive: false,
     }
 

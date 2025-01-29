@@ -1,23 +1,17 @@
 import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { MenuState, MagicMenuOptions } from '../../types/index'
+import type { MarqueeState, MagicMarqueeOptions } from '../../types/index'
 
-const menuStateStore: Ref<MenuState[]> = ref([])
+const marqueeStateStore: Ref<MarqueeState[]> = ref([])
 
-export function useMenuState(instanceId: MaybeRef<string>) {
+export function useMarqueeState(instanceId: MaybeRef<string>) {
   // Private functions
   function createState(id: string) {
-    const state: MenuState = {
+    const state: MarqueeState = {
       id: id,
       options: { ...defaultOptions },
-      views: [],
-      active: false,
-      input: {
-        type: 'pointer',
-        disabled: [],
-        view: undefined,
-      },
+      playing: true,
     }
 
     return reactive(state)
@@ -25,14 +19,14 @@ export function useMenuState(instanceId: MaybeRef<string>) {
 
   function addState(id: string) {
     const instance = createState(id)
-    menuStateStore.value = [...menuStateStore.value, instance]
+    marqueeStateStore.value = [...marqueeStateStore.value, instance]
 
     return instance
   }
 
   // Public functions
-  function initializeState(options?: MagicMenuOptions) {
-    let instance = menuStateStore.value.find((instance) => {
+  function initializeState(options?: MagicMarqueeOptions) {
+    let instance = marqueeStateStore.value.find((instance) => {
       return instance.id === toValue(instanceId)
     })
 
@@ -49,14 +43,14 @@ export function useMenuState(instanceId: MaybeRef<string>) {
   }
 
   function deleteState() {
-    menuStateStore.value = menuStateStore.value.filter(
-      (x: MenuState) => x.id !== toValue(instanceId)
+    marqueeStateStore.value = marqueeStateStore.value.filter(
+      (x: MarqueeState) => x.id !== toValue(instanceId)
     )
   }
 
   return {
     initializeState,
     deleteState,
-    menuStateStore,
+    marqueeStateStore,
   }
 }

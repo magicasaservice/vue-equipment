@@ -1,7 +1,7 @@
 <template>
   <m-button @click="drawerApi.open"> Open Drawer </m-button>
   <magic-drawer
-    :id="id"
+    id="magic-drawer-snap-points-demo"
     :options="{
       focusTrap: false,
       snapPoints: snapPoints,
@@ -16,10 +16,8 @@
 import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 
-const id = 'snap-points-demo'
 const snapPoints = ['320px', 0.75, 1]
-
-const drawerApi = useMagicDrawer(id)
+const drawerApi = useMagicDrawer('magic-drawer-snap-points-demo')
 </script>
 
 <style>

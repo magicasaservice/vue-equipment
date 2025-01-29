@@ -17,15 +17,15 @@ interface MagicAccordionProviderProps {
   options?: MagicAccordionOptions
 }
 
-const props = defineProps<MagicAccordionProviderProps>()
+const { id, asChild, options } = defineProps<MagicAccordionProviderProps>()
 
-const { deleteState, initializeState } = useAccordionState(props.id)
-initializeState(props.options)
+const { deleteState, initializeState } = useAccordionState(id)
+initializeState(options)
 
 // Lifecycle
 onBeforeUnmount(() => {
   deleteState()
 })
 
-provide(MagicAccordionInstanceId, props.id)
+provide(MagicAccordionInstanceId, id)
 </script>

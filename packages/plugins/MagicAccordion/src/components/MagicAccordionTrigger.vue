@@ -28,11 +28,11 @@ interface MagicAccordionTriggerProps {
   asChild?: boolean
 }
 
-const props = withDefaults(defineProps<MagicAccordionTriggerProps>(), {
-  disabled: false,
-  trigger: 'click',
-  asChild: false,
-})
+const {
+  disabled = false,
+  trigger = 'click',
+  asChild = false,
+} = defineProps<MagicAccordionTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
@@ -57,15 +57,15 @@ const { getView } = useAccordionView(instanceId)
 const view = getView(viewId)
 
 const mappedDisabled = computed(
-  () => toValue(props.disabled) || state.options.disabled
+  () => toValue(disabled) || state.options.disabled
 )
 
 const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
   instanceId,
   viewId,
   elRef,
-  disabled: props.disabled,
-  trigger: props.trigger,
+  disabled: disabled,
+  trigger: trigger,
 })
 
 onKeyStroke('Enter', onEnter)

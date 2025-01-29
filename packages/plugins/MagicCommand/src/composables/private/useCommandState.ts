@@ -14,7 +14,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
 
     const state: CommandState = {
       id: id,
-      options: defaultOptions,
+      options: { ...defaultOptions },
       views: [],
       renderer: undefined,
       active: false,

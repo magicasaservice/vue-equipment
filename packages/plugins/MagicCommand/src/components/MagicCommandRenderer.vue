@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-command-renderer" ref="elRef" />
+  <div ref="elRef" class="magic-command-renderer" />
 </template>
 
 <script lang="ts" setup>

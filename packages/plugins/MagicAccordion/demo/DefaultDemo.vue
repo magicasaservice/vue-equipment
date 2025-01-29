@@ -2,6 +2,7 @@
   <magic-accordion-provider id="magic-accordion-demo" class="w-full">
     <demo-list
       v-for="item in footer"
+      :key="item.label"
       :headline="item.label"
       :list="<DemoListProps['list']>item.list"
     />

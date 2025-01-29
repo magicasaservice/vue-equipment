@@ -14,7 +14,7 @@
             <m-menu-item size="sm" mode="subtle">
               <m-menu-item-child class="w-full">
                 <span>{{ item.label }}</span>
-                <template #end v-if="item.badge">
+                <template v-if="item.badge" #end>
                   <m-badge
                     size="sm"
                     :mode="item.badge.mode"

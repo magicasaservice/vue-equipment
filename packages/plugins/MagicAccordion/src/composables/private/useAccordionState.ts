@@ -10,7 +10,7 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
   function createState(id: string) {
     const state: AccordionState = {
       id: id,
-      options: defaultOptions,
+      options: { ...defaultOptions },
       views: [],
     }
 

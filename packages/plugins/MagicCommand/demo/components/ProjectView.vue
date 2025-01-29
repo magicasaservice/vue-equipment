@@ -14,8 +14,8 @@
           <magic-command-item
             v-for="(project, i) in projects"
             :key="project.id"
-            :initial="i === 0"
             v-slot="{ itemActive }"
+            :initial="i === 0"
           >
             <m-menu-item mode="ghost" size="sm" :active="itemActive">
               <m-menu-item-child>{{ project.name }}</m-menu-item-child>
