@@ -48,7 +48,7 @@ export function useMarqueeApi({
     )
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-name',
-      `magicMarqueeScrollX`
+      'magicMarqueeScrollX'
     )
     toValue(parent)?.style.setProperty(
       '--magic-marquee-animation-direction',

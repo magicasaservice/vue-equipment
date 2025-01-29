@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: var(--magic-marquee-jusrify-content, flex-start);
+  justify-content: var(--magic-marquee-justify-content, flex-start);
   align-items: var(--magic-marquee-align-items, baseline);
 }
 
@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
   backface-visibility: hidden;
   padding-right: var(--magic-marquee-gap, 1rem);
   width: var(--magic-marquee-content-width, unset);
-  animation-name: var(--magic-marquee-animation-name, magicMarqueeScrollX);
+  animation-name: var(--magic-marquee-animation-name, 'magicMarqueeScrollX');
   animation-duration: var(--magic-marquee-animation-duration);
   animation-play-state: var(--magic-marquee-animation-play-state, running);
   animation-direction: var(--magic-marquee-animation-direction, normal);
