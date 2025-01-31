@@ -27,6 +27,10 @@ const { from = 'top-bottom', to = 'bottom-top' } =
 const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollParent = inject(MagicScrollParent)
 
+if (!scrollParent) {
+  console.error('MagicScrollScene must be used inside a MagicScrollProvider')
+}
+
 const progress = ref(0)
 const intersecting = ref(false)
 const elRef = ref<HTMLElement | undefined>(undefined)

@@ -21,6 +21,12 @@ const { id, offset } = defineProps<MagicScrollCollisionProps>()
 const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollParent = inject(MagicScrollParent)
 
+if (!scrollParent) {
+  console.error(
+    'MagicScrollCollision must be used inside a MagicScrollProvider'
+  )
+}
+
 const intersecting = ref(false)
 const elRef = ref<HTMLElement | undefined>(undefined)
 

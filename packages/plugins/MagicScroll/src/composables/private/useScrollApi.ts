@@ -12,19 +12,22 @@ type UseScrollApiParams = {
   to: FromTo
 }
 
+type ChildRect = DOMRect | undefined
+type ParentRect =
+  | DOMRect
+  | {
+      width: MaybeRef<number>
+      height: MaybeRef<number>
+      top: MaybeRef<number>
+    }
+  | undefined
+
 export function useScrollApi(params: UseScrollApiParams) {
   const { child, parent, from, to } = params
   const scrollReturn = inject(MagicScrollReturn, undefined)
 
-  const childRect = ref<DOMRect>()
-  const parentRect = ref<
-    | DOMRect
-    | {
-        width: MaybeRef<number>
-        height: MaybeRef<number>
-        top: MaybeRef<number>
-      }
-  >()
+  const childRect = ref<ChildRect>(undefined)
+  const parentRect = ref<ParentRect>(undefined)
   const start = ref(0)
   const end = ref(0)
 
@@ -54,7 +57,9 @@ export function useScrollApi(params: UseScrollApiParams) {
         break
     }
 
-    if (!parentRect.value) return y
+    if (!parentRect.value) {
+      return y
+    }
 
     const dimensions = {
       width: toValue(parentRect.value.width),
