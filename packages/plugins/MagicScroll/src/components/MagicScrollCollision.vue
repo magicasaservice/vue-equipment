@@ -1,32 +1,58 @@
 <template>
-  <div ref="elRef" :style="{ display: 'contents' }">
+  <div ref="elRef" class="magic-scroll-collision">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, onMounted } from 'vue'
-import { toValue } from '@vueuse/core'
-import { useCollisionDetect } from '../composables/private/useCollisionDetect'
-import { MagicScrollReturn } from '../symbols'
+import { ref, inject, computed, toValue, watch, useId, onMounted } from 'vue'
+import { useCollisionDetection } from '../composables/private/useCollisionDetection'
+import { MagicScrollReturn, MagicScrollParent } from '../symbols'
 
-import type { MagicScrollCollisionEntry } from '../types'
+import type { CollisionOffset } from '../types'
+import { useIntersectionObserver } from '@vueuse/core'
 
-interface Props {
-  entries: MagicScrollCollisionEntry[]
+interface MagicScrollCollisionProps {
+  id?: string
+  offset?: CollisionOffset
 }
 
-const props = defineProps<Props>()
+const { id, offset } = defineProps<MagicScrollCollisionProps>()
+const scrollReturn = inject(MagicScrollReturn, undefined)
+const scrollParent = inject(MagicScrollParent)
+
+const intersecting = ref(false)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollY = computed(() => toValue(scrollReturn?.y) || 0)
+const mappedId = computed(() => id ?? `magic-scroll-collision-${useId()}`)
+
+const { observe } = useCollisionDetection({
+  id: mappedId.value,
+  child: elRef,
+  parent: scrollParent,
+  scrollY,
+  offset,
+})
+
+watch(
+  () => scrollY.value,
+  () => {
+    if (intersecting.value) {
+      observe()
+    }
+  }
+)
+
+useIntersectionObserver(
+  elRef,
+  ([{ isIntersecting }]) => {
+    intersecting.value = isIntersecting
+  },
+  { rootMargin: '150% 0px 150% 0px', immediate: true }
+)
 
 onMounted(() => {
-  useCollisionDetect({
-    scrollY,
-    entries: props.entries,
-    parent: toValue(elRef),
-  })
+  observe()
 })
 </script>

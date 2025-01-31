@@ -2,7 +2,7 @@
 
 MagicScroll is a flexible collection of components intended to build various types of scroll-based animations and alerts.
 
-<component-preview src="./demo/DefaultDemo.vue" />
+<component-preview src="./demo/CollisionDetectionDemo.vue" />
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -33,3 +33,9 @@ export default defineNuxtConfig({
   },
 })
 ```
+
+## Examples
+
+### Collision Detection
+
+<component-preview src="./demo/DefaultDemo.vue" />

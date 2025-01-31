@@ -14,26 +14,28 @@ import {
 import { MagicScrollReturn, MagicScrollParent } from '../symbols'
 
 interface MagicScrollProviderProps {
-  active?: boolean
-  el?: MaybeComputedElementRef<HTMLElement>
+  target?: MaybeComputedElementRef<HTMLElement>
 }
-const props = withDefaults(defineProps<MagicScrollProviderProps>(), {
-  active: () => true,
-})
 
-// computed is used to avoid reactivity issues
-const mappedEl = computed(() => {
-  if (props.el) return unrefElement(props.el)
-  if (typeof window === 'undefined') return undefined
-  return window
+const { target } = defineProps<MagicScrollProviderProps>()
+
+const mappedTarget = computed(() => {
+  switch (true) {
+    case !!target:
+      return unrefElement(target)
+    case typeof window !== 'undefined':
+      return window
+    default:
+      return undefined
+  }
 })
 
 const mappedParent = computed(() => {
-  if (props.el) return unrefElement(props.el)
+  if (target) return unrefElement(target)
   return undefined
 })
 
-const scrollReturn = useScroll(mappedEl)
+const scrollReturn = useScroll(mappedTarget)
 
 provide(MagicScrollReturn, scrollReturn)
 provide(MagicScrollParent, mappedParent)

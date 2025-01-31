@@ -13,24 +13,15 @@ export type FromTo =
   | 'bottom-center'
   | 'bottom-bottom'
 
-export type Offset =
-  | number
-  | (({ vw, vh }: { vw: number; vh: number }) => number)
-
-export interface MagicScrollCollisionEntry {
-  offset?: {
-    top: Offset
-    bottom: Offset
-  }
-  element?: string
-  data: Record<string, unknown>
+export interface CollisionOffset {
+  top: number
+  bottom: number
 }
 
 export type ScrollEvents = {
   collision: {
+    id: string
     direction: ScrollDirection
     position: Position
-    element: HTMLElement
-    data?: Record<string, unknown>
   }
 }

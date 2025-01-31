@@ -4,14 +4,12 @@ import MagicScrollTransform from './src/components/MagicScrollTransform.vue'
 import MagicScrollMotion from './src/components/MagicScrollMotion.vue'
 import MagicScrollCollision from './src/components/MagicScrollCollision.vue'
 
-import { useCollisionDetect } from './src/composables/private/useCollisionDetect'
+import { useCollisionDetection } from './src/composables/private/useCollisionDetection'
 import {
   MagicScrollParent,
   MagicScrollProgress,
   MagicScrollReturn,
 } from './src/symbols/index'
-
-import type { MagicScrollCollisionEntry } from './src/types/index'
 
 import type { App, Plugin } from 'vue'
 
@@ -27,15 +25,8 @@ const MagicScrollPlugin: Plugin = {
 
 export {
   MagicScrollPlugin,
-  MagicScrollProvider,
-  MagicScrollScene,
-  MagicScrollTransform,
-  MagicScrollMotion,
-  MagicScrollCollision,
-  useCollisionDetect,
+  useCollisionDetection,
   MagicScrollParent,
   MagicScrollProgress,
   MagicScrollReturn,
 }
-
-export type { MagicScrollCollisionEntry }

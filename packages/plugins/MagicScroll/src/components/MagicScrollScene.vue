@@ -21,23 +21,21 @@ interface MagicScrollSceneProps {
   to?: FromTo
 }
 
-const props = withDefaults(defineProps<MagicScrollSceneProps>(), {
-  from: 'top-bottom',
-  to: 'bottom-top',
-})
+const { from = 'top-bottom', to = 'bottom-top' } =
+  defineProps<MagicScrollSceneProps>()
 
 const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollParent = inject(MagicScrollParent)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
 const intersecting = ref(false)
+const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { getCalculations, getProgress } = useScrollApi({
   child: elRef,
   parent: scrollParent,
-  from: props.from,
-  to: props.to,
+  from,
+  to,
 })
 
 async function calculate() {
