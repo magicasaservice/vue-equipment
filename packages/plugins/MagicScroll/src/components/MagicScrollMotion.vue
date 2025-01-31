@@ -7,26 +7,27 @@
 <script lang="ts" setup>
 import { ref, inject, computed, onMounted, watch } from 'vue'
 import { unrefElement } from '@vueuse/core'
+import defu from 'defu'
 import {
   animate,
-  type MotionKeyframesDefinition,
-  type AnimationControls,
-  type Easing,
+  type ObjectSegment,
+  type AnimationPlaybackControls,
+  type SequenceOptions,
+  type AnimationSequence,
 } from 'motion'
+
 import { MagicScrollProgress } from '../symbols'
 
 interface MagicScrollMotionProps {
-  keyframes?: MotionKeyframesDefinition
-  offset?: number[]
-  easing?: Easing
+  sequence?: ObjectSegment[]
   progress?: number
+  sequenceOptions?: SequenceOptions
 }
 
-const props = withDefaults(defineProps<MagicScrollMotionProps>(), {
-  easing: 'linear',
-})
+const { sequence, progress, sequenceOptions } =
+  defineProps<MagicScrollMotionProps>()
 
-const animation = ref<AnimationControls | undefined>(undefined)
+const animation = ref<AnimationPlaybackControls | undefined>(undefined)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const injectedProgress = inject(
@@ -35,18 +36,30 @@ const injectedProgress = inject(
 )
 
 const mappedProgress = computed(() => {
-  return props.progress || injectedProgress.value || 0
+  return progress || injectedProgress.value || 0
 })
 
+const defaultSequenceOptions: SequenceOptions = {
+  duration: 1,
+  delay: 0,
+}
+
+const mappedSequenceOptions = defu(sequenceOptions, defaultSequenceOptions)
+
 function createAnimation() {
-  if (!props.keyframes) return
-  animation.value = animate(unrefElement(elRef)!, props.keyframes, {
-    duration: 1,
-    easing: props.easing || 'linear',
-    offset: props.offset,
+  const el = unrefElement(elRef)
+
+  if (!sequence || !el) {
+    return
+  }
+
+  const mappedSequence: AnimationSequence = sequence.map((item) => {
+    return [el, ...item]
   })
-  animation.value.stop()
-  animation.value.currentTime = mappedProgress.value
+
+  animation.value = animate(mappedSequence, mappedSequenceOptions)
+  animation.value.time = mappedProgress.value
+  animation.value.pause()
 }
 
 onMounted(() => {
@@ -54,14 +67,20 @@ onMounted(() => {
 })
 
 watch(mappedProgress, (value) => {
-  if ((!value && value !== 0) || !animation.value || !props.keyframes) return
-  animation.value.currentTime = value
+  if ((!value && value !== 0) || !animation.value) {
+    return
+  }
+
+  animation.value.time = value
 })
 
 watch(
-  () => props.keyframes,
+  () => sequence,
   () => {
     createAnimation()
+  },
+  {
+    deep: true,
   }
 )
 </script>

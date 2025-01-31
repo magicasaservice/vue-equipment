@@ -31,7 +31,7 @@ const scrollParent = inject(MagicScrollParent)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const progress = ref(0)
-const intersecting = ref()
+const intersecting = ref(false)
 
 const { getCalculations, getProgress } = useScrollApi({
   child: elRef,

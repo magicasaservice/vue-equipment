@@ -70,7 +70,7 @@
     "hls.js": "^1",
     "luxon": "^3",
     "mitt": "^3",
-    "motion": "^10",
+    "motion": "^12",
     "nuxt": "^3.15",
     "universal-cookie": "^7",
     "vue": "^3.5"

@@ -1,6 +1,8 @@
 # MagicScroll
 
-MagicScroll is a flexible collection of components intended to build various types of scroll animations.
+MagicScroll is a flexible collection of components intended to build various types of scroll-based animations and alerts.
+
+<component-preview src="./demo/DefaultDemo.vue" />
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
