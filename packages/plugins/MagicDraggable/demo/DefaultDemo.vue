@@ -8,7 +8,7 @@
 </template>
 
 <style>
-#default-demo {
+#magic-draggable-demo {
   --magic-draggable-position: relative;
 }
 </style>
