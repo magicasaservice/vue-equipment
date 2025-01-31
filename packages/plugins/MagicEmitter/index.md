@@ -1,6 +1,6 @@
 # MagicEmitter
 
-MagicEmitter is a simple wrapper around [mitt](https://github.com/developit/mitt). The emitter is used throughout all plugins to emit custom events. By using the emitter to listen to these events, you can trigger custom callbacks, for example after a modal opens a drawer closes.
+MagicEmitter is a simple wrapper around [mitt](https://github.com/developit/mitt). The emitter is used throughout all plugins to emit custom events. By using the emitter to listen to these events, you can trigger custom callbacks, after a modal opens or a drawer closes for example.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
