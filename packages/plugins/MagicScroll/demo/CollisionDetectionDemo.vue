@@ -8,10 +8,12 @@
         class="h-[400svh] flex flex-col justify-evenly items-center px-8"
       >
         <magic-scroll-collision
-          v-for="i in 1"
+          v-for="i in 4"
           :key="i"
-          class="h-20 bg-surface-elevation-high w-full"
-        />
+          class="h-20 bg-surface-elevation-high w-full flex items-center justify-center"
+        >
+          <span class="type-body-sm">Collision</span>
+        </magic-scroll-collision>
       </magic-scroll-scene>
     </div>
   </magic-scroll-provider>

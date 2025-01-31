@@ -1,6 +1,6 @@
 <template>
   <magic-scroll-provider
-    :el="parentRef"
+    :target="parentRef"
     class="w-full aspect-[16/9] bg-surface-elevation-base"
   >
     <div ref="parentRef" class="relative w-full h-full overflow-auto">
