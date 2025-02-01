@@ -11,8 +11,8 @@
     "@maas/mirror": "^0.11.0",
     "@types/fontkit": "^2.0.3",
     "@types/luxon": "^3.3.1",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
   },
   "exports": "./index.ts",
   "keywords": [],
