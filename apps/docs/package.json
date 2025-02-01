@@ -26,7 +26,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@maas/mirror": "^0.8.0",
+    "@maas/mirror": "^0.11.0",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
