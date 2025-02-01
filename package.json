@@ -5,12 +5,12 @@
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "type": "module",
   "devDependencies": {
-    "@antfu/ni": "^0.23.0",
-    "@release-it/bumper": "^6.0.1",
+    "@antfu/ni": "^23.3.1",
+    "@release-it/bumper": "^7.0.1",
     "@types/node": "^22.4.1",
     "@vue/tsconfig": "^0.7.0",
-    "release-it": "^17.0.1",
-    "tailwindcss": "^3.4.16",
+    "release-it": "^18.1.2",
+    "tailwindcss": "^4.0.2",
     "turbo": "^2.0.6"
   },
   "exports": {
