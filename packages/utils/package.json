@@ -4,9 +4,9 @@
   "version": "0.40.0",
   "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "@types/node": "^22.13.0",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
   },
   "exports": {
     ".": "./index.ts",
