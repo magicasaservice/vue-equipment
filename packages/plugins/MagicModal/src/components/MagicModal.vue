@@ -39,13 +39,7 @@
           class="magic-modal__content"
           @click.self="close"
         >
-          <component
-            v-bind="props"
-            :is="component"
-            v-if="component"
-            @close="close"
-          />
-          <slot v-else />
+          <slot />
         </component>
       </transition>
     </div>
@@ -60,7 +54,6 @@ import {
   toValue,
   onBeforeUnmount,
   onUnmounted,
-  type Component,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
@@ -89,16 +82,15 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicModalProps {
   id: MaybeRef<string>
-  component?: Component
   props?: Record<string, unknown>
   options?: MagicModalOptions
 }
 
-const props = withDefaults(defineProps<MagicModalProps>(), {
+const { id, options = {} } = withDefaults(defineProps<MagicModalProps>(), {
   options: () => defaultOptions,
 })
 
-const mappedOptions = customDefu(props.options, defaultOptions)
+const mappedOptions = customDefu(options, defaultOptions)
 const modalRef = ref<HTMLElement | undefined>(undefined)
 const {
   trapFocus,
@@ -112,7 +104,7 @@ const {
   focusTrap: mappedOptions.focusTrap,
 })
 
-const { isActive, close } = useMagicModal(props.id)
+const { isActive, close } = useMagicModal(id)
 
 // Split isActive into two values to animate modal smoothly
 const innerActive = ref(false)
@@ -126,7 +118,7 @@ const {
   onLeave,
   onAfterLeave,
 } = useModalCallback({
-  id: props.id,
+  id,
   mappedOptions,
   addScrollLockPadding,
   removeScrollLockPadding,

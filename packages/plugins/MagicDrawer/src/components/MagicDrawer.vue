@@ -47,13 +47,7 @@
               @pointerdown="guardedPointerdown"
               @click="guardedClick"
             >
-              <component
-                v-bind="props"
-                :is="component"
-                v-if="component"
-                @close="guardedClose"
-              />
-              <slot v-else />
+              <slot />
               <div v-if="hasDragged" class="magic-drawer__overlay" />
             </component>
           </div>
@@ -73,7 +67,6 @@ import {
   onBeforeMount,
   onBeforeUnmount,
   onUnmounted,
-  type Component,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
@@ -116,18 +109,12 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicDrawerProps {
   id: MaybeRef<string>
-  component?: Component
   options?: MagicDrawerOptions
 }
 
-const props = withDefaults(defineProps<MagicDrawerProps>(), {
-  options: () => defaultOptions,
-})
+const { options = {}, id } = defineProps<MagicDrawerProps>()
 
-const mappedOptions: typeof defaultOptions = customDefu(
-  props.options,
-  defaultOptions
-)
+const mappedOptions = customDefu(options, defaultOptions)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const drawerRef = ref<HTMLDivElement | undefined>(undefined)
@@ -145,7 +132,7 @@ const {
   focusTrap: mappedOptions.focusTrap,
 })
 
-const { isActive, open, close } = useMagicDrawer(props.id)
+const { isActive, open, close } = useMagicDrawer(id)
 
 const overshoot = ref(0)
 const {
@@ -159,15 +146,15 @@ const {
 
 // Make sure this is reactive
 const disabled = computed(() => {
-  if (props.options.disabled === undefined) {
+  if (options.disabled === undefined) {
     return defaultOptions.disabled
   } else {
-    return props.options.disabled
+    return options.disabled
   }
 })
 
 const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
-  id: props.id,
+  id,
   isActive,
   elRef,
   wrapperRef,
@@ -183,13 +170,13 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
 })
 
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
-  id: props.id,
+  id,
   elRef,
   position,
   disabled,
 })
 
-const { initializeState, deleteState } = useDrawerState(props.id)
+const { initializeState, deleteState } = useDrawerState(id)
 const { dragging, wheeling } = initializeState()
 
 // Split isActive into two values to animate drawer smoothly
@@ -205,7 +192,7 @@ const {
   onLeave,
   onAfterLeave,
 } = useDrawerCallback({
-  id: props.id,
+  id,
   mappedOptions,
   addScrollLockPadding,
   removeScrollLockPadding,
@@ -217,7 +204,7 @@ const {
   wasActive,
 })
 
-useDrawerProgress({ id: props.id, elRef, drawerRef, position, overshoot })
+useDrawerProgress({ id, elRef, drawerRef, position, overshoot })
 
 const { resetMetaViewport } = useMetaViewport()
 

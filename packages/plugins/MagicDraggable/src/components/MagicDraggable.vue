@@ -20,8 +20,7 @@
         @pointerdown="guardedPointerdown"
         @click="guardedClick"
       >
-        <component v-bind="props" :is="component" v-if="component" />
-        <slot v-else />
+        <slot />
         <div v-if="hasDragged" class="magic-draggable__overlay" />
       </component>
     </div>
@@ -29,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toValue, type Component, type MaybeRef } from 'vue'
+import { ref, computed, toValue, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
@@ -43,35 +42,32 @@ defineOptions({
 
 interface MagicDraggableProps {
   id: MaybeRef<string>
-  component?: Component
   options?: MagicDraggableOptions
 }
 
-const props = withDefaults(defineProps<MagicDraggableProps>(), {
-  options: () => defaultOptions,
-})
+const { id, options = {} } = defineProps<MagicDraggableProps>()
 
-const mappedOptions = defu(props.options, defaultOptions)
+const mappedOptions = defu(options, defaultOptions)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
-const { initializeState } = useDraggableState(props.id)
+const { initializeState } = useDraggableState(id)
 const { dragging } = initializeState()
 
 // Make sure this is reactive
 const disabled = computed(() => {
-  if (props.options.disabled === undefined) {
+  if (options.disabled === undefined) {
     return defaultOptions.disabled
   } else {
-    return props.options.disabled
+    return options.disabled
   }
 })
 
 const { snapPoints, animation, initial, threshold, scrollLock } = mappedOptions
 
 const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
-  id: props.id,
+  id,
   elRef,
   wrapperRef,
   threshold,
