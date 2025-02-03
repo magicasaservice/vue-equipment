@@ -73,7 +73,7 @@ const {
 <style>
 .magic-accordion-content {
   --magic-auto-size-transition: var(
-    --magic-accordion-size-transition,
+    --magic-accordion-content-size-transition,
     all 200ms var(--ease-in-out-sharp)
   );
   clip-path: var(--magic-accordion-content-clip-path, inset(0));
