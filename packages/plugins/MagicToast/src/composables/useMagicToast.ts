@@ -1,47 +1,50 @@
-import { computed, toValue, markRaw, type MaybeRef } from 'vue'
-import { useToastStore } from './private/useToastStore'
-import type { AddToastArgs } from './../types'
+import { computed, toValue, type MaybeRef } from 'vue'
+import { useToastState } from './private/useToastState'
+import { useToastView } from './private/useToastView'
+import type { AddViewArgs } from './private/useToastView'
 
 export function useMagicToast(id: MaybeRef<string>) {
-  const { findInstance } = useToastStore()
-
   // Private state
-  const instance = computed(() => findInstance(toValue(id)))
+  const { initializeState } = useToastState(toValue(id))
+  const state = initializeState()
+
+  const { initializeView, deleteView } = useToastView(id)
 
   // Public state
-  const toasts = computed(() => instance.value?.toasts)
+  const toasts = computed(() => state?.views)
   const count = computed(() => toasts.value?.length)
-  const firstToast = computed(() => toasts.value?.[0])
-  const lastToast = computed(() => toasts.value?.[toasts.value.length - 1])
 
-  // Public methods
-  async function add(options: AddToastArgs) {
-    const { component, props, duration } = options
-    const toastId = instance.value?.add({
-      props,
-      duration,
-      component: markRaw(component),
-    })
-    return toastId
+  interface AddArgs {
+    component: AddViewArgs['component']
+    props: AddViewArgs['props']
+    duration?: number
+    id?: string
   }
 
-  function remove(toastId: string) {
-    instance.value?.remove(toastId)
+  // Public functions
+  function add(args: AddArgs) {
+    const { id, component, props, duration = 0 } = args
+    const view = initializeView({ id, component, props })
+
+    // Remove after timeout
+    if (duration > 0) {
+      setTimeout(() => {
+        deleteView(view.id)
+      }, duration)
+    }
+
+    return id
   }
 
-  function clear() {
-    if (!instance.value) return
-    instance.value.toasts = []
+  function remove(id: string) {
+    deleteView(id)
   }
 
   return {
     toasts,
     count,
-    firstToast,
-    lastToast,
     add,
     remove,
-    clear,
   }
 }
 

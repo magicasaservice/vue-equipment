@@ -2,16 +2,18 @@ import type { MagicToastOptions } from '../types/index'
 import type { RequireAll } from '@maas/vue-equipment/utils'
 
 const defaultOptions: RequireAll<MagicToastOptions> = {
+  position: 'bottom-center',
   teleport: {
     target: 'body',
     disabled: false,
   },
-  transitions: {
-    list: 'magic-toast--list',
-  },
+  transition: 'magic-toast',
   layout: {
     expand: 'click',
-    max: 5,
+    max: 3,
+  },
+  initial: {
+    expanded: false,
   },
 }
 

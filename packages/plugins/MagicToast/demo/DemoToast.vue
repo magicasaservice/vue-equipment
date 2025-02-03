@@ -1,9 +1,9 @@
 <template>
   <div
-    class="bg-surface-elevation-high text-surface type-label-text-xl rounded-2xl p-3 w-[250px] max-w-sm pointer-events-auto cursor-pointer flex justify-between items-center"
+    class="bg-surface-elevation-base text-surface type-label-text-xl rounded-[1rem] p-2 w-[300px] pointer-events-auto cursor-pointer flex justify-between items-center"
   >
     <span>{{ message }}</span>
-    <m-button size="xs" @click="emit('close')"> Close </m-button>
+    <m-button size="sm" @click.stop="emit('remove')"> Close </m-button>
   </div>
 </template>
 
@@ -14,6 +14,6 @@ interface Props {
   message: string
 }
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['remove'])
 defineProps<Props>()
 </script>

@@ -1,65 +1,75 @@
-import { ref, toValue, type Ref, type MaybeRef } from 'vue'
+import { toValue, computed, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import type { ActiveToast, MagicToastOptions, Toast } from './../../types'
+import { useToastView } from './useToastView'
+import { useToastState } from './useToastState'
 
-type UseToastCallbackArgs = {
-  id: MaybeRef<string>
-  mappedOptions: MagicToastOptions
-  count: Ref<number | undefined>
-  firstToast: Ref<Toast | undefined>
-}
+// interface UseToastCallbackArgs {
+//   instanceId: MaybeRef<string>
+//   viewId: string
+// }
 
-export function useToastCallback(args: UseToastCallbackArgs) {
-  const { id, mappedOptions, count, firstToast } = args
-
-  const activeToasts = ref<ActiveToast[]>([])
+export function useToastCallback(instanceId: MaybeRef<string>) {
+  // const { instanceId } = args
+  const { initializeState } = useToastState(instanceId)
+  const state = initializeState()
   const emitter = useMagicEmitter()
 
+  const { deleteView, getView } = useToastView(instanceId)
+
+  const count = computed(() => state.views.length)
+
   function onBeforeEnter() {
-    emitter.emit('beforeEnter', toValue(id))
+    emitter.emit('beforeEnter', toValue(instanceId))
   }
 
   function onEnter() {
-    emitter.emit('enter', toValue(id))
+    emitter.emit('enter', toValue(instanceId))
     if (
       count.value &&
-      mappedOptions.layout?.max &&
-      count.value > mappedOptions.layout.max
+      state.options.layout?.max &&
+      count.value > state.options.layout.max
     ) {
-      firstToast.value?.remove()
+      deleteView(state.views[0].id)
     }
   }
 
   function onAfterEnter(el: Element) {
-    emitter.emit('afterEnter', toValue(id))
+    emitter.emit('afterEnter', toValue(instanceId))
 
-    const mappedEl = el as HTMLElement
-    const style = window.getComputedStyle(mappedEl)
+    const view = getView(el.id)
 
-    activeToasts.value = [
-      ...activeToasts.value,
-      {
-        id: el.id,
+    if (view) {
+      const mappedEl = el as HTMLElement
+      const style = window.getComputedStyle(mappedEl)
+
+      const dimensions = {
         height: mappedEl.offsetHeight,
         padding: {
           top: parseInt(style.paddingTop),
           bottom: parseInt(style.paddingBottom),
         },
-      },
-    ]
+      }
+
+      view.dimensions = dimensions
+    }
   }
 
   function onBeforeLeave() {
-    emitter.emit('beforeLeave', toValue(id))
+    emitter.emit('beforeLeave', toValue(instanceId))
   }
 
-  function onLeave(el: Element) {
-    emitter.emit('leave', toValue(id))
-    activeToasts.value = activeToasts.value.filter((item) => item.id !== el.id)
+  function onLeave() {
+    emitter.emit('leave', toValue(instanceId))
   }
 
-  function onAfterLeave() {
-    emitter.emit('afterLeave', toValue(id))
+  function onAfterLeave(el: Element) {
+    const view = getView(el.id)
+
+    if (view) {
+      deleteView(view.id)
+    }
+
+    emitter.emit('afterLeave', toValue(instanceId))
   }
 
   return {
@@ -69,6 +79,5 @@ export function useToastCallback(args: UseToastCallbackArgs) {
     onBeforeLeave,
     onLeave,
     onAfterLeave,
-    activeToasts,
   }
 }
