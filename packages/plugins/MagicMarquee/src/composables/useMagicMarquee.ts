@@ -9,7 +9,7 @@ export function useMagicMarquee(id: MaybeRef<string>) {
   // Public state
   const isPlaying = computed(() => state.playing)
 
-  // Public methods
+  // Public functions
   function play() {
     state.playing = true
   }

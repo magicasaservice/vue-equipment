@@ -38,7 +38,7 @@ export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
     return getCssValue(el, 'padding-bottom')
   }
 
-  // Public methods
+  // Public functions
   function findElement(id: string): HTMLElement | null {
     return mappedParent.value.querySelector(`[data-id="${id}"]`)
   }

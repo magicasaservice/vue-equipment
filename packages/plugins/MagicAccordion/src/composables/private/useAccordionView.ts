@@ -32,15 +32,15 @@ export function useAccordionView(instanceId: MaybeRef<string>) {
   // Public functions
   function initializeView(args: InitializeViewArgs) {
     const { id, active } = args
-    let instance = getView(id)
-
-    if (!instance) instance = addView(args)
+    const view = getView(id) ?? addView(args)
 
     // Select view if active was passed as argument
     // Useful if the view is initialized multiple times with different active states
-    if (active) selectView(id)
+    if (active) {
+      selectView(id)
+    }
 
-    return instance
+    return view
   }
 
   function deleteView(id: string) {
@@ -52,22 +52,22 @@ export function useAccordionView(instanceId: MaybeRef<string>) {
   }
 
   function selectView(id: string) {
-    const instance = getView(id)
+    const view = getView(id)
 
-    if (instance) {
+    if (view) {
       if (state.options.mode === 'single') {
         unselectAllViews()
       }
 
-      instance.active = true
+      view.active = true
     }
   }
 
   function unselectView(id: string) {
-    const instance = getView(id)
+    const view = getView(id)
 
-    if (instance) {
-      instance.active = false
+    if (view) {
+      view.active = false
     }
   }
 

@@ -5,7 +5,7 @@ import { useDrawerState } from './private/useDrawerState'
 import type { DrawerSnapPoint } from '../types/index'
 
 export function useMagicDrawer(id: MaybeRef<string>) {
-  // Private methods
+  // Private functions
   const { initializeState } = useDrawerState(toValue(id))
 
   const { progress, active } = initializeState()
@@ -13,7 +13,7 @@ export function useMagicDrawer(id: MaybeRef<string>) {
   // Public state
   const isActive = computed(() => active.value)
 
-  // Public methods
+  // Public functions
   function open() {
     active.value = true
   }

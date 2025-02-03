@@ -18,28 +18,28 @@ export function useMarqueeState(instanceId: MaybeRef<string>) {
   }
 
   function addState(id: string) {
-    const instance = createState(id)
-    marqueeStateStore.value = [...marqueeStateStore.value, instance]
+    const state = createState(id)
+    marqueeStateStore.value = [...marqueeStateStore.value, state]
 
-    return instance
+    return state
   }
 
   // Public functions
   function initializeState(options?: MagicMarqueeOptions) {
-    let instance = marqueeStateStore.value.find((instance) => {
-      return instance.id === toValue(instanceId)
+    let state = marqueeStateStore.value.find((entry) => {
+      return entry.id === toValue(instanceId)
     })
 
-    if (!instance) {
-      instance = addState(toValue(instanceId))
+    if (!state) {
+      state = addState(toValue(instanceId))
     }
 
     if (options) {
       const mappedOptions = defu(options, defaultOptions)
-      instance.options = mappedOptions
+      state.options = mappedOptions
     }
 
-    return instance
+    return state
   }
 
   function deleteState() {

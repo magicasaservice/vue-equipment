@@ -69,13 +69,9 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function initializeChannel(args: InitializeChannelArgs): MenuChannel {
     const { id } = args
-    const instance = getChannel(id)
+    const channel = getChannel(id) ?? addChannel(args)
 
-    if (!instance) {
-      return addChannel(args)
-    }
-
-    return instance
+    return channel
   }
 
   function deleteChannel(id: string) {

@@ -76,10 +76,10 @@ export function useMenuItem(args: UseMenuItemArgs) {
   }
 
   function selectItem(id: string, disablePointer?: boolean) {
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = true
+    if (item) {
+      item.active = true
 
       // Deactivate all siblings and descending views
       unselectSiblings(id)
@@ -104,10 +104,10 @@ export function useMenuItem(args: UseMenuItemArgs) {
   }
 
   function unselectItem(id: string) {
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = false
+    if (item) {
+      item.active = false
     }
   }
 

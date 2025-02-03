@@ -14,14 +14,14 @@ interface UnselectItemArgs {
 }
 
 export function useMagicCommand(id: MaybeRef<string>) {
-  // Private methods
+  // Private functions
   const { initializeState } = useCommandState(id)
 
   // Public state
   const state = initializeState()
   const isActive = computed(() => state.active)
 
-  // Public methods
+  // Public functions
   const { selectView, unselectView, selectInitialView, unselectAllViews } =
     useCommandView(id)
 

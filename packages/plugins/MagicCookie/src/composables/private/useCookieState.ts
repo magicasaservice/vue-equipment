@@ -19,28 +19,28 @@ export function useCookieState(instanceId: MaybeRef<string>) {
   }
 
   function addState(id: string) {
-    const instance = createState(id)
-    cookieStateStore.value = [...cookieStateStore.value, instance]
+    const state = createState(id)
+    cookieStateStore.value = [...cookieStateStore.value, state]
 
-    return instance
+    return state
   }
 
   // Public functions
   function initializeState(options?: MagicCookieOptions) {
-    let instance = cookieStateStore.value.find((instance) => {
-      return instance.id === toValue(instanceId)
+    let state = cookieStateStore.value.find((entry) => {
+      return entry.id === toValue(instanceId)
     })
 
-    if (!instance) {
-      instance = addState(toValue(instanceId))
+    if (!state) {
+      state = addState(toValue(instanceId))
     }
 
     if (options) {
       const mappedOptions = defu(options, defaultOptions)
-      instance.options = mappedOptions
+      state.options = mappedOptions
     }
 
-    return instance
+    return state
   }
 
   function deleteState() {

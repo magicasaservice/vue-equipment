@@ -35,7 +35,7 @@ export function useDrawerDOM(args?: UseDrawerDOMArgs) {
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
-  // Public methods
+  // Public functions
   function trapFocus() {
     if (focusTrap) {
       focusTrap.activate()

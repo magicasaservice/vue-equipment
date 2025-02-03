@@ -211,8 +211,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   function initializeView(args: InitializeViewArgs): MenuView {
     const { id } = args
-    let view = getView(id)
-    if (!view) view = addView(args)
+    const view = getView(id) ?? addView(args)
     return view
   }
 
