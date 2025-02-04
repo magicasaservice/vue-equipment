@@ -3,6 +3,13 @@ import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
 import type { AddViewArgs } from './private/useToastView'
 
+export interface AddArgs {
+  component: AddViewArgs['component']
+  props: AddViewArgs['props']
+  duration?: number
+  id?: string
+}
+
 export function useMagicToast(id: MaybeRef<string>) {
   // Private state
   const { initializeState } = useToastState(toValue(id))
@@ -13,13 +20,6 @@ export function useMagicToast(id: MaybeRef<string>) {
   // Public state
   const toasts = computed(() => state?.views)
   const count = computed(() => toasts.value?.length)
-
-  interface AddArgs {
-    component: AddViewArgs['component']
-    props: AddViewArgs['props']
-    duration?: number
-    id?: string
-  }
 
   // Public functions
   function add(args: AddArgs) {
@@ -33,7 +33,7 @@ export function useMagicToast(id: MaybeRef<string>) {
       }, duration)
     }
 
-    return id
+    return view.id
   }
 
   function remove(id: string) {
