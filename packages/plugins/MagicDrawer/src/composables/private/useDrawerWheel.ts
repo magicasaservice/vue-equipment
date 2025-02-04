@@ -10,12 +10,12 @@ import { unrefElement } from '@vueuse/core'
 import WheelGestures, { type WheelEventState } from '@maas/wheel-gestures'
 import { useDrawerState } from './useDrawerState'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
+import type { DrawerDefaultOptions } from '../../types'
 
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
-  position: MaybeRef<DefaultOptions['position']>
+  position: MaybeRef<DrawerDefaultOptions['position']>
   disabled: ComputedRef<boolean>
 }
 

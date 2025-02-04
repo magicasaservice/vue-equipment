@@ -31,18 +31,21 @@ import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { Coordinates, DraggableSnapPoint } from '../../types'
+import type {
+  Coordinates,
+  DraggableSnapPoint,
+  DraggableDefaultOptions,
+} from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
-  threshold: MaybeRef<DefaultOptions['threshold']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
-  animation: MaybeRef<DefaultOptions['animation']>
-  initial: MaybeRef<DefaultOptions['initial']>
-  scrollLock: MaybeRef<DefaultOptions['scrollLock']>
+  threshold: MaybeRef<DraggableDefaultOptions['threshold']>
+  snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
+  animation: MaybeRef<DraggableDefaultOptions['animation']>
+  initial: MaybeRef<DraggableDefaultOptions['initial']>
+  scrollLock: MaybeRef<DraggableDefaultOptions['scrollLock']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {

@@ -4,8 +4,11 @@ import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { defu } from 'defu'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { DraggableSnapPoint, Coordinates } from '../../types'
+import type {
+  DraggableSnapPoint,
+  Coordinates,
+  DraggableDefaultOptions,
+} from '../../types'
 
 type UseDraggableSnapArgs = {
   id: MaybeRef<string>
@@ -13,8 +16,8 @@ type UseDraggableSnapArgs = {
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
   draggedX: Ref<number>
-  animation: MaybeRef<DefaultOptions['animation']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
+  animation: MaybeRef<DraggableDefaultOptions['animation']>
+  snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
 }
 
 type InterpolateDraggedArgs = {

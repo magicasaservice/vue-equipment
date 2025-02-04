@@ -1,14 +1,6 @@
-import type { MagicDrawerOptions } from '../types'
-import type { RequireAll } from '@maas/vue-equipment/utils'
+import type { DrawerDefaultOptions } from '../types'
 
-type DefaultOptions = RequireAll<MagicDrawerOptions> & {
-  scrollLock: RequireAll<MagicDrawerOptions['scrollLock']>
-  threshold: RequireAll<MagicDrawerOptions['threshold']>
-  animation: RequireAll<MagicDrawerOptions['animation']>
-  keyListener: RequireAll<MagicDrawerOptions['keyListener']>
-}
-
-const defaultOptions: DefaultOptions = {
+const defaultOptions: DrawerDefaultOptions = {
   position: 'bottom',
   backdrop: true,
   tag: 'dialog',
@@ -49,4 +41,4 @@ const defaultOptions: DefaultOptions = {
   disabled: false,
 }
 
-export { defaultOptions, type DefaultOptions }
+export { defaultOptions }

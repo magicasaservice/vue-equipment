@@ -32,20 +32,19 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { DrawerSnapPoint } from '../../types'
+import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
   isActive: MaybeRef<boolean>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
-  position: MaybeRef<DefaultOptions['position']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
-  threshold: MaybeRef<DefaultOptions['threshold']>
-  initial: MaybeRef<DefaultOptions['initial']>
-  animation: MaybeRef<DefaultOptions['animation']>
-  preventDragClose: MaybeRef<DefaultOptions['preventDragClose']>
+  position: MaybeRef<DrawerDefaultOptions['position']>
+  snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
+  threshold: MaybeRef<DrawerDefaultOptions['threshold']>
+  initial: MaybeRef<DrawerDefaultOptions['initial']>
+  animation: MaybeRef<DrawerDefaultOptions['animation']>
+  preventDragClose: MaybeRef<DrawerDefaultOptions['preventDragClose']>
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
   close: () => void

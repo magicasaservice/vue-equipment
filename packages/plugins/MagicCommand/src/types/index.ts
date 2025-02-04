@@ -1,5 +1,6 @@
 import type { MagicModalOptions } from '../../../MagicModal'
 import type { MagicDrawerOptions } from '../../../MagicDrawer'
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 export interface MagicCommandOptions {
   debug?: boolean
@@ -15,6 +16,8 @@ export interface MagicCommandOptions {
   }
   loop?: boolean
 }
+
+export type CommandDefaultOptions = RequireAllNested<MagicCommandOptions>
 
 export type Action = 'open' | 'close'
 
