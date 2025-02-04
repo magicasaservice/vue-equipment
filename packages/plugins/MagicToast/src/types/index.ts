@@ -1,4 +1,5 @@
 import type { MaybeRef } from 'vue'
+import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type Position =
   | 'top-left'
@@ -22,12 +23,24 @@ export type ToastView = {
       bottom: number
     }
   }
+  dragStart: Date | undefined
+  dragging: boolean
+  shouldClose: boolean
+  interpolateTo: number | undefined
+  snappedX: number
+  snappedY: number
+  originX: number
+  originY: number
+  lastDraggedX: number
+  lastDraggedY: number
+  draggedX: number
+  draggedY: number
 }
 
 export type ToastState = {
   id: string
   views: ToastView[]
-  options: MagicToastOptions
+  options: ToastDefaultOptions
   expanded: boolean
 }
 
@@ -51,6 +64,7 @@ export type ToastEvents = {
 
 export type MagicToastOptions = {
   position?: Position
+  scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string
     disabled?: boolean
@@ -60,7 +74,23 @@ export type MagicToastOptions = {
     expand?: boolean | 'hover' | 'click'
     max?: false | number
   }
+  animation?: {
+    snap?: {
+      duration?: number
+      easing?: (t: number) => number
+    }
+  }
+  threshold?: {
+    lock?: number
+    distance?: number
+    momentum?: number
+  }
   initial?: {
     expanded?: boolean
   }
+}
+
+export type ToastDefaultOptions = RequireAll<MagicToastOptions> & {
+  threshold: RequireAll<MagicToastOptions['threshold']>
+  animation: RequireAll<MagicToastOptions['animation']>
 }

@@ -4,21 +4,26 @@
     ref="elRef"
     class="magic-toast-view"
     :data-expanded="state.expanded"
-    @mouseenter="onMouseenter"
-    @mouseleave="onMouseleave"
+    :data-dragging="view.dragging"
   >
-    <div class="magic-toast-view__inner" @click="onClick">
-      <slot />
+    <div
+      class="magic-toast-view__inner"
+      @pointerdown="onPointerdown"
+      @click="onClick"
+    >
+      <div :style="style">
+        <slot />
+      </div>
     </div>
   </li>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watchEffect, inject } from 'vue'
+import { ref, onMounted, computed, watchEffect, watch, inject } from 'vue'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useMagicToast } from '../composables/useMagicToast'
-import { useToastListener } from '../composables/private/useToastListener'
+import { useToastDrag } from '../composables/private/useToastDrag'
 
 import '@maas/vue-equipment/utils/css/transitions/fade.css'
 
@@ -27,7 +32,7 @@ interface MagicToastViewProps {
   index: number
 }
 
-const { index, id } = defineProps<MagicToastViewProps>()
+const { id, index } = defineProps<MagicToastViewProps>()
 
 const instanceId = inject(MagicToastInstanceId, undefined)
 
@@ -42,7 +47,12 @@ const { count } = useMagicToast(instanceId)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const { onClick, onMouseenter, onMouseleave } = useToastListener(instanceId)
+const view = computed(() => state.views[index])
+
+const { style, onPointerdown, onClick } = useToastDrag({
+  view: view.value,
+  instanceId,
+})
 
 function setIndex() {
   const newIndex = (count.value - index - 1).toString()
@@ -50,52 +60,52 @@ function setIndex() {
 }
 
 function setOffset() {
-  const newerSiblings = state.views.slice(index + 1)
-  const offset = newerSiblings.reduce((acc, curr) => {
-    return (
-      acc +
-      (curr.dimensions?.height ?? 0) -
-      (curr.dimensions?.padding.top ?? 0) -
-      (curr.dimensions?.padding.bottom ?? 0)
-    )
-  }, 0)
-
+  const offset = view.value.dimensions?.height ?? 0
   elRef.value?.style.setProperty('--mt-offset', `${offset}`)
 }
 
 onMounted(() => {
-  setIndex()
   setOffset()
+  setIndex()
 })
 
 watchEffect(() => {
   setIndex()
-  setOffset()
 })
+
+watch(
+  () => view.value.dimensions?.height,
+  () => {
+    setOffset()
+  }
+)
 </script>
 
 <style>
 .magic-toast-view {
   --mt-index: 0;
-  --mt-offset: 0;
   --mt-matrix-scale: calc(
     1 - (var(--magic-toast-scale, 0.1) * var(--mt-index, 0))
   );
   --mt-matrix-transform-x: calc(
-    var(--mt-transform-x) * var(--mt-index, 0) * var(--mt-multiplier-x)
+    var(--magic-toast-transform-factor) * var(--mt-offset) *
+      var(--mt-index, 0) * var(--mt-multiplier-x)
   );
   --mt-matrix-transform-y: calc(
-    var(--mt-transform-y) * var(--mt-index, 0) * var(--mt-multiplier-y)
+    var(--magic-toast-transform-factor) * var(--mt-offset) *
+      var(--mt-index, 0) * var(--mt-multiplier-y)
   );
-  position: absolute;
+  position: relative;
   list-style: none;
+  user-select: none;
+  cursor: var(--magic-toast-cursor, grab);
 }
 
 .magic-toast-view__inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: var(--magic-toast-transition, transform 275ms ease);
+  transition: var(--magic-toast-transition, all 275ms ease);
   transform: matrix(
     var(--mt-matrix-scale),
     0,
@@ -104,17 +114,19 @@ watchEffect(() => {
     var(--mt-matrix-transform-x),
     var(--mt-matrix-transform-y)
   );
+  & > div {
+    display: block;
+  }
 }
 
-.magic-toast-view[data-expanded='true'] {
+.magic-toast-view[data-expanded='true']:not(:last-child) {
   --mt-matrix-scale: 1;
-  --mt-matrix-transform-y: calc(var(--mt-offset) * var(--mt-multiplier-y));
+  --mt-matrix-transform-y: 0;
   --mt-matrix-transform-x: 0;
-  &:not(:last-child) {
-    & .magic-toast-view__inner {
-      padding-bottom: calc(var(--magic-toast-gap, 0.75rem) * var(--mt-index));
-      padding-top: calc(var(--magic-toast-gap, 0.75rem) * var(--mt-index));
-    }
-  }
+  padding-bottom: var(--magic-toast-gap, 0.75rem);
+}
+
+.magic-toast-view[data-dragging='true'] {
+  cursor: var(--magic-toast-cursor-dragging, grabbing);
 }
 </style>

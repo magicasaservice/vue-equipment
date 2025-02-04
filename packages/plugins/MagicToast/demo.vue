@@ -2,7 +2,10 @@
   <div class="w-full flex items-center justify-center gap-4">
     <m-button @click="onClick"> Add toast </m-button>
   </div>
-  <magic-toast-provider id="magic-toast-demo" />
+  <magic-toast-provider
+    id="magic-toast-demo"
+    :options="{ position: 'bottom-center' }"
+  />
 </template>
 
 <script lang="ts" setup>

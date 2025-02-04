@@ -1,4 +1,4 @@
-import type { MaybeRef } from 'vue'
+import { type MaybeRef } from 'vue'
 import { useToastState } from './useToastState'
 
 export function useToastListener(instanceId: MaybeRef<string>) {
@@ -17,12 +17,6 @@ export function useToastListener(instanceId: MaybeRef<string>) {
     }
   }
 
-  async function onClick() {
-    if (state.options.layout?.expand === 'click') {
-      state.expanded = true
-    }
-  }
-
   function outsideClickCallback() {
     if (state.options.layout?.expand === 'click') {
       state.expanded = false
@@ -32,7 +26,6 @@ export function useToastListener(instanceId: MaybeRef<string>) {
   return {
     onMouseenter,
     onMouseleave,
-    onClick,
     outsideClickCallback,
   }
 }

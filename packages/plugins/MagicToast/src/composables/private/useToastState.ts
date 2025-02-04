@@ -2,13 +2,15 @@ import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
 
-import type { ToastState, MagicToastOptions } from '../../types/index'
+import type {
+  ToastState,
+  MagicToastOptions,
+  ToastDefaultOptions,
+} from '../../types/index'
 
 const toastStateStore: Ref<ToastState[]> = ref([])
 
 export function useToastState(instanceId: MaybeRef<string>) {
-  // const { initializeView, deleteView } = useToastView(instanceId)
-
   // Private functions
   function createState(id: string) {
     const state: ToastState = {
@@ -39,7 +41,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
     }
 
     if (options) {
-      const mappedOptions = defu(options, defaultOptions)
+      const mappedOptions = defu(options, defaultOptions) as ToastDefaultOptions
       state.options = mappedOptions
 
       // Set initial state for expanded

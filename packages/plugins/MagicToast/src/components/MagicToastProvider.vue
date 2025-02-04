@@ -7,6 +7,7 @@
     <div
       :id="toValue(id)"
       :data-position="state.options.position"
+      :data-expanded="state.expanded"
       class="magic-toast-provider"
       v-bind="$attrs"
     >
@@ -21,6 +22,8 @@
         :on-before-leave="onBeforeLeave"
         :on-leave="onLeave"
         :on-after-leave="onAfterLeave"
+        @mouseenter="onMouseenter"
+        @mouseleave="onMouseleave"
       >
         <magic-toast-view
           v-for="(view, index) in state.views"
@@ -51,7 +54,6 @@ import {
 } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useToastState } from '../composables/private/useToastState'
-import { useToastListener } from '../composables/private/useToastListener'
 import { useToastView } from '../composables/private/useToastView'
 import { useToastCallback } from '../composables/private/useToastCallback'
 
@@ -69,6 +71,7 @@ import '@maas/vue-equipment/utils/css/animations/slide-ttb-in.css'
 import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css'
 import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
+import { useToastListener } from '../composables/private/useToastListener'
 
 interface MagicToastProps {
   id: MaybeRef<string>
@@ -89,7 +92,6 @@ const state = initializeState(options)
 
 const listRef = ref<HTMLElement | undefined>(undefined)
 
-const { outsideClickCallback } = useToastListener(id)
 const {
   onBeforeEnter,
   onEnter,
@@ -98,6 +100,9 @@ const {
   onLeave,
   onAfterLeave,
 } = useToastCallback(id)
+
+const { onMouseenter, onMouseleave, outsideClickCallback } =
+  useToastListener(id)
 
 // Lifecycle
 onClickOutside(listRef, outsideClickCallback)
@@ -119,15 +124,13 @@ provide(MagicToastInstanceId, id)
 
 <style>
 :root {
-  --magic-toast-padding-x: 1rem;
-  --magic-toast-padding-y: 1rem;
+  --magic-toast-padding-y: 0.75rem;
+  --magic-toast-transform-factor: 0.75;
 
-  --mt-transform-x: 0;
-  --mt-transform-y: 0;
   --mt-multiplier-x: 1;
   --mt-multiplier-y: 1;
-  --mt-align-items: flex-start;
-  --mt-justify-content: center;
+  --mt-align-items: center;
+  --mt-justify-content: flex-end;
   --mt-enter-animation: unset;
   --mt-leave-animation: unset;
 }
@@ -153,6 +156,8 @@ provide(MagicToastInstanceId, id)
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
+  padding-bottom: var(--magic-toast-padding-y);
   align-items: var(--mt-align-items);
   justify-content: var(--mt-justify-content);
   scrollbar-width: none;
@@ -169,70 +174,70 @@ provide(MagicToastInstanceId, id)
 .magic-toast-provider[data-position='top-left'],
 .magic-toast-provider[data-position='top-center'],
 .magic-toast-provider[data-position='top-right'] {
-  --mt-transform-y: 10;
   --mt-enter-animation: slide-ttb-in 300ms ease;
   --mt-leave-animation: slide-ttb-out 300ms ease;
   --mt-multiplier-y: 1;
-  --mt-align-items: flex-start;
-  & .magic-toast-view {
-    padding-top: var(--magic-toast-padding-y);
-  }
+  --mt-multiplier-x: 0;
+  --mt-justify-content: flex-start;
 }
 
 .magic-toast-provider[data-position='bottom-left'],
 .magic-toast-provider[data-position='bottom-center'],
 .magic-toast-provider[data-position='bottom-right'] {
-  --mt-transform-y: 10;
   --mt-enter-animation: slide-btt-in 300ms ease;
   --mt-leave-animation: slide-btt-out 300ms ease;
-  --mt-multiplier-y: -1;
-  --mt-align-items: flex-end;
-  & .magic-toast-view {
-    padding-bottom: var(--magic-toast-padding-y);
-  }
+  --mt-multiplier-y: 1;
+  --mt-multiplier-x: 0;
+  --mt-justify-content: flex-end;
 }
 
 .magic-toast-provider[data-position='top-left'],
 .magic-toast-provider[data-position='bottom-left'] {
-  --mt-justify-content: flex-start;
-  & .magic-toast-view {
-    padding-left: var(--magic-toast-padding-x);
-  }
+  --mt-align-items: flex-start;
 }
 
 .magic-toast-provider[data-position='top-right'],
 .magic-toast-provider[data-position='bottom-right'] {
-  --mt-justify-content: flex-end;
-  & .magic-toast-view {
-    padding-right: var(--magic-toast-padding-x);
-  }
+  --mt-align-items: flex-end;
 }
 
-.magic-toast-provider[data-position='from-left'] {
-  --mt-transform-y: 0;
-  --mt-transform-x: 30;
+.magic-toast-provider[data-position='center-left'] {
+  --mt-justify-content: center;
+  --mt-align-items: flex-start;
   --mt-enter-animation: slide-ltr-in 300ms ease;
   --mt-leave-animation: slide-ltr-out 300ms ease;
   --mt-multiplier-x: 1;
+  --mt-multiplier-y: 0;
 }
 
-.magic-toast-provider[data-position='from-right'] {
-  --mt-transform-y: 0;
-  --mt-transform-x: 30;
+.magic-toast-provider[data-position='center-right'] {
+  --mt-justify-content: center;
+  --mt-align-items: flex-end;
   --mt-enter-animation: slide-rtl-in 300ms ease;
   --mt-leave-animation: slide-rtl-out 300ms ease;
   --mt-multiplier-x: -1;
+  --mt-multiplier-y: 0;
 }
 
 .magic-toast-enter-active {
   animation: var(--mt-enter-animation, unset);
 }
 
-.magic-toast-leave-active:not(:last-child) {
-  animation: fade-out 150ms ease;
+.magic-toast-leave-active:not(:last-child, :first-child) {
+  animation: fade-out 300ms ease;
+  position: absolute;
+}
+
+.magic-toast-leave-active:first-child {
+  animation: fade-out 300ms ease;
 }
 
 .magic-toast-leave-active:last-child {
+  position: absolute;
   animation: var(--mt-leave-animation, unset);
+}
+
+.magic-toast-move {
+  transition: all 300ms ease;
 }
 </style>
