@@ -24,9 +24,6 @@ const defaultOptions: ToastDefaultOptions = {
       duration: 300,
     },
   },
-  initial: {
-    expanded: false,
-  },
 }
 
 export { defaultOptions }
