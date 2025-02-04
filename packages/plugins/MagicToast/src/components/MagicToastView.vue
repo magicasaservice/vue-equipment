@@ -27,7 +27,6 @@
 import { ref, computed, inject } from 'vue'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
-import { useMagicToast } from '../composables/useMagicToast'
 import { useToastDrag } from '../composables/private/useToastDrag'
 
 import '@maas/vue-equipment/utils/css/transitions/fade.css'
@@ -45,13 +44,12 @@ if (!instanceId) {
   throw new Error('MagicToastView must be used inside MagicToastProvider')
 }
 
+const elRef = ref<HTMLElement | undefined>(undefined)
+
 const { initializeState } = useToastState(instanceId)
 const state = initializeState()
 
-const { count } = useMagicToast(instanceId)
-
-const elRef = ref<HTMLElement | undefined>(undefined)
-
+const count = computed(() => state.views.length)
 const view = computed(() => state.views[index])
 
 const reversedIndex = computed(() => count.value - index - 1)
@@ -64,41 +62,38 @@ const { style, onPointerdown, onClick } = useToastDrag({
 </script>
 
 <style>
+:root {
+  --magic-toast-view-transition: transform var(--magic-toast-duration)
+      var(--ease-in-out),
+    padding var(--magic-toast-duration) var(--ease-in-out);
+}
 .magic-toast-view {
+  outline: solid 1px green;
+
   --mt-index: 0;
-  --mt-matrix-scale: calc(
-    1 - (var(--magic-toast-scale, 0.1) * var(--mt-index, 0))
+  --mt-scale: max(
+    calc(1 - (var(--magic-toast-scale-factor) * var(--mt-index))),
+    0
   );
-  --mt-matrix-transform-x: calc(
-    var(--magic-toast-transform-factor) * var(--mt-offset) *
-      var(--mt-index, 0) * var(--mt-multiplier-x)
+  --mt-translate-y: calc(
+    var(--mt-offset) * var(--mt-index) * var(--mt-multiplier-y) -
+      (var(--magic-toast-overlap-y) * var(--mt-index) * var(--mt-scale))
   );
-  --mt-matrix-transform-y: calc(
-    var(--magic-toast-transform-factor) * var(--mt-offset) *
-      var(--mt-index, 0) * var(--mt-multiplier-y)
-  );
+
   position: relative;
   list-style: none;
   user-select: none;
   cursor: var(--magic-toast-cursor, grab);
+  transition: var(--magic-toast-view-transition);
 }
 
 .magic-toast-view__inner {
+  outline: red solid 1px;
   position: relative;
   width: 100%;
   height: 100%;
-  transition: var(
-    --magic-toast-view-transition,
-    all var(--magic-toast-duration) var(--ease-in-out)
-  );
-  transform: matrix(
-    var(--mt-matrix-scale),
-    0,
-    0,
-    var(--mt-matrix-scale),
-    var(--mt-matrix-transform-x),
-    var(--mt-matrix-transform-y)
-  );
+  transition: var(--magic-toast-view-transition);
+  transform: translateY(var(--mt-translate-y)) scale(var(--mt-scale));
 }
 
 .magic-toast-view__drag {
@@ -106,9 +101,8 @@ const { style, onPointerdown, onClick } = useToastDrag({
 }
 
 .magic-toast-view[data-expanded='true'] {
-  --mt-matrix-scale: 1;
-  --mt-matrix-transform-y: 0;
-  --mt-matrix-transform-x: 0;
+  --mt-scale: 1;
+  --mt-translate-y: 0;
 }
 
 .magic-toast-view[data-expanded='true']:not(:first-child) {

@@ -164,10 +164,10 @@ provide(MagicToastInstanceId, id)
   --magic-toast-padding-y: 1rem;
   --magic-toast-padding-x: 1rem;
   --magic-toast-duration: 175ms;
-  --magic-toast-transform-factor: 0.75;
+  --magic-toast-scale-factor: 0.05;
+  --magic-toast-overlap-y: 1rem;
 
-  --mt-multiplier-x: 0;
-  --mt-multiplier-y: 0;
+  --mt-multiplier-y: 0px;
   --mt-align-items: center;
   --mt-justify-content: flex-end;
   --mt-flex-direction: column;
@@ -218,7 +218,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-ttb-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: -1;
+  --mt-multiplier-y: -1px;
   --mt-justify-content: flex-end;
   --mt-flex-direction: column-reverse;
 }
@@ -230,7 +230,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-btt-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: 1;
+  --mt-multiplier-y: 1px;
   --mt-justify-content: flex-end;
 }
 

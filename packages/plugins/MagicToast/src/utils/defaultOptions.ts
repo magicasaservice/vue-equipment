@@ -15,7 +15,7 @@ const defaultOptions: ToastDefaultOptions = {
     max: 3,
   },
   threshold: {
-    lock: 0,
+    lock: 8,
     distance: 32,
     momentum: 1,
   },
