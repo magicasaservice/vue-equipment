@@ -6,6 +6,7 @@
     :data-expanded="state.expanded"
     :data-dragging="view.dragging"
     :data-position="state.options.position"
+    :data-perspective="state.options.layout.perspective"
     :style="{
       '--mt-index': reversedIndex,
       '--mt-offset': offset,
@@ -53,7 +54,7 @@ const count = computed(() => state.views.length)
 const view = computed(() => state.views[index])
 
 const reversedIndex = computed(() => count.value - index - 1)
-const offset = computed(() => view.value.dimensions?.height)
+const offset = computed(() => `${view.value.dimensions?.height}px`)
 
 const { style, onPointerdown, onClick } = useToastDrag({
   view: view.value,
@@ -67,19 +68,14 @@ const { style, onPointerdown, onClick } = useToastDrag({
       var(--ease-in-out),
     padding var(--magic-toast-duration) var(--ease-in-out);
 }
-.magic-toast-view {
-  outline: solid 1px green;
 
+.magic-toast-view {
   --mt-index: 0;
+  --mt-translate-y: 0;
   --mt-scale: max(
     calc(1 - (var(--magic-toast-scale-factor) * var(--mt-index))),
     0
   );
-  --mt-translate-y: calc(
-    var(--mt-offset) * var(--mt-index) * var(--mt-multiplier-y) -
-      (var(--magic-toast-overlap-y) * var(--mt-index) * var(--mt-scale))
-  );
-
   position: relative;
   list-style: none;
   user-select: none;
@@ -87,8 +83,27 @@ const { style, onPointerdown, onClick } = useToastDrag({
   transition: var(--magic-toast-view-transition);
 }
 
+.magic-toast-view[data-perspective='true'] {
+  --mt-translate-y: calc(
+    (
+        var(--mt-offset) * var(--mt-index) -
+          (var(--magic-toast-overlap-y) * var(--mt-index) * var(--mt-scale))
+      ) *
+      var(--mt-multiplier-y)
+  );
+}
+
+.magic-toast-view[data-perspective='false'] {
+  --mt-translate-y: calc(
+    (
+        var(--mt-offset) * var(--mt-index) -
+          (var(--magic-toast-overlap-y) * var(--mt-index))
+      ) *
+      var(--mt-multiplier-y)
+  );
+}
+
 .magic-toast-view__inner {
-  outline: red solid 1px;
   position: relative;
   width: 100%;
   height: 100%;
@@ -109,7 +124,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
   &[data-position='bottom-left'],
   &[data-position='bottom-center'],
   &[data-position='bottom-right'] {
-    padding-top: var(--magic-toast-gap, 0.75rem);
+    padding-top: var(--magic-toast-gap);
   }
 }
 
@@ -117,7 +132,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
   &[data-position='top-left'],
   &[data-position='top-center'],
   &[data-position='top-right'] {
-    padding-bottom: var(--magic-toast-gap, 0.75rem);
+    padding-bottom: var(--magic-toast-gap);
   }
 }
 
@@ -131,5 +146,12 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 .magic-toast-view[data-position='center-right'] {
   position: absolute;
+}
+
+.magic-toast-view[data-debug='true'] {
+  outline: solid 1px green;
+  & > * {
+    outline: solid 1px red;
+  }
 }
 </style>

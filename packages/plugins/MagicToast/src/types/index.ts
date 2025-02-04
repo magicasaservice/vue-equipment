@@ -6,7 +6,6 @@ type Position =
   | 'top-center'
   | 'top-right'
   | 'center-left'
-  | 'center'
   | 'center-right'
   | 'bottom-left'
   | 'bottom-center'
@@ -72,6 +71,7 @@ export type MagicToastOptions = {
   }
   transition?: string
   layout?: {
+    perspective?: boolean
     expand?: true | 'hover' | 'click'
     max?: number
   }

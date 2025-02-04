@@ -163,6 +163,7 @@ provide(MagicToastInstanceId, id)
 :root {
   --magic-toast-padding-y: 1rem;
   --magic-toast-padding-x: 1rem;
+  --magic-toast-gap: 0.75rem;
   --magic-toast-duration: 175ms;
   --magic-toast-scale-factor: 0.05;
   --magic-toast-overlap-y: 1rem;
@@ -218,7 +219,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-ttb-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: -1px;
+  --mt-multiplier-y: -1;
   --mt-justify-content: flex-end;
   --mt-flex-direction: column-reverse;
 }
@@ -230,7 +231,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-btt-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: 1px;
+  --mt-multiplier-y: 1;
   --mt-justify-content: flex-end;
 }
 

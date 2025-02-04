@@ -11,6 +11,7 @@ const defaultOptions: ToastDefaultOptions = {
   },
   transition: 'magic-toast',
   layout: {
+    perspective: true,
     expand: 'click',
     max: 3,
   },

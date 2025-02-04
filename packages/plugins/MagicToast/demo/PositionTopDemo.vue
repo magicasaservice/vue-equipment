@@ -1,7 +1,10 @@
 <template>
-    <m-button @click="onClick">Add toast</m-button>
+  <m-button @click="onClick">Add toast</m-button>
   <magic-toast-provider
-    id="magic-toast-demo"
+    id="magic-toast-position-top-demo"
+    :options="{
+      position: 'top-right',
+    }"
   />
 </template>
 
@@ -12,8 +15,10 @@ import { useMagicToast } from '@maas/vue-equipment/plugins'
 
 const count = ref(0)
 
-const component = defineAsyncComponent(() => import('./components/DemoToast.vue'))
-const { add } = useMagicToast('magic-toast-demo')
+const component = defineAsyncComponent(
+  () => import('./components/DemoToast.vue')
+)
+const { add } = useMagicToast('magic-toast-position-top-demo')
 
 function onClick() {
   count.value += 1
@@ -24,6 +29,4 @@ function onClick() {
 
   add({ component, props })
 }
-
-
 </script>
