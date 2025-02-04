@@ -1,22 +1,14 @@
-import { toValue, computed, type MaybeRef } from 'vue'
+import { toValue, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useToastView } from './useToastView'
 import { useToastState } from './useToastState'
 
-// interface UseToastCallbackArgs {
-//   instanceId: MaybeRef<string>
-//   viewId: string
-// }
-
 export function useToastCallback(instanceId: MaybeRef<string>) {
-  // const { instanceId } = args
   const { initializeState } = useToastState(instanceId)
   const state = initializeState()
   const emitter = useMagicEmitter()
 
   const { deleteView, getView } = useToastView(instanceId)
-
-  const count = computed(() => state.views.length)
 
   function onBeforeEnter() {
     emitter.emit('beforeEnter', toValue(instanceId))
@@ -24,10 +16,12 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
 
   function onEnter() {
     emitter.emit('enter', toValue(instanceId))
+
+    // Remove oldest view once threshold is reached
     if (
-      count.value &&
+      state.views.length &&
       state.options.layout?.max &&
-      count.value > state.options.layout.max
+      state.views.length > state.options.layout.max
     ) {
       deleteView(state.views[0].id)
     }
@@ -36,6 +30,7 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
   function onAfterEnter(el: Element) {
     emitter.emit('afterEnter', toValue(instanceId))
 
+    // Save dimensions
     const view = getView(el.id)
 
     if (view) {
