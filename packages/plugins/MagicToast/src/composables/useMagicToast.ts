@@ -1,11 +1,11 @@
 import { computed, toValue, type MaybeRef } from 'vue'
 import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
-import type { AddViewArgs } from './private/useToastView'
+import type { ToastView } from '../types'
 
 export interface AddArgs {
-  component: AddViewArgs['component']
-  props: AddViewArgs['props']
+  component: ToastView['component']
+  props: ToastView['props']
   duration?: number
   id?: string
 }
@@ -40,11 +40,21 @@ export function useMagicToast(id: MaybeRef<string>) {
     deleteView(id)
   }
 
+  function expand() {
+    state.expanded = true
+  }
+
+  function collapse() {
+    state.expanded = false
+  }
+
   return {
     toasts,
     count,
     add,
     remove,
+    expand,
+    collapse,
   }
 }
 

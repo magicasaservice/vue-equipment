@@ -4,12 +4,15 @@
   </div>
   <magic-toast-provider
     id="magic-toast-demo"
-    :options="{ position: 'bottom-center' }"
+    :options="{
+      position: 'bottom-center',
+      layout: { max: 6 },
+    }"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref, onMounted } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins'
 
@@ -27,4 +30,13 @@ function onClick() {
 
   add({ component, props })
 }
+
+onMounted(() => {
+  // const props = {
+  //   message: count.value % 2 ? 'Magic as a Service™' : 'Vue Equipment',
+  // }
+  // setInterval(() => {
+  //   add({ component, props })
+  // }, 2000)
+})
 </script>

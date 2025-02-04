@@ -5,13 +5,18 @@
     class="magic-toast-view"
     :data-expanded="state.expanded"
     :data-dragging="view.dragging"
+    :data-position="state.options.position"
+    :style="{
+      '--mt-index': reversedIndex,
+      '--mt-offset': offset,
+    }"
   >
     <div
       class="magic-toast-view__inner"
       @pointerdown="onPointerdown"
       @click="onClick"
     >
-      <div :style="style">
+      <div :style="style" class="magic-toast-view__drag">
         <slot />
       </div>
     </div>
@@ -19,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, watchEffect, watch, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useMagicToast } from '../composables/useMagicToast'
@@ -49,36 +54,13 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 
 const view = computed(() => state.views[index])
 
+const reversedIndex = computed(() => count.value - index - 1)
+const offset = computed(() => view.value.dimensions?.height)
+
 const { style, onPointerdown, onClick } = useToastDrag({
   view: view.value,
   instanceId,
 })
-
-function setIndex() {
-  const newIndex = (count.value - index - 1).toString()
-  elRef.value?.style.setProperty('--mt-index', newIndex)
-}
-
-function setOffset() {
-  const offset = view.value.dimensions?.height ?? 0
-  elRef.value?.style.setProperty('--mt-offset', `${offset}`)
-}
-
-onMounted(() => {
-  setOffset()
-  setIndex()
-})
-
-watchEffect(() => {
-  setIndex()
-})
-
-watch(
-  () => view.value.dimensions?.height,
-  () => {
-    setOffset()
-  }
-)
 </script>
 
 <style>
@@ -105,7 +87,10 @@ watch(
   position: relative;
   width: 100%;
   height: 100%;
-  transition: var(--magic-toast-transition, all 275ms ease);
+  transition: var(
+    --magic-toast-view-transition,
+    all var(--magic-toast-duration) var(--ease-in-out)
+  );
   transform: matrix(
     var(--mt-matrix-scale),
     0,
@@ -114,19 +99,43 @@ watch(
     var(--mt-matrix-transform-x),
     var(--mt-matrix-transform-y)
   );
-  & > div {
-    display: block;
-  }
 }
 
-.magic-toast-view[data-expanded='true']:not(:last-child) {
+.magic-toast-view__drag {
+  display: block;
+}
+
+.magic-toast-view[data-expanded='true'] {
   --mt-matrix-scale: 1;
   --mt-matrix-transform-y: 0;
   --mt-matrix-transform-x: 0;
-  padding-bottom: var(--magic-toast-gap, 0.75rem);
+}
+
+.magic-toast-view[data-expanded='true']:not(:first-child) {
+  &[data-position='bottom-left'],
+  &[data-position='bottom-center'],
+  &[data-position='bottom-right'] {
+    padding-top: var(--magic-toast-gap, 0.75rem);
+  }
+}
+
+.magic-toast-view[data-expanded='true']:not(:first-child) {
+  &[data-position='top-left'],
+  &[data-position='top-center'],
+  &[data-position='top-right'] {
+    padding-bottom: var(--magic-toast-gap, 0.75rem);
+  }
 }
 
 .magic-toast-view[data-dragging='true'] {
   cursor: var(--magic-toast-cursor-dragging, grabbing);
+}
+
+.magic-toast-view[data-position='center-left'] {
+  position: absolute;
+}
+
+.magic-toast-view[data-position='center-right'] {
+  position: absolute;
 }
 </style>

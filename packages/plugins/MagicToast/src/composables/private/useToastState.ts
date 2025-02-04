@@ -18,6 +18,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
       options: { ...defaultOptions },
       views: [],
       expanded: false,
+      animating: false,
     }
 
     return reactive(state)
@@ -45,7 +46,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
       state.options = mappedOptions
 
       // Set initial state for expanded
-      state.expanded = mappedOptions.initial.expanded ?? false
+      state.expanded = mappedOptions.layout.expand === true ? true : false
     }
 
     return state

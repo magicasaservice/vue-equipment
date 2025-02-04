@@ -388,6 +388,10 @@ export function useToastDrag(args: UseToastDragArgs) {
       return
     }
 
+    if (position === 'center-left' || position === 'center-right') {
+      return
+    }
+
     if (state.options.layout?.expand === 'click') {
       state.expanded = true
     }

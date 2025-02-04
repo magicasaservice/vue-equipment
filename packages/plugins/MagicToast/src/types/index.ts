@@ -42,6 +42,7 @@ export type ToastState = {
   views: ToastView[]
   options: ToastDefaultOptions
   expanded: boolean
+  animating: boolean
 }
 
 export type ActiveToast = {
@@ -71,8 +72,8 @@ export type MagicToastOptions = {
   }
   transition?: string
   layout?: {
-    expand?: boolean | 'hover' | 'click'
-    max?: false | number
+    expand?: true | 'hover' | 'click'
+    max?: number
   }
   animation?: {
     snap?: {
@@ -84,9 +85,6 @@ export type MagicToastOptions = {
     lock?: number
     distance?: number
     momentum?: number
-  }
-  initial?: {
-    expanded?: boolean
   }
 }
 
