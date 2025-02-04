@@ -27,6 +27,7 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from './../useMagicDrawer'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
@@ -36,7 +37,6 @@ import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
-  isActive: MaybeRef<boolean>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
   position: MaybeRef<DrawerDefaultOptions['position']>
@@ -47,13 +47,11 @@ type UseDrawerDragArgs = {
   preventDragClose: MaybeRef<DrawerDefaultOptions['preventDragClose']>
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
-  close: () => void
 }
 
 export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
     id,
-    isActive,
     elRef,
     wrapperRef,
     position,
@@ -64,7 +62,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     animation,
     preventDragClose,
     disabled,
-    close,
   } = args
 
   // Private state
@@ -89,6 +86,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     elRect,
     wrapperRect,
   } = toRefs(state)
+
+  const { isActive, close } = useMagicDrawer(id)
 
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined

@@ -156,7 +156,6 @@ const disabled = computed(() => {
 
 const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   id,
-  isActive,
   elRef,
   wrapperRef,
   position,
@@ -167,7 +166,6 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   initial,
   preventDragClose,
   disabled,
-  close,
 })
 
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
