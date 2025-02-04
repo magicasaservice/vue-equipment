@@ -1,6 +1,7 @@
 import {
   computed,
   toValue,
+  toRefs,
   type Ref,
   type MaybeRef,
   type ComputedRef,
@@ -22,7 +23,9 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const { id, elRef, position, disabled } = args
 
   const { initializeState } = useDrawerState(toValue(id))
-  const { dragging, wheeling } = initializeState()
+  const state = initializeState()
+
+  const { dragging, wheeling } = toRefs(state)
 
   let startEvent: PointerEvent
 

@@ -1,4 +1,4 @@
-import { ref, reactive, toRefs, toValue, type Ref, type MaybeRef } from 'vue'
+import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
 import type { DrawerState } from '../../types/index'
 
 const drawerStateStore: Ref<DrawerState[]> = ref([])
@@ -49,7 +49,7 @@ export function useDrawerState(id: MaybeRef<string>) {
     })
 
     if (!state) state = addState(toValue(id))
-    return toRefs(state)
+    return state
   }
 
   function deleteState() {

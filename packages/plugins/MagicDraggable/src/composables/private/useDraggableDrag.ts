@@ -5,6 +5,7 @@ import {
   nextTick,
   watch,
   onBeforeUnmount,
+  toRefs,
   type Ref,
   type MaybeRef,
   onMounted,
@@ -58,6 +59,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Private state
   const { initializeState } = useDraggableState(toValue(id))
+  const state = initializeState()
+
   const {
     dragStart,
     dragging,
@@ -72,7 +75,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     draggedY,
     elRect,
     wrapperRect,
-  } = initializeState()
+  } = toRefs(state)
 
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined

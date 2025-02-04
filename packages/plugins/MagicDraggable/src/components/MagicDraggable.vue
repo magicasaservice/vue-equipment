@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toValue, type MaybeRef } from 'vue'
+import { ref, computed, toValue, toRefs, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
@@ -53,7 +53,9 @@ const elRef = ref<HTMLElement | undefined>(undefined)
 const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
 
 const { initializeState } = useDraggableState(id)
-const { dragging } = initializeState()
+const state = initializeState()
+
+const { dragging } = toRefs(state)
 
 // Make sure this is reactive
 const disabled = computed(() => {

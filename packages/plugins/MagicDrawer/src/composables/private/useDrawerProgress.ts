@@ -5,6 +5,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  toRefs,
   type Ref,
   type MaybeRef,
 } from 'vue'
@@ -41,7 +42,8 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   )
 
   // Public state
-  const { progress } = initializeState()
+  const state = initializeState()
+  const { progress } = toRefs(state)
 
   // Private method
   function rafCallback() {

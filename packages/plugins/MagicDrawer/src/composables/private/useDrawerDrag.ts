@@ -4,6 +4,7 @@ import {
   watch,
   onBeforeUnmount,
   toValue,
+  toRefs,
   nextTick,
   type Ref,
   type MaybeRef,
@@ -69,6 +70,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Private state
   const { initializeState } = useDrawerState(toValue(id))
+  const state = initializeState()
   const {
     dragStart,
     dragging,
@@ -87,7 +89,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     absDirectionY,
     elRect,
     wrapperRect,
-  } = initializeState()
+  } = toRefs(state)
 
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined

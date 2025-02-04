@@ -67,6 +67,7 @@ import {
   onBeforeMount,
   onBeforeUnmount,
   onUnmounted,
+  toRefs,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
@@ -177,7 +178,9 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
 })
 
 const { initializeState, deleteState } = useDrawerState(id)
-const { dragging, wheeling } = initializeState()
+const state = initializeState()
+
+const { dragging, wheeling } = toRefs(state)
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
