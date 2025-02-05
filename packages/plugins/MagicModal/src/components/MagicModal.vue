@@ -86,9 +86,7 @@ interface MagicModalProps {
   options?: MagicModalOptions
 }
 
-const { id, options = {} } = withDefaults(defineProps<MagicModalProps>(), {
-  options: () => defaultOptions,
-})
+const { id, options = {} } = defineProps<MagicModalProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
 const modalRef = ref<HTMLElement | undefined>(undefined)
