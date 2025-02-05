@@ -1,5 +1,5 @@
 <template>
-  <div v-if="wrapperActive" class="magic-cookie-view">
+  <div class="magic-cookie-view">
     <magic-auto-size :width="false">
       <transition
         :name="state.options.transition?.view"
@@ -10,7 +10,7 @@
         @enter="onEnter"
         @after-enter="onAfterEnter"
       >
-        <div v-show="innerActive" class="magic-cookie-view__inner">
+        <div v-show="state.viewActive" class="magic-cookie-view__inner">
           <slot />
         </div>
       </transition>
@@ -19,8 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, nextTick, watch, onMounted } from 'vue'
-import { useMagicCookie } from '../composables/useMagicCookie'
+import { inject } from 'vue'
 import { useCookieState } from '../composables/private/useCookieState'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 
@@ -30,19 +29,14 @@ import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/squash-y.css'
 import '@maas/vue-equipment/utils/css/easings.css'
 
-const id = inject(MagicCookieInstanceId, undefined)
+const instanceId = inject(MagicCookieInstanceId, undefined)
 
-if (!id) {
+if (!instanceId) {
   throw new Error('MagicCookiePreferences must be used inside MagicCookie')
 }
 
-const { initializeState } = useCookieState(id)
+const { initializeState } = useCookieState(instanceId)
 const state = initializeState()
-
-const { viewActive } = useMagicCookie(id)
-
-const innerActive = ref(false)
-const wrapperActive = ref(false)
 
 const {
   onBeforeEnter,
@@ -51,35 +45,7 @@ const {
   onBeforeLeave,
   onLeave,
   onAfterLeave,
-} = useCookieCallback({
-  id,
-  wrapperActive,
-})
-
-async function onOpen() {
-  wrapperActive.value = true
-  await nextTick()
-  innerActive.value = true
-}
-
-function onClose() {
-  innerActive.value = false
-}
-
-watch(viewActive, async (value) => {
-  if (value) {
-    await onOpen()
-  } else {
-    onClose()
-  }
-})
-
-onMounted(() => {
-  if (viewActive.value) {
-    wrapperActive.value = true
-    innerActive.value = true
-  }
-})
+} = useCookieCallback(instanceId)
 </script>
 
 <style>
@@ -87,25 +53,26 @@ onMounted(() => {
   width: 100%;
   --magic-auto-size-transition: var(
     --magic-cookie-view-size-transition,
-    all 300ms var(--ease-in-out-sharp)
+    all 200ms var(--ease-in-out)
   );
   clip-path: var(--magic-cookie-view-clip-path, inset(0));
 }
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.magic-cookie-view-enter-active {
+  animation: fade-in 200ms var(--ease-in-out);
 }
 
-.magic-cookie-view-enter-active {
-  animation: fade-in 300ms var(--ease-in-out);
+@keyframes squash-y-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 .magic-cookie-view-leave-active {
-  animation: squash-y 300ms var(--ease-in-out-sharp);
+  animation: squash-y-fade 200ms var(--ease-in-out);
 }
 </style>

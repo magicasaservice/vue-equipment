@@ -1,41 +1,31 @@
-import { toValue, type MaybeRef, type Ref } from 'vue'
+import { toValue, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
-type UseCookieCallbackArgs = {
-  id: MaybeRef<string>
-  wrapperActive?: Ref<boolean>
-}
-
-export function useCookieCallback(args: UseCookieCallbackArgs) {
-  const { id, wrapperActive } = args
+export function useCookieCallback(instanceId: MaybeRef<string>) {
   const emitter = useMagicEmitter()
 
   function onBeforeEnter() {
-    emitter.emit('beforeEnter', toValue(id))
+    emitter.emit('beforeEnter', toValue(instanceId))
   }
 
   function onEnter() {
-    emitter.emit('enter', toValue(id))
+    emitter.emit('enter', toValue(instanceId))
   }
 
   async function onAfterEnter() {
-    emitter.emit('afterEnter', toValue(id))
+    emitter.emit('afterEnter', toValue(instanceId))
   }
 
   function onBeforeLeave() {
-    emitter.emit('beforeLeave', toValue(id))
+    emitter.emit('beforeLeave', toValue(instanceId))
   }
 
   function onLeave() {
-    emitter.emit('leave', toValue(id))
+    emitter.emit('leave', toValue(instanceId))
   }
 
   function onAfterLeave() {
-    emitter.emit('afterLeave', toValue(id))
-
-    if (wrapperActive) {
-      wrapperActive.value = false
-    }
+    emitter.emit('afterLeave', toValue(instanceId))
   }
 
   return {

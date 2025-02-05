@@ -48,13 +48,17 @@
 </template>
 
 <script lang="ts" setup>
+import { onBeforeUnmount, ref } from 'vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { MButton, MCheckbox } from '@maas/mirror/vue'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 
 import type { MagicCookieCallbackArgs } from '../src/types'
 
 const {
-  viewActive,
   toggleView,
   hideView,
   acceptAll,
@@ -166,4 +170,28 @@ function onRejectCallback(args: MagicCookieCallbackArgs) {
 onAccept(onAcceptCallback)
 onAcceptSelected(onAcceptSelectedCallback)
 onReject(onRejectCallback)
+
+// Handle button state
+const emitter = useMagicEmitter()
+const viewActive = ref(false)
+
+function afterEnterCallback(payload: MagicEmitterEvents['afterEnter']) {
+  if (payload === 'magic-cookie-demo') {
+    viewActive.value = true
+  }
+}
+
+function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
+  if (payload === 'magic-cookie-demo') {
+    viewActive.value = false
+  }
+}
+
+emitter.on('afterEnter', afterEnterCallback)
+emitter.on('afterLeave', afterLeaveCallback)
+
+onBeforeUnmount(() => {
+  emitter.off('afterEnter', afterEnterCallback)
+  emitter.off('afterLeave', afterLeaveCallback)
+})
 </script>

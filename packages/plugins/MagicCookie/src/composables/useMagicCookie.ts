@@ -27,8 +27,6 @@ export function useMagicCookie(id: MaybeRef<string>) {
     )
   )
 
-  const viewActive = computed(() => state.viewActive)
-
   // Public functions
   function showView() {
     state.viewActive = true
@@ -94,7 +92,6 @@ export function useMagicCookie(id: MaybeRef<string>) {
   }
 
   return {
-    viewActive,
     showView,
     hideView,
     toggleView,
