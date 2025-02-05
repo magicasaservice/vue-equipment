@@ -6,6 +6,6 @@ MagicToast let’s you trigger and display toasts from anywhere.
 
 ## Examples
 
-### Position Top
+### Position
 
-<component-preview src="./demo/PositionTopDemo.vue" />
+<component-preview src="./demo/PositionDemo.vue" />
