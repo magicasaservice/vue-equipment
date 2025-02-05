@@ -20,7 +20,6 @@
     ".": "./index.ts",
     "./css/*": "./src/css/*"
   },
-  "keywords": [],
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -28,5 +27,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
+  "type": "module",
   "sideEffects": false
 }

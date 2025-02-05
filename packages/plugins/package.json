@@ -12,6 +12,13 @@
       "url": "https://github.com/ChristophJeworutzki"
     }
   ],
+  "dependencies": {
+    "@floating-ui/dom": "^1.6.13",
+    "@maas/vue-equipment/composables": "workspace:composables@*",
+    "@maas/vue-equipment/utils": "workspace:utils@*",
+    "defu": "catalog:",
+    "vue": "catalog:"
+  },
   "devDependencies": {
     "@maas/mirror": "catalog:",
     "@nuxt/schema": "catalog:",
@@ -20,7 +27,6 @@
     "vue-tsc": "^2.2.0"
   },
   "exports": "./index.ts",
-  "keywords": [],
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -28,12 +34,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
-  "sideEffects": false,
-  "dependencies": {
-    "@floating-ui/dom": "^1.6.13",
-    "@maas/vue-equipment/composables": "workspace:composables@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*",
-    "defu": "catalog:",
-    "vue": "catalog:"
-  }
+  "type": "module",
+  "sideEffects": false
 }

@@ -12,7 +12,6 @@
       "url": "https://github.com/ChristophJeworutzki"
     }
   ],
-  "type": "module",
   "devDependencies": {
     "@antfu/ni": "^0.23.2",
     "@maas/config": "^1.4.1",
@@ -26,12 +25,10 @@
   "exports": {
     "./nuxt": {
       "types": "./dist/nuxt/types.d.mts",
-      "require": "./dist/nuxt/module.cjs",
       "import": "./dist/nuxt/module.mjs"
     },
     "./composables": {
       "types": "./dist/composables/index.d.mts",
-      "require": "./dist/composables/index.js",
       "import": "./dist/composables/index.mjs"
     },
     "./plugins": {
@@ -39,23 +36,19 @@
       "import": "./dist/plugins/index.mjs"
     },
     "./plugins/*/css/*.css": {
-      "import": "./dist/plugins/*/src/css/*.css",
-      "require": "./dist/plugins/*/src/css/*.css"
+      "import": "./dist/plugins/*/src/css/*.css"
     },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
-      "require": "./dist/utils/index.js",
       "import": "./dist/utils/index.mjs"
     },
     "./utils/css/*.css": {
-      "import": "./dist/utils/css/*.css",
-      "require": "./dist/utils/css/*.css"
+      "import": "./dist/utils/css/*.css"
     }
   },
   "files": [
     "dist"
   ],
-  "keywords": [],
   "license": "MIT",
   "peerDependencies": {
     "@floating-ui/vue": "^1",
@@ -138,6 +131,7 @@
     "update:deps": "pnpm dlx taze -r -w",
     "update:deps:major": "pnpm dlx taze major -r -w"
   },
+  "type": "module",
   "volta": {
     "node": "20.18.1"
   },
