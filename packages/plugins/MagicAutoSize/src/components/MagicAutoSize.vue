@@ -152,6 +152,10 @@ onMounted(() => {
       size.width = 0
       size.height = 0
     }
+
+    // Skip animation
+    interpolated.width = size.width
+    interpolated.height = size.height
   }
 })
 
