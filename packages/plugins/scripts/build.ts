@@ -7,7 +7,9 @@ const __dirname = dirname(__filename)
 
 mkdist({
   declaration: true,
+  format: 'esm',
   addRelativeDeclarationExtensions: true,
+  loaders: ['js', 'vue'],
   distDir: resolve(__dirname, '../../../dist/plugins'),
   rootDir: resolve(__dirname, './..'),
   srcDir: resolve(__dirname, './..'),

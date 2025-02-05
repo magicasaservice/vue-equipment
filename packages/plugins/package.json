@@ -23,14 +23,14 @@
     "@maas/mirror": "catalog:",
     "@nuxt/schema": "catalog:",
     "esno": "catalog:",
-    "mkdist": "^1.6.0",
+    "mkdist": "^2.2.0",
     "vue-tsc": "^2.2.0"
   },
   "exports": "./index.ts",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "esno ./scripts/build.ts && vue-tsc --project vue-tsc.config.json",
+    "build": "esno ./scripts/build.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
