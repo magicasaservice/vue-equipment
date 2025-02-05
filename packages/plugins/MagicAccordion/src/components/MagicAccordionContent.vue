@@ -1,8 +1,15 @@
 <template>
-  <div class="magic-accordion-content" :data-active="view?.active">
-    <magic-auto-size :width="false">
+  <div
+    class="magic-accordion-content"
+    :data-active="view?.active"
+    :style="{ '--ma-duration': `${state.options.animation?.duration}ms` }"
+  >
+    <magic-auto-size
+      :width="false"
+      :duration="state.options.animation?.duration"
+      :easing="state.options.animation?.easing"
+    >
       <transition
-        mode="out-in"
         :name="mappedTransition"
         :on-before-enter="onBeforeEnter"
         :on-enter="onEnter"
@@ -28,7 +35,8 @@ import { useAccordionCallback } from '../composables/private/useAccordionCallbac
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/squash-y.css'
+import '@maas/vue-equipment/utils/css/animations/auto-size-out.css'
+
 import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {
@@ -72,19 +80,15 @@ const {
 
 <style>
 .magic-accordion-content {
-  --magic-auto-size-transition: var(
-    --magic-accordion-content-size-transition,
-    all 200ms var(--ease-in-out-sharp)
-  );
   clip-path: var(--magic-accordion-content-clip-path, inset(0));
 }
 
 .magic-accordion-enter-active {
   position: relative;
-  animation: fade-in 150ms var(--ease-in-out);
+  animation: fade-in var(--ma-duration) var(--ease-in-out);
 }
 
 .magic-accordion-leave-active {
-  animation: squash-y 200ms var(--ease-in-out-sharp);
+  animation: auto-size-out var(--ma-duration) var(--ease-in-out-sharp);
 }
 </style>

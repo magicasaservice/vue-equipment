@@ -1,8 +1,11 @@
 <template>
-  <div class="magic-cookie-view">
+  <div
+    class="magic-cookie-view"
+    :style="{ '--mc-duration': `${state.options.animation?.duration}ms` }"
+  >
     <magic-auto-size :width="false">
       <transition
-        :name="state.options.transition?.view"
+        :name="state.options.transition"
         @before-leave="onBeforeLeave"
         @leave="onLeave"
         @after-leave="onAfterLeave"
@@ -11,7 +14,7 @@
         @after-enter="onAfterEnter"
       >
         <div v-show="state.viewActive" class="magic-cookie-view__inner">
-          <slot />
+          <slot :view-active="state.viewActive" />
         </div>
       </transition>
     </magic-auto-size>
@@ -26,8 +29,7 @@ import { useCookieCallback } from '../composables/private/useCookieCallback'
 import { MagicCookieInstanceId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/squash-y.css'
-import '@maas/vue-equipment/utils/css/easings.css'
+import '@maas/vue-equipment/utils/css/animations/auto-size-out.css'
 
 const instanceId = inject(MagicCookieInstanceId, undefined)
 
@@ -51,28 +53,15 @@ const {
 <style>
 .magic-cookie-view {
   width: 100%;
-  --magic-auto-size-transition: var(
-    --magic-cookie-view-size-transition,
-    all 200ms var(--ease-in-out)
-  );
   clip-path: var(--magic-cookie-view-clip-path, inset(0));
 }
 
 .magic-cookie-view-enter-active {
-  animation: fade-in 200ms var(--ease-in-out);
-}
-
-@keyframes squash-y-fade {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    height: 0;
-    opacity: 0;
-  }
+  position: relative;
+  animation: fade-in var(--mc-duration) var(--ease-in-out);
 }
 
 .magic-cookie-view-leave-active {
-  animation: squash-y-fade 200ms var(--ease-in-out);
+  animation: auto-size-out var(--mc-duration) var(--ease-in-out);
 }
 </style>

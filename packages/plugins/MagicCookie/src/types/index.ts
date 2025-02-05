@@ -17,8 +17,10 @@ export type CookieConsent = Record<CookieItem['id'], CookieItem['active']>
 
 export interface MagicCookieOptions {
   maxAge?: number
-  transition?: {
-    view?: string
+  transition?: string
+  animation?: {
+    duration: number
+    easing: (t: number) => number
   }
 }
 

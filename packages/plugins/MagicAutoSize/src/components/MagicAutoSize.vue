@@ -12,38 +12,56 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useResizeObserver, useMutationObserver } from '@vueuse/core'
+import { easeOutQuad } from '@maas/vue-equipment/utils'
 
 import '@maas/vue-equipment/utils/css/easings.css'
+import { interpolate } from '@maas/vue-equipment/utils'
 
 interface MagicAutoSizeProps {
   width?: boolean
   height?: boolean
+  duration?: number
+  easing?: (t: number) => number
 }
 
-const { width = true, height = true } = defineProps<MagicAutoSizeProps>()
+const {
+  width = true,
+  height = true,
+  duration = 150,
+  easing = easeOutQuad,
+} = defineProps<MagicAutoSizeProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const size = ref<{ width: number; height: number }>()
+const size = reactive({
+  width: 0,
+  height: 0,
+})
+
+const interpolated = reactive({
+  width: 0,
+  height: 0,
+})
+
 const content = ref<HTMLElement | undefined>(undefined)
 
 const mappedSize = computed(() => {
-  if (size.value) {
+  if (size) {
     switch (true) {
       case width && height:
         return {
-          width: `${size.value.width}px`,
-          height: `${size.value.height}px`,
+          width: `${interpolated.width}px`,
+          height: `${interpolated.height}px`,
         }
       case width:
         return {
-          width: `${size.value.width}px`,
+          width: `${interpolated.width}px`,
         }
       case height:
         return {
-          height: `${size.value.height}px`,
+          height: `${interpolated.height}px`,
         }
       default:
         return undefined
@@ -91,19 +109,17 @@ useMutationObserver(
     // Vue sets a placeholder comment for a v-if
     if (!!addedComment && !child.value) {
       content.value = undefined
-      size.value = {
-        width: 0,
-        height: 0,
-      }
+
+      size.width = 0
+      size.height = 0
     }
 
     // If the node is removed, reset the size
     if (!child.value) {
       content.value = undefined
-      size.value = {
-        width: 0,
-        height: 0,
-      }
+
+      size.width = 0
+      size.height = 0
     }
   },
   {
@@ -112,13 +128,13 @@ useMutationObserver(
   }
 )
 
-useResizeObserver(content, () => {
-  if (content.value) {
-    size.value = {
-      width: content.value.offsetWidth + padding.value.x,
-      height: content.value.offsetHeight + padding.value.y,
-    }
-  }
+useResizeObserver(content, (entries) => {
+  const entry = entries[0]
+  const { width, height } = entry.contentRect
+  console.log('height:', height)
+
+  size.width = width + padding.value.x
+  size.height = height + padding.value.y
 })
 
 onMounted(() => {
@@ -130,24 +146,52 @@ onMounted(() => {
 
     if (!!filtered && filtered instanceof HTMLElement) {
       content.value = filtered
-      size.value = {
-        width: filtered.offsetWidth + padding.value.x,
-        height: filtered.offsetHeight + padding.value.y,
-      }
+      size.width = filtered.offsetWidth + padding.value.x
+      size.height = filtered.offsetHeight + padding.value.y
     } else {
-      size.value = {
-        width: 0,
-        height: 0,
-      }
+      size.width = 0
+      size.height = 0
     }
   }
 })
+
+function widthCallback(value: number) {
+  interpolated.width = value
+}
+
+function heightCallback(value: number) {
+  interpolated.height = value
+}
+
+watch(
+  () => size.width,
+  (value) => {
+    interpolate({
+      from: interpolated.width,
+      to: value,
+      duration: duration,
+      easing: easing,
+      callback: widthCallback,
+    })
+  }
+)
+
+watch(
+  () => size.height,
+  (value) => {
+    interpolate({
+      from: interpolated.height,
+      to: value,
+      duration: duration,
+      easing: easing,
+      callback: heightCallback,
+    })
+  }
+)
 </script>
 
 <style>
 .magic-auto-size {
-  transition: var(--magic-auto-size-transition, all 150ms var(--ease-in-out));
-  transition-delay: var(--magic-auto-size-transition-delay, 0ms);
   width: var(--magic-auto-size-width);
   height: var(--magic-auto-size-height);
 }
