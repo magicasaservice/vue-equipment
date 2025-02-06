@@ -89,6 +89,13 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
+          label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
         }
       ]
@@ -122,19 +129,19 @@ If you haven’t installed the required peer dependencies automatically, you’l
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+pnpm install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
 ```
 
 ```sh [npm]
-npm install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+npm install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
 ```
 
 ```sh [yarn]
-yarn add @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+yarn add @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
 ```
 
 ```sh [bun]
-bun install @nuxt/kit @vueuse/core @vueuse/integrations defu universal-cookie
+bun install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
 ```
 
 :::
@@ -186,6 +193,68 @@ The provider wraps the cookie banner and configures all child components accordi
   ]"
 />
 
+#### Options
+
+<ProseTable 
+  :columns="[
+    { label: 'Option' },
+    { label: 'Type' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { 
+          label: 'maxAge',
+          description: 'Maximum age of the cookie in seconds.'
+        },
+        { label: 'number' },
+        { label: '86400' }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition',
+          description: 'Configure the transition name of the cookie view.'
+        },
+        { label: 'string' },
+        { label: 'magic-cookie-view' }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'animation.duration',
+          description: 'Configure the cookie banner’s animation duration.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '300'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'animation.easing',
+          description: 'Configure the cookie banner’s animation easing.'
+        },
+        {
+          label: 'function',
+          description: '(t: number) => number'
+        },
+        {
+          label: 'easeOutQuad',
+          descriptipn: 't * (2 - t)'
+        }
+      ]
+    },
+  ]"
+/>
+
 ### MagicCookieItem
 
 The item registers and set the cookie with the given props.
@@ -218,7 +287,7 @@ The item registers and set the cookie with the given props.
       items: [
         {
           label: 'maxAge',
-          description: 'Maximum age of the cookie in seconds. Overrides '
+          description: 'Override the maximum age of the cookie in seconds.'
         },
         {
           label: 'number'
@@ -228,37 +297,5 @@ The item registers and set the cookie with the given props.
         }
       ]
     },
-  ]"
-/>
-
-### Options
-
-<ProseTable 
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { 
-          label: 'maxAge',
-          description: 'Maximum age of the cookie in seconds.'
-        },
-        { label: 'number' },
-        { label: '86400' }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.view',
-          description: 'Override the transition name of the cookie view.'
-        },
-        { label: 'string' },
-        { label: 'magic-cookie-view' }
-      ]
-    }
   ]"
 />

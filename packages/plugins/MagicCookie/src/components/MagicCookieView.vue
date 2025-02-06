@@ -3,7 +3,7 @@
     class="magic-cookie-view"
     :style="{ '--mc-duration': `${state.options.animation?.duration}ms` }"
   >
-    <magic-auto-size :width="false">
+    <auto-size :width="false">
       <transition
         :name="state.options.transition"
         @before-leave="onBeforeLeave"
@@ -17,12 +17,13 @@
           <slot :view-active="state.viewActive" />
         </div>
       </transition>
-    </magic-auto-size>
+    </auto-size>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { inject } from 'vue'
+import { AutoSize } from '@maas/vue-autosize'
 import { useCookieState } from '../composables/private/useCookieState'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 

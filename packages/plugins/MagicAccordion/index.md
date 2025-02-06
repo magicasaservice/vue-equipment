@@ -91,6 +91,13 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
+          label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
         }
       ]
@@ -110,19 +117,19 @@ If you haven’t installed the required peer dependencies automatically, you’l
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core
+pnpm install @nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [npm]
-npm install @nuxt/kit @maas/vue-primitive @vueuse/core
+npm install @nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [yarn]
-yarn add @nuxt/kit @maas/vue-primitive @vueuse/core
+yarn add @nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core
 ```
 
 ```sh [bun]
-bun install @nuxt/kit @maas/vue-primitive @vueuse/core
+bun install @nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core
 ```
 
 :::
@@ -225,6 +232,36 @@ To customize the accordion, override the necessary options. Any custom options w
         { 
           label: 'string',
           description: '\'magic-accordion\'',
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'animation.duration',
+          description: 'Configure the accordions’s animation duration.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '200'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'animation.easing',
+          description: 'Configure the accordions’s animation easing.'
+        },
+        {
+          label: 'function',
+          description: '(t: number) => number'
+        },
+        {
+          label: 'easeOutQuad',
+          description: 't * (2 - t)'
         }
       ]
     },
@@ -339,7 +376,36 @@ To customize the accordion, override the necessary options. Any custom options w
           label: 'false',
         }
       ]
-    }
+    },
+    {
+      items: [
+        {
+          label: 'animation.duration',
+          description: 'Override the component’s animation duration.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'animation.easing',
+          description: 'Override the component’s animation easing.'
+        },
+        {
+          label: 'function',
+          description: '(t: number) => number'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
   ]"
 />
 
@@ -351,17 +417,6 @@ To customize the accordion, override the necessary options. Any custom options w
     { label: 'Default' },
   ]"
   :rows="[
-    {
-      items: [
-        {
-          label: '--magic-accordion-size-transition'
-        },
-        {
-          label: 'all 200ms var(--ease-in-out-sharp)',
-          description: '`var(--ease-in-out-sharp)` transpiles to `cubic-bezier(0.83, 0, 0.17, 1)` and can also be overridden.'
-        },
-      ]
-    },
     {
       items: [
         {

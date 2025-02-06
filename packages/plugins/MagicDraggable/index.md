@@ -288,7 +288,8 @@ To customize the component override the necessary options. Any custom options wi
           description: '(t: number) => number'
         },
         {
-          label: 'easeOutBack'
+          label: 'easeOutBack',
+          description: '1 + (t - 1) * (t - 1) * ((o + 1) * (t - 1) + o)'
         }
       ]
     },

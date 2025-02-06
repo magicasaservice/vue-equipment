@@ -28,7 +28,7 @@ interface MenuCardInternalProps {
   data: {
     icon?: string
     label: string
-    badge: string
+    badge?: string
     callout: string
   }
 }

@@ -53,6 +53,7 @@
   "peerDependencies": {
     "@floating-ui/vue": "^1",
     "@maas/magic-timer": "^1",
+    "@maas/vue-autosize": "^1",
     "@maas/vue-primitive": "^1",
     "@maas/wheel-gestures": "^1",
     "@nuxt/kit": "^3",
@@ -76,6 +77,9 @@
       "optional": false
     },
     "@maas/magic-timer": {
+      "optional": false
+    },
+    "@maas/vue-autosize": {
       "optional": false
     },
     "@maas/vue-primitive": {

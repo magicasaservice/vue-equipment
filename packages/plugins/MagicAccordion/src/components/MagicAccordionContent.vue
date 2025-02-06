@@ -4,10 +4,10 @@
     :data-active="view?.active"
     :style="{ '--ma-duration': `${state.options.animation?.duration}ms` }"
   >
-    <magic-auto-size
+    <auto-size
       :width="false"
-      :duration="state.options.animation?.duration"
-      :easing="state.options.animation?.easing"
+      :duration="mappedAnimation.duration"
+      :easing="mappedAnimation.easing"
     >
       <transition
         :name="mappedTransition"
@@ -22,12 +22,14 @@
           <slot :view-active="view?.active" />
         </primitive>
       </transition>
-    </magic-auto-size>
+    </auto-size>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { inject, computed } from 'vue'
+import { defu } from 'defu'
+import { AutoSize } from '@maas/vue-autosize'
 import { Primitive } from '@maas/vue-primitive'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
@@ -42,9 +44,13 @@ import '@maas/vue-equipment/utils/css/easings.css'
 interface MagicAccordionContentProps {
   asChild?: boolean
   transition?: string
+  animation?: {
+    duration: number
+    easing: (t: number) => number
+  }
 }
 
-const { transition } = defineProps<MagicAccordionContentProps>()
+const { transition, animation } = defineProps<MagicAccordionContentProps>()
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)
@@ -64,6 +70,7 @@ const { getView } = useAccordionView(instanceId)
 const view = getView(viewId)
 
 const mappedTransition = computed(() => transition ?? state.options.transition)
+const mappedAnimation = computed(() => defu(animation, state.options.animation))
 
 const {
   onBeforeEnter,

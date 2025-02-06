@@ -42,7 +42,7 @@
         <magic-menu-content :reference-el="viewRef?.$el">
           <div class="p-1 pt-2">
             <m-menu-box class="navigation-bar__menu-box overflow-hidden">
-              <magic-auto-size>
+              <auto-size :duration="100">
                 <magic-menu-channel
                   v-for="(item, i) in menu"
                   :id="item.id"
@@ -73,7 +73,7 @@
                     />
                   </div>
                 </magic-menu-channel>
-              </magic-auto-size>
+              </auto-size>
             </m-menu-box>
           </div>
         </magic-menu-content>
@@ -84,9 +84,9 @@
 
 <script lang="ts" setup>
 import { ref, type ComponentPublicInstance } from 'vue'
+import { AutoSize } from '@maas/vue-autosize'
 import { MMenuBox, MBadge, MButton } from '@maas/mirror/vue'
 
-import { MagicAutoSize } from '../../MagicAutoSize'
 import MenuCard from './components/MenuCard.vue'
 
 const viewRef = ref<ComponentPublicInstance | null>(null)
@@ -241,10 +241,6 @@ const menu = [
 </script>
 
 <style>
-:root {
-  --magic-auto-size-transition: all 100ms var(--ease-in-out);
-}
-
 .navigation-bar__menu-box {
   --menu-box-box-shadow: none;
   --menu-box-color-bg: theme('backgroundColor.surface.elevation.high.DEFAULT');
