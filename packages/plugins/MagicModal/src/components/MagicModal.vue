@@ -178,7 +178,7 @@ onUnmounted(() => {
 </script>
 
 <style>
-@keyframes magic-modal-content-enter {
+@keyframes mm-content-enter {
   0% {
     opacity: 0;
     transform: translate3d(0, 2rem, 0);
@@ -189,7 +189,7 @@ onUnmounted(() => {
   }
 }
 
-@keyframes magic-modal-content-leave {
+@keyframes mm-content-leave {
   0% {
     opacity: 1;
     transform: scale(1);
@@ -253,30 +253,30 @@ dialog.magic-modal__content::backdrop {
 }
 
 /* Content */
-.magic-modal--content-enter-active {
-  animation: magic-modal-content-enter 300ms ease;
+.magic-modal-content-enter-active {
+  animation: mm-content-enter 175ms ease;
 }
 
-.magic-modal--content-leave-active {
-  animation: magic-modal-content-leave 300ms ease;
+.magic-modal-content-leave-active {
+  animation: mm-content-leave 175ms ease;
 }
 
 @media (prefers-reduced-motion) {
-  .magic-modal--content-enter-active {
-    animation: fade-in 300ms ease;
+  .magic-modal-content-enter-active {
+    animation: fade-in 175ms ease;
   }
 
-  .magic-modal--content-leave-active {
-    animation: fade-out 300ms ease;
+  .magic-modal-content-leave-active {
+    animation: fade-out 175ms ease;
   }
 }
 
 /* Backdrop */
-.magic-modal--backdrop-enter-active {
-  animation: fade-in 300ms ease;
+.magic-modal-backdrop-enter-active {
+  animation: fade-in 175ms ease;
 }
 
-.magic-modal--backdrop-leave-active {
-  animation: fade-out 300ms ease;
+.magic-modal-backdrop-leave-active {
+  animation: fade-out 175ms ease;
 }
 </style>
