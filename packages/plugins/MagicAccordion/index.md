@@ -430,7 +430,7 @@ To customize the accordion, override the necessary options. Any custom options w
   ]"
 />
 
-#### MagicAccordionTrigger
+### MagicAccordionTrigger
 
 #### Props
 
