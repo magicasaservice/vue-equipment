@@ -94,8 +94,6 @@ watch(
   }
 )
 
-// onKeyStroke('Enter', onEnter)
-
 const keys = useMagicKeys()
 
 if (options?.keyListener?.enter) {

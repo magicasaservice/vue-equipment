@@ -1,11 +1,14 @@
 <template>
-  <magic-command-provider id="magic-command-modal-demo">
+  <magic-command-provider
+    id="magic-command-modal-demo"
+    :options="{ keyListener: { open: false } }"
+  >
     <magic-command-trigger view-id="initial-modal-view" as-child>
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
     <magic-command-modal :options="{ focusTrap: false }">
-      <m-menu-box class="w-[40rem] h-[30rem]">
+      <m-menu-box class="h-[30rem] w-[40rem]">
         <magic-command-renderer />
       </m-menu-box>
     </magic-command-modal>

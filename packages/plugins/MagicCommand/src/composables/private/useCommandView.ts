@@ -170,6 +170,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
 
     if (initialView) {
       initialView.active = true
+      activateView()
     }
   }
 
