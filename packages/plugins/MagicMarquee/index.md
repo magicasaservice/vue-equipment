@@ -235,42 +235,6 @@ bun install @nuxt/kit @vueuse/core defu
         { label: '--magic-marquee-content-width' },
         { label: 'unset' }
       ]
-    },
-    {
-      items: [
-        { 
-          label: '--magic-marquee-animation-name',
-          description: 'This variable is crucial for the component’s core functionality. Overriding it manually might lead to unwanted side effects.'
-        },
-        { label: 'magicMarqueeScrollX' }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: '--magic-marquee-animation-duration', 
-          description: 'This variable is crucial for the component’s core functionality. Overriding it manually might lead to unwanted side effects.'
-        },
-        { label: '-' }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: '--magic-marquee-animation-play-state', 
-          description: 'This variable is crucial for the component’s core functionality. Overriding it manually might lead to unwanted side effects.'
-        },
-        { label: 'running' }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: '--magic-marquee-animation-direction', 
-          description: 'This variable is crucial for the component’s core functionality. Overriding it manually might lead to unwanted side effects.'
-        },
-        { label: 'normal' }
-      ]
     }
   ]"
 />

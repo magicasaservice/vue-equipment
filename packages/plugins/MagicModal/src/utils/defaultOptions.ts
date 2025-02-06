@@ -15,8 +15,8 @@ const defaultOptions: RequireAll<MagicModalOptions> = {
     disabled: false,
   },
   transition: {
-    content: 'magic-modal--content',
-    backdrop: 'magic-modal--backdrop',
+    content: 'magic-modal-content',
+    backdrop: 'magic-modal-backdrop',
   },
   keyListener: {
     close: ['Escape'],

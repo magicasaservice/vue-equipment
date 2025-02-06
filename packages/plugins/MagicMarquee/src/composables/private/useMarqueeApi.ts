@@ -43,32 +43,23 @@ export function useMarqueeApi({
 
   function setCssVariables() {
     toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-duration',
+      '--mm-animation-duration',
       `${toValue(duration)}s`
     )
+    toValue(parent)?.style.setProperty('--mm-animation-name', 'mm-scroll-x')
     toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-name',
-      'magicMarqueeScrollX'
-    )
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-direction',
+      '--mm-animation-direction',
       `${toValue(state.options?.direction) || 'normal'}`
     )
   }
 
   // Public functions
   function pause() {
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-play-state',
-      'paused'
-    )
+    toValue(parent)?.style.setProperty('--mm-animation-play-state', 'paused')
   }
 
   function play() {
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-play-state',
-      'running'
-    )
+    toValue(parent)?.style.setProperty('--mm-animation-play-state', 'running')
   }
 
   async function initialize() {
@@ -93,7 +84,7 @@ export function useMarqueeApi({
     () => {
       nextTick()
       toValue(parent)?.style.setProperty(
-        '--magic-marquee-animation-duration',
+        '--mm-animation-duration',
         `${toValue(duration)}s`
       )
     }
@@ -104,7 +95,7 @@ export function useMarqueeApi({
     (dir) => {
       nextTick()
       toValue(parent)?.style.setProperty(
-        '--magic-marquee-animation-direction',
+        '--mm-animation-direction',
         `${toValue(dir)}`
       )
     }

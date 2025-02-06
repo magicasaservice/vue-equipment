@@ -53,7 +53,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-@keyframes magicMarqueeScrollX {
+@keyframes mm-scroll-x {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
   }
 }
 
-@keyframes magicMarqueeScrollY {
+@keyframes mm-scroll-y {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -91,10 +91,10 @@ onBeforeUnmount(() => {
   backface-visibility: hidden;
   padding-right: var(--magic-marquee-gap, 1rem);
   width: var(--magic-marquee-content-width, unset);
-  animation-name: var(--magic-marquee-animation-name, 'magicMarqueeScrollX');
-  animation-duration: var(--magic-marquee-animation-duration);
-  animation-play-state: var(--magic-marquee-animation-play-state, running);
-  animation-direction: var(--magic-marquee-animation-direction, normal);
+  animation-name: var(--mm-animation-name, 'mm-scroll-x');
+  animation-duration: var(--mm-animation-duration);
+  animation-play-state: var(--mm-animation-play-state, running);
+  animation-direction: var(--mm-animation-direction, normal);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   display: flex;
