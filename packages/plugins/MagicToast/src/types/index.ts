@@ -72,8 +72,7 @@ export type MagicToastOptions = {
   }
   transition?: string
   layout?: {
-    perspective?: boolean
-    expand?: true | 'hover' | 'click'
+    expand?: false | 'hover' | 'click'
     max?: number
   }
   animation?: {
@@ -81,6 +80,9 @@ export type MagicToastOptions = {
       duration?: number
       easing?: (t: number) => number
     }
+  }
+  initial?: {
+    expanded?: boolean
   }
   threshold?: {
     lock?: number
@@ -92,4 +94,5 @@ export type MagicToastOptions = {
 export type ToastDefaultOptions = RequireAll<MagicToastOptions> & {
   threshold: RequireAll<MagicToastOptions['threshold']>
   animation: RequireAll<MagicToastOptions['animation']>
+  initial: RequireAll<MagicToastOptions['initial']>
 }

@@ -219,7 +219,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-ttb-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: -1;
+  --mt-multiplier-y: 1;
   --mt-justify-content: flex-end;
   --mt-flex-direction: column-reverse;
 }
@@ -231,7 +231,7 @@ provide(MagicToastInstanceId, id)
     var(--ease-in-out);
   --mt-leave-animation: mt-slide-btt-out var(--magic-toast-duration)
     var(--ease-in-out);
-  --mt-multiplier-y: 1;
+  --mt-multiplier-y: -1;
   --mt-justify-content: flex-end;
 }
 
@@ -265,27 +265,24 @@ provide(MagicToastInstanceId, id)
 
 .magic-toast-enter-active {
   animation: var(--mt-enter-animation, unset);
-}
-
-.magic-toast-leave-active:not(:last-child, :first-child) {
-  animation: fade-out var(--magic-toast-duration) var(--ease-in-out);
   position: absolute;
 
   &[data-position='bottom-left'],
   &[data-position='bottom-center'],
   &[data-position='bottom-right'] {
-    bottom: calc(var(--mt-offset) * var(--mt-index) * 1px);
+    bottom: calc(var(--mt-height) * var(--mt-index) * 1px);
   }
 
   &[data-position='top-left'],
   &[data-position='top-center'],
   &[data-position='top-right'] {
-    top: calc(var(--mt-offset) * var(--mt-index) * 1px);
+    top: calc(var(--mt-height) * var(--mt-index) * 1px);
   }
 }
 
-.magic-toast-leave-active:first-child {
+.magic-toast-leave-active {
   animation: fade-out var(--magic-toast-duration) var(--ease-in-out);
+  position: absolute;
 }
 
 .magic-toast-leave-active:last-child {
@@ -293,7 +290,7 @@ provide(MagicToastInstanceId, id)
   position: absolute;
 }
 
-.magic-toast-move:not(.magic-toast-leave-active, .magic-toast-enter-active) {
+.magic-toast-move {
   transition: all var(--magic-toast-duration) var(--ease-in-out);
 }
 </style>

@@ -6,11 +6,11 @@
     :data-expanded="state.expanded"
     :data-dragging="view.dragging"
     :data-position="state.options.position"
-    :data-perspective="state.options.layout.perspective"
     :data-debug="state.options.debug"
     :style="{
       '--mt-index': reversedIndex,
       '--mt-offset': offset,
+      '--mt-height': height,
     }"
   >
     <div
@@ -53,9 +53,16 @@ const state = initializeState()
 
 const count = computed(() => state.views.length)
 const view = computed(() => state.views[index])
-
 const reversedIndex = computed(() => count.value - index - 1)
-const offset = computed(() => `${view.value.dimensions?.height}px`)
+
+const height = computed(() => `${view.value.dimensions?.height}px`)
+const offset = computed(() => {
+  const mapped = state.views
+    .slice(0, reversedIndex.value)
+    .reduce((acc, view) => acc + (view.dimensions?.height ?? 0), 0)
+
+  return `${mapped}px`
+})
 
 const { style, onPointerdown, onClick } = useToastDrag({
   view: view.value,
@@ -70,36 +77,38 @@ const { style, onPointerdown, onClick } = useToastDrag({
 }
 
 .magic-toast-view {
-  --mt-index: 0;
-  --mt-translate-y: 0;
+  cursor: var(--magic-toast-cursor, grab);
+  position: absolute;
+  list-style: none;
+  user-select: none;
+
+  &[data-position='bottom-left'],
+  &[data-position='bottom-center'],
+  &[data-position='bottom-right'] {
+    padding-top: var(--magic-toast-gap);
+  }
+
+  &[data-position='top-left'],
+  &[data-position='top-center'],
+  &[data-position='top-right'] {
+    padding-bottom: var(--magic-toast-gap);
+  }
+}
+
+.magic-toast-view[data-expanded='false'] {
   --mt-scale: max(
     calc(1 - (var(--magic-toast-scale-factor) * var(--mt-index))),
     0
   );
-  position: relative;
-  list-style: none;
-  user-select: none;
-  cursor: var(--magic-toast-cursor, grab);
-}
-
-.magic-toast-view[data-perspective='true'] {
   --mt-translate-y: calc(
-    (
-        var(--mt-offset) * var(--mt-index) -
-          (var(--magic-toast-overlap-y) * var(--mt-index) * var(--mt-scale))
-      ) *
+    ((var(--magic-toast-overlap-y) * var(--mt-index) * var(--mt-scale))) *
       var(--mt-multiplier-y)
   );
 }
 
-.magic-toast-view[data-perspective='false'] {
-  --mt-translate-y: calc(
-    (
-        var(--mt-offset) * var(--mt-index) -
-          (var(--magic-toast-overlap-y) * var(--mt-index))
-      ) *
-      var(--mt-multiplier-y)
-  );
+.magic-toast-view[data-expanded='true'] {
+  --mt-scale: 1;
+  --mt-translate-y: calc(var(--mt-offset) * var(--mt-multiplier-y));
 }
 
 .magic-toast-view__inner {
@@ -112,27 +121,6 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 .magic-toast-view__drag {
   display: block;
-}
-
-.magic-toast-view[data-expanded='true'] {
-  --mt-scale: 1;
-  --mt-translate-y: 0;
-}
-
-.magic-toast-view[data-expanded='true']:not(:first-child) {
-  &[data-position='bottom-left'],
-  &[data-position='bottom-center'],
-  &[data-position='bottom-right'] {
-    padding-top: var(--magic-toast-gap);
-  }
-}
-
-.magic-toast-view[data-expanded='true']:not(:first-child) {
-  &[data-position='top-left'],
-  &[data-position='top-center'],
-  &[data-position='top-right'] {
-    padding-bottom: var(--magic-toast-gap);
-  }
 }
 
 .magic-toast-view[data-dragging='true'] {

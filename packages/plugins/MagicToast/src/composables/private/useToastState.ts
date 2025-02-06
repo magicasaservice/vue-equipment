@@ -46,7 +46,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
       state.options = mappedOptions
 
       // Set initial state for expanded
-      state.expanded = mappedOptions.layout.expand === true ? true : false
+      state.expanded = mappedOptions.initial.expanded
     }
 
     return state

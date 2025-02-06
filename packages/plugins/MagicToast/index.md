@@ -39,3 +39,15 @@ export default defineNuxtConfig({
 ### Position
 
 <component-preview src="./demo/PositionDemo.vue" />
+
+### Expanded
+
+<component-preview src="./demo/ExpandedDemo.vue" />
+
+### Collapsed
+
+<component-preview src="./demo/CollapsedDemo.vue" />
+
+### Hover
+
+<component-preview src="./demo/HoverDemo.vue" />

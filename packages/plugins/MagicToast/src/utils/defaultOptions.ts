@@ -12,7 +12,6 @@ const defaultOptions: ToastDefaultOptions = {
   },
   transition: 'magic-toast',
   layout: {
-    perspective: true,
     expand: 'click',
     max: 3,
   },
@@ -25,6 +24,9 @@ const defaultOptions: ToastDefaultOptions = {
     snap: {
       duration: 300,
     },
+  },
+  initial: {
+    expanded: false,
   },
 }
 
