@@ -63,6 +63,7 @@ export type ToastEvents = {
 }
 
 export type MagicToastOptions = {
+  debug?: boolean
   position?: Position
   scrollLock?: boolean | { padding: boolean }
   teleport?: {

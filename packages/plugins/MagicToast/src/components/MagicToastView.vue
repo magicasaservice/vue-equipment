@@ -7,6 +7,7 @@
     :data-dragging="view.dragging"
     :data-position="state.options.position"
     :data-perspective="state.options.layout.perspective"
+    :data-debug="state.options.debug"
     :style="{
       '--mt-index': reversedIndex,
       '--mt-offset': offset,
@@ -64,9 +65,8 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 <style>
 :root {
-  --magic-toast-view-transition: transform var(--magic-toast-duration)
-      var(--ease-in-out),
-    padding var(--magic-toast-duration) var(--ease-in-out);
+  --magic-toast-view-transition: all var(--magic-toast-duration)
+    var(--ease-in-out);
 }
 
 .magic-toast-view {
@@ -80,7 +80,6 @@ const { style, onPointerdown, onClick } = useToastDrag({
   list-style: none;
   user-select: none;
   cursor: var(--magic-toast-cursor, grab);
-  transition: var(--magic-toast-view-transition);
 }
 
 .magic-toast-view[data-perspective='true'] {

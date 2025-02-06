@@ -293,7 +293,7 @@ provide(MagicToastInstanceId, id)
   position: absolute;
 }
 
-.magic-toast-move {
+.magic-toast-move:not(.magic-toast-leave-active, .magic-toast-enter-active) {
   transition: all var(--magic-toast-duration) var(--ease-in-out);
 }
 </style>
