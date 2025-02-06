@@ -316,7 +316,7 @@ To customize the modal override the necessary options. Any custom options will b
           label: 'string'
         },
         {
-          label: '\'magic-modal--content\''
+          label: '\'magic-modal-content\''
         }
       ]
     },
@@ -330,7 +330,7 @@ To customize the modal override the necessary options. Any custom options will b
           label: 'string'
         },
         {
-          label: '\'magic-modal--backdrop\''
+          label: '\'magic-modal-backdrop\''
         }
       ]
     },
