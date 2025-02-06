@@ -13,13 +13,13 @@
     }
   ],
   "devDependencies": {
-    "@antfu/ni": "^0.23.2",
-    "@maas/config": "^1.4.1",
-    "@release-it/bumper": "^6.0.1",
+    "@antfu/ni": "^23.3.1",
+    "@maas/config": "^1.5.0",
+    "@release-it/bumper": "^7.0.1",
     "@types/node": "catalog:",
-    "release-it": "^17.11.0",
+    "release-it": "^18.1.2",
     "tailwindcss": "catalog:",
-    "turbo": "^2.3.3",
+    "turbo": "^2.4.0",
     "typescript": "catalog:"
   },
   "exports": {
