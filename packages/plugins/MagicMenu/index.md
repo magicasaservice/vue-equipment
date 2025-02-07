@@ -162,7 +162,7 @@ To customize the menu, override the necessary options. Any custom options will b
       items: [
         { 
           label: 'debug',
-          description: 'Set to true, to get visual feedback on positioning and verbose error logs.'
+          description: 'Set to true to get visual feedback on positioning and verbose error logs.'
         },
         { label: 'boolean' },
         { label: 'false' }
