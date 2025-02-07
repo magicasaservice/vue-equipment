@@ -6,15 +6,11 @@
 
 <script lang="ts" setup>
 import { provide, computed } from 'vue'
-import {
-  useScroll,
-  unrefElement,
-  type MaybeComputedElementRef,
-} from '@vueuse/core'
-import { MagicScrollReturn, MagicScrollParent } from '../symbols'
+import { useScroll, unrefElement, type MaybeElementRef } from '@vueuse/core'
+import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
 interface MagicScrollProviderProps {
-  target?: MaybeComputedElementRef<HTMLElement>
+  target?: MaybeElementRef<HTMLElement>
 }
 
 const { target } = defineProps<MagicScrollProviderProps>()
@@ -30,13 +26,16 @@ const mappedTarget = computed(() => {
   }
 })
 
-const mappedParent = computed(() => {
-  if (target) return unrefElement(target)
+const providedTarget = computed(() => {
+  if (target) {
+    return unrefElement(target)
+  }
+
   return undefined
 })
 
 const scrollReturn = useScroll(mappedTarget)
 
 provide(MagicScrollReturn, scrollReturn)
-provide(MagicScrollParent, mappedParent)
+provide(MagicScrollTarget, providedTarget)
 </script>

@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { ref, inject, computed, toValue, watch, useId, onMounted } from 'vue'
 import { useCollisionDetection } from '../composables/private/useCollisionDetection'
-import { MagicScrollReturn, MagicScrollParent } from '../symbols'
+import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
 import type { CollisionOffset } from '../types'
 import { useIntersectionObserver } from '@vueuse/core'
@@ -19,11 +19,11 @@ interface MagicScrollCollisionProps {
 
 const { id, offset } = defineProps<MagicScrollCollisionProps>()
 const scrollReturn = inject(MagicScrollReturn, undefined)
-const scrollParent = inject(MagicScrollParent)
+const scrollTarget = inject(MagicScrollTarget)
 
-if (!scrollParent) {
+if (!scrollTarget) {
   console.error(
-    'MagicScrollCollision must be used inside a MagicScrollProvider'
+    'MagicScrollCollision must be used within a MagicScrollProvider'
   )
 }
 
@@ -36,7 +36,7 @@ const mappedId = computed(() => id ?? `magic-scroll-collision-${useId()}`)
 const { observe } = useCollisionDetection({
   id: mappedId.value,
   child: elRef,
-  parent: scrollParent,
+  parent: scrollTarget,
   scrollY,
   offset,
 })

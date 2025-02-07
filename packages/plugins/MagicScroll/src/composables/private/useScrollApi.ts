@@ -3,13 +3,13 @@ import { useWindowSize } from '@vueuse/core'
 import { MagicScrollReturn } from '../../symbols'
 import { clampValue } from '@maas/vue-equipment/utils'
 
-import type { FromTo } from '../../types'
+import type { ScrollIntersection } from '../../types'
 
 type UseScrollApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>
   parent: MaybeRefOrGetter<HTMLElement | null | undefined>
-  from: FromTo
-  to: FromTo
+  from: ScrollIntersection
+  to: ScrollIntersection
 }
 
 type ChildRect = DOMRect | undefined

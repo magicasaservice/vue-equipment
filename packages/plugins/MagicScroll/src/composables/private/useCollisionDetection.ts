@@ -2,7 +2,11 @@ import { ref, reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useElementBounding } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
-import type { Position, ScrollDirection, CollisionOffset } from '../../types'
+import type {
+  CollisionEdge,
+  ScrollDirection,
+  CollisionOffset,
+} from '../../types'
 
 type UseCollisionDetectionArgs = {
   id: string
@@ -13,12 +17,14 @@ type UseCollisionDetectionArgs = {
 }
 
 type ObserveItemArgs = {
-  position: Position
+  childEdge: CollisionEdge
+  parentEdge: CollisionEdge
   direction: ScrollDirection
 }
 
 type ResetItemArgs = {
-  position: Position
+  childEdge: CollisionEdge
+  parentEdge: CollisionEdge
   direction: ScrollDirection
 }
 
@@ -27,12 +33,24 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
 
   const alerted = reactive({
     up: {
-      top: false,
-      bottom: false,
+      top: {
+        top: false,
+        bottom: false,
+      },
+      bottom: {
+        top: false,
+        bottom: false,
+      },
     },
     down: {
-      top: false,
-      bottom: false,
+      top: {
+        top: false,
+        bottom: false,
+      },
+      bottom: {
+        top: false,
+        bottom: false,
+      },
     },
   })
 
@@ -63,71 +81,100 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
 
     if (scrollDirection.value) {
       observeItem({
-        position: 'top',
+        childEdge: 'top',
+        parentEdge: 'top',
         direction: scrollDirection.value,
       })
       observeItem({
-        position: 'bottom',
+        childEdge: 'top',
+        parentEdge: 'bottom',
+        direction: scrollDirection.value,
+      })
+      observeItem({
+        childEdge: 'bottom',
+        parentEdge: 'bottom',
+        direction: scrollDirection.value,
+      })
+      observeItem({
+        childEdge: 'bottom',
+        parentEdge: 'top',
         direction: scrollDirection.value,
       })
       resetItem({
-        position: 'top',
+        childEdge: 'top',
+        parentEdge: 'top',
         direction: oppositeScrollDirection.value,
       })
       resetItem({
-        position: 'bottom',
+        childEdge: 'top',
+        parentEdge: 'bottom',
+        direction: oppositeScrollDirection.value,
+      })
+      resetItem({
+        childEdge: 'bottom',
+        parentEdge: 'bottom',
+        direction: oppositeScrollDirection.value,
+      })
+      resetItem({
+        childEdge: 'bottom',
+        parentEdge: 'top',
         direction: oppositeScrollDirection.value,
       })
     }
   }
 
   function reset() {
-    alerted.up.top = false
-    alerted.up.bottom = false
-    alerted.down.top = false
-    alerted.down.bottom = false
+    alerted.up.top.top = false
+    alerted.up.top.bottom = false
+    alerted.up.bottom.top = false
+    alerted.up.bottom.bottom = false
+    alerted.down.top.top = false
+    alerted.down.top.bottom = false
+    alerted.down.bottom.top = false
+    alerted.down.bottom.bottom = false
   }
 
   function observeItem(args: ObserveItemArgs) {
-    const { position, direction } = args
+    const { childEdge, parentEdge, direction } = args
 
-    if (alerted[direction][position]) {
+    if (alerted[direction][childEdge][parentEdge]) {
       return
     }
 
-    const offset = mappedOffset[position]
-    const elementPosition = toValue(childBoundingRect[position])
-    const collisionPosition = toValue(parentBoundingRect[position]) + offset
+    const offset = mappedOffset[parentEdge]
+    const mappedChildEdge = toValue(childBoundingRect[childEdge])
+    const mappedParentEdge = toValue(parentBoundingRect[parentEdge]) + offset
 
     if (
-      (direction === 'down' && elementPosition <= collisionPosition) ||
-      (direction === 'up' && elementPosition >= collisionPosition)
+      (direction === 'down' && mappedChildEdge <= mappedParentEdge) ||
+      (direction === 'up' && mappedChildEdge >= mappedParentEdge)
     ) {
-      alerted[direction][position] = true
+      alerted[direction][childEdge][parentEdge] = true
       useMagicEmitter().emit('collision', {
         id,
         direction,
-        position,
+        parentEdge,
+        childEdge,
       })
     }
   }
 
   function resetItem(args: ResetItemArgs) {
-    const { position, direction } = args
+    const { childEdge, parentEdge, direction } = args
 
-    if (!alerted[direction][position]) {
+    if (!alerted[direction][childEdge][parentEdge]) {
       return
     }
 
-    const offset = mappedOffset[position]
-    const elementPosition = toValue(childBoundingRect[position])
-    const collisionPosition = toValue(parentBoundingRect[position]) + offset
+    const offset = mappedOffset[parentEdge]
+    const mappedChildEdge = toValue(childBoundingRect[childEdge])
+    const mappedParentEdge = toValue(parentBoundingRect[parentEdge]) + offset
 
     if (
-      (direction === 'down' && elementPosition >= collisionPosition) ||
-      (direction === 'up' && elementPosition <= collisionPosition)
+      (direction === 'down' && mappedChildEdge >= mappedParentEdge) ||
+      (direction === 'up' && mappedChildEdge <= mappedParentEdge)
     ) {
-      alerted[direction][position] = false
+      alerted[direction][childEdge][parentEdge] = false
     }
   }
 

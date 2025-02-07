@@ -19,9 +19,9 @@ import {
 import { MagicScrollProgress } from '../symbols'
 
 interface MagicScrollMotionProps {
-  progress?: number
-  sequence?: ObjectSegment[]
+  sequence: ObjectSegment[]
   sequenceOptions?: SequenceOptions
+  progress?: number
 }
 
 const { progress, sequence, sequenceOptions } =

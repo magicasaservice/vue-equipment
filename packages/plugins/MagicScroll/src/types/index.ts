@@ -1,8 +1,7 @@
-export type Dimensions = { width: number; height: number }
 export type ScrollDirection = 'up' | 'down'
-export type Position = 'top' | 'bottom'
+export type CollisionEdge = 'top' | 'bottom'
 
-export type FromTo =
+export type ScrollIntersection =
   | 'top-top'
   | 'top-center'
   | 'top-bottom'
@@ -18,10 +17,11 @@ export interface CollisionOffset {
   bottom: number
 }
 
-export type ScrollEvents = {
+export interface ScrollEvents {
   collision: {
     id: string
     direction: ScrollDirection
-    position: Position
+    childEdge: CollisionEdge
+    parentEdge: CollisionEdge
   }
 }
