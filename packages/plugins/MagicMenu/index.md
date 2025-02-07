@@ -2,7 +2,7 @@
 
 MagicMenu is a flexible collection of components intended to build various types of menus and navigation.
 
-[Show Examples](#mode)
+<component-preview src="./demo/DefaultDemo.vue" />
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -78,7 +78,7 @@ function handleClick() {
 
 ### MagicMenuProvider
 
-The provider wraps the menu and configures all child components according to the provided [options](#options).
+The MagicMenuProvider wraps the menu and configures all child components according to the provided [options](#options).
 
 #### Props
 
@@ -232,7 +232,10 @@ To customize the menu, override the necessary options. Any custom options will b
     {
       items: [
         { label: 'floating.strategy' },
-        { label: '\'fixed\' | \'absolute\'' },
+        { 
+          label: 'string',
+          description: '\'fixed\' | \'absolute\'' 
+        },
         { 
           label: '\'fixed\' | \'absolute\'',
           description: 'Dependant on `options.mode`' 
@@ -618,7 +621,7 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
-## Mode
+## Examples
 
 The menu includes four different modes which preconfigure its appeareance and behavior. You can set the mode via the `options.mode` prop on the `MagicMenuProvider`.
 
