@@ -1,35 +1,47 @@
 <template>
   <magic-scroll-provider
     :target="parentRef"
-    class="w-full aspect-[16/9] bg-surface-elevation-base"
+    class="bg-surface-elevation-base aspect-square w-full"
   >
-    <div ref="parentRef" class="relative w-full h-full overflow-auto">
+    <div ref="parentRef" class="relative h-full w-full overflow-auto">
       <magic-scroll-scene
-        class="h-[400svh] flex flex-col justify-evenly items-center px-8"
+        class="flex flex-col items-center justify-evenly gap-[100vh] px-24 py-[100vh]"
       >
         <magic-scroll-collision
           v-for="i in 4"
+          :id="`collision-${i}`"
           :key="i"
-          class="h-20 bg-surface-elevation-high w-full flex items-center justify-center"
+          class="bg-surface-elevation-high flex aspect-square w-full items-center justify-center"
         >
-          <span class="type-body-sm">Collision</span>
+          <m-badge size="lg" mode="tone">{{ `Collision ${i}` }}</m-badge>
         </magic-scroll-collision>
       </magic-scroll-scene>
     </div>
   </magic-scroll-provider>
+  <magic-toast-provider
+    id="magic-scroll-collision-detection-demo"
+    :options="{ position: 'bottom-right' }"
+  />
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, defineAsyncComponent, ref } from 'vue'
 import {
+  useMagicToast,
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { MBadge } from '@maas/mirror/vue'
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
+const component = defineAsyncComponent(
+  () => import('./components/CollisionToast.vue')
+)
+
+const { add } = useMagicToast('magic-scroll-collision-detection-demo')
 
 function callback(payload: MagicEmitterEvents['collision']) {
-  console.log(payload)
+  add({ component, duration: 5000, props: { payload } })
 }
 
 useMagicEmitter().on('collision', callback)

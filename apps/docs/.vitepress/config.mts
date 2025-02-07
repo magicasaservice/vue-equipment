@@ -13,8 +13,7 @@ const currentYear = new Date().getFullYear()
 
 export default defineConfig({
   title: 'Vue Equipment',
-  description:
-    'A magic collection of Vue composables, plugins, components and directives',
+  description: 'Our Frontend Toolkit, Free and Open Source',
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   markdown: {
     preConfig(md) {
@@ -88,7 +87,7 @@ function getPlugins() {
     text: 'Plugins',
     collapsed: false,
     items: plugins.map((i) => ({
-      text: i.name,
+      text: i.name.replace('Magic', 'Magic '),
       link: i.external || `/${i.package}/${i.name}/`,
     })),
   }

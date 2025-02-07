@@ -236,6 +236,8 @@ MagicScrollMotion is a wrapper around [motion.dev](https://motion.dev/) for scro
 
 ### MagicScrollCollision
 
+MagicScrollCollision emits an event once the element’s top or bottom edge collides with the target’s top or bottom edge.
+
 <ProseTable 
   :columns="[
     { label: 'Prop' },

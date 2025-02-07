@@ -1,19 +1,33 @@
 <template>
   <div
-    class="bg-surface-elevation-high text-surface type-label-text-xl rounded-m p-3 w-[250px] pointer-events-auto cursor-pointer flex justify-between items-center"
+    class="bg-surface-elevation-base flex w-[264px] flex-col justify-between gap-2 rounded-md p-4"
   >
-    <span>{{ message }}</span>
-    <m-button size="xs" @click="emit('close')"> Close </m-button>
+    <div class="relative inline-flex gap-2">
+      <m-badge size="sm" mode="tone">ID</m-badge>
+      <m-badge size="sm">{{ payload.id }}</m-badge>
+    </div>
+    <div class="relative inline-flex gap-2">
+      <m-badge size="sm" mode="tone">Scroll Direction</m-badge>
+      <m-badge size="sm">{{ payload.direction }}</m-badge>
+    </div>
+    <div class="relative inline-flex gap-2">
+      <m-badge size="sm" mode="tone">Scroll Container Edge</m-badge>
+      <m-badge size="sm">{{ payload.parentEdge }}</m-badge>
+    </div>
+    <div class="relative inline-flex gap-2">
+      <m-badge size="sm" mode="tone">Element Edge</m-badge>
+      <m-badge size="sm">{{ payload.childEdge }}</m-badge>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins'
+import { MBadge } from '@maas/mirror/vue'
 
-interface Props {
-  message: string
+interface CollisionToastProps {
+  payload: MagicEmitterEvents['collision']
 }
 
-const emit = defineEmits(['close'])
-defineProps<Props>()
+defineProps<CollisionToastProps>()
 </script>
