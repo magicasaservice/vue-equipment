@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full aspect-[16/9]">
+  <div class="aspect-[16/9] w-full">
     <magic-player-provider
-      id="default-demo-player"
+      id="magic-player-default-demo"
       :options="{
         src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
       }"
@@ -9,7 +9,7 @@
       <magic-player-video />
       <magic-player-poster>
         <magic-player-provider
-          id="default-demo-player-poster"
+          id="magic-player-default-demo-poster"
           :options="{
             src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
             autoplay: true,
