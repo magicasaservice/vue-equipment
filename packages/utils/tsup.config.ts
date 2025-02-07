@@ -5,7 +5,7 @@ import { cpSync } from 'node:fs'
 export default defineConfig({
   entry: [resolve(__dirname, './index.ts')],
   outDir: resolve(__dirname, '../../dist/utils'),
-  format: ['cjs', 'esm'],
+  format: ['esm'],
   dts: true,
   sourcemap: true,
   clean: true,

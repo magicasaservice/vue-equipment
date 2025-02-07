@@ -4,6 +4,6 @@ sidebar: false
 
 hero:
   name: Vue Equipment
-  text: by MaaS
-  tagline: A magic collection of Vue composables, plugins and utilities
+  text: by MaaS™
+  tagline: Our Frontend Toolkit, Free and Open Source
 ---

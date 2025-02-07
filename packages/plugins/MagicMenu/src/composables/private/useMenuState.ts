@@ -10,7 +10,7 @@ export function useMenuState(instanceId: MaybeRef<string>) {
   function createState(id: string) {
     const state: MenuState = {
       id: id,
-      options: defaultOptions,
+      options: { ...defaultOptions },
       views: [],
       active: false,
       input: {
@@ -24,28 +24,28 @@ export function useMenuState(instanceId: MaybeRef<string>) {
   }
 
   function addState(id: string) {
-    const instance = createState(id)
-    menuStateStore.value = [...menuStateStore.value, instance]
+    const state = createState(id)
+    menuStateStore.value = [...menuStateStore.value, state]
 
-    return instance
+    return state
   }
 
   // Public functions
   function initializeState(options?: MagicMenuOptions) {
-    let instance = menuStateStore.value.find((instance) => {
-      return instance.id === toValue(instanceId)
+    let state = menuStateStore.value.find((entry) => {
+      return entry.id === toValue(instanceId)
     })
 
-    if (!instance) {
-      instance = addState(toValue(instanceId))
+    if (!state) {
+      state = addState(toValue(instanceId))
     }
 
     if (options) {
       const mappedOptions = defu(options, defaultOptions)
-      instance.options = mappedOptions
+      state.options = mappedOptions
     }
 
-    return instance
+    return state
   }
 
   function deleteState() {

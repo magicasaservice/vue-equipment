@@ -1,9 +1,10 @@
 <template>
   <primitive
     :as-child="asChild"
-    :class="['magic-accordion-view', { '-active': view.active }]"
+    :data-active="view?.active"
+    class="magic-accordion-view"
   >
-    <slot :is-active="view?.active" />
+    <slot :view-active="view?.active" />
   </primitive>
 </template>
 
@@ -18,12 +19,12 @@ import {
 import { useAccordionView } from '../composables/private/useAccordionView'
 
 interface MagicAccordionViewProps {
-  asChild?: boolean
   id?: string
-  activeOnMounted?: boolean
+  asChild?: boolean
+  active?: boolean
 }
 
-const props = defineProps<MagicAccordionViewProps>()
+const { id, active } = defineProps<MagicAccordionViewProps>()
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 
@@ -33,19 +34,20 @@ if (!instanceId) {
   )
 }
 
-const mappedId = computed(() => props.id ?? `magic-accordion-view-${useId()}`)
+const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)
+const mappedActive = computed(() => view.active)
 
 // Register view
 const { initializeView, deleteView } = useAccordionView(instanceId)
 
 const view = initializeView({
   id: mappedId.value,
-  active: props.activeOnMounted ?? false,
+  active: active ?? false,
 })
 
 // Pass id and active state to children
 provide(MagicAccordionViewId, mappedId.value)
-provide(MagicAccordionViewActive, view.active)
+provide(MagicAccordionViewActive, mappedActive)
 
 // Lifecycle
 onBeforeUnmount(() => {

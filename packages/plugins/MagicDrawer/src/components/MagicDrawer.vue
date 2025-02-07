@@ -5,17 +5,13 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      ref="drawerRef"
       :id="toValue(id)"
-      :class="[
-        'magic-drawer',
-        `-${mappedOptions.position}`,
-        {
-          '-dragging': dragging,
-          '-wheeling': wheeling,
-          '-disabled': disabled,
-        },
-      ]"
+      ref="drawerRef"
+      class="magic-drawer"
+      :data-dragging="dragging"
+      :data-wheeling="wheeling"
+      :data-disabled="disabled"
+      :data-position="mappedOptions.position"
       v-bind="$attrs"
       aria-modal="true"
     >
@@ -32,7 +28,7 @@
         </div>
       </transition>
 
-      <div class="magic-drawer__wrapper" ref="wrapperRef">
+      <div ref="wrapperRef" class="magic-drawer__wrapper">
         <transition
           :name="contentTransition"
           @before-leave="onBeforeLeave"
@@ -51,13 +47,7 @@
               @pointerdown="guardedPointerdown"
               @click="guardedClick"
             >
-              <component
-                v-if="component"
-                v-bind="props"
-                :is="component"
-                @close="guardedClose"
-              />
-              <slot v-else />
+              <slot />
               <div v-if="hasDragged" class="magic-drawer__overlay" />
             </component>
           </div>
@@ -67,7 +57,7 @@
   </teleport>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
   ref,
   watch,
@@ -77,7 +67,7 @@ import {
   onBeforeMount,
   onBeforeUnmount,
   onUnmounted,
-  type Component,
+  toRefs,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
@@ -120,18 +110,12 @@ const customDefu = createDefu((obj, key, value) => {
 
 interface MagicDrawerProps {
   id: MaybeRef<string>
-  component?: Component
   options?: MagicDrawerOptions
 }
 
-const props = withDefaults(defineProps<MagicDrawerProps>(), {
-  options: () => defaultOptions,
-})
+const { options = {}, id } = defineProps<MagicDrawerProps>()
 
-const mappedOptions: typeof defaultOptions = customDefu(
-  props.options,
-  defaultOptions
-)
+const mappedOptions = customDefu(options, defaultOptions)
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const drawerRef = ref<HTMLDivElement | undefined>(undefined)
@@ -149,7 +133,7 @@ const {
   focusTrap: mappedOptions.focusTrap,
 })
 
-const { isActive, open, close } = useMagicDrawer(props.id)
+const { isActive, open, close } = useMagicDrawer(id)
 
 const overshoot = ref(0)
 const {
@@ -163,16 +147,15 @@ const {
 
 // Make sure this is reactive
 const disabled = computed(() => {
-  if (props.options.disabled === undefined) {
+  if (options.disabled === undefined) {
     return defaultOptions.disabled
   } else {
-    return props.options.disabled
+    return options.disabled
   }
 })
 
 const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
-  id: props.id,
-  isActive,
+  id,
   elRef,
   wrapperRef,
   position,
@@ -183,18 +166,19 @@ const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
   initial,
   preventDragClose,
   disabled,
-  close,
 })
 
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
-  id: props.id,
+  id,
   elRef,
   position,
   disabled,
 })
 
-const { initializeState, deleteState } = useDrawerState(props.id)
-const { dragging, wheeling } = initializeState()
+const { initializeState, deleteState } = useDrawerState(id)
+const state = initializeState()
+
+const { dragging, wheeling } = toRefs(state)
 
 // Split isActive into two values to animate drawer smoothly
 const innerActive = ref(false)
@@ -209,7 +193,7 @@ const {
   onLeave,
   onAfterLeave,
 } = useDrawerCallback({
-  id: props.id,
+  id,
   mappedOptions,
   addScrollLockPadding,
   removeScrollLockPadding,
@@ -221,7 +205,7 @@ const {
   wasActive,
 })
 
-useDrawerProgress({ id: props.id, elRef, drawerRef, position, overshoot })
+useDrawerProgress({ id, elRef, drawerRef, position, overshoot })
 
 const { resetMetaViewport } = useMetaViewport()
 
@@ -387,10 +371,10 @@ onUnmounted(() => {
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
   --magic-drawer-leave-animation: slide-btt-out 300ms ease;
   --magic-drawer-drag-overshoot: 4rem;
-  --magic-drawer-padding: 0px;
 }
 
 .magic-drawer {
+  --magic-drawer-padding: 0px;
   --magic-drawer-drag-overshoot-x: 0px;
   --magic-drawer-drag-overshoot-y: 0px;
   position: fixed;
@@ -408,7 +392,7 @@ onUnmounted(() => {
   border: none;
 }
 
-.magic-drawer.-bottom {
+.magic-drawer[data-position='bottom'] {
   --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 0 var(--magic-drawer-drag-overshoot-y) 0;
 
@@ -419,7 +403,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-top {
+.magic-drawer[data-position='top'] {
   --magic-drawer-enter-animation: slide-ttb-in 300ms ease;
   --magic-drawer-leave-animation: slide-ttb-out 300ms ease;
   --magic-drawer-align-items: flex-start;
@@ -435,7 +419,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-right {
+.magic-drawer[data-position='right'] {
   --magic-drawer-enter-animation: slide-rtl-in 300ms ease;
   --magic-drawer-leave-animation: slide-rtl-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -450,7 +434,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-drawer.-left {
+.magic-drawer[data-position='left'] {
   --magic-drawer-enter-animation: slide-ltr-in 300ms ease;
   --magic-drawer-leave-animation: slide-ltr-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -513,16 +497,16 @@ dialog.magic-drawer__drag::backdrop {
   background-color: transparent;
 }
 
-.magic-drawer.-dragging .magic-drawer__drag {
+.magic-drawer[data-dragging='true'] .magic-drawer__drag {
   cursor: grabbing;
   user-select: none;
 }
 
-.magic-drawer.-wheeling .magic-drawer__drag {
+.magic-drawer[data-wheeling='true'] .magic-drawer__drag {
   cursor: auto;
 }
 
-.magic-drawer.-disabled .magic-drawer__drag {
+.magic-drawer[data-disabled='true'] .magic-drawer__drag {
   cursor: auto;
 }
 
@@ -550,7 +534,7 @@ dialog.magic-drawer__drag::backdrop {
   z-index: -1;
 }
 
-.magic-drawer.-disabled .magic-drawer__backdrop {
+.magic-drawer[data-disabled='true'] .magic-drawer__backdrop {
   pointer-events: none;
 }
 

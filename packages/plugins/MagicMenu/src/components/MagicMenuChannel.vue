@@ -1,10 +1,11 @@
 <template>
   <transition :name="mappedTransition">
     <div
-      :class="['magic-menu-channel', { '-initialized': state.active }]"
       v-if="channel.active"
-      :data-id="mappedId"
       :id="id"
+      class="magic-menu-channel"
+      :data-initialized="state.active"
+      :data-id="mappedId"
     >
       <slot />
     </div>
@@ -56,6 +57,7 @@ if (!contentId) {
 }
 
 const mappedId = computed(() => `magic-menu-channel-${id}`)
+const mappedActive = computed(() => channel.active)
 const mappedTransition = computed(
   () => transition ?? state.options.transition.channel
 )
@@ -72,20 +74,20 @@ const channel = initializeChannel({
 
 // Pass id and active state to children
 provide(MagicMenuChannelId, mappedId.value)
-provide(MagicMenuChannelActive, channel.active)
+provide(MagicMenuChannelActive, mappedActive)
 </script>
 
 <style>
 .magic-menu-channel-enter-active {
   animation: fade-in 300ms ease;
-  &.-initialized {
+  &[data-initialized='true'] {
     position: absolute;
   }
 }
 
 .magic-menu-channel-leave-active {
   animation: fade-out 300ms ease;
-  &.-initialized {
+  &[data-initialized='true'] {
     position: absolute;
   }
 }

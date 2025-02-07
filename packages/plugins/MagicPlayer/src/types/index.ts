@@ -1,4 +1,14 @@
-export type MagicPlayerSourceType = 'native' | 'hls'
+export interface MagicPlayerOptions {
+  src: string
+  mode?: 'audio' | 'video'
+  srcType?: 'native' | 'hls'
+  preload?: 'auto' | 'metadata' | 'none'
+  autoplay?: boolean
+  loop?: boolean
+  transition?: {
+    videoControls: string
+  }
+}
 
 type API = 'media' | 'player' | 'controls' | 'runtime' | 'player'
 

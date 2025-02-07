@@ -22,7 +22,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   const buffered = ref<Buffered>([])
   const muted = ref(false)
 
-  const { mediaRef } = args
+  const { mediaRef, id } = args
 
   // Computed state
   const remainingTime = computed(() => duration.value - currentTime.value)
@@ -167,7 +167,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   // Listen to updates
   emitter.on('update', (payload) => {
-    if (payload.id !== toValue(args.id)) return
+    if (payload.id !== toValue(id)) return
 
     if (payload.api === 'media') {
       switch (payload.key) {
@@ -211,7 +211,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Emit updates
   watch(currentTime, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'currentTime',
       value,
@@ -220,7 +220,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(duration, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'duration',
       value,
@@ -229,7 +229,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(seeking, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'seeking',
       value,
@@ -238,7 +238,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(volume, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'volume',
       value,
@@ -247,7 +247,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(rate, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'rate',
       value,
@@ -256,7 +256,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(waiting, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'waiting',
       value,
@@ -265,7 +265,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(ended, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'ended',
       value,
@@ -274,7 +274,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(playing, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'playing',
       value,
@@ -283,7 +283,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(stalled, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'stalled',
       value,
@@ -292,7 +292,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(buffered, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'buffered',
       value,
@@ -301,7 +301,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   watch(muted, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'media',
       key: 'muted',
       value,

@@ -8,9 +8,8 @@ export type UsePlayerAudioApiArgs = {
 
 export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   // Private state
-  const { playing, currentTime, muted } = usePlayerMediaApi({
-    id: args.id,
-  })
+  const { id } = args
+  const { playing, currentTime, muted } = usePlayerMediaApi({ id })
 
   // Public state
   const touched = ref(false)
@@ -60,7 +59,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
 
   // Listen to updates
   emitter.on('update', (payload) => {
-    if (payload.id !== toValue(args.id)) return
+    if (payload.id !== toValue(id)) return
 
     if (payload.api === 'player') {
       switch (payload.key) {
@@ -77,7 +76,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   // Emit updates
   watch(mouseEntered, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'player',
       key: 'mouseEntered',
       value,
@@ -86,7 +85,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
 
   watch(touched, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'player',
       key: 'touched',
       value,

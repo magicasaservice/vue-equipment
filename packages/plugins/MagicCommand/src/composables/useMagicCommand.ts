@@ -1,36 +1,87 @@
-import { computed, toValue, type MaybeRef } from 'vue'
-import { useCommandStore } from './private/useCommandStore'
+import { computed, nextTick, type MaybeRef } from 'vue'
+import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
 
+interface SelectItemArgs {
+  id: string
+  viewId: string
+}
+
+interface UnselectItemArgs {
+  id: string
+  viewId: string
+}
+
 export function useMagicCommand(id: MaybeRef<string>) {
+  // Private functions
+  const { initializeState } = useCommandState(id)
+
   // Public state
-  const isActive = computed(() =>
-    commandStore.value.map((item) => item.id).includes(toValue(id))
-  )
+  const state = initializeState()
+  const isActive = computed(() => state.active)
 
-  // Private methods
-  const { commandStore, addInstance, removeInstance } = useCommandStore()
+  // Public functions
+  const { selectView, unselectView, selectInitialView, unselectAllViews } =
+    useCommandView(id)
 
-  // Public methods
-  function open() {
-    addInstance(toValue(id))
+  async function open() {
+    state.active = true
+    await nextTick()
+    selectInitialView()
   }
 
   function close() {
-    removeInstance(toValue(id))
+    state.active = false
+    state.input.view = undefined
+    unselectAllViews()
   }
 
-  const { selectItem, selectLastItem } = useCommandItem(toValue(id))
-  const { selectView, selectLastView } = useCommandView()
+  function selectItem(args: SelectItemArgs) {
+    const { id, viewId } = args
+
+    if (!viewId) {
+      throw new Error('viewId is required to select an item')
+    }
+
+    if (!id) {
+      throw new Error('id is required to select an item')
+    }
+
+    const { selectItem } = useCommandItem({
+      instanceId: id,
+      viewId: viewId,
+    })
+
+    return selectItem(id)
+  }
+
+  function unselectItem(args: UnselectItemArgs) {
+    const { id, viewId } = args
+
+    if (!viewId) {
+      throw new Error('viewId is required to select an item')
+    }
+
+    if (!id) {
+      throw new Error('id is required to select an item')
+    }
+
+    const { unselectItem } = useCommandItem({
+      instanceId: id,
+      viewId: viewId,
+    })
+
+    return unselectItem(id)
+  }
 
   return {
     isActive,
     open,
     close,
     selectItem,
-    selectLastItem,
+    unselectItem,
     selectView,
-    selectLastView,
+    unselectView,
   }
 }

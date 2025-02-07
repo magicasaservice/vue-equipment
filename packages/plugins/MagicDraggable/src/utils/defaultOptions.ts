@@ -1,20 +1,16 @@
-import type { MagicDraggableOptions } from '../types'
-import type { RequireAll } from '@maas/vue-equipment/utils'
-
-type DefaultOptions = RequireAll<MagicDraggableOptions> & {
-  threshold: RequireAll<MagicDraggableOptions['threshold']>
-  animation: RequireAll<MagicDraggableOptions['animation']>
-}
+import type { DraggableDefaultOptions } from '../types'
 
 import { easeOutBack } from '@maas/vue-equipment/utils'
 
-const defaultOptions: DefaultOptions = {
+const defaultOptions: DraggableDefaultOptions = {
   tag: 'div',
+  scrollLock: { padding: true },
+  snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
   threshold: {
+    lock: 0,
     distance: 128,
     momentum: 1.5,
     idle: 250,
-    lock: 0,
   },
   animation: {
     snap: {
@@ -25,9 +21,8 @@ const defaultOptions: DefaultOptions = {
   initial: {
     snapPoint: 'center',
   },
-  snapPoints: [],
   disabled: false,
   scrollLock: { padding: true },
 }
 
-export { defaultOptions, type DefaultOptions }
+export { defaultOptions }

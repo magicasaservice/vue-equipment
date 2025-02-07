@@ -1,5 +1,4 @@
 export * from './useCountdown'
 export * from './useEasings'
-export * from './useGlyphToSvg'
 export * from './useMetaViewport'
 export * from './useScrollTo'

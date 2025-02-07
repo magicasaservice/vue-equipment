@@ -2,22 +2,31 @@
   "name": "docs",
   "version": "0.40.0",
   "private": true,
-  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "contributors": [
+    {
+      "name": "Robin Scholz",
+      "url": "https://github.com/robinscholz"
+    },
+    {
+      "name": "Christoph Jeworutzki",
+      "url": "https://github.com/ChristophJeworutzki"
+    }
+  ],
   "type": "module",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
+    "@types/fs-extra": "catalog:",
+    "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.13.0",
     "autoprefixer": "^10.4.20",
     "fonts": "workspace:fonts@*",
-    "fs-extra": "^11.2.0",
-    "postcss": "^8.4.49",
+    "fs-extra": "catalog:",
+    "postcss": "^8.5.1",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.17",
-    "unplugin-icons": "^0.22.0",
-    "unplugin-vue-components": "^0.28.0",
-    "vite": "^6.0.3",
+    "tailwindcss": "catalog:",
+    "unplugin-icons": "^22.0.0",
+    "vite": "^6.1.0",
     "vitepress": "1.5.0",
-    "vue": "^3.5.13"
+    "vue": "catalog:"
   },
   "scripts": {
     "dev": "vitepress dev",
@@ -26,10 +35,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@maas/mirror": "^0.11.0",
+    "@maas/mirror": "catalog:",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
+    "@maas/vue-equipment/utils": "workspace:utils@*",
+    "markdown-it": "^14.1.0",
+    "unplugin-vue-components": "^28.0.0"
   }
 }

@@ -1,19 +1,19 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, toValue, toRefs, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useDrawerState } from './private/useDrawerState'
 
 import type { DrawerSnapPoint } from '../types/index'
 
 export function useMagicDrawer(id: MaybeRef<string>) {
-  // Private methods
+  // Private functions
   const { initializeState } = useDrawerState(toValue(id))
-
-  const { progress, active } = initializeState()
+  const state = initializeState()
+  const { progress, active } = toRefs(state)
 
   // Public state
   const isActive = computed(() => active.value)
 
-  // Public methods
+  // Public functions
   function open() {
     active.value = true
   }

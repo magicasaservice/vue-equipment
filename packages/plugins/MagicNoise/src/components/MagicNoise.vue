@@ -1,6 +1,6 @@
 <template>
-  <div class="magic-noise" :class="{ '-loading': !isReady }">
-    <div :class="{ '-loading': !isReady }" class="magic-noise__inner">
+  <div class="magic-noise" :data-loading="!isReady">
+    <div class="magic-noise__inner">
       <canvas ref="canvasRef" class="magic-noise__canvas" />
       <canvas ref="offCanvasRef" class="magic-noise__off-canvas" />
     </div>
@@ -18,9 +18,7 @@ interface MagicNoiseProps {
   pause?: boolean
 }
 
-const props = withDefaults(defineProps<MagicNoiseProps>(), {
-  pause: false,
-})
+const { pause = false, options } = defineProps<MagicNoiseProps>()
 
 const canvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
 const offCanvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
@@ -28,7 +26,7 @@ const offCanvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
 const noiseApi = useNoiseApi({
   canvasRef,
   offCanvasRef,
-  options: props.options,
+  options,
 })
 
 const {
@@ -43,7 +41,7 @@ const {
 useResizeObserver(canvasRef, useDebounceFn(initialize, 100))
 
 watch(
-  () => props.pause,
+  () => pause,
   (pause) => {
     if (pause) {
       drawControls.value?.pause()
@@ -77,8 +75,11 @@ onUnmounted(() => {
   user-select: none;
   transition: var(--magic-noise-loading-transition);
   background: var(--magic-noise-background, transparent);
-  &.-loading {
+  &[data-loading='true'] {
     background: var(--magic-noise-loading-background, #000);
+    & > .magic-noise__inner {
+      opacity: 0;
+    }
   }
 }
 
@@ -87,9 +88,6 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   transition: var(--magic-noise-loading-transition);
-  &.-loading {
-    opacity: 0;
-  }
 }
 
 .magic-noise__canvas {

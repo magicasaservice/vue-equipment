@@ -1,0 +1,11 @@
+/* Hide the #Overview headline  */
+.table-of-contents ul li:first-child {
+  display: none;
+}
+
+/* Mirage stylistic sets */
+body {
+  font-feature-settings:
+    'cv06' 1,
+    'cv04' 1;
+}

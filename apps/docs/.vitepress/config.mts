@@ -4,15 +4,25 @@ import autoprefixer from 'autoprefixer'
 
 // https://github.com/vitejs/vite/issues/5370
 import { plugins, composables } from './../../../packages/metadata'
+import { componentPreview } from './plugins/componentPreview'
 
 const mappedComposables = getComposables()
 const mappedPlugins = getPlugins()
 
+const currentYear = new Date().getFullYear()
+
 export default defineConfig({
   title: 'Vue Equipment',
-  description:
-    'A magic collection of Vue composables, plugins, components and directives',
-  head: [['link', { rel: 'icon', href: '/apps/docs/public/favicon.svg' }]], // TODO: fix this
+  description: 'Our Frontend Toolkit, Free and Open Source',
+  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  markdown: {
+    preConfig(md) {
+      md.use(componentPreview)
+    },
+    toc: {
+      level: [2],
+    },
+  },
   themeConfig: {
     nav: [
       { text: 'Docs', link: '/overview/introduction' },
@@ -39,7 +49,7 @@ export default defineConfig({
     ],
     footer: {
       message: 'Released under the MIT License.',
-      copyright: '© 2024 Magic as a Service™',
+      copyright: `© ${currentYear} Magic as a Service™`,
     },
   },
   srcDir: './../..',

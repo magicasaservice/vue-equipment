@@ -1,11 +1,18 @@
 <template>
   <div
-    class="magic-command-item"
     ref="elRef"
+    class="magic-command-item"
     :data-id="mappedId"
-    :aria-selected="isActive"
+    :data-disabled="disabled"
+    :data-active="item.active"
+    :data-pointer-disabled="pointerDisabled"
+    @mouseenter="guardedSelect"
+    @mousemove="guardedSelect"
+    @touchstart.passive="guardedSelect"
+    @click="onClick"
   >
-    <slot :is-active="isActive" />
+    <slot :item-active="item.active" :item-disabled="disabled" />
+    <div v-if="pointerDisabled" class="magic-command-item__pointer-guard" />
   </div>
 </template>
 
@@ -14,80 +21,113 @@ import {
   ref,
   computed,
   inject,
-  toValue,
-  nextTick,
-  onMounted,
-  onUnmounted,
+  provide,
+  onBeforeUnmount,
   useId,
+  onMounted,
 } from 'vue'
-import { useEventListener, onKeyStroke } from '@vueuse/core'
-import { useCommandStore } from '../composables/private/useCommandStore'
 import { useCommandItem } from '../composables/private/useCommandItem'
-import { MagicCommandInstanceId } from '../symbols'
+import { useCommandState } from '../composables/private/useCommandState'
+import {
+  MagicCommandInstanceId,
+  MagicCommandViewId,
+  MagicCommandContentId,
+  MagicCommandItemId,
+  MagicCommandItemActive,
+  MagicCommandItemDisabled,
+} from '../symbols'
 
 interface MagicCommandItemProps {
   id?: string
-  default?: boolean
-  callback: Function | false
-  listener?: ('click' | 'mouseenter' | 'touchstart')[]
-  keys?: string[]
+  initial?: boolean
+  disabled?: boolean
 }
 
-const props = withDefaults(defineProps<MagicCommandItemProps>(), {
-  listener: () => ['click'],
-  keys: () => ['Enter'],
-})
+const {
+  id,
+  initial = false,
+  disabled = false,
+} = defineProps<MagicCommandItemProps>()
+
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
+
+const instanceId = inject(MagicCommandInstanceId, undefined)
+const viewId = inject(MagicCommandViewId, undefined)
+const contentId = inject(MagicCommandContentId, undefined)
+
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const commandId = inject(MagicCommandInstanceId, '')
-const { selectItem, activeItem } = useCommandItem(commandId)
-
-const mappedId = computed(() => {
-  return props.id ?? useId() ?? ''
-})
-
-const isActive = computed(() => {
-  return toValue(mappedId) === activeItem.value
-})
-
-function listenerCallback() {
-  selectItem(mappedId.value)
-  nextTick(() => {
-    if (props.callback) {
-      props.callback()
-    }
-  })
+if (!instanceId) {
+  throw new Error('MagicCommandItem must be nested inside MagicCommandProvider')
 }
 
-useEventListener(elRef, props.listener, listenerCallback)
-
-if (props.keys.length) {
-  onKeyStroke(props.keys, () => (isActive.value ? listenerCallback() : null))
+if (!viewId) {
+  throw new Error('MagicCommandItem must be nested inside MagicCommandView')
 }
 
-const { addItem, removeItem } = useCommandStore()
+if (!contentId) {
+  throw new Error('MagicCommandItem must be nested inside MagicCommandContent')
+}
+const mappedId = computed(() => id ?? `magic-command-item-${useId()}`)
 
+// Register item
+const { initializeItem, deleteItem, selectItem } = useCommandItem({
+  instanceId,
+  viewId,
+})
+
+// Guarded select
+// Check for mode and active state
+const { initializeState } = useCommandState(instanceId)
+const state = initializeState()
+const item = initializeItem({
+  id: mappedId.value,
+  disabled: disabled ?? false,
+})
+
+const pointerDisabled = computed(() => state.input.type !== 'pointer')
+const mappedDisabled = computed(() => disabled ?? item?.disabled)
+const mappedActive = computed(() => item?.active)
+
+function guardedSelect() {
+  if (state.input.type === 'pointer' && !item.disabled && !item.active) {
+    selectItem(mappedId.value)
+  }
+}
+
+function onClick(event: MouseEvent) {
+  emit('click', event)
+
+  guardedSelect()
+}
+
+// Pass id and states to children
+provide(MagicCommandItemId, mappedId.value)
+provide(MagicCommandItemActive, mappedActive)
+provide(MagicCommandItemDisabled, mappedDisabled)
+
+// Lifecycle
 onMounted(() => {
-  if (toValue(commandId)) {
-    addItem(toValue(commandId), mappedId.value)
+  if (initial) {
+    selectItem(mappedId.value)
   }
-
-  nextTick(() => {
-    if (props.default) {
-      selectItem(mappedId.value)
-    }
-  })
 })
 
-onUnmounted(() => {
-  if (toValue(commandId)) {
-    removeItem(toValue(commandId), mappedId.value)
-  }
+onBeforeUnmount(() => {
+  deleteItem(mappedId.value)
 })
 </script>
 
 <style>
 .magic-command-item {
-  cursor: pointer;
+  position: relative;
+  cursor: var(--magic-command-item-cursor, default);
+}
+
+.magic-command-item__pointer-guard {
+  position: absolute;
+  inset: 0;
 }
 </style>

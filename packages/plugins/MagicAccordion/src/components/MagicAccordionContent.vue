@@ -1,9 +1,16 @@
 <template>
-  <div :class="['magic-accordion-content', { '-active': view?.active }]">
-    <magic-auto-size :immediate="true" :width="false">
+  <div
+    class="magic-accordion-content"
+    :data-active="view?.active"
+    :style="{ '--ma-duration': `${state.options.animation?.duration}ms` }"
+  >
+    <auto-size
+      :width="false"
+      :duration="mappedAnimation.duration"
+      :easing="mappedAnimation.easing"
+    >
       <transition
-        mode="out-in"
-        :name="state.options.transition"
+        :name="mappedTransition"
         :on-before-enter="onBeforeEnter"
         :on-enter="onEnter"
         :on-after-enter="onAfterEnter"
@@ -11,16 +18,18 @@
         :on-leave="onLeave"
         :on-after-leave="onAfterLeave"
       >
-        <primitive :as-child="asChild" v-show="view?.active">
-          <slot :is-active="view?.active" />
+        <primitive v-show="view?.active" :as-child="asChild">
+          <slot :view-active="view?.active" />
         </primitive>
       </transition>
-    </magic-auto-size>
+    </auto-size>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
+import { defu } from 'defu'
+import { AutoSize } from '@maas/vue-autosize'
 import { Primitive } from '@maas/vue-primitive'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
@@ -28,13 +37,20 @@ import { useAccordionCallback } from '../composables/private/useAccordionCallbac
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
+import '@maas/vue-equipment/utils/css/animations/auto-size-out.css'
+
 import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {
   asChild?: boolean
+  transition?: string
+  animation?: {
+    duration: number
+    easing: (t: number) => number
+  }
 }
 
-defineProps<MagicAccordionContentProps>()
+const { transition, animation } = defineProps<MagicAccordionContentProps>()
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)
@@ -53,6 +69,9 @@ const state = initializeState()
 const { getView } = useAccordionView(instanceId)
 const view = getView(viewId)
 
+const mappedTransition = computed(() => transition ?? state.options.transition)
+const mappedAnimation = computed(() => defu(animation, state.options.animation))
+
 const {
   onBeforeEnter,
   onEnter,
@@ -68,26 +87,15 @@ const {
 
 <style>
 .magic-accordion-content {
-  --magic-auto-size-transition: var(
-    --magic-accordion-size-transition,
-    all 200ms var(--ease-in-out-sharp) ;
-  );
   clip-path: var(--magic-accordion-content-clip-path, inset(0));
 }
 
 .magic-accordion-enter-active {
   position: relative;
-  transition: var(
-    --magic-accordion-enter-transition,
-    fade-in 150ms var(--ease-in-out)
-  );
+  animation: fade-in var(--ma-duration) var(--ease-in-out);
 }
 
 .magic-accordion-leave-active {
-  transition: var(
-    --magic-accordion-leave-transition,
-    all 200ms var(--ease-in-out-sharp)
-  );
-  height: 0;
+  animation: auto-size-out var(--ma-duration) var(--ease-in-out-sharp);
 }
 </style>

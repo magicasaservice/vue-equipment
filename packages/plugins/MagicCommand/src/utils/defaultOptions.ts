@@ -1,16 +1,18 @@
-import type { MagicCommandOptions } from '../types'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { CommandDefaultOptions } from '../types'
 
-const defaultOptions: RequireAllNested<MagicCommandOptions> = {
-  keys: {
-    open: ['Cmd+k'],
+const defaultOptions: CommandDefaultOptions = {
+  debug: false,
+  transition: {
+    content: 'magic-command-content',
+  },
+  keyListener: {
+    open: ['Cmd+k', 'Ctrl+k'],
     close: ['Escape'],
     next: ['ArrowDown'],
     prev: ['ArrowUp'],
+    enter: ['Enter'],
   },
   loop: false,
 }
 
-type DefaultOptions = typeof defaultOptions
-
-export { defaultOptions, type DefaultOptions }
+export { defaultOptions }

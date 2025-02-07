@@ -10,7 +10,7 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
   function createState(id: string) {
     const state: AccordionState = {
       id: id,
-      options: defaultOptions,
+      options: { ...defaultOptions },
       views: [],
     }
 
@@ -18,28 +18,28 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
   }
 
   function addState(id: string) {
-    const instance = createState(id)
-    accordionStateStore.value = [...accordionStateStore.value, instance]
+    const state = createState(id)
+    accordionStateStore.value = [...accordionStateStore.value, state]
 
-    return instance
+    return state
   }
 
   // Public functions
   function initializeState(options?: MagicAccordionOptions) {
-    let instance = accordionStateStore.value.find((instance) => {
-      return instance.id === toValue(instanceId)
+    let state = accordionStateStore.value.find((entry) => {
+      return entry.id === toValue(instanceId)
     })
 
-    if (!instance) {
-      instance = addState(toValue(instanceId))
+    if (!state) {
+      state = addState(toValue(instanceId))
     }
 
     if (options) {
       const mappedOptions = defu(options, defaultOptions)
-      instance.options = mappedOptions
+      state.options = mappedOptions
     }
 
-    return instance
+    return state
   }
 
   function deleteState() {

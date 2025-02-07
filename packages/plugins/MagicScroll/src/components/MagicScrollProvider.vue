@@ -4,37 +4,38 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { provide, computed } from 'vue'
-import {
-  useScroll,
-  unrefElement,
-  type MaybeComputedElementRef,
-} from '@vueuse/core'
-import { MagicScrollReturn, MagicScrollParent } from '../symbols'
+import { useScroll, unrefElement, type MaybeElementRef } from '@vueuse/core'
+import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
 interface MagicScrollProviderProps {
-  active?: Boolean
-  el?: MaybeComputedElementRef<HTMLElement>
+  target?: MaybeElementRef<HTMLElement>
 }
-const props = withDefaults(defineProps<MagicScrollProviderProps>(), {
-  active: () => true,
+
+const { target } = defineProps<MagicScrollProviderProps>()
+
+const mappedTarget = computed(() => {
+  switch (true) {
+    case !!target:
+      return unrefElement(target)
+    case typeof window !== 'undefined':
+      return window
+    default:
+      return undefined
+  }
 })
 
-// computed is used to avoid reactivity issues
-const mappedEl = computed(() => {
-  if (props.el) return unrefElement(props.el)
-  if (typeof window === 'undefined') return undefined
-  return window
-})
+const providedTarget = computed(() => {
+  if (target) {
+    return unrefElement(target)
+  }
 
-const mappedParent = computed(() => {
-  if (props.el) return unrefElement(props.el)
   return undefined
 })
 
-const scrollReturn = useScroll(mappedEl)
+const scrollReturn = useScroll(mappedTarget)
 
 provide(MagicScrollReturn, scrollReturn)
-provide(MagicScrollParent, mappedParent)
+provide(MagicScrollTarget, providedTarget)
 </script>

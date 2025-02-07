@@ -1,5 +1,5 @@
 <template>
-  <magic-accordion-provider id="magic-accordion-demo">
+  <magic-accordion-provider id="magic-accordion-demo" class="w-full">
     <magic-accordion-view>
       <magic-accordion-trigger>Card Tricks</magic-accordion-trigger>
       <magic-accordion-content>
@@ -33,7 +33,7 @@
   </magic-accordion-provider>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onBeforeUnmount } from 'vue'
 import {
   useMagicEmitter,

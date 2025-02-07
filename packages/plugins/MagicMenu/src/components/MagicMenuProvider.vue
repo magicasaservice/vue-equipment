@@ -1,13 +1,15 @@
 <template>
-  <div class="magic-menu-provider" ref="elRef">
+  <primitive ref="elRef" :as-child="asChild" class="magic-menu-provider">
     <slot />
-  </div>
+  </primitive>
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, watch, type MaybeRef, onBeforeUnmount } from 'vue'
+import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
+import { Primitive } from '@maas/vue-primitive'
 import { defu } from 'defu'
+
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
@@ -18,15 +20,16 @@ import type { MagicMenuOptions } from '../types'
 
 interface MagicMenuProviderProps {
   id: MaybeRef<string>
+  asChild?: boolean
   options?: MagicMenuOptions
 }
 
-const props = defineProps<MagicMenuProviderProps>()
+const { id, options } = defineProps<MagicMenuProviderProps>()
 const elRef = ref<HTMLElement | undefined>(undefined)
 
-const mappedOptions = defu(props.options, defaultOptions)
+const mappedOptions = defu(options, defaultOptions)
 
-const { initializeState, deleteState } = useMenuState(props.id)
+const { initializeState, deleteState } = useMenuState(id)
 const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
@@ -63,7 +66,7 @@ const {
   onEscape,
   onEnter,
   onTab,
-} = useMenuKeyListener(props.id)
+} = useMenuKeyListener(id)
 
 onKeyStroke('ArrowRight', onArrowRight)
 onKeyStroke('ArrowLeft', onArrowLeft)
@@ -74,7 +77,7 @@ onKeyStroke('Enter', onEnter)
 onKeyStroke('Tab', onTab)
 
 // Handle off-click
-const { unselectAllViews } = useMenuView(props.id)
+const { unselectAllViews } = useMenuView(id)
 
 onClickOutside(
   elRef,
@@ -94,7 +97,7 @@ onBeforeUnmount(() => {
   deleteState()
 })
 
-provide(MagicMenuInstanceId, props.id)
+provide(MagicMenuInstanceId, id)
 </script>
 
 <style>

@@ -1,24 +1,22 @@
-import { ref, computed, nextTick, watch } from 'vue'
-
-import {
-  useElementBounding,
-  useElementSize,
-  useThrottleFn,
-  toValue,
-  type MaybeRef,
-} from '@vueuse/core'
+import { ref, computed, nextTick, watch, toValue, type MaybeRef } from 'vue'
+import { useElementBounding, useElementSize, useThrottleFn } from '@vueuse/core'
+import { useMarqueeState } from './useMarqueeState'
 
 export type UseMarqueeApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>
   parent: MaybeRef<HTMLElement | null | undefined>
-  options?: {
-    speed?: MaybeRef<number>
-    direction?: MaybeRef<'reverse' | 'normal'>
-  }
+  instanceId: MaybeRef<string>
 }
 
-export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
+export function useMarqueeApi({
+  child,
+  parent,
+  instanceId,
+}: UseMarqueeApiParams) {
   // Private state
+  const { initializeState } = useMarqueeState(instanceId)
+  const state = initializeState()
+
   const duplicates = ref(1)
   const childRect = useElementBounding(child)
   const parentRect = useElementBounding(parent)
@@ -26,16 +24,14 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
   const { width } = useElementSize(parent)
 
   const duration = computed(() =>
-    (childRect.width.value / toValue(speed) / 50).toFixed(2)
+    (childRect.width.value / (toValue(state.options.speed) ?? 1) / 50).toFixed(
+      2
+    )
   )
 
   // Public state
-  const playing = ref(true)
 
-  // Reactive options
-  const speed = computed(() => toValue(options?.speed) || 1)
-  const direction = computed(() => toValue(options?.direction) || 'normal')
-
+  // Private functions
   function calculateDuplicates() {
     const childWidth = childRect?.width.value
     const parentWidth = parentRect?.width.value
@@ -47,33 +43,23 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
 
   function setCssVariables() {
     toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-duration',
+      '--mm-animation-duration',
       `${toValue(duration)}s`
     )
+    toValue(parent)?.style.setProperty('--mm-animation-name', 'mm-scroll-x')
     toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-name',
-      `magicMarqueeScrollX`
-    )
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-direction',
-      `${toValue(options?.direction) || 'normal'}`
+      '--mm-animation-direction',
+      `${toValue(state.options?.direction) || 'normal'}`
     )
   }
 
+  // Public functions
   function pause() {
-    playing.value = false
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-play-state',
-      'paused'
-    )
+    toValue(parent)?.style.setProperty('--mm-animation-play-state', 'paused')
   }
 
   function play() {
-    playing.value = true
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-play-state',
-      'running'
-    )
+    toValue(parent)?.style.setProperty('--mm-animation-play-state', 'running')
   }
 
   async function initialize() {
@@ -93,25 +79,44 @@ export function useMarqueeApi({ child, parent, options }: UseMarqueeApiParams) {
     }, 100)
   )
 
-  watch(speed, () => {
-    nextTick()
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-duration',
-      `${toValue(duration)}s`
-    )
-  })
+  watch(
+    () => state.options.speed,
+    () => {
+      nextTick()
+      toValue(parent)?.style.setProperty(
+        '--mm-animation-duration',
+        `${toValue(duration)}s`
+      )
+    }
+  )
 
-  watch(direction, (dir) => {
-    nextTick()
-    toValue(parent)?.style.setProperty(
-      '--magic-marquee-animation-direction',
-      `${toValue(dir)}`
-    )
-  })
+  watch(
+    () => state.options.direction,
+    (dir) => {
+      nextTick()
+      toValue(parent)?.style.setProperty(
+        '--mm-animation-direction',
+        `${toValue(dir)}`
+      )
+    }
+  )
+
+  watch(
+    () => state.playing,
+    (value) => {
+      switch (value) {
+        case true:
+          play()
+          break
+        case false:
+          pause()
+          break
+      }
+    }
+  )
 
   return {
     duplicates,
-    playing,
     play,
     pause,
     initialize,

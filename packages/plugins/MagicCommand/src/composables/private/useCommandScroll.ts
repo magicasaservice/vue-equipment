@@ -1,71 +1,122 @@
 import { toValue, computed, type MaybeRef } from 'vue'
 
+interface IsElementAboveArgs {
+  element: MaybeRef<HTMLElement>
+  ancestor?: HTMLElement
+}
+
+interface IsElementBelowArgs {
+  element: MaybeRef<HTMLElement>
+  ancestor?: HTMLElement
+}
+
+interface ScrollInFromTopArgs {
+  element: MaybeRef<HTMLElement>
+  ancestor?: HTMLElement
+}
+
+interface ScrollInFromBottomArgs {
+  element: MaybeRef<HTMLElement>
+  ancestor?: HTMLElement
+}
+
 export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
   // Private state
   const mappedParent = computed(
     () => toValue(parent) || document.documentElement
   )
 
-  const paddingTop = computed(() =>
-    parseFloat(getCssValue(mappedParent.value, 'padding-top'))
-  )
-
-  const paddingBottom = computed(() =>
-    parseFloat(getCssValue(mappedParent.value, 'padding-bottom'))
-  )
-
   // Private functions
   function getCssValue(el: HTMLElement, style: string) {
-    return getComputedStyle(el, null).getPropertyValue(style)
+    return parseFloat(getComputedStyle(el, null).getPropertyValue(style))
   }
 
-  // Public methods
-  function isElementAbove(element: MaybeRef<HTMLElement>): boolean {
-    const elementRect = toValue(element).getBoundingClientRect()
-    const parentRect = mappedParent.value.getBoundingClientRect()
-    const parentTop = parentRect.top + paddingTop.value
-
-    return elementRect.top < parentTop
+  function getPaddingTop(el: HTMLElement) {
+    return getCssValue(el, 'padding-top')
   }
 
-  function isElementBelow(element: MaybeRef<HTMLElement>): boolean {
-    const elementRect = toValue(element).getBoundingClientRect()
-    const parentRect = mappedParent.value.getBoundingClientRect()
-    const parentBottom =
-      parentRect.height + parentRect.top - paddingBottom.value
-
-    return elementRect.bottom >= parentBottom
+  function getPaddingBottom(el: HTMLElement) {
+    return getCssValue(el, 'padding-bottom')
   }
 
+  // Public functions
   function findElement(id: string): HTMLElement | null {
     return mappedParent.value.querySelector(`[data-id="${id}"]`)
   }
 
-  function scrollInFromTop(element: HTMLElement) {
-    const elementRect = element.getBoundingClientRect()
-    const parentRect = mappedParent.value.getBoundingClientRect()
-    const scrollAmount = elementRect.top - parentRect.top - paddingTop.value
+  function findScrollableAncestor(
+    element: HTMLElement | null
+  ): HTMLElement | undefined {
+    if (!element || element === document.documentElement) {
+      return undefined
+    }
 
-    mappedParent.value.scrollBy({
+    const { overflowY } = window.getComputedStyle(element)
+    const isScrollable =
+      overflowY !== 'visible' &&
+      overflowY !== 'hidden' &&
+      element.scrollHeight > element.clientHeight
+
+    return isScrollable
+      ? element
+      : findScrollableAncestor(element.parentElement)
+  }
+
+  function isElementAbove(args: IsElementAboveArgs): boolean {
+    const { ancestor = mappedParent.value, element } = args
+
+    const elementRect = toValue(element).getBoundingClientRect()
+    const ancestorRect = ancestor.getBoundingClientRect()
+    const ancestorPadding = getPaddingTop(ancestor)
+
+    const ancestorTop = ancestorRect.top + ancestorPadding
+    return elementRect.top < ancestorTop
+  }
+
+  function isElementBelow(args: IsElementBelowArgs): boolean {
+    const { ancestor = mappedParent.value, element } = args
+
+    const elementRect = toValue(element).getBoundingClientRect()
+    const ancestorRect = ancestor.getBoundingClientRect()
+    const ancestorPadding = getPaddingBottom(ancestor)
+
+    const ancestorBottom =
+      ancestorRect.height + ancestorRect.top - ancestorPadding
+    return elementRect.bottom >= ancestorBottom
+  }
+
+  function scrollInFromTop(args: ScrollInFromTopArgs) {
+    const { ancestor = mappedParent.value, element } = args
+
+    const elementRect = toValue(element).getBoundingClientRect()
+    const ancestorRect = ancestor.getBoundingClientRect()
+    const ancestorPadding = getPaddingTop(ancestor)
+
+    const scrollAmount = elementRect.top - ancestorRect.top - ancestorPadding
+    ancestor.scrollBy({
       top: scrollAmount,
     })
   }
 
-  function scrollInFromBottom(element: HTMLElement) {
-    const elementRect = element.getBoundingClientRect()
-    const parentRect = mappedParent.value.getBoundingClientRect()
-    const scrollAmount =
-      elementRect.bottom - parentRect.bottom + paddingBottom.value
+  function scrollInFromBottom(args: ScrollInFromBottomArgs) {
+    const { ancestor = mappedParent.value, element } = args
 
-    mappedParent.value.scrollBy({
+    const elementRect = toValue(element).getBoundingClientRect()
+    const ancestorRect = ancestor.getBoundingClientRect()
+    const ancestorPadding = getPaddingBottom(ancestor)
+
+    const scrollAmount =
+      elementRect.bottom - ancestorRect.bottom + ancestorPadding
+    ancestor.scrollBy({
       top: scrollAmount,
     })
   }
 
   return {
+    findElement,
+    findScrollableAncestor,
     isElementAbove,
     isElementBelow,
-    findElement,
     scrollInFromTop,
     scrollInFromBottom,
   }

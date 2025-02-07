@@ -1,6 +1,6 @@
 <template>
   <magic-modal
-    :id="commandId"
+    :id="instanceId"
     class="magic-command-modal"
     :options="options"
     v-bind="$attrs"
@@ -9,12 +9,15 @@
   </magic-modal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { useMagicModal } from '../../../MagicModal'
+import {
+  useMagicModal,
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { MagicCommandInstanceId } from './../symbols'
+import { MagicCommandInstanceId } from '../symbols'
 
 import type { MagicCommandModalOptions } from '../types'
 
@@ -28,15 +31,17 @@ interface MagicCommandProps {
 
 defineProps<MagicCommandProps>()
 
-const commandId = inject(MagicCommandInstanceId, '')
+const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
-function afterLeaveCallback() {
-  close()
+function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
+  if (typeof payload === 'string' && payload === instanceId) {
+    close()
+  }
 }
 
-const { close, isActive } = useMagicCommand(commandId)
-const modalApi = useMagicModal(commandId)
+const { close, isActive } = useMagicCommand(instanceId)
+const modalApi = useMagicModal(instanceId)
 
 watch(isActive, (value) => {
   if (value) {

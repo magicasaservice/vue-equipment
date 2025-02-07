@@ -1,3 +1,5 @@
+import type { RequireAll } from '@maas/vue-equipment/utils'
+
 type Position =
   | 'top-left'
   | 'top-center'
@@ -26,11 +28,13 @@ export type DraggableSnapPoint =
 
 export interface MagicDraggableOptions {
   tag?: 'dialog' | 'div'
+  scrollLock?: boolean | { padding: boolean }
+  snapPoints?: DraggableSnapPoint[]
   threshold?: {
+    lock?: number
     distance?: number
     momentum?: number
     idle?: number
-    lock?: number
   }
   animation?: {
     snap?: {
@@ -41,9 +45,12 @@ export interface MagicDraggableOptions {
   initial?: {
     snapPoint?: DraggableSnapPoint
   }
-  snapPoints?: DraggableSnapPoint[]
-  scrollLock?: boolean | { padding: boolean }
   disabled?: boolean
+}
+
+export type DraggableDefaultOptions = RequireAll<MagicDraggableOptions> & {
+  threshold: RequireAll<MagicDraggableOptions['threshold']>
+  animation: RequireAll<MagicDraggableOptions['animation']>
 }
 
 export interface DraggableState {

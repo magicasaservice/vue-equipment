@@ -2,7 +2,6 @@ export type InterpolateArgs = {
   from: number
   to: number
   duration: number
-  interval?: number
   easing?: (t: number) => number
   callback: (result: number) => void
 }

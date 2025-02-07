@@ -1,18 +1,19 @@
 # Vue Equipment
+
 Our Frontend Toolkit, Free and Open Source.
 
 > “Any sufficiently advanced technology is indistinguishable from magic.”
 > – Arthur C. Clarke
 
-Over the years, we have found ourselves facing a common problem: driven by the lack of options in the Vue ecosystem, we needed to implement solutions from the ground-up, over and over again. Vue Equipment is our attempt to solve this. It is essentially a collection of ready-to-use plugins and composables for building modern web applications. 
+Over the years, we have found ourselves facing a common problem: driven by the lack of options in the Vue ecosystem, we needed to implement solutions from the ground-up, over and over again. Vue Equipment is our attempt to solve this. It is essentially a collection of ready-to-use plugins and composables for building modern web applications.
 
 ## 🚧 Disclaimer
 
-This project is still under development. Expect breaking changes before the beta release.
+This project is still under development. Expect breaking changes before the initial stable release.
 
 ## 📖 Docs
 
-For the full documentation visit [vue-equipment.maas.engineering](https://vue-equipment.maas.engineering). Please note, that we are actively working on an updated version.
+For the full documentation visit [vue-equipment.maas.engineering](https://vue-equipment.maas.engineering). We are actively working on updating the docs before our initial release.
 
 ## 🐛 Found a Bug?
 

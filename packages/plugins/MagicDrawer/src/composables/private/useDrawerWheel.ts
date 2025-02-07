@@ -1,6 +1,7 @@
 import {
   computed,
   toValue,
+  toRefs,
   type Ref,
   type MaybeRef,
   type ComputedRef,
@@ -9,12 +10,12 @@ import { unrefElement } from '@vueuse/core'
 import WheelGestures, { type WheelEventState } from '@maas/wheel-gestures'
 import { useDrawerState } from './useDrawerState'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
+import type { DrawerDefaultOptions } from '../../types'
 
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
-  position: MaybeRef<DefaultOptions['position']>
+  position: MaybeRef<DrawerDefaultOptions['position']>
   disabled: ComputedRef<boolean>
 }
 
@@ -22,7 +23,9 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const { id, elRef, position, disabled } = args
 
   const { initializeState } = useDrawerState(toValue(id))
-  const { dragging, wheeling } = initializeState()
+  const state = initializeState()
+
+  const { dragging, wheeling } = toRefs(state)
 
   let startEvent: PointerEvent
 
@@ -34,6 +37,8 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       case 'top':
       case 'bottom':
         return 'y'
+      default:
+        return undefined
     }
   })
 

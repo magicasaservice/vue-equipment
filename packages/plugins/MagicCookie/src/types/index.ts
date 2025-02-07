@@ -1,18 +1,39 @@
-export type MagicCookieRecord = {
-  key: string
+export interface CookieItem {
+  id: string
+  active: boolean
   optional?: boolean
-  title?: string
-  text?: string
-  [key: string]: unknown
+  maxAge?: number
+  timestamp?: number
 }
 
-export type MagicCookieConsent = {
-  timestamp: number | undefined
-  cookies: Record<string, boolean>
+export interface CookieState {
+  id: string
+  options: MagicCookieOptions
+  items: CookieItem[]
+  viewActive: boolean
+}
+
+export type CookieConsent = Record<CookieItem['id'], CookieItem['active']>
+
+export interface MagicCookieOptions {
+  maxAge?: number
+  transition?: string
+  animation?: {
+    duration: number
+    easing: (t: number) => number
+  }
 }
 
 export type CookieEvents = {
-  accept: MagicCookieConsent
-  reject: MagicCookieConsent
-  acceptSelected: MagicCookieConsent
+  beforeEnter: string
+  enter: string
+  afterEnter: string
+  beforeLeave: string
+  leave: string
+  afterLeave: string
+  acceptAll: CookieConsent
+  rejectAll: CookieConsent
+  acceptSelected: CookieConsent
 }
+
+export type MagicCookieCallbackArgs = CookieConsent

@@ -1,13 +1,12 @@
 <template>
   <primitive
     ref="elRef"
-    :class="[
-      'magic-menu-trigger',
-      { '-active': view?.active, '-disabled': mappedDisabled },
-    ]"
     :data-id="`${viewId}-trigger`"
+    :data-active="view?.active"
+    :data-disabled="mappedDisabled"
     :tabindex="mappedTabindex"
     :as-child="asChild"
+    class="magic-menu-trigger"
     @click="onClick"
     @contextmenu="onClick"
     @mouseenter="onMouseenter"
@@ -38,7 +37,7 @@ interface MagicMenuTriggerProps {
   asChild?: boolean
 }
 
-const props = defineProps<MagicMenuTriggerProps>()
+const { disabled, trigger } = defineProps<MagicMenuTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
@@ -63,11 +62,11 @@ const state = initializeState()
 const { getItem } = useMenuItem({ instanceId, viewId })
 const item = getItem(itemId ?? '')
 
-const mappedDisabled = computed(() => props.disabled ?? item?.disabled ?? false)
+const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
 
 const mappedTrigger = computed<Interaction[]>(() => {
-  if (props.trigger?.length) {
-    return props.trigger
+  if (trigger?.length) {
+    return trigger
   }
 
   switch (state.options.mode) {
@@ -83,6 +82,8 @@ const mappedTrigger = computed<Interaction[]>(() => {
       return view?.parent.item ? ['mouseenter', 'click'] : ['right-click']
     case 'navigation':
       return ['mouseenter']
+    default:
+      return []
   }
 })
 
