@@ -22,6 +22,7 @@ const defaultOptions: DraggableDefaultOptions = {
     snapPoint: 'center',
   },
   disabled: false,
+  scrollLock: { padding: true },
 }
 
 export { defaultOptions }
