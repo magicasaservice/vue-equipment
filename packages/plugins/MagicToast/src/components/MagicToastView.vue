@@ -77,7 +77,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
 }
 
 .magic-toast-view {
-  cursor: var(--magic-toast-cursor, grab);
+  cursor: var(--magic-toast-view-cursor, grab);
   position: absolute;
   list-style: none;
   user-select: none;
@@ -124,7 +124,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
 }
 
 .magic-toast-view[data-dragging='true'] {
-  cursor: var(--magic-toast-cursor-dragging, grabbing);
+  cursor: var(--magic-toast-view-cursor-dragging, grabbing);
 }
 
 .magic-toast-view[data-position='center-left'] {
