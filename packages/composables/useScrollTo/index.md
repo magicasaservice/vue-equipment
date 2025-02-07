@@ -1,18 +1,22 @@
 # useScrollTo
 
-Scroll to element with a set speed
+Scroll to an element with consistent speed.
 
-## Usage
+<component-preview src="./demo/DefaultDemo.vue" />
 
-```ts
+<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+
+## Anatomy
+
+```js
 import { useScrollTo } from '@maas/vue-equipment/composables'
 
 const { scrollToTarget } = useScrollTo()
-const el = ref()
 
 scrollToTarget({
-  target: el,
+  target,
   speed: 1000,
-  offset: { x: 0, y: 50 },
 })
 ```
+
+<!--@include: @/apps/docs/src/content/snippets/installation.md-->

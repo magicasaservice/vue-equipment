@@ -76,6 +76,13 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
   {
     items: [
       {
+        label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
+      }
+    ]
+  },
+  {
+    items: [
+      {
         label: '[@maas/magic-timer](https://www.npmjs.com/package/@maas/magic-timer)'
       }
     ]

@@ -1,22 +1,24 @@
 <template>
-  <div class="flex flex-wrap gap-4">
+  <div class="flex w-full flex-col items-center gap-4">
     <div
       ref="parentRef"
-      class="w-[300px] h-[300px] m-auto overflow-scroll bg-surface-elevation-base snap-both snap-mandatory"
+      class="bg-surface-elevation-base aspect-[16/9] w-full snap-both snap-mandatory overflow-scroll"
     >
-      <div class="w-[900px] h-[900px] relative">
-        <div class="absolute left-0 top-0 bg-surface-elevation-high px-2 py-1">
+      <div
+        class="type-surface-body-sm text-surface-subtle relative h-[900px] w-[900px]"
+      >
+        <div class="bg-surface-elevation-high absolute left-0 top-0 px-2 py-1">
           Top Left
         </div>
         <div
           ref="elRef"
-          class="absolute bottom-0 right-0 bg-surface-elevation-high px-2 py-1"
+          class="bg-surface-elevation-high absolute bottom-0 right-0 px-2 py-1"
         >
           Bottom Right
         </div>
       </div>
     </div>
-    <m-button @click="scroll()"> Click to scroll </m-button>
+    <m-button @click="scroll()">Scroll</m-button>
   </div>
 </template>
 

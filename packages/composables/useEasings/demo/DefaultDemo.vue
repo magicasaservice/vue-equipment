@@ -1,16 +1,22 @@
 <template>
-  <div class="flex flex-col gap-8">
+  <div class="flex w-full flex-col gap-8">
     <div
-      class="flex flex-col p-8 gap-4 bg-surface-elevation-base rounded-surface-md"
+      class="bg-surface-elevation-base rounded-surface-md flex flex-col gap-4 p-8"
     >
-      <div class="flex gap-2" v-for="easing in mappedEasings" :key="easing">
-        <div class="w-40">{{ easing.name }}</div>
+      <div
+        class="flex gap-2"
+        v-for="easing in mappedEasings"
+        :key="easing.name"
+      >
+        <div class="w-40">
+          <m-badge size="sm" mode="tone">{{ easing.name }}</m-badge>
+        </div>
         <div
-          class="w-full h-4 flex bg-surface-elevation-high rounded-full pr-4"
+          class="bg-surface-elevation-high flex h-6 w-full rounded-full pr-5"
         >
-          <div class="w-full h-full">
+          <div class="h-full w-full">
             <div
-              class="w-4 h-4 bg-surface-elevation-low rounded-full text-center"
+              class="m-1 h-4 w-4 rounded-full bg-[white] text-center"
               :style="easing.style"
             />
           </div>
@@ -18,7 +24,7 @@
       </div>
     </div>
 
-    <div class="w-full flex justify-center">
+    <div class="flex w-full justify-center">
       <m-button @click="toggle">
         {{ isActive ? 'Reset' : 'Start' }}
       </m-button>
@@ -28,11 +34,19 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton, MBadge } from '@maas/mirror/vue'
 import { useEasings } from '@maas/vue-equipment/composables'
 import { useRafFn } from '@vueuse/core'
 
+interface MappedEasing {
+  name: string
+  style: {
+    marginLeft?: string
+  }
+}
+
 const easings = useEasings()
+
 const { pause, resume, isActive } = useRafFn(() => mapEasings(), {
   immediate: false,
 })
@@ -42,9 +56,9 @@ const duration = ref(1000)
 const startX = ref(0)
 const endX = ref(100)
 
-const mappedEasings = ref<Record<string, any>>([])
+const mappedEasings = ref<MappedEasing[]>([])
 
-const getCurrentTime = () => {
+function getCurrentTime() {
   if (!startTime.value) {
     startTime.value = Date.now()
   }
@@ -53,7 +67,7 @@ const getCurrentTime = () => {
   return Math.min(elapsedTime / duration.value, 1)
 }
 
-const toggle = () => {
+function toggle() {
   if (isActive.value) {
     pause()
     startTime.value = 0
@@ -63,19 +77,19 @@ const toggle = () => {
   }
 }
 
-const mapEasings = () => {
+function mapEasings() {
   const easingsValues = Object.values(easings)
   const easingsKeys = Object.keys(easings)
 
   mappedEasings.value = easingsValues.map((easing, i) => {
     return {
       name: easingsKeys[i],
-      style: isActive.value ? getStyle(easing) : '',
+      style: isActive.value ? getStyle(easing) : {},
     }
   })
 }
 
-const getStyle = (easing: typeof easings.easeInCubic) => {
+function getStyle(easing: typeof easings.easeInCubic) {
   return {
     marginLeft: `${
       easing(getCurrentTime()) * (endX.value - startX.value) + startX.value

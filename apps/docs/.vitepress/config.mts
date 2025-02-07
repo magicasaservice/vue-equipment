@@ -87,7 +87,7 @@ function getPlugins() {
     text: 'Plugins',
     collapsed: false,
     items: plugins.map((i) => ({
-      text: i.name.replace('Magic', 'Magic '),
+      text: i.name,
       link: i.external || `/${i.package}/${i.name}/`,
     })),
   }

@@ -1,5 +1,5 @@
 {
-  "extends": "@maas/config/tsconfig/package-base.json",
+  "extends": "@maas/config/tsconfig/vue-base.json",
   "compilerOptions": {
     "paths": {
       "@maas/vue-equipment/composables": ["./index.ts"]
