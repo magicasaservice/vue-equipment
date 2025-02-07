@@ -23,14 +23,16 @@ export function useMagicToast(id: MaybeRef<string>) {
 
   // Public functions
   function add(args: AddArgs) {
-    const { id, component, props, duration = 0 } = args
+    const { id, component, props, duration } = args
     const view = initializeView({ id, component, props })
 
+    const mappedDuration = duration ?? state.options.duration
+
     // Remove after timeout
-    if (duration > 0) {
+    if (mappedDuration > 0) {
       setTimeout(() => {
         deleteView(view.id)
-      }, duration)
+      }, mappedDuration)
     }
 
     return view.id
