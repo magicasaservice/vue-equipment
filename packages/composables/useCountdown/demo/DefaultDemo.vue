@@ -4,7 +4,6 @@
       v-if="years || years === 0"
       class="type-surface-body-sm text-surface-subtle flex flex-col items-center gap-2"
     >
-      <m-badge>{{ years }} Year{{ years !== 1 ? 's' : '' }}</m-badge>
       <m-badge>{{ days }} Day{{ days !== 1 ? 's' : '' }}</m-badge>
       <m-badge>{{ hours }} Hour{{ hours !== 1 ? 's' : '' }}</m-badge>
       <m-badge>{{ minutes }} Minute{{ minutes !== 1 ? 's' : '' }}</m-badge>
