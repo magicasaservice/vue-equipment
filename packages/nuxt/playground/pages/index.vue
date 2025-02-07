@@ -5,7 +5,12 @@
         {{ composable.name }}
       </nuxt-link>
     </li>
-    <li v-for="plugin in plugins" :key="plugin.name">
+    <li
+      v-for="plugin in plugins.filter(
+        (plugin) => plugin.name !== 'MagicEmitter'
+      )"
+      :key="plugin.name"
+    >
       <nuxt-link :to="`/${kebabCase(plugin.name)}`">
         {{ plugin.name }}
       </nuxt-link>

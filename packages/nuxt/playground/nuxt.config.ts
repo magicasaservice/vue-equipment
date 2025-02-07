@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { kebabCase } from 'scule'
 
-import { composables } from '../../metadata'
+import { composables, plugins } from '../../metadata'
 
 export default defineNuxtConfig({
   modules: [
@@ -36,6 +36,10 @@ export default defineNuxtConfig({
       __dirname,
       '../../../dist/composables'
     ),
+    '@maas/vue-equipment/plugins/MagicPlayer/css': path.resolve(
+      __dirname,
+      '../../../dist/plugins/MagicPlayer/src/css'
+    ),
     '@maas/vue-equipment/plugins': path.resolve(
       __dirname,
       '../../../dist/plugins'
@@ -56,23 +60,25 @@ export default defineNuxtConfig({
   // Load demo files as routes
   hooks: {
     'pages:extend'(pages) {
-      // for (const plugin of plugins) {
-      //   try {
-      //     pages.push({
-      //       name: plugin.name,
-      //       path: `/${kebabCase(plugin.name)}`,
-      //       file: `../../plugins/${plugin.name}/demo/index.vue`,
-      //     })
-      //   } catch (e: unknown) {
-      //     console.error(e)
-      //   }
-      // }
+      for (const plugin of plugins.filter(
+        (plugin) => plugin.name !== 'MagicEmitter'
+      )) {
+        try {
+          pages.push({
+            name: plugin.name,
+            path: `/${kebabCase(plugin.name)}`,
+            file: `../../plugins/${plugin.name}/demo/DefaultDemo.vue`,
+          })
+        } catch (e: unknown) {
+          console.error(e)
+        }
+      }
 
       for (const composable of composables) {
         pages.push({
           name: composable.name,
           path: `/${kebabCase(composable.name)}`,
-          file: `../../composables/${composable.name}/demo.vue`,
+          file: `../../composables/${composable.name}/demo/DefaultDemo.vue`,
         })
       }
     },

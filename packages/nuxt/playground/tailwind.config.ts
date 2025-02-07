@@ -4,6 +4,8 @@ import mirrorPreset from '../../../.maas/tailwind.preset.js'
 export default {
   content: [
     './../plugins/**/*.vue',
+    './../plugins/**/demo/*.vue',
+    './../plugins/**/demo/**/*.vue',
     './pages/**/*.vue',
     './app.vue',
     './error.vue',
