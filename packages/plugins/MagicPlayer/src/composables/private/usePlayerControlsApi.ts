@@ -23,14 +23,10 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   const trackRect = ref<DOMRect | undefined>(undefined)
   const popoverRect = ref<DOMRect | undefined>(undefined)
 
-  const { trackRef, barRef, popoverRef } = args
+  const { id, trackRef, barRef, popoverRef } = args
 
-  const { buffered, duration, playing, currentTime } = usePlayerMediaApi({
-    id: args.id,
-  })
-  const { play, pause, seek } = usePlayerVideoApi({
-    id: args.id,
-  })
+  const { buffered, duration, playing, currentTime } = usePlayerMediaApi({ id })
+  const { play, pause, seek } = usePlayerVideoApi({ id })
 
   // Public state
   const dragging = ref(false)
@@ -187,7 +183,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   // Listen to updates
   emitter.on('update', (payload) => {
-    if (payload.id !== toValue(args.id)) return
+    if (payload.id !== toValue(id)) return
 
     if (payload.api === 'controls') {
       switch (payload.key) {
@@ -238,7 +234,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   // Emit updates
   watch(dragging, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'dragging',
       value,
@@ -247,7 +243,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(mouseEntered, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'mouseEntered',
       value,
@@ -256,7 +252,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(seekedTime, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'seekedTime',
       value,
@@ -265,7 +261,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(seekedPercentage, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'seekedPercentage',
       value,
@@ -274,7 +270,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(scrubbedPercentage, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'scrubbedPercentage',
       value,
@@ -283,7 +279,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(bufferedPercentage, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'bufferedPercentage',
       value,
@@ -292,7 +288,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(thumbPercentage, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'thumbPercentage',
       value,
@@ -301,7 +297,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(popoverOffsetX, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'popoverOffsetX',
       value,
@@ -310,7 +306,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   watch(resumePlay, (value) => {
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'resumePlay',
       value,
@@ -321,7 +317,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     if (!value) return
 
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'barRect',
       value,
@@ -332,7 +328,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     if (!value) return
 
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'trackRect',
       value,
@@ -343,7 +339,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     if (!value) return
 
     emitter.emit('update', {
-      id: toValue(args.id),
+      id: toValue(id),
       api: 'controls',
       key: 'popoverRect',
       value,

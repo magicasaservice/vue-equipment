@@ -4,8 +4,8 @@ import { resolve } from 'node:path'
 export default defineConfig({
   entry: [resolve(__dirname, './index.ts')],
   outDir: resolve(__dirname, '../../dist/composables'),
-  external: ['vue', '@vueuse/core'],
-  format: ['cjs', 'esm'],
+  external: ['@maas/magic-timer', '@vueuse/core', 'luxon', 'vue'],
+  format: ['esm'],
   dts: true,
   sourcemap: true,
   clean: true,

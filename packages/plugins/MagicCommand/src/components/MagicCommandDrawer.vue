@@ -1,6 +1,6 @@
 <template>
   <magic-drawer
-    :id="commandId"
+    :id="instanceId"
     class="magic-command-drawer"
     :options="options"
     v-bind="$attrs"
@@ -9,34 +9,44 @@
   </magic-drawer>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { useMagicDrawer } from '../../../MagicDrawer/src/composables/useMagicDrawer'
+import {
+  useMagicDrawer,
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { MagicCommandInstanceId } from './../symbols'
-
+import { MagicCommandInstanceId } from '../symbols'
 import type { MagicCommandDrawerOptions } from '../types'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-interface MagicCommandProps {
+interface MagicCommandDrawerProps {
   options?: MagicCommandDrawerOptions
 }
 
-defineProps<MagicCommandProps>()
+defineProps<MagicCommandDrawerProps>()
 
-const commandId = inject(MagicCommandInstanceId, '')
+const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
-function afterLeaveCallback() {
-  close()
+if (!instanceId) {
+  throw new Error(
+    'MagicCommandDrawer must be nested inside MagicCommandProvider'
+  )
 }
 
-const { close, isActive } = useMagicCommand(commandId)
-const drawerApi = useMagicDrawer(commandId)
+function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
+  if (typeof payload === 'string' && payload === instanceId) {
+    close()
+  }
+}
+
+const { close, isActive } = useMagicCommand(instanceId)
+const drawerApi = useMagicDrawer(instanceId)
 
 watch(isActive, (value) => {
   if (value) {

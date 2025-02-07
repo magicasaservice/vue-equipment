@@ -1,3 +1,4 @@
+@import './animations/auto-size-out.css';
 @import './animations/clip-in.css';
 @import './animations/clip-out.css';
 @import './animations/fade-down-in.css';
@@ -16,6 +17,6 @@
 @import './animations/slide-rtl-out.css';
 @import './animations/slide-ttb-in.css';
 @import './animations/slide-ttb-out.css';
+@import './animations/squash-y.css';
 @import './animations/zoom-in.css';
 @import './animations/zoom-out.css';
-

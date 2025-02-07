@@ -1,14 +1,11 @@
 <template>
   <div
     class="magic-player-overlay"
-    :class="{
-      '-playing': playing,
-      '-paused': !playing,
-      '-idle': idle,
-      '-not-idle': !idle,
-      '-hover': mouseEntered,
-      '-not-hover': !mouseEntered,
-    }"
+    :data-playing="playing"
+    :data-paused="!playing"
+    :data-waiting="waiting"
+    :data-idle="idle"
+    :data-hover="mouseEntered"
     @click.stop="togglePlay"
   >
     <slot>
@@ -35,25 +32,29 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import { inject } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
-interface MagicPlayerOverlayProps {
-  id: string
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+
+if (!instanceId) {
+  throw new Error(
+    'MagicPlayerOverlay must be nested inside MagicPlayerProvider.'
+  )
 }
 
-const props = defineProps<MagicPlayerOverlayProps>()
-
 const { playing, waiting } = usePlayerMediaApi({
-  id: props.id,
+  id: instanceId,
 })
 const { mouseEntered, togglePlay } = usePlayerVideoApi({
-  id: props.id,
+  id: instanceId,
 })
 
 const { idle } = useIdle(3000)
@@ -85,8 +86,11 @@ const { idle } = useIdle(3000)
   height: var(--magic-player-overlay-button-size, 2.5rem);
 }
 
-.magic-player-overlay.-playing.-idle,
-.magic-player-overlay.-playing.-not-hover {
+.magic-player-overlay.-playing[data-idle='true'] {
+  opacity: 0;
+}
+
+.magic-player-overlay.-playing[data-hover='false'] {
   opacity: 0;
 }
 </style>

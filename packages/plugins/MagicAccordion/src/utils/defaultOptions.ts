@@ -1,10 +1,14 @@
 import type { MagicAccordionOptions } from '../types'
-import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import { easeOutQuad, type RequireAll } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAllNested<MagicAccordionOptions> = {
-  mode: 'multiple',
+const defaultOptions: RequireAll<MagicAccordionOptions> = {
+  mode: 'single',
   transition: 'magic-accordion',
   disabled: false,
+  animation: {
+    duration: 200,
+    easing: easeOutQuad,
+  },
 }
 
 export { defaultOptions }

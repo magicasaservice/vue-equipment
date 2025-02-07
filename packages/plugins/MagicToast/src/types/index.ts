@@ -1,21 +1,47 @@
 import type { MaybeRef } from 'vue'
-import type { PickPartial } from '@maas/vue-equipment/utils'
+import type { RequireAll } from '@maas/vue-equipment/utils'
 
-export type Toast = {
+type Position =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'center-left'
+  | 'center-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+
+export type ToastView = {
   id: string
   component: object
   props?: MaybeRef<Record<string, unknown>>
-  remove: () => void
+  dimensions?: {
+    height: number
+    padding: {
+      top: number
+      bottom: number
+    }
+  }
+  dragStart: Date | undefined
+  dragging: boolean
+  shouldClose: boolean
+  interpolateTo: number | undefined
+  snappedX: number
+  snappedY: number
+  originX: number
+  originY: number
+  lastDraggedX: number
+  lastDraggedY: number
+  draggedX: number
+  draggedY: number
 }
 
-export type AddToastArgs = Pick<Toast, 'component'> &
-  PickPartial<Toast, 'props'> & { duration?: number }
-
-export type ToastInstance = {
+export type ToastState = {
   id: string
-  toasts: Toast[]
-  add: (args: AddToastArgs) => string
-  remove: (id: string) => void
+  views: ToastView[]
+  options: ToastDefaultOptions
+  expanded: boolean
+  animating: boolean
 }
 
 export type ActiveToast = {
@@ -37,15 +63,37 @@ export type ToastEvents = {
 }
 
 export type MagicToastOptions = {
+  debug?: boolean
+  position?: Position
+  duration?: number
+  scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string
     disabled?: boolean
   }
-  transitions?: {
-    list: string
-  }
+  transition?: string
   layout?: {
-    expand?: boolean | 'hover' | 'click'
-    max?: false | number
+    expand?: false | 'hover' | 'click'
+    max?: number
   }
+  animation?: {
+    snap?: {
+      duration?: number
+      easing?: (t: number) => number
+    }
+  }
+  initial?: {
+    expanded?: boolean
+  }
+  threshold?: {
+    lock?: number
+    distance?: number
+    momentum?: number
+  }
+}
+
+export type ToastDefaultOptions = RequireAll<MagicToastOptions> & {
+  threshold: RequireAll<MagicToastOptions['threshold']>
+  animation: RequireAll<MagicToastOptions['animation']>
+  initial: RequireAll<MagicToastOptions['initial']>
 }

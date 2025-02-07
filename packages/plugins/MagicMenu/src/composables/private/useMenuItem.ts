@@ -1,4 +1,6 @@
 import { reactive, type MaybeRef } from 'vue'
+import { usePointer, watchOnce } from '@vueuse/core'
+
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 import type { MenuItem } from '../../types/index'
@@ -57,14 +59,9 @@ export function useMenuItem(args: UseMenuItemArgs) {
   // Public functions
   function initializeItem(args: InitializeItemArgs) {
     const { id } = args
-    const instance = getItem(id)
+    const item = getItem(id) ?? addItem(args)
 
-    if (!instance) {
-      const item = addItem(args)
-      return item
-    }
-
-    return instance
+    return item
   }
 
   function deleteItem(id: string) {
@@ -78,11 +75,11 @@ export function useMenuItem(args: UseMenuItemArgs) {
     })
   }
 
-  function selectItem(id: string) {
-    const instance = getItem(id)
+  function selectItem(id: string, disablePointer?: boolean) {
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = true
+    if (item) {
+      item.active = true
 
       // Deactivate all siblings and descending views
       unselectSiblings(id)
@@ -92,14 +89,25 @@ export function useMenuItem(args: UseMenuItemArgs) {
       if (view) {
         state.input.view = view.id
       }
+
+      if (disablePointer) {
+        const { x, y } = usePointer()
+        state.input.disabled = [...state.input.disabled, 'pointer'] // Disable pointer
+
+        watchOnce([x, y], () => {
+          state.input.disabled = state.input.disabled.filter(
+            (x) => x !== 'pointer'
+          ) // Enable pointer
+        })
+      }
     }
   }
 
   function unselectItem(id: string) {
-    const instance = getItem(id)
+    const item = getItem(id)
 
-    if (instance) {
-      instance.active = false
+    if (item) {
+      item.active = false
     }
   }
 

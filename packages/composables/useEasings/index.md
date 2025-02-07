@@ -1,27 +1,29 @@
 # useEasings
 
-Easings as functions
+A standard set of easing functions neatly packaged into a composable.
 
-## Usage
+<component-preview src="./demo/DefaultDemo.vue" />
 
-```ts
+<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+
+## Anatomy
+
+```js
 import { useEasings } from '@maas/vue-equipment/composables'
 
-const {
-  linear,
-  easeInQuad,
-  easeOutQuad,
-  easeInOutQuad,
-  easeInCubic,
-  easeOutCubic,
-  easeInOutCubic,
-  easeInQuart,
-  easeOutQuart,
-  easeInOutQuart,
-  easeInQuint,
-  easeOutQuint,
-  easeInOutQuint,
-} = useEasings()
-
+const { easeOutQuad } = useEasings()
 easeOutQuad(300)
+```
+
+<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+
+### Direct import
+
+Import the composable directly where you need it.
+
+```js
+import {
+  useCountdown,
+  type DateTimeArray,
+} from '@maas/vue-equipment/composables'
 ```

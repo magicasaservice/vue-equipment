@@ -4,21 +4,26 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import { inject } from 'vue'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { MagicPlayerInstanceId } from '../symbols'
 
-export type MagicPlayerPosterProps = {
-  id: string
+const instanceId = inject(MagicPlayerInstanceId, undefined)
+
+if (!instanceId) {
+  throw new Error(
+    'MagicPlayerPoster must be nested inside MagicPlayerProvider.'
+  )
 }
-const props = defineProps<MagicPlayerPosterProps>()
 
 const { loaded } = usePlayerRuntime({
-  id: props.id,
+  id: instanceId,
 })
 
 const { touched } = usePlayerVideoApi({
-  id: props.id,
+  id: instanceId,
 })
 </script>
 

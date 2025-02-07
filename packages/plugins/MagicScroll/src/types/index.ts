@@ -1,8 +1,7 @@
-export type Dimensions = { width: number; height: number }
 export type ScrollDirection = 'up' | 'down'
-export type Position = 'top' | 'bottom'
+export type CollisionEdge = 'top' | 'bottom'
 
-export type FromTo =
+export type ScrollIntersection =
   | 'top-top'
   | 'top-center'
   | 'top-bottom'
@@ -13,24 +12,16 @@ export type FromTo =
   | 'bottom-center'
   | 'bottom-bottom'
 
-export type Offset =
-  | number
-  | (({ vw, vh }: { vw: number; vh: number }) => number)
-
-export interface MagicScrollCollisionEntry {
-  offset?: {
-    top: Offset
-    bottom: Offset
-  }
-  element?: string
-  data: Record<string, unknown>
+export interface CollisionOffset {
+  top: number
+  bottom: number
 }
 
-export type ScrollEvents = {
+export interface ScrollEvents {
   collision: {
+    id: string
     direction: ScrollDirection
-    position: Position
-    element: HTMLElement
-    data?: Record<string, unknown>
+    childEdge: CollisionEdge
+    parentEdge: CollisionEdge
   }
 }

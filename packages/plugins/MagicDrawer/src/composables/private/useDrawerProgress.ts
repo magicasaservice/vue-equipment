@@ -5,6 +5,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  toRefs,
   type Ref,
   type MaybeRef,
 } from 'vue'
@@ -15,13 +16,13 @@ import {
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
 import { useDrawerState } from './useDrawerState'
-import type { DefaultOptions } from '../../utils/defaultOptions'
+import type { DrawerDefaultOptions } from '../../types'
 
 interface UseDrawerProgressArgs {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | undefined>
   drawerRef: Ref<HTMLDivElement | undefined>
-  position: MaybeRef<DefaultOptions['position']>
+  position: MaybeRef<DrawerDefaultOptions['position']>
   overshoot: MaybeRef<number>
 }
 
@@ -41,7 +42,8 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   )
 
   // Public state
-  const { progress } = initializeState()
+  const state = initializeState()
+  const { progress } = toRefs(state)
 
   // Private method
   function rafCallback() {

@@ -1,6 +1,7 @@
 import type { App, Plugin } from 'vue'
 
 import MagicMarquee from './src/components/MagicMarquee.vue'
+import { useMagicMarquee } from './src/composables/useMagicMarquee'
 
 const MagicMarqueePlugin: Plugin = {
   install: (app: App) => {
@@ -8,4 +9,4 @@ const MagicMarqueePlugin: Plugin = {
   },
 }
 
-export { MagicMarqueePlugin, MagicMarquee }
+export { MagicMarqueePlugin, useMagicMarquee }

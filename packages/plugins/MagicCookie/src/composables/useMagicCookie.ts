@@ -1,136 +1,107 @@
-import { computed, ref } from 'vue'
-import { useCookies } from '@vueuse/integrations/useCookies'
-import { toValue } from '@vueuse/core'
+import { computed, nextTick, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
-import { cookieApiStore } from './private/useCookieApi'
+import { useCookieState } from './private/useCookieState'
+import { useCookieItem } from './private/useCookieItem'
 
-import type { MagicCookieConsent } from '../types'
+import type { CookieConsent, MagicCookieCallbackArgs } from '../types'
 
-// Reactive variables
-const preferencesVisible = ref(false)
-const selectedCookies = ref<{ [key: string]: boolean }>({})
+export function useMagicCookie(id: MaybeRef<string>) {
+  const { selectItem, unselectItem, toggleItem, setItemCookie } = useCookieItem(
+    { instanceId: id }
+  )
 
-export function useMagicCookie() {
-  // Use universal cookies from the @vueuse/integrations/useCookies
-  const universalCookies = useCookies(['cookie_consent'])
-
-  // Computed property to manage cookie consent data
-  const cookieConsent = computed({
-    get: () => {
-      return universalCookies.get('cookie_consent') as MagicCookieConsent
-    },
-    set: (value: MagicCookieConsent) => {
-      universalCookies.set('cookie_consent', value, {
-        path: '/',
-        maxAge: cookieApiStore.value?.maxAge,
-      })
-    },
-  })
-
-  // Initialize an event emitter for custom events
+  // Private state
   const emitter = useMagicEmitter()
 
-  // Initial state: selectedCookies value is set based on the current cookie consent data
-  selectedCookies.value = cookieConsent.value?.cookies || {}
+  const { initializeState } = useCookieState(id)
+  const state = initializeState()
 
-  // Methods
-  // Toggle the selection of a specific cookie by key
-  function toggleSelection(key: string) {
-    selectedCookies.value = {
-      ...selectedCookies.value,
-      [key]: !selectedCookies.value[key],
-    }
+  // Public state
+  const cookieConsent = computed(() =>
+    state?.items.reduce(
+      (acc, cookie) => ({
+        ...acc,
+        [cookie.id]: cookie.optional === false ? true : cookie.active,
+      }),
+      {} as CookieConsent
+    )
+  )
+
+  // Public functions
+  function showView() {
+    state.viewActive = true
   }
 
-  // Accept all cookies
-  function accept() {
-    // Create an object representing all cookies as accepted
-    const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce(
-        (result, cookie) => {
-          result[cookie.key] = true
-          return result
-        },
-        {} as { [key: string]: boolean }
-      )
+  function hideView() {
+    state.viewActive = false
+  }
 
-    // Set the selectedCookies value to include all cookies
-    selectedCookies.value = cookies
+  function toggleView() {
+    state.viewActive = !state.viewActive
+  }
 
-    // Get the current timestamp
+  async function acceptAll() {
     const timestamp = new Date().getTime()
 
-    // Update the cookieConsent with the accepted cookies and timestamp
-    cookieConsent.value = { timestamp, cookies }
+    for (const cookie of state.items) {
+      selectItem(cookie.id, timestamp)
+      setItemCookie(cookie.id)
+    }
 
-    // Emit the 'Accept' event with the updated cookieConsentData
-    emitter.emit('accept', cookieConsent.value)
+    await nextTick()
+
+    emitter.emit('acceptAll', cookieConsent.value)
   }
 
   // Accept selected cookies
   function acceptSelected() {
-    // Get the current timestamp
-    const timestamp = new Date().getTime()
-
-    // Update the cookieConsentData with the selected cookies and timestamp
-    cookieConsent.value = {
-      timestamp: timestamp,
-      cookies: selectedCookies.value,
+    for (const cookie of state.items) {
+      setItemCookie(cookie.id)
     }
 
-    // Emit the 'AcceptSelected' event with the updated cookieConsentData
     emitter.emit('acceptSelected', cookieConsent.value)
   }
 
   // Reject all cookies
-  function reject() {
-    // Create an object representing all cookies as rejected (optional cookies as accepted)
-    const cookies: { [key: string]: boolean } =
-      cookieApiStore.value?.cookies?.reduce(
-        (result, cookie) => {
-          result[cookie.key] = cookie.optional === false ? true : false
-          return result
-        },
-        {} as { [key: string]: boolean }
-      )
-
-    // Set the selectedCookies value to include all cookies
-    selectedCookies.value = cookies
-
-    // Get the current timestamp
+  async function rejectAll() {
     const timestamp = new Date().getTime()
+    // Set all optional cookies to false
+    for (const cookie of state.items) {
+      if (cookie.optional !== false) {
+        unselectItem(cookie.id, timestamp)
+      }
 
-    // Update the cookieConsentData with the rejected cookies and timestamp
-    cookieConsent.value = { timestamp, cookies }
+      setItemCookie(cookie.id)
+    }
 
-    // Emit the 'Reject' event with the updated cookieConsentData
-    emitter.emit('reject', cookieConsent.value)
+    await nextTick()
+
+    emitter.emit('rejectAll', cookieConsent.value)
   }
 
-  // Events
-  function onAccept(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('accept', (args: MagicCookieConsent) => handler(toValue(args)))
+  function onAccept(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('acceptAll', callback)
   }
 
-  function onAcceptSelected(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('acceptSelected', (args: MagicCookieConsent) =>
-      handler(toValue(args))
-    )
+  function onAcceptSelected(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('acceptSelected', callback)
   }
 
-  function onReject(handler: (args: MagicCookieConsent) => void) {
-    emitter.on('reject', (args: MagicCookieConsent) => handler(toValue(args)))
+  function onReject(callback: (args: MagicCookieCallbackArgs) => void) {
+    emitter.on('rejectAll', callback)
   }
 
-  // Return the API functions and reactive variables
   return {
-    preferencesVisible,
-    selectedCookies,
+    showView,
+    hideView,
+    toggleView,
     cookieConsent,
-    toggleSelection,
-    accept,
+    selectItem,
+    unselectItem,
+    toggleItem,
+    acceptAll,
     acceptSelected,
-    reject,
+    rejectAll,
     onAccept,
     onAcceptSelected,
     onReject,

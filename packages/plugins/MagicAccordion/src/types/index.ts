@@ -4,6 +4,10 @@ export interface MagicAccordionOptions {
   mode?: AccordionMode
   transition?: string
   disabled?: boolean
+  animation?: {
+    duration: number
+    easing: (t: number) => number
+  }
 }
 
 export interface AccordionView {

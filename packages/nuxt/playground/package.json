@@ -9,14 +9,14 @@
     "preview": "nuxi preview"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.12.0",
-    "@types/node": "^22.10.1",
+    "@nuxtjs/tailwindcss": "catalog:",
+    "@types/node": "catalog:",
     "docs": "workspace:docs@*",
-    "nuxt": "^3.14.1592",
+    "nuxt": "catalog:",
     "scule": "^1.3.0"
   },
   "dependencies": {
-    "@maas/mirror": "^0.11.0",
+    "@maas/mirror": "catalog:",
     "@maas/vue-equipment/plugins": "workspace:plugins@*"
   }
 }

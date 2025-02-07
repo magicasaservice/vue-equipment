@@ -1,8 +1,19 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
+
+import IconResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
-import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
+
+import { plugins } from '../../packages/metadata'
+
+function splitAtNumber(str: string) {
+  const match = str.match(/\d/)
+  if (!match) return str
+
+  const index = match.index
+  return str.slice(0, index) + '-' + str.slice(index)
+}
 
 export default defineConfig(async () => {
   return {
@@ -12,14 +23,19 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
-      MarkdownTransform(),
       Components({
-        dirs: [resolve(__dirname, '.vitepress/theme/components')],
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-        dts: '../../docs/apps/.vitepress/components.d.ts',
-        transformer: 'vue3',
+        resolvers: [IconResolver({ customCollections: ['maas'] })],
       }),
-      Icons(),
+      Icons({
+        compiler: 'vue3',
+        customCollections: {
+          maas: async (iconName) => {
+            return await fetch(
+              `https://symbols.maas.earth/maas/${splitAtNumber(iconName)}.svg`
+            ).then((res) => res.text())
+          },
+        },
+      }),
     ],
     // We need this to resolve the aliases in the plugin files
     // CSS imports from utils need a higher priority than JS imports from utils
@@ -29,6 +45,15 @@ export default defineConfig(async () => {
           find: '@maas/vue-equipment/composables',
           replacement: resolve(__dirname, '../../packages/composables'),
         },
+        ...plugins.map((plugin) => {
+          return {
+            find: `@maas/vue-equipment/plugins/${plugin.name}/css`,
+            replacement: resolve(
+              __dirname,
+              `../../packages/plugins/${plugin.name}/src/css`
+            ),
+          }
+        }),
         {
           find: '@maas/vue-equipment/plugins',
           replacement: resolve(__dirname, '../../packages/plugins'),
@@ -44,6 +69,10 @@ export default defineConfig(async () => {
         {
           find: 'fonts',
           replacement: resolve(__dirname, '../../packages/fonts/dist'),
+        },
+        {
+          find: './theme/components',
+          replacement: resolve(__dirname, './.vitepress/theme/components'),
         },
       ],
       dedupe: ['vue'],

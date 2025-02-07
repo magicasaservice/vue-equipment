@@ -2,64 +2,72 @@
   "name": "@maas/vue-equipment",
   "description": "A magic collection of Vue composables, plugins, components and directives",
   "version": "0.40.0",
-  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
-  "type": "module",
+  "contributors": [
+    {
+      "name": "Robin Scholz",
+      "url": "https://github.com/robinscholz"
+    },
+    {
+      "name": "Christoph Jeworutzki",
+      "url": "https://github.com/ChristophJeworutzki"
+    }
+  ],
   "devDependencies": {
-    "@antfu/ni": "^0.23.0",
-    "@release-it/bumper": "^6.0.1",
-    "@types/node": "^22.4.1",
-    "@vue/tsconfig": "^0.7.0",
-    "release-it": "^17.0.1",
-    "tailwindcss": "^3.4.16",
-    "turbo": "^2.0.6"
+    "@antfu/ni": "^23.3.1",
+    "@maas/config": "^1.5.0",
+    "@release-it/bumper": "^7.0.1",
+    "@types/node": "catalog:",
+    "release-it": "^18.1.2",
+    "tailwindcss": "catalog:",
+    "turbo": "^2.4.0",
+    "typescript": "catalog:"
   },
   "exports": {
     "./nuxt": {
       "types": "./dist/nuxt/types.d.mts",
-      "require": "./dist/nuxt/module.cjs",
       "import": "./dist/nuxt/module.mjs"
     },
     "./composables": {
       "types": "./dist/composables/index.d.mts",
-      "require": "./dist/composables/index.js",
       "import": "./dist/composables/index.mjs"
     },
     "./plugins": {
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.mjs"
     },
+    "./plugins/*/css/*.css": {
+      "import": "./dist/plugins/*/src/css/*.css"
+    },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
-      "require": "./dist/utils/index.js",
       "import": "./dist/utils/index.mjs"
     },
     "./utils/css/*.css": {
-      "import": "./dist/utils/css/*.css",
-      "require": "./dist/utils/css/*.css"
+      "import": "./dist/utils/css/*.css"
     }
   },
   "files": [
     "dist"
   ],
-  "keywords": [],
   "license": "MIT",
   "peerDependencies": {
-    "@floating-ui/vue": "^1.0.6",
-    "@maas/magic-timer": "^1.0.0",
-    "@maas/vue-primitive": "^1.1.0",
-    "@maas/wheel-gestures": "^1.0.0",
-    "@nuxt/kit": "^3.14.1592",
-    "@vueuse/core": "^10.3.0",
-    "@vueuse/integrations": "^10.3.0",
-    "defu": "^6.1.2",
-    "focus-trap": "^7.5.2",
-    "hls.js": "^1.4.10",
-    "luxon": "^3.4.2",
-    "mitt": "^3.0.1",
-    "motion": "^10.16.2",
-    "nuxt": "^3.14.1592",
-    "universal-cookie": "^7.1.0",
-    "vue": "^3.5.3"
+    "@floating-ui/vue": "^1",
+    "@maas/magic-timer": "^1",
+    "@maas/vue-autosize": "^1",
+    "@maas/vue-primitive": "^1",
+    "@maas/wheel-gestures": "^1",
+    "@nuxt/kit": "^3",
+    "@vueuse/core": "^12",
+    "@vueuse/integrations": "^12",
+    "defu": "^6",
+    "focus-trap": "^7",
+    "hls.js": "^1",
+    "luxon": "^3",
+    "mitt": "^3",
+    "motion": "^12",
+    "nuxt": "^3.15",
+    "universal-cookie": "^7",
+    "vue": "^3.5"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
@@ -69,6 +77,9 @@
       "optional": false
     },
     "@maas/magic-timer": {
+      "optional": false
+    },
+    "@maas/vue-autosize": {
       "optional": false
     },
     "@maas/vue-primitive": {
@@ -120,8 +131,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
     "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
-    "release": "turbo run t:release && release-it"
+    "release": "turbo run t:release && release-it",
+    "update:deps": "pnpm dlx taze -r -w",
+    "update:deps:major": "pnpm dlx taze major -r -w"
   },
+  "type": "module",
   "volta": {
     "node": "20.18.1"
   },
@@ -143,10 +157,10 @@
       }
     }
   },
-  "packageManager": "pnpm@9.4.0",
+  "packageManager": "pnpm@9.15.4",
   "pnpm": {
     "overrides": {
-      "typescript": "5.6.3"
+      "typescript": "catalog:"
     }
   }
 }

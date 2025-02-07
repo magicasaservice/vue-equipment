@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body" v-if="wrapperActive">
+  <teleport v-if="wrapperActive" to="body">
     <transition
       :name="mappedTransition"
       :on-before-enter="onBeforeEnter"
@@ -10,24 +10,25 @@
       :on-after-leave="onAfterLeave"
     >
       <div
+        v-if="innerActive"
         class="magic-menu-content"
         :data-id="`${viewId}-content`"
         v-bind="$attrs"
-        v-if="innerActive"
       >
         <magic-menu-float
           :placement="view?.placement"
+          :middleware="middleware"
           :arrow="arrow"
           :reference-el="referenceEl"
         >
-          <template #arrow v-if="$slots.arrow && arrow">
+          <template v-if="$slots.arrow && arrow" #arrow>
             <slot name="arrow" />
           </template>
           <template #default>
             <div
-              class="magic-menu-content__inner"
               ref="contentRef"
-              :class="{ '-disabled': pointerDisabled }"
+              class="magic-menu-content__inner"
+              :data-pointer-disabled="pointerDisabled"
             >
               <slot />
             </div>
@@ -35,21 +36,23 @@
         </magic-menu-float>
       </div>
     </transition>
-    <span
-      v-for="point in coords"
-      v-if="state.options.debug"
-      :style="{
-        background: 'red',
-        position: 'fixed',
-        top: point.y + 'px',
-        left: point.x + 'px',
-        width: '4px',
-        height: '4px',
-        zIndex: 1000,
-        pointerEvents: 'none',
-        transform: 'translate(-50%, -50%)',
-      }"
-    />
+    <template v-if="state.options.debug">
+      <span
+        v-for="point in coords"
+        :key="`${point.x}${point.y}`"
+        :style="{
+          background: 'red',
+          position: 'fixed',
+          top: point.y + 'px',
+          left: point.x + 'px',
+          width: '4px',
+          height: '4px',
+          zIndex: 1000,
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%)',
+        }"
+      />
+    </template>
   </teleport>
 </template>
 
@@ -78,6 +81,8 @@ import {
   MagicMenuContentId,
 } from '../symbols'
 
+import type { Middleware } from '@floating-ui/vue'
+
 import '@maas/vue-equipment/utils/css/animations/fade-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-out.css'
 
@@ -87,6 +92,7 @@ defineOptions({
 
 interface MagicMenuContentProps {
   arrow?: boolean | undefined
+  middleware?: Middleware[]
   transition?: string
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
@@ -245,7 +251,7 @@ provide(MagicMenuContentId, `${viewId}-content`)
   border: 0;
 }
 
-.magic-menu-content__inner.-disabled {
+.magic-menu-content__inner[data-pointer-disabled='true'] {
   pointer-events: none;
 }
 

@@ -13,8 +13,8 @@ export default defineNuxtModule({
   setup() {
     const resolver = createResolver(import.meta.url)
     addComponent({
-      filePath: resolver.resolve('src/components/MagicToast.vue'),
-      name: 'MagicToast',
+      filePath: resolver.resolve('src/components/MagicToastProvider.vue'),
+      name: 'MagicToastProvider',
       global: true,
     })
 

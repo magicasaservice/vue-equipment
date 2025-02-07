@@ -2,12 +2,21 @@
   "name": "metadata",
   "description": "Metadata for @maas/vue-equipment",
   "version": "0.40.0",
-  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "contributors": [
+    {
+      "name": "Robin Scholz",
+      "url": "https://github.com/robinscholz"
+    },
+    {
+      "name": "Christoph Jeworutzki",
+      "url": "https://github.com/ChristophJeworutzki"
+    }
+  ],
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "esno": "^4.8.0",
+    "@types/fs-extra": "catalog:",
+    "esno": "catalog:",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.0",
+    "fs-extra": "catalog:",
     "gray-matter": "^4.0.3",
     "simple-git": "^3.27.0"
   },
@@ -19,7 +28,6 @@
   "files": [
     "index.*"
   ],
-  "keywords": [],
   "license": "MIT",
   "private": true,
   "scripts": {

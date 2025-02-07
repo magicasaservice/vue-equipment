@@ -1,7 +1,7 @@
 import { join, resolve } from 'node:path'
 import { existsSync } from 'node:fs'
 import { writeFile, readFile } from 'node:fs/promises'
-import { remove } from 'fs-extra'
+import { remove } from 'fs-extra/esm'
 import type { PackageIndexes } from './../../../../packages/metadata'
 
 const DIR_TYPES = resolve(__dirname, '../../../types/')

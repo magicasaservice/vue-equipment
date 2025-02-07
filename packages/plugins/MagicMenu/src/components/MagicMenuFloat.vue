@@ -1,7 +1,7 @@
 <template>
   <div
-    class="magic-menu-float"
     ref="elRef"
+    class="magic-menu-float"
     :style="floatingStyles"
     :class="placementClasses"
   >
@@ -36,8 +36,9 @@ import {
   flip,
   shift,
   limitShift,
-  arrow,
+  arrow as floatingArrow,
   type Placement,
+  type Middleware,
 } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -46,11 +47,13 @@ import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 
 interface MagicMenuFloatProps {
   placement?: Placement
+  middleware?: Middleware[]
   arrow?: boolean
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
 }
 
-const props = defineProps<MagicMenuFloatProps>()
+const { placement, middleware, arrow, referenceEl } =
+  defineProps<MagicMenuFloatProps>()
 
 const elRef = ref<HTMLElement | undefined>(undefined)
 const arrowRef = ref<HTMLElement | undefined>(undefined)
@@ -65,8 +68,8 @@ const { getView } = useMenuView(instanceId ?? '')
 const view = getView(viewId ?? '')
 
 const mappedPlacement = computed(() => {
-  if (props.placement) {
-    return props.placement
+  if (placement) {
+    return placement
   }
 
   switch (state.options.mode) {
@@ -76,31 +79,37 @@ const mappedPlacement = computed(() => {
       return !view?.parent.item ? 'bottom' : 'right-start'
     case 'context':
       return 'right-start'
+    default:
+      return undefined
   }
 })
 
 const hasArrow = computed(
-  () => props.arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
+  () => arrow ?? (state.options.mode === 'dropdown' && !view?.parent.item)
 )
 
 const mappedMiddleware = computed(() => {
-  const middleware = []
+  const combined = []
+
+  if (middleware) {
+    combined.push(...middleware)
+  }
 
   switch (state.options.mode) {
     case 'menubar':
       if (!view?.parent.item) {
-        middleware.push(
+        combined.push(
           flip({
             crossAxis: true,
           })
         )
       } else if (!!view?.parent.item) {
-        middleware.push(
+        combined.push(
           flip({
             crossAxis: false,
           })
         )
-        middleware.push(
+        combined.push(
           shift({
             crossAxis: true,
             limiter: limitShift(),
@@ -109,13 +118,13 @@ const mappedMiddleware = computed(() => {
       }
       break
     case 'dropdown':
-      middleware.push(
+      combined.push(
         flip({
           mainAxis: true,
           crossAxis: false,
         })
       )
-      middleware.push(
+      combined.push(
         shift({
           mainAxis: true,
           crossAxis: false,
@@ -123,15 +132,15 @@ const mappedMiddleware = computed(() => {
         })
       )
       if (hasArrow.value) {
-        middleware.push(
-          arrow({
+        combined.push(
+          floatingArrow({
             element: arrowRef.value,
           })
         )
       }
       break
     case 'context':
-      middleware.push(
+      combined.push(
         flip({
           mainAxis: true,
           crossAxis: true,
@@ -140,12 +149,12 @@ const mappedMiddleware = computed(() => {
       break
   }
 
-  return middleware
+  return combined
 })
 
 const mappedReferenceEl = computed(() => {
-  if (props.referenceEl) {
-    return toValue(props.referenceEl)
+  if (referenceEl) {
+    return toValue(referenceEl)
   } else if (view?.state.clicked) {
     return {
       getBoundingClientRect() {
@@ -172,33 +181,27 @@ const mappedStrategy = computed(() => {
   )
 })
 
-const { floatingStyles, placement, middlewareData } = useFloating(
-  mappedReferenceEl,
-  elRef,
-  {
-    placement: mappedPlacement,
-    strategy: mappedStrategy,
-    whileElementsMounted: autoUpdate,
-    middleware: mappedMiddleware,
-  }
-)
+const {
+  floatingStyles,
+  placement: floatingPlacement,
+  middlewareData,
+} = useFloating(mappedReferenceEl, elRef, {
+  placement: mappedPlacement,
+  strategy: mappedStrategy,
+  whileElementsMounted: autoUpdate,
+  middleware: mappedMiddleware,
+})
 
 const arrowStyles = computed(() => {
   if (!hasArrow.value) {
     return {}
   }
 
-  let translate = 'translate3d('
-  ;(translate +=
-    middlewareData.value.arrow?.x != null
-      ? `${middlewareData.value.arrow.x}px`
-      : '0'),
-    (translate += ', ')
-  ;(translate +=
-    middlewareData.value.arrow?.y != null
-      ? `${middlewareData.value.arrow.y}px`
-      : '0'),
-    (translate += ', 0)')
+  const translate = `translate3d(${
+    middlewareData.value.arrow?.x ? `${middlewareData.value.arrow.x}px` : '0'
+  }, ${
+    middlewareData.value.arrow?.y ? `${middlewareData.value.arrow.y}px` : '0'
+  }, 0)`
 
   return {
     transform: translate,
@@ -206,14 +209,14 @@ const arrowStyles = computed(() => {
 })
 
 const placementClasses = computed(() => {
-  return placement.value
+  return floatingPlacement.value
     .split('-')
     .map((value) => `-${value}`)
     .join(' ')
 })
 
 const polygonPoints = computed(() => {
-  const position = placement.value.split('-')[0]
+  const position = floatingPlacement.value.split('-')[0]
 
   switch (position) {
     case 'bottom':
@@ -224,6 +227,8 @@ const polygonPoints = computed(() => {
       return '50,50 100,100 100,0'
     case 'left':
       return '50,50 0,100 0,0'
+    default:
+      return undefined
   }
 })
 </script>

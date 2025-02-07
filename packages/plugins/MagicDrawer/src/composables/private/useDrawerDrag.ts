@@ -4,6 +4,7 @@ import {
   watch,
   onBeforeUnmount,
   toValue,
+  toRefs,
   nextTick,
   type Ref,
   type MaybeRef,
@@ -26,34 +27,31 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from './../useMagicDrawer'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import { type DefaultOptions } from '../../utils/defaultOptions'
-import type { DrawerSnapPoint } from '../../types'
+import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
-  isActive: MaybeRef<boolean>
   elRef: Ref<HTMLElement | undefined>
   wrapperRef: Ref<HTMLDivElement | undefined>
-  position: MaybeRef<DefaultOptions['position']>
-  snapPoints: MaybeRef<DefaultOptions['snapPoints']>
-  threshold: MaybeRef<DefaultOptions['threshold']>
-  initial: MaybeRef<DefaultOptions['initial']>
-  animation: MaybeRef<DefaultOptions['animation']>
-  preventDragClose: MaybeRef<DefaultOptions['preventDragClose']>
+  position: MaybeRef<DrawerDefaultOptions['position']>
+  snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
+  threshold: MaybeRef<DrawerDefaultOptions['threshold']>
+  initial: MaybeRef<DrawerDefaultOptions['initial']>
+  animation: MaybeRef<DrawerDefaultOptions['animation']>
+  preventDragClose: MaybeRef<DrawerDefaultOptions['preventDragClose']>
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
-  close: () => void
 }
 
 export function useDrawerDrag(args: UseDrawerDragArgs) {
   const {
     id,
-    isActive,
     elRef,
     wrapperRef,
     position,
@@ -64,11 +62,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     animation,
     preventDragClose,
     disabled,
-    close,
   } = args
 
   // Private state
   const { initializeState } = useDrawerState(toValue(id))
+  const state = initializeState()
   const {
     dragStart,
     dragging,
@@ -87,7 +85,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     absDirectionY,
     elRect,
     wrapperRect,
-  } = initializeState()
+  } = toRefs(state)
+
+  const { isActive, close } = useMagicDrawer(id)
 
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
@@ -172,7 +172,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointY === drawerHeight.value) {
+          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -193,7 +193,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointX === drawerWidth.value) {
+          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -224,7 +224,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
             direction: relDirectionY.value,
           })
           // Close if last snap point is reached
-          if (snapPointY === drawerHeight.value) {
+          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point
@@ -244,7 +244,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           })
 
           // Close if last snap point is reached
-          if (snapPointX === drawerWidth.value) {
+          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
             shouldClose.value = true
           } else {
             // Snap to next snap point

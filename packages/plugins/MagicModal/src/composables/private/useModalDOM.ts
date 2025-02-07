@@ -35,7 +35,7 @@ export function useModalDOM(args?: useModalDOMArgs) {
       : useFocusTrap(mappedOptions.focusTarget, mappedOptions.focusTrap)
     : undefined
 
-  // Public methods
+  // Public functions
   function trapFocus() {
     if (focusTrap) {
       focusTrap.activate()

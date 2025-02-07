@@ -1,6 +1,6 @@
 <template>
-  <div class="magic-menu-view" :id="mappedId">
-    <slot />
+  <div :id="mappedId" class="magic-menu-view">
+    <slot :view-active="view.active" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ interface MagicMenuViewProps {
   placement?: Placement
 }
 
-const props = defineProps<MagicMenuViewProps>()
+const { id, placement } = defineProps<MagicMenuViewProps>()
 
 const parentTree = inject(MagicMenuParentTree, [])
 const instanceId = inject(MagicMenuInstanceId, undefined)
@@ -32,8 +32,9 @@ if (!instanceId) {
   throw new Error('MagicMenuView must be nested inside MagicMenuProvider')
 }
 
-const mappedId = computed(() => props.id ?? `magic-menu-view-${useId()}`)
+const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
+const mappedActive = computed(() => view.active)
 
 // Register view
 const { initializeView, deleteView } = useMenuView(instanceId)
@@ -41,8 +42,8 @@ const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
 const mappedPlacement = computed(() => {
-  if (props.placement) {
-    return props.placement
+  if (placement) {
+    return placement
   }
 
   switch (state.options.mode) {
@@ -55,20 +56,20 @@ const mappedPlacement = computed(() => {
     case 'context':
       return 'right-start'
     default:
-      return 'bottom'
+      return undefined
   }
 })
 
 const view = initializeView({
   id: mappedId.value,
   parent: { views: parentTree, item: itemId ?? '' },
-  placement: mappedPlacement.value,
+  placement: mappedPlacement.value ?? 'bottom',
 })
 
 // Pass id, active state and parent tree to children
 provide(MagicMenuParentTree, mappedParentTree.value)
 provide(MagicMenuViewId, mappedId.value)
-provide(MagicMenuViewActive, view.active)
+provide(MagicMenuViewActive, mappedActive)
 
 // Lifecycle
 onBeforeUnmount(() => {

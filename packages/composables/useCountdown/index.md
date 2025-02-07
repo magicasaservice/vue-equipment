@@ -1,37 +1,21 @@
 # useCountdown
 
-A composable function that returns the remaining time until a given Date and Time.
+Calculate the remaining time until a given moment.
 
-## Usage
+<component-preview src="./demo/DefaultDemo.vue" />
 
-```vue
-<template>
-  <div class="w-full flex gap-4">
-    <div>
-      <input type="datetime" v-model="refDate" />
-    </div>
-    <div>
-      <div>{{ years }} Year(s)</div>
-      <div>{{ days }} Day(s)</div>
-      <div>{{ hours }} Hour(s)</div>
-      <div>{{ minutes }} Minute(s)</div>
-      <div>{{ seconds }} Second(s)</div>
-    </div>
-  </div>
-</template>
+<!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
-<script lang="ts" setup>
-import { ref } from 'vue'
+## Anatomy
+
+```js
 import {
   useCountdown,
   type DateTimeArray,
 } from '@maas/vue-equipment/composables'
-import { computed } from 'vue'
 
-const refDate = ref('2025-01-01 00:00:00')
-
-const refDateArray = computed<DateTimeArray>(() => {
-  const date = new Date(refDate.value)
+const dateArray = computed<DateTimeArray>(() => {
+  const date = new Date('2024-01-01 00:00:00')
   return [
     date.getFullYear(),
     date.getMonth() + 1,
@@ -42,14 +26,30 @@ const refDateArray = computed<DateTimeArray>(() => {
   ]
 })
 
+function callback() {
+  console.log('Countdown finished!')
+}
+
+const args = {
+  endDateTime: dateArray,
+  timezone: 'Europe/Berlin',
+}
+
 const { years, days, hours, minutes, seconds } = useCountdown(
-  {
-    endDateTime: refDateArray,
-    timezone: 'Europe/Berlin',
-  },
-  () => {
-    console.log('Countdown finished!')
-  },
+  args,
+  callback,
 )
-</script>
+```
+
+<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+
+### Direct import
+
+Import the composable directly where you need it.
+
+```js
+import {
+  useCountdown,
+  type DateTimeArray,
+} from '@maas/vue-equipment/composables'
 ```

@@ -2,7 +2,7 @@ import {} from '@nuxt/schema'
 import {
   defineNuxtModule,
   createResolver,
-  addComponent,
+  addComponentsDir,
   addImports,
   extendViteConfig,
 } from '@nuxt/kit'
@@ -25,18 +25,15 @@ export default defineNuxtModule({
       config.optimizeDeps.include.push('universal-cookie')
     })
 
-    addComponent({
-      filePath: resolver.resolve('src/components/MagicCookie.vue'),
-      name: 'MagicCookie',
+    addComponentsDir({
+      path: resolver.resolve('src/components'),
       global: true,
+      pathPrefix: false,
     })
+
     addImports({
       from: '@maas/vue-equipment/plugins/MagicCookie',
       name: 'useMagicCookie',
-    })
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicCookie',
-      name: 'useCookietEmitter',
     })
   },
 })

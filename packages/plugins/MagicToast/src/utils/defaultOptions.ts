@@ -1,17 +1,33 @@
-import type { MagicToastOptions } from '../types/index'
-import type { RequireAll } from '@maas/vue-equipment/utils'
+import type { ToastDefaultOptions } from '../types/index'
 
-const defaultOptions: RequireAll<MagicToastOptions> = {
+const defaultOptions: ToastDefaultOptions = {
+  debug: false,
+  position: 'bottom-center',
+  duration: 0,
+  scrollLock: {
+    padding: true,
+  },
   teleport: {
     target: 'body',
     disabled: false,
   },
-  transitions: {
-    list: 'magic-toast--list',
-  },
+  transition: 'magic-toast',
   layout: {
     expand: 'click',
-    max: 5,
+    max: 3,
+  },
+  threshold: {
+    lock: 8,
+    distance: 32,
+    momentum: 1,
+  },
+  animation: {
+    snap: {
+      duration: 300,
+    },
+  },
+  initial: {
+    expanded: false,
   },
 }
 

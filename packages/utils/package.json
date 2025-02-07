@@ -2,17 +2,24 @@
   "name": "utils",
   "description": "Util functions used throughout",
   "version": "0.40.0",
-  "author": "Robin Scholz <https://github.com/robinscholz>, Christoph Jeworutzki <https://github.com/ChristophJeworutzki>",
+  "contributors": [
+    {
+      "name": "Robin Scholz",
+      "url": "https://github.com/robinscholz"
+    },
+    {
+      "name": "Christoph Jeworutzki",
+      "url": "https://github.com/ChristophJeworutzki"
+    }
+  ],
   "devDependencies": {
-    "@types/node": "^22.13.0",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3"
+    "@types/node": "catalog:",
+    "tsup": "catalog:"
   },
   "exports": {
     ".": "./index.ts",
     "./css/*": "./src/css/*"
   },
-  "keywords": [],
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -20,5 +27,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
+  "type": "module",
   "sideEffects": false
 }

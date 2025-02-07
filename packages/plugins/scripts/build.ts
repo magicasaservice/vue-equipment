@@ -1,9 +1,15 @@
 import { mkdist } from 'mkdist'
-import { resolve } from 'node:path'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 mkdist({
   declaration: true,
+  format: 'esm',
   addRelativeDeclarationExtensions: true,
+  loaders: ['js', 'vue'],
   distDir: resolve(__dirname, '../../../dist/plugins'),
   rootDir: resolve(__dirname, './..'),
   srcDir: resolve(__dirname, './..'),
@@ -17,8 +23,9 @@ mkdist({
     '!tsconfig.json',
     '!**/demo.vue',
     '!**/demo/*.vue',
+    '!**/demo/**/*.vue',
     '!**/index.md',
     '!scripts/*',
-    '!*.config.json',
+    '!*.config.*',
   ],
 })

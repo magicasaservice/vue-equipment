@@ -1,11 +1,12 @@
 <template>
-  <div class="magic-marquee" ref="parentRef">
+  <div ref="parentRef" class="magic-marquee">
     <div class="magic-marquee__track">
-      <div class="magic-marquee__content" ref="childRef">
+      <div ref="childRef" class="magic-marquee__content">
         <slot />
       </div>
       <div
-        v-for="_duplicate in duplicates"
+        v-for="duplicate in duplicates"
+        :key="duplicate"
         class="magic-marquee__content"
         :aria-hidden="true"
       >
@@ -15,45 +16,44 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+<script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
+import { useMarqueeState } from '../composables/private/useMarqueeState'
+
+import type { MagicMarqueeOptions } from '../types'
 
 interface MagicMarqueeProps {
-  direction?: 'reverse' | 'normal'
-  speed?: number
+  id: MaybeRef<string>
+  options?: MagicMarqueeOptions
 }
 
-const props = withDefaults(defineProps<MagicMarqueeProps>(), {
-  direction: 'normal',
-  speed: 1,
-})
+const { id, options } = defineProps<MagicMarqueeProps>()
+
+const { deleteState, initializeState } = useMarqueeState(id)
+initializeState(options)
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const childRef = ref<HTMLElement | undefined>(undefined)
 
-const { duplicates, playing, play, pause, initialize } = useMarqueeApi({
+const { duplicates, initialize } = useMarqueeApi({
   child: childRef,
   parent: parentRef,
-  options: {
-    speed: computed(() => props.speed),
-    direction: computed(() => props.direction),
-  },
+  instanceId: id,
 })
 
 onMounted(() => {
   initialize()
 })
 
-defineExpose({
-  playing,
-  play,
-  pause,
+// Lifecycle
+onBeforeUnmount(() => {
+  deleteState()
 })
 </script>
 
 <style>
-@keyframes magicMarqueeScrollX {
+@keyframes mm-scroll-x {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -62,7 +62,7 @@ defineExpose({
   }
 }
 
-@keyframes magicMarqueeScrollY {
+@keyframes mm-scroll-y {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -82,7 +82,7 @@ defineExpose({
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: var(--magic-marquee-jusrify-content, flex-start);
+  justify-content: var(--magic-marquee-justify-content, flex-start);
   align-items: var(--magic-marquee-align-items, baseline);
 }
 
@@ -91,10 +91,10 @@ defineExpose({
   backface-visibility: hidden;
   padding-right: var(--magic-marquee-gap, 1rem);
   width: var(--magic-marquee-content-width, unset);
-  animation-name: var(--magic-marquee-animation-name);
-  animation-duration: var(--magic-marquee-animation-duration);
-  animation-play-state: var(--magic-marquee-animation-play-state, running);
-  animation-direction: var(--magic-marquee-animation-direction, normal);
+  animation-name: var(--mm-animation-name, 'mm-scroll-x');
+  animation-duration: var(--mm-animation-duration);
+  animation-play-state: var(--mm-animation-play-state, running);
+  animation-direction: var(--mm-animation-direction, normal);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   display: flex;

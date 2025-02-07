@@ -4,40 +4,42 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, provide, inject, onMounted, watch, nextTick, readonly } from 'vue'
+<script lang="ts" setup>
+import { ref, provide, inject, watch, nextTick, readonly } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/private/useScrollApi'
 import {
-  MagicScrollParent,
+  MagicScrollTarget,
   MagicScrollProgress,
   MagicScrollReturn,
 } from '../symbols'
 
-import type { FromTo } from '../types'
+import type { ScrollIntersection } from '../types'
 
 interface MagicScrollSceneProps {
-  from?: FromTo
-  to?: FromTo
+  from?: ScrollIntersection
+  to?: ScrollIntersection
 }
 
-const props = withDefaults(defineProps<MagicScrollSceneProps>(), {
-  from: 'top-bottom',
-  to: 'bottom-top',
-})
+const { from = 'top-bottom', to = 'bottom-top' } =
+  defineProps<MagicScrollSceneProps>()
 
 const scrollReturn = inject(MagicScrollReturn, undefined)
-const scrollParent = inject(MagicScrollParent)
+const scrollTarget = inject(MagicScrollTarget)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
+if (!scrollTarget) {
+  console.error('MagicScrollScene must be used within a MagicScrollProvider')
+}
+
 const progress = ref(0)
-const intersecting = ref()
+const intersecting = ref(false)
+const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { getCalculations, getProgress } = useScrollApi({
   child: elRef,
-  parent: scrollParent,
-  from: props.from,
-  to: props.to,
+  parent: scrollTarget,
+  from,
+  to,
 })
 
 async function calculate() {

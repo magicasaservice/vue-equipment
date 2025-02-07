@@ -1,0 +1,12 @@
+@keyframes auto-size-out {
+  0% {
+    opacity: 1;
+    height: 0%;
+    overflow: visible;
+  }
+  100% {
+    opacity: 0;
+    height: 0%;
+    overflow: visible;
+  }
+}

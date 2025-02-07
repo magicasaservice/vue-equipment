@@ -4,7 +4,7 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import type { DraggableSnapPoint } from '../types/index'
 
 export function useMagicDraggable(id: MaybeRef<string>) {
-  // Public methods
+  // Public functions
   function snapTo(snapPoint: DraggableSnapPoint, duration?: number) {
     useMagicEmitter().emit('snapTo', {
       id: toValue(id),
