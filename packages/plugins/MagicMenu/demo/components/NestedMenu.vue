@@ -8,7 +8,7 @@
       <m-menu-item-child>{{ item.label }}</m-menu-item-child>
       <template v-if="item.cmd" #end>
         <m-menu-item-child end>
-          <span>{{ item.cmd }}</span>
+          <div class="pr-0.5">{{ item.cmd }}</div>
         </m-menu-item-child>
       </template>
     </m-menu-item>
@@ -18,15 +18,16 @@
       <magic-menu-trigger as-child>
         <m-menu-item size="xs" :active="itemActive ?? viewActive">
           <m-menu-item-child>{{ item.label }}</m-menu-item-child>
-          <template v-if="item.cmd" #end>
+          <template #end>
             <m-menu-item-child end>
-              <span>{{ item.cmd }}</span>
+              <span v-if="item.cmd">{{ item.cmd }}</span>
+              <i-maas-chevron-e-500 />
             </m-menu-item-child>
           </template>
         </m-menu-item>
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
-        <div class="bg-surface-elevation-high p-1 rounded-2xl w-[220px]">
+        <div class="bg-surface-elevation-high w-[220px] rounded-2xl p-1">
           <nested-menu
             v-for="(subItem, index) in item.items"
             :key="index"

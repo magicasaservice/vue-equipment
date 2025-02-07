@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    IMaasChevronE500: typeof import('~icons/maas/chevron-e500')['default']
+    IMaasChevronS500: typeof import('~icons/maas/chevron-s500')['default']
     IMaasSignInfoOval500: typeof import('~icons/maas/sign-info-oval500')['default']
   }
 }
