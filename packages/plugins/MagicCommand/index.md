@@ -101,7 +101,7 @@ function handleClick() {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the command palette.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[
@@ -165,7 +165,7 @@ bun install @nuxt/kit @maas/vue-primitive @vueuse/core defu
 
 ### MagicCommandProvider
 
-The provider wraps the command palette and configures all child components according to the provided [options](#options).
+The MagicCommandProvider wraps the command palette and configures all child components according to the provided [options](#options).
 
 #### Props
 

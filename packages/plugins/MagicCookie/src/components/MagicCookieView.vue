@@ -35,7 +35,9 @@ import '@maas/vue-equipment/utils/css/animations/auto-size-out.css'
 const instanceId = inject(MagicCookieInstanceId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicCookiePreferences must be used inside MagicCookie')
+  throw new Error(
+    'MagicCookiePreferences must be used within a MagicCookieProvider'
+  )
 }
 
 const { initializeState } = useCookieState(instanceId)

@@ -1,6 +1,6 @@
 # MagicEmitter
 
-MagicEmitter is a simple wrapper around [mitt](https://github.com/developit/mitt). The emitter is used throughout all plugins to emit custom events. By using the emitter to listen to these events, you can trigger custom callbacks, after a modal opens or a drawer closes for example.
+MagicEmitter is a wrapper around [mitt](https://github.com/developit/mitt). The emitter is used throughout all plugins to emit custom events. By using the emitter to listen to these events, you can trigger custom callbacks, after a modal opens or a drawer closes for example.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
@@ -54,7 +54,7 @@ useMagicEmitter().off('*', callback)
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the modal.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[

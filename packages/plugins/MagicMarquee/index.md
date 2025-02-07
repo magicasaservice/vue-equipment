@@ -67,7 +67,7 @@ function handleClick() {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the command palette.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[

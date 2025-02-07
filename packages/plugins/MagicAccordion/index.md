@@ -74,7 +74,7 @@ function handleClick() {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the accordion.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[
@@ -138,7 +138,7 @@ bun install @nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core
 
 ### MagicAccordionProvider
 
-The provider wraps the accordion and configures all child components according to the provided [options](#options).
+The MagicAccordionProvider wraps the accordion and configures all child components according to the provided [options](#options).
 
 #### Props
 

@@ -80,7 +80,7 @@ function handleClick() {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the modal.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[
@@ -144,7 +144,7 @@ bun install @nuxt/kit @vueuse/core defu hls.js
 
 ### MagicPlayerProvider
 
-The provider wraps the menu and configures all child components according to the provided [options](#options).
+The MagicPlayerProvider wraps the menu and configures all child components according to the provided [options](#options).
 
 #### Props
 

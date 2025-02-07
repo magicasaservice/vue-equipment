@@ -43,7 +43,7 @@ const { id, index } = defineProps<MagicToastViewProps>()
 const instanceId = inject(MagicToastInstanceId, undefined)
 
 if (!instanceId) {
-  throw new Error('MagicToastView must be used inside MagicToastProvider')
+  throw new Error('MagicToastView must be used within a MagicToastProvider')
 }
 
 const elRef = ref<HTMLElement | undefined>(undefined)

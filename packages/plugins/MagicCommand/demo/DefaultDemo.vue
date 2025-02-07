@@ -1,11 +1,15 @@
 <template>
-  <magic-command-provider id="magic-command-demo">
+  <magic-command-provider id="magic-command-demo" class="flex flex-col gap-6">
     <magic-command-trigger view-id="initial-default-view" as-child>
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
+    <div class="type-surface-body-sm text-surface-subtle">
+      <span>or press ⌘+K / ⌃+K</span>
+    </div>
+
     <magic-command-modal :options="{ focusTrap: false }">
-      <m-menu-box class="w-[40rem] h-[30rem]">
+      <m-menu-box class="h-[30rem] w-[40rem]">
         <magic-command-renderer />
       </m-menu-box>
     </magic-command-modal>

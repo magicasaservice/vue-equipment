@@ -6,7 +6,7 @@ const defaultOptions: CommandDefaultOptions = {
     content: 'magic-command-content',
   },
   keyListener: {
-    open: ['Cmd+k'],
+    open: ['Cmd+k', 'Ctrl+k'],
     close: ['Escape'],
     next: ['ArrowDown'],
     prev: ['ArrowUp'],

@@ -72,7 +72,7 @@ function handleClick() {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually to use the modal.
+If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
 <ProseTable
   :columns="[
@@ -150,7 +150,7 @@ bun install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu 
 
 ### MagicCookieProvider
 
-The provider wraps the cookie banner and configures all child components according to the provided [options](#options).
+The MagicCookieProvider wraps the cookie banner and configures all child components according to the provided [options](#options).
 
 #### Props
 
