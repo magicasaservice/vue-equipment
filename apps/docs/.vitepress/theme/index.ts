@@ -9,7 +9,7 @@ import * as Mirror from '@maas/mirror/vue'
 
 import './styles/main.css'
 import './styles/custom.css'
-// import 'fonts/mirage/stylesheet.css'
+import 'fonts/mirage/stylesheet.css'
 import 'fonts/interface/stylesheet.css'
 import 'fonts/index/stylesheet.css'
 import '@maas/mirror/css/index.css'

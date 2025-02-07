@@ -5,7 +5,5 @@
 
 /* Mirage stylistic sets */
 body {
-  font-feature-settings:
-    'cv06' 1,
-    'cv04' 1;
+  font-feature-settings: 'ss01', 'ss02', 'cv04';
 }
