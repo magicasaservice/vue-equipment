@@ -198,24 +198,24 @@ auto-install-peers=true
 
 ### Manual Installation
 
-Alternatively, install them all with the following command.
+Alternatively, install them all with the following command or refer to the docs of each plugin to pick and choose what to install.
 
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @floating-ui/vue @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+pnpm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
 ```
 
 ```sh [npm]
-npm install @floating-ui/vue @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+npm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
 ```
 
 ```sh [yarn]
-yarn add @floating-ui/vue @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+yarn add @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
 ```
 
 ```sh [bun]
-bun install @floating-ui/vue @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+bun install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
 ```
 
 :::
