@@ -49,13 +49,14 @@ const mappedSequenceOptions = defu(sequenceOptions, defaultSequenceOptions)
 function createAnimation() {
   const el = unrefElement(elRef)
 
-  if (!sequence || !el) {
+  // Prevent animation creation
+  if (!sequence || !sequence.length || !el) {
     return
   }
 
   const mappedSequence: AnimationSequence = sequence.map((item) => {
-    const [keyframes, options = {}] = item
-    return [el, keyframes, options]
+    const [animation = [], options = {}] = item
+    return [el, animation, options]
   })
 
   animation.value = animate(mappedSequence, mappedSequenceOptions)
