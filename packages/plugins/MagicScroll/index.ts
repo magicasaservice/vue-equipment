@@ -10,6 +10,7 @@ import {
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
+import type { MagicScrollSequence } from './src/types'
 
 const MagicScrollPlugin: Plugin = {
   install: (app: App) => {
@@ -26,3 +27,5 @@ export {
   MagicScrollProgress,
   MagicScrollReturn,
 }
+
+export type { MagicScrollSequence }

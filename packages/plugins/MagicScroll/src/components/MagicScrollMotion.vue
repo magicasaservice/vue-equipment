@@ -10,16 +10,16 @@ import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
 import {
   animate,
-  type ObjectSegment,
   type AnimationPlaybackControls,
   type SequenceOptions,
   type AnimationSequence,
 } from 'motion'
 
 import { MagicScrollProgress } from '../symbols'
+import { type MagicScrollSequence } from '../types'
 
 interface MagicScrollMotionProps {
-  sequence: ObjectSegment[]
+  sequence: MagicScrollSequence
   sequenceOptions?: SequenceOptions
   progress?: number
 }
@@ -54,7 +54,8 @@ function createAnimation() {
   }
 
   const mappedSequence: AnimationSequence = sequence.map((item) => {
-    return [el, ...item]
+    const [keyframes, options = {}] = item
+    return [el, keyframes, options]
   })
 
   animation.value = animate(mappedSequence, mappedSequenceOptions)

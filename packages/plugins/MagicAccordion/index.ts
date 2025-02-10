@@ -13,6 +13,8 @@ import {
   MagicAccordionViewActive,
 } from './src/symbols/index'
 
+import type { MagicAccordionOptions } from './src/types/index'
+
 const MagicAccordionPlugin: Plugin = {
   install: (app: App) => {
     app.component('MagicAccordionContent', MagicAccordionContent)
@@ -29,3 +31,5 @@ export {
   MagicAccordionViewId,
   MagicAccordionViewActive,
 }
+
+export type { MagicAccordionOptions }

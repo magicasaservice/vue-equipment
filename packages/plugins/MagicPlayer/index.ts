@@ -1,5 +1,3 @@
-import type { App, Plugin } from 'vue'
-
 import MagicPlayerAudio from './src/components/MagicPlayerAudio.vue'
 import MagicPlayerAudioControls from './src/components/MagicPlayerAudioControls.vue'
 import MagicPlayerDisplayTime from './src/components/MagicPlayerDisplayTime.vue'
@@ -12,6 +10,9 @@ import MagicPlayerVideo from './src/components/MagicPlayerVideo.vue'
 import MagicPlayerVideoControls from './src/components/MagicPlayerVideoControls.vue'
 
 import { useMagicPlayer } from './src/composables/useMagicPlayer'
+
+import type { App, Plugin } from 'vue'
+import type { MagicPlayerOptions } from './src/types'
 
 const MagicPlayerPlugin: Plugin = {
   install: (app: App) => {
@@ -29,3 +30,4 @@ const MagicPlayerPlugin: Plugin = {
 }
 
 export { MagicPlayerPlugin, useMagicPlayer }
+export type { MagicPlayerOptions }

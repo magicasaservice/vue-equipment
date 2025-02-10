@@ -22,6 +22,7 @@ import {
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'
+import type { MagicMenuOptions } from './src/types/index'
 
 const MagicMenuPlugin: Plugin = {
   install: (app: App) => {
@@ -49,3 +50,5 @@ export {
   MagicMenuChannelActive,
   MagicMenuContentId,
 }
+
+export type { MagicMenuOptions }

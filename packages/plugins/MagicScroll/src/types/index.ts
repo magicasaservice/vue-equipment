@@ -1,3 +1,5 @@
+import type { DOMKeyframesDefinition, AnimationOptions } from 'motion'
+
 export type ScrollDirection = 'up' | 'down'
 export type CollisionEdge = 'top' | 'bottom'
 
@@ -25,3 +27,5 @@ export interface ScrollEvents {
     parentEdge: CollisionEdge
   }
 }
+
+export type MagicScrollSequence = [DOMKeyframesDefinition, AnimationOptions?][]
