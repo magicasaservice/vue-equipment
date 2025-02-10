@@ -75,7 +75,7 @@ provide(MagicPlayerOptionsKey, mappedOptions)
 }
 
 .magic-player-provider[data-loaded='true'][data-mode='video'] {
-  --magic-player-background: transparent;
+  --magic-player-provider-background: transparent;
 }
 
 .magic-player-provider[data-mode='audio'] {
