@@ -82,5 +82,8 @@ export default defineConfig(async () => {
         external: ['@maas/vue-equipment'],
       },
     },
+    ssr: {
+      noExternal: ['wheel-gestures'],
+    },
   }
 })

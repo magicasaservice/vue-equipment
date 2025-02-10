@@ -2,6 +2,7 @@
   "name": "docs",
   "version": "0.40.0",
   "private": true,
+  "type": "module",
   "contributors": [
     {
       "name": "Robin Scholz",
@@ -12,7 +13,6 @@
       "url": "https://github.com/ChristophJeworutzki"
     }
   ],
-  "type": "module",
   "devDependencies": {
     "@types/fs-extra": "catalog:",
     "@types/markdown-it": "^14.1.2",
