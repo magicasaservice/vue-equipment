@@ -8,7 +8,6 @@ catalog:
   '@maas/magic-timer': ^1.1.0
   '@maas/mirror': ^0.12.1
   '@maas/vue-primitive': ^1.1.0
-  '@maas/wheel-gestures': ^1.0.0
   '@nuxt/kit': ^3.15.4
   '@nuxt/schema': ^3.15.4
   '@nuxtjs/tailwindcss': ^6.13.1

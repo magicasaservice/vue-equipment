@@ -1,5 +1,5 @@
 import { computed, toValue, toRefs, type MaybeRef } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '../../../MagicEmitter'
 import { useDrawerState } from './private/useDrawerState'
 
 import type { DrawerSnapPoint } from '../types/index'
