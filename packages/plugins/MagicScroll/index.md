@@ -191,11 +191,11 @@ MagicScrollMotion is a wrapper around [motion.dev](https://motion.dev/) for scro
       items: [
         {
           label: 'sequence',
-          description: 'An modified motion.dev [timeline sequence](https://motion.dev/docs/animate#timeline-sequences), where the initial element is omitted for each entry.'
+          description: 'A modified motion.dev [timeline sequence](https://motion.dev/docs/animate#timeline-sequences), where the initial element is omitted for each entry.'
         },
         {
-          label: 'ObjectSegment[]',
-          description: 'More info can be found in the [motion.dev docs](https://motion.dev/docs/animate#timeline-sequences).',
+          label: 'MagicScrollSequence',
+          description: 'MagicScrollSequence is derived directly from motion’s `AnimationSequence`. It omits the initial element entry of the array. More info can be found in the [motion.dev docs](https://motion.dev/docs/animate#timeline-sequences).',
         },
         {
           label: 'true'
