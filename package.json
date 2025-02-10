@@ -55,7 +55,6 @@
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
     "@maas/vue-primitive": "^1",
-    "@maas/wheel-gestures": "^1",
     "@nuxt/kit": "^3",
     "@vueuse/core": "^12",
     "@vueuse/integrations": "^12",
@@ -67,7 +66,8 @@
     "motion": "^12",
     "nuxt": "^3.15",
     "universal-cookie": "^7",
-    "vue": "^3.5"
+    "vue": "^3.5",
+    "wheel-gestures": "^2.2.48"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
@@ -83,9 +83,6 @@
       "optional": false
     },
     "@maas/vue-primitive": {
-      "optional": false
-    },
-    "@maas/wheel-gestures": {
       "optional": false
     },
     "@vueuse/core": {
@@ -116,6 +113,9 @@
       "optional": false
     },
     "vue": {
+      "optional": false
+    },
+    "wheel-gestures": {
       "optional": false
     }
   },

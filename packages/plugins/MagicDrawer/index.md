@@ -101,13 +101,6 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
-          label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
           label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
         }
       ]
@@ -132,7 +125,14 @@ If you haven’t installed the required peer dependencies automatically, you’l
           label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
         }
       ]
-    }
+    },
+    {
+      items: [
+        {
+          label: '[wheel-gestures](https://www.npmjs.com/package/wheel-gestures)'
+        }
+      ]
+    },
   ]"
 />
 
@@ -141,19 +141,19 @@ If you haven’t installed the required peer dependencies automatically, you’l
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+pnpm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [npm]
-npm install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+npm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [yarn]
-yarn add @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+yarn add @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [bun]
-bun install @nuxt/kit @maas/wheel-gestures @vueuse/core @vueuse/integrations defu focus-trap
+bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 :::
@@ -668,3 +668,7 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
 ### Snap Points
 
 <ComponentPreview src="./demo/SnapPointsDemo.vue" />
+
+### Mousewheel
+
+<ComponentPreview src="./demo/MousewheelDemo.vue" />
