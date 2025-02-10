@@ -58,7 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     for (const plugin of mappedPlugins) {
       // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
-        `@maas/vue-equipment/plugins/${plugin}/nuxt.ts`
+        `@maas/vue-equipment/plugins/${plugin}/nuxt`
       )
 
       await installModule(nuxtPlugin)
