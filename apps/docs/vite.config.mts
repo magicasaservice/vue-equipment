@@ -25,6 +25,7 @@ export default defineConfig(async () => {
     plugins: [
       Components({
         resolvers: [IconResolver({ customCollections: ['maas'] })],
+        dts: 'apps/docs/types/components.d.ts',
       }),
       Icons({
         compiler: 'vue3',
@@ -35,7 +36,7 @@ export default defineConfig(async () => {
             ).then((res) => res.text())
           },
         },
-      }),
+      })
     ],
     // We need this to resolve the aliases in the plugin files
     // CSS imports from utils need a higher priority than JS imports from utils

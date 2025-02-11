@@ -3,7 +3,35 @@
     <template v-if="!!data.icon" #start>
       <m-menu-card-child start>
         <m-avatar variant="secondary" size="xs" mode="outline">
-          <!-- <ui-icon-renderer :name="data.icon" class="h-4 w-4" /> -->
+          <i-maas-maas-ve-500 class="h-4 w-4" v-if="data.icon === 'maas-ve'" />
+          <i-maas-maas-mr-500 class="h-4 w-4" v-if="data.icon === 'maas-mr'" />
+          <i-maas-maas-dt-500 class="h-4 w-4" v-if="data.icon === 'maas-dt'" />
+          <i-maas-maas-az-500 class="h-4 w-4" v-if="data.icon === 'maas-az'" />
+          <i-maas-maas-of-500 class="h-4 w-4" v-if="data.icon === 'maas-of'" />
+          <i-maas-edit-alt-500
+            class="h-4 w-4"
+            v-if="data.icon === 'edit-alt'"
+          />
+          <i-maas-maas-robot-500
+            class="h-4 w-4"
+            v-if="data.icon === 'maas-robot'"
+          />
+          <i-maas-brand-github-500
+            class="h-4 w-4"
+            v-if="data.icon === 'brand-github'"
+          />
+          <i-maas-brand-figma-500
+            class="h-4 w-4"
+            v-if="data.icon === 'brand-figma'"
+          />
+          <i-maas-brand-vue-500
+            class="h-4 w-4"
+            v-if="data.icon === 'brand-vue'"
+          />
+          <i-maas-brand-nuxt-500
+            class="h-4 w-4"
+            v-if="data.icon === 'brand-nuxt'"
+          />
         </m-avatar>
       </m-menu-card-child>
     </template>

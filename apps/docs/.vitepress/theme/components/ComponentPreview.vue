@@ -6,12 +6,12 @@
           v-model="activeTab"
           value="preview"
           type="radio"
-          id="preview"
+          :id="previewTab"
           class="active"
         />
-        <label for="preview">Preview</label>
-        <input v-model="activeTab" value="code" type="radio" id="code" />
-        <label for="code">Code</label>
+        <label :for="previewTab">Preview</label>
+        <input v-model="activeTab" value="code" type="radio" :id="codeTab" />
+        <label :for="codeTab">Code</label>
       </div>
       <div class="blocks">
         <div
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, useId } from 'vue'
 
 interface Props {
   code: string
@@ -50,6 +50,9 @@ interface Props {
 
 const { code } = defineProps<Props>()
 const mappedCode = ref(decodeURIComponent(code ?? ''))
+
+const codeTab = useId()
+const previewTab = useId()
 
 const activeTab = ref<'preview' | 'code'>('preview')
 </script>
