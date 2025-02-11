@@ -1,6 +1,5 @@
 {
   "name": "utils",
-  "description": "Util functions used throughout",
   "version": "0.40.0",
   "contributors": [
     {

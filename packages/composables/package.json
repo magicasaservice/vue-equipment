@@ -1,6 +1,5 @@
 {
   "name": "composables",
-  "description": "Collection of essential Vue Composition Utilities",
   "version": "0.40.0",
   "contributors": [
     {
