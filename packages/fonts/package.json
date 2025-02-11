@@ -15,5 +15,6 @@
     "./index/*": "./dist/index/*",
     "./interface/*": "./dist/interface/*",
     "./mirage/*": "./dist/mirage/*"
-  }
+  },
+  "version": "1.0.0-beta.1"
 }
