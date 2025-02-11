@@ -2,10 +2,51 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
-    "//#update:metadata": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "docs#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["update", "build:types", "^build"]
+    },
+    "nuxt#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["update", "composables#build", "plugins#build"]
+    },
+
+    "build": {
+      "outputs": ["./dist/**"],
+      "dependsOn": ["update"]
+    },
+    "build:types": {
+      "cache": false,
+      "outputs": ["./types/**"]
+    },
+    "docs#build": {
+      "cache": false,
+      "dependsOn": ["update", "^build:types", "^build"]
+    },
+    "plugins#build": {
+      "dependsOn": ["utils#build"]
+    },
+    "composables#build": {},
+    "utils#build": {},
+    "nuxt#build": {
+      "dependsOn": ["update", "composables#build", "plugins#build"]
+    },
+
+    "lint": {
+      "cache": true,
+      "outputs": []
+    },
+    "update": {
       "cache": false,
       "outputs": ["./packages/metadata/index.json"]
     },
+
     "//#t:release": {
       "cache": false,
       "dependsOn": [
@@ -14,43 +55,6 @@
         "plugins#build",
         "nuxt#build"
       ]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "docs#dev": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["//#update:metadata", "build:types", "^build"]
-    },
-    "nuxt#dev": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
-    },
-    "lint": {
-      "cache": true,
-      "outputs": []
-    },
-    "build": {
-      "outputs": ["./dist/**"]
-    },
-    "build:types": {
-      "cache": false,
-      "outputs": ["./types/**"]
-    },
-    "docs#build": {
-      "cache": false,
-      "dependsOn": ["//#update:metadata", "^build:types", "^build"]
-    },
-    "plugins#build": {
-      "dependsOn": ["utils#build"]
-    },
-    "composables#build": {},
-    "utils#build": {},
-    "nuxt#build": {
-      "dependsOn": ["//#update:metadata", "composables#build", "plugins#build"]
     }
   }
 }
