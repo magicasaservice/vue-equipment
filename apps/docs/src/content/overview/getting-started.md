@@ -4,31 +4,7 @@ Everything you need to know to start using Vue Equipment.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
-## Installation
-
-### CLI
-
-Add `@maas/vue-equipment` to your dependencies.
-
-::: code-group
-
-```sh [pnpm]
-pnpm install @maas/vue-equipment
-```
-
-```sh [npm]
-npm install @maas/vue-equipment
-```
-
-```sh [yarn]
-yarn add @maas/vue-equipment
-```
-
-```sh [bun]
-bun install @maas/vue-equipment
-```
-
-:::
+<!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
 ### Vue
 
