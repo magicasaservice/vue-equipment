@@ -5,7 +5,7 @@ export default {
     commit: true,
     tag: true,
     push: true,
-    commitMessage: 'chore: release v${version}',
+    commitMessage: 'release: v${version}',
     requireCleanWorkingDir: true,
     requireBranch: 'main',
   },
