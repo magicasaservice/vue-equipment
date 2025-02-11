@@ -64,17 +64,9 @@ export default defineConfig({
     [
       'meta',
       {
-        name: 'description',
-        content:
-          'Our Frontend Toolkit, Free and Open Source. Built by Magic as a Service™',
-      },
-    ],
-    [
-      'meta',
-      {
         name: 'og:description',
         content:
-          'Our Frontend Toolkit, Free and Open Source. Built by Magic as a Service™',
+          'Our Frontend Toolkit, Free and Open Source. A collection of ready-to-use plugins and composables for building modern web applications.',
       },
     ],
     ['meta', { name: 'og:type', content: 'website' }],
