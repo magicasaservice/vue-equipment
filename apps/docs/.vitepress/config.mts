@@ -66,7 +66,7 @@ export default defineConfig({
       {
         name: 'og:description',
         content:
-          'Our Frontend Toolkit, Free and Open Source. A collection of ready-to-use plugins and composables for building modern web applications.',
+          'Our Frontend Toolkit, Free and Open Source.',
       },
     ],
     ['meta', { name: 'og:type', content: 'website' }],
