@@ -97,13 +97,6 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
   {
     items: [
       {
-        label: '[@maas/wheel-gestures](https://www.npmjs.com/package/@maas/wheel-gestures)'
-      }
-    ]
-  },
-  {
-    items: [
-      {
         label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
       }
     ]
@@ -184,7 +177,14 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
         label: '[vue](https://www.npmjs.com/package/vue)'
       }
     ]
-  }
+  },
+  {
+    items: [
+      {
+        label: '[wheel-gestures](https://www.npmjs.com/package/wheel-gestures)'
+      }
+    ]
+  },
 ]"
 />
 
@@ -203,19 +203,19 @@ Alternatively, install them all with the following command or refer to the docs 
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+pnpm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
 ```
 
 ```sh [npm]
-npm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+npm install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
 ```
 
 ```sh [yarn]
-yarn add @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+yarn add @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
 ```
 
 ```sh [bun]
-bun install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @maas/wheel-gestures @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue
+bun install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
 ```
 
 :::
