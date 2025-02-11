@@ -126,7 +126,7 @@
     "build:types": "turbo run build:types",
     "build:docs": "turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
-    "update:metadata": "pnpm -C packages/metadata update",
+    "update:metadata": "pnpm --filter metadata update",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
     "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
