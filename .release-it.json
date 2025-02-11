@@ -1,0 +1,18 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "requireCleanWorkingDir": true
+  },
+  "github": {
+    "release": true
+  },
+  "npm": {
+    "allowSameVersion": true
+  },
+  "plugins": {
+    "@release-it/bumper": {
+      "in": "package.json",
+      "out": ["package.json", "packages/*/package.json", "apps/*/package.json"]
+    }
+  }
+}

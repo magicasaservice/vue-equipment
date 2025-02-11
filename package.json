@@ -1,6 +1,6 @@
 {
   "name": "@maas/vue-equipment",
-  "description": "A magic collection of Vue composables, plugins, components and directives",
+  "description": "Our Frontend Toolkit, Free and Open Source",
   "version": "0.40.0",
   "contributors": [
     {
@@ -13,7 +13,6 @@
     }
   ],
   "devDependencies": {
-    "@antfu/ni": "^23.3.1",
     "@maas/config": "^1.5.0",
     "@release-it/bumper": "^7.0.1",
     "@types/node": "catalog:",
@@ -127,7 +126,7 @@
     "build:types": "turbo run build:types",
     "build:docs": "turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
-    "update:metadata": "nr -C packages/metadata update",
+    "update:metadata": "pnpm -C packages/metadata update",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "turbo run lint",
     "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
@@ -138,24 +137,6 @@
   "type": "module",
   "volta": {
     "node": "20.18.1"
-  },
-  "release-it": {
-    "git": {
-      "requireCleanWorkingDir": true
-    },
-    "npm": {
-      "allowSameVersion": true
-    },
-    "plugins": {
-      "@release-it/bumper": {
-        "in": "package.json",
-        "out": [
-          "package.json",
-          "packages/*/package.json",
-          "apps/*/package.json"
-        ]
-      }
-    }
   },
   "packageManager": "pnpm@9.15.4",
   "pnpm": {
