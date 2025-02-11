@@ -33,6 +33,7 @@ cache
 # dist
 dist
 !packages/fonts/dist
+packages/metadata/index.json
 
 # types
 /types
