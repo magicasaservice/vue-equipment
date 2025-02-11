@@ -6,7 +6,7 @@ packages:
 catalog:
   '@floating-ui/vue': ^1.1.6
   '@maas/magic-timer': ^1.1.0
-  '@maas/mirror': ^0.12.1
+  '@maas/mirror': ^0.12.2
   '@maas/vue-primitive': ^1.1.0
   '@nuxt/kit': ^3.15.4
   '@nuxt/schema': ^3.15.4
@@ -22,8 +22,8 @@ catalog:
   hls.js: ^1.5.20
   luxon: ^3.5.0
   mitt: ^3.0.1
-  tailwindcss: ^3.4.17
-  motion: ^12.3.1
+  tailwindcss: 3.4.17
+  motion: ^12.4.2
   nuxt: ^3.15.4
   tsup: ^8.3.6
   typescript: 5.6.3
