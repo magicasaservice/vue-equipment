@@ -16,7 +16,7 @@ export default {
   },
   npm: {
     allowSameVersion: true,
-    tag: ['latest', 'beta'], // TODO: Remove beta for the stable release
+    tag: ['beta'], // TODO: Remove this for the stable release
   },
   plugins: {
     '@release-it/bumper': {
