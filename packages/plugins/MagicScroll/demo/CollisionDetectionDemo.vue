@@ -5,8 +5,13 @@
   >
     <div ref="parentRef" class="relative h-full w-full overflow-auto">
       <magic-scroll-scene
-        class="flex flex-col items-center justify-evenly gap-[100vh] px-24 py-[100vh]"
+        class="flex flex-col items-center justify-evenly gap-[100vh] pb-[100vh]"
       >
+        <span
+          class="type-surface-body-sm text-surface-subtle w-full aspect-square flex items-center justify-center"
+        >
+          Scroll down
+        </span>
         <magic-scroll-collision
           v-for="i in 4"
           :id="`collision-${i}`"

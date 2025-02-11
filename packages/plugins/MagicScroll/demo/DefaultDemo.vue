@@ -10,8 +10,11 @@
         to="bottom-bottom"
         class="h-[400svh]"
       >
-        <div class="sticky w-full top-0 p-4 mb-[-100%] type-surface-body-sm">
+        <div
+          class="sticky w-full top-0 p-4 mb-[-100%] type-surface-body-sm text-surface-subtle flex justify-between"
+        >
           <span>{{ Math.round(progress * 100) }}%</span>
+          <span>Scroll down</span>
         </div>
         <magic-scroll-motion
           :sequence="sequence"
