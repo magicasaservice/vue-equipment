@@ -8,7 +8,7 @@
         v-slot="{ progress }"
         from="top-top"
         to="bottom-bottom"
-        class="h-[400svh]"
+        class="h-[500svh]"
       >
         <div
           class="sticky w-full top-0 p-4 mb-[-100%] type-surface-body-sm text-surface-subtle flex justify-between"
@@ -34,10 +34,16 @@ const parentRef = ref<HTMLElement | undefined>(undefined)
 const sequence = [
   [
     {
+      opacity: [0, 1],
+    },
+  ],
+  [
+    {
       x: ['0rem', '-5rem'],
       y: ['0rem', '5rem'],
       scale: [1, 1.25],
     },
+    { delay: 0.5 },
   ],
   [
     {

@@ -60,13 +60,9 @@ function createAnimation() {
   })
 
   animation.value = animate(mappedSequence, mappedSequenceOptions)
-  animation.value.time = mappedProgress.value
   animation.value.pause()
+  animation.value.time = mappedProgress.value
 }
-
-onMounted(() => {
-  createAnimation()
-})
 
 watch(mappedProgress, (value) => {
   if ((!value && value !== 0) || !animation.value) {
@@ -85,4 +81,8 @@ watch(
     deep: true,
   }
 )
+
+onMounted(() => {
+  createAnimation()
+})
 </script>
