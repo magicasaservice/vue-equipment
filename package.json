@@ -142,6 +142,13 @@
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@bundled-es-modules/glob",
+      "@parcel/watcher",
+      "esbuild",
+      "style-dictionary",
+      "vue-demi"
+    ]
   }
 }
