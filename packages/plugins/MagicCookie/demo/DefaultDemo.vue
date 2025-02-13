@@ -3,7 +3,7 @@
     id="magic-cookie-demo"
     class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-xl"
   >
-    <div class="type-surface-body-md">
+    <div class="type-surface-body-md text-surface">
       Vue Equipment does not use cookies to provide you a personalized
       experience based on your activity, but for good measure here is a cookie
       banner anyways.

@@ -1,17 +1,12 @@
 <template>
   <ol>
     <li v-for="composable in composables" :key="composable.name">
-      <nuxt-link :to="`/${kebabCase(composable.name)}`">
+      <nuxt-link :to="`/composables/${kebabCase(composable.name)}`">
         {{ composable.name }}
       </nuxt-link>
     </li>
-    <li
-      v-for="plugin in plugins.filter(
-        (plugin) => plugin.name !== 'MagicEmitter'
-      )"
-      :key="plugin.name"
-    >
-      <nuxt-link :to="`/${kebabCase(plugin.name)}`">
+    <li v-for="plugin in mappedPlugins" :key="plugin.name">
+      <nuxt-link :to="`/plugins/${kebabCase(plugin.name)}`">
         {{ plugin.name }}
       </nuxt-link>
     </li>
@@ -20,5 +15,13 @@
 
 <script lang="ts" setup>
 import { kebabCase } from 'scule'
-import { composables, plugins } from '../../../metadata'
+import {
+  composables,
+  plugins,
+  type VueEquipmentFunction,
+} from '../../../metadata'
+
+const mappedPlugins = plugins.filter(
+  (plugin: VueEquipmentFunction) => plugin.name !== 'MagicEmitter'
+)
 </script>
