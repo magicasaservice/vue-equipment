@@ -1,5 +1,11 @@
 <template>
-  <Layout class="flex"></Layout>
+  <Layout>
+    <template #home-hero-image>
+      <div class="flex items-center justify-center w-full h-full">
+        <img src="../../public/images/carabiner.png" alt="Vue Equipment" class="w-48 h-48 sm:w-64 sm:h-64 lg:w-full lg:h-full max-h-96 max-w-96" />
+      </div>
+    </template>
+  </Layout>
 </template>
 
 <script lang="ts" setup>
