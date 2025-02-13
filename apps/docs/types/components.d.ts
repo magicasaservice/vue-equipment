@@ -9,8 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     IMaasBrandFigma500: typeof import('~icons/maas/brand-figma500')['default']
     IMaasBrandGithub500: typeof import('~icons/maas/brand-github500')['default']
-    IMaasBrandNuxt500: typeof import('~icons/maas/brand-nuxt500')['default']
-    IMaasBrandVue500: typeof import('~icons/maas/brand-vue500')['default']
     IMaasChevronE500: typeof import('~icons/maas/chevron-e500')['default']
     IMaasEditAlt500: typeof import('~icons/maas/edit-alt500')['default']
     IMaasMaasAz500: typeof import('~icons/maas/maas-az500')['default']

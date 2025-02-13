@@ -278,9 +278,6 @@ importers:
       '@maas/vue-equipment/composables':
         specifier: workspace:composables@*
         version: link:../../composables
-      '@maas/vue-equipment/nuxt':
-        specifier: workspace:nuxt@*
-        version: link:..
       '@maas/vue-equipment/plugins':
         specifier: workspace:plugins@*
         version: link:../../plugins
