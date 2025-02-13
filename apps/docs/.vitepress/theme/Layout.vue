@@ -11,6 +11,10 @@ const { Layout } = DefaultTheme
 const { isDark } = useData()
 
 onMounted(() => {
+  document.documentElement.setAttribute(
+      'data-theme', 'vue-equipment'
+  )
+
   watchEffect(() => {
     document.documentElement.setAttribute(
       'data-color-mode',

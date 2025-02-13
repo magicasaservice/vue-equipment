@@ -21,5 +21,135 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-layout-max-width: 1440px;
+  --vp-layout-max-width: 100lvw;
 }
+
+/**
+ * Colors: Background
+ *
+ * - `bg`: The bg color used for main screen.
+ *
+ * - `bg-alt`: The alternative bg color used in places such as "sidebar",
+ *   or "code block".
+ *
+ * - `bg-elv`: The elevated bg color. This is used at parts where it "floats",
+ *   such as "dialog".
+ *
+ * - `bg-soft`: The bg color to slightly distinguish some components from
+ *   the page. Used for things like "carbon ads" or "table".
+ * -------------------------------------------------------------------------- */
+
+     
+
+:root {
+  --vp-c-bg: var(--app-color-surface-elevation-base-bg);
+  --vp-c-bg-alt: var(--app-color-surface-elevation-base-bg);
+  --vp-c-bg-elv: var(--app-color-surface-elevation-base-bg);
+  --vp-c-bg-soft: var(--app-color-surface-elevation-high-bg);
+  --vp-code-block-bg: var(--app-color-primary-bg-translucent);
+}
+
+/**
+ * Colors: Borders
+ *
+ * - `divider`: This is used for separators. This is used to divide sections
+ *   within the same components, such as having separator on "h2" heading.
+ *
+ * - `border`: This is designed for borders on interactive components.
+ *   For example this should be used for a button outline.
+ *
+ * - `gutter`: This is used to divide components in the page. For example
+ *   the header and the lest of the page.
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-border: var(--app-color-surface-border);
+  --vp-c-divider: var(--app-color-surface-border);
+  --vp-c-gutter: var(--app-color-surface-border);
+}
+
+/**
+ * Colors: Text
+ *
+ * - `text-1`: Used for primary text.
+ *
+ * - `text-2`: Used for muted texts, such as "inactive menu" or "info texts".
+ *
+ * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-text-1: var(--app-color-surface-fg);
+  --vp-c-text-2: var(--app-color-surface-fg-muted);
+  --vp-c-text-3: var(--app-color-surface-fg-subtle);
+}
+
+/**
+ * Colors: Function
+ *
+ * - `default`: The color used purely for subtle indication without any
+ *   special meanings attached to it such as bg color for menu hover state.
+ *
+ * - `brand`: Used for primary brand colors, such as link text, button with
+ *   brand theme, etc.
+ *
+ * - `tip`: Used to indicate useful information. The default theme uses the
+ *   brand color for this by default.
+ *
+ * - `warning`: Used to indicate warning to the users. Used in custom
+ *   container, badges, etc.
+ *
+ * - `danger`: Used to show error, or dangerous message to the users. Used
+ *   in custom container, badges, etc.
+ *
+ * To understand the scaling system, refer to "Colors: Palette" section.
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-default-1: var(--app-color-primary-fg-solid);
+  --vp-c-default-2: var(--app-color-primary-fg-muted);
+  --vp-c-default-3: var(--app-color-primary-fg-subtle);
+  --vp-c-default-soft: var(--app-color-primary-bg-tone);
+
+  --vp-c-brand-1: var(--app-color-accent-fg-on-tone);
+  --vp-c-brand-2: var(--app-color-accent-fg-muted);
+  --vp-c-brand-3: var(--app-color-accent-fg-subtle); 
+  --vp-c-brand-soft: var(--app-color-accent-fg-subtle);
+
+  --vp-c-tip-1: var(--app-color-warning-fg-solid);
+  --vp-c-tip-2: var(--app-color-warning-fg-muted);
+  --vp-c-tip-3: var(--app-color-warning-fg-subtle);
+  --vp-c-tip-soft: var(--app-color-warning-fg-subtle);
+
+  --vp-c-note-1: var(--vp-c-brand-1);
+  --vp-c-note-2: var(--vp-c-brand-2);
+  --vp-c-note-3: var(--vp-c-brand-3);
+  --vp-c-note-soft: var(--vp-c-brand-soft);
+
+  --vp-c-success-1: var(--app-color-success-fg-solid);
+  --vp-c-success-2: var(--app-color-success-fg-muted);
+  --vp-c-success-3: var(--app-color-success-fg-subtle);
+  --vp-c-success-soft: var(--app-color-success-fg-subtle);
+
+
+  --vp-c-important-1: var(--app-color-danger-fg-solid);
+  --vp-c-important-2: var(--app-color-danger-fg-muted);
+  --vp-c-important-3: var(--app-color-danger-fg-subtle);
+  --vp-c-important-soft: var(--app-color-danger-fg-subtle);
+
+  --vp-c-warning-1: var(--app-color-warning-fg-solid);
+  --vp-c-warning-2: var(--app-color-warning-fg-muted);
+  --vp-c-warning-3: var(--app-color-warning-fg-subtle);
+  --vp-c-warning-soft: var(--app-color-warning-fg-subtle);
+
+  --vp-c-danger-1: var(--app-color-danger-fg-solid);
+  --vp-c-danger-2: var(--app-color-danger-fg-muted);
+  --vp-c-danger-3: var(--app-color-danger-fg-subtle);
+  --vp-c-danger-soft: var(--app-color-danger-fg-subtle);
+
+  --vp-c-caution-1: var(--app-color-warning-fg-solid);
+  --vp-c-caution-2: var(--app-color-warning-fg-muted);
+  --vp-c-caution-3: var(--app-color-warning-fg-subtle);
+  --vp-c-caution-soft: var(--app-color-warning-fg-subtle);
+}
+

@@ -18,6 +18,7 @@ import '../../../../.maas/tokens/css/theme/dark/components/index.css'
 import '../../../../.maas/tokens/css/application.css'
 import '../../../../.maas/tokens/css/theme/dark/application.css'
 import './styles/tailwind.css'
+import './styles/mirror.css'
 
 export default {
   extends: DefaultTheme,

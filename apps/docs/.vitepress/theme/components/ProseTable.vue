@@ -11,7 +11,7 @@
     </thead>
     <tbody class="w-full">
       <tr v-for="(row, i) in mappedRows" :key="i">
-        <td v-for="(cell, j) in row.items" :key="j">
+        <td v-for="(cell, j) in row.items" :key="j" class="truncate text-[var(--vp-code-color)]">
           <magic-menu-provider
             v-if="cell.description"
             id="magic-menu--dropdown"
