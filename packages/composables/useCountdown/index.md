@@ -14,8 +14,11 @@ import {
   type DateTimeArray,
 } from '@maas/vue-equipment/composables'
 
-const dateArray = computed<DateTimeArray>(() => {
-  const date = new Date('2024-01-01 00:00:00')
+const nextYear = computed(() => new Date().getFullYear() + 1)
+const refDate = ref(`${nextYear.value}-01-01 00:00:00`)
+
+const refDateArray = computed(() => {
+  const date = new Date(refDate.value)
   return [
     date.getFullYear(),
     date.getMonth() + 1,
@@ -35,10 +38,7 @@ const args = {
   timezone: 'Europe/Berlin',
 }
 
-const { years, days, hours, minutes, seconds } = useCountdown(
-  args,
-  callback,
-)
+const { years, days, hours, minutes, seconds } = useCountdown(args, callback)
 ```
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
