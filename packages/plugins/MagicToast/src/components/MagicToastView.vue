@@ -72,7 +72,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 <style>
 :root {
-  --magic-toast-view-transition: all var(--magic-toast-duration)
+  --magic-toast-view-transition: all var(--magic-toast-animation-duration)
     var(--ease-in-out);
 }
 

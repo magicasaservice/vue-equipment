@@ -378,7 +378,7 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
     },
     {
       items: [
-        { label: '--magic-toast-duration' },
+        { label: '--magic-toast-animation-duration' },
         { label: '175ms' }
       ]
     },
@@ -440,7 +440,7 @@ MagicToastView is used internally. Some CSS is configurable.
     {
       items: [
         { label: '--magic-toast-view-transition' },
-        { label: 'all var(--magic-toast-duration) var(--ease-in-out)' }
+        { label: 'all var(--magic-toast-animation-duration) var(--ease-in-out)' }
       ]
     },
     {

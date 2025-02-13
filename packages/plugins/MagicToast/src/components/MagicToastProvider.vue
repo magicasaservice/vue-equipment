@@ -1,6 +1,5 @@
 <template>
   <teleport
-    :key="teleportId"
     :to="state.options.teleport?.target"
     :disabled="state.options.teleport?.disabled"
   >
@@ -47,13 +46,11 @@ import {
   toValue,
   ref,
   provide,
-  useId,
   watch,
   onBeforeUnmount,
   type MaybeRef,
 } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { defu } from 'defu'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastView } from '../composables/private/useToastView'
 import { useToastCallback } from '../composables/private/useToastCallback'
@@ -82,8 +79,6 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const teleportId = ref(useId())
-
 const { deleteView } = useToastView(id)
 const { deleteState, initializeState } = useToastState(id)
 const state = initializeState(options)
@@ -108,8 +103,7 @@ onClickOutside(listRef, outsideClickCallback)
 watch(
   () => options,
   (value) => {
-    state.options = defu(value, state.options)
-    teleportId.value = useId()
+    initializeState(value)
   },
   {
     deep: true,
@@ -164,7 +158,7 @@ provide(MagicToastInstanceId, id)
   --magic-toast-padding-y: 1rem;
   --magic-toast-padding-x: 1rem;
   --magic-toast-gap: 0.75rem;
-  --magic-toast-duration: 175ms;
+  --magic-toast-animation-duration: 175ms;
   --magic-toast-scale-factor: 0.05;
   --magic-toast-overlap-y: 1rem;
 
@@ -215,9 +209,9 @@ provide(MagicToastInstanceId, id)
 .magic-toast-provider[data-position='top-left'],
 .magic-toast-provider[data-position='top-center'],
 .magic-toast-provider[data-position='top-right'] {
-  --mt-enter-animation: mt-slide-ttb-in var(--magic-toast-duration)
+  --mt-enter-animation: mt-slide-ttb-in var(--magic-toast-animation-duration)
     var(--ease-in-out);
-  --mt-leave-animation: mt-slide-ttb-out var(--magic-toast-duration)
+  --mt-leave-animation: mt-slide-ttb-out var(--magic-toast-animation-duration)
     var(--ease-in-out);
   --mt-multiplier-y: 1;
   --mt-justify-content: flex-end;
@@ -227,9 +221,9 @@ provide(MagicToastInstanceId, id)
 .magic-toast-provider[data-position='bottom-left'],
 .magic-toast-provider[data-position='bottom-center'],
 .magic-toast-provider[data-position='bottom-right'] {
-  --mt-enter-animation: mt-slide-btt-in var(--magic-toast-duration)
+  --mt-enter-animation: mt-slide-btt-in var(--magic-toast-animation-duration)
     var(--ease-in-out);
-  --mt-leave-animation: mt-slide-btt-out var(--magic-toast-duration)
+  --mt-leave-animation: mt-slide-btt-out var(--magic-toast-animation-duration)
     var(--ease-in-out);
   --mt-multiplier-y: -1;
   --mt-justify-content: flex-end;
@@ -248,18 +242,18 @@ provide(MagicToastInstanceId, id)
 .magic-toast-provider[data-position='center-left'] {
   --mt-justify-content: center;
   --mt-align-items: flex-start;
-  --mt-enter-animation: slide-ltr-in var(--magic-toast-duration)
+  --mt-enter-animation: slide-ltr-in var(--magic-toast-animation-duration)
     var(--ease-in-out);
-  --mt-leave-animation: slide-ltr-out var(--magic-toast-duration)
+  --mt-leave-animation: slide-ltr-out var(--magic-toast-animation-duration)
     var(--ease-in-out);
 }
 
 .magic-toast-provider[data-position='center-right'] {
   --mt-justify-content: center;
   --mt-align-items: flex-end;
-  --mt-enter-animation: slide-rtl-in var(--magic-toast-duration)
+  --mt-enter-animation: slide-rtl-in var(--magic-toast-animation-duration)
     var(--ease-in-out);
-  --mt-leave-animation: slide-rtl-out var(--magic-toast-duration)
+  --mt-leave-animation: slide-rtl-out var(--magic-toast-animation-duration)
     var(--ease-in-out);
 }
 
@@ -281,7 +275,7 @@ provide(MagicToastInstanceId, id)
 }
 
 .magic-toast-leave-active {
-  animation: fade-out var(--magic-toast-duration) var(--ease-in-out);
+  animation: fade-out var(--magic-toast-animation-duration) var(--ease-in-out);
   position: absolute;
 }
 
@@ -291,6 +285,6 @@ provide(MagicToastInstanceId, id)
 }
 
 .magic-toast-move {
-  transition: all var(--magic-toast-duration) var(--ease-in-out);
+  transition: all var(--magic-toast-animation-duration) var(--ease-in-out);
 }
 </style>
