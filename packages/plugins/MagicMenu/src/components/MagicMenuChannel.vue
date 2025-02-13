@@ -79,14 +79,14 @@ provide(MagicMenuChannelActive, mappedActive)
 
 <style>
 .magic-menu-channel-enter-active {
-  animation: fade-in 300ms ease;
+  animation: fade-in 225ms ease;
   &[data-initialized='true'] {
     position: absolute;
   }
 }
 
 .magic-menu-channel-leave-active {
-  animation: fade-out 300ms ease;
+  animation: fade-out 225ms ease;
   &[data-initialized='true'] {
     position: absolute;
   }

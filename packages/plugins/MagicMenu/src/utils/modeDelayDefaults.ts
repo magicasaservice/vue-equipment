@@ -2,11 +2,11 @@ export enum ModeDelayMouseenter {
   menubar = 0,
   dropdown = 0,
   context = 0,
-  navigation = 50,
+  navigation = 0,
 }
 
 export enum ModeDelayMouseleave {
-  navigation = 200,
+  navigation = 100,
 }
 
 export enum ModeDelayClick {
