@@ -5,7 +5,7 @@
        <div class="flex items-center justify-center w-full h-full max-w-96">
           <img src="/images/carabiner.png" alt="Vue Equipment" class="w-auto h-full" />
         </div>
-      <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-8 px-4">
         <h1 v-html="frontmatter.hero.name" class="type-surface-display-md -strong text-surface" />
         <h2 class="flex flex-col">
           <span v-html="frontmatter.hero.tagline" class="type-surface-title-lg -strong " />
