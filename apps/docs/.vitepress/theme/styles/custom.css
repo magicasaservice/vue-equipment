@@ -39,8 +39,6 @@
  *   the page. Used for things like "carbon ads" or "table".
  * -------------------------------------------------------------------------- */
 
-     
-
 :root {
   --vp-c-bg: var(--app-color-surface-elevation-base-bg);
   --vp-c-bg-alt: var(--app-color-surface-elevation-base-bg);
