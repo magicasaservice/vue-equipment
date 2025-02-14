@@ -45,7 +45,7 @@
   --vp-c-bg: var(--app-color-surface-elevation-base-bg);
   --vp-c-bg-alt: var(--app-color-surface-elevation-base-bg);
   --vp-c-bg-elv: var(--app-color-surface-elevation-base-bg);
-  --vp-c-bg-soft: var(--app-color-surface-elevation-high-bg);
+  --vp-c-bg-soft: var(--app-color-primary-bg-translucent);
   --vp-code-block-bg: var(--app-color-primary-bg-translucent);
 }
 
@@ -119,7 +119,7 @@
   --vp-c-tip-1: var(--app-color-warning-fg-solid);
   --vp-c-tip-2: var(--app-color-warning-fg-muted);
   --vp-c-tip-3: var(--app-color-warning-fg-subtle);
-  --vp-c-tip-soft: var(--app-color-warning-fg-subtle);
+  --vp-c-tip-soft: var(--app-color-primary-bg-translucent);
 
   --vp-c-note-1: var(--vp-c-brand-1);
   --vp-c-note-2: var(--vp-c-brand-2);

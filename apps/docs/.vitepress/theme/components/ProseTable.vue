@@ -35,7 +35,7 @@
               </magic-menu-trigger>
               <magic-menu-content :arrow="false" class="vp-doc">
                 <div
-                  class="bg-surface-elevation-high border-2 border-surface rounded-md px-2 py-2 max-w-xs type-surface-body-sm"
+                  class="bg-surface-elevation-high rounded-md px-2 py-2 max-w-xs type-surface-body-sm"
                 >
                   <span v-html="cell.parsedDescription" />
                 </div>
