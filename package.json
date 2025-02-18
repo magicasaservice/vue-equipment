@@ -34,8 +34,8 @@
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.mjs"
     },
-    "./plugins/*/css/*.css": {
-      "import": "./dist/plugins/*/src/css/*.css"
+    "./plugins/MagicPlayer/css/*.css": {
+      "import": "./dist/plugins/MagicPlayer/src/css/*.css"
     },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
