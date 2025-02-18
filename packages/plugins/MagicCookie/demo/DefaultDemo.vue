@@ -32,7 +32,7 @@
     <div class="flex gap-4 pt-6">
       <template v-if="viewActive">
         <m-button mode="plain" block @click="toggleView">Close</m-button>
-        <m-button mode="translucent" block @click="onSave"> Save </m-button>
+        <m-button mode="translucent" block @click="onSave">Save</m-button>
       </template>
       <template v-else>
         <m-button mode="plain" block @click="onRejectAll">

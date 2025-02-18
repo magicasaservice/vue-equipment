@@ -1,5 +1,5 @@
 <template>
-  <m-button @click="onClick">Add toast</m-button>
+  <m-button @click="onClick">Add Toast</m-button>
   <magic-toast-provider id="magic-toast-demo" />
 </template>
 

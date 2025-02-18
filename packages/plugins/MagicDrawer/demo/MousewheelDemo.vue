@@ -1,5 +1,5 @@
 <template>
-  <m-button @click="drawerApi.open"> Open Drawer </m-button>
+  <m-button @click="drawerApi.open">Open Drawer</m-button>
   <magic-drawer
     id="magic-drawer-mousewheel-demo"
     :options="{ focusTrap: false, enableMousewheel: true }"

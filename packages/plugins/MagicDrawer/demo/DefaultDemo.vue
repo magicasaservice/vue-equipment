@@ -1,5 +1,5 @@
 <template>
-  <m-button @click="drawerApi.open"> Open Drawer </m-button>
+  <m-button @click="drawerApi.open">Open Drawer</m-button>
   <magic-drawer id="magic-drawer-demo" :options="{ focusTrap: false }">
     <div class="bg-surface-elevation-base absolute inset-0" />
   </magic-drawer>
