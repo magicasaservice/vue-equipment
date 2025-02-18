@@ -105,8 +105,8 @@ export default defineConfig({
       mappedComposables,
     ],
     footer: {
-      message: 'Released under the MIT License.',
-      copyright: `© ${currentYear} Magic as a Service™`,
+      message: 'Released under the MIT License',
+      copyright: `© ${currentYear} <a href="https://maas.engineering" target="_blank" ref="noopener noreferrer">Magic as a Service</a>™`,
     },
   },
   srcDir: './../..',
