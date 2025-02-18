@@ -16,6 +16,7 @@
     "@maas/config": "^1.6.0",
     "@release-it/bumper": "^7.0.1",
     "@types/node": "catalog:",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "release-it": "^18.1.2",
     "tailwindcss": "catalog:",
     "turbo": "^2.4.2",

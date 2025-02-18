@@ -3,17 +3,19 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-font-family-base: 'Mirage', ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --vt-font-family-mono: 'Index', ui-monospace, 'Menlo', 'Monaco', 'Consolas',
-    'Liberation Mono', 'Courier New', monospace;
+  --vp-font-family-base:
+    'Mirage', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --vt-font-family-mono:
+    'Index', ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
+    'Courier New', monospace;
   font-optical-sizing: auto;
 }
 
 :root:where(:lang(zh)) {
-  --vp-font-family-base: 'Punctuation SC', 'Inter', ui-sans-serif, system-ui,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+  --vp-font-family-base:
+    'Punctuation SC', 'Inter', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 /**
@@ -63,7 +65,7 @@
 :root {
   --vp-c-border: var(--app-color-surface-border);
   --vp-c-divider: var(--app-color-surface-border);
-  --vp-c-gutter: var(--app-color-surface-border);
+  --vp-c-gutter: var(--app-color-surface-elevation-high-bg);
 }
 
 /**
@@ -111,7 +113,7 @@
 
   --vp-c-brand-1: var(--app-color-accent-fg-on-translucent);
   --vp-c-brand-2: var(--app-color-accent-fg-muted);
-  --vp-c-brand-3: var(--app-color-accent-fg-subtle); 
+  --vp-c-brand-3: var(--app-color-accent-fg-subtle);
   --vp-c-brand-soft: var(--app-color-accent-fg-subtle);
 
   --vp-c-tip-1: var(--app-color-warning-fg-solid);
@@ -128,7 +130,6 @@
   --vp-c-success-2: var(--app-color-success-fg-muted);
   --vp-c-success-3: var(--app-color-success-fg-subtle);
   --vp-c-success-soft: var(--app-color-success-fg-subtle);
-
 
   --vp-c-important-1: var(--app-color-danger-fg-solid);
   --vp-c-important-2: var(--app-color-danger-fg-muted);
@@ -150,4 +151,3 @@
   --vp-c-caution-3: var(--app-color-warning-fg-subtle);
   --vp-c-caution-soft: var(--app-color-warning-fg-subtle);
 }
-

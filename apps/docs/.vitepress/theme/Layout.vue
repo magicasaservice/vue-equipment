@@ -6,10 +6,10 @@
           <img src="/images/carabiner.png" alt="Vue Equipment" class="w-auto h-full" />
         </div>
       <div class="flex flex-col gap-8 px-4">
-        <h1 v-html="frontmatter.hero.name" class="type-surface-display-md -strong text-surface" />
+        <h1 class="type-surface-display-md -strong text-surface" v-html="frontmatter.hero.name" />
         <h2 class="flex flex-col">
-          <span v-html="frontmatter.hero.tagline" class="type-surface-title-lg -strong " />
-          <span v-html="frontmatter.hero.text" class="type-surface-title-lg -strong text-surface-subtle" />
+          <span class="type-surface-title-lg -strong " v-html="frontmatter.hero.tagline" />
+          <span class="type-surface-title-lg -strong text-surface-subtle" v-html="frontmatter.hero.text" />
         </h2>
       </div>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-screen h-screen flex items-center justify-center bg-surface-elevation-low p-24"
+    class="bg-surface-elevation-low flex h-screen w-screen items-center justify-center p-24"
     data-color-mode="dark"
   >
     <component :is="defaultDemo" />

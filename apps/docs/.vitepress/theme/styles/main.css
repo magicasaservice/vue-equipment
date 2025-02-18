@@ -8,27 +8,26 @@ body {
   font-feature-settings: 'ss01', 'ss02', 'cv04';
 }
 
-[data-theme="vue-equipment"] .VPContent.is-home {
+[data-theme='vue-equipment'] .VPContent.is-home {
   display: flex;
   justify-content: center;
   align-items: stretch;
 }
 
-
-[data-theme="vue-equipment"] .VPHome {
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
-    padding: 6rem 0 2rem 0;
+[data-theme='vue-equipment'] .VPHome {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 6rem 0 2rem 0;
 }
 
-[data-theme="vue-equipment"] .VPHome .vp-doc.container {
+[data-theme='vue-equipment'] .VPHome .vp-doc.container {
   display: none;
 }
 
-[data-theme="vue-equipment"] .VPHomeHero {
+[data-theme='vue-equipment'] .VPHomeHero {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,7 +35,7 @@ body {
   padding: 0;
 }
 
-[data-theme="vue-equipment"] .VPHomeHero .container {
+[data-theme='vue-equipment'] .VPHomeHero .container {
   max-width: 100%;
   flex-direction: column-reverse;
   align-items: center;
@@ -44,8 +43,56 @@ body {
   gap: 1rem;
 }
 
-[data-theme="vue-equipment"] .VPHomeHero .main {
+[data-theme='vue-equipment'] .VPHomeHero .main {
   width: 100%;
-  max-width: 100%!important;
-  text-align: center;;
+  max-width: 100% !important;
+  text-align: center;
+}
+
+[data-theme='vue-equipment'] .vp-doc div[class*='language-'] {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 8px;
+}
+
+[data-theme='vue-equipment'] .vp-code-group .tabs {
+  margin-left: 0;
+  margin-right: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+[data-theme='vue-equipment'] .vp-doc .prose-table table {
+  margin: 0;
+}
+
+[data-theme='vue-equipment'] .vp-doc tr {
+  border: none;
+}
+
+[data-theme='vue-equipment'] .vp-doc th,
+[data-theme='vue-equipment'] .vp-doc td {
+  border: none;
+  border-top: none;
+  border-right: solid 1px var(--app-color-surface-border);
+  border-left: solid 1px var(--app-color-surface-border);
+  &:first-child {
+    border-left: none;
+  }
+  &:last-child {
+    border-right: none;
+  }
+}
+
+[data-theme='vue-equipment'] .items {
+  border: none;
+  & * {
+    background: none;
+    border: none;
+  }
+}
+
+[data-theme='vue-equipment'] .items .outline {
+  outline: none;
+  border-top: solid 1px var(--app-color-surface-border);
 }

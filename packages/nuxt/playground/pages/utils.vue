@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-screen flex flex-col items-start justify-start gap-12 p-8"
+    class="flex h-screen w-full flex-col items-start justify-start gap-12 p-8"
   >
     <pre>{{ clampValue }}</pre>
     <pre>{{ mapValue }}</pre>

@@ -1,16 +1,16 @@
 <template>
-  <div class="component-preview">
+  <div class="component-preview max-w-full">
     <div class="vp-code-group">
       <div class="tabs">
         <input
+          :id="previewTab"
           v-model="activeTab"
           value="preview"
           type="radio"
-          :id="previewTab"
           class="active"
         />
         <label :for="previewTab">Preview</label>
-        <input v-model="activeTab" value="code" type="radio" :id="codeTab" />
+        <input :id="codeTab" v-model="activeTab" value="code" type="radio" />
         <label :for="codeTab">Code</label>
       </div>
       <div class="blocks">
@@ -20,17 +20,19 @@
             { active: activeTab === 'preview' },
           ]"
         >
-          <div class="flex justify-center items-center py-12 px-12">
+          <div
+            class="flex items-center justify-center px-4 py-8 sm:p-8 md:p-12"
+          >
             <slot />
           </div>
         </div>
         <div class="w-full">
           <div
+            v-if="mappedCode"
             :class="[
               'language-Vue vp-adaptive-theme',
               { active: activeTab === 'code' },
             ]"
-            v-if="mappedCode"
           >
             <button title="Copy Code" class="copy" />
             <div v-html="mappedCode" />

@@ -114,6 +114,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 22.13.4
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.11
+        version: 0.6.11(prettier@3.5.1)
       release-it:
         specifier: ^18.1.2
         version: 18.1.2(@types/node@22.13.4)(typescript@5.6.3)
