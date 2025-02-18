@@ -1,17 +1,30 @@
 <template>
   <Layout>
     <template #home-hero-info>
-      <div class="flex flex-col gap-8 items-center">
-       <div class="flex items-center justify-center w-full h-full max-w-96">
-          <img src="/images/carabiner.png" alt="Vue Equipment" class="w-auto h-full" />
+      <div class="flex flex-col items-center gap-8">
+        <div class="flex h-full w-full max-w-96 items-center justify-center">
+          <img
+            src="/images/carabiner.png"
+            alt="Vue Equipment"
+            class="h-full w-auto"
+          />
         </div>
-      <div class="flex flex-col gap-8 px-4">
-        <h1 class="type-surface-display-md -strong text-surface" v-html="frontmatter.hero.name" />
-        <h2 class="flex flex-col">
-          <span class="type-surface-title-lg -strong " v-html="frontmatter.hero.tagline" />
-          <span class="type-surface-title-lg -strong text-surface-subtle" v-html="frontmatter.hero.text" />
-        </h2>
-      </div>
+        <div class="flex flex-col gap-8 px-4">
+          <h1
+            class="type-surface-display-md -strong text-surface"
+            v-html="frontmatter.hero.name"
+          />
+          <h2 class="flex flex-col">
+            <span
+              class="type-surface-title-lg -strong"
+              v-html="frontmatter.hero.tagline"
+            />
+            <span
+              class="type-surface-title-lg -strong text-surface-subtle"
+              v-html="frontmatter.hero.text"
+            />
+          </h2>
+        </div>
       </div>
     </template>
   </Layout>
@@ -26,9 +39,7 @@ const { Layout } = DefaultTheme
 const { isDark, frontmatter } = useData()
 
 onMounted(() => {
-  document.documentElement.setAttribute(
-      'data-theme', 'vue-equipment'
-  )
+  document.documentElement.setAttribute('data-theme', 'vue-equipment')
 
   watchEffect(() => {
     document.documentElement.setAttribute(

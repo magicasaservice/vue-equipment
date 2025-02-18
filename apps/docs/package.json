@@ -23,8 +23,8 @@
     "postcss": "^8.5.2",
     "prettier": "^3.5.1",
     "tailwindcss": "catalog:",
-    "unplugin-icons": "^22.0.0",
-    "unplugin-vue-components": "^28.0.0",
+    "unplugin-icons": "^22.1.0",
+    "unplugin-vue-components": "^28.2.0",
     "vite": "^6.1.0",
     "vitepress": "1.5.0",
     "vue": "catalog:"

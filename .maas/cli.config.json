@@ -2,7 +2,7 @@
   "sourceType": "git",
   "dist": ".maas",
   "gitProvider": "github",
-  "repoName": "magicasaservice/mirror-tokens",
+  "repoName": "magicasaservice/vue-equipment-tokens",
   "repoBranch": "main",
   "tailwind": {
     "variables": true
