@@ -475,3 +475,7 @@ MagicToastView is used internally. Some CSS is configurable.
 ### Hover
 
 <component-preview src="./demo/HoverDemo.vue" />
+
+### Clear All
+
+<component-preview src="./demo/ClearAllDemo.vue" />

@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, toValue, nextTick, type MaybeRef } from 'vue'
 import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
 import type { ToastView } from '../types'
@@ -18,7 +18,7 @@ export function useMagicToast(id: MaybeRef<string>) {
   const { initializeView, deleteView } = useToastView(id)
 
   // Public state
-  const toasts = computed(() => state?.views)
+  const toasts = computed(() => state.views)
   const count = computed(() => toasts.value?.length)
 
   // Public functions
@@ -42,6 +42,21 @@ export function useMagicToast(id: MaybeRef<string>) {
     deleteView(id)
   }
 
+  async function clear(transition?: string) {
+    // Save transition
+    const lastTransition = state.options.transition
+
+    // Set transition
+    state.options.transition = transition ?? ''
+
+    // Clear
+    state.views = []
+    await nextTick()
+
+    // Restore transition
+    state.options.transition = lastTransition
+  }
+
   function expand() {
     state.expanded = true
   }
@@ -55,6 +70,7 @@ export function useMagicToast(id: MaybeRef<string>) {
     count,
     add,
     remove,
+    clear,
     expand,
     collapse,
   }
