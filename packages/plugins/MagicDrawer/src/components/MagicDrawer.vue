@@ -467,12 +467,14 @@ onUnmounted(() => {
     var(--magic-drawer-drag-overshoot-y)
   );
   pointer-events: none;
+  display: flex;
+  min-height: 0;
 }
 
 .magic-drawer__content {
   width: 100%;
-  height: 100%;
   max-height: 100%;
+  height: var(--magic-drawer-content-height, 100%);
   position: relative;
 }
 
