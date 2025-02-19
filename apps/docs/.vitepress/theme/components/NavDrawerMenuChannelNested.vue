@@ -44,27 +44,13 @@ defineProps<NavDrawerMenuChannelNestedProps>()
 </script>
 
 <style>
-@keyframes nested-channel-in {
-  0% {
-    opacity: 0%;
-  }
-
-  50% {
-    opacity: 0%;
-  }
-
-  100% {
-    opacity: 100%;
-  }
-}
-
 .nested-channel-enter-active {
-  animation: fade-in 200ms ease;
+  animation: fade-up-in 250ms ease;
+  position: absolute;
 }
 
 .nested-channel-leave-active {
-  animation: fade-out 300ms ease;
+  animation: fade-out 250ms ease;
   position: absolute;
-  top: 3.375rem;
 }
 </style>

@@ -20,15 +20,13 @@
           </magic-menu-remote>
         </m-button>
         <magic-drawer :id="DrawerId.navDrawer" :options="{ focusTrap: false }">
-          <div
-            class="scrollbar-none rounded-t-surface-sm relative h-full w-full overflow-auto overscroll-none"
-          >
+          <div class="scrollbar-none relative h-full w-full overflow-auto">
             <div
-              class="bg-surface-elevation-high rounded-t-surface-sm fixed inset-0 -z-10 overflow-hidden"
+              class="bg-surface-elevation-high fixed inset-0 -z-10 overflow-hidden rounded-t-2xl"
             />
             <div class="flex w-full flex-col gap-6 pt-6">
               <nav-drawer-handle />
-              <auto-size :width="false" :duration="200">
+              <auto-size :width="false" :duration="250" :easing="easeOutQuad">
                 <nav-drawer-menu-channel-nested
                   v-for="channel in theme.sidebar"
                   :key="channel.text"
@@ -37,9 +35,7 @@
                 <nav-drawer-menu-channel-initial />
               </auto-size>
             </div>
-            <nav-drawer-menu-footer
-              class="sticky bottom-0 -mt-[var(--magic-drawer-drag-overshoot)] translate-y-[var(--magic-drawer-drag-overshoot)]"
-            />
+            <nav-drawer-menu-footer class="sticky bottom-0" />
           </div>
         </magic-drawer>
       </magic-menu-view>
@@ -53,6 +49,7 @@ import { useData, useRoute } from 'vitepress'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
+import { easeOutQuad } from '@maas/vue-autosize'
 
 import NavDrawerHandle from './NavDrawerHandle.vue'
 import NavDrawerMenuChannelNested from './NavDrawerMenuChannelNested.vue'
@@ -75,7 +72,7 @@ watch(
 <style>
 [data-id='nav-drawer'] {
   --magic-drawer-height: auto;
-  --magic-drawer-max-height: calc(100dvh - 4rem);
+  --magic-drawer-max-height: calc(100dvh - 8rem);
   --magic-drawer-content-height: auto;
   --magic-drawer-drag-overshoot: 1rem;
 }
