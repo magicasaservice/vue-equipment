@@ -1,7 +1,7 @@
 <template>
   <magic-accordion-view class="flex flex-col w-full">
-    <magic-accordion-trigger v-slot="{ isActive }">
-      <m-menu-item size="sm" mode="plain" :active="isActive">
+    <magic-accordion-trigger v-slot="{ viewActive }">
+      <m-menu-item size="sm" mode="plain" :active="viewActive">
         <m-menu-item-child>
           <span>{{ headline }}</span>
         </m-menu-item-child>
@@ -52,7 +52,7 @@ export interface DemoListProps {
 defineProps<DemoListProps>()
 </script>
 
-<style>
+<style scoped>
 .magic-accordion-view:not(:last-child):after {
   content: '';
   width: calc(100% - 2.25rem);
