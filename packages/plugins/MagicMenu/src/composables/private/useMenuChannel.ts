@@ -44,7 +44,9 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
   }
 
   function unselectSiblings(id: string) {
-    if (!view?.channels) return
+    if (!view?.channels) {
+      return
+    }
 
     // Direct array iteration is faster than filter + forEach
     for (const channel of view.channels) {
@@ -55,7 +57,9 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
   }
 
   function getChannel(id: string): MenuChannel | undefined {
-    if (!view?.channels) return undefined
+    if (!view?.channels) {
+      return undefined
+    }
 
     // Always check view first to ensure we have latest state
     const channel = view.channels.find((ch) => ch.id === id)
@@ -69,13 +73,14 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function initializeChannel(args: InitializeChannelArgs): MenuChannel {
     const { id } = args
-    const channel = getChannel(id) ?? addChannel(args)
 
     return channel
   }
 
   function deleteChannel(id: string) {
-    if (!view?.channels) return
+    if (!view?.channels) {
+      return
+    }
 
     const index = view.channels.findIndex((channel) => channel.id === id)
     if (index !== -1) {
@@ -86,7 +91,9 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function selectChannel(id: string) {
     const channel = getChannel(id)
-    if (!channel) return
+    if (!channel) {
+      return
+    }
 
     channel.active = true
     unselectSiblings(id)
@@ -94,7 +101,9 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function unselectChannel(id: string) {
     const channel = getChannel(id)
-    if (!channel) return
+    if (!channel) {
+      return
+    }
 
     channel.active = false
   }
