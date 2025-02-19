@@ -17,7 +17,7 @@
           as-child
         >
           <m-button size="xs" mode="translucent" @click="open">
-            <i-maas-menu-500 />
+            <i-maas-drawer-bottom-500 />
             <span>Menu</span>
           </m-button>
         </magic-menu-remote>

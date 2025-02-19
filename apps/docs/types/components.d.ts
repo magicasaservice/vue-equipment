@@ -17,8 +17,11 @@ declare module 'vue' {
     IMaasChevronN500: typeof import('~icons/maas/chevron-n500')['default']
     IMaasChevronS500: typeof import('~icons/maas/chevron-s500')['default']
     IMaasChevronW500: typeof import('~icons/maas/chevron-w500')['default']
+    IMaasCircle500: typeof import('~icons/maas/circle500')['default']
+    IMaasDrawerBottom500: typeof import('~icons/maas/drawer-bottom500')['default']
     IMaasEditAlt500: typeof import('~icons/maas/edit-alt500')['default']
     IMaasMaasAz500: typeof import('~icons/maas/maas-az500')['default']
+    IMaasMaasCircle500: typeof import('~icons/maas/maas-circle500')['default']
     IMaasMaasDt500: typeof import('~icons/maas/maas-dt500')['default']
     IMaasMaasMr500: typeof import('~icons/maas/maas-mr500')['default']
     IMaasMaasObotSticker500: typeof import('~icons/maas/maas-obot-sticker500')['default']
@@ -30,9 +33,11 @@ declare module 'vue' {
     IMaasMoon: typeof import('~icons/maas/moon')['default']
     IMaasMoon500: typeof import('~icons/maas/moon500')['default']
     IMaasRmaasObotSticker500: typeof import('~icons/maas/rmaas-obot-sticker500')['default']
+    IMaasRobot500: typeof import('~icons/maas/robot500')['default']
     IMaasRobotSticker500: typeof import('~icons/maas/robot-sticker500')['default']
     IMaasSignInfoOval500: typeof import('~icons/maas/sign-info-oval500')['default']
     IMaasSpacer500: typeof import('~icons/maas/spacer500')['default']
     IMaasSun500: typeof import('~icons/maas/sun500')['default']
+    IMaasVe500: typeof import('~icons/maas/ve500')['default']
   }
 }

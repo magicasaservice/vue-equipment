@@ -1,10 +1,10 @@
 <template>
   <header class="fixed top-0 z-50 w-full backdrop-blur-xl">
-    <div class="flex w-full items-center justify-between px-8">
+    <div class="flex w-full items-center justify-between px-6 md:px-8">
       <VPNavBarTitle class="w-52" />
       <div class="flex gap-12">
         <nav-menu-bar class="hidden sm:block" />
-        <div class="flex gap-4">
+        <div class="flex gap-3">
           <nav-color-mode-switch />
           <nav-drawer class="block sm:hidden" />
         </div>
