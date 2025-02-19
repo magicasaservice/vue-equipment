@@ -1,7 +1,7 @@
 <template>
   <div class="type-surface-footnote text-surface-muted">
     <div
-      class="flex w-full items-center justify-between gap-8 px-8 py-3 backdrop-blur-2xl"
+      class="flex w-full items-center justify-between gap-8 px-8 py-4 backdrop-blur-xl"
     >
       <p class="flex flex-col">
         <span class="inline">Designed and Engineered by</span>
