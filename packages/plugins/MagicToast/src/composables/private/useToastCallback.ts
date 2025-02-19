@@ -27,11 +27,11 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
     }
   }
 
-  function onAfterEnter(el: Element) {
+  function onAfterEnter(el: HTMLElement) {
     emitter.emit('afterEnter', toValue(instanceId))
 
     // Save dimensions
-    const view = getView(el.id)
+    const view = getView(el.dataset.id ?? '')
 
     if (view) {
       const mappedEl = el as HTMLElement
@@ -57,8 +57,8 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
     emitter.emit('leave', toValue(instanceId))
   }
 
-  function onAfterLeave(el: Element) {
-    const view = getView(el.id)
+  function onAfterLeave(el: HTMLElement) {
+    const view = getView(el.dataset.id ?? '')
 
     if (view) {
       deleteView(view.id)
