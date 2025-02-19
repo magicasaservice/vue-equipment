@@ -494,7 +494,7 @@ To customize the menu, override the necessary options. Any custom options will b
       items: [
         {
           label: 'viewId',
-          description: 'Provide the id of the view, the channel is nested in. This is only neccessary if the triger isn’t nested inside `MagicMenuView`.'
+          description: 'Provide the id of the view, the channel is nested in. This is only neccessary if the remote isn’t nested inside `MagicMenuView`.'
         },
         {
           label: 'string'
@@ -508,7 +508,7 @@ To customize the menu, override the necessary options. Any custom options will b
       items: [
         {
           label: 'instanceId',
-          description: 'Provide the menu id. This is only neccessary if the trigger isn’t nested inside `MagicMenuProvider`.'
+          description: 'Provide the menu id. This is only neccessary if the remote isn’t nested inside `MagicMenuProvider`.'
         },
         {
           label: 'string'
@@ -583,6 +583,34 @@ To customize the menu, override the necessary options. Any custom options will b
         },
         {
           label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'viewId',
+          description: 'Provide the id of the view, the channel is nested in. This is only neccessary if the trigger isn’t nested inside `MagicMenuView`.'
+        },
+        {
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'instanceId',
+          description: 'Provide the menu id. This is only neccessary if the trigger isn’t nested inside `MagicMenuProvider`.'
+        },
+        {
+          label: 'string'
         },
         {
           label: 'false'

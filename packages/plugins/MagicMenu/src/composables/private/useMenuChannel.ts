@@ -73,6 +73,7 @@ export function useMenuChannel(args: UseMenuChannelArgs) {
 
   function initializeChannel(args: InitializeChannelArgs): MenuChannel {
     const { id } = args
+    const channel = getChannel(id) ?? addChannel(args)
 
     return channel
   }

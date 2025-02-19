@@ -56,7 +56,6 @@ if (!contentId) {
 }
 
 const mappedId = computed(() => `magic-menu-channel-${id}`)
-const mappedActive = computed(() => channel.active)
 const mappedTransition = computed(
   () => transition ?? state.options.transition.channel
 )
@@ -70,6 +69,8 @@ const { initializeChannel } = useMenuChannel({
 const channel = initializeChannel({
   id: mappedId.value,
 })
+
+const mappedActive = computed(() => channel.active)
 
 // Pass id and active state to children
 provide(MagicMenuChannelId, mappedId.value)

@@ -1,7 +1,7 @@
 <template>
   <primitive
     ref="elRef"
-    :data-id="`${viewId}-trigger`"
+    :data-id="`${mappedViewId}-trigger`"
     :data-active="view?.active"
     :data-disabled="mappedDisabled"
     :tabindex="mappedTabindex"
@@ -32,34 +32,47 @@ import type { Interaction } from '../types'
 import { onKeyStroke } from '@vueuse/core'
 
 interface MagicMenuTriggerProps {
+  instanceId?: string
+  viewId?: string
   disabled?: boolean
   trigger?: Interaction[]
   asChild?: boolean
 }
 
-const { disabled, trigger } = defineProps<MagicMenuTriggerProps>()
+const { instanceId, viewId, disabled, trigger } =
+  defineProps<MagicMenuTriggerProps>()
 const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
 
-const instanceId = inject(MagicMenuInstanceId, undefined)
-const viewId = inject(MagicMenuViewId, undefined)
+const injectedInstanceId = inject(MagicMenuInstanceId, undefined)
+const injectedViewId = inject(MagicMenuViewId, undefined)
 const itemId = inject(MagicMenuItemId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuTrigger must be nested inside MagicMenuProvider')
+const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
+const mappedViewId = computed(() => viewId ?? injectedViewId)
+
+if (!mappedInstanceId.value) {
+  throw new Error(
+    'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided'
+  )
 }
 
-if (!viewId) {
-  throw new Error('MagicMenuTrigger must be nested inside MagicMenuView')
+if (!mappedViewId.value) {
+  throw new Error(
+    'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided'
+  )
 }
 
-const { getView, getRelativeViewIndex } = useMenuView(instanceId)
-const view = getView(viewId)
-const viewIndex = getRelativeViewIndex(viewId)
+const { getView, getRelativeViewIndex } = useMenuView(mappedInstanceId.value)
+const view = getView(mappedViewId.value)
+const viewIndex = getRelativeViewIndex(mappedViewId.value)
 
-const { initializeState } = useMenuState(instanceId)
+const { initializeState } = useMenuState(mappedInstanceId.value)
 const state = initializeState()
 
-const { getItem } = useMenuItem({ instanceId, viewId })
+const { getItem } = useMenuItem({
+  instanceId: mappedInstanceId.value,
+  viewId: mappedViewId.value,
+})
 const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
@@ -96,8 +109,8 @@ const mappedTabindex = computed(() => {
 })
 
 const { onMouseenter, onClick, onEnter } = useMenuTrigger({
-  instanceId,
-  viewId,
+  instanceId: mappedInstanceId.value,
+  viewId: mappedViewId.value,
   itemId,
   mappedDisabled,
   mappedTrigger,
@@ -122,7 +135,7 @@ onKeyStroke('Enter', onEnter)
   cursor: var(--magic-menu-trigger-cursor, pointer);
 }
 
-.magic-menu-trigger.-disabled {
+.magic-menu-trigger[data-disabled='true'] {
   pointer-events: none;
 }
 </style>
