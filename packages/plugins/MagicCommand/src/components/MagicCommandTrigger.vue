@@ -112,7 +112,7 @@ if (options?.keyListener?.enter) {
   cursor: var(--magic-command-trigger-cursor, pointer);
 }
 
-.magic-menu-trigger.-disabled {
+.magic-menu-trigger[data-disabled='true'] {
   pointer-events: none;
 }
 </style>
