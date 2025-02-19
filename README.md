@@ -9,11 +9,11 @@ Over the years, we have found ourselves facing a common problem: driven by the l
 
 ## 🚧 Disclaimer
 
-This project is still under development. Expect breaking changes before the initial stable release.
+This project is currently in beta. Expect breaking changes before the initial stable release. With this being said, we aim to keep the amount to an absolute minimum and will communicate any breaking changes with each [release](https://github.com/magicasaservice/vue-equipment/releases).
 
 ## 📖 Docs
 
-For the full documentation visit [vue-equipment.maas.engineering](https://vue-equipment.maas.engineering). We are actively working on updating the docs before our initial release.
+For the full documentation visit [vue.equipment](https://vue.equipment). We are actively working on updating the docs before our initial stable release.
 
 ## 🐛 Found a Bug?
 
