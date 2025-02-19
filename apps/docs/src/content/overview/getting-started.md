@@ -1,3 +1,12 @@
+---
+prev:
+  text: 'Introduction'
+  link: '/overview/Introduction'
+next:
+  text: 'MagicAccordion'
+  link: '/plugins/MagicAccordion'
+---
+
 # Getting Started
 
 Everything you need to know to start using Vue Equipment.

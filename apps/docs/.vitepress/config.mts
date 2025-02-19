@@ -65,8 +65,7 @@ export default defineConfig({
       'meta',
       {
         name: 'og:description',
-        content:
-          'Our Frontend Toolkit, Free and Open Source.',
+        content: 'Our Frontend Toolkit, Free and Open Source.',
       },
     ],
     ['meta', { name: 'og:type', content: 'website' }],
