@@ -34,7 +34,7 @@ export default {
     for (const component in Mirror) {
       // Filter out props, default, etc
       if (!component.includes('Props')) {
-        app.component(component)
+        app.component(component, Mirror[component])
       }
     }
   },

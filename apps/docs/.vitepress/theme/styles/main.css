@@ -49,6 +49,14 @@ body {
   text-align: center;
 }
 
+[data-theme='vue-equipment'] .VPContent {
+  padding-top: 64px;
+}
+
+[data-theme='vue-equipment'] .VPDoc {
+  padding-top: 32px;
+}
+
 [data-theme='vue-equipment'] .vp-doc div[class*='language-'] {
   margin-left: 0;
   margin-right: 0;

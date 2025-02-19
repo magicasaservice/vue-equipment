@@ -15,6 +15,8 @@ function splitAtNumber(str: string) {
   return str.slice(0, index) + '-' + str.slice(index)
 }
 
+const overrides = ['VPNav', 'VPLocalNav']
+
 export default defineConfig(async () => {
   return {
     server: {
@@ -36,7 +38,7 @@ export default defineConfig(async () => {
             ).then((res) => res.text())
           },
         },
-      })
+      }),
     ],
     // We need this to resolve the aliases in the plugin files
     // CSS imports from utils need a higher priority than JS imports from utils
@@ -71,10 +73,15 @@ export default defineConfig(async () => {
           find: 'fonts',
           replacement: resolve(__dirname, '../../packages/fonts/dist'),
         },
-        {
-          find: './theme/components',
-          replacement: resolve(__dirname, './.vitepress/theme/components'),
-        },
+        ...overrides.map((override) => {
+          return {
+            find: new RegExp(`^.*\\/${override}\\.vue$`),
+            replacement: resolve(
+              __dirname,
+              `./.vitepress/theme/components/overrides/${override}.vue`
+            ),
+          }
+        }),
       ],
       dedupe: ['vue'],
     },
