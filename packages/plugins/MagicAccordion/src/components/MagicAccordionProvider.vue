@@ -1,5 +1,5 @@
 <template>
-  <primitive :id="id" :as-child="asChild" class="magic-accordion-provider">
+  <primitive :data-id="id" :as-child="asChild" class="magic-accordion-provider">
     <slot />
   </primitive>
 </template>

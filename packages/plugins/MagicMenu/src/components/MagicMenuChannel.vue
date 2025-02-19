@@ -2,7 +2,6 @@
   <transition :name="mappedTransition">
     <div
       v-if="channel.active"
-      :id="id"
       class="magic-menu-channel"
       :data-initialized="state.active"
       :data-id="mappedId"

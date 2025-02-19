@@ -5,9 +5,9 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      :id="toValue(id)"
       ref="drawerRef"
       class="magic-drawer"
+      :data-id="toValue(id)"
       :data-dragging="dragging"
       :data-wheeling="wheeling"
       :data-disabled="disabled"

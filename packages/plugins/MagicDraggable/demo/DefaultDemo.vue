@@ -8,7 +8,7 @@
 </template>
 
 <style>
-#magic-draggable-demo {
+[data-id='magic-draggable-demo'] {
   --magic-draggable-position: relative;
 }
 </style>

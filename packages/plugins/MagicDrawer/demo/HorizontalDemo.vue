@@ -16,7 +16,7 @@ const drawerApi = useMagicDrawer('magic-drawer-horizontal-demo')
 </script>
 
 <style>
-#magic-drawer-horizontal-demo {
+[data-id='magic-drawer-horizontal-demo'] {
   --magic-drawer-height: 100svh;
   --magic-drawer-width: 20rem;
 }

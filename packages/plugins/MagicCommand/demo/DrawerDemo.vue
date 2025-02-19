@@ -27,9 +27,8 @@ import DefaultView from './components/DefaultView.vue'
 </script>
 
 <style>
-#magic-command-drawer-demo {
+[data-id='magic-command-drawer-demo'] {
   --magic-drawer-width: 40rem;
   --magic-drawer-height: 30rem;
-  /* --magic-drawer-drag-overshoot: 0px; */
 }
 </style>

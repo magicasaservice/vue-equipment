@@ -1,11 +1,23 @@
 <template>
-  <primitive ref="elRef" :as-child="asChild" class="magic-menu-provider">
+  <primitive
+    ref="elRef"
+    :as-child="asChild"
+    :data-id="id"
+    class="magic-menu-provider"
+  >
     <slot />
   </primitive>
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import {
+  ref,
+  provide,
+  watch,
+  toValue,
+  onBeforeUnmount,
+  type MaybeRef,
+} from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
 import { defu } from 'defu'
@@ -88,7 +100,11 @@ onClickOutside(
     unselectAllViews()
   },
   {
-    ignore: ['.magic-menu-trigger', '.magic-menu-item', 'magic-menu-float'],
+    ignore: [
+      `[data-id='${toValue(id)}'] .magic-menu-trigger`,
+      `[data-id='${toValue(id)}'] .magic-menu-item`,
+      `.magic-menu-float`,
+    ],
   }
 )
 

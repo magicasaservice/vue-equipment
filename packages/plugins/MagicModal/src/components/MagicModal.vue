@@ -5,9 +5,9 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      :id="toValue(id)"
       ref="modalRef"
       class="magic-modal"
+      :data-id="toValue(id)"
       v-bind="$attrs"
       aria-modal="true"
       @click.self="close"

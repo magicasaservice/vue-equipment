@@ -1,8 +1,8 @@
 <template>
   <li
-    :id="id"
     ref="elRef"
     class="magic-toast-view"
+    :data-id="id"
     :data-expanded="state.expanded"
     :data-dragging="view.dragging"
     :data-position="state.options.position"

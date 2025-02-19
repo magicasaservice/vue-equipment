@@ -21,7 +21,7 @@ const drawerApi = useMagicDrawer('magic-drawer-snap-points-demo')
 </script>
 
 <style>
-#snap-points-demo {
+[data-id='magic-drawer-snap-points-demo'] {
   --magic-drawer-height: 100svh;
 }
 </style>

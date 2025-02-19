@@ -1,7 +1,7 @@
 <template>
   <div
-    :id="toValue(id)"
     ref="drawerRef"
+    :data-id="toValue(id)"
     :class="[
       'magic-draggable',
       {

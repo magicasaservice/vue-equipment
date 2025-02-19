@@ -1,8 +1,8 @@
 <template>
   <div
-    :id="mappedId"
     ref="elRef"
     class="magic-menu-item"
+    :data-id="mappedId"
     :data-disabled="disabled"
     :data-active="item.active"
     :data-pointer-disabled="pointerDisabled"

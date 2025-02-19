@@ -4,7 +4,7 @@
     :disabled="state.options.teleport?.disabled"
   >
     <div
-      :id="toValue(id)"
+      :data-id="toValue(id)"
       :data-position="state.options.position"
       :data-expanded="state.expanded"
       class="magic-toast-provider"

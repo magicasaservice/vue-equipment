@@ -38,7 +38,7 @@
           <div class="magic-player-video-controls__item -grow">
             <slot name="timelineBefore" />
             <div ref="trackRef" class="magic-player-video-controls__timeline">
-              <magic-player-timeline :id="id" />
+              <magic-player-timeline />
             </div>
             <slot name="timelineAfter" />
           </div>

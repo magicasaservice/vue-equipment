@@ -29,21 +29,21 @@
           class="magic-player-audio-controls__item -shrink-0"
           data-slot="display-time-current"
         >
-          <magic-player-display-time :id="id" type="current" />
+          <magic-player-display-time type="current" />
         </div>
         <div
           class="magic-player-audio-controls__item -grow"
           data-slot="timeline"
         >
           <div ref="trackRef" class="magic-player-audio-controls__timeline">
-            <magic-player-timeline :id="id" />
+            <magic-player-timeline />
           </div>
         </div>
         <div
           class="magic-player-audio-controls__item -shrink-0"
           data-slot="display-time-duration"
         >
-          <magic-player-display-time :id="id" type="duration" />
+          <magic-player-display-time type="duration" />
         </div>
       </div>
     </div>
