@@ -365,7 +365,9 @@ onUnmounted(() => {
 <style>
 :root {
   --magic-drawer-height: 75svh;
+  --magic-drawer-max-height: none;
   --magic-drawer-width: 100%;
+  --magic-drawer-max-width: none;
   --magic-drawer-justify-content: center;
   --magic-drawer-align-items: flex-end;
   --magic-drawer-enter-animation: slide-btt-in 300ms ease;
@@ -453,7 +455,13 @@ onUnmounted(() => {
 
 .magic-drawer__wrapper {
   height: var(--magic-drawer-height);
+  max-height: calc(
+    var(--magic-drawer-max-height) + var(--magic-drawer-drag-overshoot-y)
+  );
   width: var(--magic-drawer-width);
+  max-width: calc(
+    var(--magic-drawer-max-width) + var(--magic-drawer-drag-overshoot-x)
+  );
   transform: translate(
     var(--magic-drawer-drag-overshoot-x),
     var(--magic-drawer-drag-overshoot-y)

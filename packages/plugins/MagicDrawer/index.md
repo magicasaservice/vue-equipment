@@ -605,6 +605,26 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
     {
       items: [
         {
+          label: '--magic-drawer-max-height'
+        },
+        {
+          label: 'none'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-max-width'
+        },
+        {
+          label: 'none'
+        },
+      ]
+    },
+    {
+      items: [
+        {
           label: '--magic-drawer-justify-content'
         },
         {
