@@ -26,7 +26,7 @@
             />
             <div class="flex w-full flex-col gap-6 pt-6">
               <nav-drawer-handle />
-              <auto-size :width="false" :duration="250" :easing="easeOutQuad">
+              <auto-size :width="false" :duration="250" :height="animate">
                 <nav-drawer-menu-channel-nested
                   v-for="channel in theme.sidebar"
                   :key="channel.text"
@@ -44,9 +44,13 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { watch, ref, onBeforeUnmount } from 'vue'
 import { useData, useRoute } from 'vitepress'
-import { useMagicDrawer } from '@maas/vue-equipment/plugins'
+import {
+  useMagicDrawer,
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
 import { easeOutQuad } from '@maas/vue-autosize'
@@ -67,6 +71,24 @@ watch(
     close()
   }
 )
+
+// Enable autosize once drawer opened
+const animate = ref(false)
+const emitter = useMagicEmitter()
+
+function callback(payload: MagicEmitterEvents['afterEnter']) {
+  if (payload === DrawerId.navDrawer) {
+    animate.value = !animate.value
+  }
+}
+
+emitter.on('afterEnter', callback)
+emitter.on('afterLeave', callback)
+
+onBeforeUnmount(() => {
+  emitter.off('afterEnter', callback)
+  emitter.off('afterLeave', callback)
+})
 </script>
 
 <style>
