@@ -21,13 +21,13 @@
         </m-button>
         <magic-drawer :id="DrawerId.navDrawer" :options="{ focusTrap: false }">
           <div
-            class="scrollbar-none rounded-t-surface-sm relative h-full w-full overflow-auto"
+            class="scrollbar-none rounded-t-surface-sm relative h-full w-full overflow-auto overscroll-none"
           >
             <div
               class="bg-surface-elevation-high rounded-t-surface-sm fixed inset-0 -z-10 overflow-hidden"
             />
             <div class="flex w-full flex-col gap-6 pt-6">
-              <drawer-handle />
+              <nav-drawer-handle />
               <auto-size :width="false" :duration="200">
                 <nav-drawer-menu-channel-nested
                   v-for="channel in theme.sidebar"
@@ -54,7 +54,7 @@ import { useMagicDrawer } from '@maas/vue-equipment/plugins'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
 
-import DrawerHandle from './DrawerHandle.vue'
+import NavDrawerHandle from './NavDrawerHandle.vue'
 import NavDrawerMenuChannelNested from './NavDrawerMenuChannelNested.vue'
 import NavDrawerMenuChannelInitial from './NavDrawerMenuChannelInitial.vue'
 import NavDrawerMenuFooter from './NavDrawerMenuFooter.vue'
