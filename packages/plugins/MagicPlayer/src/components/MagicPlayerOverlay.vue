@@ -86,11 +86,11 @@ const { idle } = useIdle(3000)
   height: var(--magic-player-overlay-button-size, 2.5rem);
 }
 
-.magic-player-overlay.-playing[data-idle='true'] {
+.magic-player-overlay[data-playing='true'][data-idle='true'] {
   opacity: 0;
 }
 
-.magic-player-overlay.-playing[data-hover='false'] {
+.magic-player-overlay[data-playing='true'][data-hover='false'] {
   opacity: 0;
 }
 </style>
