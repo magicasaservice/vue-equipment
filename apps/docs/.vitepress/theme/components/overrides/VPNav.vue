@@ -6,7 +6,7 @@
         <nav-menu-bar class="hidden sm:block" />
         <div class="flex gap-2">
           <nav-color-mode-switch />
-          <nav-menu-drawer class="block sm:hidden" />
+          <nav-drawer class="block sm:hidden" />
         </div>
       </div>
     </div>
@@ -17,5 +17,5 @@
 import VPNavBarTitle from 'vitepress/dist/client/theme-default/components/VPNavBarTitle.vue'
 import NavColorModeSwitch from '../NavColorModeSwitch.vue'
 import NavMenuBar from '../NavMenuBar.vue'
-import NavMenuDrawer from '../NavMenuDrawer.vue'
+import NavDrawer from '../NavDrawer.vue'
 </script>

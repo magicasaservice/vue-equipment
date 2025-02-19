@@ -1,12 +1,17 @@
 export enum MenuId {
-  navColorModeSwitch = 'magic-menu--color-mode-switch',
-  navMenuBar = 'magic-menu--nav-menu-bar',
+  navColorModeSwitch = 'color-mode-switch',
+  navMenuBar = 'nav-menu-bar',
+  navDrawer = 'nav-drawer',
 }
 
 export enum DrawerId {
-  navMenuDrawer = 'magic-drawer--nav-menu-drawer',
+  navDrawer = 'nav-drawer',
 }
 
-export enum AccordionId {
-  navMenuDrawer = 'magic-accordion--nav-menu-drawer',
+export enum ChannelId {
+  navDrawerMenuInitial = 'nav-drawer-menu-initial',
+}
+
+export enum ViewId {
+  navDrawer = 'nav-drawer',
 }
