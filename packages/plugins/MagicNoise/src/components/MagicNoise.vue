@@ -74,7 +74,7 @@ onUnmounted(() => {
   position: relative;
   user-select: none;
   transition: var(--magic-noise-loading-transition);
-  background: var(--magic-noise-background, transparent);
+  background: var(--magic-noise-background, #000);
   &[data-loading='true'] {
     background: var(--magic-noise-loading-background, #000);
     & > .magic-noise__inner {

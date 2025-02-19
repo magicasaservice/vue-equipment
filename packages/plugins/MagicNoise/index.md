@@ -239,7 +239,7 @@ The component comes with some CSS variables for customization.
           label: '--magic-noise-background'
         },
         {
-          label: 'transparent'
+          label: '#000'
         }
       ]
     },
