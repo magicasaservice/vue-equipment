@@ -2,13 +2,9 @@
   <div
     ref="drawerRef"
     :data-id="toValue(id)"
-    :class="[
-      'magic-draggable',
-      {
-        '-dragging': dragging,
-        '-disabled': disabled,
-      },
-    ]"
+    :data-dragging="dragging"
+    :data-disabled="disabled"
+    class="magic-draggable"
     v-bind="$attrs"
   >
     <div ref="wrapperRef" class="magic-draggable__wrapper">
@@ -107,7 +103,7 @@ function guardedClick(event: PointerEvent) {
   border: none;
 }
 
-.magic-draggable.-disabled {
+.magic-draggable[data-disabled='true'] {
   pointer-events: none;
 }
 
@@ -129,12 +125,12 @@ function guardedClick(event: PointerEvent) {
   touch-action: none;
 }
 
-.magic-draggable.-dragging .magic-draggable__drag {
+.magic-draggable[data-dragging='true'] .magic-draggable__drag {
   cursor: grabbing;
   user-select: none;
 }
 
-.magic-draggable.-disabled .magic-draggable__drag {
+.magic-draggable[data-disabled='true'] .magic-draggable__drag {
   cursor: default;
 }
 
