@@ -1,9 +1,17 @@
 <template>
   <div
-    class="bg-surface-elevation-base text-surface type-label-text-lg rounded-[1.375rem] p-2 pl-4 w-[320px] pointer-events-auto flex justify-between items-center"
+    class="bg-component-primary-translucent backdrop-blur-xl text-component-primary-onTranslucent type-label-text-lg rounded-[1.375rem] p-2 pl-4 w-[320px] pointer-events-auto flex justify-between items-center"
   >
     <span>{{ message }}</span>
-    <m-button size="sm" @click.stop="emit('remove')">Close</m-button>
+    <m-button
+      size="md"
+      mode="translucent"
+      icon
+      square
+      @click.stop="emit('remove')"
+    >
+      <i-maas-close-500 class="h-4 w-4" />
+    </m-button>
   </div>
 </template>
 

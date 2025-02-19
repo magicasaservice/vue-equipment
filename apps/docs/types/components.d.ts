@@ -18,6 +18,8 @@ declare module 'vue' {
     IMaasChevronS500: typeof import('~icons/maas/chevron-s500')['default']
     IMaasChevronW500: typeof import('~icons/maas/chevron-w500')['default']
     IMaasCircle500: typeof import('~icons/maas/circle500')['default']
+    IMaasClose500: typeof import('~icons/maas/close500')['default']
+    IMaasCloseOval500: typeof import('~icons/maas/close-oval500')['default']
     IMaasDrawerBottom500: typeof import('~icons/maas/drawer-bottom500')['default']
     IMaasEditAlt500: typeof import('~icons/maas/edit-alt500')['default']
     IMaasMaasAz500: typeof import('~icons/maas/maas-az500')['default']
