@@ -41,7 +41,7 @@ export default defineConfig({
       {
         src: 'https://stats.maas.earth/js/script.tagged-events.js',
         defer: 'true',
-        dataDomain: 'vue.equipment',
+        'data-domain': 'vue.equipment',
       },
     ],
     ['link', { rel: 'icon', href: '/icon.svg', type: 'image/svg+xml' }],
