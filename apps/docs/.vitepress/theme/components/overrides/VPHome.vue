@@ -35,11 +35,16 @@
             mode="solid"
             variant="warning"
             as-child
-            class="col-span-full"
+            class="col-span-full sm:w-48"
           >
             <VPLink href="/overview/getting-started">Get Started</VPLink>
           </m-button>
-          <m-button size="lg" mode="translucent" as-child class="col-span-1">
+          <m-button
+            size="lg"
+            mode="translucent"
+            as-child
+            class="col-span-1 sm:w-48"
+          >
             <a
               href="https://github.com/magicasaservice/vue-equipment"
               target="_blank"
@@ -48,7 +53,12 @@
               View on Github
             </a>
           </m-button>
-          <m-button size="lg" mode="translucent" as-child class="col-span-1">
+          <m-button
+            size="lg"
+            mode="translucent"
+            as-child
+            class="col-span-1 sm:w-48"
+          >
             <a
               href="https://maas-engineering"
               target="_blank"
@@ -58,14 +68,14 @@
             </a>
           </m-button>
         </div>
-        <div class="flex w-full flex-col items-center gap-3 px-4">
+        <div class="flex w-full flex-col items-center gap-3 px-6">
           <span class="type-surface-callout-lg -strong text-surface">
             Sponsored by
           </span>
-          <div class="grid w-full max-w-screen-sm grid-cols-12">
-            <nuxt-sponsor-card
-              class="col-span-6 col-start-4 sm:col-span-4 sm:col-start-5"
-            />
+          <div
+            class="grid w-full max-w-screen-sm grid-cols-12 justify-center gap-3 sm:flex"
+          >
+            <nuxt-sponsor-card class="col-span-6 col-start-4 sm:w-48" />
           </div>
         </div>
       </div>
