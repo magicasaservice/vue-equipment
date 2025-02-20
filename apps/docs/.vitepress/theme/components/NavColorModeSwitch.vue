@@ -7,7 +7,7 @@
     }"
     class="nav-color-mode-switch"
   >
-    <magic-menu-view>
+    <magic-menu-view :id="ViewId.navColorModeSwitch">
       <m-button as-child size="xs" mode="translucent">
         <magic-menu-trigger>
           <i-maas-moon-500 v-if="isDark" />
@@ -15,7 +15,7 @@
           <span>{{ currentColorMode }}</span>
         </magic-menu-trigger>
       </m-button>
-      <magic-menu-content :arrow="false" placement="top">
+      <magic-menu-content :arrow="false" placement="bottom">
         <div class="px-2 py-1">
           <m-menu-box size="xs">
             <magic-menu-item @click="setMode('dark')">
@@ -53,7 +53,7 @@
 import { computed, nextTick } from 'vue'
 import { useData } from 'vitepress'
 import { MButton, MMenuItem, MMenuItemChild, MMenuBox } from '@maas/mirror/vue'
-import { MenuId } from '../utils/enums'
+import { MenuId, ViewId } from '../utils/enums'
 
 const { isDark } = useData()
 

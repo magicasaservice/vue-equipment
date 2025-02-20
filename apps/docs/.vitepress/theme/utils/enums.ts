@@ -14,4 +14,5 @@ export enum ChannelId {
 
 export enum ViewId {
   navDrawer = 'nav-drawer',
+  navColorModeSwitch = 'color-mode-switch',
 }
