@@ -1,6 +1,6 @@
 <template>
   <div
-    class="vp-home-override flex w-full flex-col items-center gap-8 pb-12 pt-12"
+    class="vp-home-override flex w-full flex-col items-center gap-8 pb-12 pt-4 xl:pt-12"
   >
     <div
       class="flex flex-col items-center gap-10 xl:h-full xl:flex-row xl:gap-0"

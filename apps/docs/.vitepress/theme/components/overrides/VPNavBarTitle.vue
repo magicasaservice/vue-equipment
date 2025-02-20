@@ -1,7 +1,7 @@
 <template>
   <div class="vp-nav-bar-title-override" :class="{ 'has-sidebar': hasSidebar }">
     <a
-      class="type-surface-title-sm -short -strong"
+      class="type-surface-title-sm -short -strong flex h-16 shrink-0 items-center gap-2"
       :href="link ?? normalizeLink(currentLang.link)"
       :rel="rel"
       :target="target"
@@ -42,13 +42,3 @@ const target = computed(() =>
     : theme.value.logoLink?.target
 )
 </script>
-
-<style scoped>
-.vp-nav-bar-title-override a {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  height: 4rem;
-  flex-shrink: 0;
-}
-</style>
