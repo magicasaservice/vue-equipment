@@ -58,7 +58,7 @@ body {
 }
 
 [data-theme='vue-equipment'] .VPSidebar {
-  padding-top: 82px; // 64px + 32px - 4px - 10px
+  padding-top: 82px;
 }
 
 [data-theme='vue-equipment'] .vp-doc div[class*='language-'] {
