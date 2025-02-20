@@ -11,50 +11,18 @@ body {
 [data-theme='vue-equipment'] .VPContent.is-home {
   display: flex;
   justify-content: center;
-  align-items: stretch;
 }
-
-[data-theme='vue-equipment'] .VPHome {
-  margin-bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  padding: 6rem 0 2rem 0;
-}
-
-[data-theme='vue-equipment'] .VPHome .vp-doc.container {
-  display: none;
-}
-
-[data-theme='vue-equipment'] .VPHomeHero {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-[data-theme='vue-equipment'] .VPHomeHero .container {
-  max-width: 100%;
-  flex-direction: column-reverse;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-[data-theme='vue-equipment'] .VPHomeHero .main {
-  width: 100%;
-  max-width: 100% !important;
-  text-align: center;
+[data-theme='vue-equipment'] .content {
+  padding-bottom: 0;
 }
 
 [data-theme='vue-equipment'] .VPContent {
-  padding-top: 64px;
+  padding-top: 4rem;
 }
 
 [data-theme='vue-equipment'] .VPDoc {
-  padding-top: 32px;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 [data-theme='vue-equipment'] .VPSidebar {

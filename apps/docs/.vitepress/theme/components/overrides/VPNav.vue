@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed top-0 z-50 w-full backdrop-blur-xl">
+  <header class="vp-nav-override fixed top-0 z-50 w-full backdrop-blur-xl">
     <div class="flex w-full items-center justify-between px-6 md:px-8">
       <VPNavBarTitle class="w-52" />
       <div class="flex gap-12">

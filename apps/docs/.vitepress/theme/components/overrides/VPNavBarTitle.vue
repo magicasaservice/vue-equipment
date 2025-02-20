@@ -1,5 +1,5 @@
 <template>
-  <div class="vp-nav-bar-title" :class="{ 'has-sidebar': hasSidebar }">
+  <div class="vp-nav-bar-title-override" :class="{ 'has-sidebar': hasSidebar }">
     <a
       class="type-surface-title-sm -short -strong"
       :href="link ?? normalizeLink(currentLang.link)"
@@ -44,7 +44,7 @@ const target = computed(() =>
 </script>
 
 <style scoped>
-.vp-nav-bar-title a {
+.vp-nav-bar-title-override a {
   display: flex;
   gap: 0.75rem;
   align-items: center;
