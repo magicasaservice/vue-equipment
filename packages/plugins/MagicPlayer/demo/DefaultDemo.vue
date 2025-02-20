@@ -3,7 +3,8 @@
     <magic-player-provider
       id="magic-player-default-demo"
       :options="{
-        src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
+        src: 'https://stream.mux.com/3wVFr42nN3VqIVv01ugl00oSJTzKlhsZ01ep2yKz5vqeZ8.m3u8',
+        srcType: 'hls',
       }"
     >
       <magic-player-video />
@@ -11,7 +12,7 @@
         <magic-player-provider
           id="magic-player-default-demo-poster"
           :options="{
-            src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
+            src: 'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4',
             autoplay: true,
             loop: true,
           }"
@@ -19,7 +20,7 @@
           <magic-player-video />
           <magic-player-poster>
             <img
-              src="https://image.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/thumbnail.jpg"
+              src="https://image.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/thumbnail.png?time=0"
               alt="Poster"
             />
           </magic-player-poster>

@@ -5,7 +5,7 @@
       :options="{
         autoplay: true,
         loop: true,
-        src: 'https://stream.mux.com/c2sidhKoTaKUTgqqACU8AsRRq02uUbEFLrgGQXDjlJks/high.mp4',
+        src: 'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4',
       }"
     >
       <magic-player-video />
