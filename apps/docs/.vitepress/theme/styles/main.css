@@ -57,6 +57,10 @@ body {
   padding-top: 32px;
 }
 
+[data-theme='vue-equipment'] .VPSidebar {
+  padding-top: 82px; // 64px + 32px - 4px - 10px
+}
+
 [data-theme='vue-equipment'] .vp-doc div[class*='language-'] {
   margin-left: 0;
   margin-right: 0;

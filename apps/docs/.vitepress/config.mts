@@ -79,7 +79,6 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    logo: { light: '/logo-light.svg', dark: '/logo-dark.svg' },
     nav: [
       { text: 'Overview', link: '/overview/introduction' },
       mappedPlugins,
