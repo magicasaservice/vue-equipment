@@ -5,7 +5,7 @@
     <div
       class="flex flex-col items-center gap-10 xl:h-full xl:flex-row xl:gap-0"
     >
-      <div class="relative w-full max-w-screen-sm px-6">
+      <div class="relative w-full max-w-xl px-6">
         <div class="w-full">
           <img src="/images/carabiner.png" alt="Vue Equipment" />
         </div>
@@ -35,7 +35,7 @@
             mode="solid"
             variant="warning"
             as-child
-            class="col-span-full sm:w-48"
+            class="col-span-full sm:w-40"
           >
             <VPLink href="/overview/getting-started">Get Started</VPLink>
           </m-button>
@@ -43,7 +43,7 @@
             size="lg"
             mode="translucent"
             as-child
-            class="col-span-1 sm:w-48"
+            class="col-span-1 sm:w-40"
           >
             <a
               href="https://github.com/magicasaservice/vue-equipment"
@@ -57,10 +57,10 @@
             size="lg"
             mode="translucent"
             as-child
-            class="col-span-1 sm:w-48"
+            class="col-span-1 sm:w-40"
           >
             <a
-              href="https://maas-engineering"
+              href="https://maas.engineering"
               target="_blank"
               ref="nooopener noreferrer"
             >
@@ -75,7 +75,7 @@
           <div
             class="grid w-full max-w-screen-sm grid-cols-12 justify-center gap-3 sm:flex"
           >
-            <nuxt-sponsor-card class="col-span-6 col-start-4 sm:w-48" />
+            <nuxt-sponsor-card class="col-span-6 col-start-4 sm:w-40" />
           </div>
         </div>
       </div>

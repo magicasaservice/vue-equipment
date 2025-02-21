@@ -15,7 +15,7 @@ function splitAtNumber(str: string) {
   return str.slice(0, index) + '-' + str.slice(index)
 }
 
-const overrides = ['VPNav', 'VPLocalNav', 'VPNavBarTitle', 'VPHome']
+const overrides = ['VPNav', 'VPLocalNav', 'VPNavBarTitle', 'VPHome', 'VPFooter']
 
 export default defineConfig(async () => {
   return {

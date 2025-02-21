@@ -16,8 +16,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import { useSidebar } from 'vitepress/theme-without-fonts'
 import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs.js'
-import { useSidebar } from 'vitepress/dist/client/theme-default/composables/sidebar.js'
 import { normalizeLink } from 'vitepress/dist/client/theme-default/support/utils.js'
 
 const { site, theme } = useData()

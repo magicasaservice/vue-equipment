@@ -30,7 +30,6 @@ function getPlugins() {
 
 const mappedComposables = getComposables()
 const mappedPlugins = getPlugins()
-const currentYear = new Date().getFullYear()
 
 export default defineConfig({
   title: 'Vue Equipment',
@@ -109,10 +108,34 @@ export default defineConfig({
       },
       mappedPlugins,
       mappedComposables,
+      {
+        collapsed: false,
+        items: [
+          {
+            text: 'Magic as a Service™',
+            link: 'https://maas.engineering',
+          },
+          {
+            text: 'Legal Notice',
+            link: 'https://maas.engineering/legal-notice',
+          },
+          {
+            text: 'Privacy Policy',
+            link: 'https://maas.engineering/privacy-policy',
+          },
+        ],
+      },
     ],
     footer: {
-      message: 'Released under the MIT License',
-      copyright: `© ${currentYear} <a href="https://maas.engineering" target="_blank" ref="noopener noreferrer">Magic as a Service</a>™`,
+      message:
+        'Engineered and Designed by <a href="https://maas.engineering" target="_blank" ref="noopener noreferrer">Magic as a Service™</a>',
+      copyright: `Released under the <a
+          href="https://github.com/magicasaservice/vue-equipment/blob/main/LICENSE"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          MIT License
+        </a>`,
     },
   },
   srcDir: './../..',
