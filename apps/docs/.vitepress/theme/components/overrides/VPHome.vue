@@ -60,7 +60,7 @@
             class="col-span-1 sm:w-48"
           >
             <a
-              href="https://maas-engineering"
+              href="https://maas.engineering"
               target="_blank"
               ref="nooopener noreferrer"
             >
