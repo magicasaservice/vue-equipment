@@ -31,6 +31,8 @@ export function useScrollApi(params: UseScrollApiParams) {
   const start = ref(0)
   const end = ref(0)
 
+  const { width: windowWidth, height: windowHeight } = useWindowSize()
+
   function splitLocation(location: string) {
     return {
       child: location.match(/^[a-z]+/)![0],
@@ -87,9 +89,15 @@ export function useScrollApi(params: UseScrollApiParams) {
 
   function getCalculations() {
     childRect.value = toValue(child)?.getBoundingClientRect()
+
     parentRect.value = toValue(parent)
       ? toValue(parent)?.getBoundingClientRect()
-      : { ...useWindowSize(), top: 0 }
+      : {
+          width: windowWidth.value,
+          height: windowHeight.value,
+          top: 0,
+        }
+
     start.value = getOffsetTop(splitLocation(from))
     end.value = getOffsetTop(splitLocation(to))
   }

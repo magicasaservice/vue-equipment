@@ -25,7 +25,7 @@ const { from = 'top-bottom', to = 'bottom-top' } =
   defineProps<MagicScrollSceneProps>()
 
 const scrollReturn = inject(MagicScrollReturn, undefined)
-const scrollTarget = inject(MagicScrollTarget)
+const scrollTarget = inject(MagicScrollTarget, undefined)
 
 if (!scrollTarget) {
   console.error('MagicScrollScene must be used within a MagicScrollProvider')
