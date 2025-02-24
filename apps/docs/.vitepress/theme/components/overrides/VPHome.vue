@@ -50,7 +50,7 @@
               target="_blank"
               ref="nooopener noreferrer"
             >
-              View on Github
+              View on GitHub
             </a>
           </m-button>
           <m-button
