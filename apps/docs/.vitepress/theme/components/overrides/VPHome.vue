@@ -28,7 +28,7 @@
           </h2>
         </div>
         <div
-          class="grid w-full grid-cols-2 items-start justify-center gap-3 px-6 sm:flex"
+          class="grid w-full grid-cols-2 items-start justify-center gap-4 px-6 sm:flex"
         >
           <m-button
             size="lg"

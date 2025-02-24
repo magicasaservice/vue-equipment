@@ -87,7 +87,7 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: 'Overview', link: '/overview/introduction' },
+      { text: 'Introduction', link: '/overview/introduction' },
       mappedPlugins,
       mappedComposables,
     ],
