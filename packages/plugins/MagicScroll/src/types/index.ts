@@ -5,13 +5,13 @@ export type CollisionEdge = 'top' | 'bottom'
 
 export type ScrollIntersection =
   | 'top-top'
-  | 'top'
+  | 'top-center'
   | 'top-bottom'
   | 'center-top'
   | 'center-center'
   | 'center-bottom'
   | 'bottom-top'
-  | 'bottom'
+  | 'bottom-center'
   | 'bottom-bottom'
 
 export interface CollisionOffset {
