@@ -198,7 +198,7 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
           description: 'Set the toaster’s position relative to the viewport.'
         },
         { label: 'Position' },
-        { label: 'bottom-center' }
+        { label: 'bottom' }
       ]
     },
     {
