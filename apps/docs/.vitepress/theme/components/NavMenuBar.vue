@@ -23,7 +23,7 @@
         <magic-menu-view
           v-else-if="entry.items"
           :key="`menu-${entry.text}`"
-          placement="bottom-center"
+          placement="bottom"
         >
           <magic-menu-trigger as-child :trigger="['mouseenter']">
             <m-button size="xs" mode="ghost">{{ entry.text }}</m-button>
