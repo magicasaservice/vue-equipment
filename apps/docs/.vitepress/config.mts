@@ -86,8 +86,20 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    socialLinks: [
+      {
+        icon: 'github',
+        link: 'https://github.com/magicasaservice/vue-equipment',
+      },
+    ],
     nav: [
-      { text: 'Introduction', link: '/overview/introduction' },
+      {
+        text: 'Overview',
+        items: [
+          { link: '/overview/introduction', text: 'Introduction' },
+          { link: '/overview/getting-started', text: 'Getting Started' },
+        ],
+      },
       mappedPlugins,
       mappedComposables,
     ],

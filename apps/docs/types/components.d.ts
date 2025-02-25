@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    IMaasBrandBluesky500: typeof import('~icons/maas/brand-bluesky500')['default']
     IMaasBrandFigma500: typeof import('~icons/maas/brand-figma500')['default']
     IMaasBrandGithub500: typeof import('~icons/maas/brand-github500')['default']
     IMaasBrandNuxt500: typeof import('~icons/maas/brand-nuxt500')['default']
@@ -22,6 +23,7 @@ declare module 'vue' {
     IMaasMaasDt500: typeof import('~icons/maas/maas-dt500')['default']
     IMaasMaasMr500: typeof import('~icons/maas/maas-mr500')['default']
     IMaasMaasOf500: typeof import('~icons/maas/maas-of500')['default']
+    IMaasMaasRobot100: typeof import('~icons/maas/maas-robot100')['default']
     IMaasMaasRobot500: typeof import('~icons/maas/maas-robot500')['default']
     IMaasMaasRobotSticker500: typeof import('~icons/maas/maas-robot-sticker500')['default']
     IMaasMaasVe500: typeof import('~icons/maas/maas-ve500')['default']

@@ -10,62 +10,35 @@
           <img src="/images/carabiner.png" alt="Vue Equipment" />
         </div>
       </div>
-      <div class="flex flex-col items-center gap-10 px-4 text-center">
+      <div class="flex flex-col items-center gap-8 px-4 text-center">
         <div class="flex flex-col items-center gap-6 px-4 text-center">
           <h1
             class="type-surface-display-md -strong text-surface"
             v-html="frontmatter.hero.name"
           />
-          <h2 class="flex flex-col items-center">
-            <span
+          <div class="flex flex-col items-center gap-4">
+            <h2
               class="type-surface-title-lg -strong"
               v-html="frontmatter.hero.tagline"
             />
-            <span
-              class="type-surface-title-lg -strong text-surface-subtle"
+            <p
+              class="type-surface-callout-lg text-surface-subtle max-w-lg"
               v-html="frontmatter.hero.text"
             />
-          </h2>
+          </div>
         </div>
         <div
           class="grid w-full grid-cols-2 items-start justify-center gap-4 px-6 sm:flex"
         >
           <m-button
+            v-for="action in frontmatter.hero.actions"
+            :key="action.text"
             size="lg"
-            mode="solid"
-            variant="warning"
+            :mode="action.theme"
             as-child
-            class="col-span-full sm:w-40"
+            class="no-icon col-span-full sm:w-40"
           >
-            <VPLink href="/overview/getting-started">Get Started</VPLink>
-          </m-button>
-          <m-button
-            size="lg"
-            mode="translucent"
-            as-child
-            class="col-span-1 sm:w-40"
-          >
-            <a
-              href="https://github.com/magicasaservice/vue-equipment"
-              target="_blank"
-              ref="nooopener noreferrer"
-            >
-              View on GitHub
-            </a>
-          </m-button>
-          <m-button
-            size="lg"
-            mode="translucent"
-            as-child
-            class="col-span-1 sm:w-40"
-          >
-            <a
-              href="https://maas.engineering"
-              target="_blank"
-              ref="nooopener noreferrer"
-            >
-              Visit MaaS™
-            </a>
+            <VPLink :href="action.link">{{ action.text }}</VPLink>
           </m-button>
         </div>
         <div class="flex w-full flex-col items-center gap-3 px-6">

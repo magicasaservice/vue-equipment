@@ -7,8 +7,8 @@
     }"
     class="nav-color-mode-switch"
   >
-    <magic-menu-view :id="ViewId.navColorModeSwitch">
-      <m-button as-child size="xs" mode="translucent">
+    <magic-menu-view :id="ViewId.navColorModeSwitch" v-slot="{ viewActive }">
+      <m-button as-child size="xs" :mode="viewActive ? 'translucent' : 'ghost'">
         <magic-menu-trigger>
           <i-maas-moon-500 v-if="isDark" />
           <i-maas-sun-500 v-else-if="!isDark" />

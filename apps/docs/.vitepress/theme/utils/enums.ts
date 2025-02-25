@@ -10,6 +10,7 @@ export enum DrawerId {
 
 export enum ChannelId {
   navDrawerMenuInitial = 'nav-drawer-menu-initial',
+  navDrawerMenuNested = 'nav-drawer-menu-nested',
 }
 
 export enum ViewId {

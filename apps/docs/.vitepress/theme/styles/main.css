@@ -5,7 +5,8 @@
 
 /* Mirage stylistic sets */
 body {
-  font-feature-settings: 'ss01', 'ss02', 'cv04';
+  /* font-feature-settings: 'ss01', 'ss02', 'cv04'; */
+  font-feature-settings: 'ss02', 'cv04';
 }
 
 [data-theme='vue-equipment'] .VPContent.is-home {

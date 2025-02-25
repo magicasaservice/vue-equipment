@@ -5,10 +5,9 @@
     class="nav-drawer-menu-channel-initial flex w-full flex-col gap-4"
   >
     <div class="flex w-full flex-col gap-1 px-2">
-      <nav-drawer-menu-remote
-        v-for="channel in theme.sidebar"
-        :channel="channel"
-      />
+      <template v-for="channel in theme.sidebar">
+        <nav-drawer-menu-remote v-if="channel.text" :channel="channel" />
+      </template>
     </div>
   </magic-menu-channel>
 </template>

@@ -16,7 +16,7 @@
           :trigger="['click']"
           as-child
         >
-          <m-button size="xs" mode="translucent" @click="open">
+          <m-button size="xs" mode="ghost" @click="open">
             <i-maas-drawer-bottom-500 />
             <span>Menu</span>
           </m-button>
@@ -29,11 +29,13 @@
             <div class="flex w-full flex-col gap-6 pt-4">
               <nav-drawer-handle />
               <auto-size :width="false" :duration="250" :height="animate">
-                <nav-drawer-menu-channel-nested
-                  v-for="channel in theme.sidebar"
-                  :key="channel.text"
-                  :channel="channel"
-                />
+                <template v-for="channel in theme.sidebar">
+                  <nav-drawer-menu-channel-nested
+                    v-if="!!channel.text"
+                    :key="channel.text"
+                    :channel="channel"
+                  />
+                </template>
                 <nav-drawer-menu-channel-initial />
               </auto-size>
             </div>
