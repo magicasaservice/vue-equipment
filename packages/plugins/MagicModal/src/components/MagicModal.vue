@@ -49,6 +49,7 @@
 <script lang="ts" setup>
 import {
   ref,
+  shallowRef,
   watch,
   nextTick,
   toValue,
@@ -105,8 +106,8 @@ const {
 const { isActive, close } = useMagicModal(id)
 
 // Split isActive into two values to animate modal smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
 
 const {
   onBeforeEnter,

@@ -5,7 +5,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, toValue, watch, useId, onMounted } from 'vue'
+import {
+  ref,
+  shallowRef,
+  inject,
+  computed,
+  toValue,
+  watch,
+  useId,
+  onMounted,
+} from 'vue'
 import { useCollisionDetection } from '../composables/private/useCollisionDetection'
 import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
@@ -27,7 +36,7 @@ if (!scrollTarget) {
   )
 }
 
-const intersecting = ref(false)
+const intersecting = shallowRef(false)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const scrollY = computed(() => toValue(scrollReturn?.y) || 0)

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
@@ -22,7 +22,7 @@ const defaultOptions = {
 const scrollLock =
   typeof window !== 'undefined'
     ? useScrollLock(document?.documentElement)
-    : ref(false)
+    : shallowRef(false)
 
 export function useDrawerDOM(args?: UseDrawerDOMArgs) {
   // Private state

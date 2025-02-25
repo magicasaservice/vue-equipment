@@ -1,4 +1,4 @@
-import { ref, watch, toValue, type MaybeRef } from 'vue'
+import { ref, shallowRef, watch, toValue, type MaybeRef } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
@@ -19,8 +19,8 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   const { playing, currentTime, muted } = usePlayerMediaApi({ id })
 
   // Public state
-  const touched = ref(false)
-  const mouseEntered = ref(false)
+  const touched = shallowRef(false)
+  const mouseEntered = shallowRef(false)
 
   const { isFullscreen, enter, exit } = useFullscreen(fullscreenTarget)
 

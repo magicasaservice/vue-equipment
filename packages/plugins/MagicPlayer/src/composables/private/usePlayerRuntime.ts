@@ -1,4 +1,4 @@
-import { ref, watch, toValue, type MaybeRef } from 'vue'
+import { shallowRef, watch, toValue, type MaybeRef } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 import type Hls from 'hls.js'
@@ -14,8 +14,8 @@ export type UsePlayerRuntimeArgs = {
 
 export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   let hls: Hls | undefined
-  const loaded = ref(false)
-  const defferedLoading = ref(false)
+  const loaded = shallowRef(false)
+  const defferedLoading = shallowRef(false)
 
   const { mediaRef, srcType, src } = args
 

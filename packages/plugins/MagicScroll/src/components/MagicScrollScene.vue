@@ -5,7 +5,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, inject, watch, nextTick, readonly } from 'vue'
+import {
+  ref,
+  shallowRef,
+  provide,
+  inject,
+  watch,
+  nextTick,
+  readonly,
+} from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/private/useScrollApi'
 import {
@@ -31,8 +39,8 @@ if (!scrollTarget) {
   console.error('MagicScrollScene must be used within a MagicScrollProvider')
 }
 
-const progress = ref(0)
-const intersecting = ref(false)
+const progress = shallowRef(0)
+const intersecting = shallowRef(false)
 const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { getCalculations, getProgress } = useScrollApi({

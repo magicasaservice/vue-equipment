@@ -60,6 +60,7 @@
 <script lang="ts" setup>
 import {
   ref,
+  shallowRef,
   watch,
   computed,
   nextTick,
@@ -135,7 +136,7 @@ const {
 
 const { isActive, open, close } = useMagicDrawer(id)
 
-const overshoot = ref(0)
+const overshoot = shallowRef(0)
 const {
   position,
   snapPoints,
@@ -181,9 +182,9 @@ const state = initializeState()
 const { dragging, wheeling } = toRefs(state)
 
 // Split isActive into two values to animate drawer smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
-const wasActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
+const wasActive = shallowRef(false)
 
 const {
   onBeforeEnter,

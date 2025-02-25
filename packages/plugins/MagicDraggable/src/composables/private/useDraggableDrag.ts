@@ -1,5 +1,5 @@
 import {
-  ref,
+  shallowRef,
   computed,
   toValue,
   nextTick,
@@ -84,8 +84,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
 
-  const momentumThresholdReached = ref(false)
-  const distanceThresholdReached = ref(false)
+  const momentumThresholdReached = shallowRef(false)
+  const distanceThresholdReached = shallowRef(false)
 
   // Public state
   const style = computed(

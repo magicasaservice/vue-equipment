@@ -1,4 +1,11 @@
-import { ref, inject, toValue, type MaybeRef, type MaybeRefOrGetter } from 'vue'
+import {
+  ref,
+  shallowRef,
+  inject,
+  toValue,
+  type MaybeRef,
+  type MaybeRefOrGetter,
+} from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { MagicScrollReturn } from '../../symbols'
 import { clampValue } from '@maas/vue-equipment/utils'
@@ -28,8 +35,8 @@ export function useScrollApi(params: UseScrollApiParams) {
 
   const childRect = ref<ChildRect>(undefined)
   const parentRect = ref<ParentRect>(undefined)
-  const start = ref(0)
-  const end = ref(0)
+  const start = shallowRef(0)
+  const end = shallowRef(0)
 
   const { width: windowWidth, height: windowHeight } = useWindowSize()
 

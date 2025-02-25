@@ -1,4 +1,11 @@
-import { ref, computed, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
+import {
+  shallowRef,
+  computed,
+  toValue,
+  nextTick,
+  type MaybeRef,
+  type Ref,
+} from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { mapValue, interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
@@ -88,25 +95,22 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         ? toValue(snapPoints)
         : [...toValue(snapPoints), 0]
 
-      const mapped = extended.reduce(
-        (acc, current) => {
-          const key = mapSnapPoint(current)
-          if (key || key === 0) {
-            acc[key] = current
-          }
-          return acc
-        },
-        {} as Record<number, DrawerSnapPoint>
-      )
+      const mapped = extended.reduce((acc, current) => {
+        const key = mapSnapPoint(current)
+        if (key || key === 0) {
+          acc[key] = current
+        }
+        return acc
+      }, {} as Record<number, DrawerSnapPoint>)
 
       return mapped
     }
   )
 
   // Public state
-  const snappedY = ref(0)
-  const snappedX = ref(0)
-  const activeSnapPoint = ref<DrawerSnapPoint | undefined>(undefined)
+  const snappedY = shallowRef(0)
+  const snappedX = shallowRef(0)
+  const activeSnapPoint = shallowRef<DrawerSnapPoint | undefined>(undefined)
 
   const drawerHeight = computed(() => {
     const rect = toValue(wrapperRect)

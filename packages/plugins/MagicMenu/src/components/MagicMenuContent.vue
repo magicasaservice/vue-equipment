@@ -59,6 +59,7 @@
 <script lang="ts" setup>
 import {
   ref,
+  shallowRef,
   inject,
   provide,
   nextTick,
@@ -134,8 +135,8 @@ const mappedTransition = computed(() => {
 })
 
 // Split isActive into two values to animate content smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
 
 const {
   lockScroll,

@@ -1,4 +1,12 @@
-import { ref, computed, watch, toValue, type MaybeRef, type Ref } from 'vue'
+import {
+  ref,
+  shallowRef,
+  computed,
+  watch,
+  toValue,
+  type MaybeRef,
+  type Ref,
+} from 'vue'
 import {
   useResizeObserver,
   useEventListener,
@@ -18,7 +26,7 @@ export type UsePlayerControlsApiArgs = {
 
 export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   // Private state
-  const resumePlay = ref(false)
+  const resumePlay = shallowRef(false)
   const barRect = ref<DOMRect | undefined>(undefined)
   const trackRect = ref<DOMRect | undefined>(undefined)
   const popoverRect = ref<DOMRect | undefined>(undefined)
@@ -29,13 +37,13 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   const { play, pause, seek } = usePlayerVideoApi({ id })
 
   // Public state
-  const dragging = ref(false)
-  const mouseEntered = ref(false)
-  const seekedTime = ref(0)
-  const seekedPercentage = ref(0)
-  const scrubbedPercentage = ref(0)
-  const thumbPercentage = ref(0)
-  const popoverOffsetX = ref(0)
+  const dragging = shallowRef(false)
+  const mouseEntered = shallowRef(false)
+  const seekedTime = shallowRef(0)
+  const seekedPercentage = shallowRef(0)
+  const scrubbedPercentage = shallowRef(0)
+  const thumbPercentage = shallowRef(0)
+  const popoverOffsetX = shallowRef(0)
 
   const bufferedPercentage = computed(() => {
     if (!buffered) return 0

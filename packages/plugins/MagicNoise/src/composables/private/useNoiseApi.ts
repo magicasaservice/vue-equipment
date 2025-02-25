@@ -22,7 +22,7 @@ export function useNoiseApi({
 }: UseNoiseApiArgs) {
   const tiles = shallowRef<Pixel[]>([])
   const pixels = shallowRef<Pixel[]>([])
-  const isReady = ref(false)
+  const isReady = shallowRef(false)
 
   const context = shallowRef<CanvasRenderingContext2D | null>(null)
   const offContext = shallowRef<CanvasRenderingContext2D | null>(null)

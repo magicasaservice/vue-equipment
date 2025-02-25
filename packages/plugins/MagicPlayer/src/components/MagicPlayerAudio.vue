@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, onBeforeUnmount } from 'vue'
+import { ref, shallowRef, inject, onMounted, onBeforeUnmount } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
@@ -24,7 +24,7 @@ if (!injectedOptions) {
 
 const elRef = ref<HTMLVideoElement | undefined>(undefined)
 
-const pausedByIntersection = ref(false)
+const pausedByIntersection = shallowRef(false)
 
 const { initialize, destroy } = usePlayerRuntime({
   id: injectedId,

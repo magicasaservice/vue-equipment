@@ -1,11 +1,11 @@
-import { ref } from 'vue'
+import { shallowRef, ref } from 'vue'
 import { useScrollLock } from '@vueuse/core'
 import { matchClass } from '@maas/vue-equipment/utils'
 
 const scrollLock =
   typeof window !== 'undefined'
     ? useScrollLock(document?.documentElement)
-    : ref(false)
+    : shallowRef(false)
 
 export function useDraggableScrollLock() {
   // Private state

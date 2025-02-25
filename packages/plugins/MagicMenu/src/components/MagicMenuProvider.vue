@@ -12,6 +12,7 @@
 <script lang="ts" setup>
 import {
   ref,
+  shallowRef,
   provide,
   watch,
   toValue,
@@ -46,8 +47,8 @@ const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
-const lastX = ref(0)
-const lastY = ref(0)
+const lastX = shallowRef(0)
+const lastY = shallowRef(0)
 
 const { x, y } = usePointer()
 
