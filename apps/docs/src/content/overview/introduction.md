@@ -2,7 +2,7 @@
 
 ### Our Frontend Toolkit, Free and Open Source
 
-Vue Equipment is a collection of ready-to-use plugins and composables for building modern web applications. It comes unstyled, with a flexible, yet opiniated API. It’s fully typed and can be integrated in both Vue and Nuxt.
+Vue Equipment is a collection of ready-to-use plugins and composables for building modern web applications. It comes unstyled, with a flexible, yet opinionated API. It’s fully typed and can be integrated in both Vue and Nuxt.
 
 ## Vision
 

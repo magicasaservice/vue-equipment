@@ -4,9 +4,8 @@ sidebar: false
 
 hero:
   name: Vue Equipment
-  # text: Created by Magic&nbsp;as&nbsp;a&nbsp;Service™
   tagline: Our Frontend Toolkit, Free&nbsp;and Open&nbsp;Source
-  text: A collection of ready-to-use plugins and composables for building modern web applications. Unstyled, fully typed and with a flexible, yet opiniated API.
+  text: A collection of ready-to-use plugins and composables for building modern web applications. Unstyled, fully typed and with a flexible, yet opinionated API.
   actions:
     - theme: solid
       text: Get Started
