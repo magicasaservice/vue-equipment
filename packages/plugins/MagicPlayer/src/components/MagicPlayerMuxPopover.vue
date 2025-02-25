@@ -68,14 +68,19 @@ const thumbHeight = computed(() => {
 
 function getMuxId(url?: string) {
   const match = url?.match(/mux\.com\/([^\/]+)/)
-  return match?.[1]
+  return match?.[1]?.replace(/\.(m3u8|mp4)$/, '')
 }
 
 async function init() {
   const parsedPlaybackId = getMuxId(injectedOptions?.src)
   const mappedPlaybackId = playbackId ?? parsedPlaybackId
 
-  if (!mappedPlaybackId) return
+  if (!mappedPlaybackId) {
+    console.error(
+      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
+    )
+    return
+  }
 
   try {
     storyboard.value = await fetch(
