@@ -3,7 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, inject, onMounted, onBeforeUnmount } from 'vue'
+import {
+  useTemplateRef,
+  shallowRef,
+  inject,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
@@ -22,7 +28,7 @@ if (!injectedOptions) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
 }
 
-const elRef = ref<HTMLVideoElement | undefined>(undefined)
+const elRef = useTemplateRef('elRef')
 
 const pausedByIntersection = shallowRef(false)
 

@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
   shallowRef,
   provide,
   watch,
@@ -38,7 +38,7 @@ interface MagicMenuProviderProps {
 }
 
 const { id, options } = defineProps<MagicMenuProviderProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('elRef')
 
 const mappedOptions = defu(options, defaultOptions)
 

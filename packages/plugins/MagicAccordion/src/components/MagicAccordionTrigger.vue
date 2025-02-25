@@ -13,14 +13,15 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, ref, computed, toValue, type MaybeRef } from 'vue'
+import { useTemplateRef, inject, computed, toValue, type MaybeRef } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { onKeyStroke } from '@vueuse/core'
 import { useAccordionTrigger } from '../composables/private/useAccordionTrigger'
-import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
-import type { Interaction } from '../types'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionView } from '../composables/private/useAccordionView'
+import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
+
+import type { Interaction } from '../types'
 
 interface MagicAccordionTriggerProps {
   disabled?: MaybeRef<boolean>
@@ -33,7 +34,8 @@ const {
   trigger = 'click',
   asChild = false,
 } = defineProps<MagicAccordionTriggerProps>()
-const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
+
+const elRef = useTemplateRef<InstanceType<typeof Primitive>>('elRef')
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)

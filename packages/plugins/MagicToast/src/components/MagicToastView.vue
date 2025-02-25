@@ -1,6 +1,5 @@
 <template>
   <li
-    ref="elRef"
     class="magic-toast-view"
     :data-id="id"
     :data-expanded="state.expanded"
@@ -26,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from 'vue'
+import { computed, inject } from 'vue'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
@@ -45,8 +44,6 @@ const instanceId = inject(MagicToastInstanceId, undefined)
 if (!instanceId) {
   throw new Error('MagicToastView must be used within a MagicToastProvider')
 }
-
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { initializeState } = useToastState(instanceId)
 const state = initializeState()

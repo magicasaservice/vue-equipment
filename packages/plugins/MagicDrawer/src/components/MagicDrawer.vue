@@ -59,7 +59,7 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
   shallowRef,
   watch,
   computed,
@@ -118,9 +118,9 @@ const { options = {}, id } = defineProps<MagicDrawerProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
-const drawerRef = ref<HTMLDivElement | undefined>(undefined)
-const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
+const elRef = useTemplateRef<HTMLElement>('elRef')
+const drawerRef = useTemplateRef('drawerRef')
+const wrapperRef = useTemplateRef('wrapperRef')
 
 const {
   trapFocus,

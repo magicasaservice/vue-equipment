@@ -19,9 +19,9 @@ import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 export type UsePlayerControlsApiArgs = {
   id: MaybeRef<string>
-  barRef?: Ref<HTMLDivElement | undefined>
-  trackRef?: Ref<HTMLDivElement | undefined>
-  popoverRef?: Ref<HTMLDivElement | undefined>
+  barRef?: Ref<HTMLDivElement | null>
+  trackRef?: Ref<HTMLDivElement | null>
+  popoverRef?: Ref<HTMLDivElement | null>
 }
 
 export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {

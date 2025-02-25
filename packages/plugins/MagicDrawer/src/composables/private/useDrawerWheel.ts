@@ -14,7 +14,7 @@ import type { DrawerDefaultOptions } from '../../types'
 
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
+  elRef: Ref<HTMLElement | null>
   position: MaybeRef<DrawerDefaultOptions['position']>
   disabled: ComputedRef<boolean>
 }

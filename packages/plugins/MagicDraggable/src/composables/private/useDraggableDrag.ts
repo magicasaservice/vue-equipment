@@ -39,8 +39,8 @@ import type {
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
-  wrapperRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | null>
+  wrapperRef: Ref<HTMLDivElement | null>
   threshold: MaybeRef<DraggableDefaultOptions['threshold']>
   snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
   animation: MaybeRef<DraggableDefaultOptions['animation']>

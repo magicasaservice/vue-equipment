@@ -12,7 +12,7 @@ type UseCommandTriggerArgs = {
   mappedActive?: ComputedRef<boolean>
   trigger: Interaction[]
   action: Action
-  elRef: Ref<InstanceType<typeof Primitive> | undefined>
+  elRef: Ref<InstanceType<typeof Primitive> | null>
 }
 
 export function useCommandTrigger(args: UseCommandTriggerArgs) {

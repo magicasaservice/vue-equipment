@@ -13,7 +13,7 @@ import type { Buffered } from '../../types'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
-  mediaRef?: MaybeRef<HTMLMediaElement | undefined>
+  mediaRef?: MaybeRef<HTMLMediaElement | null>
 }
 
 export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {

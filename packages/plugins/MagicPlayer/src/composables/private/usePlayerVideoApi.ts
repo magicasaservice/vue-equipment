@@ -1,4 +1,4 @@
-import { ref, shallowRef, watch, toValue, type MaybeRef } from 'vue'
+import { ref, shallowRef, watch, toValue, type MaybeRef, type Ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
@@ -6,15 +6,15 @@ import { usePlayerMediaApi } from './usePlayerMediaApi'
 
 export type UsePlayerVideoApiArgs = {
   id: MaybeRef<string>
-  playerRef?: MaybeRef<HTMLElement | undefined>
-  videoRef?: MaybeRef<HTMLVideoElement | undefined>
+  playerRef?: Ref<HTMLElement | null>
+  videoRef?: Ref<HTMLVideoElement | null>
 }
 
 export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Private state
   const { id, playerRef, videoRef } = args
 
-  const fullscreenTarget = ref<HTMLElement | undefined>(undefined)
+  const fullscreenTarget = ref<HTMLElement | null>(null)
 
   const { playing, currentTime, muted } = usePlayerMediaApi({ id })
 

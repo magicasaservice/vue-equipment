@@ -16,7 +16,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
       id: id,
       options: { ...defaultOptions },
       views: [],
-      renderer: undefined,
+      renderer: null,
       active: false,
       input: {
         type: 'pointer',

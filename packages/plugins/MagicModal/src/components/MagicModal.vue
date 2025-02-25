@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
   shallowRef,
   watch,
   nextTick,
@@ -90,7 +90,8 @@ interface MagicModalProps {
 const { id, options = {} } = defineProps<MagicModalProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
-const modalRef = ref<HTMLElement | undefined>(undefined)
+const modalRef = useTemplateRef('modalRef')
+
 const {
   trapFocus,
   releaseFocus,

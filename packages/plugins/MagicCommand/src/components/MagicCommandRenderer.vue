@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onBeforeUnmount } from 'vue'
+import { inject, onBeforeUnmount, useTemplateRef } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
@@ -21,7 +21,7 @@ if (!instanceId) {
   )
 }
 
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('elRef')
 
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()

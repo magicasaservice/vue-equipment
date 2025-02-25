@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref, toValue, watch } from 'vue'
+import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandTrigger } from '../composables/private/useCommandTrigger'
@@ -45,7 +45,8 @@ const {
   action = 'open' as Action,
   trigger = ['click'] as Interaction[],
 } = defineProps<MagicCommandTriggerProps>()
-const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
+
+const elRef = useTemplateRef<InstanceType<typeof Primitive>>('elRef')
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const itemActive = inject(MagicCommandItemActive, undefined)

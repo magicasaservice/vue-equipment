@@ -26,7 +26,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, watch, nextTick, provide, computed } from 'vue'
+import {
+  ref,
+  inject,
+  watch,
+  nextTick,
+  provide,
+  computed,
+  useTemplateRef,
+} from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
@@ -50,7 +58,7 @@ defineOptions({
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('elRef')
 
 if (!instanceId) {
   throw new Error(

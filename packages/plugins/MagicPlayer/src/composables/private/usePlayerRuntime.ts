@@ -7,7 +7,7 @@ import { useEventListener } from '@vueuse/core'
 
 export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
-  mediaRef?: MaybeRef<HTMLVideoElement | undefined>
+  mediaRef?: MaybeRef<HTMLVideoElement | HTMLAudioElement | null>
   srcType?: MagicPlayerOptions['srcType']
   src?: string
 }

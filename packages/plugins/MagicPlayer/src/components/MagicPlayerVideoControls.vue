@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, provide } from 'vue'
+import { computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -116,9 +116,9 @@ const mappedTransition = computed(
   () => transition ?? injectedOptions?.transition?.videoControls
 )
 
-const barRef = ref<HTMLDivElement | undefined>(undefined)
-const trackRef = ref<HTMLDivElement | undefined>(undefined)
-const popoverRef = ref<HTMLDivElement | undefined>(undefined)
+const barRef = useTemplateRef('barRef')
+const trackRef = useTemplateRef('trackRef')
+const popoverRef = useTemplateRef('popoverRef')
 
 const { playing, waiting, muted } = usePlayerMediaApi({
   id: mappedId.value,

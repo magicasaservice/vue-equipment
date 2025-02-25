@@ -1,11 +1,4 @@
-import {
-  ref,
-  shallowRef,
-  reactive,
-  computed,
-  toValue,
-  type MaybeRef,
-} from 'vue'
+import { shallowRef, reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useElementBounding } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
@@ -17,8 +10,8 @@ import type {
 
 type UseCollisionDetectionArgs = {
   id: string
-  child: MaybeRef<HTMLElement | undefined>
-  parent: MaybeRef<HTMLElement | undefined>
+  child: MaybeRef<HTMLElement | null>
+  parent: MaybeRef<HTMLElement | null | undefined>
   scrollY: MaybeRef<number>
   offset?: CollisionOffset
 }

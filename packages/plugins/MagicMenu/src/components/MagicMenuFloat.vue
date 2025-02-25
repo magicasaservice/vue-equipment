@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
   computed,
   inject,
   toValue,
@@ -55,8 +55,8 @@ interface MagicMenuFloatProps {
 const { placement, middleware, arrow, referenceEl } =
   defineProps<MagicMenuFloatProps>()
 
-const elRef = ref<HTMLElement | undefined>(undefined)
-const arrowRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('elRef')
+const arrowRef = useTemplateRef('arrowRef')
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)

@@ -37,8 +37,8 @@ import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
-  wrapperRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | null>
+  wrapperRef: Ref<HTMLDivElement | null>
   position: MaybeRef<DrawerDefaultOptions['position']>
   snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
   threshold: MaybeRef<DrawerDefaultOptions['threshold']>

@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, type MaybeRef } from 'vue'
+import { useTemplateRef, provide, type MaybeRef } from 'vue'
 import defu from 'defu'
 
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
@@ -38,7 +38,7 @@ interface MagicPlayerProps {
 const { id, options } = defineProps<MagicPlayerProps>()
 const mappedOptions = defu(options, defaultOptions)
 
-const playerRef = ref<HTMLDivElement | undefined>(undefined)
+const playerRef = useTemplateRef('playerRef')
 
 const { playing, waiting, muted } = usePlayerMediaApi({
   id: id,

@@ -3,7 +3,7 @@ import { unrefElement } from '@vueuse/core'
 import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 interface UseDrawerGuardsArgs {
-  elRef: Ref<HTMLElement | undefined>
+  elRef: Ref<HTMLElement | null>
   absDirectionX: MaybeRef<'with' | 'against' | undefined>
   absDirectionY: MaybeRef<'with' | 'against' | undefined>
   position: MaybeRef<DrawerDefaultOptions['position']>

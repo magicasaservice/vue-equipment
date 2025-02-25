@@ -1,18 +1,11 @@
 <template>
-  <primitive ref="elRef" :as-child="asChild" class="magic-command-provider">
+  <primitive :as-child="asChild" class="magic-command-provider">
     <slot />
   </primitive>
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  shallowRef,
-  provide,
-  watch,
-  onBeforeUnmount,
-  type MaybeRef,
-} from 'vue'
+import { shallowRef, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
 import { createDefu } from 'defu'
@@ -31,7 +24,6 @@ interface MagicCommandProviderProps {
 }
 
 const { id, options = {} } = defineProps<MagicCommandProviderProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {

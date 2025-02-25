@@ -6,13 +6,13 @@
 
 <script lang="ts" setup>
 import {
-  ref,
   shallowRef,
   provide,
   inject,
   watch,
   nextTick,
   readonly,
+  useTemplateRef,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useScrollApi } from '../composables/private/useScrollApi'
@@ -41,7 +41,8 @@ if (!scrollTarget) {
 
 const progress = shallowRef(0)
 const intersecting = shallowRef(false)
-const elRef = ref<HTMLElement | undefined>(undefined)
+
+const elRef = useTemplateRef('elRef')
 
 const { getCalculations, getProgress } = useScrollApi({
   child: elRef,

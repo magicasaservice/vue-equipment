@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
+import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
 import type { MagicNoiseOptions } from '../types'
@@ -20,8 +20,8 @@ interface MagicNoiseProps {
 
 const { pause = false, options } = defineProps<MagicNoiseProps>()
 
-const canvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
-const offCanvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
+const canvasRef = useTemplateRef('canvasRef')
+const offCanvasRef = useTemplateRef('offCanvasRef')
 
 const noiseApi = useNoiseApi({
   canvasRef,

@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, inject, provide } from 'vue'
+import { computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
@@ -75,8 +75,8 @@ if (!mappedId.value) {
   )
 }
 
-const barRef = ref<HTMLDivElement | undefined>(undefined)
-const trackRef = ref<HTMLDivElement | undefined>(undefined)
+const barRef = useTemplateRef('barRef')
+const trackRef = useTemplateRef('trackRef')
 
 const { playing, waiting } = usePlayerMediaApi({
   id: mappedId.value,

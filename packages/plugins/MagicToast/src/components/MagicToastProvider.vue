@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import {
   toValue,
-  ref,
+  useTemplateRef,
   provide,
   watch,
   onBeforeUnmount,
@@ -83,7 +83,7 @@ const { deleteView } = useToastView(id)
 const { deleteState, initializeState } = useToastState(id)
 const state = initializeState(options)
 
-const listRef = ref<HTMLElement | undefined>(undefined)
+const listRef = useTemplateRef('listRef')
 
 const {
   onBeforeEnter,

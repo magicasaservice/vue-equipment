@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="elRef"
     class="magic-command-item"
     :data-id="mappedId"
     :data-disabled="disabled"
@@ -18,7 +17,6 @@
 
 <script lang="ts" setup>
 import {
-  ref,
   computed,
   inject,
   provide,
@@ -56,8 +54,6 @@ const emit = defineEmits<{
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
 const contentId = inject(MagicCommandContentId, undefined)
-
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 if (!instanceId) {
   throw new Error('MagicCommandItem must be nested inside MagicCommandProvider')
