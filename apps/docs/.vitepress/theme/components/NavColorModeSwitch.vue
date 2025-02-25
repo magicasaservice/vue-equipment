@@ -79,6 +79,7 @@ async function setMode(mode: 'dark' | 'light') {
   document.head.appendChild(css)
 
   // Calling getComputedStyle forces the browser to redraw
+  // eslint-disable-next-line
   const _ = window.getComputedStyle(css).opacity
   await new Promise((resolve) => requestAnimationFrame(resolve))
 
@@ -96,6 +97,7 @@ async function setMode(mode: 'dark' | 'light') {
   await nextTick()
 
   // Calling getComputedStyle forces the browser to redraw
+  // eslint-disable-next-line
   const __ = window.getComputedStyle(css).opacity
   document.head.removeChild(css)
 }

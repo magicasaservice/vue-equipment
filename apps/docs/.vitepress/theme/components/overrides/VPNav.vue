@@ -8,13 +8,13 @@
           <nav-drawer class="block sm:hidden" />
           <nav-color-mode-switch class="block sm:hidden" />
           <m-button
+            v-for="item in theme.socialLinks"
+            :key="item.link"
             size="xs"
             mode="ghost"
             square
             icon
             as-child
-            v-for="item in theme.socialLinks"
-            :key="item.link"
             class="shrink-0"
           >
             <a :href="item.link" rel="noopener noreferrer" target="_blank">
@@ -32,7 +32,6 @@
 <script lang="ts" setup>
 import { useData } from 'vitepress'
 import VPNavBarTitle from 'vitepress/dist/client/theme-default/components/VPNavBarTitle.vue'
-import VPLink from 'vitepress/dist/client/theme-default/components/VPLink.vue'
 import NavColorModeSwitch from '../NavColorModeSwitch.vue'
 import NavMenuBar from '../NavMenuBar.vue'
 import NavDrawer from '../NavDrawer.vue'
