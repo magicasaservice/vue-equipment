@@ -32,7 +32,6 @@
 <script lang="ts" setup>
 import { useData } from 'vitepress'
 import VPNavBarTitle from 'vitepress/dist/client/theme-default/components/VPNavBarTitle.vue'
-import VPLink from 'vitepress/dist/client/theme-default/components/VPLink.vue'
 import NavColorModeSwitch from '../NavColorModeSwitch.vue'
 import NavMenuBar from '../NavMenuBar.vue'
 import NavDrawer from '../NavDrawer.vue'
