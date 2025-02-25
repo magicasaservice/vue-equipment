@@ -5,6 +5,7 @@ import {
   watch,
   unref,
   toValue,
+  type Ref,
   type MaybeRef,
 } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
@@ -13,7 +14,7 @@ import type { Buffered } from '../../types'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
-  mediaRef?: MaybeRef<HTMLMediaElement | null>
+  mediaRef?: Ref<HTMLMediaElement | null>
 }
 
 export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {

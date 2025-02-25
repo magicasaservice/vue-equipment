@@ -3,6 +3,7 @@ import {
   shallowRef,
   inject,
   toValue,
+  type Ref,
   type MaybeRef,
   type MaybeRefOrGetter,
 } from 'vue'
@@ -23,9 +24,9 @@ type ChildRect = DOMRect | undefined
 type ParentRect =
   | DOMRect
   | {
-      width: MaybeRef<number>
-      height: MaybeRef<number>
-      top: MaybeRef<number>
+      width: Ref<number>
+      height: Ref<number>
+      top: Ref<number>
     }
   | undefined
 

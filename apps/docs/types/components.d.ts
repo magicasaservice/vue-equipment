@@ -23,7 +23,6 @@ declare module 'vue' {
     IMaasMaasDt500: typeof import('~icons/maas/maas-dt500')['default']
     IMaasMaasMr500: typeof import('~icons/maas/maas-mr500')['default']
     IMaasMaasOf500: typeof import('~icons/maas/maas-of500')['default']
-    IMaasMaasRobot100: typeof import('~icons/maas/maas-robot100')['default']
     IMaasMaasRobot500: typeof import('~icons/maas/maas-robot500')['default']
     IMaasMaasRobotSticker500: typeof import('~icons/maas/maas-robot-sticker500')['default']
     IMaasMaasVe500: typeof import('~icons/maas/maas-ve500')['default']

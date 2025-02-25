@@ -1,4 +1,4 @@
-import { shallowRef, watch, toValue, type MaybeRef } from 'vue'
+import { shallowRef, watch, toValue, type MaybeRef, type Ref } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 
 import type Hls from 'hls.js'
@@ -7,7 +7,7 @@ import { useEventListener } from '@vueuse/core'
 
 export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
-  mediaRef?: MaybeRef<HTMLVideoElement | HTMLAudioElement | null>
+  mediaRef?: Ref<HTMLVideoElement | HTMLAudioElement | null>
   srcType?: MagicPlayerOptions['srcType']
   src?: string
 }
