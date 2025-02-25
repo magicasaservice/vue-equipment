@@ -2,7 +2,7 @@ import type { ToastDefaultOptions } from '../types/index'
 
 const defaultOptions: ToastDefaultOptions = {
   debug: false,
-  position: 'bottom-center',
+  position: 'bottom',
   duration: 0,
   scrollLock: {
     padding: true,

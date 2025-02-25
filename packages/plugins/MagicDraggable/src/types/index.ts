@@ -2,13 +2,13 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type Position =
   | 'top-left'
-  | 'top-center'
+  | 'top'
   | 'top-right'
-  | 'center-left'
+  | 'left'
   | 'center'
-  | 'center-right'
+  | 'right'
   | 'bottom-left'
-  | 'bottom-center'
+  | 'bottom'
   | 'bottom-right'
 
 export type Coordinates = {
@@ -22,7 +22,7 @@ export type DraggableSnapPoint =
       offset?: {
         x?: number
         y?: number
-      },
+      }
     ]
   | Position
 

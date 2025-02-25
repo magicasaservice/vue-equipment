@@ -3,12 +3,12 @@ import type { RequireAll } from '@maas/vue-equipment/utils'
 
 type Position =
   | 'top-left'
-  | 'top-center'
+  | 'top'
   | 'top-right'
-  | 'center-left'
-  | 'center-right'
+  | 'left'
+  | 'right'
   | 'bottom-left'
-  | 'bottom-center'
+  | 'bottom'
   | 'bottom-right'
 
 export type ToastView = {

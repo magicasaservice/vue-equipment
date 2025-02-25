@@ -91,10 +91,10 @@ export function useToastDrag(args: UseToastDragArgs) {
     } = args
 
     switch (position) {
-      case 'top-center':
+      case 'top':
       case 'top-left':
       case 'top-right':
-      case 'bottom-center':
+      case 'bottom':
       case 'bottom-left':
       case 'bottom-right':
         interpolate({
@@ -109,8 +109,8 @@ export function useToastDrag(args: UseToastDragArgs) {
 
         break
 
-      case 'center-left':
-      case 'center-right':
+      case 'left':
+      case 'right':
         interpolate({
           from: draggedX.value,
           to,
@@ -130,10 +130,10 @@ export function useToastDrag(args: UseToastDragArgs) {
     const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
 
     switch (position) {
-      case 'top-center':
+      case 'top':
       case 'top-left':
       case 'top-right':
-      case 'bottom-center':
+      case 'bottom':
       case 'bottom-left':
       case 'bottom-right':
         if (distanceY > toValue(threshold).distance) {
@@ -143,8 +143,8 @@ export function useToastDrag(args: UseToastDragArgs) {
         }
         break
 
-      case 'center-left':
-      case 'center-right':
+      case 'left':
+      case 'right':
         if (distanceX > toValue(threshold).distance) {
           shouldClose.value = true
         } else {
@@ -164,10 +164,10 @@ export function useToastDrag(args: UseToastDragArgs) {
     const velocityY = elapsed && distanceY ? distanceY / elapsed : 0
 
     switch (position) {
-      case 'top-center':
+      case 'top':
       case 'top-left':
       case 'top-right':
-      case 'bottom-center':
+      case 'bottom':
       case 'bottom-left':
       case 'bottom-right':
         if (velocityY > 0.5) {
@@ -176,8 +176,8 @@ export function useToastDrag(args: UseToastDragArgs) {
           interpolateTo.value = 0
         }
         break
-      case 'center-left':
-      case 'center-right':
+      case 'left':
+      case 'right':
         if (velocityX > 0.5) {
           shouldClose.value = true
         } else {
@@ -189,7 +189,7 @@ export function useToastDrag(args: UseToastDragArgs) {
 
   function setDragged({ x, y }: { x: number; y: number }) {
     switch (position) {
-      case 'top-center':
+      case 'top':
         const newDraggedTC = Math.min(y - originY.value, 0)
         draggedY.value = newDraggedTC
         break
@@ -201,7 +201,7 @@ export function useToastDrag(args: UseToastDragArgs) {
         const newDraggedTR = Math.min(y - originY.value, 0)
         draggedY.value = newDraggedTR
         break
-      case 'bottom-center':
+      case 'bottom':
         const newDraggedBC = Math.max(y - originY.value, 0)
         draggedY.value = newDraggedBC
         break
@@ -213,11 +213,11 @@ export function useToastDrag(args: UseToastDragArgs) {
         const newDraggedBR = Math.max(y - originY.value, 0)
         draggedY.value = newDraggedBR
         break
-      case 'center-left':
+      case 'left':
         const newDraggedCL = Math.min(x - originX.value, 0)
         draggedX.value = newDraggedCL
         break
-      case 'center-right':
+      case 'right':
         const newDraggedCR = Math.max(x - originX.value, 0)
         draggedX.value = newDraggedCR
         break
@@ -242,10 +242,10 @@ export function useToastDrag(args: UseToastDragArgs) {
       })
     } else {
       switch (position) {
-        case 'top-center':
+        case 'top':
         case 'top-left':
         case 'top-right':
-        case 'bottom-center':
+        case 'bottom':
         case 'bottom-left':
         case 'bottom-right':
           interpolateDragged({
@@ -253,8 +253,8 @@ export function useToastDrag(args: UseToastDragArgs) {
           })
           break
 
-        case 'center-left':
-        case 'center-right':
+        case 'left':
+        case 'right':
           interpolateDragged({
             to: lastDraggedX.value,
           })
@@ -388,7 +388,7 @@ export function useToastDrag(args: UseToastDragArgs) {
       return
     }
 
-    if (position === 'center-left' || position === 'center-right') {
+    if (position === 'left' || position === 'right') {
       return
     }
 

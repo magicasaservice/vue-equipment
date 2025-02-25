@@ -80,13 +80,13 @@ const { style, onPointerdown, onClick } = useToastDrag({
   user-select: none;
 
   &[data-position='bottom-left'],
-  &[data-position='bottom-center'],
+  &[data-position='bottom'],
   &[data-position='bottom-right'] {
     padding-top: var(--magic-toast-gap);
   }
 
   &[data-position='top-left'],
-  &[data-position='top-center'],
+  &[data-position='top'],
   &[data-position='top-right'] {
     padding-bottom: var(--magic-toast-gap);
   }
@@ -124,11 +124,11 @@ const { style, onPointerdown, onClick } = useToastDrag({
   cursor: var(--magic-toast-view-cursor-dragging, grabbing);
 }
 
-.magic-toast-view[data-position='center-left'] {
+.magic-toast-view[data-position='left'] {
   position: absolute;
 }
 
-.magic-toast-view[data-position='center-right'] {
+.magic-toast-view[data-position='right'] {
   position: absolute;
 }
 
