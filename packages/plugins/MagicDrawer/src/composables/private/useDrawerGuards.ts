@@ -22,6 +22,30 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
     return toValue(activeSnapPoint) !== 1 && !!toValue(activeSnapPoint)
   })
 
+  // Private functions
+  function canScrollY(element: HTMLElement): boolean {
+    const style = window.getComputedStyle(element)
+    const overflowY = style.overflowY
+
+    const canScroll = ['auto', 'scroll'].includes(overflowY)
+    const hasOverflow =
+      Math.round(element.scrollHeight) > Math.round(element.clientHeight)
+
+    return canScroll && hasOverflow
+  }
+
+  function canScrollX(element: HTMLElement): boolean {
+    const style = window.getComputedStyle(element)
+    const overflowX = style.overflowX
+
+    const canScroll = ['auto', 'scroll'].includes(overflowX)
+    const hasOverflow =
+      Math.round(element.scrollWidth) > Math.round(element.clientWidth)
+
+    return canScroll && hasOverflow
+  }
+
+  // Public functions
   function canDrag(el: EventTarget) {
     let element = el as HTMLElement
 
@@ -47,7 +71,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
       switch (position) {
         case 'bottom':
           // Check if the element is scrollable
-          if (element.scrollHeight > element.clientHeight) {
+          if (canScrollY(element)) {
             // User has already scrolled,
             // prevent dragging
             if (element.scrollTop > 0) {
@@ -70,7 +94,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
         case 'top':
           // Check if the element is scrollable
-          if (element.scrollHeight > element.clientHeight) {
+          if (canScrollY(element)) {
             // User has already scrolled,
             // prevent dragging
             const maxScroll = element.scrollHeight - element.clientHeight
@@ -94,7 +118,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
         case 'right':
           // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
+          if (canScrollX(element)) {
             // User has already scrolled,
             // prevent dragging
             if (element.scrollLeft > 0) {
@@ -117,7 +141,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
         case 'left':
           // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
+          if (canScrollX(element)) {
             // User has already scrolled,
             // prevent dragging
             const maxScroll = element.scrollWidth - element.clientWidth
@@ -164,7 +188,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
         case 'top':
           // Element can be scrolled,
           // let scroll lock handle it
-          if (element.scrollHeight > element.clientHeight) {
+          if (canScrollY(element)) {
             return false
           }
 
@@ -174,7 +198,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
         case 'right':
           // Element can be scrolled,
           // let scroll lock handle it
-          if (element.scrollWidth > element.clientWidth) {
+          if (canScrollX(element)) {
             return false
           }
 
@@ -211,7 +235,7 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
       switch (position) {
         case 'bottom':
           // Check if the element is scrollable
-          if (element.scrollHeight > element.clientHeight) {
+          if (canScrollY(element)) {
             // Element is scrolled to the end,
             // user tries to drag,
             // lock scroll
@@ -220,12 +244,16 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
                 return element
               }
             }
+
+            // Scrollable element has been identified
+            // No need to traverse up the DOM
+            return undefined
           }
           break
 
         case 'top':
           // Check if the element is scrollable
-          if (element.scrollHeight > element.clientHeight) {
+          if (canScrollY(element)) {
             // Element is scrolled to the end,
             // user tries to drag,
             // lock scroll
@@ -235,12 +263,16 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
                 return element
               }
             }
+
+            // Scrollable element has been identified
+            // No need to traverse up the DOM
+            return undefined
           }
           break
 
         case 'right':
           // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
+          if (canScrollX(element)) {
             // Element is scrolled to the end,
             // user tries to drag,
             // lock scroll
@@ -249,12 +281,16 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
                 return element
               }
             }
+
+            // Scrollable element has been identified
+            // No need to traverse up the DOM
+            return undefined
           }
           break
 
         case 'left':
           // Check if the element is scrollable
-          if (element.scrollWidth > element.clientWidth) {
+          if (canScrollX(element)) {
             // Element is scrolled to the end,
             // user tries to drag,
             // lock scroll
@@ -264,6 +300,10 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
                 return element
               }
             }
+
+            // Scrollable element has been identified
+            // No need to traverse up the DOM
+            return undefined
           }
           break
       }

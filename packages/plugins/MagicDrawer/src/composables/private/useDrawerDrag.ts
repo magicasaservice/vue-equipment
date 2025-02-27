@@ -494,9 +494,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Possibly lock scroll
     if (!scrollLock) {
-      const target = lockScroll(e.target!)
-      if (target) {
-        scrollLock = useScrollLock(target)
+      const scrollLockTarget = lockScroll(e.target!)
+      if (scrollLockTarget) {
+        scrollLock = useScrollLock(scrollLockTarget)
         scrollLock.value = true
       }
     }
