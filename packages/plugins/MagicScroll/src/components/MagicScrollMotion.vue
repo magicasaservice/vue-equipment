@@ -1,5 +1,5 @@
 <template>
-  <div ref="elRef" class="magic-scroll-motion">
+  <div ref="el" class="magic-scroll-motion">
     <slot />
   </div>
 </template>
@@ -28,7 +28,7 @@ const { progress, sequence, sequenceOptions } =
   defineProps<MagicScrollMotionProps>()
 
 const animation = ref<AnimationPlaybackControls | undefined>(undefined)
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const injectedProgress = inject(
   MagicScrollProgress,

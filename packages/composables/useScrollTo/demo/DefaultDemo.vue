@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-full flex-col items-center gap-4">
     <div
-      ref="parentRef"
+      ref="parent"
       class="bg-surface-elevation-base aspect-[16/9] w-full snap-both snap-mandatory overflow-scroll"
     >
       <div
@@ -11,7 +11,7 @@
           Top Left
         </div>
         <div
-          ref="elRef"
+          ref="el"
           class="bg-surface-elevation-high absolute bottom-0 right-0 px-2 py-1"
         >
           Bottom Right
@@ -23,15 +23,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useScrollTo } from '@maas/vue-equipment/composables'
 import { easeInQuad } from '@maas/vue-equipment/utils'
 
 const { scrollToTarget } = useScrollTo()
 
-const elRef = ref()
-const parentRef = ref()
+const elRef = useTemplateRef('el')
+const parentRef = useTemplateRef('parent')
 
 const scroll = () => {
   scrollToTarget({

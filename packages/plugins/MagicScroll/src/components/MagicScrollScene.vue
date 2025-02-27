@@ -1,5 +1,5 @@
 <template>
-  <div ref="elRef" class="magic-scroll-scene">
+  <div ref="el" class="magic-scroll-scene">
     <slot :progress="progress" />
   </div>
 </template>
@@ -42,7 +42,7 @@ if (!scrollTarget) {
 const progress = shallowRef(0)
 const intersecting = shallowRef(false)
 
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const { getCalculations, getProgress } = useScrollApi({
   child: elRef,

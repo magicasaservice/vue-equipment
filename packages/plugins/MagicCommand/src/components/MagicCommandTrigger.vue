@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :data-id="`${mappedViewId}-trigger`"
     :data-active="mappedActive"
     :data-disabled="mappedDisabled"
@@ -46,7 +46,7 @@ const {
   trigger = ['click'] as Interaction[],
 } = defineProps<MagicCommandTriggerProps>()
 
-const elRef = useTemplateRef<InstanceType<typeof Primitive>>('elRef')
+const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const itemActive = inject(MagicCommandItemActive, undefined)

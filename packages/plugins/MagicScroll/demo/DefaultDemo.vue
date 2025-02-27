@@ -3,7 +3,7 @@
     :target="parentRef"
     class="w-full aspect-[16/9] bg-surface-elevation-base"
   >
-    <div ref="parentRef" class="relative w-full h-full overflow-auto">
+    <div ref="parent" class="relative w-full h-full overflow-auto">
       <magic-scroll-scene
         v-slot="{ progress }"
         from="top-top"
@@ -28,9 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const parentRef = ref<HTMLElement | undefined>(undefined)
+const parentRef = useTemplateRef('parent')
 const sequence = [
   [
     {

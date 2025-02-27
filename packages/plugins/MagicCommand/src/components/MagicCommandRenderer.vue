@@ -1,5 +1,5 @@
 <template>
-  <div ref="elRef" class="magic-command-renderer" />
+  <div ref="el" class="magic-command-renderer" />
 </template>
 
 <script lang="ts" setup>
@@ -21,7 +21,7 @@ if (!instanceId) {
   )
 }
 
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()

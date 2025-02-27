@@ -1,7 +1,7 @@
 <template>
-  <div ref="parentRef" class="magic-marquee">
+  <div ref="parent" class="magic-marquee">
     <div class="magic-marquee__track">
-      <div ref="childRef" class="magic-marquee__content">
+      <div ref="child" class="magic-marquee__content">
         <slot />
       </div>
       <div
@@ -33,8 +33,8 @@ const { id, options } = defineProps<MagicMarqueeProps>()
 const { deleteState, initializeState } = useMarqueeState(id)
 initializeState(options)
 
-const parentRef = useTemplateRef('parentRef')
-const childRef = useTemplateRef('childRef')
+const parentRef = useTemplateRef('parent')
+const childRef = useTemplateRef('child')
 
 const { duplicates, initialize } = useMarqueeApi({
   child: childRef,

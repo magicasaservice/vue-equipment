@@ -11,7 +11,7 @@
       v-bind="$attrs"
     >
       <transition-group
-        ref="listRef"
+        ref="list"
         tag="ol"
         class="magic-toast-provider__list"
         :name="state.options.transition"
@@ -83,7 +83,7 @@ const { deleteView } = useToastView(id)
 const { deleteState, initializeState } = useToastState(id)
 const state = initializeState(options)
 
-const listRef = useTemplateRef('listRef')
+const listRef = useTemplateRef('list')
 
 const {
   onBeforeEnter,

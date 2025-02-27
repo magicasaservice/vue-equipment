@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :data-id="`${mappedViewId}-trigger`"
     :data-active="view?.active"
     :data-disabled="mappedDisabled"

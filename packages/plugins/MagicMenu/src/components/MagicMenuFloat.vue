@@ -1,13 +1,13 @@
 <template>
   <div
-    ref="elRef"
+    ref="el"
     class="magic-menu-float"
     :style="floatingStyles"
     :class="placementClasses"
   >
     <div
       v-if="hasArrow"
-      ref="arrowRef"
+      ref="arrow"
       class="magic-menu-float__arrow"
       :style="arrowStyles"
     >
@@ -55,8 +55,8 @@ interface MagicMenuFloatProps {
 const { placement, middleware, arrow, referenceEl } =
   defineProps<MagicMenuFloatProps>()
 
-const elRef = useTemplateRef('elRef')
-const arrowRef = useTemplateRef('arrowRef')
+const elRef = useTemplateRef('el')
+const arrowRef = useTemplateRef('arrow')
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)

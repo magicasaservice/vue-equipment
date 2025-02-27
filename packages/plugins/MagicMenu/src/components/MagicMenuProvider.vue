@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :as-child="asChild"
     :data-id="id"
     class="magic-menu-provider"
@@ -38,7 +38,7 @@ interface MagicMenuProviderProps {
 }
 
 const { id, options } = defineProps<MagicMenuProviderProps>()
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const mappedOptions = defu(options, defaultOptions)
 

@@ -1,6 +1,6 @@
 <template>
   <video
-    ref="elRef"
+    ref="el"
     class="magic-player-video"
     playsinline
     disablePictureInPicture

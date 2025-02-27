@@ -5,7 +5,7 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      ref="modalRef"
+      ref="modal"
       class="magic-modal"
       :data-id="toValue(id)"
       v-bind="$attrs"
@@ -90,7 +90,7 @@ interface MagicModalProps {
 const { id, options = {} } = defineProps<MagicModalProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
-const modalRef = useTemplateRef('modalRef')
+const modalRef = useTemplateRef('modal')
 
 const {
   trapFocus,

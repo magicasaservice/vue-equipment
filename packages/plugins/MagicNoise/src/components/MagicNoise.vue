@@ -1,8 +1,8 @@
 <template>
   <div class="magic-noise" :data-loading="!isReady">
     <div class="magic-noise__inner">
-      <canvas ref="canvasRef" class="magic-noise__canvas" />
-      <canvas ref="offCanvasRef" class="magic-noise__off-canvas" />
+      <canvas ref="canvas" class="magic-noise__canvas" />
+      <canvas ref="offCanvas" class="magic-noise__off-canvas" />
     </div>
   </div>
 </template>
@@ -20,8 +20,8 @@ interface MagicNoiseProps {
 
 const { pause = false, options } = defineProps<MagicNoiseProps>()
 
-const canvasRef = useTemplateRef('canvasRef')
-const offCanvasRef = useTemplateRef('offCanvasRef')
+const canvasRef = useTemplateRef('canvas')
+const offCanvasRef = useTemplateRef('offCanvas')
 
 const noiseApi = useNoiseApi({
   canvasRef,

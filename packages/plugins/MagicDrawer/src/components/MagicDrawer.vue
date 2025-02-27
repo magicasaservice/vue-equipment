@@ -5,7 +5,7 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      ref="drawerRef"
+      ref="drawer"
       class="magic-drawer"
       :data-id="toValue(id)"
       :data-dragging="dragging"
@@ -28,7 +28,7 @@
         </div>
       </transition>
 
-      <div ref="wrapperRef" class="magic-drawer__wrapper">
+      <div ref="wrapper" class="magic-drawer__wrapper">
         <transition
           :name="contentTransition"
           @before-leave="onBeforeLeave"
@@ -41,7 +41,7 @@
           <div v-show="innerActive" class="magic-drawer__content">
             <component
               :is="mappedOptions.tag"
-              ref="elRef"
+              ref="el"
               class="magic-drawer__drag"
               :style="style"
               @pointerdown="guardedPointerdown"
@@ -118,9 +118,9 @@ const { options = {}, id } = defineProps<MagicDrawerProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
 
-const elRef = useTemplateRef<HTMLElement>('elRef')
-const drawerRef = useTemplateRef('drawerRef')
-const wrapperRef = useTemplateRef('wrapperRef')
+const elRef = useTemplateRef<HTMLElement>('el')
+const drawerRef = useTemplateRef('drawer')
+const wrapperRef = useTemplateRef('wrapper')
 
 const {
   trapFocus,

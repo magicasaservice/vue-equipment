@@ -1,5 +1,5 @@
 <template>
-  <div ref="elRef" class="magic-scroll-collision">
+  <div ref="el" class="magic-scroll-collision">
     <slot />
   </div>
 </template>
@@ -37,7 +37,7 @@ if (!scrollTarget) {
 }
 
 const intersecting = shallowRef(false)
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const scrollY = computed(() => toValue(scrollReturn?.y) || 0)
 const mappedId = computed(() => id ?? `magic-scroll-collision-${useId()}`)

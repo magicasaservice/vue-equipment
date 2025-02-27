@@ -1,5 +1,5 @@
 <template>
-  <audio ref="elRef" class="magic-player-audio" />
+  <audio ref="el" class="magic-player-audio" />
 </template>
 
 <script lang="ts" setup>
@@ -28,7 +28,7 @@ if (!injectedOptions) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
 }
 
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 const pausedByIntersection = shallowRef(false)
 

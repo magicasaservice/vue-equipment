@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="playerRef"
+    ref="player"
     class="magic-player-provider"
     :data-mode="mappedOptions.mode"
     :data-fullscreen="isFullscreen"
@@ -38,7 +38,7 @@ interface MagicPlayerProps {
 const { id, options } = defineProps<MagicPlayerProps>()
 const mappedOptions = defu(options, defaultOptions)
 
-const playerRef = useTemplateRef('playerRef')
+const playerRef = useTemplateRef('player')
 
 const { playing, waiting, muted } = usePlayerMediaApi({
   id: id,

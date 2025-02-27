@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :as-child="asChild"
     :data-disabled="mappedDisabled"
     class="magic-accordion-trigger"
@@ -35,7 +35,7 @@ const {
   asChild = false,
 } = defineProps<MagicAccordionTriggerProps>()
 
-const elRef = useTemplateRef<InstanceType<typeof Primitive>>('elRef')
+const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)

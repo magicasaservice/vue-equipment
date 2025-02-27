@@ -12,7 +12,7 @@
       <div
         v-if="isActive"
         v-show="!isIdle"
-        ref="elRef"
+        ref="el"
         :key="`${viewId}-content`"
         class="magic-command-content"
         :data-id="`${viewId}-content`"
@@ -58,7 +58,7 @@ defineOptions({
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
 
-const elRef = useTemplateRef('elRef')
+const elRef = useTemplateRef('el')
 
 if (!instanceId) {
   throw new Error(
