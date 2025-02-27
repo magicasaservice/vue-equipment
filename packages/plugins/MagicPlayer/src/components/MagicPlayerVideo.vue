@@ -23,8 +23,6 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
-import { use } from 'motion/react-client'
-
 const injectedId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
