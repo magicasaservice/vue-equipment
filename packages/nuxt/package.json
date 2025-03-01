@@ -17,7 +17,7 @@
     "@maas/vue-equipment/utils": "workspace:utils@*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "1.7.0",
+    "@nuxt/devtools": "2.1.1",
     "@nuxt/kit": "catalog:",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "catalog:",
