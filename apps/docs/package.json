@@ -26,7 +26,7 @@
     "unplugin-icons": "^22.1.0",
     "unplugin-vue-components": "^28.4.1",
     "vite": "^6.2.0",
-    "vitepress": "1.5.0",
+    "vitepress": "1.6.3",
     "vue": "catalog:"
   },
   "scripts": {
