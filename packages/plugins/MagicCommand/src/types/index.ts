@@ -51,7 +51,7 @@ export interface CommandState {
   id: string
   active: boolean
   views: CommandView[]
-  renderer: HTMLElement | undefined
+  renderer: HTMLElement | null
   options: MagicCommandOptions
   input: {
     type: 'keyboard' | 'pointer'

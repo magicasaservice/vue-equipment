@@ -1,9 +1,9 @@
 <template>
-  <div ref="elRef" class="magic-command-renderer" />
+  <div ref="el" class="magic-command-renderer" />
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onBeforeUnmount } from 'vue'
+import { inject, onBeforeUnmount, useTemplateRef } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
@@ -21,7 +21,7 @@ if (!instanceId) {
   )
 }
 
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('el')
 
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()

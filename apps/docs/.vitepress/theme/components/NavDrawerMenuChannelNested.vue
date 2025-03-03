@@ -16,7 +16,7 @@
       </m-button>
     </div>
     <div class="flex w-full flex-col justify-between gap-1 px-2">
-      <VPLink :href="item.link" v-for="item in channel.items" :key="item.text">
+      <VPLink v-for="item in channel.items" :key="item.text" :href="item.link">
         <m-menu-item>
           <m-menu-item-child>{{ item.text }}</m-menu-item-child>
         </m-menu-item>

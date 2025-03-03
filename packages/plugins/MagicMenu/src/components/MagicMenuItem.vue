@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="elRef"
     class="magic-menu-item"
     :data-id="mappedId"
     :data-disabled="disabled"
@@ -18,15 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  inject,
-  provide,
-  onBeforeUnmount,
-  watch,
-  useId,
-} from 'vue'
+import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -51,8 +42,6 @@ const emit = defineEmits<{
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 const contentId = inject(MagicMenuContentId, undefined)
-
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 if (!instanceId) {
   throw new Error('MagicMenuItem must be nested inside MagicMenuProvider')

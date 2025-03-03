@@ -1,4 +1,4 @@
-import { shallowRef, ref, reactive, type Ref, type MaybeRef } from 'vue'
+import { shallowRef, reactive, type Ref, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import {
   useElementSize,
@@ -10,8 +10,8 @@ import { defaultOptions } from '../../utils/defaultOptions'
 import type { MagicNoiseOptions, Pixel, RafControls } from '../../types'
 
 type UseNoiseApiArgs = {
-  canvasRef: Ref<HTMLCanvasElement | undefined>
-  offCanvasRef: Ref<HTMLCanvasElement | undefined>
+  canvasRef: Ref<HTMLCanvasElement | null>
+  offCanvasRef: Ref<HTMLCanvasElement | null>
   options?: MaybeRef<MagicNoiseOptions>
 }
 
@@ -22,7 +22,7 @@ export function useNoiseApi({
 }: UseNoiseApiArgs) {
   const tiles = shallowRef<Pixel[]>([])
   const pixels = shallowRef<Pixel[]>([])
-  const isReady = ref(false)
+  const isReady = shallowRef(false)
 
   const context = shallowRef<CanvasRenderingContext2D | null>(null)
   const offContext = shallowRef<CanvasRenderingContext2D | null>(null)

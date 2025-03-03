@@ -5,7 +5,7 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      ref="modalRef"
+      ref="modal"
       class="magic-modal"
       :data-id="toValue(id)"
       v-bind="$attrs"
@@ -48,7 +48,8 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
+  shallowRef,
   watch,
   nextTick,
   toValue,
@@ -89,7 +90,8 @@ interface MagicModalProps {
 const { id, options = {} } = defineProps<MagicModalProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
-const modalRef = ref<HTMLElement | undefined>(undefined)
+const modalRef = useTemplateRef('modal')
+
 const {
   trapFocus,
   releaseFocus,
@@ -105,8 +107,8 @@ const {
 const { isActive, close } = useMagicModal(id)
 
 // Split isActive into two values to animate modal smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
 
 const {
   onBeforeEnter,

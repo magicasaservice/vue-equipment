@@ -1,6 +1,5 @@
 <template>
   <li
-    ref="elRef"
     class="magic-toast-view"
     :data-id="id"
     :data-expanded="state.expanded"
@@ -26,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject } from 'vue'
+import { computed, inject } from 'vue'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
@@ -45,8 +44,6 @@ const instanceId = inject(MagicToastInstanceId, undefined)
 if (!instanceId) {
   throw new Error('MagicToastView must be used within a MagicToastProvider')
 }
-
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 const { initializeState } = useToastState(instanceId)
 const state = initializeState()
@@ -83,13 +80,13 @@ const { style, onPointerdown, onClick } = useToastDrag({
   user-select: none;
 
   &[data-position='bottom-left'],
-  &[data-position='bottom-center'],
+  &[data-position='bottom'],
   &[data-position='bottom-right'] {
     padding-top: var(--magic-toast-gap);
   }
 
   &[data-position='top-left'],
-  &[data-position='top-center'],
+  &[data-position='top'],
   &[data-position='top-right'] {
     padding-bottom: var(--magic-toast-gap);
   }
@@ -127,11 +124,11 @@ const { style, onPointerdown, onClick } = useToastDrag({
   cursor: var(--magic-toast-view-cursor-dragging, grabbing);
 }
 
-.magic-toast-view[data-position='center-left'] {
+.magic-toast-view[data-position='left'] {
   position: absolute;
 }
 
-.magic-toast-view[data-position='center-right'] {
+.magic-toast-view[data-position='right'] {
   position: absolute;
 }
 

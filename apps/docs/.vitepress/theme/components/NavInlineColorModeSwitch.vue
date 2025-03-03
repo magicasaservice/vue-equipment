@@ -1,5 +1,5 @@
 <template>
-  <magic-menu-view :id="ViewId.navColorModeSwitch" placement="bottom-center">
+  <magic-menu-view :id="ViewId.navColorModeSwitch" placement="bottom">
     <magic-menu-trigger as-child :trigger="['mouseenter']">
       <m-button size="xs" mode="ghost">
         <i-maas-moon-500 v-if="isDark" />
@@ -44,7 +44,7 @@
 import { computed, nextTick } from 'vue'
 import { useData } from 'vitepress'
 import { MButton, MMenuItem, MMenuItemChild, MMenuBox } from '@maas/mirror/vue'
-import { MenuId, ViewId } from '../utils/enums'
+import { ViewId } from '../utils/enums'
 
 const { isDark } = useData()
 
@@ -70,6 +70,7 @@ async function setMode(mode: 'dark' | 'light') {
   document.head.appendChild(css)
 
   // Calling getComputedStyle forces the browser to redraw
+  // eslint-disable-next-line
   const _ = window.getComputedStyle(css).opacity
   await new Promise((resolve) => requestAnimationFrame(resolve))
 
@@ -87,6 +88,7 @@ async function setMode(mode: 'dark' | 'light') {
   await nextTick()
 
   // Calling getComputedStyle forces the browser to redraw
+  // eslint-disable-next-line
   const __ = window.getComputedStyle(css).opacity
   document.head.removeChild(css)
 }

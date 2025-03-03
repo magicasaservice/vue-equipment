@@ -1,9 +1,15 @@
 <template>
-  <audio ref="elRef" class="magic-player-audio" />
+  <audio ref="el" class="magic-player-audio" />
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, onBeforeUnmount } from 'vue'
+import {
+  useTemplateRef,
+  shallowRef,
+  inject,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
@@ -22,9 +28,9 @@ if (!injectedOptions) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
 }
 
-const elRef = ref<HTMLVideoElement | undefined>(undefined)
+const elRef = useTemplateRef('el')
 
-const pausedByIntersection = ref(false)
+const pausedByIntersection = shallowRef(false)
 
 const { initialize, destroy } = usePlayerRuntime({
   id: injectedId,

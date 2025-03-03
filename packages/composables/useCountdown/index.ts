@@ -1,4 +1,11 @@
-import { computed, onMounted, ref, unref, watch, type MaybeRef } from 'vue'
+import {
+  computed,
+  onMounted,
+  shallowRef,
+  unref,
+  watch,
+  type MaybeRef,
+} from 'vue'
 import { MagicTimer } from '@maas/magic-timer'
 import { DateTime } from 'luxon'
 
@@ -37,11 +44,11 @@ export function useCountdown(options: CountdownOptions, callback?: () => void) {
 
   const timer = new MagicTimer()
 
-  const years = ref(0)
-  const days = ref(0)
-  const hours = ref(0)
-  const minutes = ref(0)
-  const seconds = ref(0)
+  const years = shallowRef(0)
+  const days = shallowRef(0)
+  const hours = shallowRef(0)
+  const minutes = shallowRef(0)
+  const seconds = shallowRef(0)
 
   // Parse the end dateTime array into an date and time object
   // If hour, minute or second are not set, set them to 0

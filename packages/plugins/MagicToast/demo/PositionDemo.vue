@@ -29,14 +29,14 @@ const { add } = useMagicToast('magic-toast-position-demo')
 const position = ref('bottom-right')
 
 const options = [
-  { value: 'top-left', label: 'Top Left' },
-  { value: 'top-center', label: 'Top Center' },
   { value: 'top-right', label: 'Top Right' },
+  { value: 'top', label: 'Top' },
+  { value: 'top-left', label: 'Top Left' },
+  { value: 'left', label: 'Left' },
   { value: 'bottom-left', label: 'Bottom Left' },
-  { value: 'bottom-center', label: 'Bottom Center' },
+  { value: 'bottom', label: 'Bottom' },
   { value: 'bottom-right', label: 'Bottom Right' },
-  { value: 'center-left', label: 'Center Left' },
-  { value: 'center-right', label: 'Center Right' },
+  { value: 'right', label: 'Right' },
 ]
 
 function onClick() {

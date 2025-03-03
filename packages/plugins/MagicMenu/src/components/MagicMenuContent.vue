@@ -26,7 +26,6 @@
           </template>
           <template #default>
             <div
-              ref="contentRef"
               class="magic-menu-content__inner"
               :data-pointer-disabled="pointerDisabled"
             >
@@ -58,15 +57,15 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  shallowRef,
   inject,
   provide,
   nextTick,
   watch,
   computed,
+  onBeforeUnmount,
   type MaybeRef,
   type ComponentPublicInstance,
-  onBeforeUnmount,
 } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
@@ -98,8 +97,6 @@ interface MagicMenuContentProps {
 }
 
 const { arrow = undefined, transition } = defineProps<MagicMenuContentProps>()
-
-const contentRef = ref<HTMLElement | undefined>(undefined)
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
@@ -134,8 +131,8 @@ const mappedTransition = computed(() => {
 })
 
 // Split isActive into two values to animate content smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
 
 const {
   lockScroll,

@@ -1,14 +1,14 @@
 <template>
   <div class="magic-noise" :data-loading="!isReady">
     <div class="magic-noise__inner">
-      <canvas ref="canvasRef" class="magic-noise__canvas" />
-      <canvas ref="offCanvasRef" class="magic-noise__off-canvas" />
+      <canvas ref="canvas" class="magic-noise__canvas" />
+      <canvas ref="offCanvas" class="magic-noise__off-canvas" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch, shallowRef } from 'vue'
+import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
 import type { MagicNoiseOptions } from '../types'
@@ -20,8 +20,8 @@ interface MagicNoiseProps {
 
 const { pause = false, options } = defineProps<MagicNoiseProps>()
 
-const canvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
-const offCanvasRef = shallowRef<HTMLCanvasElement | undefined>(undefined)
+const canvasRef = useTemplateRef('canvas')
+const offCanvasRef = useTemplateRef('offCanvas')
 
 const noiseApi = useNoiseApi({
   canvasRef,

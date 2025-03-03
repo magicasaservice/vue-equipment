@@ -10,7 +10,7 @@
       }"
       class="w-full"
     >
-      <magic-menu-view class="w-full" :initial="true" :id="ViewId.navDrawer">
+      <magic-menu-view :id="ViewId.navDrawer" class="w-full" :initial="true">
         <magic-menu-remote
           :channel-id="ChannelId.navDrawerMenuInitial"
           :trigger="['click']"
@@ -57,7 +57,6 @@ import {
 } from '@maas/vue-equipment/plugins'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
-import { easeOutQuad } from '@maas/vue-autosize'
 
 import NavDrawerHandle from './NavDrawerHandle.vue'
 import NavDrawerMenuChannelNested from './NavDrawerMenuChannelNested.vue'

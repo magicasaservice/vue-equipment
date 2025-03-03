@@ -260,7 +260,7 @@ To customize the command palette, override the necessary options. Any custom opt
         description: 'Key combinations that will open the command menu.',
       },
       { label: 'string[] | false' },
-      { label: '[\'Cmd+k\']' },
+      { label: '[\'Cmd+k\', \'Ctrl+k\']' },
     ],
   },
   {

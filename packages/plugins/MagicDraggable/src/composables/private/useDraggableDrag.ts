@@ -1,5 +1,5 @@
 import {
-  ref,
+  shallowRef,
   computed,
   toValue,
   nextTick,
@@ -39,8 +39,8 @@ import type {
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
-  wrapperRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | null>
+  wrapperRef: Ref<HTMLDivElement | null>
   threshold: MaybeRef<DraggableDefaultOptions['threshold']>
   snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
   animation: MaybeRef<DraggableDefaultOptions['animation']>
@@ -84,8 +84,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
 
-  const momentumThresholdReached = ref(false)
-  const distanceThresholdReached = ref(false)
+  const momentumThresholdReached = shallowRef(false)
+  const distanceThresholdReached = shallowRef(false)
 
   // Public state
   const style = computed(

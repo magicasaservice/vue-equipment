@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :as-child="asChild"
     :data-id="id"
     class="magic-menu-provider"
@@ -11,7 +11,8 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
+  shallowRef,
   provide,
   watch,
   toValue,
@@ -37,7 +38,7 @@ interface MagicMenuProviderProps {
 }
 
 const { id, options } = defineProps<MagicMenuProviderProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('el')
 
 const mappedOptions = defu(options, defaultOptions)
 
@@ -46,8 +47,8 @@ const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
-const lastX = ref(0)
-const lastY = ref(0)
+const lastX = shallowRef(0)
+const lastY = shallowRef(0)
 
 const { x, y } = usePointer()
 

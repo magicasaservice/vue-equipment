@@ -29,7 +29,7 @@
         </magic-cookie-item>
       </div>
     </magic-cookie-view>
-    <div class="flex flex-wrap gap-x-4 gap-y-2 pt-6">
+    <div class="flex flex-wrap sm:flex-nowrap gap-x-4 gap-y-2 pt-6">
       <template v-if="viewActive">
         <m-button mode="plain" block @click="toggleView">Close</m-button>
         <m-button mode="translucent" block @click="onSave">Save</m-button>

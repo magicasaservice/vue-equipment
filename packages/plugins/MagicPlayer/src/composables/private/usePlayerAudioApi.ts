@@ -1,4 +1,4 @@
-import { ref, watch, toValue, type MaybeRef } from 'vue'
+import { shallowRef, watch, toValue, type MaybeRef } from 'vue'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 import { usePlayerMediaApi } from './usePlayerMediaApi'
 
@@ -12,8 +12,8 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   const { playing, currentTime, muted } = usePlayerMediaApi({ id })
 
   // Public state
-  const touched = ref(false)
-  const mouseEntered = ref(false)
+  const touched = shallowRef(false)
+  const mouseEntered = shallowRef(false)
 
   // Public functions
   function play() {

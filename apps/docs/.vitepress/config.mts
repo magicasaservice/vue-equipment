@@ -140,7 +140,7 @@ export default defineConfig({
     ],
     footer: {
       message:
-        'Engineered and Designed by <a href="https://maas.engineering" target="_blank" ref="noopener noreferrer">Magic as a Service™</a>',
+        'Engineered and Designed by <a href="https://maas.engineering" target="_blank" rel="noopener noreferrer">Magic as a Service™</a>',
       copyright: `Released under the <a
           href="https://github.com/magicasaservice/vue-equipment/blob/main/LICENSE"
           target="_blank"

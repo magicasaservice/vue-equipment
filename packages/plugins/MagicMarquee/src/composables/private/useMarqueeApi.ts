@@ -1,4 +1,11 @@
-import { ref, computed, nextTick, watch, toValue, type MaybeRef } from 'vue'
+import {
+  shallowRef,
+  computed,
+  nextTick,
+  watch,
+  toValue,
+  type MaybeRef,
+} from 'vue'
 import { useElementBounding, useElementSize, useThrottleFn } from '@vueuse/core'
 import { useMarqueeState } from './useMarqueeState'
 
@@ -17,7 +24,7 @@ export function useMarqueeApi({
   const { initializeState } = useMarqueeState(instanceId)
   const state = initializeState()
 
-  const duplicates = ref(1)
+  const duplicates = shallowRef(1)
   const childRect = useElementBounding(child)
   const parentRect = useElementBounding(parent)
 

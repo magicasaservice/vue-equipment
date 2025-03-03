@@ -9,7 +9,7 @@ interface UseAccordionTriggerArgs {
   viewId: string
   trigger: Interaction
   disabled: MaybeRef<boolean>
-  elRef: Ref<InstanceType<typeof Primitive> | undefined>
+  elRef: Ref<InstanceType<typeof Primitive> | null>
 }
 
 export function useAccordionTrigger(args: UseAccordionTriggerArgs) {

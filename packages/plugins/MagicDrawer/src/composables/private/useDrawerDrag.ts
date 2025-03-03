@@ -37,8 +37,8 @@ import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
-  wrapperRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | null>
+  wrapperRef: Ref<HTMLDivElement | null>
   position: MaybeRef<DrawerDefaultOptions['position']>
   snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
   threshold: MaybeRef<DrawerDefaultOptions['threshold']>
@@ -494,9 +494,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Possibly lock scroll
     if (!scrollLock) {
-      const target = lockScroll(e.target!)
-      if (target) {
-        scrollLock = useScrollLock(target)
+      const scrollLockTarget = lockScroll(e.target!)
+      if (scrollLockTarget) {
+        scrollLock = useScrollLock(scrollLockTarget)
         scrollLock.value = true
       }
     }

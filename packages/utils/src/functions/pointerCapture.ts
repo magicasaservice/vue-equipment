@@ -1,12 +1,12 @@
 interface GuardedSetPointerCaptureArgs {
   event: PointerEvent
-  element?: Element
+  element?: Element | null
   debug?: boolean
 }
 
 interface GuardedReleasePointerCaptureArgs {
   event: PointerEvent
-  element?: Element
+  element?: Element | null
 }
 
 export function guardedSetPointerCapture(

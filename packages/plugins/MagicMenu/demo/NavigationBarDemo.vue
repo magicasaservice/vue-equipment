@@ -10,7 +10,7 @@
       }"
       class="flex"
     >
-      <magic-menu-view ref="viewRef">
+      <magic-menu-view ref="view">
         <div class="flex gap-1">
           <magic-menu-trigger
             v-for="(item, i) in menu"
@@ -83,13 +83,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type ComponentPublicInstance } from 'vue'
+import { useTemplateRef, type ComponentPublicInstance } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
 import { MMenuBox, MBadge, MButton } from '@maas/mirror/vue'
 
 import MenuCard from './components/MenuCard.vue'
 
-const viewRef = ref<ComponentPublicInstance | null>(null)
+const viewRef = useTemplateRef<ComponentPublicInstance>('view')
 
 const menu = [
   {

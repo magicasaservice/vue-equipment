@@ -1,4 +1,4 @@
-import { toValue, computed, type MaybeRef } from 'vue'
+import { toValue, computed, type MaybeRef, type Ref } from 'vue'
 
 interface IsElementAboveArgs {
   element: MaybeRef<HTMLElement>
@@ -20,7 +20,7 @@ interface ScrollInFromBottomArgs {
   ancestor?: HTMLElement
 }
 
-export function useCommandScroll(parent: MaybeRef<HTMLElement | undefined>) {
+export function useCommandScroll(parent: Ref<HTMLElement | null>) {
   // Private state
   const mappedParent = computed(
     () => toValue(parent) || document.documentElement

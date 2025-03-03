@@ -20,8 +20,8 @@ import type { DrawerDefaultOptions } from '../../types'
 
 interface UseDrawerProgressArgs {
   id: MaybeRef<string>
-  elRef: Ref<HTMLElement | undefined>
-  drawerRef: Ref<HTMLDivElement | undefined>
+  elRef: Ref<HTMLElement | null>
+  drawerRef: Ref<HTMLDivElement | null>
   position: MaybeRef<DrawerDefaultOptions['position']>
   overshoot: MaybeRef<number>
 }

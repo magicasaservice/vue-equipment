@@ -1,6 +1,6 @@
 <template>
   <primitive
-    ref="elRef"
+    ref="el"
     :data-id="`${mappedViewId}-trigger`"
     :data-active="view?.active"
     :data-disabled="mappedDisabled"
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref, toValue, watch } from 'vue'
+import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -41,7 +41,7 @@ interface MagicMenuTriggerProps {
 
 const { instanceId, viewId, disabled, trigger } =
   defineProps<MagicMenuTriggerProps>()
-const elRef = ref<InstanceType<typeof Primitive> | undefined>(undefined)
+const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const injectedInstanceId = inject(MagicMenuInstanceId, undefined)
 const injectedViewId = inject(MagicMenuViewId, undefined)

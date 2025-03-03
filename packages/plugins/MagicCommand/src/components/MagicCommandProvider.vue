@@ -1,11 +1,11 @@
 <template>
-  <primitive ref="elRef" :as-child="asChild" class="magic-command-provider">
+  <primitive :as-child="asChild" class="magic-command-provider">
     <slot />
   </primitive>
 </template>
 
 <script lang="ts" setup>
-import { ref, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { shallowRef, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
 import { createDefu } from 'defu'
@@ -24,7 +24,6 @@ interface MagicCommandProviderProps {
 }
 
 const { id, options = {} } = defineProps<MagicCommandProviderProps>()
-const elRef = ref<HTMLElement | undefined>(undefined)
 
 // Prevent keys arrays from being merged with default
 const customDefu = createDefu((obj, key, value) => {
@@ -41,8 +40,8 @@ const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
-const lastX = ref(0)
-const lastY = ref(0)
+const lastX = shallowRef(0)
+const lastY = shallowRef(0)
 
 const { x, y } = usePointer()
 

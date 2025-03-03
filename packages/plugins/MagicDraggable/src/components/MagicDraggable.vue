@@ -1,16 +1,15 @@
 <template>
   <div
-    ref="drawerRef"
     :data-id="toValue(id)"
     :data-dragging="dragging"
     :data-disabled="disabled"
     class="magic-draggable"
     v-bind="$attrs"
   >
-    <div ref="wrapperRef" class="magic-draggable__wrapper">
+    <div ref="wrapper" class="magic-draggable__wrapper">
       <component
         :is="mappedOptions.tag"
-        ref="elRef"
+        ref="el"
         class="magic-draggable__drag"
         :style="style"
         @pointerdown="guardedPointerdown"
@@ -24,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toValue, toRefs, type MaybeRef } from 'vue'
+import { useTemplateRef, computed, toValue, toRefs, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
@@ -45,8 +44,8 @@ const { id, options = {} } = defineProps<MagicDraggableProps>()
 
 const mappedOptions = defu(options, defaultOptions)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
-const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
+const elRef = useTemplateRef<HTMLElement>('el')
+const wrapperRef = useTemplateRef('wrapper')
 
 const { initializeState } = useDraggableState(id)
 const state = initializeState()

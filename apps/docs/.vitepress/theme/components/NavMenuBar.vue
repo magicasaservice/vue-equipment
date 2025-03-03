@@ -10,19 +10,32 @@
   >
     <div class="flex items-center gap-2">
       <template v-for="entry in theme.nav">
-        <m-button v-if="entry.link" size="xs" mode="ghost">
+        <m-button
+          v-if="entry.link"
+          :key="`button-${entry.text}`"
+          size="xs"
+          mode="ghost"
+        >
           <VPLink :href="entry.link">
             {{ entry.text }}
           </VPLink>
         </m-button>
-        <magic-menu-view v-else-if="entry.items" placement="bottom-center">
+        <magic-menu-view
+          v-else-if="entry.items"
+          :key="`menu-${entry.text}`"
+          placement="bottom"
+        >
           <magic-menu-trigger as-child :trigger="['mouseenter']">
             <m-button size="xs" mode="ghost">{{ entry.text }}</m-button>
           </magic-menu-trigger>
           <magic-menu-content>
             <div class="p-1">
               <m-menu-box size="xs" class="max-w-[9rem]">
-                <VPLink :href="item.link" v-for="item in entry.items">
+                <VPLink
+                  v-for="item in entry.items"
+                  :key="item.text"
+                  :href="item.link"
+                >
                   <m-menu-item to="/" size="xs">
                     <m-menu-item-child>{{ item.text }}</m-menu-item-child>
                   </m-menu-item>

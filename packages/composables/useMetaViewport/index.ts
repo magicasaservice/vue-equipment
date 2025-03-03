@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 export type UseMetaViewportArgs = {
   content: string
@@ -9,7 +9,7 @@ export function useMetaViewport(args?: UseMetaViewportArgs) {
     args?.content ||
     'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
 
-  const metaViewport = ref<string | undefined>(undefined)
+  const metaViewport = shallowRef<string | undefined>(undefined)
 
   function setMetaViewport() {
     const metaElement = document.querySelector(

@@ -5,7 +5,7 @@
     :disabled="mappedOptions.teleport?.disabled"
   >
     <div
-      ref="drawerRef"
+      ref="drawer"
       class="magic-drawer"
       :data-id="toValue(id)"
       :data-dragging="dragging"
@@ -28,7 +28,7 @@
         </div>
       </transition>
 
-      <div ref="wrapperRef" class="magic-drawer__wrapper">
+      <div ref="wrapper" class="magic-drawer__wrapper">
         <transition
           :name="contentTransition"
           @before-leave="onBeforeLeave"
@@ -41,7 +41,7 @@
           <div v-show="innerActive" class="magic-drawer__content">
             <component
               :is="mappedOptions.tag"
-              ref="elRef"
+              ref="el"
               class="magic-drawer__drag"
               :style="style"
               @pointerdown="guardedPointerdown"
@@ -59,7 +59,8 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  useTemplateRef,
+  shallowRef,
   watch,
   computed,
   nextTick,
@@ -117,9 +118,9 @@ const { options = {}, id } = defineProps<MagicDrawerProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
 
-const elRef = ref<HTMLElement | undefined>(undefined)
-const drawerRef = ref<HTMLDivElement | undefined>(undefined)
-const wrapperRef = ref<HTMLDivElement | undefined>(undefined)
+const elRef = useTemplateRef<HTMLElement>('el')
+const drawerRef = useTemplateRef('drawer')
+const wrapperRef = useTemplateRef('wrapper')
 
 const {
   trapFocus,
@@ -135,7 +136,7 @@ const {
 
 const { isActive, open, close } = useMagicDrawer(id)
 
-const overshoot = ref(0)
+const overshoot = shallowRef(0)
 const {
   position,
   snapPoints,
@@ -181,9 +182,9 @@ const state = initializeState()
 const { dragging, wheeling } = toRefs(state)
 
 // Split isActive into two values to animate drawer smoothly
-const innerActive = ref(false)
-const wrapperActive = ref(false)
-const wasActive = ref(false)
+const innerActive = shallowRef(false)
+const wrapperActive = shallowRef(false)
+const wasActive = shallowRef(false)
 
 const {
   onBeforeEnter,

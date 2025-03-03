@@ -1,11 +1,20 @@
 <template>
-  <div ref="elRef" class="magic-scroll-collision">
+  <div ref="el" class="magic-scroll-collision">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, toValue, watch, useId, onMounted } from 'vue'
+import {
+  shallowRef,
+  inject,
+  computed,
+  toValue,
+  watch,
+  useId,
+  onMounted,
+  useTemplateRef,
+} from 'vue'
 import { useCollisionDetection } from '../composables/private/useCollisionDetection'
 import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
@@ -27,8 +36,8 @@ if (!scrollTarget) {
   )
 }
 
-const intersecting = ref(false)
-const elRef = ref<HTMLElement | undefined>(undefined)
+const intersecting = shallowRef(false)
+const elRef = useTemplateRef('el')
 
 const scrollY = computed(() => toValue(scrollReturn?.y) || 0)
 const mappedId = computed(() => id ?? `magic-scroll-collision-${useId()}`)

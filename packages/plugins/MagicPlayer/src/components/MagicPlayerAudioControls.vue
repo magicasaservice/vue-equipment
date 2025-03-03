@@ -9,7 +9,7 @@
     :data-hover="mouseEntered"
   >
     <div class="magic-player-audio-controls__bar">
-      <div ref="barRef" class="magic-player-audio-controls__bar--inner">
+      <div ref="bar" class="magic-player-audio-controls__bar--inner">
         <div
           class="magic-player-audio-controls__item -shrink-0"
           data-slot="play-toggle"
@@ -35,7 +35,7 @@
           class="magic-player-audio-controls__item -grow"
           data-slot="timeline"
         >
-          <div ref="trackRef" class="magic-player-audio-controls__timeline">
+          <div ref="track" class="magic-player-audio-controls__timeline">
             <magic-player-timeline />
           </div>
         </div>
@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, inject, provide } from 'vue'
+import { computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
@@ -75,8 +75,8 @@ if (!mappedId.value) {
   )
 }
 
-const barRef = ref<HTMLDivElement | undefined>(undefined)
-const trackRef = ref<HTMLDivElement | undefined>(undefined)
+const barRef = useTemplateRef('bar')
+const trackRef = useTemplateRef('track')
 
 const { playing, waiting } = usePlayerMediaApi({
   id: mappedId.value,

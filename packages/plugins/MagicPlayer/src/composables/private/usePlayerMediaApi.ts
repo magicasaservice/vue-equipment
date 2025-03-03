@@ -1,26 +1,35 @@
-import { ref, computed, watch, unref, toValue, type MaybeRef } from 'vue'
+import {
+  ref,
+  shallowRef,
+  computed,
+  watch,
+  unref,
+  toValue,
+  type Ref,
+  type MaybeRef,
+} from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
 import { usePlayerStateEmitter } from './usePlayerStateEmitter'
 import type { Buffered } from '../../types'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
-  mediaRef?: MaybeRef<HTMLMediaElement | undefined>
+  mediaRef?: Ref<HTMLMediaElement | null>
 }
 
 export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Public state
-  const currentTime = ref(0)
-  const duration = ref(0)
-  const seeking = ref(false)
-  const volume = ref(1)
-  const rate = ref(1)
-  const waiting = ref(false)
-  const ended = ref(false)
-  const playing = ref(false)
-  const stalled = ref(false)
+  const currentTime = shallowRef(0)
+  const duration = shallowRef(0)
+  const seeking = shallowRef(false)
+  const volume = shallowRef(1)
+  const rate = shallowRef(1)
+  const waiting = shallowRef(false)
+  const ended = shallowRef(false)
+  const playing = shallowRef(false)
+  const stalled = shallowRef(false)
   const buffered = ref<Buffered>([])
-  const muted = ref(false)
+  const muted = shallowRef(false)
 
   const { mediaRef, id } = args
 

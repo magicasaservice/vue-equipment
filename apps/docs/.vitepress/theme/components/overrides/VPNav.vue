@@ -8,13 +8,13 @@
           <nav-drawer class="block sm:hidden" />
           <nav-color-mode-switch class="block sm:hidden" />
           <m-button
+            v-for="item in theme.socialLinks"
+            :key="item.link"
             size="xs"
             mode="ghost"
             square
             icon
             as-child
-            v-for="item in theme.socialLinks"
-            :key="item.link"
             class="shrink-0"
           >
             <a :href="item.link" rel="noopener noreferrer" target="_blank">

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { Coordinates, MenuView } from '../../types'
 
@@ -27,9 +27,9 @@ export function useMenuCursor(view: MenuView, debug = false) {
   ])
 
   // Public state
-  const isInsideFrom = ref(false)
-  const isInsideTo = ref(false)
-  const isInsideTriangle = ref(false)
+  const isInsideFrom = shallowRef(false)
+  const isInsideTo = shallowRef(false)
+  const isInsideTriangle = shallowRef(false)
 
   // Private functions
   function extendTriangle(

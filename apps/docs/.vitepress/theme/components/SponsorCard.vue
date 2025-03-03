@@ -1,5 +1,5 @@
 <template>
-  <a :href="href" target="_blank" ref="nooopener noreferrer">
+  <a rel="noopener noreferrer" :href="href" target="_blank">
     <m-button size="lg" mode="outline" icon block>
       <slot />
     </m-button>

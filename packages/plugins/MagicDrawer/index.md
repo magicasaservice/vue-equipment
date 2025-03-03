@@ -685,6 +685,10 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
   ]"
 />
 
+## Caveats
+
+The drawer handles situations where dragging and scrolling might interfer with each other on touch devices. In order for the drawer to differentiate when the user scrolls and when the user drags, any scrollable containers within the drawer need to have their overflow value explicitely set to 'auto' or 'scroll'.
+
 ## Examples
 
 ### Vertical

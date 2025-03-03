@@ -7,14 +7,21 @@
     class="magic-player-mux-popover"
   >
     <canvas
-      ref="canvasRef"
+      ref="canvas"
       :width="storyboard?.tile_width"
       :height="storyboard?.tile_height"
     />
   </div>
 </template>
 <script lang="ts" setup>
-import { shallowRef, onMounted, watch, computed, type Ref, inject } from 'vue'
+import {
+  shallowRef,
+  onMounted,
+  watch,
+  computed,
+  inject,
+  useTemplateRef,
+} from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
@@ -51,9 +58,9 @@ if (!instanceId || !injectedOptions) {
 const { seekedTime } = usePlayerControlsApi({ id: instanceId })
 const { pixelRatio } = useDevicePixelRatio()
 
-const canvasRef = shallowRef() as Ref<HTMLCanvasElement>
+const canvasRef = useTemplateRef('canvas')
 const storyboard = shallowRef<MuxStoryboard | undefined>()
-let context: CanvasRenderingContext2D | undefined = undefined
+let context: CanvasRenderingContext2D | null | undefined = undefined
 let image: HTMLImageElement | undefined = undefined
 
 const thumbWidth = computed(() => {
@@ -68,14 +75,19 @@ const thumbHeight = computed(() => {
 
 function getMuxId(url?: string) {
   const match = url?.match(/mux\.com\/([^\/]+)/)
-  return match?.[1]
+  return match?.[1]?.replace(/\.(m3u8|mp4)$/, '')
 }
 
 async function init() {
   const parsedPlaybackId = getMuxId(injectedOptions?.src)
   const mappedPlaybackId = playbackId ?? parsedPlaybackId
 
-  if (!mappedPlaybackId) return
+  if (!mappedPlaybackId) {
+    console.error(
+      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
+    )
+    return
+  }
 
   try {
     storyboard.value = await fetch(
@@ -88,8 +100,8 @@ async function init() {
     image.src = storyboard.value.url
     await image.decode()
 
-    context = canvasRef.value.getContext('2d')!
-    context.drawImage(image, 0, 0)
+    context = canvasRef.value?.getContext('2d')
+    context?.drawImage(image, 0, 0)
   } catch (e: unknown) {
     console.error('Can not initialize timeine preview.', e)
   }

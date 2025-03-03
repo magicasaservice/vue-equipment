@@ -15,7 +15,7 @@ type UseMenuTriggerArgs = {
   itemId?: string
   mappedDisabled: ComputedRef<boolean>
   mappedTrigger: ComputedRef<Interaction[]>
-  elRef: Ref<InstanceType<typeof Primitive> | undefined>
+  elRef: Ref<InstanceType<typeof Primitive> | null>
 }
 
 export function useMenuTrigger(args: UseMenuTriggerArgs) {

@@ -1,6 +1,6 @@
 <template>
   <video
-    ref="elRef"
+    ref="el"
     class="magic-player-video"
     playsinline
     disablePictureInPicture
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, inject, onBeforeUnmount } from 'vue'
+import { useTemplateRef, watch, onMounted, inject, onBeforeUnmount } from 'vue'
 import {
   useElementVisibility,
   useEventListener,
@@ -23,7 +23,6 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
-
 const injectedId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
@@ -35,7 +34,7 @@ if (!injectedOptions) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
 }
 
-const elRef = ref<HTMLVideoElement | undefined>(undefined)
+const elRef = useTemplateRef('el')
 
 const isVisible = useElementVisibility(elRef)
 

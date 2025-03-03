@@ -57,17 +57,14 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   const snapPointsMap = computedWithControl(
     () => toValue(snapPoints),
     () => {
-      const mapped = toValue(snapPoints).reduce(
-        (acc, current) => {
-          const key = mapSnapPoint(current)
-          if (key) {
-            const mappedKey = `x${key.x}y${key.y}`
-            acc[mappedKey] = current
-          }
-          return acc
-        },
-        {} as Record<string, DraggableSnapPoint>
-      )
+      const mapped = toValue(snapPoints).reduce((acc, current) => {
+        const key = mapSnapPoint(current)
+        if (key) {
+          const mappedKey = `x${key.x}y${key.y}`
+          acc[mappedKey] = current
+        }
+        return acc
+      }, {} as Record<string, DraggableSnapPoint>)
 
       return mapped
     }
@@ -101,7 +98,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           x: mappedOffset.x,
           y: mappedOffset.y,
         }
-      case 'top-center':
+      case 'top':
         return {
           x:
             wrapperRect.value.width / 2 +
@@ -114,7 +111,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
           y: mappedOffset.y,
         }
-      case 'center-left':
+      case 'left':
         return {
           x: mappedOffset.x,
           y:
@@ -133,7 +130,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
             elRect.value.height / 2 +
             mappedOffset.y,
         }
-      case 'center-right':
+      case 'right':
         return {
           x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
           y:
@@ -146,7 +143,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           x: mappedOffset.x,
           y: wrapperRect.value.height + mappedOffset.y - elRect.value.height,
         }
-      case 'bottom-center':
+      case 'bottom':
         return {
           x:
             wrapperRect.value.width / 2 +

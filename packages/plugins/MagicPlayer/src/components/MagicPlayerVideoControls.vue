@@ -16,13 +16,13 @@
         <div
           v-if="$slots.popover"
           v-show="!!seekedTime && touched"
-          ref="popoverRef"
+          ref="popover"
           class="magic-player-video-controls__popover"
           :style="{ marginLeft: `${popoverOffsetX}%` }"
         >
           <slot name="popover" />
         </div>
-        <div ref="barRef" class="magic-player-video-controls__bar--inner">
+        <div ref="bar" class="magic-player-video-controls__bar--inner">
           <div class="magic-player-video-controls__item -shrink-0">
             <button v-if="!playing" @click="play">
               <slot name="playIcon">
@@ -37,7 +37,7 @@
           </div>
           <div class="magic-player-video-controls__item -grow">
             <slot name="timelineBefore" />
-            <div ref="trackRef" class="magic-player-video-controls__timeline">
+            <div ref="track" class="magic-player-video-controls__timeline">
               <magic-player-timeline />
             </div>
             <slot name="timelineAfter" />
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, provide } from 'vue'
+import { computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -116,9 +116,9 @@ const mappedTransition = computed(
   () => transition ?? injectedOptions?.transition?.videoControls
 )
 
-const barRef = ref<HTMLDivElement | undefined>(undefined)
-const trackRef = ref<HTMLDivElement | undefined>(undefined)
-const popoverRef = ref<HTMLDivElement | undefined>(undefined)
+const barRef = useTemplateRef('bar')
+const trackRef = useTemplateRef('track')
+const popoverRef = useTemplateRef('popover')
 
 const { playing, waiting, muted } = usePlayerMediaApi({
   id: mappedId.value,

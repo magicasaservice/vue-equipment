@@ -6,7 +6,11 @@
   >
     <div class="flex w-full flex-col gap-1 px-2">
       <template v-for="channel in theme.sidebar">
-        <nav-drawer-menu-remote v-if="channel.text" :channel="channel" />
+        <nav-drawer-menu-remote
+          v-if="channel.text"
+          :key="channel.text"
+          :channel="channel"
+        />
       </template>
     </div>
   </magic-menu-channel>

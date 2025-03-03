@@ -1,11 +1,11 @@
 <template>
-  <div ref="elRef" class="magic-scroll-motion">
+  <div ref="el" class="magic-scroll-motion">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, onMounted, watch } from 'vue'
+import { ref, inject, computed, onMounted, watch, useTemplateRef } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
 import {
@@ -28,7 +28,7 @@ const { progress, sequence, sequenceOptions } =
   defineProps<MagicScrollMotionProps>()
 
 const animation = ref<AnimationPlaybackControls | undefined>(undefined)
-const elRef = ref<HTMLElement | undefined>(undefined)
+const elRef = useTemplateRef('el')
 
 const injectedProgress = inject(
   MagicScrollProgress,
