@@ -21,7 +21,7 @@
     "fonts": "workspace:fonts@*",
     "fs-extra": "catalog:",
     "postcss": "^8.5.3",
-    "prettier": "^3.5.2",
+    "prettier": "^3.5.3",
     "tailwindcss": "catalog:",
     "unplugin-icons": "^22.1.0",
     "unplugin-vue-components": "^28.4.1",

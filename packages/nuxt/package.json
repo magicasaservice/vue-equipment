@@ -21,7 +21,7 @@
     "@nuxt/kit": "catalog:",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "catalog:",
-    "@nuxt/test-utils": "^3.17.0",
+    "@nuxt/test-utils": "^3.17.1",
     "@nuxtjs/tailwindcss": "catalog:",
     "nuxt": "catalog:",
     "vitest": "^3.0.7"

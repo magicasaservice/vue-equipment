@@ -23,7 +23,7 @@
     "@nuxt/schema": "catalog:",
     "esno": "catalog:",
     "mkdist": "github:magicasaservice/mkdist#fix/vue-template-ts",
-    "vue-tsc": "^2.2.4"
+    "vue-tsc": "^2.2.8"
   },
   "exports": "./index.ts",
   "license": "MIT",
