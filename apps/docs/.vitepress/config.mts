@@ -135,6 +135,10 @@ export default defineConfig({
             text: 'Privacy Policy',
             link: 'https://maas.engineering/privacy-policy',
           },
+          {
+            text: 'GitHub',
+            link: 'https://github.com/magicasaservice',
+          },
         ],
       },
     ],
