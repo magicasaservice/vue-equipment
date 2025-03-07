@@ -2,7 +2,7 @@
   <primitive
     ref="el"
     :as-child="asChild"
-    :data-id="`${viewId}-trigger`"
+    :data-id="`${mappedViewId}-trigger`"
     :data-disabled="mappedDisabled"
     as="button"
     class="magic-accordion-trigger"
