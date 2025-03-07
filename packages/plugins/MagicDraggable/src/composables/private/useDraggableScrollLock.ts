@@ -1,6 +1,6 @@
-import { shallowRef, ref, computed } from 'vue'
+import { shallowRef, ref } from 'vue'
 import { useScrollLock } from '@vueuse/core'
-import { matchClass } from '@maas/vue-equipment/utils'
+import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
 
 const scrollLock =
   typeof window !== 'undefined'
@@ -25,8 +25,10 @@ export function useDraggableScrollLock() {
 
     const exclude = new RegExp(/magic-draggable/)
 
-    const scrollbarWidth = window.innerWidth - document.body.offsetWidth
-    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.body.style.setProperty(
+      '--scrollbar-width',
+      `${scrollbarWidth()}px`
+    )
     document.body.style.paddingRight = 'var(--scrollbar-width)'
 
     positionFixedElements.value = [

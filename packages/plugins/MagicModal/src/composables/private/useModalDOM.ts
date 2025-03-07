@@ -2,7 +2,7 @@ import { ref, shallowRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { matchClass } from '@maas/vue-equipment/utils'
+import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
 
 import type { MagicModalOptions } from '../../types/index'
 
@@ -65,8 +65,10 @@ export function useModalDOM(args?: useModalDOMArgs) {
 
     const exclude = new RegExp(/magic-modal(__backdrop)?/)
 
-    const scrollbarWidth = window.innerWidth - document.body.offsetWidth
-    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.body.style.setProperty(
+      '--scrollbar-width',
+      `${scrollbarWidth()}px`
+    )
     document.body.style.paddingRight = 'var(--scrollbar-width)'
 
     positionFixedElements.value = [

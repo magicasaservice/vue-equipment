@@ -1,6 +1,6 @@
 import { ref, shallowRef } from 'vue'
 import { useScrollLock } from '@vueuse/core'
-import { matchClass } from '@maas/vue-equipment/utils'
+import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
 
 const scrollLock =
   typeof window !== 'undefined'
@@ -26,8 +26,10 @@ export function useMenuDOM() {
 
     const exclude = new RegExp(/magic-menu?/)
 
-    const scrollbarWidth = window.innerWidth - document.body.offsetWidth
-    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.body.style.setProperty(
+      '--scrollbar-width',
+      `${scrollbarWidth()}px`
+    )
     document.body.style.paddingRight = 'var(--scrollbar-width)'
 
     positionFixedElements.value = [
