@@ -1,6 +1,10 @@
 import { shallowRef, ref } from 'vue'
 import { useScrollLock } from '@vueuse/core'
-import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
+import {
+  matchClass,
+  scrollbarWidth,
+  scrollbarGutterSupport,
+} from '@maas/vue-equipment/utils'
 
 const scrollLock =
   typeof window !== 'undefined'
@@ -29,7 +33,15 @@ export function useDraggableScrollLock() {
       '--scrollbar-width',
       `${scrollbarWidth()}px`
     )
-    document.body.style.paddingRight = 'var(--scrollbar-width)'
+
+    switch (scrollbarGutterSupport()) {
+      case true:
+        document.documentElement.style.scrollbarGutter = 'stable'
+        break
+      case false:
+        document.body.style.paddingRight = 'var(--scrollbar-width)'
+        break
+    }
 
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
@@ -46,8 +58,9 @@ export function useDraggableScrollLock() {
   }
 
   function removeScrollLockPadding() {
-    document.body.style.paddingRight = ''
+    document.documentElement.style.scrollbarGutter = ''
     document.body.style.removeProperty('--scrollbar-width')
+    document.body.style.paddingRight = ''
     positionFixedElements.value.forEach(
       (elem) => (elem.style.paddingRight = '')
     )

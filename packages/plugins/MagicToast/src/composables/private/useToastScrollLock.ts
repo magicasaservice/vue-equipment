@@ -1,6 +1,9 @@
 import { ref, shallowRef } from 'vue'
 import { useScrollLock } from '@vueuse/core'
-import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
+import {
+  scrollbarGutterSupport,
+  scrollbarWidth,
+} from '@maas/vue-equipment/utils'
 
 const scrollLock =
   typeof window !== 'undefined'
@@ -23,21 +26,26 @@ export function useToastScrollLock() {
   function addScrollLockPadding() {
     if (typeof window === 'undefined') return
 
-    const exclude = new RegExp(/magic-toast/)
-
     document.body.style.setProperty(
       '--scrollbar-width',
       `${scrollbarWidth()}px`
     )
-    document.body.style.paddingRight = 'var(--scrollbar-width)'
+
+    switch (scrollbarGutterSupport()) {
+      case true:
+        document.documentElement.style.scrollbarGutter = 'stable'
+        break
+      case false:
+        document.body.style.paddingRight = 'var(--scrollbar-width)'
+        break
+    }
 
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
     ].filter(
       (x) =>
         getComputedStyle(x, null).getPropertyValue('position') === 'fixed' &&
-        getComputedStyle(x, null).getPropertyValue('right') === '0px' &&
-        !matchClass(x, exclude)
+        getComputedStyle(x, null).getPropertyValue('right') === '0px'
     ) as HTMLElement[]
 
     positionFixedElements.value.forEach(
@@ -46,13 +54,13 @@ export function useToastScrollLock() {
   }
 
   function removeScrollLockPadding() {
-    document.body.style.paddingRight = ''
+    document.documentElement.style.scrollbarGutter = ''
     document.body.style.removeProperty('--scrollbar-width')
+    document.body.style.paddingRight = ''
     positionFixedElements.value.forEach(
       (elem) => (elem.style.paddingRight = '')
     )
   }
-
   return {
     lockScroll,
     unlockScroll,

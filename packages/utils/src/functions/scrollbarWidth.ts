@@ -1,19 +1,22 @@
 export function scrollbarWidth() {
-  // Create div with a scrollbar
-  const outer = document.createElement('div')
-  outer.style.visibility = 'hidden'
-  outer.style.overflow = 'scroll'
-  document.body.appendChild(outer)
+  const wrapper = document.createElement('div')
+  wrapper.style.position = 'absolute'
+  wrapper.style.visibility = 'hidden'
+  wrapper.style.overflow = 'hidden'
+  wrapper.style.width = '100px'
+  wrapper.style.height = '100px'
+  wrapper.style.top = '-9999px'
 
-  // Create inner div
-  const inner = document.createElement('div')
-  outer.appendChild(inner)
+  wrapper.innerHTML = '<div style="width: 200px; height: 200px;"></div>'
+  document.body.appendChild(wrapper)
 
-  // Get width
-  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
+  // Get the scrollbar width
+  const withoutScrollbar = wrapper.clientWidth
+  wrapper.style.overflow = 'scroll'
+  const withScrollbar = wrapper.clientWidth
 
   // Clean up
-  outer.parentNode?.removeChild(outer)
+  document.body.removeChild(wrapper)
 
-  return scrollbarWidth
+  return Math.round(withoutScrollbar - withScrollbar)
 }

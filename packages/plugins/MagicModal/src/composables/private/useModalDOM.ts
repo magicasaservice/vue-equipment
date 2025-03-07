@@ -2,7 +2,11 @@ import { ref, shallowRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { matchClass, scrollbarWidth } from '@maas/vue-equipment/utils'
+import {
+  matchClass,
+  scrollbarGutterSupport,
+  scrollbarWidth,
+} from '@maas/vue-equipment/utils'
 
 import type { MagicModalOptions } from '../../types/index'
 
@@ -69,7 +73,15 @@ export function useModalDOM(args?: useModalDOMArgs) {
       '--scrollbar-width',
       `${scrollbarWidth()}px`
     )
-    document.body.style.paddingRight = 'var(--scrollbar-width)'
+
+    switch (scrollbarGutterSupport()) {
+      case true:
+        document.documentElement.style.scrollbarGutter = 'stable'
+        break
+      case false:
+        document.body.style.paddingRight = 'var(--scrollbar-width)'
+        break
+    }
 
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
@@ -86,8 +98,9 @@ export function useModalDOM(args?: useModalDOMArgs) {
   }
 
   function removeScrollLockPadding() {
-    document.body.style.paddingRight = ''
+    document.documentElement.style.scrollbarGutter = ''
     document.body.style.removeProperty('--scrollbar-width')
+    document.body.style.paddingRight = ''
     positionFixedElements.value.forEach(
       (elem) => (elem.style.paddingRight = '')
     )
