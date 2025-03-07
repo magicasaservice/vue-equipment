@@ -10,5 +10,6 @@
 <style>
 [data-id='magic-draggable-demo'] {
   --magic-draggable-position: relative;
+  --magic-draggable-z-index: 50;
 }
 </style>
