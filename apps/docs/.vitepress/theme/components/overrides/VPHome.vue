@@ -36,7 +36,7 @@
             size="lg"
             :mode="action.theme"
             as-child
-            class="no-icon col-span-full sm:w-40"
+            class="no-icon col-span-full sm:w-[10.5rem]"
           >
             <VPLink :href="action.link">{{ action.text }}</VPLink>
           </m-button>
@@ -48,7 +48,7 @@
           <div
             class="grid w-full max-w-screen-sm grid-cols-12 justify-center gap-3 sm:flex"
           >
-            <nuxt-sponsor-card class="col-span-6 col-start-4 sm:w-40" />
+            <nuxt-sponsor-card class="col-span-6 col-start-4 sm:w-[10.5rem]" />
           </div>
         </div>
       </div>
