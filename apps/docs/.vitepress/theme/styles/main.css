@@ -28,6 +28,7 @@ body {
 
 [data-theme='vue-equipment'] .VPSidebar {
   padding-top: 82px;
+  width: auto;
 }
 
 [data-theme='vue-equipment'] .vp-doc div[class*='language-'] {

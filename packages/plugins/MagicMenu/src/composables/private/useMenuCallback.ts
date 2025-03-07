@@ -45,11 +45,11 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
       state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
 
     if (scrollLock) {
-      lockScroll()
-
       if (typeof scrollLock === 'object' && scrollLock.padding) {
         addScrollLockPadding()
       }
+
+      lockScroll()
     }
   }
 

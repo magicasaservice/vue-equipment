@@ -68,13 +68,16 @@ export function useDrawerDOM(args?: UseDrawerDOMArgs) {
     const scrollbarWidth = window.innerWidth - document.body.offsetWidth
     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
     document.body.style.paddingRight = 'var(--scrollbar-width)'
+
     positionFixedElements.value = [
       ...document.body.getElementsByTagName('*'),
     ].filter(
       (x) =>
         getComputedStyle(x, null).getPropertyValue('position') === 'fixed' &&
+        getComputedStyle(x, null).getPropertyValue('right') === '0px' &&
         !matchClass(x, exclude)
     ) as HTMLElement[]
+
     positionFixedElements.value.forEach(
       (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)')
     )

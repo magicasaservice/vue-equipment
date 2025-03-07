@@ -322,10 +322,11 @@ export function useToastDrag(args: UseToastDragArgs) {
     // Lock scroll as soon as the user starts dragging
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
-      lockScroll()
       if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
         addScrollLockPadding()
       }
+
+      lockScroll()
     }
 
     // Prevent dragging if we’re already dragging
