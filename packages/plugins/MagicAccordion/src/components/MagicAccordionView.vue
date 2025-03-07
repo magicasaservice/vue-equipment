@@ -1,6 +1,7 @@
 <template>
   <primitive
     :as-child="asChild"
+    :data-id="mappedId"
     :data-active="view?.active"
     class="magic-accordion-view"
   >

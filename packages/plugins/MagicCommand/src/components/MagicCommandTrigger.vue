@@ -62,7 +62,9 @@ if (!instanceId) {
 }
 
 if (!mappedViewId.value) {
-  throw new Error('MagicCommandTrigger must be nested inside MagicCommandView')
+  throw new Error(
+    'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided'
+  )
 }
 
 const { getView } = useCommandView(instanceId)

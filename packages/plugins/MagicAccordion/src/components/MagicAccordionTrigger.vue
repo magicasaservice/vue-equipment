@@ -2,9 +2,10 @@
   <primitive
     ref="el"
     :as-child="asChild"
+    :data-id="`${viewId}-trigger`"
     :data-disabled="mappedDisabled"
-    class="magic-accordion-trigger"
     as="button"
+    class="magic-accordion-trigger"
     @mouseenter="onMouseenter"
     @click="onClick"
   >
@@ -24,12 +25,14 @@ import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 import type { Interaction } from '../types'
 
 interface MagicAccordionTriggerProps {
+  viewId?: string
   disabled?: MaybeRef<boolean>
   trigger?: Interaction
   asChild?: boolean
 }
 
 const {
+  viewId,
   disabled = false,
   trigger = 'click',
   asChild = false,
@@ -38,7 +41,9 @@ const {
 const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
-const viewId = inject(MagicAccordionViewId, undefined)
+const injectedViewId = inject(MagicAccordionViewId, undefined)
+
+const mappedViewId = computed(() => viewId ?? injectedViewId)
 
 if (!instanceId) {
   throw new Error(
@@ -46,9 +51,9 @@ if (!instanceId) {
   )
 }
 
-if (!viewId) {
+if (!mappedViewId.value) {
   throw new Error(
-    'MagicAccordionTrigger must be nested inside MagicAccordionView'
+    'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided'
   )
 }
 
@@ -56,16 +61,16 @@ const { initializeState } = useAccordionState(instanceId)
 const state = initializeState()
 
 const { getView } = useAccordionView(instanceId)
-const view = getView(viewId)
+const view = getView(mappedViewId.value)
 
 const mappedDisabled = computed(
   () => toValue(disabled) || state.options.disabled
 )
 
 const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
-  instanceId,
-  viewId,
   elRef,
+  instanceId,
+  viewId: mappedViewId.value,
   disabled: disabled,
   trigger: trigger,
 })

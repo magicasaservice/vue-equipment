@@ -1,5 +1,5 @@
 <template>
-  <primitive :as-child="asChild" class="magic-command-provider">
+  <primitive :data-id="id" :as-child="asChild" class="magic-command-provider">
     <slot />
   </primitive>
 </template>

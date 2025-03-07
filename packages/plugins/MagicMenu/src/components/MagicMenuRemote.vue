@@ -48,7 +48,7 @@ if (!mappedInstanceId.value) {
 
 if (!mappedViewId.value) {
   throw new Error(
-    'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided'
+    'MagicMenuRemote must be nested inside MagicMenuView or a viewId must be provided'
   )
 }
 

@@ -61,17 +61,17 @@ import IconPause from './icons/Pause.vue'
 import { MagicPlayerInstanceId } from '../symbols'
 
 interface MagicAudioPlayerControlsProps {
-  id?: string
+  instanceId?: string
 }
 
-const { id } = defineProps<MagicAudioPlayerControlsProps>()
+const { instanceId } = defineProps<MagicAudioPlayerControlsProps>()
 
-const instanceId = inject(MagicPlayerInstanceId, undefined)
-const mappedId = computed(() => id ?? instanceId)
+const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
+const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 
-if (!mappedId.value) {
+if (!mappedInstanceId.value) {
   throw new Error(
-    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or be passed an id as a prop.'
+    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or an instanceId must be provided.'
   )
 }
 
@@ -79,20 +79,20 @@ const barRef = useTemplateRef('bar')
 const trackRef = useTemplateRef('track')
 
 const { playing, waiting } = usePlayerMediaApi({
-  id: mappedId.value,
+  id: mappedInstanceId.value,
 })
 
 const { play, pause, touched, mouseEntered } = usePlayerAudioApi({
-  id: mappedId.value,
+  id: mappedInstanceId.value,
 })
 
 usePlayerControlsApi({
-  id: mappedId.value,
+  id: mappedInstanceId.value,
   barRef: barRef,
   trackRef: trackRef,
 })
 
 const { idle } = useIdle(3000)
 
-provide(MagicPlayerInstanceId, mappedId.value)
+provide(MagicPlayerInstanceId, mappedInstanceId.value)
 </script>
