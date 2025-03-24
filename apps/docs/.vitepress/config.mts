@@ -49,7 +49,13 @@ export default defineConfig({
       { rel: 'apple-touch-icon', href: '/apple-touch-icon-180x180.png' },
     ],
     ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
-    ['meta', { name: 'og:image', content: '/images/og-image.jpg' }],
+    [
+      'meta',
+      {
+        name: 'og:image',
+        content: 'https://vue.equipment/images/og-image.jpg',
+      },
+    ],
     ['meta', { name: 'og:image:width', content: '1200' }],
     ['meta', { name: 'og:image:height', content: '630' }],
     [
@@ -60,10 +66,7 @@ export default defineConfig({
           'A v-shaped triangle carabiner with engraved small text on one side',
       },
     ],
-    [
-      'meta',
-      { name: 'og:url', content: 'https://vue-equipment.maas.engineering' },
-    ],
+    ['meta', { name: 'og:url', content: 'https://vue.equipment' }],
     [
       'meta',
       { name: 'og:title', content: 'Vue Equipment | Magic as a Service™' },
