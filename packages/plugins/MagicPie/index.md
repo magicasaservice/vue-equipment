@@ -35,7 +35,7 @@ app.use(MagicPiePlugin)
 
 ### Nuxt
 
-The modal is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicPie` to the plugins in your configuration.
+The pie is available as a Nuxt module. In your Nuxt config file add `@maas/vue-equipment/nuxt` to your modules and add `MagicPie` to the plugins in your configuration.
 
 ```js
 export default defineNuxtConfig({
@@ -48,7 +48,7 @@ export default defineNuxtConfig({
 
 ### Direct Import
 
-If you prefer a more granular approach, the modal can also be directly imported into any Vue component.
+If you prefer a more granular approach, the pie can also be directly imported into any Vue component.
 
 ```vue
 <script setup>
@@ -82,7 +82,7 @@ onMounted(() => {
 
 ### Props
 
-The modal comes with a simple set of props. Only the id is required.
+The pie comes with a simple set of props. Only the id is required.
 
 <ProseTable
   :columns="[
