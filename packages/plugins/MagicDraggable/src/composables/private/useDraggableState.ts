@@ -1,7 +1,7 @@
 import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
 import type { DraggableState } from '../../types/index'
 
-const drawerStateStore: Ref<DraggableState[]> = ref([])
+const draggableStateStore: Ref<DraggableState[]> = ref([])
 
 export function useDraggableState(id: MaybeRef<string>) {
   //Private functions
@@ -28,14 +28,14 @@ export function useDraggableState(id: MaybeRef<string>) {
 
   function addState(id: string) {
     const state = createState(id)
-    drawerStateStore.value = [...drawerStateStore.value, state]
+    draggableStateStore.value = [...draggableStateStore.value, state]
 
     return state
   }
 
   // Public functions
   function initializeState() {
-    let state = drawerStateStore.value.find((entry) => {
+    let state = draggableStateStore.value.find((entry) => {
       return entry.id === id
     })
 
@@ -44,7 +44,7 @@ export function useDraggableState(id: MaybeRef<string>) {
   }
 
   function deleteState() {
-    drawerStateStore.value = drawerStateStore.value.filter(
+    draggableStateStore.value = draggableStateStore.value.filter(
       (x: DraggableState) => x.id !== id
     )
   }
