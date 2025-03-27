@@ -12,7 +12,7 @@ export function useMagicPie(id: MaybeRef<string>) {
   // Private functions
   const { initializeState } = usePieState(toValue(id))
   const state = initializeState()
-  const { percentage, animation } = toRefs(state)
+  const { percentage, interpolationId } = toRefs(state)
 
   // Public functions
   function setPercentage(value: number) {
@@ -25,15 +25,15 @@ export function useMagicPie(id: MaybeRef<string>) {
     // Clamp value
     const mappedValue = Math.min(Math.max(0, value), 100)
 
-    // Cancel any running animations
-    if (animation.value) {
-      cancelAnimationFrame(animation.value)
+    // Cancel any running interpolations
+    if (interpolationId.value) {
+      cancelAnimationFrame(interpolationId.value)
     }
 
     // Calculate the remaining duration
     const mappedDuration = duration - (duration * percentage.value) / 100
 
-    animation.value = interpolate({
+    interpolationId.value = interpolate({
       from: percentage.value,
       to: mappedValue,
       duration: mappedDuration,
@@ -41,16 +41,16 @@ export function useMagicPie(id: MaybeRef<string>) {
       callback: (value: number) => {
         percentage.value = value
       },
-      animationIdCallback: (id: number) => {
-        animation.value = id
+      interpolationIdCallback: (id: number) => {
+        interpolationId.value = id
       },
     })
   }
 
   function cancelInterpolatePercentage() {
-    if (animation.value) {
-      cancelAnimationFrame(animation.value)
-      animation.value = undefined
+    if (interpolationId.value) {
+      cancelAnimationFrame(interpolationId.value)
+      interpolationId.value = undefined
     }
   }
 

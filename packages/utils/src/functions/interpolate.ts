@@ -4,7 +4,7 @@ export type InterpolateArgs = {
   duration: number
   easing?: (t: number) => number
   callback: (result: number) => void
-  animationIdCallback?: (id: number) => void
+  interpolationIdCallback?: (id: number) => void
 }
 
 export function interpolate(args: InterpolateArgs) {
@@ -13,12 +13,12 @@ export function interpolate(args: InterpolateArgs) {
     to,
     duration,
     callback,
-    animationIdCallback = () => {},
+    interpolationIdCallback = () => {},
     easing = (t) => t * (2 - t),
   } = args
 
   let startTime: number
-  let animationId: number
+  let interpolationId: number
 
   function animate(timestamp: number) {
     if (!startTime) startTime = timestamp
@@ -30,12 +30,12 @@ export function interpolate(args: InterpolateArgs) {
     callback(value)
 
     if (progress < 1) {
-      animationId = requestAnimationFrame(animate)
-      animationIdCallback(animationId)
+      interpolationId = requestAnimationFrame(animate)
+      interpolationIdCallback(interpolationId)
     }
   }
 
-  animationId = requestAnimationFrame(animate)
+  interpolationId = requestAnimationFrame(animate)
 
-  return animationId
+  return interpolationId
 }

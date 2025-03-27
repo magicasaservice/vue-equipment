@@ -5,7 +5,7 @@ export interface MagicPieOptions {
 export interface PieState {
   id: string
   percentage: number
-  animation: number | undefined
+  interpolationId: number | undefined
 }
 
 export type PiePoint = [number, number]

@@ -9,7 +9,7 @@ export function usePieState(id: MaybeRef<string>) {
     const state: PieState = {
       id: id,
       percentage: 0,
-      animation: undefined,
+      interpolationId: undefined,
     }
 
     return reactive(state)
