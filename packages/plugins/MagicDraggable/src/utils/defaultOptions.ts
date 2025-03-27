@@ -19,7 +19,7 @@ const defaultOptions: DraggableDefaultOptions = {
     },
   },
   initial: {
-    snapPoint: 'center',
+    snapPoint: 'top-left',
   },
   disabled: false,
 }

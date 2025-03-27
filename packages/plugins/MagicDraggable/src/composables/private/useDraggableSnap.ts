@@ -14,8 +14,10 @@ type UseDraggableSnapArgs = {
   id: MaybeRef<string>
   elRect: Ref<DOMRect | undefined>
   wrapperRect: Ref<DOMRect | undefined>
-  draggedY: Ref<number>
   draggedX: Ref<number>
+  draggedY: Ref<number>
+  lastDraggedX: Ref<number>
+  lastDraggedY: Ref<number>
   animation: MaybeRef<DraggableDefaultOptions['animation']>
   snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
 }
@@ -34,8 +36,21 @@ type SnapToArgs = {
 }
 
 export function useDraggableSnap(args: UseDraggableSnapArgs) {
-  const { id, draggedY, draggedX, elRect, wrapperRect, animation, snapPoints } =
-    args
+  // Private state
+  const {
+    id,
+    draggedX,
+    draggedY,
+    lastDraggedX,
+    lastDraggedY,
+    elRect,
+    wrapperRect,
+    animation,
+    snapPoints,
+  } = args
+
+  const interpolationIdX = ref<number | undefined>(undefined)
+  const interpolationIdY = ref<number | undefined>(undefined)
 
   // Public state
   const activeSnapPoint = ref<DraggableSnapPoint | undefined>(undefined)
@@ -159,6 +174,16 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     }
   }
 
+  function cancelInterpolation() {
+    if (interpolationIdY.value) {
+      cancelAnimationFrame(interpolationIdY.value)
+    }
+
+    if (interpolationIdX.value) {
+      cancelAnimationFrame(interpolationIdX.value)
+    }
+  }
+
   // Public functions
   function interpolateDragged(args: InterpolateDraggedArgs) {
     const {
@@ -170,20 +195,32 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     const snapPoint = snapPointsMap.value[`x${x}y${y}`]
     emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
-    interpolate({
+    // Cancel any running interpolations
+    cancelInterpolation()
+
+    interpolationIdY.value = interpolate({
       from: draggedY.value,
       to: y,
       duration,
       easing,
-      callback: (value: number) => {
+      callback(value: number) {
         draggedY.value = value
         if (y > x && draggedY.value === y) {
           emitter.emit('afterSnap', { id: toValue(id), snapPoint })
         }
+
+        // Update lastDragged to reset hasDragged
+        if (draggedY.value === y) {
+          lastDraggedX.value = draggedX.value
+          lastDraggedY.value = draggedY.value
+        }
+      },
+      interpolationIdCallback(id) {
+        interpolationIdY.value = id
       },
     })
 
-    interpolate({
+    interpolationIdX.value = interpolate({
       from: draggedX.value,
       to: x,
       duration,
@@ -193,6 +230,15 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
         if (x >= y && draggedX.value === x) {
           emitter.emit('afterSnap', { id: toValue(id), snapPoint })
         }
+
+        // Update lastDragged to reset hasDragged
+        if (draggedX.value === x) {
+          lastDraggedX.value = draggedX.value
+          lastDraggedY.value = draggedY.value
+        }
+      },
+      interpolationIdCallback(id) {
+        interpolationIdX.value = id
       },
     })
   }
@@ -211,8 +257,16 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
           duration,
         })
       } else {
+        // Cancel any running interpolations
+        cancelInterpolation()
+
+        // Snap
         draggedX.value = mappedSnapPoint.x
         draggedY.value = mappedSnapPoint.y
+
+        // Update lastDragged to reset hasDragged
+        lastDraggedX.value = draggedX.value
+        lastDraggedY.value = draggedY.value
       }
     }
 

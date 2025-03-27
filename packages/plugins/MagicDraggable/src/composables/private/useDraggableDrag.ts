@@ -122,8 +122,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     wrapperRect,
     animation,
     snapPoints,
-    draggedY,
     draggedX,
+    draggedY,
+    lastDraggedX,
+    lastDraggedY,
   })
 
   // Private functions
@@ -561,6 +563,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       if (activeSnapPoint.value) {
         await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
         snapPointsMap.trigger()
+        mappedSnapPoints.trigger()
       }
     }, 100)()
   })
@@ -574,6 +577,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       if (activeSnapPoint.value) {
         await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
         snapPointsMap.trigger()
+        mappedSnapPoints.trigger()
       }
     }, 100)()
   })

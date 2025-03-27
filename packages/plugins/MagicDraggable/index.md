@@ -431,3 +431,9 @@ In order to provide its basic functionality the component comes with some CSS. T
    }
  ]"
 />
+
+## Examples
+
+### Resize
+
+<ComponentPreview src="./demo/ResizeDemo.vue" />
