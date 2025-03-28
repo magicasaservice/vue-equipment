@@ -113,7 +113,7 @@ function guardedClick(event: PointerEvent) {
 }
 
 .magic-draggable__drag {
-  cursor: grab;
+  cursor: (--magic-draggable-cursor, grab);
   user-select: none;
   pointer-events: auto;
   position: relative;
@@ -125,7 +125,7 @@ function guardedClick(event: PointerEvent) {
 }
 
 .magic-draggable[data-dragging='true'] .magic-draggable__drag {
-  cursor: grabbing;
+  cursor: (--magic-draggable-cursor-dragging, grabbing);
   user-select: none;
 }
 

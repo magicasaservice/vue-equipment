@@ -380,54 +380,74 @@ In order to provide its basic functionality the component comes with some CSS. T
  ]"
  :rows="[
    {
-     items: [
-       {
-         label: '--magic-draggable-position'
-       },
-       {
-         label: 'fixed'
-       },
-     ]
+      items: [
+        {
+          label: '--magic-draggable-position'
+        },
+        {
+          label: 'fixed'
+        },
+      ]
    },
    {
-     items: [
-       {
-         label: '--magic-draggable-width'
-       },
-       {
-         label: '100%'
-       },
-     ]
+      items: [
+        {
+          label: '--magic-draggable-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
    },
    {
-     items: [
-       {
-         label: '--magic-draggable-height'
-       },
-       {
-         label: '100%'
-       },
-     ]
+      items: [
+        {
+          label: '--magic-draggable-height'
+        },
+        {
+          label: '100%'
+        },
+      ]
    },
    {
-     items: [
-       {
-         label: '--magic-draggable-z-index'
-       },
-       {
-         label: '999'
-       },
-     ]
+      items: [
+        {
+          label: '--magic-draggable-z-index'
+        },
+        {
+          label: '999'
+        },
+      ]
    },
    {
-     items: [
-       {
-         label: '--magic-draggable-inset'
-       },
-       {
-         label: '0'
-       },
-     ]
+      items: [
+        {
+          label: '--magic-draggable-inset'
+        },
+        {
+          label: '0'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-draggable-cursor'
+        },
+        {
+          label: 'grab'
+        },
+      ]
+   },
+  {
+    items: [
+        {
+          label: '--magic-draggable-cursor-dragging'
+        },
+        {
+          label: 'grabbing'
+        },
+      ]
    }
  ]"
 />
