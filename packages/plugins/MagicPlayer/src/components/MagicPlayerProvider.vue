@@ -2,6 +2,7 @@
   <div
     ref="player"
     class="magic-player-provider"
+    :data-id="id"
     :data-mode="mappedOptions.mode"
     :data-fullscreen="isFullscreen"
     :data-touched="touched"
