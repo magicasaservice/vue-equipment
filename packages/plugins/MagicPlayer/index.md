@@ -559,3 +559,7 @@ This component is used internally by both the video and audio controls component
 ### Standalone Controls
 
 <component-preview src="./demo/StandaloneControlsDemo.vue" />
+
+### Composable
+
+<component-preview src="./demo/ComposableDemo.vue" />
