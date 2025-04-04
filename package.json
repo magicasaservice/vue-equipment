@@ -15,12 +15,12 @@
   "devDependencies": {
     "@maas/config": "^1.6.0",
     "@maas/mirror": "catalog:",
-    "@release-it/bumper": "^7.0.1",
+    "@release-it/bumper": "^7.0.2",
     "@types/node": "catalog:",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "release-it": "^18.1.2",
     "tailwindcss": "catalog:",
-    "turbo": "^2.4.4",
+    "turbo": "^2.5.0",
     "typescript": "catalog:"
   },
   "exports": {
@@ -140,7 +140,7 @@
   "volta": {
     "node": "20.18.1"
   },
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.7.1",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"

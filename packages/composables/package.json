@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@maas/mirror": "catalog:",
-    "@types/luxon": "^3.4.2",
+    "@types/luxon": "^3.6.2",
     "tsup": "catalog:"
   },
   "exports": "./index.ts",
