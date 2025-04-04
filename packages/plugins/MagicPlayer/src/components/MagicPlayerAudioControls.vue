@@ -6,7 +6,9 @@
     :data-paused="!playing"
     :data-waiting="waiting"
     :data-idle="idle"
-    :data-hover="audioMouseEntered"
+    :data-hover="controlsMouseEntered"
+    @mouseenter="onMouseenter"
+    @mouseleave="onMouseleave"
   >
     <div class="magic-player-audio-controls__bar">
       <div ref="bar" class="magic-player-audio-controls__bar--inner">
@@ -51,14 +53,25 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, computed, inject, provide, useTemplateRef } from 'vue'
+import {
+  toRefs,
+  computed,
+  inject,
+  provide,
+  useTemplateRef,
+  onBeforeUnmount,
+} from 'vue'
 import { useIdle } from '@vueuse/core'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
-import { MagicPlayerInstanceId } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerTrackRef,
+  MagicPlayerBarRef,
+} from '../symbols'
 
 interface MagicAudioPlayerControlsProps {
   instanceId?: string
@@ -82,17 +95,27 @@ const { play, pause } = usePlayerAudioApi({
   id: mappedInstanceId.value,
 })
 
-usePlayerControlsApi({
-  id: mappedInstanceId.value,
-  barRef: barRef,
-  trackRef: trackRef,
-})
+const { initialize, destroy, onMouseenter, onMouseleave } =
+  usePlayerControlsApi({
+    id: mappedInstanceId.value,
+    barRef: barRef,
+    trackRef: trackRef,
+  })
 
 const { initializeState } = usePlayerState(mappedInstanceId.value)
 const state = initializeState()
-const { playing, waiting, touched, audioMouseEntered } = toRefs(state)
+const { playing, waiting, touched, controlsMouseEntered } = toRefs(state)
 
 const { idle } = useIdle(3000)
 
+// Lifecycle hooks
+initialize()
+
+onBeforeUnmount(() => {
+  destroy()
+})
+
 provide(MagicPlayerInstanceId, mappedInstanceId.value)
+provide(MagicPlayerTrackRef, trackRef)
+provide(MagicPlayerBarRef, barRef)
 </script>

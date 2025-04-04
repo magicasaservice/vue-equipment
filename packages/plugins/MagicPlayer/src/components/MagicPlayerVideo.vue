@@ -31,6 +31,7 @@ import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 

@@ -1,5 +1,4 @@
 import {
-  ref,
   toRefs,
   shallowRef,
   computed,
@@ -7,11 +6,14 @@ import {
   toValue,
   type MaybeRef,
   type Ref,
+  type WatchHandle,
 } from 'vue'
 import {
   useResizeObserver,
   useEventListener,
   defaultWindow,
+  type UseResizeObserverReturn,
+  useThrottleFn,
 } from '@vueuse/core'
 import {
   isIOS,
@@ -30,7 +32,7 @@ export type UsePlayerControlsApiArgs = {
 }
 
 export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
-  const { id, trackRef, barRef, popoverRef } = args
+  const { id, barRef, trackRef, popoverRef } = args
 
   // Private state
   const { initializeState } = usePlayerState(toValue(id))
@@ -47,9 +49,9 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     popoverOffsetX,
     playing,
     buffered,
-    barRect,
-    trackRect,
-    popoverRect,
+    controlsBarRect,
+    controlsTrackRect,
+    controlsPopoverRect,
   } = toRefs(state)
 
   const resumePlay = shallowRef(false)
@@ -60,10 +62,13 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   // Public state
   const bufferedPercentage = computed(() => {
-    if (!buffered) return 0
+    if (!buffered) {
+      return 0
+    }
 
     const endBuffer = buffered.value?.length > 0 ? buffered.value[0][1] : 0
     const percentage = (endBuffer / duration.value) * 100
+
     return clampValue(percentage, 0, thumbPercentage.value)
   })
 
@@ -71,27 +76,33 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   const { play, pause, seek } = usePlayerVideoApi({ id })
 
   function getPopoverOffsetX() {
-    if (!trackRect.value || !popoverRect.value || !barRect.value) {
-      return 0
-    } else {
-      const trackFactor = barRect.value.width / trackRect.value.width
-
-      const offsetXPercentage =
-        (Math.abs(trackRect.value.x - barRect.value.x) / barRect.value.width) *
-        100
-
-      const popoverWidthPercentage =
-        (popoverRect.value.width / barRect.value.width) * 100
-
-      const maxPercentage = 100 - popoverWidthPercentage
-
-      const percentage =
-        seekedPercentage.value / trackFactor +
-        offsetXPercentage -
-        popoverWidthPercentage / 2
-
-      popoverOffsetX.value = clampValue(percentage, 0, maxPercentage)
+    if (
+      !controlsTrackRect.value ||
+      !controlsPopoverRect.value ||
+      !controlsBarRect.value
+    ) {
+      return
     }
+
+    const trackFactor =
+      controlsBarRect.value.width / controlsTrackRect.value.width
+
+    const offsetXPercentage =
+      (Math.abs(controlsTrackRect.value.x - controlsBarRect.value.x) /
+        controlsBarRect.value.width) *
+      100
+
+    const popoverWidthPercentage =
+      (controlsPopoverRect.value.width / controlsBarRect.value.width) * 100
+
+    const maxPercentage = 100 - popoverWidthPercentage
+
+    const percentage =
+      seekedPercentage.value / trackFactor +
+      offsetXPercentage -
+      popoverWidthPercentage / 2
+
+    popoverOffsetX.value = clampValue(percentage, 0, maxPercentage)
   }
 
   function getTimelineTrackSize() {
@@ -100,9 +111,13 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return
     }
 
-    trackRect.value = toValue(trackRef)!.getBoundingClientRect()
+    controlsTrackRect.value = toValue(trackRef)!.getBoundingClientRect()
+
+    console.log('controlsTrackRect.value :', controlsTrackRect.value)
+
     thumbPercentage.value =
-      100 - (trackRect.value.height / trackRect.value.width) * 100
+      100 -
+      (controlsTrackRect.value.height / controlsTrackRect.value.width) * 100
   }
 
   function getPopoverSizes() {
@@ -111,22 +126,26 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return
     }
 
-    barRect.value = toValue(barRef)!.getBoundingClientRect()
-    popoverRect.value = toValue(popoverRef)!.getBoundingClientRect()
+    controlsBarRect.value = toValue(barRef)!.getBoundingClientRect()
+    controlsPopoverRect.value = toValue(popoverRef)!.getBoundingClientRect()
   }
 
   function getSizes() {
     getTimelineTrackSize()
     getPopoverSizes()
+    getPopoverOffsetX()
   }
 
+  const getSizesThrottled = useThrottleFn(getSizes, 100)
+
   function seekToTrackPosition(absX: number) {
-    if (!trackRect.value) {
-      throw new Error('trackRect is undefined')
+    if (!controlsTrackRect.value) {
+      return
     }
 
-    const relX = absX - trackRect.value!.x - trackRect.value!.height / 2
-    const percentage = Math.round((relX / trackRect.value!.width) * 100)
+    const relX =
+      absX - controlsTrackRect.value!.x - controlsTrackRect.value!.height / 2
+    const percentage = Math.round((relX / controlsTrackRect.value!.width) * 100)
 
     seekedPercentage.value = clampValue(percentage, 0, thumbPercentage.value)
 
@@ -153,7 +172,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   function onPointerup(e: PointerEvent) {
     resetStateAndListeners()
-    guardedReleasePointerCapture({ event: e, element: trackRef?.value })
+    guardedReleasePointerCapture({ event: e, element: barRef?.value })
     if (resumePlay.value) {
       play()
     }
@@ -164,6 +183,13 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     if (!e.isPrimary) {
       return
     }
+    // Needs to happen here to avoid bugs with the player
+    // inside a carousel or a scrollable container.
+    getSizesThrottled()
+
+    // Prevent event bubbling, helpful on iOS
+    e.stopImmediatePropagation()
+    e.stopPropagation()
 
     // Set track position
     seekToTrackPosition(e.clientX)
@@ -174,7 +200,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return
     } else {
       // Capture pointer, update state, pause video
-      guardedSetPointerCapture({ event: e, element: trackRef?.value })
+      guardedSetPointerCapture({ event: e, element: barRef?.value })
       resumePlay.value = playing.value
       dragging.value = true
       pause()
@@ -202,48 +228,73 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   }
 
   function onMouseenter() {
-    getTimelineTrackSize()
-    getPopoverSizes()
+    getSizes()
     controlsMouseEntered.value = true
   }
 
   function onMouseleave() {
     controlsMouseEntered.value = false
-    seekedTime.value = 0
+    if (!dragging.value) {
+      seekedTime.value = 0
+    }
   }
 
   // Lifecycle hooks and listeners
-  watch(() => trackRef, getTimelineTrackSize)
-  watch(() => popoverRef, getPopoverSizes)
-  watch(() => barRef, getPopoverSizes)
+  let watchTrack: WatchHandle | null = null
+  let watchPopover: WatchHandle | null = null
+  let watchBar: WatchHandle | null = null
+  let watchCurrentTime: WatchHandle | null = null
+  let resizeObserverTrack: UseResizeObserverReturn | null = null
+  let resizeObserverPopover: UseResizeObserverReturn | null = null
+  let resizeObserverBar: UseResizeObserverReturn | null = null
+  let windowResizeCleanup: ReturnType<typeof useEventListener> | null = null
 
-  watch(currentTime, (value) => {
-    const percentage = (value / duration?.value) * 100
-    scrubbedPercentage.value = mapValue(
-      percentage,
-      0,
-      100,
-      0,
-      thumbPercentage.value
+  function initialize() {
+    watchTrack = watch(() => trackRef, getTimelineTrackSize)
+    watchPopover = watch(() => popoverRef, getPopoverSizes)
+    watchBar = watch(() => barRef, getPopoverSizes)
+
+    watchCurrentTime = watch(currentTime, (value) => {
+      const percentage = (value / duration?.value) * 100
+      scrubbedPercentage.value = mapValue(
+        percentage,
+        0,
+        100,
+        0,
+        thumbPercentage.value
+      )
+    })
+
+    resizeObserverTrack = useResizeObserver(trackRef, getTimelineTrackSize)
+    resizeObserverPopover = useResizeObserver(popoverRef, getPopoverSizes)
+    resizeObserverBar = useResizeObserver(barRef, getPopoverSizes)
+
+    windowResizeCleanup = useEventListener(
+      defaultWindow,
+      'resize',
+      () => {
+        getSizes()
+      },
+      {
+        passive: true,
+      }
     )
-  })
+  }
 
-  useResizeObserver(trackRef, getTimelineTrackSize)
-  useResizeObserver(popoverRef, getPopoverSizes)
-
-  useEventListener(
-    defaultWindow,
-    'resize',
-    () => {
-      getTimelineTrackSize()
-      getPopoverSizes()
-    },
-    {
-      passive: true,
-    }
-  )
+  function destroy() {
+    watchTrack?.()
+    watchPopover?.()
+    watchBar?.()
+    watchCurrentTime?.()
+    resizeObserverTrack?.stop()
+    resizeObserverPopover?.stop()
+    resizeObserverBar?.stop()
+    windowResizeCleanup?.()
+  }
 
   return {
+    initialize,
+    destroy,
     bufferedPercentage,
     onMouseenter,
     onMouseleave,

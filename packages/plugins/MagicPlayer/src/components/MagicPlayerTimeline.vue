@@ -1,9 +1,7 @@
 <template>
-  <div class="magic-player-timeline">
+  <div class="magic-player-timeline" ref="track">
     <div
       class="magic-player-timeline__target"
-      @mouseenter="onMouseenter"
-      @mouseleave="onMouseleave"
       @pointerdown="onPointerdown"
       @pointermove="onPointermove"
     >
@@ -38,7 +36,12 @@
 import { inject, toRefs } from 'vue'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import { usePlayerState } from '../composables/private/usePlayerState'
-import { MagicPlayerInstanceId } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerTrackRef,
+  MagicPlayerPopoverRef,
+  MagicPlayerBarRef,
+} from '../symbols'
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
@@ -53,13 +56,15 @@ const state = initializeState()
 const { controlsMouseEntered, seekedPercentage, scrubbedPercentage } =
   toRefs(state)
 
-const {
-  bufferedPercentage,
-  onMouseenter,
-  onMouseleave,
-  onPointerdown,
-  onPointermove,
-} = usePlayerControlsApi({
-  id: instanceId,
-})
+const barRef = inject(MagicPlayerBarRef)
+const trackRef = inject(MagicPlayerTrackRef)
+const popoverRef = inject(MagicPlayerPopoverRef)
+
+const { bufferedPercentage, onPointerdown, onPointermove } =
+  usePlayerControlsApi({
+    id: instanceId,
+    barRef,
+    trackRef,
+    popoverRef,
+  })
 </script>

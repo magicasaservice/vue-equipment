@@ -40,8 +40,7 @@ export interface PlayerState {
   touched: boolean
   isFullscreen: boolean
   fullscreenTarget: HTMLElement | null
-  videoMouseEntered: boolean
-  audioMouseEntered: boolean
+  mouseEntered: boolean
   controlsMouseEntered: boolean
   dragging: boolean
   seekedTime: number
@@ -49,7 +48,7 @@ export interface PlayerState {
   scrubbedPercentage: number
   thumbPercentage: number
   popoverOffsetX: number
-  barRect: DOMRect | undefined
-  trackRect: DOMRect | undefined
-  popoverRect: DOMRect | undefined
+  controlsBarRect: DOMRect | undefined
+  controlsTrackRect: DOMRect | undefined
+  controlsPopoverRect: DOMRect | undefined
 }

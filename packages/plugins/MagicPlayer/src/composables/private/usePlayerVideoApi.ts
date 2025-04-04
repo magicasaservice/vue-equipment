@@ -1,4 +1,4 @@
-import { ref, toRefs, watch, toValue, type MaybeRef, type Ref } from 'vue'
+import { toRefs, watch, toValue, type MaybeRef, type Ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { usePlayerState } from './usePlayerState'
@@ -15,14 +15,8 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
-  const {
-    currentTime,
-    playing,
-    muted,
-    touched,
-    videoMouseEntered,
-    fullscreenTarget,
-  } = toRefs(state)
+  const { currentTime, playing, muted, touched, fullscreenTarget } =
+    toRefs(state)
 
   const { enter, exit } = useFullscreen(fullscreenTarget)
 
@@ -36,7 +30,6 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   }
 
   function togglePlay() {
-    console.log('togglePlay', playing.value)
     playing.value = !playing.value
   }
 
@@ -49,20 +42,10 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   }
 
   function unmute() {
-    console.log('unmute', muted.value)
     muted.value = false
   }
 
-  function onMouseenter() {
-    videoMouseEntered.value = true
-  }
-
-  function onMouseleave() {
-    videoMouseEntered.value = false
-  }
-
   function enterFullscreen() {
-    console.log('enterFullscreen', fullscreenTarget.value)
     if (!fullscreenTarget.value) {
       console.error('No fullscreen target found')
       return
@@ -124,8 +107,6 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     unmute,
     enterFullscreen,
     exitFullscreen,
-    onMouseenter,
-    onMouseleave,
   }
 }
 

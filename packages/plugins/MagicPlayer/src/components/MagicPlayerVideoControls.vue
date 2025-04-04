@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="el"
     class="magic-player-video-controls"
     :data-fullscreen="isFullscreen"
     :data-touched="touched"
@@ -10,6 +11,8 @@
     :data-idle="idle"
     :data-hover="controlsMouseEntered"
     :data-standalone="standalone"
+    @mouseenter="onMouseenter"
+    @mouseleave="onMouseleave"
   >
     <transition :name="mappedTransition">
       <div v-show="!hidden" class="magic-player-video-controls__bar">
@@ -73,8 +76,15 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, computed, inject, provide, useTemplateRef } from 'vue'
-import { useIdle } from '@vueuse/core'
+import {
+  toRefs,
+  computed,
+  inject,
+  provide,
+  useTemplateRef,
+  onBeforeUnmount,
+} from 'vue'
+import { useElementVisibility, useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconVolumeOn from './icons/VolumeOn.vue'
@@ -84,7 +94,13 @@ import IconFullscreenExit from './icons/FullscreenExit.vue'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
-import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
+  MagicPlayerTrackRef,
+  MagicPlayerPopoverRef,
+  MagicPlayerBarRef,
+} from '../symbols'
 
 import '@maas/vue-equipment/utils/css/animations/fade-up-in.css'
 import '@maas/vue-equipment/utils/css/animations/fade-up-out.css'
@@ -127,7 +143,7 @@ const {
   waiting,
   muted,
   touched,
-  videoMouseEntered,
+  mouseEntered,
   controlsMouseEntered,
   isFullscreen,
   popoverOffsetX,
@@ -137,12 +153,16 @@ const {
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   usePlayerVideoApi({ id: mappedInstanceId.value })
 
-usePlayerControlsApi({
-  id: mappedInstanceId.value,
-  barRef: barRef,
-  trackRef: trackRef,
-  popoverRef: popoverRef,
-})
+const { initialize, destroy, onMouseenter, onMouseleave } =
+  usePlayerControlsApi({
+    id: mappedInstanceId.value,
+    barRef: barRef,
+    trackRef: trackRef,
+    popoverRef: popoverRef,
+  })
+
+const elRef = useTemplateRef('el')
+const isVisible = useElementVisibility(elRef)
 
 const { idle } = useIdle(3000)
 
@@ -152,9 +172,9 @@ const hidden = computed(() => {
       return false
     case playing.value && idle.value:
       return true
-    case playing.value &&
-      !controlsMouseEntered.value &&
-      !videoMouseEntered.value:
+    case playing.value && !controlsMouseEntered.value && !mouseEntered.value:
+      return true
+    case !isVisible.value:
       return true
     case !touched.value:
       return true
@@ -163,5 +183,15 @@ const hidden = computed(() => {
   }
 })
 
+// Lifecycle hooks
+initialize()
+
+onBeforeUnmount(() => {
+  destroy()
+})
+
 provide(MagicPlayerInstanceId, mappedInstanceId.value)
+provide(MagicPlayerTrackRef, trackRef)
+provide(MagicPlayerPopoverRef, popoverRef)
+provide(MagicPlayerBarRef, barRef)
 </script>

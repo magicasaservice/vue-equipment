@@ -5,7 +5,7 @@
     :data-paused="!playing"
     :data-waiting="waiting"
     :data-idle="idle"
-    :data-hover="videoMouseEntered"
+    :data-hover="mouseEntered"
     @click.stop="togglePlay"
   >
     <slot>
@@ -52,7 +52,7 @@ if (!instanceId) {
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
-const { videoMouseEntered, playing, waiting } = toRefs(state)
+const { mouseEntered, playing, waiting } = toRefs(state)
 
 const { togglePlay } = usePlayerVideoApi({
   id: instanceId,

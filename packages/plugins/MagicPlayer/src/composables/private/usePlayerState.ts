@@ -23,8 +23,7 @@ export function usePlayerState(id: MaybeRef<string>) {
       touched: false,
       isFullscreen: false,
       fullscreenTarget: null,
-      videoMouseEntered: false,
-      audioMouseEntered: false,
+      mouseEntered: false,
       controlsMouseEntered: false,
       dragging: false,
       seekedTime: 0,
@@ -32,9 +31,9 @@ export function usePlayerState(id: MaybeRef<string>) {
       scrubbedPercentage: 0,
       thumbPercentage: 0,
       popoverOffsetX: 0,
-      barRect: undefined,
-      trackRect: undefined,
-      popoverRect: undefined,
+      controlsBarRect: undefined,
+      controlsTrackRect: undefined,
+      controlsPopoverRect: undefined,
     }
 
     return reactive(state)

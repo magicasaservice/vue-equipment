@@ -11,8 +11,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
-  const { touched, audioMouseEntered, currentTime, playing, muted } =
-    toRefs(state)
+  const { touched, currentTime, playing, muted } = toRefs(state)
 
   // Public state
 
@@ -41,14 +40,6 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
     muted.value = false
   }
 
-  function onMouseenter() {
-    audioMouseEntered.value = true
-  }
-
-  function onMouseleave() {
-    audioMouseEntered.value = false
-  }
-
   // Lifecycle hooks and listeners
   watch(playing, (value) => {
     if (!touched.value && value) {
@@ -63,8 +54,6 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
     seek,
     mute,
     unmute,
-    onMouseenter,
-    onMouseleave,
   }
 }
 

@@ -19,16 +19,9 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  toRefs,
-  useTemplateRef,
-  provide,
-  type MaybeRef,
-  onUnmounted,
-} from 'vue'
+import { toRefs, provide, type MaybeRef, onUnmounted } from 'vue'
 import defu from 'defu'
 
-import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerState } from '../composables/private/usePlayerState'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
@@ -44,16 +37,18 @@ interface MagicPlayerProps {
 const { id, options } = defineProps<MagicPlayerProps>()
 const mappedOptions = defu(options, defaultOptions)
 
-const playerRef = useTemplateRef('player')
-
 const { initializeState, deleteState } = usePlayerState(id)
 const state = initializeState()
-const { playing, waiting, muted, loaded, isFullscreen, touched } = toRefs(state)
+const { playing, waiting, muted, loaded, isFullscreen, touched, mouseEntered } =
+  toRefs(state)
 
-const { onMouseenter, onMouseleave } = usePlayerVideoApi({
-  id: id,
-  playerRef: playerRef,
-})
+function onMouseenter() {
+  mouseEntered.value = true
+}
+
+function onMouseleave() {
+  mouseEntered.value = false
+}
 
 onUnmounted(() => {
   deleteState()
