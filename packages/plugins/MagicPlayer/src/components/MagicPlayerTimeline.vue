@@ -5,6 +5,7 @@
       @mouseenter="onMouseenter"
       @mouseleave="onMouseleave"
       @pointerdown="onPointerdown"
+      @pointermove="onPointermove"
     >
       <div class="magic-player-timeline__track">
         <div
@@ -52,8 +53,13 @@ const state = initializeState()
 const { controlsMouseEntered, seekedPercentage, scrubbedPercentage } =
   toRefs(state)
 
-const { bufferedPercentage, onMouseenter, onMouseleave, onPointerdown } =
-  usePlayerControlsApi({
-    id: instanceId,
-  })
+const {
+  bufferedPercentage,
+  onMouseenter,
+  onMouseleave,
+  onPointerdown,
+  onPointermove,
+} = usePlayerControlsApi({
+  id: instanceId,
+})
 </script>

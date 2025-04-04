@@ -159,19 +159,16 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     }
   }
 
+  // Public functions
   function onPointermove(e: PointerEvent) {
     if (!e.isPrimary) {
       return
     }
 
-    // Update DomRect values
-    getSizes()
-
     // Set track position
     seekToTrackPosition(e.clientX)
   }
 
-  // Public functions
   function onPointerdown(e: PointerEvent) {
     if (dragging.value) {
       return
@@ -181,6 +178,9 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       resumePlay.value = playing.value
       dragging.value = true
       pause()
+
+      // Update DOM Rect sizes
+      getSizes()
 
       // Add listeners
       cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
@@ -248,6 +248,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     onMouseenter,
     onMouseleave,
     onPointerdown,
+    onPointermove,
   }
 }
 
