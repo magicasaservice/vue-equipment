@@ -22,3 +22,34 @@ export type PlayerPrivateEvents = {
     value: string | number | boolean | Buffered | DOMRect | HTMLElement
   }
 }
+
+export interface PlayerState {
+  id: string
+  currentTime: number
+  duration: number
+  seeking: boolean
+  volume: number
+  rate: number
+  loaded: boolean
+  waiting: boolean
+  ended: boolean
+  playing: boolean
+  stalled: boolean
+  buffered: Buffered
+  muted: boolean
+  touched: boolean
+  isFullscreen: boolean
+  fullscreenTarget: HTMLElement | null
+  videoMouseEntered: boolean
+  audioMouseEntered: boolean
+  controlsMouseEntered: boolean
+  dragging: boolean
+  seekedTime: number
+  seekedPercentage: number
+  scrubbedPercentage: number
+  thumbPercentage: number
+  popoverOffsetX: number
+  barRect: DOMRect | undefined
+  trackRect: DOMRect | undefined
+  popoverRect: DOMRect | undefined
+}

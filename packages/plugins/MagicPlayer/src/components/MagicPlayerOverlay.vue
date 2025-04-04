@@ -5,7 +5,7 @@
     :data-paused="!playing"
     :data-waiting="waiting"
     :data-idle="idle"
-    :data-hover="mouseEntered"
+    :data-hover="videoMouseEntered"
     @click.stop="togglePlay"
   >
     <slot>
@@ -33,12 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
-import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { MagicPlayerInstanceId } from '../symbols'
 
@@ -50,10 +50,11 @@ if (!instanceId) {
   )
 }
 
-const { playing, waiting } = usePlayerMediaApi({
-  id: instanceId,
-})
-const { mouseEntered, togglePlay } = usePlayerVideoApi({
+const { initializeState } = usePlayerState(instanceId)
+const state = initializeState()
+const { videoMouseEntered, playing, waiting } = toRefs(state)
+
+const { togglePlay } = usePlayerVideoApi({
   id: instanceId,
 })
 

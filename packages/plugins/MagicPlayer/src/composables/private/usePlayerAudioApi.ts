@@ -1,6 +1,5 @@
-import { shallowRef, watch, toValue, type MaybeRef } from 'vue'
-import { usePlayerStateEmitter } from './usePlayerStateEmitter'
-import { usePlayerMediaApi } from './usePlayerMediaApi'
+import { toRefs, watch, toValue, type MaybeRef } from 'vue'
+import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerAudioApiArgs = {
   id: MaybeRef<string>
@@ -9,11 +8,13 @@ export type UsePlayerAudioApiArgs = {
 export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   // Private state
   const { id } = args
-  const { playing, currentTime, muted } = usePlayerMediaApi({ id })
+
+  const { initializeState } = usePlayerState(toValue(id))
+  const state = initializeState()
+  const { touched, audioMouseEntered, currentTime, playing, muted } =
+    toRefs(state)
 
   // Public state
-  const touched = shallowRef(false)
-  const mouseEntered = shallowRef(false)
 
   // Public functions
   function play() {
@@ -41,11 +42,11 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   }
 
   function onMouseenter() {
-    mouseEntered.value = true
+    audioMouseEntered.value = true
   }
 
   function onMouseleave() {
-    mouseEntered.value = false
+    audioMouseEntered.value = false
   }
 
   // Lifecycle hooks and listeners
@@ -55,46 +56,7 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
     }
   })
 
-  const emitter = usePlayerStateEmitter()
-
-  // Listen to updates
-  emitter.on('update', (payload) => {
-    if (payload.id !== toValue(id)) return
-
-    if (payload.api === 'player') {
-      switch (payload.key) {
-        case 'mouseEntered':
-          mouseEntered.value = payload.value as boolean
-          break
-        case 'touched':
-          touched.value = payload.value as boolean
-          break
-      }
-    }
-  })
-
-  // Emit updates
-  watch(mouseEntered, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'player',
-      key: 'mouseEntered',
-      value,
-    })
-  })
-
-  watch(touched, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'player',
-      key: 'touched',
-      value,
-    })
-  })
-
   return {
-    mouseEntered,
-    touched,
     play,
     pause,
     togglePlay,

@@ -19,12 +19,17 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, provide, type MaybeRef } from 'vue'
+import {
+  toRefs,
+  useTemplateRef,
+  provide,
+  type MaybeRef,
+  onUnmounted,
+} from 'vue'
 import defu from 'defu'
 
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
-import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
-import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
+import { usePlayerState } from '../composables/private/usePlayerState'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 import { defaultOptions } from '../utils/defaultOptions'
@@ -41,22 +46,18 @@ const mappedOptions = defu(options, defaultOptions)
 
 const playerRef = useTemplateRef('player')
 
-const { playing, waiting, muted } = usePlayerMediaApi({
+const { initializeState, deleteState } = usePlayerState(id)
+const state = initializeState()
+const { playing, waiting, muted, loaded, isFullscreen, touched } = toRefs(state)
+
+const { onMouseenter, onMouseleave } = usePlayerVideoApi({
   id: id,
+  playerRef: playerRef,
 })
 
-const { loaded } = usePlayerRuntime({
-  id: id,
-  src: mappedOptions.src,
-  srcType: mappedOptions.srcType,
+onUnmounted(() => {
+  deleteState()
 })
-
-const { onMouseenter, onMouseleave, isFullscreen, touched } = usePlayerVideoApi(
-  {
-    id: id,
-    playerRef: playerRef,
-  }
-)
 
 provide(MagicPlayerInstanceId, id)
 provide(MagicPlayerOptionsKey, mappedOptions)

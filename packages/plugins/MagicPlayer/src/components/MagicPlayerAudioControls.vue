@@ -6,7 +6,7 @@
     :data-paused="!playing"
     :data-waiting="waiting"
     :data-idle="idle"
-    :data-hover="mouseEntered"
+    :data-hover="audioMouseEntered"
   >
     <div class="magic-player-audio-controls__bar">
       <div ref="bar" class="magic-player-audio-controls__bar--inner">
@@ -51,9 +51,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, useTemplateRef } from 'vue'
+import { toRefs, computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
-import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import IconPlay from './icons/Play.vue'
@@ -78,11 +78,7 @@ if (!mappedInstanceId.value) {
 const barRef = useTemplateRef('bar')
 const trackRef = useTemplateRef('track')
 
-const { playing, waiting } = usePlayerMediaApi({
-  id: mappedInstanceId.value,
-})
-
-const { play, pause, touched, mouseEntered } = usePlayerAudioApi({
+const { play, pause } = usePlayerAudioApi({
   id: mappedInstanceId.value,
 })
 
@@ -91,6 +87,10 @@ usePlayerControlsApi({
   barRef: barRef,
   trackRef: trackRef,
 })
+
+const { initializeState } = usePlayerState(mappedInstanceId.value)
+const state = initializeState()
+const { playing, waiting, touched, audioMouseEntered } = toRefs(state)
 
 const { idle } = useIdle(3000)
 

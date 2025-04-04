@@ -8,7 +8,7 @@
     :data-waiting="waiting"
     :data-muted="muted"
     :data-idle="idle"
-    :data-hover="mouseEntered"
+    :data-hover="controlsMouseEntered"
     :data-standalone="standalone"
   >
     <transition :name="mappedTransition">
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, useTemplateRef } from 'vue'
+import { toRefs, computed, inject, provide, useTemplateRef } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -81,7 +81,7 @@ import IconVolumeOn from './icons/VolumeOn.vue'
 import IconVolumeOff from './icons/VolumeOff.vue'
 import IconFullscreenEnter from './icons/FullscreenEnter.vue'
 import IconFullscreenExit from './icons/FullscreenExit.vue'
-import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
@@ -101,10 +101,10 @@ const {
   transition,
 } = defineProps<MagicPlayerControlsProps>()
 
-const instanceId = inject(MagicPlayerInstanceId, undefined)
-const mappedId = computed(() => id ?? instanceId)
+const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
+const mappedInstanceId = computed(() => id ?? injectedInstanceId)
 
-if (!mappedId.value) {
+if (!mappedInstanceId.value) {
   throw new Error(
     'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
   )
@@ -120,24 +120,25 @@ const barRef = useTemplateRef('bar')
 const trackRef = useTemplateRef('track')
 const popoverRef = useTemplateRef('popover')
 
-const { playing, waiting, muted } = usePlayerMediaApi({
-  id: mappedId.value,
-})
-
+const { initializeState } = usePlayerState(mappedInstanceId.value)
+const state = initializeState()
 const {
+  playing,
+  waiting,
+  muted,
   touched,
-  mouseEntered,
+  videoMouseEntered,
+  controlsMouseEntered,
   isFullscreen,
-  play,
-  pause,
-  mute,
-  unmute,
-  enterFullscreen,
-  exitFullscreen,
-} = usePlayerVideoApi({ id: mappedId.value })
+  popoverOffsetX,
+  seekedTime,
+} = toRefs(state)
 
-const { popoverOffsetX, seekedTime } = usePlayerControlsApi({
-  id: mappedId.value,
+const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
+  usePlayerVideoApi({ id: mappedInstanceId.value })
+
+usePlayerControlsApi({
+  id: mappedInstanceId.value,
   barRef: barRef,
   trackRef: trackRef,
   popoverRef: popoverRef,
@@ -151,7 +152,9 @@ const hidden = computed(() => {
       return false
     case playing.value && idle.value:
       return true
-    case playing.value && !mouseEntered.value:
+    case playing.value &&
+      !controlsMouseEntered.value &&
+      !videoMouseEntered.value:
       return true
     case !touched.value:
       return true
@@ -160,5 +163,5 @@ const hidden = computed(() => {
   }
 })
 
-provide(MagicPlayerInstanceId, mappedId.value)
+provide(MagicPlayerInstanceId, mappedInstanceId.value)
 </script>

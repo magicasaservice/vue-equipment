@@ -1,17 +1,63 @@
+import { toRefs, type MaybeRef } from 'vue'
 import { usePlayerMediaApi } from './private/usePlayerMediaApi'
 import { usePlayerVideoApi } from './private/usePlayerVideoApi'
+import { usePlayerAudioApi } from './private/usePlayerAudioApi'
 import { usePlayerRuntime } from './private/usePlayerRuntime'
 import { usePlayerControlsApi } from './private/usePlayerControlsApi'
-
-import type { MaybeRef } from 'vue'
+import { usePlayerState } from './private/usePlayerState'
 
 export function useMagicPlayer(id: MaybeRef<string>) {
+  const audioApi = usePlayerAudioApi({ id })
   const mediaApi = usePlayerMediaApi({ id })
   const videoApi = usePlayerVideoApi({ id })
   const controlsApi = usePlayerControlsApi({ id })
   const playerRuntime = usePlayerRuntime({ id })
 
+  const { initializeState } = usePlayerState(id)
+  const state = initializeState()
+  const {
+    duration,
+    seeking,
+    volume,
+    rate,
+    loaded,
+    waiting,
+    ended,
+    playing,
+    stalled,
+    buffered,
+    muted,
+    touched,
+    dragging,
+    isFullscreen,
+    seekedTime,
+    seekedPercentage,
+    scrubbedPercentage,
+    thumbPercentage,
+    popoverOffsetX,
+  } = toRefs(state)
+
   return {
+    duration,
+    seeking,
+    volume,
+    rate,
+    loaded,
+    waiting,
+    ended,
+    playing,
+    stalled,
+    buffered,
+    muted,
+    touched,
+    dragging,
+    isFullscreen,
+    seekedTime,
+    seekedPercentage,
+    scrubbedPercentage,
+    thumbPercentage,
+    popoverOffsetX,
+    audioApi,
     mediaApi,
     videoApi,
     controlsApi,

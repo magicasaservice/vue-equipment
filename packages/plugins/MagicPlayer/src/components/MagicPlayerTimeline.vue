@@ -5,8 +5,6 @@
       @mouseenter="onMouseenter"
       @mouseleave="onMouseleave"
       @pointerdown="onPointerdown"
-      @pointerup="onPointerup"
-      @pointermove="onPointermove"
     >
       <div class="magic-player-timeline__track">
         <div
@@ -21,7 +19,7 @@
             :style="{ left: `${bufferedPercentage}%` }"
           />
           <div
-            v-show="mouseEntered"
+            v-show="controlsMouseEntered"
             class="magic-player-timeline__seeked"
             :style="{ left: `${seekedPercentage}%` }"
           />
@@ -36,8 +34,9 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, toRefs } from 'vue'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId } from '../symbols'
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
@@ -48,17 +47,13 @@ if (!instanceId) {
   )
 }
 
-const {
-  mouseEntered,
-  seekedPercentage,
-  scrubbedPercentage,
-  bufferedPercentage,
-  onMouseenter,
-  onMouseleave,
-  onPointerdown,
-  onPointerup,
-  onPointermove,
-} = usePlayerControlsApi({
-  id: instanceId,
-})
+const { initializeState } = usePlayerState(instanceId)
+const state = initializeState()
+const { controlsMouseEntered, seekedPercentage, scrubbedPercentage } =
+  toRefs(state)
+
+const { bufferedPercentage, onMouseenter, onMouseleave, onPointerdown } =
+  usePlayerControlsApi({
+    id: instanceId,
+  })
 </script>

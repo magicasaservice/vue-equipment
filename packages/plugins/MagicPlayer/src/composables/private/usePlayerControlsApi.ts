@@ -1,5 +1,6 @@
 import {
   ref,
+  toRefs,
   shallowRef,
   computed,
   watch,
@@ -12,10 +13,14 @@ import {
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
+import {
+  isIOS,
+  guardedReleasePointerCapture,
+  guardedSetPointerCapture,
+} from '@maas/vue-equipment/utils'
 import { clampValue, mapValue } from '@maas/vue-equipment/utils'
-import { usePlayerMediaApi } from './usePlayerMediaApi'
 import { usePlayerVideoApi } from './usePlayerVideoApi'
-import { usePlayerStateEmitter } from './usePlayerStateEmitter'
+import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerControlsApiArgs = {
   id: MaybeRef<string>
@@ -25,26 +30,35 @@ export type UsePlayerControlsApiArgs = {
 }
 
 export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
-  // Private state
-  const resumePlay = shallowRef(false)
-  const barRect = ref<DOMRect | undefined>(undefined)
-  const trackRect = ref<DOMRect | undefined>(undefined)
-  const popoverRect = ref<DOMRect | undefined>(undefined)
-
   const { id, trackRef, barRef, popoverRef } = args
 
-  const { buffered, duration, playing, currentTime } = usePlayerMediaApi({ id })
-  const { play, pause, seek } = usePlayerVideoApi({ id })
+  // Private state
+  const { initializeState } = usePlayerState(toValue(id))
+  const state = initializeState()
+  const {
+    currentTime,
+    duration,
+    dragging,
+    controlsMouseEntered,
+    seekedTime,
+    seekedPercentage,
+    scrubbedPercentage,
+    thumbPercentage,
+    popoverOffsetX,
+    playing,
+    buffered,
+    barRect,
+    trackRect,
+    popoverRect,
+  } = toRefs(state)
+
+  const resumePlay = shallowRef(false)
+
+  let cancelPointerup: (() => void) | undefined = undefined
+  let cancelPointermove: (() => void) | undefined = undefined
+  let cancelTouchend: (() => void) | undefined = undefined
 
   // Public state
-  const dragging = shallowRef(false)
-  const mouseEntered = shallowRef(false)
-  const seekedTime = shallowRef(0)
-  const seekedPercentage = shallowRef(0)
-  const scrubbedPercentage = shallowRef(0)
-  const thumbPercentage = shallowRef(0)
-  const popoverOffsetX = shallowRef(0)
-
   const bufferedPercentage = computed(() => {
     if (!buffered) return 0
 
@@ -54,6 +68,8 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   })
 
   // Private functions
+  const { play, pause, seek } = usePlayerVideoApi({ id })
+
   function getPopoverOffsetX() {
     if (!trackRect.value || !popoverRect.value || !barRect.value) {
       return 0
@@ -99,6 +115,11 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     popoverRect.value = toValue(popoverRef)!.getBoundingClientRect()
   }
 
+  function getSizes() {
+    getTimelineTrackSize()
+    getPopoverSizes()
+  }
+
   function seekToTrackPosition(absX: number) {
     if (!trackRect.value) {
       throw new Error('trackRect is undefined')
@@ -123,37 +144,72 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     getPopoverOffsetX()
   }
 
-  // Public functions
-  function onMouseenter() {
-    getTimelineTrackSize()
-    getPopoverSizes()
-    mouseEntered.value = true
-  }
-
-  function onMouseleave() {
-    mouseEntered.value = false
+  function resetStateAndListeners() {
     dragging.value = false
-    seekedTime.value = 0
+    cancelTouchend?.()
+    cancelPointerup?.()
+    cancelPointermove?.()
   }
 
-  function onPointerdown(e: MouseEvent | TouchEvent) {
-    dragging.value = true
-    resumePlay.value = playing.value
-    pause()
-    const x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX
-    seekToTrackPosition(x)
-  }
-
-  function onPointerup() {
-    dragging.value = false
+  function onPointerup(e: PointerEvent) {
+    resetStateAndListeners()
+    guardedReleasePointerCapture({ event: e, element: trackRef?.value })
     if (resumePlay.value) {
       play()
     }
   }
 
-  function onPointermove(e: MouseEvent | TouchEvent) {
-    const x = e instanceof MouseEvent ? e.pageX : e.touches[0].pageX
-    seekToTrackPosition(x)
+  function onPointermove(e: PointerEvent) {
+    if (!e.isPrimary) {
+      return
+    }
+
+    // Update DomRect values
+    getSizes()
+
+    // Set track position
+    seekToTrackPosition(e.clientX)
+  }
+
+  // Public functions
+  function onPointerdown(e: PointerEvent) {
+    if (dragging.value) {
+      return
+    } else {
+      // Capture pointer, update state, pause video
+      guardedSetPointerCapture({ event: e, element: trackRef?.value })
+      resumePlay.value = playing.value
+      dragging.value = true
+      pause()
+
+      // Add listeners
+      cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
+      cancelPointermove = useEventListener(
+        document,
+        'pointermove',
+        onPointermove,
+        { passive: false }
+      )
+
+      // Pointerup doesn’t fire on iOS, so we need to use touchend
+      cancelTouchend = isIOS()
+        ? useEventListener(document, 'touchend', onPointerup)
+        : undefined
+
+      // Set initial transform
+      onPointermove(e)
+    }
+  }
+
+  function onMouseenter() {
+    getTimelineTrackSize()
+    getPopoverSizes()
+    controlsMouseEntered.value = true
+  }
+
+  function onMouseleave() {
+    controlsMouseEntered.value = false
+    seekedTime.value = 0
   }
 
   // Lifecycle hooks and listeners
@@ -187,188 +243,11 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     }
   )
 
-  const emitter = usePlayerStateEmitter()
-
-  // Listen to updates
-  emitter.on('update', (payload) => {
-    if (payload.id !== toValue(id)) return
-
-    if (payload.api === 'controls') {
-      switch (payload.key) {
-        case 'dragging': {
-          dragging.value = payload.value as boolean
-          break
-        }
-        case 'mouseEntered': {
-          mouseEntered.value = payload.value as boolean
-          break
-        }
-        case 'seekedTime': {
-          seekedTime.value = payload.value as number
-          break
-        }
-        case 'seekedPercentage': {
-          seekedPercentage.value = payload.value as number
-          break
-        }
-        case 'scrubbedPercentage': {
-          scrubbedPercentage.value = payload.value as number
-          break
-        }
-        case 'thumbPercentage': {
-          thumbPercentage.value = payload.value as number
-          break
-        }
-        case 'popoverOffsetX': {
-          popoverOffsetX.value = payload.value as number
-          break
-        }
-        case 'barRect': {
-          barRect.value = payload.value as DOMRect
-          break
-        }
-        case 'trackRect': {
-          trackRect.value = payload.value as DOMRect
-          break
-        }
-        case 'popoverRect': {
-          popoverRect.value = payload.value as DOMRect
-          break
-        }
-      }
-    }
-  })
-
-  // Emit updates
-  watch(dragging, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'dragging',
-      value,
-    })
-  })
-
-  watch(mouseEntered, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'mouseEntered',
-      value,
-    })
-  })
-
-  watch(seekedTime, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'seekedTime',
-      value,
-    })
-  })
-
-  watch(seekedPercentage, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'seekedPercentage',
-      value,
-    })
-  })
-
-  watch(scrubbedPercentage, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'scrubbedPercentage',
-      value,
-    })
-  })
-
-  watch(bufferedPercentage, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'bufferedPercentage',
-      value,
-    })
-  })
-
-  watch(thumbPercentage, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'thumbPercentage',
-      value,
-    })
-  })
-
-  watch(popoverOffsetX, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'popoverOffsetX',
-      value,
-    })
-  })
-
-  watch(resumePlay, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'resumePlay',
-      value,
-    })
-  })
-
-  watch(barRect, (value) => {
-    if (!value) return
-
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'barRect',
-      value,
-    })
-  })
-
-  watch(trackRect, (value) => {
-    if (!value) return
-
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'trackRect',
-      value,
-    })
-  })
-
-  watch(popoverRect, (value) => {
-    if (!value) return
-
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'controls',
-      key: 'popoverRect',
-      value,
-    })
-  })
-
   return {
-    mouseEntered,
-    dragging,
-    seekedTime,
-    seekedPercentage,
-    scrubbedPercentage,
     bufferedPercentage,
-    thumbPercentage,
-    popoverOffsetX,
     onMouseenter,
     onMouseleave,
     onPointerdown,
-    onPointerup,
-    onPointermove,
-    trackRect,
   }
 }
 

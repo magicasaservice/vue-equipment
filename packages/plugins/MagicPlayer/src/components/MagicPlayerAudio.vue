@@ -4,6 +4,7 @@
 
 <script lang="ts" setup>
 import {
+  toRefs,
   useTemplateRef,
   shallowRef,
   inject,
@@ -14,13 +15,14 @@ import { useIntersectionObserver } from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
+import { usePlayerState } from '../composables/private/usePlayerState'
 
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
-const injectedId = inject(MagicPlayerInstanceId, undefined)
+const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
-if (!injectedId) {
+if (!injectedInstanceId) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
 }
 
@@ -33,20 +35,24 @@ const elRef = useTemplateRef('el')
 const pausedByIntersection = shallowRef(false)
 
 const { initialize, destroy } = usePlayerRuntime({
-  id: injectedId,
+  id: injectedInstanceId,
   mediaRef: elRef,
   src: injectedOptions.src,
   srcType: injectedOptions.srcType,
 })
 
-const { playing } = usePlayerMediaApi({
-  id: injectedId,
+usePlayerMediaApi({
+  id: injectedInstanceId,
   mediaRef: elRef,
 })
 
 const { play, pause } = usePlayerAudioApi({
-  id: injectedId,
+  id: injectedInstanceId,
 })
+
+const { initializeState } = usePlayerState(injectedInstanceId)
+const state = initializeState()
+const { playing } = toRefs(state)
 
 useIntersectionObserver(
   elRef,

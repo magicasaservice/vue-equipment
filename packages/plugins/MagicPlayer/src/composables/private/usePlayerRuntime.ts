@@ -1,9 +1,9 @@
-import { shallowRef, watch, toValue, type MaybeRef, type Ref } from 'vue'
-import { usePlayerStateEmitter } from './usePlayerStateEmitter'
+import { shallowRef, toRefs, toValue, type MaybeRef, type Ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { usePlayerState } from './usePlayerState'
 
 import type Hls from 'hls.js'
 import type { MagicPlayerOptions } from '../../types'
-import { useEventListener } from '@vueuse/core'
 
 export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
@@ -14,10 +14,13 @@ export type UsePlayerRuntimeArgs = {
 
 export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   let hls: Hls | undefined
-  const loaded = shallowRef(false)
   const defferedLoading = shallowRef(false)
 
-  const { mediaRef, srcType, src } = args
+  const { id, mediaRef, srcType, src } = args
+
+  const { initializeState } = usePlayerState(toValue(id))
+  const state = initializeState()
+  const { loaded } = toRefs(state)
 
   // Private functions
   function useNative() {
@@ -92,33 +95,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     defferedLoading.value = false
   }
 
-  const emitter = usePlayerStateEmitter()
-
-  // Listen to updates
-  emitter.on('update', (payload) => {
-    if (payload.id !== toValue(args.id)) return
-
-    if (payload.api === 'runtime') {
-      switch (payload.key) {
-        case 'loaded':
-          loaded.value = payload.value as boolean
-          break
-      }
-    }
-  })
-
-  // Emit updates
-  watch(loaded, (value) => {
-    emitter.emit('update', {
-      id: toValue(args.id),
-      api: 'runtime',
-      key: 'loaded',
-      value,
-    })
-  })
-
   return {
-    loaded,
     initialize,
     destroy,
   }

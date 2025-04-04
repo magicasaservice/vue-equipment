@@ -12,7 +12,11 @@
         <magic-player-video />
       </magic-player-provider>
     </div>
-    <m-button @click="playerApi.videoApi.togglePlay()"> Toggle Play </m-button>
+    <div class="flex gap-4">
+      <m-button @click="playerApi.videoApi.togglePlay()">
+        Toggle Play
+      </m-button>
+    </div>
   </div>
 </template>
 

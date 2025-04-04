@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
-import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
-import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+import { inject, toRefs } from 'vue'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId } from '../symbols'
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
@@ -18,13 +17,9 @@ if (!instanceId) {
   )
 }
 
-const { loaded } = usePlayerRuntime({
-  id: instanceId,
-})
-
-const { touched } = usePlayerVideoApi({
-  id: instanceId,
-})
+const { initializeState } = usePlayerState(instanceId)
+const state = initializeState()
+const { loaded, touched } = toRefs(state)
 </script>
 
 <style>

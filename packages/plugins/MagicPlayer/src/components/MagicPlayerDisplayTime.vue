@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
-import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
+import { computed, inject, toRefs } from 'vue'
 import { formatTime } from '@maas/vue-equipment/utils'
+import { usePlayerState } from '../composables/private/usePlayerState'
+
 import { MagicPlayerInstanceId } from '../symbols'
 
 interface MagicPlayerDisplayTimeProps {
@@ -24,9 +25,11 @@ if (!instanceId) {
   )
 }
 
-const { currentTime, remainingTime, duration } = usePlayerMediaApi({
-  id: instanceId,
-})
+const { initializeState } = usePlayerState(instanceId)
+const state = initializeState()
+const { currentTime, duration } = toRefs(state)
+
+const remainingTime = computed(() => duration.value - currentTime.value)
 
 const stringifiedTime = computed(() => {
   switch (type) {

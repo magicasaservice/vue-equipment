@@ -15,6 +15,7 @@
 </template>
 <script lang="ts" setup>
 import {
+  toRefs,
   shallowRef,
   onMounted,
   watch,
@@ -23,7 +24,7 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
-import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
+import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
 interface MagicPlayerMuxPopoverProps {
@@ -55,7 +56,10 @@ if (!instanceId || !injectedOptions) {
   )
 }
 
-const { seekedTime } = usePlayerControlsApi({ id: instanceId })
+const { initializeState } = usePlayerState(instanceId)
+const state = initializeState()
+const { seekedTime } = toRefs(state)
+
 const { pixelRatio } = useDevicePixelRatio()
 
 const canvasRef = useTemplateRef('canvas')

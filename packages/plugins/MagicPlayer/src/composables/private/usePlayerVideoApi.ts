@@ -1,8 +1,7 @@
-import { ref, shallowRef, watch, toValue, type MaybeRef, type Ref } from 'vue'
+import { ref, toRefs, watch, toValue, type MaybeRef, type Ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
-import { usePlayerStateEmitter } from './usePlayerStateEmitter'
-import { usePlayerMediaApi } from './usePlayerMediaApi'
+import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerVideoApiArgs = {
   id: MaybeRef<string>
@@ -14,15 +13,18 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Private state
   const { id, playerRef, videoRef } = args
 
-  const fullscreenTarget = ref<HTMLElement | null>(null)
+  const { initializeState } = usePlayerState(toValue(id))
+  const state = initializeState()
+  const {
+    currentTime,
+    playing,
+    muted,
+    touched,
+    videoMouseEntered,
+    fullscreenTarget,
+  } = toRefs(state)
 
-  const { playing, currentTime, muted } = usePlayerMediaApi({ id })
-
-  // Public state
-  const touched = shallowRef(false)
-  const mouseEntered = shallowRef(false)
-
-  const { isFullscreen, enter, exit } = useFullscreen(fullscreenTarget)
+  const { enter, exit } = useFullscreen(fullscreenTarget)
 
   // Public functions
   function play() {
@@ -34,6 +36,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   }
 
   function togglePlay() {
+    console.log('togglePlay', playing.value)
     playing.value = !playing.value
   }
 
@@ -46,18 +49,20 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   }
 
   function unmute() {
+    console.log('unmute', muted.value)
     muted.value = false
   }
 
   function onMouseenter() {
-    mouseEntered.value = true
+    videoMouseEntered.value = true
   }
 
   function onMouseleave() {
-    mouseEntered.value = false
+    videoMouseEntered.value = false
   }
 
   function enterFullscreen() {
+    console.log('enterFullscreen', fullscreenTarget.value)
     if (!fullscreenTarget.value) {
       console.error('No fullscreen target found')
       return
@@ -110,61 +115,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     })
   }
 
-  const emitter = usePlayerStateEmitter()
-
-  // Listen to updates
-  emitter.on('update', (payload) => {
-    if (payload.id !== toValue(id)) return
-
-    if (payload.api === 'player') {
-      switch (payload.key) {
-        case 'mouseEntered':
-          mouseEntered.value = payload.value as boolean
-          break
-        case 'fullscreenTarget':
-          fullscreenTarget.value = payload.value as HTMLElement
-          break
-        case 'touched':
-          touched.value = payload.value as boolean
-          break
-      }
-    }
-  })
-
-  // Emit updates
-  watch(mouseEntered, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'player',
-      key: 'mouseEntered',
-      value,
-    })
-  })
-
-  watch(touched, (value) => {
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'player',
-      key: 'touched',
-      value,
-    })
-  })
-
-  watch(fullscreenTarget, (value) => {
-    if (!value) return
-
-    emitter.emit('update', {
-      id: toValue(id),
-      api: 'player',
-      key: 'fullscreenTarget',
-      value,
-    })
-  })
-
   return {
-    mouseEntered,
-    isFullscreen,
-    touched,
     play,
     pause,
     togglePlay,
