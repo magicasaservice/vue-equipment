@@ -22,8 +22,8 @@
         </m-button>
         <magic-menu-view
           v-else-if="entry.items"
-          :key="`menu-${entry.text}`"
           :id="`id-${entry.text}`"
+          :key="`menu-${entry.text}`"
           placement="bottom"
         >
           <magic-menu-trigger as-child :trigger="['mouseenter']">

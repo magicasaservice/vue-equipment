@@ -62,7 +62,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   // Public state
   const bufferedPercentage = computed(() => {
-    if (!buffered) {
+    if (!buffered.value) {
       return 0
     }
 
@@ -112,8 +112,6 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     }
 
     controlsTrackRect.value = toValue(trackRef)!.getBoundingClientRect()
-
-    console.log('controlsTrackRect.value :', controlsTrackRect.value)
 
     thumbPercentage.value =
       100 -

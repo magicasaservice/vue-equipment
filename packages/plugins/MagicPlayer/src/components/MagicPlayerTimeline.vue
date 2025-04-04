@@ -1,5 +1,5 @@
 <template>
-  <div class="magic-player-timeline" ref="track">
+  <div ref="track" class="magic-player-timeline">
     <div
       class="magic-player-timeline__target"
       @pointerdown="onPointerdown"
