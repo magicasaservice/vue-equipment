@@ -7,7 +7,7 @@
     <div
       ref="drawer"
       class="magic-drawer"
-      :data-id="toValue(id)"
+      :data-id="mappedId"
       :data-dragging="dragging"
       :data-wheeling="wheeling"
       :data-disabled="disabled"
@@ -117,6 +117,7 @@ interface MagicDrawerProps {
 const { options = {}, id } = defineProps<MagicDrawerProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
+const mappedId = toValue(id)
 
 const elRef = useTemplateRef<HTMLElement>('el')
 const drawerRef = useTemplateRef('drawer')

@@ -4,7 +4,7 @@
     :disabled="state.options.teleport?.disabled"
   >
     <div
-      :data-id="toValue(id)"
+      :data-id="mappedId"
       :data-position="state.options.position"
       :data-expanded="state.expanded"
       class="magic-toast-provider"
@@ -74,6 +74,7 @@ interface MagicToastProps {
 }
 
 const { id, options } = defineProps<MagicToastProps>()
+const mappedId = toValue(id)
 
 defineOptions({
   inheritAttrs: false,

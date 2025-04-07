@@ -7,7 +7,7 @@
     <div
       ref="modal"
       class="magic-modal"
-      :data-id="toValue(id)"
+      :data-id="mappedId"
       v-bind="$attrs"
       aria-modal="true"
       @click.self="close"
@@ -90,6 +90,7 @@ interface MagicModalProps {
 const { id, options = {} } = defineProps<MagicModalProps>()
 
 const mappedOptions = customDefu(options, defaultOptions)
+const mappedId = toValue(id)
 const modalRef = useTemplateRef('modal')
 
 const {

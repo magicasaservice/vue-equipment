@@ -1,6 +1,6 @@
 <template>
   <div
-    :data-id="toValue(id)"
+    :data-id="mappedId"
     :data-dragging="dragging"
     :data-disabled="disabled"
     class="magic-draggable"
@@ -43,6 +43,7 @@ interface MagicDraggableProps {
 const { id, options = {} } = defineProps<MagicDraggableProps>()
 
 const mappedOptions = defu(options, defaultOptions)
+const mappedId = toValue(id)
 
 const elRef = useTemplateRef<HTMLElement>('el')
 const wrapperRef = useTemplateRef('wrapper')
