@@ -1,4 +1,3 @@
-import {} from '@nuxt/schema'
 import { defineNuxtModule, createResolver, addComponent } from '@nuxt/kit'
 
 export default defineNuxtModule({

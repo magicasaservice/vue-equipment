@@ -52,5 +52,16 @@ export default defineNuxtConfig({
     public: path.resolve(__dirname, '../../../apps/docs/public'),
   },
 
+  // https://github.com/nuxt/nuxt/issues/31326
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          sanitizeFileName: true,
+        },
+      },
+    },
+  },
+
   compatibilityDate: '2024-10-04',
 })

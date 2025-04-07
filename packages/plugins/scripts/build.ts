@@ -13,6 +13,13 @@ mkdist({
   distDir: resolve(__dirname, '../../../dist/plugins'),
   rootDir: resolve(__dirname, './..'),
   srcDir: resolve(__dirname, './..'),
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        verbatimModuleSyntax: true,
+      },
+    },
+  },
   pattern: [
     '**',
     '!index.md',

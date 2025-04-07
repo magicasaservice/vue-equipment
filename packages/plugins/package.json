@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@maas/mirror": "catalog:",
-    "@nuxt/schema": "catalog:",
     "esno": "catalog:",
     "mkdist": "^2.3.0",
     "vue-sfc-transformer": "^0.1.5",

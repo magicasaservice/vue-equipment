@@ -1,4 +1,3 @@
-import {} from '@nuxt/schema'
 import { defineNuxtModule, addImports } from '@nuxt/kit'
 
 export default defineNuxtModule({
