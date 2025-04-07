@@ -19,7 +19,7 @@ catalog:
   esno: ^4.8.0
   focus-trap: ^7.6.4
   fs-extra: ^11.3.0
-  hls.js: ^1.6.0
+  hls.js: ^1.6.1
   luxon: ^3.6.1
   mitt: ^3.0.1
   tailwindcss: 3.4.17
