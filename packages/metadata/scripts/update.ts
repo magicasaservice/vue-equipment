@@ -11,7 +11,7 @@ import type {
 
 import fg from 'fast-glob'
 import Git from 'simple-git'
-import { packages } from '../../../dist/meta/packages'
+import { packages } from '../../../meta/packages'
 
 export const DOCS_URL = 'https://maas.egineering/vue-equipment'
 export const DIR_PACKAGE = resolve(__dirname, '..')
