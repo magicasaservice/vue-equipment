@@ -22,7 +22,8 @@
     "@maas/mirror": "catalog:",
     "@nuxt/schema": "catalog:",
     "esno": "catalog:",
-    "mkdist": "github:magicasaservice/mkdist#fix/vue-template-ts",
+    "mkdist": "^2.3.0",
+    "vue-sfc-transformer": "^0.1.5",
     "vue-tsc": "^2.2.8"
   },
   "exports": "./index.ts",
