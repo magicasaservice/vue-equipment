@@ -24,6 +24,7 @@ mkdist({
     '!**/demo.vue',
     '!**/demo/*.vue',
     '!**/demo/**/*.vue',
+    '!**/demo/**/*.json',
     '!**/index.md',
     '!scripts/*',
     '!*.config.*',
