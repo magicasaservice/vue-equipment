@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { useTemplateRef, computed, toValue, toRefs, type MaybeRef } from 'vue'
-import { defu } from 'defu'
+import { createDefu } from 'defu'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
 import { defaultOptions } from '../utils/defaultOptions'
@@ -42,7 +42,15 @@ interface MagicDraggableProps {
 
 const { id, options = {} } = defineProps<MagicDraggableProps>()
 
-const mappedOptions = defu(options, defaultOptions)
+// Prevent deep merge of options.snapPoints
+const customDefu = createDefu((obj, key, value) => {
+  if (key === 'snapPoints') {
+    obj[key] = value
+    return true
+  }
+})
+
+const mappedOptions = customDefu(options, defaultOptions)
 const mappedId = toValue(id)
 
 const elRef = useTemplateRef<HTMLElement>('el')
