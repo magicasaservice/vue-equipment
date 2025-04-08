@@ -16,6 +16,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
   const { initializeState } = usePlayerState(id)
   const state = initializeState()
   const {
+    currentTime,
     duration,
     seeking,
     volume,
@@ -52,6 +53,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     touched,
     dragging,
     isFullscreen,
+    currentTime,
     seekedTime,
     seekedPercentage,
     scrubbedPercentage,
