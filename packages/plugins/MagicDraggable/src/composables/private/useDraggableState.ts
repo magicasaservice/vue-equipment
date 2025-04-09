@@ -21,6 +21,7 @@ export function useDraggableState(id: MaybeRef<string>) {
       draggedY: 0,
       elRect: undefined,
       wrapperRect: undefined,
+      activeSnapPoint: undefined,
     }
 
     return reactive(state)

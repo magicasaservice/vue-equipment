@@ -68,6 +68,7 @@ export interface DraggableState {
   draggedY: number
   elRect: DOMRect | undefined
   wrapperRect: DOMRect | undefined
+  activeSnapPoint: DraggableSnapPoint | undefined
 }
 
 export type DraggableEvents = {

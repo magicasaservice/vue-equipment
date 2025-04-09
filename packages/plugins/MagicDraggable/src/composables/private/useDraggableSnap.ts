@@ -1,8 +1,18 @@
-import { ref, toValue, nextTick, type MaybeRef, type Ref } from 'vue'
+import {
+  ref,
+  toRefs,
+  computed,
+  toValue,
+  nextTick,
+  type MaybeRef,
+  type Ref,
+} from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { defu } from 'defu'
+
+import { useDraggableState } from './useDraggableState'
 
 import type {
   DraggableSnapPoint,
@@ -12,12 +22,6 @@ import type {
 
 type UseDraggableSnapArgs = {
   id: MaybeRef<string>
-  elRect: Ref<DOMRect | undefined>
-  wrapperRect: Ref<DOMRect | undefined>
-  draggedX: Ref<number>
-  draggedY: Ref<number>
-  lastDraggedX: Ref<number>
-  lastDraggedY: Ref<number>
   animation: MaybeRef<DraggableDefaultOptions['animation']>
   snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
 }
@@ -36,24 +40,32 @@ type SnapToArgs = {
 }
 
 export function useDraggableSnap(args: UseDraggableSnapArgs) {
+  const { id, animation, snapPoints } = args
+
   // Private state
+  const { initializeState } = useDraggableState(toValue(id))
+  const state = initializeState()
+
   const {
-    id,
-    draggedX,
-    draggedY,
     lastDraggedX,
     lastDraggedY,
+    draggedX,
+    draggedY,
     elRect,
     wrapperRect,
-    animation,
-    snapPoints,
-  } = args
+    activeSnapPoint,
+  } = toRefs(state)
 
   const interpolationIdX = ref<number | undefined>(undefined)
   const interpolationIdY = ref<number | undefined>(undefined)
 
   // Public state
-  const activeSnapPoint = ref<DraggableSnapPoint | undefined>(undefined)
+  const mappedActiveSnapPoint = computed(() => {
+    if (!activeSnapPoint.value) {
+      return undefined
+    }
+    return mapSnapPoint(activeSnapPoint.value)
+  })
 
   const mappedSnapPoints = computedWithControl(
     () => toValue(wrapperRect),
@@ -65,7 +77,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
         })
         .filter((snapPoint) => snapPoint !== undefined) as Coordinates[]
 
-      return mapped
+      return mapped ?? []
     }
   )
 
@@ -84,6 +96,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       return mapped
     }
   )
+
   // Private functions
   const emitter = useMagicEmitter()
 
@@ -107,80 +120,81 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
 
     const mappedOffset = defu(offset, { x: 0, y: 0 })
 
+    let x = 0
+    let y = 0
+
     switch (position) {
-      case 'top-left':
-        return {
-          x: mappedOffset.x,
-          y: mappedOffset.y,
-        }
-      case 'top':
-        return {
-          x:
-            wrapperRect.value.width / 2 +
-            mappedOffset.x -
-            elRect.value.width / 2,
-          y: mappedOffset.y,
-        }
-      case 'top-right':
-        return {
-          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
-          y: mappedOffset.y,
-        }
-      case 'left':
-        return {
-          x: mappedOffset.x,
-          y:
-            wrapperRect.value.height / 2 +
-            mappedOffset.y -
-            elRect.value.height / 2,
-        }
-      case 'center':
-        return {
-          x:
-            wrapperRect.value.width / 2 -
-            elRect.value.width / 2 +
-            mappedOffset.x,
-          y:
-            wrapperRect.value.height / 2 -
-            elRect.value.height / 2 +
-            mappedOffset.y,
-        }
-      case 'right':
-        return {
-          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
-          y:
-            wrapperRect.value.height / 2 +
-            mappedOffset.y -
-            elRect.value.height / 2,
-        }
-      case 'bottom-left':
-        return {
-          x: mappedOffset.x,
-          y: wrapperRect.value.height + mappedOffset.y - elRect.value.height,
-        }
-      case 'bottom':
-        return {
-          x:
-            wrapperRect.value.width / 2 +
-            mappedOffset.x -
-            elRect.value.width / 2,
-          y: wrapperRect.value.height - mappedOffset.y - elRect.value.height,
-        }
-      case 'bottom-right':
-        return {
-          x: wrapperRect.value.width - mappedOffset.x - elRect.value.width,
-          y: wrapperRect.value.height - mappedOffset.y - elRect.value.height,
-        }
+      case 'top-left': {
+        x = mappedOffset.x
+        y = mappedOffset.y
+        break
+      }
+      case 'top': {
+        x =
+          wrapperRect.value.width / 2 + mappedOffset.x - elRect.value.width / 2
+        y = mappedOffset.y
+        break
+      }
+      case 'top-right': {
+        x = wrapperRect.value.width - mappedOffset.x - elRect.value.width
+        y = mappedOffset.y
+        break
+      }
+      case 'left': {
+        x = mappedOffset.x
+        y =
+          wrapperRect.value.height / 2 +
+          mappedOffset.y -
+          elRect.value.height / 2
+        break
+      }
+      case 'center': {
+        x =
+          wrapperRect.value.width / 2 - elRect.value.width / 2 + mappedOffset.x
+        y =
+          wrapperRect.value.height / 2 -
+          elRect.value.height / 2 +
+          mappedOffset.y
+        break
+      }
+      case 'right': {
+        x = wrapperRect.value.width - mappedOffset.x - elRect.value.width
+        y =
+          wrapperRect.value.height / 2 +
+          mappedOffset.y -
+          elRect.value.height / 2
+        break
+      }
+      case 'bottom-left': {
+        x = mappedOffset.x
+        y = wrapperRect.value.height + mappedOffset.y - elRect.value.height
+        break
+      }
+      case 'bottom': {
+        x =
+          wrapperRect.value.width / 2 + mappedOffset.x - elRect.value.width / 2
+        y = wrapperRect.value.height - mappedOffset.y - elRect.value.height
+        break
+      }
+      case 'bottom-right': {
+        x = wrapperRect.value.width - mappedOffset.x - elRect.value.width
+        y = wrapperRect.value.height - mappedOffset.y - elRect.value.height
+        break
+      }
     }
+
+    return { x: Math.round(x), y: Math.round(y) }
   }
 
   function cancelInterpolation() {
     if (interpolationIdY.value) {
       cancelAnimationFrame(interpolationIdY.value)
+      interpolationIdY.value = undefined
     }
 
     if (interpolationIdX.value) {
       cancelAnimationFrame(interpolationIdX.value)
+      interpolationIdX.value = undefined
     }
   }
 
@@ -211,8 +225,8 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
 
         // Update lastDragged to reset hasDragged
         if (draggedY.value === y) {
-          lastDraggedX.value = draggedX.value
-          lastDraggedY.value = draggedY.value
+          lastDraggedY.value = y
+          interpolationIdY.value = undefined
         }
       },
       interpolationIdCallback(id) {
@@ -233,8 +247,8 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
 
         // Update lastDragged to reset hasDragged
         if (draggedX.value === x) {
-          lastDraggedX.value = draggedX.value
-          lastDraggedY.value = draggedY.value
+          lastDraggedX.value = x
+          interpolationIdX.value = undefined
         }
       },
       interpolationIdCallback(id) {
@@ -270,13 +284,13 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       }
     }
 
-    // Save value for window resize events
+    // Save value for resize events
     activeSnapPoint.value = snapPoint
   }
 
   return {
+    mappedActiveSnapPoint,
     mappedSnapPoints,
-    activeSnapPoint,
     snapPointsMap,
     mapSnapPoint,
     interpolateDragged,

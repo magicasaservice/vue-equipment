@@ -53,6 +53,10 @@ const customDefu = createDefu((obj, key, value) => {
 const mappedOptions = customDefu(options, defaultOptions)
 const mappedId = toValue(id)
 
+if (!mappedOptions.snapPoints.length) {
+  throw new Error('MagicDraggable must have at least one snap point set')
+}
+
 const elRef = useTemplateRef<HTMLElement>('el')
 const wrapperRef = useTemplateRef('wrapper')
 

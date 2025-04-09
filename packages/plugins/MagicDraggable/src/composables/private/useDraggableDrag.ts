@@ -78,6 +78,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     draggedY,
     elRect,
     wrapperRect,
+    activeSnapPoint,
   } = toRefs(state)
 
   let cancelPointerup: (() => void) | undefined = undefined
@@ -111,21 +112,15 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // Snap logic
   const {
     snapTo,
-    activeSnapPoint,
+    mappedActiveSnapPoint,
     mapSnapPoint,
     mappedSnapPoints,
     snapPointsMap,
     interpolateDragged,
   } = useDraggableSnap({
     id,
-    elRect,
-    wrapperRect,
     animation,
     snapPoints,
-    draggedX,
-    draggedY,
-    lastDraggedX,
-    lastDraggedY,
   })
 
   // Private functions
@@ -138,10 +133,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     removeScrollLockPadding,
   } = useDraggableScrollLock()
 
-  async function getSizes() {
+  function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
     wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
-    await nextTick()
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
@@ -169,11 +163,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   }
 
-  function detectCollision() {
+  async function checkSizes() {
+    getSizes()
     const childRect = toValue(elRect)
     const parentRect = toValue(wrapperRect)
 
     if (!childRect || !parentRect) {
+      console.warn('MagicDraggable could not calculate sizing')
       return
     }
 
@@ -184,29 +180,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     ) {
       console.warn('MagicDraggable is too small for its content')
       return
-    }
-
-    // Set to current dragged position, to remember non colliding axis position
-    interpolateTo.value = { x: draggedX.value, y: draggedY.value }
-
-    // Check y axis
-    if (childRect.top < parentRect.top) {
-      interpolateTo.value = { x: interpolateTo.value?.x, y: 0 }
-    } else if (childRect.bottom > parentRect.bottom) {
-      interpolateTo.value = {
-        x: interpolateTo.value?.x,
-        y: parentRect.height - childRect.height,
-      }
-    }
-
-    // Check x axis
-    if (childRect.left < parentRect.left) {
-      interpolateTo.value = { x: 0, y: interpolateTo.value?.y }
-    } else if (childRect.right > parentRect.right) {
-      interpolateTo.value = {
-        x: parentRect.width - childRect.width,
-        y: interpolateTo.value?.y,
-      }
     }
   }
 
@@ -321,7 +294,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         } else {
           const smallerDistance = compareDistances(
             snapPoint,
-            interpolateTo.value!
+            interpolateTo.value
           )
           interpolateTo.value = smallerDistance
         }
@@ -336,8 +309,25 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         calculateDistance(b, draggedCoords)
         ? a
         : b
-    })
+    }, mappedSnapPoints.value[0])
+
     return closestSnapPoint
+  }
+
+  function onIdle() {
+    // Snap to the closest point if the user has idled
+    interpolateTo.value = findClosestSnapPoint()
+
+    // Reset the intermediate dragged position, so that the direction vector
+    // is calculated correctly for the subsequent drag
+    if (distanceThresholdReached.value && momentumThresholdReached.value) {
+      intermediateDraggedX.value = draggedX.value
+      intermediateDraggedY.value = draggedY.value
+
+      // Reset thresholds
+      distanceThresholdReached.value = false
+      momentumThresholdReached.value = false
+    }
   }
 
   function onPointerup(e: PointerEvent) {
@@ -350,12 +340,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     if (x !== undefined && y !== undefined) {
       interpolateDragged({ x, y })
-    }
 
-    // Save the snap point we’re snapping to
-    // both the input value, as well as the actual pixel value
-    if (interpolateTo.value) {
-      const key = `x${interpolateTo.value.x}y${interpolateTo.value.y}`
+      // Save the snap point we’re snapping to
+      // both the input value, as well as the actual pixel value
+      const key = `x${x}y${y}`
       activeSnapPoint.value = snapPointsMap.value[key]
     }
 
@@ -392,7 +380,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     guardedReleasePointerCapture({ event: e, element: elRef.value })
   }
 
-  function onPointermove(e: PointerEvent) {
+  async function onPointermove(e: PointerEvent) {
     // Prevent dragging with a secondary pointer
     if (!e.isPrimary) {
       return
@@ -400,10 +388,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Save dragged value
     setDragged({ x: e.screenX, y: e.screenY })
-
-    // Check for collision with bounding box
-    getSizes()
-    detectCollision()
 
     // Check thresholds
     if (!distanceThresholdReached.value) {
@@ -414,38 +398,26 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       checkMomentum()
     }
 
-    // Snap back to last dragged position if thresholds are not reached
+    // Snap back to last active snapPoint if thresholds are not reached
     if (!distanceThresholdReached.value && !momentumThresholdReached.value) {
-      interpolateTo.value = { x: lastDraggedX.value, y: lastDraggedY.value }
+      const { x, y } = mappedActiveSnapPoint.value ?? {}
+
+      if (x !== undefined && y !== undefined) {
+        interpolateTo.value = { x, y }
+        console.log('G', interpolateTo.value)
+      }
+
       return
     }
 
     // Find snap point
-    if (toValue(snapPoints).length) {
-      findSnapPointByVector()
-    }
+    findSnapPointByVector()
 
     emitter.emit('drag', {
       id: toValue(id),
       x: draggedX.value,
       y: draggedY.value,
     })
-  }
-
-  function onIdle() {
-    // Snap to the closest point if the user has idled
-    interpolateTo.value = findClosestSnapPoint()
-
-    // Reset the intermediate dragged position, so that the direction vector
-    // is calculated correctly for the subsequent drag
-    if (distanceThresholdReached.value && momentumThresholdReached.value) {
-      intermediateDraggedX.value = draggedX.value
-      intermediateDraggedY.value = draggedY.value
-
-      // Reset thresholds
-      distanceThresholdReached.value = false
-      momentumThresholdReached.value = false
-    }
   }
 
   // Public functions
@@ -459,28 +431,36 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       lockScroll()
     }
 
-    // Prevent dragging if we’re already dragging
+    // Prevent dragging if we’re already dragging or interpolating
     if (dragging.value) {
       return
-    } else {
-      // Capture pointer, save state
-      guardedSetPointerCapture({ event: e, element: elRef.value })
-      dragging.value = true
-
-      emitter.emit('beforeDrag', {
-        id: toValue(id),
-        x: draggedX.value,
-        y: draggedY.value,
-      })
     }
 
-    // Save intermediate and last dragged position,
-    // used later to reset position and calculate vectors
+    // Check dimensions
+    checkSizes()
+
+    // Capture pointer, save state
+    guardedSetPointerCapture({ event: e, element: elRef.value })
+    dragging.value = true
+
+    emitter.emit('beforeDrag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
+
+    // Save intermediate dragged position
+    // Used later to reset position and calculate vectors
     intermediateDraggedX.value = draggedX.value
     intermediateDraggedY.value = draggedY.value
 
+    // Save last dragged position
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
+
+    // Origin is the distance between pointer event and last dragged position
+    originX.value = e.screenX - draggedX.value
+    originY.value = e.screenY - draggedY.value
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
@@ -495,10 +475,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     cancelTouchend = isIOS()
       ? useEventListener(document, 'touchend', onPointerup)
       : undefined
-
-    // Origin is the distance between pointer event and last dragged position
-    originX.value = e.screenX - draggedX.value
-    originY.value = e.screenY - draggedY.value
 
     // Save start time
     dragStart.value = new Date()
@@ -558,7 +534,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // To achieve this, we update the snapPointsMap after the element has snapped
   useResizeObserver(wrapperRef, async () => {
     useThrottleFn(async () => {
-      await getSizes()
+      getSizes()
 
       if (activeSnapPoint.value) {
         await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
@@ -572,7 +548,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // To achieve this, we update the snapPointsMap after the element has snapped
   useResizeObserver(elRef, async () => {
     useThrottleFn(async () => {
-      await getSizes()
+      getSizes()
 
       if (activeSnapPoint.value) {
         await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })

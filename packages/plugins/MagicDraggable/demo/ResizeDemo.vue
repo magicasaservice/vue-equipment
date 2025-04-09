@@ -2,6 +2,11 @@
   <magic-draggable
     id="magic-draggable-demo"
     class="bg-surface-elevation-base w-full h-[20rem] rounded-md"
+    :options="{
+      threshold: {
+        lock: 10,
+      },
+    }"
   >
     <div
       :class="[
