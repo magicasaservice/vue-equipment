@@ -1,5 +1,5 @@
 import { shallowRef, reactive, computed, toValue, type MaybeRef } from 'vue'
-import { useElementBounding } from '@vueuse/core'
+import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 
 import type {
@@ -54,8 +54,22 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
     },
   })
 
+  const { width, height } = useWindowSize()
+  const windowBoundingRect = {
+    width,
+    height,
+    right: width,
+    bottom: height,
+    top: shallowRef(0),
+    left: shallowRef(0),
+  }
+
   const childBoundingRect = useElementBounding(child)
   const parentBoundingRect = useElementBounding(parent)
+
+  const mappedParentBoundingRect = toValue(parent)
+    ? parentBoundingRect
+    : windowBoundingRect
 
   const mappedOffset = { top: 0, bottom: 0, ...offset }
 
@@ -143,7 +157,8 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
 
     const offset = mappedOffset[parentEdge]
     const mappedChildEdge = toValue(childBoundingRect[childEdge])
-    const mappedParentEdge = toValue(parentBoundingRect[parentEdge]) + offset
+    const mappedParentEdge =
+      toValue(mappedParentBoundingRect[parentEdge]) + offset
 
     if (
       (direction === 'down' && mappedChildEdge <= mappedParentEdge) ||
@@ -168,7 +183,8 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
 
     const offset = mappedOffset[parentEdge]
     const mappedChildEdge = toValue(childBoundingRect[childEdge])
-    const mappedParentEdge = toValue(parentBoundingRect[parentEdge]) + offset
+    const mappedParentEdge =
+      toValue(mappedParentBoundingRect[parentEdge]) + offset
 
     if (
       (direction === 'down' && mappedChildEdge >= mappedParentEdge) ||
