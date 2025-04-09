@@ -1,45 +1,47 @@
 import {
-  ref,
   shallowRef,
   inject,
   toValue,
-  type Ref,
   type MaybeRef,
   type MaybeRefOrGetter,
 } from 'vue'
-import { useWindowSize } from '@vueuse/core'
-import { MagicScrollReturn } from '../../symbols'
+import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { clampValue } from '@maas/vue-equipment/utils'
+import { MagicScrollReturn } from '../../symbols'
 
 import type { ScrollIntersection } from '../../types'
 
-type UseScrollApiParams = {
+type UseScrollApiArgs = {
   child: MaybeRef<HTMLElement | null | undefined>
   parent: MaybeRefOrGetter<HTMLElement | null | undefined>
   from: ScrollIntersection
   to: ScrollIntersection
 }
 
-type ChildRect = DOMRect | undefined
-type ParentRect =
-  | DOMRect
-  | {
-      width: Ref<number>
-      height: Ref<number>
-      top: Ref<number>
-    }
-  | undefined
+export function useScrollApi(args: UseScrollApiArgs) {
+  const { child, parent, from, to } = args
 
-export function useScrollApi(params: UseScrollApiParams) {
-  const { child, parent, from, to } = params
   const scrollReturn = inject(MagicScrollReturn, undefined)
 
-  const childRect = ref<ChildRect>(undefined)
-  const parentRect = ref<ParentRect>(undefined)
   const start = shallowRef(0)
   const end = shallowRef(0)
 
-  const { width: windowWidth, height: windowHeight } = useWindowSize()
+  const { width, height } = useWindowSize()
+  const windowBoundingRect = {
+    width,
+    height,
+    right: width,
+    bottom: height,
+    top: shallowRef(0),
+    left: shallowRef(0),
+  }
+
+  const childBoundingRect = useElementBounding(child)
+  const parentBoundingRect = useElementBounding(parent)
+
+  const mappedParentBoundingRect = toValue(parent)
+    ? parentBoundingRect
+    : windowBoundingRect
 
   function splitLocation(location: string) {
     return {
@@ -51,44 +53,45 @@ export function useScrollApi(params: UseScrollApiParams) {
   function getOffsetTop(points: { child: string; parent: string }) {
     let y = 0
 
-    if (!childRect.value) return y
-
     const scrollY = toValue(scrollReturn?.y) || 0
 
-    switch (points.child) {
-      case 'top':
-        y += childRect.value.top + scrollY
-        break
-      case 'center':
-        y += childRect.value.top + childRect.value.height / 2 + scrollY
-        break
-      case 'bottom':
-        y += childRect.value.top + childRect.value.height + scrollY
-        break
-    }
+    const parentTop = mappedParentBoundingRect.top.value
+    const parentHeight = mappedParentBoundingRect.height.value
+    const childTop = childBoundingRect.top.value
+    const childHeight = childBoundingRect.height.value
 
-    if (!parentRect.value) {
+    if (!childHeight) {
       return y
     }
 
-    const dimensions = {
-      width: toValue(parentRect.value.width),
-      height: toValue(parentRect.value.height),
-      top: toValue(parentRect.value.top),
+    switch (points.child) {
+      case 'top':
+        y += childTop + scrollY
+        break
+      case 'center':
+        y += childTop + childHeight / 2 + scrollY
+        break
+      case 'bottom':
+        y += childTop + childHeight + scrollY
+        break
+    }
+
+    if (!mappedParentBoundingRect.height.value) {
+      return y
     }
 
     switch (points.parent) {
       case 'top':
-        y -= dimensions.top
+        y -= parentTop
         break
       case 'center':
-        y -= dimensions.top + dimensions.height / 2
+        y -= parentTop + parentHeight / 2
         break
       case 'bottom':
-        y -= dimensions.top + dimensions.height
+        y -= parentTop + parentHeight
         break
       case 'initial':
-        y -= childRect.value.top + scrollY
+        y -= childTop + scrollY
         break
     }
 
@@ -96,22 +99,15 @@ export function useScrollApi(params: UseScrollApiParams) {
   }
 
   function getCalculations() {
-    childRect.value = toValue(child)?.getBoundingClientRect()
-
-    parentRect.value = toValue(parent)
-      ? toValue(parent)?.getBoundingClientRect()
-      : {
-          width: windowWidth.value,
-          height: windowHeight.value,
-          top: 0,
-        }
+    childBoundingRect.update()
+    parentBoundingRect.update()
 
     start.value = getOffsetTop(splitLocation(from))
     end.value = getOffsetTop(splitLocation(to))
   }
 
   function getProgress() {
-    const scrollY = toValue(scrollReturn?.y) || 0
+    const scrollY = toValue(scrollReturn?.y) ?? 0
     const total = Math.abs(end.value - start.value)
     const current = scrollY - start.value
 
