@@ -12,8 +12,8 @@ catalog:
   '@nuxtjs/tailwindcss': ^6.13.2
   '@types/fs-extra': ^11.0.4
   '@types/node': ^22.14.0
-  '@vueuse/core': '>=13.0.0'
-  '@vueuse/integrations': '>=13.0.0'
+  '@vueuse/core': '>=13.1.0'
+  '@vueuse/integrations': '>=13.1.0'
   defu: ^6.1.4
   esno: ^4.8.0
   focus-trap: ^7.6.4

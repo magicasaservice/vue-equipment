@@ -22,7 +22,7 @@
     "@maas/mirror": "catalog:",
     "esno": "catalog:",
     "mkdist": "^2.3.0",
-    "vue-sfc-transformer": "^0.1.5",
+    "vue-sfc-transformer": "^0.1.10",
     "vue-tsc": "^2.2.8"
   },
   "exports": "./index.ts",
