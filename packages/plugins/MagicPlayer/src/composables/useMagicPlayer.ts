@@ -8,7 +8,6 @@ import { usePlayerState } from './private/usePlayerState'
 
 export function useMagicPlayer(id: MaybeRef<string>) {
   const audioApi = usePlayerAudioApi({ id })
-  const mediaApi = usePlayerMediaApi({ id })
   const videoApi = usePlayerVideoApi({ id })
   const controlsApi = usePlayerControlsApi({ id })
   const playerRuntime = usePlayerRuntime({ id })
@@ -60,7 +59,6 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     thumbPercentage,
     popoverOffsetX,
     audioApi,
-    mediaApi,
     videoApi,
     controlsApi,
     playerRuntime,
