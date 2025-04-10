@@ -404,7 +404,6 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
       if (x !== undefined && y !== undefined) {
         interpolateTo.value = { x, y }
-        console.log('G', interpolateTo.value)
       }
 
       return

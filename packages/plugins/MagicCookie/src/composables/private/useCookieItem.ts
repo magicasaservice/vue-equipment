@@ -43,8 +43,6 @@ export function useCookieItem(args: UseCookieItemArgs) {
       maxAge: maxAge,
     }
 
-    console.log(item)
-
     return reactive(item)
   }
 
