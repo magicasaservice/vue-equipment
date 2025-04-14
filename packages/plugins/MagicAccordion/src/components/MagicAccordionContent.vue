@@ -2,6 +2,7 @@
   <div
     class="magic-accordion-content"
     :data-active="view?.active"
+    :data-id="`${viewId}-content`"
     :style="{ '--ma-duration': `${state.options.animation?.duration}ms` }"
   >
     <auto-size
