@@ -1,0 +1,9 @@
+.fade-down-enter-active {
+  animation: fade-down-in var(--duration, 300ms)
+    var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
+}
+
+.fade-down-leave-active {
+  animation: fade-down-out var(--duration, 300ms)
+    var(--easing, cubic-bezier(0.45, 0, 0.55, 1));
+}

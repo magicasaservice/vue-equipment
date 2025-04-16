@@ -28,8 +28,8 @@ import NestedMenu from './components/NestedMenu.vue'
 import { MButton } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
 
 const offsetMiddleware = [offset({ crossAxis: -4, mainAxis: 8 })]
 

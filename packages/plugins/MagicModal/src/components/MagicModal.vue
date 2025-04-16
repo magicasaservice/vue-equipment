@@ -66,8 +66,8 @@ import { useMagicModal } from '../composables/useMagicModal'
 
 import type { MagicModalOptions } from './../types/index'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
 
 defineOptions({
   inheritAttrs: false,

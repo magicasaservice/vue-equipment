@@ -102,8 +102,8 @@ import {
   MagicPlayerBarRef,
 } from '../symbols'
 
-import '@maas/vue-equipment/utils/css/animations/fade-up-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-up-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-up-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-up-out.css'
 
 interface MagicPlayerControlsProps {
   id?: string

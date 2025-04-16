@@ -82,8 +82,8 @@ import {
 
 import type { Middleware } from '@floating-ui/vue'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
 
 defineOptions({
   inheritAttrs: false,

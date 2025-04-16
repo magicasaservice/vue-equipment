@@ -54,19 +54,19 @@ import { onClickOutside } from '@vueuse/core'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastView } from '../composables/private/useToastView'
 import { useToastCallback } from '../composables/private/useToastCallback'
+import { useToastListener } from '../composables/private/useToastListener'
 
 import MagicToastView from './MagicToastView.vue'
 import { MagicToastInstanceId } from '../../symbols'
 
 import type { MagicToastOptions } from '../types/index'
 
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-import '@maas/vue-equipment/utils/css/animations/squash-y.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ltr-out.css'
-import '@maas/vue-equipment/utils/css/animations/slide-rtl-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
-import { useToastListener } from '../composables/private/useToastListener'
+import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/squash-y.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ltr-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ltr-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-rtl-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-rtl-out.css'
 
 interface MagicToastProps {
   id: MaybeRef<string>

@@ -85,16 +85,16 @@ import { useMagicDrawer } from '../composables/useMagicDrawer'
 
 import type { MagicDrawerOptions } from '../types/index'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/fade-out.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ltr-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-rtl-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ttb-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-btt-in.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ltr-out.css'
-import '@maas/vue-equipment/utils/css/animations/slide-rtl-out.css'
-import '@maas/vue-equipment/utils/css/animations/slide-ttb-out.css'
-import '@maas/vue-equipment/utils/css/animations/slide-btt-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ltr-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-rtl-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ttb-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-btt-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ltr-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-rtl-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-ttb-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/slide-btt-out.css'
 
 defineOptions({
   inheritAttrs: false,

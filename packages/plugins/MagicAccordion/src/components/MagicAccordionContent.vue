@@ -37,8 +37,8 @@ import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionCallback } from '../composables/private/useAccordionCallback'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
-import '@maas/vue-equipment/utils/css/animations/fade-in.css'
-import '@maas/vue-equipment/utils/css/animations/auto-size-out.css'
+import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
+import '@maas/vue-equipment/utils/css/keyframes/auto-size-out.css'
 
 import '@maas/vue-equipment/utils/css/easings.css'
 

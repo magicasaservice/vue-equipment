@@ -30,8 +30,6 @@ import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
 
-import '@maas/vue-equipment/utils/css/transitions/fade.css'
-
 interface MagicToastViewProps {
   id: string
   index: number
