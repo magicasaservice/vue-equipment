@@ -131,7 +131,9 @@ export function useNoiseApi({
 
   function initialize() {
     resetContexts()
-    if (!canvasRef.value || !offCanvasRef.value) return
+    if (!canvasRef.value || !offCanvasRef.value) {
+      return
+    }
 
     // Adjusted dimensions
     const maxCanvasDim = Math.max(width.value, height.value) * pixelRatio.value
@@ -152,11 +154,13 @@ export function useNoiseApi({
     offCanvasRef.value.height = dimensions.offHeight = adjustedOffCanvasDim
 
     context.value = canvasRef.value.getContext('2d', {
-      alpha: false,
+      alpha: mappedOptions.alpha,
+      colorSpace: mappedOptions.colorSpace,
     })
     offContext.value = offCanvasRef.value.getContext('2d', {
-      alpha: false,
+      alpha: mappedOptions.alpha,
       willReadFrequently: true,
+      colorSpace: mappedOptions.colorSpace,
     })
 
     resetPixels()

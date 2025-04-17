@@ -15,4 +15,6 @@ export type MagicNoiseOptions = {
   tiles?: number
   fps?: number
   color?: string
+  alpha?: boolean
+  colorSpace?: 'srgb' | 'display-p3'
 }

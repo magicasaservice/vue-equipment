@@ -219,6 +219,35 @@ To customize the component override the necessary options. Any custom options wi
           label: 'white'
         }
       ]
+    },
+    {
+      items: [
+        {
+          label: 'alpha',
+          description: 'A boolean value indicating if the canvas should be drawn with a transparent backdrop. Setting this to true might slow rendering performance.'
+        },
+        { 
+          label: 'boolean'
+        },
+        { 
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'alpha',
+          description: 'Sets the [color space](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext#colorspace) of the noise.'
+        },
+        { 
+          label: 'string',
+          description: '\'srgb\' | \'muldisplay-p3tiple\''
+        },
+        { 
+          label: 'srgb'
+        }
+      ]
     }
   ]"
 />
@@ -236,7 +265,8 @@ The component comes with some CSS variables for customization.
     {
       items: [
         {
-          label: '--magic-noise-background'
+          label: '--magic-noise-background',
+          description: 'Make sure to set `options.alpha` to `true`. Otherwise the background will not be visible.'
         },
         {
           label: '#000'
@@ -265,3 +295,9 @@ The component comes with some CSS variables for customization.
     }
   ]"
 />
+
+## Examples
+
+### Custom Color
+
+<ComponentPreview src="./demo/CustomColor.vue" />

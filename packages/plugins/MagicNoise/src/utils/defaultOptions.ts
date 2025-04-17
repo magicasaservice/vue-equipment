@@ -6,6 +6,8 @@ const defaultOptions: RequireAll<MagicNoiseOptions> = {
   tiles: 32,
   fps: 12,
   color: 'white',
+  alpha: false,
+  colorSpace: 'srgb',
 }
 
 export { defaultOptions }
