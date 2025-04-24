@@ -106,7 +106,6 @@ export async function readMetadata() {
             .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || [])[1] || ''
 
         description = description.trim()
-        description = description.charAt(0).toLowerCase() + description.slice(1)
 
         fn.description = description
 

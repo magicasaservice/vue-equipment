@@ -17,6 +17,8 @@
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.2",
     "@types/node": "catalog:",
+    "eslint": "^9.25.1",
+    "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "release-it": "^18.1.2",
     "tailwindcss": "catalog:",

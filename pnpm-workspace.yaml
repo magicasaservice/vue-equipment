@@ -24,6 +24,7 @@ catalog:
   tailwindcss: 3.4.17
   motion: ^12.7.3
   nuxt: ^3.16.2
+  prettier: ^3.5.3
   tsup: ^8.4.0
   typescript: 5.6.3
   universal-cookie: ^7.2.2

@@ -1,12 +1,4 @@
-import {
-  ref,
-  toRefs,
-  computed,
-  toValue,
-  nextTick,
-  type MaybeRef,
-  type Ref,
-} from 'vue'
+import { ref, toRefs, computed, toValue, nextTick, type MaybeRef } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins'
@@ -84,14 +76,17 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   const snapPointsMap = computedWithControl(
     () => toValue(snapPoints),
     () => {
-      const mapped = toValue(snapPoints).reduce((acc, current) => {
-        const key = mapSnapPoint(current)
-        if (key) {
-          const mappedKey = `x${key.x}y${key.y}`
-          acc[mappedKey] = current
-        }
-        return acc
-      }, {} as Record<string, DraggableSnapPoint>)
+      const mapped = toValue(snapPoints).reduce(
+        (acc, current) => {
+          const key = mapSnapPoint(current)
+          if (key) {
+            const mappedKey = `x${key.x}y${key.y}`
+            acc[mappedKey] = current
+          }
+          return acc
+        },
+        {} as Record<string, DraggableSnapPoint>
+      )
 
       return mapped
     }

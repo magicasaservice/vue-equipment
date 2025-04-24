@@ -1,5 +1,4 @@
 import { toRefs, type MaybeRef } from 'vue'
-import { usePlayerMediaApi } from './private/usePlayerMediaApi'
 import { usePlayerVideoApi } from './private/usePlayerVideoApi'
 import { usePlayerAudioApi } from './private/usePlayerAudioApi'
 import { usePlayerRuntime } from './private/usePlayerRuntime'
