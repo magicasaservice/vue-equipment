@@ -41,11 +41,11 @@ export default defineNuxtModule<ModuleOptions>({
     const packages = ['plugins', 'composables', 'utils']
     nuxt.options.alias = nuxt.options.alias ?? {}
 
-    packages.forEach((pkg) => {
+    for (const pkg of packages) {
       nuxt.options.alias[`@maas/vue-equipment/${pkg}`] =
         nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ??
         resolver.resolve(`../${pkg}`)
-    })
+    }
 
     // Plugins
     if (options.plugins === true) {
