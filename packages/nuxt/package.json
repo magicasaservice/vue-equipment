@@ -26,11 +26,10 @@
     "vitest": "^3.1.1"
   },
   "scripts": {
-    "build": "nuxt-module-build build --outDir ../../dist/nuxt && pnpm dlx nuxi prepare ./playground",
-    "build:prepare": "nuxt-module-build prepare --outDir ../../dist/nuxt",
+    "build": "pnpm dlx nuxi prepare playground && nuxt-module-build build --outDir ../../dist/nuxt",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"

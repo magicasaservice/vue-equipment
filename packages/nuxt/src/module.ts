@@ -32,18 +32,18 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Prevent vite from optimizing plugins
     extendViteConfig((config) => {
-      config.optimizeDeps = config.optimizeDeps || {}
-      config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
+      config.optimizeDeps = config.optimizeDeps ?? {}
+      config.optimizeDeps.exclude = config.optimizeDeps.exclude ?? []
       config.optimizeDeps.exclude.push('@maas/vue-equipment/plugins')
     })
 
     // Aliases
     const packages = ['plugins', 'composables', 'utils']
-    nuxt.options.alias = nuxt.options.alias || {}
+    nuxt.options.alias = nuxt.options.alias ?? {}
 
     packages.forEach((pkg) => {
       nuxt.options.alias[`@maas/vue-equipment/${pkg}`] =
-        nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ||
+        nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ??
         resolver.resolve(`../${pkg}`)
     })
 

@@ -29,7 +29,12 @@ export default defineNuxtConfig({
   },
 
   alias: {
-    '@maas/vue-equipment/nuxt': path.resolve(__dirname, `${dist}/nuxt/module`),
+    '@maas/vue-equipment/nuxt': path.resolve(__dirname, `../src/module`),
+    '@maas/vue-equipment/plugins': path.resolve(__dirname, `${dist}/plugins`),
+    '@maas/vue-equipment/composables': path.resolve(
+      __dirname,
+      `${dist}/composables`
+    ),
     '@maas/mirror/tokens': path.resolve(__dirname, '../../../.maas/tokens/css'),
     '@maas/vue-equipment/plugins/MagicPlayer/css': path.resolve(
       __dirname,
