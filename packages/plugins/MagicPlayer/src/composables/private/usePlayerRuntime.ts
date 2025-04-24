@@ -14,7 +14,7 @@ export type UsePlayerRuntimeArgs = {
 
 export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   let hls: Hls | undefined
-  const defferedLoading = shallowRef(false)
+  const deferredLoading = shallowRef(false)
 
   const { id, mediaRef, srcType, src } = args
 
@@ -43,7 +43,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     useEventListener(mediaRef, 'play', () => {
       // Since the autoplay event is faster than the hls initialization,
       // hls.startLoad() needs to be deferred until hls is ready
-      defferedLoading.value = true
+      deferredLoading.value = true
     })
 
     const { default: Hls } = await import('hls.js')
@@ -61,7 +61,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       })
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (defferedLoading.value) {
+        if (deferredLoading.value) {
           hls?.startLoad()
         }
       })
@@ -92,7 +92,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   function destroy() {
     hls?.destroy()
-    defferedLoading.value = false
+    deferredLoading.value = false
   }
 
   return {
