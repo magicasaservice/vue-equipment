@@ -1,9 +1,6 @@
 @font-face {
   font-family: 'Mirage';
-  src:
-    url('Mirage-Variable.woff2') format('woff2-variations'),
-    url('Mirage-Variable.woff') format('woff2-variations');
+  src: url('mirage.TRIAL.variable.woff2') format('woff2');
   font-weight: 100 900;
-  font-style: normal;
   font-display: block;
 }
