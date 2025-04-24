@@ -35,6 +35,7 @@ export default defineNuxtConfig({
       __dirname,
       `${dist}/composables`
     ),
+    '@maas/vue-equipment/utils': path.resolve(__dirname, `${dist}/utils`),
     '@maas/mirror/tokens': path.resolve(__dirname, '../../../.maas/tokens/css'),
     '@maas/vue-equipment/plugins/MagicPlayer/css': path.resolve(
       __dirname,
