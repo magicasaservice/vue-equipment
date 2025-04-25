@@ -14,7 +14,6 @@
     :data-standalone="standalone"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
-    @pointerdown="onPointerdown"
   >
     <transition :name="mappedTransition">
       <div v-show="!hidden" class="magic-player-video-controls__bar">
@@ -158,10 +157,6 @@ const {
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   usePlayerVideoApi({ id: mappedInstanceId.value })
 
-function onPointerdown() {
-  touched.value = true
-}
-
 const { initialize, destroy, onMouseenter, onMouseleave } =
   usePlayerControlsApi({
     id: mappedInstanceId.value,
@@ -179,13 +174,10 @@ const hidden = computed(() => {
   switch (true) {
     case standalone:
       return false
-    case playing.value && idle.value:
-      return true
-    case playing.value && !controlsMouseEntered.value && !mouseEntered.value:
-      return true
     case !isVisible.value:
-      return true
-    case hasOverlay.value && !touched.value:
+    case playing.value && idle.value:
+    case hasOverlay.value && !touched.value && !started.value:
+    case playing.value && !controlsMouseEntered.value && !mouseEntered.value:
       return true
     default:
       return false

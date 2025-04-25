@@ -10,6 +10,7 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
+  shallowRef,
 } from 'vue'
 import {
   useElementVisibility,
@@ -21,10 +22,15 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
 
-import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
+  MagicPlayerRef,
+} from '../symbols'
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+const injectedPlayerRef = inject(MagicPlayerRef, undefined)
 
 if (!injectedInstanceId) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
@@ -35,7 +41,7 @@ if (!injectedOptions) {
 }
 
 const elRef = useTemplateRef('el')
-const isVisible = useElementVisibility(elRef)
+const isVisible = useElementVisibility(injectedPlayerRef)
 
 const { initialize, destroy } = usePlayerRuntime({
   id: injectedInstanceId,
@@ -49,53 +55,44 @@ usePlayerMediaApi({
   mediaRef: elRef,
 })
 
-usePlayerAudioApi({
+const { play, pause } = usePlayerAudioApi({
   id: injectedInstanceId,
 })
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { playing, paused, started, ended } = toRefs(state)
+const { playing, started } = toRefs(state)
 
-// Autoplay when window is focused, video has not been paused manually,
-// has autoplay enabled or has started playing and not ended.
-// Set playing state directly to avoid influencing paused state.
+// Lifecycle hooks and listeners
+const wasPlaying = shallowRef(false)
+
 function onWindowFocus() {
-  if (
-    isVisible.value &&
-    !playing.value &&
-    !paused.value &&
-    (injectedOptions?.autoplay || (started.value && !ended.value))
-  ) {
-    playing.value = true
+  if (isVisible.value && wasPlaying.value) {
+    play()
   }
 }
 
+function onWindowBlur() {
+  wasPlaying.value = playing.value
+}
+
 useEventListener(defaultWindow, 'focus', onWindowFocus)
+useEventListener(defaultWindow, 'blur', onWindowBlur)
 
-// Autoplay when element is visible, has not been paused manually,
-// has autoplay enabled or has started playing and not ended.
-// Set playing state directly to avoid influencing paused state.
-watch(
-  isVisible,
-  (value) => {
-    if (!value && playing.value) {
-      playing.value = false
-    }
-
-    if (
-      value &&
-      !playing.value &&
-      !paused.value &&
-      (injectedOptions.autoplay || (started.value && !ended.value))
-    ) {
-      playing.value = true
-    }
-  },
-  {
-    immediate: true,
+watch(isVisible, (value) => {
+  if (!value) {
+    wasPlaying.value = playing.value
+    pause()
   }
-)
+
+  if (value && wasPlaying.value) {
+    play()
+  }
+
+  if (value && injectedOptions.autoplay && !started.value) {
+    play()
+  }
+})
 
 onMounted(() => {
   initialize()

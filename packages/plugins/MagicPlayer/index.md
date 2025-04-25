@@ -560,13 +560,17 @@ This component is used internally by both the video and audio controls component
 
 <component-preview src="./demo/OmitOverlayDemo.vue" />
 
-### Poster Image
-
-<component-preview src="./demo/ImagePosterDemo.vue" />
-
 ### Standalone Controls
 
 <component-preview src="./demo/StandaloneControlsDemo.vue" />
+
+### Native Controls
+
+<component-preview src="./demo/NativeControlsDemo.vue" />
+
+### Poster Image
+
+<component-preview src="./demo/ImagePosterDemo.vue" />
 
 ### Composable
 

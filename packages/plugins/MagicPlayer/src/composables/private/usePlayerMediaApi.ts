@@ -23,6 +23,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     started,
     ended,
     playing,
+    paused,
     stalled,
     buffered,
     muted,
@@ -154,6 +155,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   useEventListener(mediaRef, 'pause', () => {
     playing.value = false
+    paused.value = true
   })
 
   useEventListener(mediaRef, 'play', () => {

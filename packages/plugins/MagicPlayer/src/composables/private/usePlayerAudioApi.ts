@@ -13,8 +13,6 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   const state = initializeState()
   const { currentTime, playing, paused, muted } = toRefs(state)
 
-  // Public state
-
   // Public functions
   function play() {
     playing.value = true
@@ -42,13 +40,6 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   function unmute() {
     muted.value = false
   }
-
-  // Lifecycle hooks and listeners
-  // watch(playing, (value) => {
-  //   if (!started.value && value) {
-  //     started.value = true
-  //   }
-  // })
 
   return {
     play,

@@ -18,6 +18,7 @@ import {
   onMounted,
   inject,
   onBeforeUnmount,
+  shallowRef,
 } from 'vue'
 import {
   useElementVisibility,
@@ -60,65 +61,56 @@ const { initialize, destroy } = usePlayerRuntime({
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { muted, playing, paused, started, ended } = toRefs(state)
+const { muted, playing, started } = toRefs(state)
 
 usePlayerMediaApi({
   id: injectedInstanceId,
   mediaRef: elRef,
 })
 
-const { initializeFullscreen } = usePlayerVideoApi({
+const { play, pause, mute, initializeFullscreen } = usePlayerVideoApi({
   id: injectedInstanceId,
   videoRef: elRef,
   playerRef: injectedPlayerRef,
 })
 
-// Autoplay when window is focused, video has not been paused manually,
-// has autoplay enabled or has started playing and not ended.
-// Set playing state directly to avoid influencing paused state.
+// Lifecycle hooks and listeners
+const wasPlaying = shallowRef(false)
+
 function onWindowFocus() {
-  if (
-    isVisible.value &&
-    !playing.value &&
-    !paused.value &&
-    (injectedOptions?.autoplay || (started.value && !ended.value))
-  ) {
-    playing.value = true
+  if (isVisible.value && wasPlaying.value) {
+    play()
   }
 }
 
+function onWindowBlur() {
+  wasPlaying.value = playing.value
+}
+
 useEventListener(defaultWindow, 'focus', onWindowFocus)
+useEventListener(defaultWindow, 'blur', onWindowBlur)
 
-// Autoplay when element is visible, has not been paused manually,
-// has autoplay enabled or has started playing and not ended.
-// Set playing state directly to avoid influencing paused state.
-watch(
-  isVisible,
-  (value) => {
-    if (!value && playing.value) {
-      playing.value = false
-    }
-
-    if (
-      value &&
-      !playing.value &&
-      !paused.value &&
-      (injectedOptions.autoplay || (started.value && !ended.value))
-    ) {
-      playing.value = true
-    }
-  },
-  {
-    immediate: true,
+watch(isVisible, (value) => {
+  if (!value) {
+    wasPlaying.value = playing.value
+    pause()
   }
-)
+
+  if (value && wasPlaying.value) {
+    play()
+  }
+
+  if (value && injectedOptions.autoplay && !started.value) {
+    play()
+  }
+})
 
 onMounted(() => {
   initialize()
   initializeFullscreen()
 
   if (injectedOptions.autoplay) {
-    muted.value = true
+    mute()
   }
 })
 
