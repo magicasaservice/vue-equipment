@@ -48,6 +48,32 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     muted.value = false
   }
 
+  function initializeFullscreen() {
+    if (!playerRef || !videoRef) {
+      return
+    }
+
+    watch(
+      [playerRef, videoRef],
+      ([player, video]) => {
+        switch (true) {
+          case !!video && !!player:
+            fullscreenTarget.value = isIOS() ? toValue(video) : toValue(player)
+            break
+          case !!player:
+            fullscreenTarget.value = toValue(player)
+            break
+          case !!video:
+            fullscreenTarget.value = toValue(video)
+            break
+        }
+      },
+      {
+        immediate: true,
+      }
+    )
+  }
+
   function enterFullscreen() {
     if (!fullscreenTarget.value) {
       console.error('No fullscreen target found')
@@ -66,41 +92,6 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     exit()
   }
 
-  // Lifecycle hooks and listeners
-  // watch(playing, (value) => {
-  //   if (!started.value && value) {
-  //     started.value = true
-  //   }
-  // })
-
-  if (playerRef && !videoRef) {
-    watch(playerRef, (value) => {
-      if (value) {
-        fullscreenTarget.value = toValue(value)
-      }
-    })
-  }
-
-  if (videoRef && !playerRef) {
-    watch(videoRef, (value) => {
-      if (value) {
-        fullscreenTarget.value = toValue(value)
-      }
-    })
-  }
-
-  if (videoRef && playerRef) {
-    watch([playerRef, videoRef], ([player, video]) => {
-      if (player && video) {
-        fullscreenTarget.value = isIOS() ? toValue(video) : toValue(player)
-      } else if (player) {
-        fullscreenTarget.value = toValue(player)
-      } else if (video) {
-        fullscreenTarget.value = toValue(video)
-      }
-    })
-  }
-
   return {
     play,
     pause,
@@ -108,6 +99,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
     seek,
     mute,
     unmute,
+    initializeFullscreen,
     enterFullscreen,
     exitFullscreen,
   }

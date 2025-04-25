@@ -21,12 +21,22 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, provide, type MaybeRef, onUnmounted } from 'vue'
+import {
+  toRefs,
+  provide,
+  type MaybeRef,
+  onUnmounted,
+  useTemplateRef,
+} from 'vue'
 import defu from 'defu'
 
 import { usePlayerState } from '../composables/private/usePlayerState'
 
-import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
+  MagicPlayerRef,
+} from '../symbols'
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicPlayerOptions } from '../types'
@@ -53,6 +63,8 @@ const {
   mouseEntered,
 } = toRefs(state)
 
+const playerRef = useTemplateRef('player')
+
 function onMouseenter() {
   mouseEntered.value = true
 }
@@ -71,6 +83,7 @@ onUnmounted(() => {
 
 provide(MagicPlayerInstanceId, id)
 provide(MagicPlayerOptionsKey, mappedOptions)
+provide(MagicPlayerRef, playerRef)
 </script>
 
 <style>

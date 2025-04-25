@@ -30,10 +30,15 @@ import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
 
-import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
+  MagicPlayerRef,
+} from '../symbols'
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+const injectedPlayerRef = inject(MagicPlayerRef, undefined)
 
 if (!injectedInstanceId) {
   throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
@@ -62,9 +67,10 @@ usePlayerMediaApi({
   mediaRef: elRef,
 })
 
-usePlayerVideoApi({
+const { initializeFullscreen } = usePlayerVideoApi({
   id: injectedInstanceId,
   videoRef: elRef,
+  playerRef: injectedPlayerRef,
 })
 
 // Autoplay when window is focused, video has not been paused manually,
@@ -109,6 +115,8 @@ watch(
 
 onMounted(() => {
   initialize()
+  initializeFullscreen()
+
   if (injectedOptions.autoplay) {
     muted.value = true
   }
