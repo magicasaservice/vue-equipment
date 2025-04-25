@@ -1,5 +1,8 @@
 <template>
-  <div v-show="!loaded || !touched" class="magic-player-poster">
+  <div
+    v-show="!loaded || !started || (hasOverlay && !touched)"
+    class="magic-player-poster"
+  >
     <slot />
   </div>
 </template>
@@ -19,7 +22,7 @@ if (!instanceId) {
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
-const { loaded, touched } = toRefs(state)
+const { loaded, started, hasOverlay, touched } = toRefs(state)
 </script>
 
 <style>

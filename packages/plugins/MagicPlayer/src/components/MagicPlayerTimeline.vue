@@ -47,7 +47,7 @@ const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 if (!instanceId) {
   throw new Error(
-    'MagicPlayerPoster must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
+    'MagicPlayerTimeline must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
   )
 }
 
@@ -58,7 +58,7 @@ const { controlsMouseEntered, seekedPercentage, scrubbedPercentage } =
 
 const barRef = inject(MagicPlayerBarRef)
 const trackRef = inject(MagicPlayerTrackRef)
-const popoverRef = inject(MagicPlayerPopoverRef)
+const popoverRef = inject(MagicPlayerPopoverRef, undefined)
 
 const { bufferedPercentage, onPointerdown, onPointermove } =
   usePlayerControlsApi({

@@ -4,8 +4,9 @@
     class="magic-player-video-controls"
     :data-fullscreen="isFullscreen"
     :data-touched="touched"
+    :data-started="started"
     :data-playing="playing"
-    :data-paused="!playing"
+    :data-paused="paused"
     :data-waiting="waiting"
     :data-muted="muted"
     :data-idle="idle"
@@ -13,6 +14,7 @@
     :data-standalone="standalone"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
+    @pointerdown="onPointerdown"
   >
     <transition :name="mappedTransition">
       <div v-show="!hidden" class="magic-player-video-controls__bar">
@@ -27,7 +29,7 @@
         </div>
         <div ref="bar" class="magic-player-video-controls__bar--inner">
           <div class="magic-player-video-controls__item -shrink-0">
-            <button v-if="!playing" @click="play">
+            <button v-if="paused || !started" @click="play">
               <slot name="playIcon">
                 <icon-play />
               </slot>
@@ -140,6 +142,8 @@ const { initializeState } = usePlayerState(mappedInstanceId.value)
 const state = initializeState()
 const {
   playing,
+  started,
+  paused,
   waiting,
   muted,
   touched,
@@ -147,11 +151,16 @@ const {
   controlsMouseEntered,
   isFullscreen,
   popoverOffsetX,
+  hasOverlay,
   seekedTime,
 } = toRefs(state)
 
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   usePlayerVideoApi({ id: mappedInstanceId.value })
+
+function onPointerdown() {
+  touched.value = true
+}
 
 const { initialize, destroy, onMouseenter, onMouseleave } =
   usePlayerControlsApi({
@@ -176,7 +185,7 @@ const hidden = computed(() => {
       return true
     case !isVisible.value:
       return true
-    case !touched.value:
+    case hasOverlay.value && !touched.value:
       return true
     default:
       return false

@@ -41,6 +41,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     currentTime,
     duration,
     dragging,
+    touched,
     controlsMouseEntered,
     seekedTime,
     seekedPercentage,
@@ -52,6 +53,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     controlsBarRect,
     controlsTrackRect,
     controlsPopoverRect,
+    hasControls,
   } = toRefs(state)
 
   const resumePlay = shallowRef(false)
@@ -201,6 +203,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       guardedSetPointerCapture({ event: e, element: barRef?.value })
       resumePlay.value = playing.value
       dragging.value = true
+      touched.value = true
       pause()
 
       // Update DOM Rect sizes
@@ -248,6 +251,8 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   let windowResizeCleanup: ReturnType<typeof useEventListener> | null = null
 
   function initialize() {
+    hasControls.value = true
+
     watchTrack = watch(() => trackRef, getTimelineTrackSize)
     watchPopover = watch(() => popoverRef, getPopoverSizes)
     watchBar = watch(() => barRef, getPopoverSizes)

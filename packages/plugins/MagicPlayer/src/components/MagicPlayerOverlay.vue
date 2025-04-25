@@ -2,38 +2,49 @@
   <div
     class="magic-player-overlay"
     :data-playing="playing"
-    :data-paused="!playing"
+    :data-touched="touched"
+    :data-paused="paused"
+    :data-started="started"
     :data-waiting="waiting"
+    :data-loaded="loaded"
+    :data-muted="muted"
     :data-idle="idle"
     :data-hover="mouseEntered"
     @click.stop="togglePlay"
   >
     <slot>
-      <template v-if="waiting">
-        <button class="magic-player-overlay__button">
+      <transition name="fade" mode="out-in">
+        <button
+          v-if="defferedWaiting && started"
+          class="magic-player-overlay__button"
+        >
           <slot name="waitingIcon">
             <icon-waiting />
           </slot>
         </button>
-      </template>
-      <template v-else>
-        <button v-if="!playing" class="magic-player-overlay__button">
+        <button
+          v-else-if="paused || !started"
+          class="magic-player-overlay__button"
+        >
           <slot name="playIcon">
             <icon-play />
           </slot>
         </button>
-        <button v-else class="magic-player-overlay__button">
+        <button
+          v-else-if="started && !paused"
+          class="magic-player-overlay__button"
+        >
           <slot name="pauseIcon">
             <icon-pause />
           </slot>
         </button>
-      </template>
+      </transition>
     </slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, toRefs } from 'vue'
+import { watch, ref, inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -52,13 +63,46 @@ if (!instanceId) {
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
-const { mouseEntered, playing, waiting } = toRefs(state)
+const {
+  mouseEntered,
+  playing,
+  paused,
+  started,
+  touched,
+  muted,
+  loaded,
+  waiting,
+  hasOverlay,
+} = toRefs(state)
+
+// Immediately set hasOverlay to true
+// to ensure proper interaction between overlay and controls
+hasOverlay.value = true
 
 const { togglePlay } = usePlayerVideoApi({
   id: instanceId,
 })
 
 const { idle } = useIdle(3000)
+
+// Slightly defer waiting state to avoid flicker
+const defferedWaiting = ref(false)
+
+watch(
+  () => waiting.value,
+  (value) => {
+    switch (value) {
+      case true:
+        defferedWaiting.value = true
+        break
+      case false:
+        setTimeout(() => {
+          defferedWaiting.value = false
+        }, 1000)
+        break
+    }
+  }
+)
 </script>
 
 <style>

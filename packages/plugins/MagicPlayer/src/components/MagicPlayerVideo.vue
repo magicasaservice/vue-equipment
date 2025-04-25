@@ -44,7 +44,6 @@ if (!injectedOptions) {
 }
 
 const elRef = useTemplateRef('el')
-
 const isVisible = useElementVisibility(elRef)
 
 const { initialize, destroy } = usePlayerRuntime({
@@ -56,35 +55,51 @@ const { initialize, destroy } = usePlayerRuntime({
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { muted, playing } = toRefs(state)
+const { muted, playing, paused, started, ended } = toRefs(state)
 
 usePlayerMediaApi({
   id: injectedInstanceId,
   mediaRef: elRef,
 })
 
-const { play, pause } = usePlayerVideoApi({
+usePlayerVideoApi({
   id: injectedInstanceId,
   videoRef: elRef,
 })
 
+// Autoplay when window is focused, video has not been paused manually,
+// has autoplay enabled or has started playing and not ended.
+// Set playing state directly to avoid influencing paused state.
 function onWindowFocus() {
-  if (isVisible.value && !playing.value && injectedOptions?.autoplay) {
-    play()
+  if (
+    isVisible.value &&
+    !playing.value &&
+    !paused.value &&
+    (injectedOptions?.autoplay || (started.value && !ended.value))
+  ) {
+    playing.value = true
   }
 }
 
-// Autoplay when window is focused
 useEventListener(defaultWindow, 'focus', onWindowFocus)
 
-// Autoplay when element is visible
+// Autoplay when element is visible, has not been paused manually,
+// has autoplay enabled or has started playing and not ended.
+// Set playing state directly to avoid influencing paused state.
 watch(
   isVisible,
   (value) => {
-    if (value && !playing.value && injectedOptions.autoplay) {
-      play()
-    } else if (!value && playing.value) {
-      pause()
+    if (!value && playing.value) {
+      playing.value = false
+    }
+
+    if (
+      value &&
+      !playing.value &&
+      !paused.value &&
+      (injectedOptions.autoplay || (started.value && !ended.value))
+    ) {
+      playing.value = true
     }
   },
   {

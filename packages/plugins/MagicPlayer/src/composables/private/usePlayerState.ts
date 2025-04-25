@@ -17,6 +17,8 @@ export function usePlayerState(id: MaybeRef<string>) {
       waiting: false,
       ended: false,
       playing: false,
+      started: false,
+      paused: false, // Set by user interaction
       stalled: false,
       buffered: [],
       muted: false,
@@ -31,6 +33,8 @@ export function usePlayerState(id: MaybeRef<string>) {
       scrubbedPercentage: 0,
       thumbPercentage: 0,
       popoverOffsetX: 0,
+      hasOverlay: false,
+      hasControls: false,
       controlsBarRect: undefined,
       controlsTrackRect: undefined,
       controlsPopoverRect: undefined,

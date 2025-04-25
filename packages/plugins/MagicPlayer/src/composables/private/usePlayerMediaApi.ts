@@ -20,6 +20,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     volume,
     rate,
     waiting,
+    started,
     ended,
     playing,
     stalled,
@@ -82,7 +83,9 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     playing,
     (isPlaying) => {
       const el = toValue(mediaRef)
-      if (!el) return
+      if (!el) {
+        return
+      }
 
       if (isPlaying) {
         const playPromise = el.play()
@@ -127,6 +130,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   })
 
   useEventListener(mediaRef, 'playing', () => {
+    started.value = true
     waiting.value = false
     ended.value = false
     ignorePlayingUpdates(() => (playing.value = true))
@@ -154,6 +158,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   useEventListener(mediaRef, 'play', () => {
     playing.value = true
+    started.value = true
   })
 
   useEventListener(mediaRef, 'volumechange', () => {

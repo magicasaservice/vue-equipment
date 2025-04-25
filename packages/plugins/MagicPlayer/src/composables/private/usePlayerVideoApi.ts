@@ -15,7 +15,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
-  const { currentTime, playing, muted, touched, fullscreenTarget } =
+  const { currentTime, playing, paused, muted, fullscreenTarget } =
     toRefs(state)
 
   const { enter, exit } = useFullscreen(fullscreenTarget)
@@ -23,14 +23,17 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Public functions
   function play() {
     playing.value = true
+    paused.value = false
   }
 
   function pause() {
     playing.value = false
+    paused.value = true
   }
 
   function togglePlay() {
     playing.value = !playing.value
+    paused.value = !playing.value
   }
 
   function seek(time: number) {
@@ -64,11 +67,11 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   }
 
   // Lifecycle hooks and listeners
-  watch(playing, (value) => {
-    if (!touched.value && value) {
-      touched.value = true
-    }
-  })
+  // watch(playing, (value) => {
+  //   if (!started.value && value) {
+  //     started.value = true
+  //   }
+  // })
 
   if (playerRef && !videoRef) {
     watch(playerRef, (value) => {

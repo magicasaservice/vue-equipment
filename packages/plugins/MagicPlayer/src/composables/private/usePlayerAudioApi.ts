@@ -1,4 +1,4 @@
-import { toRefs, watch, toValue, type MaybeRef } from 'vue'
+import { toRefs, toValue, type MaybeRef } from 'vue'
 import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerAudioApiArgs = {
@@ -11,21 +11,24 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
-  const { touched, currentTime, playing, muted } = toRefs(state)
+  const { currentTime, playing, paused, muted } = toRefs(state)
 
   // Public state
 
   // Public functions
   function play() {
     playing.value = true
+    paused.value = false
   }
 
   function pause() {
     playing.value = false
+    paused.value = true
   }
 
   function togglePlay() {
     playing.value = !playing.value
+    paused.value = !playing.value
   }
 
   function seek(time: number) {
@@ -41,11 +44,11 @@ export function usePlayerAudioApi(args: UsePlayerAudioApiArgs) {
   }
 
   // Lifecycle hooks and listeners
-  watch(playing, (value) => {
-    if (!touched.value && value) {
-      touched.value = true
-    }
-  })
+  // watch(playing, (value) => {
+  //   if (!started.value && value) {
+  //     started.value = true
+  //   }
+  // })
 
   return {
     play,

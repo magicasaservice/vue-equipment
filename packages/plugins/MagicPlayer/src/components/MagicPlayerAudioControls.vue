@@ -2,9 +2,11 @@
   <div
     class="magic-player-audio-controls"
     :data-touched="touched"
+    :data-started="started"
     :data-playing="playing"
-    :data-paused="!playing"
+    :data-paused="paused"
     :data-waiting="waiting"
+    :data-muted="muted"
     :data-idle="idle"
     :data-hover="controlsMouseEntered"
     @mouseenter="onMouseenter"
@@ -104,7 +106,15 @@ const { initialize, destroy, onMouseenter, onMouseleave } =
 
 const { initializeState } = usePlayerState(mappedInstanceId.value)
 const state = initializeState()
-const { playing, waiting, touched, controlsMouseEntered } = toRefs(state)
+const {
+  playing,
+  paused,
+  started,
+  muted,
+  waiting,
+  touched,
+  controlsMouseEntered,
+} = toRefs(state)
 
 const { idle } = useIdle(3000)
 

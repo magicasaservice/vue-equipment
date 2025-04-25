@@ -7,12 +7,14 @@
     :data-fullscreen="isFullscreen"
     :data-touched="touched"
     :data-playing="playing"
-    :data-paused="!playing"
+    :data-paused="paused"
+    :data-started="started"
     :data-waiting="waiting"
     :data-loaded="loaded"
     :data-muted="muted"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
+    @pointerdown="onPointerdown"
   >
     <slot />
   </div>
@@ -39,8 +41,17 @@ const mappedOptions = defu(options, defaultOptions)
 
 const { initializeState, deleteState } = usePlayerState(id)
 const state = initializeState()
-const { playing, waiting, muted, loaded, isFullscreen, touched, mouseEntered } =
-  toRefs(state)
+const {
+  playing,
+  paused,
+  started,
+  waiting,
+  muted,
+  loaded,
+  isFullscreen,
+  touched,
+  mouseEntered,
+} = toRefs(state)
 
 function onMouseenter() {
   mouseEntered.value = true
@@ -48,6 +59,10 @@ function onMouseenter() {
 
 function onMouseleave() {
   mouseEntered.value = false
+}
+
+function onPointerdown() {
+  touched.value = true
 }
 
 onUnmounted(() => {

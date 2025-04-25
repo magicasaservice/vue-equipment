@@ -552,6 +552,14 @@ This component is used internally by both the video and audio controls component
 
 <component-preview src="./demo/AutoplayDemo.vue" />
 
+### Autoplay with Controls
+
+<component-preview src="./demo/AutoplayControlsDemo.vue" />
+
+### Controls without Overlay
+
+<component-preview src="./demo/OmitOverlayDemo.vue" />
+
 ### Poster Image
 
 <component-preview src="./demo/ImagePosterDemo.vue" />

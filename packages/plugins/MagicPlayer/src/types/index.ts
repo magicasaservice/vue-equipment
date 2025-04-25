@@ -34,6 +34,8 @@ export interface PlayerState {
   waiting: boolean
   ended: boolean
   playing: boolean
+  started: boolean
+  paused: boolean
   stalled: boolean
   buffered: Buffered
   muted: boolean
@@ -48,6 +50,8 @@ export interface PlayerState {
   scrubbedPercentage: number
   thumbPercentage: number
   popoverOffsetX: number
+  hasOverlay: boolean
+  hasControls: boolean
   controlsBarRect: DOMRect | undefined
   controlsTrackRect: DOMRect | undefined
   controlsPopoverRect: DOMRect | undefined

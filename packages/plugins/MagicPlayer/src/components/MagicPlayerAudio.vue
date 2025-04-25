@@ -6,12 +6,16 @@
 import {
   toRefs,
   useTemplateRef,
-  shallowRef,
   inject,
+  watch,
   onMounted,
   onBeforeUnmount,
 } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import {
+  useElementVisibility,
+  useEventListener,
+  defaultWindow,
+} from '@vueuse/core'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
@@ -31,8 +35,7 @@ if (!injectedOptions) {
 }
 
 const elRef = useTemplateRef('el')
-
-const pausedByIntersection = shallowRef(false)
+const isVisible = useElementVisibility(elRef)
 
 const { initialize, destroy } = usePlayerRuntime({
   id: injectedInstanceId,
@@ -46,24 +49,47 @@ usePlayerMediaApi({
   mediaRef: elRef,
 })
 
-const { play, pause } = usePlayerAudioApi({
+usePlayerAudioApi({
   id: injectedInstanceId,
 })
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { playing } = toRefs(state)
+const { playing, paused, started, ended } = toRefs(state)
 
-useIntersectionObserver(
-  elRef,
-  ([{ isIntersecting }]) => {
-    if (!isIntersecting && playing.value) {
-      pause()
-      pausedByIntersection.value = true
-    } else if (isIntersecting && !playing.value && pausedByIntersection.value) {
-      pausedByIntersection.value = false
+// Autoplay when window is focused, video has not been paused manually,
+// has autoplay enabled or has started playing and not ended.
+// Set playing state directly to avoid influencing paused state.
+function onWindowFocus() {
+  if (
+    isVisible.value &&
+    !playing.value &&
+    !paused.value &&
+    (injectedOptions?.autoplay || (started.value && !ended.value))
+  ) {
+    playing.value = true
+  }
+}
 
-      play()
+useEventListener(defaultWindow, 'focus', onWindowFocus)
+
+// Autoplay when element is visible, has not been paused manually,
+// has autoplay enabled or has started playing and not ended.
+// Set playing state directly to avoid influencing paused state.
+watch(
+  isVisible,
+  (value) => {
+    if (!value && playing.value) {
+      playing.value = false
+    }
+
+    if (
+      value &&
+      !playing.value &&
+      !paused.value &&
+      (injectedOptions.autoplay || (started.value && !ended.value))
+    ) {
+      playing.value = true
     }
   },
   {
