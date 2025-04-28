@@ -4,7 +4,7 @@
     class="magic-player-provider"
     :data-id="id"
     :data-mode="mappedOptions.mode"
-    :data-fullscreen="isFullscreen"
+    :data-fullscreen="fullscreen"
     :data-touched="touched"
     :data-playing="playing"
     :data-paused="paused"
@@ -25,6 +25,7 @@ import {
   toRefs,
   provide,
   type MaybeRef,
+  onMounted,
   onUnmounted,
   useTemplateRef,
 } from 'vue'
@@ -40,6 +41,7 @@ import {
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicPlayerOptions } from '../types'
+import { usePlayerEmitter } from '../composables/private/usePlayerEmitter'
 
 interface MagicPlayerProps {
   id: MaybeRef<string>
@@ -58,10 +60,12 @@ const {
   waiting,
   muted,
   loaded,
-  isFullscreen,
+  fullscreen,
   touched,
   mouseEntered,
 } = toRefs(state)
+
+const { initializeEmitter } = usePlayerEmitter({ id })
 
 const playerRef = useTemplateRef('player')
 
@@ -76,6 +80,10 @@ function onMouseleave() {
 function onPointerdown() {
   touched.value = true
 }
+
+onMounted(() => {
+  initializeEmitter()
+})
 
 onUnmounted(() => {
   deleteState()

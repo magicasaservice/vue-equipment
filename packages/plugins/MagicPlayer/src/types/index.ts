@@ -29,26 +29,26 @@ export type Buffered = [number, number][]
 
 export interface PlayerState {
   id: string
-  currentTime: number
-  duration: number
-  seeking: boolean
-  volume: number
-  rate: number
-  loaded: boolean
-  waiting: boolean
-  ended: boolean
-  playing: boolean
-  started: boolean
-  paused: boolean
-  stalled: boolean
   buffered: Buffered
+  currentTime: number
+  dragging: boolean
+  duration: number
+  ended: boolean
+  loaded: boolean
   muted: boolean
+  paused: boolean
+  playing: boolean
+  rate: number
+  seeking: boolean
+  stalled: boolean
+  started: boolean
   touched: boolean
-  isFullscreen: boolean
+  volume: number
+  waiting: boolean
+  fullscreen: boolean
   fullscreenTarget: HTMLElement | null
   mouseEntered: boolean
   controlsMouseEntered: boolean
-  dragging: boolean
   seekedTime: number
   seekedPercentage: number
   scrubbedPercentage: number
@@ -59,4 +59,24 @@ export interface PlayerState {
   controlsBarRect: DOMRect | undefined
   controlsTrackRect: DOMRect | undefined
   controlsPopoverRect: DOMRect | undefined
+}
+
+export interface PlayerEvents {
+  buffered: { id: string; value: Buffered }
+  currentTime: { id: string; value: number }
+  dragging: { id: string; value: boolean }
+  duration: { id: string; value: number }
+  ended: { id: string; value: boolean }
+  fullscreen: { id: string; value: boolean }
+  loaded: { id: string; value: boolean }
+  muted: { id: string; value: boolean }
+  paused: { id: string; value: boolean }
+  playing: { id: string; value: boolean }
+  rate: { id: string; value: number }
+  seeking: { id: string; value: boolean }
+  stalled: { id: string; value: boolean }
+  started: { id: string; value: boolean }
+  touched: { id: string; value: boolean }
+  volume: { id: string; value: number }
+  waiting: { id: string; value: boolean }
 }

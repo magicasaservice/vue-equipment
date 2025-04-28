@@ -4,6 +4,7 @@ import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
 import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
 import type { ModalEvents } from '../../../MagicModal/src/types/index'
 import type { MenuEvents } from '../../../MagicMenu/src/types/index'
+import type { PlayerEvents } from '../../../MagicPlayer/src/types'
 import type { ScrollEvents } from '../../../MagicScroll/src/types/index'
 import type { ToastEvents } from '../../../MagicToast/src/types/index'
 
@@ -23,6 +24,7 @@ export type MagicEmitterEvents = Merge<
     DrawerEvents,
     ModalEvents,
     MenuEvents,
+    PlayerEvents,
     ScrollEvents,
     ToastEvents,
   ]

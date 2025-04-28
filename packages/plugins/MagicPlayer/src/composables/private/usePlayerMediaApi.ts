@@ -62,11 +62,12 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   if (toValue(mediaRef)) {
     watch([mediaRef], () => {
       const el = toValue(mediaRef)
-      if (!el) return
 
-      el.volume = volume.value
-      el.muted = muted.value
-      el.playbackRate = rate.value
+      if (el) {
+        el.volume = volume.value
+        el.muted = muted.value
+        el.playbackRate = rate.value
+      }
     })
   }
 
@@ -90,8 +91,9 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
       if (isPlaying) {
         const playPromise = el.play()
-        //eslint-disable-next-line
-        if (playPromise !== undefined) playPromise.catch((error) => {})
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {})
+        }
       } else {
         el.pause()
       }
@@ -138,7 +140,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   })
 
   useEventListener(mediaRef, 'ratechange', () => {
-    rate.value = toValue(mediaRef)!.playbackRate
+    rate.value = toValue(mediaRef)?.playbackRate ?? rate.value
   })
 
   useEventListener(mediaRef, 'stalled', () => {
@@ -165,9 +167,11 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   useEventListener(mediaRef, 'volumechange', () => {
     const el = toValue(mediaRef)
-    if (!el) return
-    volume.value = el.volume
-    muted.value = el.muted
+
+    if (el) {
+      volume.value = el.volume
+      muted.value = el.muted
+    }
   })
 }
 

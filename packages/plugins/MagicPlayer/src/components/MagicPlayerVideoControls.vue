@@ -2,7 +2,7 @@
   <div
     ref="el"
     class="magic-player-video-controls"
-    :data-fullscreen="isFullscreen"
+    :data-fullscreen="fullscreen"
     :data-touched="touched"
     :data-started="started"
     :data-playing="playing"
@@ -59,7 +59,7 @@
             </button>
           </div>
           <div class="magic-player-video-controls__item -shrink-0">
-            <button v-if="isFullscreen" @click="exitFullscreen">
+            <button v-if="fullscreen" @click="exitFullscreen">
               <slot name="fullscreenExitIcon">
                 <icon-fullscreen-exit />
               </slot>
@@ -148,7 +148,7 @@ const {
   touched,
   mouseEntered,
   controlsMouseEntered,
-  isFullscreen,
+  fullscreen,
   popoverOffsetX,
   hasOverlay,
   seekedTime,
