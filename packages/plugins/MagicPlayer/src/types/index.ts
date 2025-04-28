@@ -62,21 +62,34 @@ export interface PlayerState {
 }
 
 export interface PlayerEvents {
-  buffered: { id: string; value: Buffered }
-  currentTime: { id: string; value: number }
-  dragging: { id: string; value: boolean }
-  duration: { id: string; value: number }
-  ended: { id: string; value: boolean }
-  fullscreen: { id: string; value: boolean }
-  loaded: { id: string; value: boolean }
-  muted: { id: string; value: boolean }
-  paused: { id: string; value: boolean }
-  playing: { id: string; value: boolean }
-  rate: { id: string; value: number }
-  seeking: { id: string; value: boolean }
-  stalled: { id: string; value: boolean }
-  started: { id: string; value: boolean }
-  touched: { id: string; value: boolean }
-  volume: { id: string; value: number }
-  waiting: { id: string; value: boolean }
+  // dragging: { id: string; value: boolean }
+  // ended: { id: string; value: boolean }
+  // fullscreen: { id: string; value: boolean }
+  // loaded: { id: string; value: boolean }
+  // muted: { id: string; value: boolean }
+  // paused: { id: string; value: boolean }
+  // playing: { id: string; value: boolean }
+  // rate: { id: string; value: number }
+  // stalled: { id: string; value: boolean }
+  // started: { id: string; value: boolean }
+  // touched: { id: string; value: boolean }
+  // volume: { id: string; value: number }
+  // waiting: { id: string; value: boolean }
+
+  onDragStart: string
+  onDragEnd: string
+  onEnd: string
+  onFullscreenEnter: string
+  onFullscreenLeave: string
+  onLoad: string
+  onMute: string
+  onUnmute: string
+  onPause: string
+  onPlay: string
+  onRateChange: string
+  onStall: string
+  onStart: string
+  onTouch: string
+  onVolumeChange: string
+  onWait: string
 }

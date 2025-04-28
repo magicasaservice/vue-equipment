@@ -13,10 +13,7 @@ export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
   const {
-    buffered,
-    currentTime,
     dragging,
-    duration,
     ended,
     fullscreen,
     loaded,
@@ -24,7 +21,6 @@ export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
     paused,
     playing,
     rate,
-    seeking,
     stalled,
     started,
     touched,
@@ -37,111 +33,92 @@ export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
 
   // Public functions
   function initializeEmitter() {
-    watch(buffered, (newBuffered, oldBuffered) => {
-      if (newBuffered.join() !== oldBuffered?.join()) {
-        emitter.emit('buffered', {
-          id: toValue(id),
-          value: newBuffered,
-        })
+    watch(dragging, (newDragging) => {
+      if (newDragging) {
+        emitter.emit('onDragStart', toValue(id))
+      }
+
+      if (!newDragging) {
+        emitter.emit('onDragEnd', toValue(id))
       }
     })
 
-    watch(currentTime, (newCurrentTime, oldCurrentTime) => {
-      if (newCurrentTime !== oldCurrentTime) {
-        emitter.emit('currentTime', {
-          id: toValue(id),
-          value: newCurrentTime,
-        })
+    watch(ended, (newEnded) => {
+      if (newEnded) {
+        emitter.emit('onEnd', toValue(id))
       }
     })
 
-    watch(dragging, (newDragging, oldDragging) => {
-      if (newDragging !== oldDragging) {
-        emitter.emit('dragging', { id: toValue(id), value: newDragging })
+    watch(fullscreen, (newFullscreen) => {
+      if (newFullscreen) {
+        emitter.emit('onFullscreenEnter', toValue(id))
+      }
+
+      if (!newFullscreen) {
+        emitter.emit('onFullscreenLeave', toValue(id))
       }
     })
 
-    watch(duration, (newDuration, oldDuration) => {
-      if (newDuration !== oldDuration) {
-        emitter.emit('duration', { id: toValue(id), value: newDuration })
+    watch(loaded, (newLoaded) => {
+      if (newLoaded) {
+        emitter.emit('onLoad', toValue(id))
       }
     })
 
-    watch(ended, (newEnded, oldEnded) => {
-      if (newEnded !== oldEnded) {
-        emitter.emit('ended', { id: toValue(id), value: newEnded })
+    watch(muted, (newMuted) => {
+      if (newMuted) {
+        emitter.emit('onMute', toValue(id))
+      }
+      if (!newMuted) {
+        emitter.emit('onUnmute', toValue(id))
       }
     })
 
-    watch(fullscreen, (newFullscreen, oldFullscreen) => {
-      if (newFullscreen !== oldFullscreen) {
-        emitter.emit('fullscreen', { id: toValue(id), value: newFullscreen })
+    watch(paused, (newPaused) => {
+      if (newPaused) {
+        emitter.emit('onPause', toValue(id))
       }
     })
 
-    watch(loaded, (newLoaded, oldLoaded) => {
-      if (newLoaded !== oldLoaded) {
-        emitter.emit('loaded', { id: toValue(id), value: newLoaded })
+    watch(playing, (newPlaying) => {
+      if (newPlaying) {
+        emitter.emit('onPlay', toValue(id))
       }
     })
 
-    watch(muted, (newMuted, oldMuted) => {
-      if (newMuted !== oldMuted) {
-        emitter.emit('muted', { id: toValue(id), value: newMuted })
+    watch(rate, (newRate) => {
+      if (newRate) {
+        emitter.emit('onRateChange', toValue(id))
       }
     })
 
-    watch(paused, (newPaused, oldPaused) => {
-      if (newPaused !== oldPaused) {
-        emitter.emit('paused', { id: toValue(id), value: newPaused })
+    watch(started, (newStarted) => {
+      if (newStarted) {
+        emitter.emit('onStart', toValue(id))
       }
     })
 
-    watch(playing, (newPlaying, oldPlaying) => {
-      if (newPlaying !== oldPlaying) {
-        emitter.emit('playing', { id: toValue(id), value: newPlaying })
+    watch(stalled, (newStalled) => {
+      if (newStalled) {
+        emitter.emit('onStall', toValue(id))
       }
     })
 
-    watch(rate, (newRate, oldRate) => {
-      if (newRate !== oldRate) {
-        emitter.emit('rate', { id: toValue(id), value: newRate })
+    watch(touched, (newTouched) => {
+      if (newTouched) {
+        emitter.emit('onTouch', toValue(id))
       }
     })
 
-    watch(seeking, (newSeeking, oldSeeking) => {
-      if (newSeeking !== oldSeeking) {
-        emitter.emit('seeking', { id: toValue(id), value: newSeeking })
+    watch(volume, (newVolume) => {
+      if (newVolume) {
+        emitter.emit('onVolumeChange', toValue(id))
       }
     })
 
-    watch(started, (newStarted, oldStarted) => {
-      if (newStarted !== oldStarted) {
-        emitter.emit('started', { id: toValue(id), value: newStarted })
-      }
-    })
-
-    watch(stalled, (newStalled, oldStalled) => {
-      if (newStalled !== oldStalled) {
-        emitter.emit('stalled', { id: toValue(id), value: newStalled })
-      }
-    })
-
-    watch(touched, (newTouched, oldTouched) => {
-      if (newTouched !== oldTouched) {
-        emitter.emit('touched', { id: toValue(id), value: newTouched })
-      }
-    })
-
-    watch(volume, (newVolume, oldVolume) => {
-      if (newVolume !== oldVolume) {
-        emitter.emit('volume', { id: toValue(id), value: newVolume })
-      }
-    })
-
-    watch(waiting, (newWaiting, oldWaiting) => {
-      if (newWaiting !== oldWaiting) {
-        emitter.emit('waiting', { id: toValue(id), value: newWaiting })
+    watch(waiting, (newWaiting) => {
+      if (newWaiting) {
+        emitter.emit('onWait', toValue(id))
       }
     })
   }

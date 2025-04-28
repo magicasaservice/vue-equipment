@@ -15,10 +15,10 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
-  const { currentTime, playing, paused, muted, fullscreenTarget } =
+  const { currentTime, playing, paused, muted, fullscreenTarget, fullscreen } =
     toRefs(state)
 
-  const { enter, exit } = useFullscreen(fullscreenTarget)
+  const { enter, exit, isFullscreen } = useFullscreen(fullscreenTarget)
 
   // Public functions
   function play() {
@@ -67,6 +67,16 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
             fullscreenTarget.value = toValue(video)
             break
         }
+      },
+      {
+        immediate: true,
+      }
+    )
+
+    watch(
+      isFullscreen,
+      (newFullscreen) => {
+        fullscreen.value = newFullscreen
       },
       {
         immediate: true,

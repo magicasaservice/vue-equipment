@@ -591,3 +591,7 @@ This component is used internally by both the video and audio controls component
 ### Composable
 
 <component-preview src="./demo/ComposableDemo.vue" />
+
+### Emitter
+
+<component-preview src="./demo/EmitterDemo.vue" />
