@@ -1,7 +1,7 @@
 <template>
   <magic-draggable
-    id="magic-draggable-demo"
-    class="bg-surface-elevation-base w-full h-[20rem] rounded-md"
+    id="magic-draggable-resize-demo"
+    class="bg-surface-elevation-base h-[20rem] w-full rounded-md"
     :options="{
       threshold: {
         lock: 10,
@@ -10,7 +10,7 @@
   >
     <div
       :class="[
-        'bg-surface-elevation-high w-40 rounded-md flex items-center justify-center transition-all duration-150',
+        'bg-surface-elevation-high flex w-40 items-center justify-center rounded-md transition-all duration-150',
         {
           'aspect-square': square,
           'aspect-[2/3]': !square,
@@ -34,7 +34,7 @@ function toggle() {
 </script>
 
 <style>
-[data-id='magic-draggable-demo'] {
+[data-id='magic-draggable-resize-demo'] {
   --magic-draggable-position: relative;
   --magic-draggable-z-index: 50;
 }
