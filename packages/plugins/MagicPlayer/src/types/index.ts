@@ -62,20 +62,6 @@ export interface PlayerState {
 }
 
 export interface PlayerEvents {
-  // dragging: { id: string; value: boolean }
-  // ended: { id: string; value: boolean }
-  // fullscreen: { id: string; value: boolean }
-  // loaded: { id: string; value: boolean }
-  // muted: { id: string; value: boolean }
-  // paused: { id: string; value: boolean }
-  // playing: { id: string; value: boolean }
-  // rate: { id: string; value: number }
-  // stalled: { id: string; value: boolean }
-  // started: { id: string; value: boolean }
-  // touched: { id: string; value: boolean }
-  // volume: { id: string; value: number }
-  // waiting: { id: string; value: boolean }
-
   onDragStart: string
   onDragEnd: string
   onEnd: string
