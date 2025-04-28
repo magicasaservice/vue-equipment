@@ -11,6 +11,7 @@ import {
   onMounted,
   onBeforeUnmount,
   shallowRef,
+  computed,
 } from 'vue'
 import {
   useElementVisibility,
@@ -21,6 +22,8 @@ import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
+
+import { audioModePlaybackDefaults } from '../utils/playbackDefaults'
 
 import {
   MagicPlayerInstanceId,
@@ -41,7 +44,6 @@ if (!injectedOptions) {
 }
 
 const elRef = useTemplateRef('el')
-const isVisible = useElementVisibility(injectedPlayerRef)
 
 const { initialize, destroy } = usePlayerRuntime({
   id: injectedInstanceId,
@@ -65,6 +67,17 @@ const { playing, started } = toRefs(state)
 
 // Lifecycle hooks and listeners
 const wasPlaying = shallowRef(false)
+const isVisible = useElementVisibility(injectedPlayerRef)
+
+const manageWindow = computed(() => {
+  const playbackOptions = injectedOptions.playback || audioModePlaybackDefaults
+  return playbackOptions !== false && playbackOptions?.includes('window')
+})
+
+const manageViewport = computed(() => {
+  const playbackOptions = injectedOptions.playback || audioModePlaybackDefaults
+  return playbackOptions !== false && playbackOptions?.includes('viewport')
+})
 
 function onWindowFocus() {
   if (isVisible.value && wasPlaying.value) {
@@ -74,25 +87,30 @@ function onWindowFocus() {
 
 function onWindowBlur() {
   wasPlaying.value = playing.value
+  pause()
 }
 
-useEventListener(defaultWindow, 'focus', onWindowFocus)
-useEventListener(defaultWindow, 'blur', onWindowBlur)
+if (manageWindow.value) {
+  useEventListener(defaultWindow, 'focus', onWindowFocus)
+  useEventListener(defaultWindow, 'blur', onWindowBlur)
+}
 
-watch(isVisible, (value) => {
-  if (!value) {
-    wasPlaying.value = playing.value
-    pause()
-  }
+if (manageViewport.value) {
+  watch(isVisible, (value) => {
+    if (!value) {
+      wasPlaying.value = playing.value
+      pause()
+    }
 
-  if (value && wasPlaying.value) {
-    play()
-  }
+    if (value && wasPlaying.value) {
+      play()
+    }
 
-  if (value && injectedOptions.autoplay && !started.value) {
-    play()
-  }
-})
+    if (value && injectedOptions.autoplay && !started.value) {
+      play()
+    }
+  })
+}
 
 onMounted(() => {
   initialize()

@@ -153,7 +153,7 @@ To customize the menu, override the necessary options. Any custom options will b
           description: 'The menu includes four different modes which preconfigure its appeareance and behavior. Details [below](#mode)'
         },
         { label: 'MenuMode',
-          description: '\'menubar\' | \'navigation\' |\'dropdown\' | \'context\''
+          description: '\'menubar\' | \'navigation\' | \'dropdown\' | \'context\''
         },
         { label: 'menubar' }
       ]

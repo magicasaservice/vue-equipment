@@ -218,7 +218,7 @@ To customize the player override the necessary options. Any custom options will 
           label: 'mode',
         },
         { 
-          label: 'string',
+          label: 'PlayerMode',
           description:  '\'audio\' | \'video\''
         },
         { 
@@ -265,6 +265,22 @@ To customize the player override the necessary options. Any custom options will 
         },
         { 
           label: 'false' 
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'playback',
+          description: 'Override how playback is managed in relation to the visibility inside the viewport and the window’s focus.'
+        },
+        { 
+          label: 'PlayerPlayback[]',
+          description: '(\'viewport\' | \'window\')[]'
+        },
+        { 
+          label: '[\'viewport\'] | [\'viewport\', \'window\']',
+          description: 'Dependant on `options.mode`'
         }
       ]
     },

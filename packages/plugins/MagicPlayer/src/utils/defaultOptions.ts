@@ -1,6 +1,6 @@
-import type { MagicPlayerOptions } from '../types'
+import type { RequiredMagicPlayerOptions } from '../types'
 
-const defaultOptions: MagicPlayerOptions = {
+const defaultOptions: RequiredMagicPlayerOptions = {
   mode: 'video',
   src: '',
   srcType: 'native',

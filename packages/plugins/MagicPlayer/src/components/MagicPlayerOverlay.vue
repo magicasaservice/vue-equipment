@@ -46,11 +46,14 @@
 <script lang="ts" setup>
 import { watch, ref, inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
+
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
+
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
+
 import { MagicPlayerInstanceId } from '../symbols'
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
@@ -98,7 +101,7 @@ watch(
       case false:
         setTimeout(() => {
           defferedWaiting.value = false
-        }, 1000)
+        }, 500)
         break
     }
   }
