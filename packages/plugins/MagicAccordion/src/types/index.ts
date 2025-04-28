@@ -23,7 +23,7 @@ export interface AccordionState {
 
 export type Interaction = 'click' | 'mouseenter'
 
-export type AccordionEvents = {
+export interface AccordionEvents {
   beforeEnter: {
     id: string
     viewId: string

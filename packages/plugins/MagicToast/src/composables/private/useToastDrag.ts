@@ -7,11 +7,12 @@ import {
   interpolate,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins'
 import { useToastState } from './useToastState'
-import { useMagicEmitter } from '../../../../MagicEmitter'
-import type { ToastView } from '../../types'
 import { useToastView } from './useToastView'
 import { useToastScrollLock } from './useToastScrollLock'
+
+import type { ToastView } from '../../types'
 
 interface UseToastDragArgs {
   instanceId: MaybeRef<string>

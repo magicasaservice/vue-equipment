@@ -88,7 +88,7 @@ export interface MenuState {
   }
 }
 
-export type MenuEvents = {
+export interface MenuEvents {
   beforeEnter: {
     id: string
     viewId: string

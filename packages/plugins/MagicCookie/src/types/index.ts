@@ -24,7 +24,7 @@ export interface MagicCookieOptions {
   }
 }
 
-export type CookieEvents = {
+export interface CookieEvents {
   beforeEnter: string
   enter: string
   afterEnter: string

@@ -59,7 +59,7 @@ export interface CommandState {
   }
 }
 
-export type CommandEvents = {
+export interface CommandEvents {
   beforeEnter: {
     id: string
     viewId: string

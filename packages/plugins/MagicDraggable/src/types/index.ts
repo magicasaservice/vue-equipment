@@ -22,7 +22,7 @@ export type DraggableSnapPoint =
       offset?: {
         x?: number
         y?: number
-      }
+      },
     ]
   | Position
 
@@ -71,7 +71,7 @@ export interface DraggableState {
   activeSnapPoint: DraggableSnapPoint | undefined
 }
 
-export type DraggableEvents = {
+export interface DraggableEvents {
   beforeSnap: {
     id: string
     snapPoint: DraggableSnapPoint

@@ -53,7 +53,7 @@ export type ActiveToast = {
   }
 }
 
-export type ToastEvents = {
+export interface ToastEvents {
   beforeEnter: string
   enter: string
   afterEnter: string
