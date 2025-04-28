@@ -38,8 +38,8 @@
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.mjs"
     },
-    "./plugins/MagicPlayer/css/*.css": {
-      "import": "./dist/plugins/MagicPlayer/src/css/*.css"
+    "./plugins/MagicPlayer/css": {
+      "import": "./dist/plugins/MagicPlayer/src/css"
     },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
