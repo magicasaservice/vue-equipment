@@ -1,14 +1,12 @@
 type PlayerMode = 'audio' | 'video'
 
-type PlayerPlayback = 'viewport' | 'window'
-
 export interface MagicPlayerOptions {
   src: string
   mode?: PlayerMode
   srcType?: 'native' | 'hls'
   preload?: 'auto' | 'metadata' | 'none'
   autoplay?: boolean
-  playback?: PlayerPlayback[] | false
+  playback?: ('viewport' | 'window')[] | false
   loop?: boolean
   transition?: {
     videoControls: string

@@ -275,7 +275,7 @@ To customize the player override the necessary options. Any custom options will 
           description: 'Override how playback is managed in relation to the visibility inside the viewport and the window’s focus.'
         },
         { 
-          label: 'PlayerPlayback[]',
+          label: 'string[]',
           description: '(\'viewport\' | \'window\')[]'
         },
         { 
