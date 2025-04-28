@@ -1,14 +1,11 @@
 <template>
-  <div
-    v-show="!loaded || !started || (hasOverlay && !touched)"
-    class="magic-player-poster"
-  >
+  <div v-show="isVisible" class="magic-player-poster">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, toRefs } from 'vue'
+import { inject, toRefs, computed } from 'vue'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId } from '../symbols'
 
@@ -22,7 +19,11 @@ if (!instanceId) {
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
-const { loaded, started, hasOverlay, touched } = toRefs(state)
+const { loaded, started } = toRefs(state)
+
+const isVisible = computed(() => {
+  return !loaded.value || !started.value
+})
 </script>
 
 <style>
