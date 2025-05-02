@@ -8,6 +8,7 @@
   height: var(--magic-player-timeline-track-height);
   display: flex;
   align-items: center;
+  touch-action: none;
 }
 
 .magic-player-timeline__target {

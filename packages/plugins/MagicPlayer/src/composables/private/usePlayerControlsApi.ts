@@ -183,6 +183,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     if (!e.isPrimary) {
       return
     }
+
     // Needs to happen here to avoid bugs with the player
     // inside a carousel or a scrollable container.
     getSizesThrottled()
