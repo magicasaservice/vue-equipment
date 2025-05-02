@@ -353,7 +353,7 @@ To customize the drawer override the necessary options. Any custom options will 
           label: 'string'
         },
         {
-          label: '\'magic-drawer--content\''
+          label: '\'magic-drawer-content\''
         }
       ]
     },
@@ -367,7 +367,7 @@ To customize the drawer override the necessary options. Any custom options will 
           label: 'string'
         },
         {
-          label: '\'magic-drawer--backdrop\''
+          label: '\'magic-drawer-backdrop\''
         }
       ]
     },

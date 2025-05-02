@@ -551,20 +551,20 @@ dialog.magic-drawer__drag::backdrop {
 }
 
 /* Content */
-.magic-drawer--content-enter-active {
+.magic-drawer-content-enter-active {
   animation: var(--magic-drawer-enter-animation);
 }
 
-.magic-drawer--content-leave-active {
+.magic-drawer-content-leave-active {
   animation: var(--magic-drawer-leave-animation);
 }
 
 /* Backdrop */
-.magic-drawer--backdrop-enter-active {
+.magic-drawer-backdrop-enter-active {
   animation: fade-in 300ms ease;
 }
 
-.magic-drawer--backdrop-leave-active {
+.magic-drawer-backdrop-leave-active {
   animation: fade-out 300ms ease;
 }
 </style>

@@ -16,8 +16,8 @@ const defaultOptions: DrawerDefaultOptions = {
     disabled: false,
   },
   transition: {
-    content: 'magic-drawer--content',
-    backdrop: 'magic-drawer--backdrop',
+    content: 'magic-drawer-content',
+    backdrop: 'magic-drawer-backdrop',
   },
   threshold: {
     lock: 0,
