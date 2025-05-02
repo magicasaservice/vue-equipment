@@ -10,6 +10,7 @@ export interface MagicPlayerOptions {
   loop?: boolean
   transition?: {
     videoControls: string
+    overlay?: string
   }
 }
 
@@ -22,6 +23,7 @@ export interface RequiredMagicPlayerOptions {
   loop: boolean
   transition: {
     videoControls: string
+    overlay: string
   }
 }
 

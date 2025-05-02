@@ -9,6 +9,7 @@ const defaultOptions: RequiredMagicPlayerOptions = {
   loop: false,
   transition: {
     videoControls: 'magic-player-video-controls',
+    overlay: 'magic-player-overlay',
   },
 }
 

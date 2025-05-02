@@ -311,6 +311,20 @@ To customize the player override the necessary options. Any custom options will 
           label: 'magic-player-video-controls' 
         }
       ]
+    },
+    {
+      items: [
+        {
+          label: 'transition.overlay',
+          description: 'Override the transition name of the overlay icons.'
+        },
+        { 
+          label: 'string' 
+        },
+        { 
+          label: 'magic-player-overlay' 
+        }
+      ]
     }
   ]"
 />

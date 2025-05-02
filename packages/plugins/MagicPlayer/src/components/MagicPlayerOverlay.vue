@@ -13,7 +13,7 @@
     @click.stop="togglePlay"
   >
     <slot>
-      <transition name="fade" mode="out-in">
+      <transition :name="mappedTransition" mode="out-in">
         <button
           v-if="defferedWaiting && started"
           class="magic-player-overlay__button"
@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, inject, toRefs } from 'vue'
+import { watch, ref, computed, inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
 
 import IconPlay from './icons/Play.vue'
@@ -54,9 +54,16 @@ import IconWaiting from './icons/Waiting.vue'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 
-import { MagicPlayerInstanceId } from '../symbols'
+import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+
+interface MagicPlayerOverlayProps {
+  transition?: string
+}
+
+const { transition } = defineProps<MagicPlayerOverlayProps>()
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
+const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 if (!instanceId) {
   throw new Error(
@@ -81,6 +88,10 @@ const {
 // Immediately set hasOverlay to true
 // to ensure proper interaction between overlay and controls
 hasOverlay.value = true
+
+const mappedTransition = computed(
+  () => transition ?? injectedOptions?.transition?.videoControls
+)
 
 const { togglePlay } = usePlayerVideoApi({
   id: instanceId,
@@ -140,5 +151,13 @@ watch(
 
 .magic-player-overlay[data-playing='true'][data-hover='false'] {
   opacity: 0;
+}
+
+.magic-player-overlay-enter-active {
+  animation: fade-in 100ms ease;
+}
+
+.magic-player-overlay-leave-active {
+  animation: fade-out 100ms ease;
 }
 </style>
