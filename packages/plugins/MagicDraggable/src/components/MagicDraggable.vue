@@ -3,6 +3,7 @@
     :data-id="mappedId"
     :data-dragging="dragging"
     :data-disabled="disabled"
+    :data-active-snap-point="activeSnapPoint"
     class="magic-draggable"
     v-bind="$attrs"
   >
@@ -63,7 +64,7 @@ const wrapperRef = useTemplateRef('wrapper')
 const { initializeState } = useDraggableState(id)
 const state = initializeState()
 
-const { dragging } = toRefs(state)
+const { dragging, activeSnapPoint } = toRefs(state)
 
 // Make sure this is reactive
 const disabled = computed(() => {
