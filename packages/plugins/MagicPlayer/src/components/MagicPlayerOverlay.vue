@@ -90,7 +90,7 @@ const {
 hasOverlay.value = true
 
 const mappedTransition = computed(
-  () => transition ?? injectedOptions?.transition?.videoControls
+  () => transition ?? injectedOptions?.transition?.overlay
 )
 
 const { togglePlay } = usePlayerVideoApi({
