@@ -71,6 +71,7 @@ import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import {
   MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
   MagicPlayerTrackRef,
   MagicPlayerBarRef,
 } from '../symbols'
@@ -82,6 +83,8 @@ interface MagicAudioPlayerControlsProps {
 const { instanceId } = defineProps<MagicAudioPlayerControlsProps>()
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
+const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+
 const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 
 if (!mappedInstanceId.value) {
@@ -116,7 +119,7 @@ const {
   controlsMouseEntered,
 } = toRefs(state)
 
-const { idle } = useIdle(3000)
+const { idle } = useIdle(injectedOptions?.threshold?.idle)
 
 // Lifecycle hooks
 initialize()

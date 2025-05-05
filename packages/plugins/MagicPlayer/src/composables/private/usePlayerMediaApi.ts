@@ -19,6 +19,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     seeking,
     volume,
     rate,
+    loaded,
     waiting,
     started,
     ended,
@@ -40,23 +41,23 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Watcher
   watch(volume, () => {
     const el = toValue(mediaRef)
-    if (!el) return
-
-    el.volume = volume.value
+    if (el) {
+      el.volume = volume.value
+    }
   })
 
   watch(muted, () => {
     const el = toValue(mediaRef)
-    if (!el) return
-
-    el.muted = muted.value
+    if (el) {
+      el.muted = muted.value
+    }
   })
 
   watch(rate, () => {
     const el = toValue(mediaRef)
-    if (!el) return
-
-    el.playbackRate = rate.value
+    if (el) {
+      el.playbackRate = rate.value
+    }
   })
 
   if (toValue(mediaRef)) {
@@ -71,29 +72,43 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     })
   }
 
+  watch(loaded, () => {
+    if (playing.value) {
+      const el = toValue(mediaRef)
+      if (el) {
+        el.play()
+      }
+    }
+  })
+
   // Ignorable watcher
   const { ignoreUpdates: ignoreCurrentTimeUpdates } = watchIgnorable(
     currentTime,
     (time) => {
       const el = toValue(mediaRef)
-      if (!el) return
-      el.currentTime = unref(time)
+
+      if (el) {
+        el.currentTime = unref(time)
+      }
     }
   )
 
   const { ignoreUpdates: ignorePlayingUpdates } = watchIgnorable(
     playing,
-    (isPlaying) => {
+    (value) => {
       const el = toValue(mediaRef)
+
       if (!el) {
         return
       }
 
-      if (isPlaying) {
+      if (value) {
         const playPromise = el.play()
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {})
-        }
+
+        playPromise?.catch(() => {
+          // Reset state if play was rejected
+          playing.value = false
+        })
       } else {
         el.pause()
       }

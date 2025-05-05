@@ -16,7 +16,7 @@
     @mouseleave="onMouseleave"
   >
     <transition :name="mappedTransition">
-      <div v-show="!hidden" class="magic-player-video-controls__bar">
+      <div v-show="visible" class="magic-player-video-controls__bar">
         <div
           v-if="$slots.popover"
           v-show="!!seekedTime && touched"
@@ -119,6 +119,8 @@ const {
 } = defineProps<MagicPlayerControlsProps>()
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
+const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+
 const mappedInstanceId = computed(() => id ?? injectedInstanceId)
 
 if (!mappedInstanceId.value) {
@@ -126,8 +128,6 @@ if (!mappedInstanceId.value) {
     'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
   )
 }
-
-const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 const mappedTransition = computed(
   () => transition ?? injectedOptions?.transition?.videoControls
@@ -168,19 +168,20 @@ const { initialize, destroy, onMouseenter, onMouseleave } =
 const elRef = useTemplateRef('el')
 const isVisible = useElementVisibility(elRef)
 
-const { idle } = useIdle(3000)
+const { idle } = useIdle(injectedOptions?.threshold?.idle)
 
-const hidden = computed(() => {
+const visible = computed(() => {
   switch (true) {
     case standalone:
-      return false
-    case !isVisible.value:
-    case playing.value && idle.value:
-    case hasOverlay.value && !touched.value && !started.value:
-    case playing.value && !controlsMouseEntered.value && !mouseEntered.value:
       return true
-    default:
+    case !isVisible.value:
+    case hasOverlay.value && !started.value:
+    case playing.value && idle.value:
+    case playing.value && !mouseEntered.value && !controlsMouseEntered.value:
+    case injectedOptions?.autoplay && (!started.value || !mouseEntered.value):
       return false
+    default:
+      return true
   }
 })
 

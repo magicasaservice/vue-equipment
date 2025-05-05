@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full flex flex-col gap-4 items-center">
-    <div class="w-full aspect-[16/9]">
+  <div class="flex w-full flex-col items-center gap-4">
+    <div class="aspect-[16/9] w-full">
       <magic-player-provider
-        id="composable-demo-player"
+        id="magic-player-composable-demo"
         :options="{
           autoplay: true,
           loop: true,
@@ -22,5 +22,5 @@
 
 <script lang="ts" setup>
 import { useMagicPlayer } from '@maas/vue-equipment/plugins'
-const playerApi = useMagicPlayer('composable-demo-player')
+const playerApi = useMagicPlayer('magic-player-composable-demo')
 </script>

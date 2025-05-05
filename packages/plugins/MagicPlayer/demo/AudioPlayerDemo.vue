@@ -1,12 +1,12 @@
 <template>
   <div class="w-full">
     <magic-player-provider
-      id="audio-demo-player"
+      id="magic-player-audio-demo"
       :options="{ mode: 'audio', src: '/demo/magic-player/loveless.mp3' }"
-      class="bg-surface-elevation-high rounded-surface-sm p-2 flex flex-col gap-2"
+      class="bg-surface-elevation-high rounded-surface-sm flex flex-col gap-2 p-2"
     >
       <span
-        class="w-full block p-4 bg-surface-elevation-base rounded-surface-sm-inset type-surface-callout-md"
+        class="bg-surface-elevation-base rounded-surface-sm-inset type-surface-callout-md block w-full p-4"
       >
         Loveless
       </span>

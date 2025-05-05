@@ -12,34 +12,38 @@
     :data-hover="mouseEntered"
     @click.stop="togglePlay"
   >
-    <slot>
-      <transition :name="mappedTransition" mode="out-in">
-        <button
-          v-if="defferedWaiting && started"
-          class="magic-player-overlay__button"
-        >
-          <slot name="waitingIcon">
-            <icon-waiting />
-          </slot>
-        </button>
-        <button
-          v-else-if="paused || !started"
-          class="magic-player-overlay__button"
-        >
-          <slot name="playIcon">
-            <icon-play />
-          </slot>
-        </button>
-        <button
-          v-else-if="started && !paused"
-          class="magic-player-overlay__button"
-        >
-          <slot name="pauseIcon">
-            <icon-pause />
-          </slot>
-        </button>
-      </transition>
-    </slot>
+    <transition :name="mappedOverlayTransition">
+      <div v-if="isVisible">
+        <slot>
+          <transition :name="mappedIconsTransition">
+            <button
+              v-if="defferedWaiting && started"
+              class="magic-player-overlay__button"
+            >
+              <slot name="waitingIcon">
+                <icon-waiting />
+              </slot>
+            </button>
+            <button
+              v-else-if="paused || !started"
+              class="magic-player-overlay__button"
+            >
+              <slot name="playIcon">
+                <icon-play />
+              </slot>
+            </button>
+            <button
+              v-else-if="started && !paused"
+              class="magic-player-overlay__button"
+            >
+              <slot name="pauseIcon">
+                <icon-pause />
+              </slot>
+            </button>
+          </transition>
+        </slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -57,7 +61,10 @@ import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
 interface MagicPlayerOverlayProps {
-  transition?: string
+  transition?: {
+    overlay?: string
+    icons?: string
+  }
 }
 
 const { transition } = defineProps<MagicPlayerOverlayProps>()
@@ -89,15 +96,30 @@ const {
 // to ensure proper interaction between overlay and controls
 hasOverlay.value = true
 
-const mappedTransition = computed(
-  () => transition ?? injectedOptions?.transition?.overlay
+const mappedOverlayTransition = computed(
+  () => transition?.overlay ?? injectedOptions?.transition?.overlay
+)
+
+const mappedIconsTransition = computed(
+  () => transition?.icons ?? injectedOptions?.transition?.icons
 )
 
 const { togglePlay } = usePlayerVideoApi({
   id: instanceId,
 })
 
-const { idle } = useIdle(3000)
+const { idle } = useIdle(injectedOptions?.threshold?.idle)
+
+const isVisible = computed(() => {
+  switch (true) {
+    case playing.value && idle.value:
+    case playing.value && !mouseEntered.value:
+    case injectedOptions?.autoplay && (!started.value || !mouseEntered.value):
+      return false
+    default:
+      return true
+  }
+})
 
 // Slightly defer waiting state to avoid flicker
 const defferedWaiting = ref(false)
@@ -125,11 +147,16 @@ watch(
   inset: 0;
   background-color: var(--magic-player-overlay-background, rgba(0, 0, 0, 0.3));
   color: var(--magic-player-overlay-color, rgba(255, 255, 255, 1));
-  transition: var(--magic-player-overlay-transition, opacity 300ms ease);
+  cursor: pointer;
+}
+
+.magic-player-overlay div {
+  width: 100%;
+  height: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .magic-player-overlay__button {
@@ -141,23 +168,25 @@ watch(
   outline: none;
   appearance: none;
   cursor: pointer;
-  width: var(--magic-player-overlay-button-size, 2.5rem);
-  height: var(--magic-player-overlay-button-size, 2.5rem);
-}
-
-.magic-player-overlay[data-playing='true'][data-idle='true'] {
-  opacity: 0;
-}
-
-.magic-player-overlay[data-playing='true'][data-hover='false'] {
-  opacity: 0;
+  width: var(--magic-player-overlay-button-size, 2rem);
+  height: var(--magic-player-overlay-button-size, 2rem);
 }
 
 .magic-player-overlay-enter-active {
-  animation: fade-in 100ms ease;
+  animation: fade-in 150ms ease;
 }
 
 .magic-player-overlay-leave-active {
-  animation: fade-out 100ms ease;
+  animation: fade-out 150ms ease;
+}
+
+.magic-player-icons-enter-active {
+  animation: none;
+  position: absolute;
+}
+
+.magic-player-icons-leave-active {
+  animation: none;
+  position: absolute;
 }
 </style>

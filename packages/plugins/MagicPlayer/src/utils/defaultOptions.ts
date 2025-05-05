@@ -10,6 +10,10 @@ const defaultOptions: RequiredMagicPlayerOptions = {
   transition: {
     videoControls: 'magic-player-video-controls',
     overlay: 'magic-player-overlay',
+    icons: 'magic-player-icons',
+  },
+  threshold: {
+    idle: 3000,
   },
 }
 

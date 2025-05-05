@@ -63,7 +63,7 @@ const { initialize, destroy } = usePlayerRuntime({
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { muted, playing, started } = toRefs(state)
+const { muted, playing, started, loaded } = toRefs(state)
 
 usePlayerMediaApi({
   id: injectedInstanceId,
@@ -106,6 +106,8 @@ if (manageWindow.value) {
   useEventListener(defaultWindow, 'blur', onWindowBlur)
 }
 
+// If viewport is managed, autoplay when the video
+// has loaded, is visible and autoplay is enabled
 if (manageViewport.value) {
   watch(isVisible, (value) => {
     if (!value) {
@@ -121,10 +123,39 @@ if (manageViewport.value) {
       play()
     }
   })
+
+  watch(
+    loaded,
+    (value) => {
+      if (
+        value &&
+        !started.value &&
+        isVisible.value &&
+        injectedOptions.autoplay
+      ) {
+        play()
+      }
+    },
+    { once: true }
+  )
 }
 
-onMounted(() => {
-  initialize()
+// If viewport is not managed, autoplay when the video
+// has loaded and autoplay is enabled
+if (!manageViewport.value) {
+  watch(
+    loaded,
+    (value) => {
+      if (value && !started.value && injectedOptions.autoplay) {
+        play()
+      }
+    },
+    { once: true }
+  )
+}
+
+onMounted(async () => {
+  initialize(injectedOptions.autoplay)
   initializeFullscreen()
 
   if (injectedOptions.autoplay) {

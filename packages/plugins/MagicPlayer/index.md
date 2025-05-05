@@ -316,13 +316,27 @@ To customize the player override the necessary options. Any custom options will 
       items: [
         {
           label: 'transition.overlay',
-          description: 'Override the transition name of the overlay icons.'
+          description: 'Override the name of the overlay’s outer wrapper transition.'
         },
         { 
           label: 'string' 
         },
         { 
           label: 'magic-player-overlay' 
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition.icons',
+          description: 'Override the name of the overlay’s transition between icons.'
+        },
+        { 
+          label: 'string' 
+        },
+        { 
+          label: 'magic-player-icons' 
         }
       ]
     }
@@ -382,14 +396,8 @@ To customize the player override the necessary options. Any custom options will 
     },
     {
       items: [
-        { label: '--magic-player-overlay-transition' },
-        { label: 'opacity 300ms ease' }
-      ]
-    },
-    {
-      items: [
         { label: '--magic-player-overlay-button-size' },
-        { label: '2.5rem' }
+        { label: '2rem' }
       ]
     }
   ]"
@@ -438,11 +446,25 @@ To customize the player override the necessary options. Any custom options will 
     {
       items: [
         {
-          label: 'transition',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions).'
+          label: 'transition.overlay',
+          description: 'Override the [name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the outer wrapper’s transition.'
         },
         {
-          label: 'boolean'
+          label: 'string'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'transition.icons',
+          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the transition between icons.'
+        },
+        {
+          label: 'string'
         },
         {
           label: 'false'

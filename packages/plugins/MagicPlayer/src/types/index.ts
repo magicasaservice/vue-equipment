@@ -9,8 +9,12 @@ export interface MagicPlayerOptions {
   playback?: ('viewport' | 'window')[] | false
   loop?: boolean
   transition?: {
-    videoControls: string
+    videoControls?: string
     overlay?: string
+    icons?: string
+  }
+  threshold?: {
+    idle?: number
   }
 }
 
@@ -24,6 +28,10 @@ export interface RequiredMagicPlayerOptions {
   transition: {
     videoControls: string
     overlay: string
+    icons: string
+  }
+  threshold: {
+    idle: number
   }
 }
 

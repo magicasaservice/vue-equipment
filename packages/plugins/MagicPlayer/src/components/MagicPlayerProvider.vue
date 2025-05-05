@@ -12,6 +12,7 @@
     :data-waiting="waiting"
     :data-loaded="loaded"
     :data-muted="muted"
+    @touchstart="onTouchstart"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
     @pointerdown="onPointerdown"
@@ -24,10 +25,10 @@
 import {
   toRefs,
   provide,
-  type MaybeRef,
   onMounted,
   onUnmounted,
   useTemplateRef,
+  type MaybeRef,
 } from 'vue'
 import defu from 'defu'
 
@@ -42,6 +43,7 @@ import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicPlayerOptions } from '../types'
 import { usePlayerEmitter } from '../composables/private/usePlayerEmitter'
+import { usePlayerProvider } from '../composables/private/usePlayerProvider'
 
 interface MagicPlayerProps {
   id: MaybeRef<string>
@@ -62,24 +64,15 @@ const {
   loaded,
   fullscreen,
   touched,
-  mouseEntered,
+  // mouseEntered,
 } = toRefs(state)
 
-const { initializeEmitter } = usePlayerEmitter({ id })
+const { onTouchstart, onMouseenter, onMouseleave, onPointerdown } =
+  usePlayerProvider(id)
 
+// Lifecycle hooks
 const playerRef = useTemplateRef('player')
-
-function onMouseenter() {
-  mouseEntered.value = true
-}
-
-function onMouseleave() {
-  mouseEntered.value = false
-}
-
-function onPointerdown() {
-  touched.value = true
-}
+const { initializeEmitter } = usePlayerEmitter({ id })
 
 onMounted(() => {
   initializeEmitter()

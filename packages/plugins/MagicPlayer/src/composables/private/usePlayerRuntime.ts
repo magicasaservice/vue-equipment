@@ -25,7 +25,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   // Private functions
   function useNative() {
     const el = toValue(mediaRef)
-    if (!el || !src) return
+
+    if (!el || !src) {
+      return
+    }
+
     el.src = src
     el.addEventListener(
       'loadeddata',
@@ -36,15 +40,15 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     )
   }
 
-  async function useHlsJS() {
+  async function useHlsJS(autoplay = false) {
     const el = toValue(mediaRef)
-    if (!el) return
 
-    useEventListener(mediaRef, 'play', () => {
-      // Since the autoplay event is faster than the hls initialization,
-      // hls.startLoad() needs to be deferred until hls is ready
-      deferredLoading.value = true
-    })
+    if (!el) {
+      return
+    }
+
+    // If autoplay is true, hls.startLoad() needs to be deferred until hls is ready
+    deferredLoading.value = autoplay
 
     const { default: Hls } = await import('hls.js')
 
@@ -70,8 +74,8 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         hls?.stopLoad()
       })
 
-      // If the user pauses the video and then plays it again,
-      // hls.startLoad() needs to be called. Best to use a seperate watcher for this
+      // Start loading once the user requested it,
+      // separate from any autoplay logic
       useEventListener(mediaRef, 'play', () => {
         hls?.startLoad()
       })
@@ -82,11 +86,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   }
 
   // Public functions
-  function initialize() {
+  function initialize(autoplay = false) {
     if (srcType === 'native') {
       useNative()
     } else if (srcType === 'hls') {
-      useHlsJS()
+      useHlsJS(autoplay)
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full aspect-[9/16]">
+  <div class="aspect-[9/16] w-full">
     <magic-player-provider
-      id="image-poster-demo-player"
+      id="magic-player-image-poster-demo"
       :style="{ '--magic-player-provider-aspect-ratio': '9/16' }"
       :options="{
         src: 'https://stream.mux.com/PniSBG6rbyou2x5jExB9EwYQAgBXGyqxXA023GC6JeXQ/highest.mp4',

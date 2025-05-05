@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full flex flex-col">
+  <div class="flex w-full flex-col">
     <magic-player-provider
-      id="standalone-controls-demo-player"
+      id="magic-player-standalone-controls-demo"
       :options="{
         src: 'https://stream.mux.com/3wVFr42nN3VqIVv01ugl00oSJTzKlhsZ01ep2yKz5vqeZ8.m3u8',
         srcType: 'hls',
@@ -16,9 +16,9 @@
       </magic-player-poster>
       <magic-player-overlay />
     </magic-player-provider>
-    <div class="relative w-full pt-4 flex items-center">
+    <div class="relative flex w-full items-center pt-4">
       <magic-player-video-controls
-        id="standalone-controls-demo-player"
+        id="magic-player-standalone-controls-demo"
         class="bg-black"
         standalone
       >
