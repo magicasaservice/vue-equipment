@@ -8,10 +8,10 @@ catalog:
   '@maas/magic-timer': ^1.1.1
   '@maas/mirror': ^0.12.2
   '@maas/vue-primitive': ^1.3.0
-  '@nuxt/kit': ^3.16.2
-  '@nuxtjs/tailwindcss': ^6.13.2
+  '@nuxt/kit': ^3.17.2
+  '@nuxtjs/tailwindcss': ^6.14.0
   '@types/fs-extra': ^11.0.4
-  '@types/node': ^22.14.1
+  '@types/node': ^22.15.3
   '@vueuse/core': '>=13.1.0'
   '@vueuse/integrations': '>=13.1.0'
   defu: ^6.1.4
@@ -22,8 +22,8 @@ catalog:
   luxon: ^3.6.1
   mitt: ^3.0.1
   tailwindcss: 3.4.17
-  motion: ^12.7.3
-  nuxt: ^3.16.2
+  motion: ^12.9.4
+  nuxt: ^3.17.2
   prettier: ^3.5.3
   tsup: ^8.4.0
   typescript: 5.6.3

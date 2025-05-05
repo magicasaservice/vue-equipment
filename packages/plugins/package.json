@@ -12,7 +12,7 @@
     }
   ],
   "dependencies": {
-    "@floating-ui/dom": "^1.6.13",
+    "@floating-ui/dom": "^1.7.0",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "catalog:",
@@ -22,8 +22,8 @@
     "@maas/mirror": "catalog:",
     "esno": "catalog:",
     "mkdist": "^2.3.0",
-    "vue-sfc-transformer": "^0.1.10",
-    "vue-tsc": "^2.2.8"
+    "vue-sfc-transformer": "^0.1.14",
+    "vue-tsc": "^2.2.10"
   },
   "exports": "./index.ts",
   "license": "MIT",
