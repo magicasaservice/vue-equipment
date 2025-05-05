@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="el"
     class="magic-player-video-controls"
     :data-fullscreen="fullscreen"
     :data-touched="touched"
@@ -85,7 +84,7 @@ import {
   useTemplateRef,
   onBeforeUnmount,
 } from 'vue'
-import { useElementVisibility, useIdle } from '@vueuse/core'
+import { useIdle } from '@vueuse/core'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconVolumeOn from './icons/VolumeOn.vue'
@@ -165,20 +164,20 @@ const { initialize, destroy, onMouseenter, onMouseleave } =
     popoverRef: popoverRef,
   })
 
-const elRef = useTemplateRef('el')
-const isVisible = useElementVisibility(elRef)
-
 const { idle } = useIdle(injectedOptions?.threshold?.idle)
 
 const visible = computed(() => {
   switch (true) {
     case standalone:
       return true
-    case !isVisible.value:
     case hasOverlay.value && !started.value:
+
     case playing.value && idle.value:
     case playing.value && !mouseEntered.value && !controlsMouseEntered.value:
-    case injectedOptions?.autoplay && (!started.value || !mouseEntered.value):
+
+    case injectedOptions?.autoplay && !started.value:
+    case injectedOptions?.autoplay && !mouseEntered.value:
+    case injectedOptions?.autoplay && !mouseEntered.value && !touched.value:
       return false
     default:
       return true
