@@ -151,9 +151,9 @@ watch(
 }
 
 .magic-player-overlay div {
+  position: relative;
   width: 100%;
   height: 100%;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
