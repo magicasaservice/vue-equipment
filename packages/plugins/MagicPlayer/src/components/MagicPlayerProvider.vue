@@ -64,7 +64,7 @@ const {
   loaded,
   fullscreen,
   touched,
-  // mouseEntered,
+  hasOverlay,
 } = toRefs(state)
 
 const { onTouchstart, onMouseenter, onMouseleave, onPointerdown } =
