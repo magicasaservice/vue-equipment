@@ -142,12 +142,10 @@ function onClose() {
 }
 
 if (mappedOptions.keyListener?.close) {
-  for (const key of mappedOptions.keyListener.close) {
-    onKeyStroke(key, (e) => {
-      close()
-      e.preventDefault()
-    })
-  }
+  onKeyStroke(mappedOptions.keyListener.close, (e) => {
+    close()
+    e.preventDefault()
+  })
 }
 
 watch(isActive, async (value) => {
