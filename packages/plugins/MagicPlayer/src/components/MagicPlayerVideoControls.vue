@@ -18,7 +18,7 @@
       <div v-show="visible" class="magic-player-video-controls__bar">
         <div
           v-if="$slots.popover"
-          v-show="!!seekedTime && touched"
+          v-show="!!seekedTime && started"
           ref="popover"
           class="magic-player-video-controls__popover"
           :style="{ marginLeft: `${popoverOffsetX}%` }"
