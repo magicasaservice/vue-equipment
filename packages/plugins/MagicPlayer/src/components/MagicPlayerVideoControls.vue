@@ -44,7 +44,11 @@
           </div>
           <div class="magic-player-video-controls__item -grow">
             <slot name="timelineBefore" />
-            <div ref="track" class="magic-player-video-controls__timeline">
+            <div
+              ref="track"
+              class="magic-player-video-controls__timeline"
+              @mouseleave="onMouseleaveTimeline"
+            >
               <magic-player-timeline />
             </div>
             <slot name="timelineAfter" />
@@ -161,13 +165,18 @@ const {
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   usePlayerVideoApi({ id: mappedInstanceId.value })
 
-const { initialize, destroy, onMouseenter, onMouseleave } =
-  usePlayerControlsApi({
-    id: mappedInstanceId.value,
-    barRef: barRef,
-    trackRef: trackRef,
-    popoverRef: popoverRef,
-  })
+const {
+  initialize,
+  destroy,
+  onMouseenter,
+  onMouseleave,
+  onMouseleaveTimeline,
+} = usePlayerControlsApi({
+  id: mappedInstanceId.value,
+  barRef: barRef,
+  trackRef: trackRef,
+  popoverRef: popoverRef,
+})
 
 const { idle } = useIdle(injectedOptions?.threshold?.idle)
 

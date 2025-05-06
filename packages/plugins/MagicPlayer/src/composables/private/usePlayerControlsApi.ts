@@ -163,9 +163,16 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     getPopoverOffsetX()
   }
 
+  function resetTimelineState() {
+    seekedTime.value = null
+    seekedPercentage.value = 0
+    popoverOffsetX.value = null
+  }
+
   function resetStateAndListeners() {
     dragging.value = false
     touched.value = false
+
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
@@ -173,6 +180,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   function onPointerup(e: PointerEvent) {
     resetStateAndListeners()
+    resetTimelineState()
     guardedReleasePointerCapture({ event: e, element: barRef?.value })
     if (resumePlay.value) {
       play()
@@ -238,11 +246,13 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   function onMouseleave() {
     controlsMouseEntered.value = false
     if (!dragging.value) {
-      seekedTime.value = null
-      popoverOffsetX.value = null
-      seekedPercentage.value = 0
-      scrubbedPercentage.value = 0
-      thumbPercentage.value = 0
+      resetTimelineState()
+    }
+  }
+
+  function onMouseleaveTimeline() {
+    if (!dragging.value) {
+      resetTimelineState()
     }
   }
 
@@ -307,6 +317,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     bufferedPercentage,
     onMouseenter,
     onMouseleave,
+    onMouseleaveTimeline,
     onPointerdown,
     onPointermove,
   }
