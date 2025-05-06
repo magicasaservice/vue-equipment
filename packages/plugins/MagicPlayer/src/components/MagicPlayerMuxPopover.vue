@@ -13,6 +13,7 @@
     />
   </div>
 </template>
+
 <script lang="ts" setup>
 import {
   toRefs,
@@ -64,16 +65,23 @@ const { pixelRatio } = useDevicePixelRatio()
 
 const canvasRef = useTemplateRef('canvas')
 const storyboard = shallowRef<MuxStoryboard | undefined>()
+
 let context: CanvasRenderingContext2D | null | undefined = undefined
 let image: HTMLImageElement | undefined = undefined
 
 const thumbWidth = computed(() => {
-  if (!storyboard.value) return 0
+  if (!storyboard.value) {
+    return 0
+  }
+
   return storyboard.value.tile_width / pixelRatio.value
 })
 
 const thumbHeight = computed(() => {
-  if (!storyboard.value) return 0
+  if (!storyboard.value) {
+    return 0
+  }
+
   return storyboard.value.tile_height / pixelRatio.value
 })
 
@@ -82,37 +90,10 @@ function getMuxId(url?: string) {
   return match?.[1]?.replace(/\.(m3u8|mp4)$/, '')
 }
 
-async function init() {
-  const parsedPlaybackId = getMuxId(injectedOptions?.src)
-  const mappedPlaybackId = playbackId ?? parsedPlaybackId
-
-  if (!mappedPlaybackId) {
-    console.error(
-      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
-    )
+function drawFrame(time: number | null) {
+  if (!storyboard.value || !context || !image || !time) {
     return
   }
-
-  try {
-    storyboard.value = await fetch(
-      `https://image.mux.com/${mappedPlaybackId}/storyboard.json`
-    ).then((res) => res.json())
-
-    if (!storyboard.value) throw new Error()
-
-    image = new Image()
-    image.src = storyboard.value.url
-    await image.decode()
-
-    context = canvasRef.value?.getContext('2d')
-    context?.drawImage(image, 0, 0)
-  } catch (e: unknown) {
-    console.error('Can not initialize timeine preview.', e)
-  }
-}
-
-function drawFrame(time: number) {
-  if (!storyboard.value || !context || !image) return
 
   const { tile_height, tile_width, tiles } = storyboard.value
 
@@ -144,8 +125,48 @@ function drawFrame(time: number) {
   )
 }
 
-onMounted(init)
-watch(() => seekedTime?.value, drawFrame)
+async function initialize() {
+  const parsedPlaybackId = getMuxId(injectedOptions?.src)
+  const mappedPlaybackId = playbackId ?? parsedPlaybackId
+
+  if (!mappedPlaybackId) {
+    console.error(
+      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
+    )
+    return
+  }
+
+  try {
+    storyboard.value = await fetch(
+      `https://image.mux.com/${mappedPlaybackId}/storyboard.json`
+    ).then((res) => res.json())
+
+    if (!storyboard.value) {
+      throw new Error()
+    }
+
+    image = new Image()
+    image.src = storyboard.value.url
+    await image.decode()
+
+    context = canvasRef.value?.getContext('2d')
+
+    // Draw initial frame
+    drawFrame(seekedTime.value)
+  } catch (e: unknown) {
+    console.error('Can not initialize timeline preview', e)
+  }
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  initialize()
+})
+
+watch(
+  () => seekedTime?.value,
+  (value) => drawFrame(value)
+)
 </script>
 
 <style>

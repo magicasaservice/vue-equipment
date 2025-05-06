@@ -2,6 +2,7 @@
   <div
     class="magic-player-audio-controls"
     :data-touched="touched"
+    :data-dragging="dragging"
     :data-started="started"
     :data-playing="playing"
     :data-paused="paused"
@@ -116,6 +117,7 @@ const {
   muted,
   waiting,
   touched,
+  dragging,
   controlsMouseEntered,
 } = toRefs(state)
 

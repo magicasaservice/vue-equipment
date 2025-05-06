@@ -59,11 +59,11 @@ export interface PlayerState {
   fullscreenTarget: HTMLElement | null
   mouseEntered: boolean
   controlsMouseEntered: boolean
-  seekedTime: number
+  seekedTime: number | null
   seekedPercentage: number
   scrubbedPercentage: number
   thumbPercentage: number
-  popoverOffsetX: number
+  popoverOffsetX: number | null
   hasOverlay: boolean
   hasControls: boolean
   controlsBarRect: DOMRect | undefined

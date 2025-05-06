@@ -12,7 +12,6 @@
     :data-waiting="waiting"
     :data-loaded="loaded"
     :data-muted="muted"
-    @touchstart="onTouchstart"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
     @pointerdown="onPointerdown"
@@ -64,11 +63,9 @@ const {
   loaded,
   fullscreen,
   touched,
-  hasOverlay,
 } = toRefs(state)
 
-const { onTouchstart, onMouseenter, onMouseleave, onPointerdown } =
-  usePlayerProvider(id)
+const { onMouseenter, onMouseleave, onPointerdown } = usePlayerProvider(id)
 
 // Lifecycle hooks
 const playerRef = useTemplateRef('player')

@@ -20,6 +20,10 @@
   cursor: pointer;
 }
 
+[data-dragging='true'] .magic-player-timeline__target {
+  cursor: grabbing;
+}
+
 .magic-player-timeline__track {
   position: relative;
   width: 100%;

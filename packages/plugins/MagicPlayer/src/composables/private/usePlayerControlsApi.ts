@@ -144,8 +144,8 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     }
 
     const relX =
-      absX - controlsTrackRect.value!.x - controlsTrackRect.value!.height / 2
-    const percentage = Math.round((relX / controlsTrackRect.value!.width) * 100)
+      absX - controlsTrackRect.value.x - controlsTrackRect.value.height / 2
+    const percentage = Math.round((relX / controlsTrackRect.value.width) * 100)
 
     seekedPercentage.value = clampValue(percentage, 0, thumbPercentage.value)
 
@@ -165,6 +165,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   function resetStateAndListeners() {
     dragging.value = false
+    touched.value = false
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
@@ -237,7 +238,11 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   function onMouseleave() {
     controlsMouseEntered.value = false
     if (!dragging.value) {
-      seekedTime.value = 0
+      seekedTime.value = null
+      popoverOffsetX.value = null
+      seekedPercentage.value = 0
+      scrubbedPercentage.value = 0
+      thumbPercentage.value = 0
     }
   }
 

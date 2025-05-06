@@ -3,6 +3,7 @@
     class="magic-player-video-controls"
     :data-fullscreen="fullscreen"
     :data-touched="touched"
+    :data-dragging="dragging"
     :data-started="started"
     :data-playing="playing"
     :data-paused="paused"
@@ -17,13 +18,16 @@
     <transition :name="mappedTransition">
       <div v-show="visible" class="magic-player-video-controls__bar">
         <div
-          v-if="$slots.popover"
-          v-show="!!seekedTime && started"
+          v-if="$slots.popover && seekedTime !== null && seekedTime >= 0"
           ref="popover"
           class="magic-player-video-controls__popover"
-          :style="{ marginLeft: `${popoverOffsetX}%` }"
+          :style="{
+            marginLeft: `${popoverOffsetX}%`,
+          }"
         >
-          <slot name="popover" />
+          <div v-show="popoverOffsetX !== null">
+            <slot name="popover" />
+          </div>
         </div>
         <div ref="bar" class="magic-player-video-controls__bar--inner">
           <div class="magic-player-video-controls__item -shrink-0">
@@ -151,6 +155,7 @@ const {
   popoverOffsetX,
   hasOverlay,
   seekedTime,
+  dragging,
 } = toRefs(state)
 
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =

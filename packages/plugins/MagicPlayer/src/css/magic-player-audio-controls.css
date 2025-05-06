@@ -1,7 +1,6 @@
 @import './magic-player-timeline.css';
 @import './magic-player-display-time.css';
 
-/* We keep this variable since it's used in multiple places */
 :root {
   --magic-player-audio-controls-height: 3rem;
 }
