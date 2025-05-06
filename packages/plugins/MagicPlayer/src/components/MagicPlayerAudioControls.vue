@@ -40,7 +40,11 @@
           class="magic-player-audio-controls__item -grow"
           data-slot="timeline"
         >
-          <div ref="track" class="magic-player-audio-controls__timeline">
+          <div
+            ref="track"
+            class="magic-player-audio-controls__timeline"
+            @mouseleave="onMouseleaveTimeline"
+          >
             <magic-player-timeline />
           </div>
         </div>
@@ -101,12 +105,17 @@ const { play, pause } = usePlayerAudioApi({
   id: mappedInstanceId.value,
 })
 
-const { initialize, destroy, onMouseenter, onMouseleave } =
-  usePlayerControlsApi({
-    id: mappedInstanceId.value,
-    barRef: barRef,
-    trackRef: trackRef,
-  })
+const {
+  initialize,
+  destroy,
+  onMouseenter,
+  onMouseleave,
+  onMouseleaveTimeline,
+} = usePlayerControlsApi({
+  id: mappedInstanceId.value,
+  barRef: barRef,
+  trackRef: trackRef,
+})
 
 const { initializeState } = usePlayerState(mappedInstanceId.value)
 const state = initializeState()
