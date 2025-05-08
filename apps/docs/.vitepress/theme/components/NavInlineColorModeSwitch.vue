@@ -1,5 +1,5 @@
 <template>
-  <magic-menu-view :id="ViewId.navColorModeSwitch" placement="bottom">
+  <magic-menu-view :id="ViewId.navInlineColorModeSwitch" placement="bottom">
     <magic-menu-trigger as-child :trigger="['mouseenter']">
       <m-button size="xs" mode="ghost">
         <i-maas-moon-500 v-if="isDark" />
