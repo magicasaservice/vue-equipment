@@ -1,3 +1,9 @@
+---
+next:
+  text: 'Getting Started'
+  link: '/overview/getting-started/'
+---
+
 # Introduction
 
 ### Our Frontend Toolkit, Free and Open Source

@@ -1,10 +1,10 @@
 ---
 prev:
   text: 'Introduction'
-  link: '/overview/Introduction'
+  link: '/overview/introduction/'
 next:
   text: 'MagicAccordion'
-  link: '/plugins/MagicAccordion'
+  link: '/plugins/MagicAccordion/'
 ---
 
 # Getting Started
