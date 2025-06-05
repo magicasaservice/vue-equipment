@@ -233,7 +233,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     onArrowUp,
     onArrowDown,
     onEscape,
-    onEnter,
+    onReturn,
     onTab,
   }
 }
