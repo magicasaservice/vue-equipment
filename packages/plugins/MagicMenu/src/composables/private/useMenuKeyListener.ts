@@ -190,7 +190,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     unselectAllViews()
   }
 
-  async function onEnter(e: KeyboardEvent) {
+  async function onReturn(e: KeyboardEvent) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {

@@ -6,12 +6,12 @@
     <auto-size :width="false">
       <transition
         :name="state.options.transition"
-        @before-leave="onBeforeLeave"
-        @leave="onLeave"
-        @after-leave="onAfterLeave"
         @before-enter="onBeforeEnter"
         @enter="onEnter"
         @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+        @after-leave="onAfterLeave"
       >
         <div v-show="state.viewActive" class="magic-cookie-view__inner">
           <slot :view-active="state.viewActive" />

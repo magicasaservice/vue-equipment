@@ -87,8 +87,8 @@ const mappedTrigger = computed<Interaction[]>(() => {
       return view?.parent.item
         ? ['mouseenter', 'click']
         : state.active
-        ? ['mouseenter', 'click']
-        : ['click']
+          ? ['mouseenter', 'click']
+          : ['click']
     case 'dropdown':
       return view?.parent.item ? ['mouseenter', 'click'] : ['click']
     case 'context':
@@ -108,7 +108,7 @@ const mappedTabindex = computed(() => {
   }
 })
 
-const { onMouseenter, onClick, onEnter } = useMenuTrigger({
+const { onMouseenter, onClick, onKeypress } = useMenuTrigger({
   instanceId: mappedInstanceId.value,
   viewId: mappedViewId.value,
   itemId,
@@ -127,7 +127,7 @@ watch(
   }
 )
 
-onKeyStroke('Enter', onEnter)
+onKeyStroke('Enter', onKeypress)
 </script>
 
 <style>

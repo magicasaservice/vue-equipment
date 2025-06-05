@@ -67,7 +67,7 @@ const mappedDisabled = computed(
   () => toValue(disabled) || state.options.disabled
 )
 
-const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
+const { onMouseenter, onClick, onKeypress } = useAccordionTrigger({
   elRef,
   instanceId,
   viewId: mappedViewId.value,
@@ -75,7 +75,7 @@ const { onMouseenter, onClick, onEnter } = useAccordionTrigger({
   trigger: trigger,
 })
 
-onKeyStroke('Enter', onEnter)
+onKeyStroke('Enter', onKeypress)
 </script>
 
 <style>

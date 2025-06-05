@@ -2,12 +2,12 @@
   <teleport v-if="state.renderer && state.active" :to="state.renderer">
     <transition
       :name="state.options.transition?.content"
-      :on-before-enter="onBeforeEnter"
-      :on-enter="onEnter"
-      :on-after-enter="onAfterEnter"
-      :on-before-leave="onBeforeLeave"
-      :on-leave="onLeave"
-      :on-after-leave="onAfterLeave"
+      @before-enter="onBeforeEnter"
+      @enter="onEnter"
+      @after-enter="onAfterEnter"
+      @before-leave="onBeforeLeave"
+      @leave="onLeave"
+      @after-leave="onAfterLeave"
     >
       <div
         v-if="isActive"

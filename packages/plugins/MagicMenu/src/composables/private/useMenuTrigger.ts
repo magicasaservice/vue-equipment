@@ -58,7 +58,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   }
 
   // Public functions
-  function onEnter(e: KeyboardEvent) {
+  function onKeypress(e: KeyboardEvent) {
     if (focused.value && !mappedDisabled.value && !view?.active) {
       e.preventDefault()
       e.stopPropagation()
@@ -146,6 +146,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
   return {
     onMouseenter,
     onClick,
-    onEnter,
+    onKeypress,
   }
 }

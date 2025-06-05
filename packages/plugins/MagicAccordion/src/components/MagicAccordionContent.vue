@@ -12,12 +12,12 @@
     >
       <transition
         :name="mappedTransition"
-        :on-before-enter="onBeforeEnter"
-        :on-enter="onEnter"
-        :on-after-enter="onAfterEnter"
-        :on-before-leave="onBeforeLeave"
-        :on-leave="onLeave"
-        :on-after-leave="onAfterLeave"
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+        @after-leave="onAfterLeave"
       >
         <primitive v-show="view?.active" :as-child="asChild">
           <slot :view-active="view?.active" />

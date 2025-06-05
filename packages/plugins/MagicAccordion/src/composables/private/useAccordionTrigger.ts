@@ -1,8 +1,9 @@
 import { toValue, type MaybeRef, type Ref } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
-import type { Interaction } from '../../types'
-import { useAccordionView } from './useAccordionView'
 import { useFocus } from '@vueuse/core'
+import { useAccordionView } from './useAccordionView'
+
+import type { Interaction } from '../../types'
 
 interface UseAccordionTriggerArgs {
   instanceId: MaybeRef<string>
@@ -36,7 +37,7 @@ export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
     }
   }
 
-  function onEnter(e: KeyboardEvent) {
+  function onKeypress(e: KeyboardEvent) {
     if (focused.value && !toValue(disabled) && !view?.active) {
       e.preventDefault()
       e.stopPropagation()
@@ -52,6 +53,6 @@ export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
   return {
     onMouseenter,
     onClick,
-    onEnter,
+    onKeypress,
   }
 }

@@ -77,7 +77,7 @@ const mappedDisabled = computed(
 
 const options = inject(MagicCommandProviderOptions, undefined)
 
-const { onMouseenter, onClick, onEnter } = useCommandTrigger({
+const { onMouseenter, onClick, onKeypress } = useCommandTrigger({
   instanceId,
   viewId: mappedViewId.value,
   mappedActive,
@@ -103,7 +103,7 @@ if (options?.keyListener?.enter) {
   for (const key of options.keyListener.enter) {
     watch(keys[key], (value) => {
       if (value) {
-        onEnter()
+        onKeypress()
       }
     })
   }

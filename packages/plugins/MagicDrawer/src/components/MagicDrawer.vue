@@ -31,12 +31,12 @@
       <div ref="wrapper" class="magic-drawer__wrapper">
         <transition
           :name="contentTransition"
-          @before-leave="onBeforeLeave"
-          @leave="onLeave"
-          @after-leave="onAfterLeave"
           @before-enter="onBeforeEnter"
           @enter="onEnter"
           @after-enter="onAfterEnter"
+          @before-leave="onBeforeLeave"
+          @leave="onLeave"
+          @after-leave="onAfterLeave"
         >
           <div v-show="innerActive" class="magic-drawer__content">
             <component

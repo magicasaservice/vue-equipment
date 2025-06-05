@@ -36,7 +36,7 @@ export function useCommandTrigger(args: UseCommandTriggerArgs) {
   const { focused } = useFocus(elRef)
 
   // Public functions
-  async function onEnter(e?: KeyboardEvent) {
+  async function onKeypress(e?: KeyboardEvent) {
     if (
       (focused.value || mappedActive?.value) &&
       !mappedDisabled.value &&
@@ -112,6 +112,6 @@ export function useCommandTrigger(args: UseCommandTriggerArgs) {
   return {
     onMouseenter,
     onClick,
-    onEnter,
+    onKeypress,
   }
 }

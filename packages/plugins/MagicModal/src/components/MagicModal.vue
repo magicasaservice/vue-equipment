@@ -26,12 +26,12 @@
       </transition>
       <transition
         :name="mappedOptions.transition?.content"
-        @before-leave="onBeforeLeave"
-        @leave="onLeave"
-        @after-leave="onAfterLeave"
         @before-enter="onBeforeEnter"
         @enter="onEnter"
         @after-enter="onAfterEnter"
+        @before-leave="onBeforeLeave"
+        @leave="onLeave"
+        @after-leave="onAfterLeave"
       >
         <component
           :is="mappedOptions.tag"

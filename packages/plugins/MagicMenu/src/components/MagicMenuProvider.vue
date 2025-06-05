@@ -77,7 +77,7 @@ const {
   onArrowUp,
   onArrowDown,
   onEscape,
-  onEnter,
+  onReturn,
   onTab,
 } = useMenuKeyListener(id)
 
@@ -86,7 +86,7 @@ onKeyStroke('ArrowLeft', onArrowLeft)
 onKeyStroke('ArrowDown', onArrowDown)
 onKeyStroke('ArrowUp', onArrowUp)
 onKeyStroke('Escape', onEscape)
-onKeyStroke('Enter', onEnter)
+onKeyStroke('Enter', onReturn)
 onKeyStroke('Tab', onTab)
 
 // Handle off-click

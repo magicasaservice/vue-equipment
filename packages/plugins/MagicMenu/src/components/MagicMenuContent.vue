@@ -2,12 +2,12 @@
   <teleport v-if="wrapperActive" to="body">
     <transition
       :name="mappedTransition"
-      :on-before-enter="onBeforeEnter"
-      :on-enter="onEnter"
-      :on-after-enter="onAfterEnter"
-      :on-before-leave="onBeforeLeave"
-      :on-leave="onLeave"
-      :on-after-leave="onAfterLeave"
+      @before-enter="onBeforeEnter"
+      @enter="onEnter"
+      @after-enter="onAfterEnter"
+      @before-leave="onBeforeLeave"
+      @leave="onLeave"
+      @after-leave="onAfterLeave"
     >
       <div
         v-if="innerActive"
