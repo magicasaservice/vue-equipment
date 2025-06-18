@@ -17,7 +17,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
   const state = initializeState()
 
   // Public state
-  const cookieConsent = computed(() =>
+  const cookies = computed(() =>
     state?.items.reduce(
       (acc, cookie) => ({
         ...acc,
@@ -25,6 +25,10 @@ export function useMagicCookie(id: MaybeRef<string>) {
       }),
       {} as CookieConsent
     )
+  )
+
+  const cookiesSet = computed(() =>
+    state?.items.every((cookie) => cookie.set === true)
   )
 
   // Public functions
@@ -50,7 +54,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
 
     await nextTick()
 
-    emitter.emit('acceptAll', cookieConsent.value)
+    emitter.emit('acceptAll', cookies.value)
   }
 
   // Accept selected cookies
@@ -59,7 +63,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
       setItemCookie(cookie.id)
     }
 
-    emitter.emit('acceptSelected', cookieConsent.value)
+    emitter.emit('acceptSelected', cookies.value)
   }
 
   // Reject all cookies
@@ -76,7 +80,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
 
     await nextTick()
 
-    emitter.emit('rejectAll', cookieConsent.value)
+    emitter.emit('rejectAll', cookies.value)
   }
 
   function onAccept(callback: (args: MagicCookieCallbackArgs) => void) {
@@ -92,10 +96,11 @@ export function useMagicCookie(id: MaybeRef<string>) {
   }
 
   return {
+    cookies,
+    cookiesSet,
     showView,
     hideView,
     toggleView,
-    cookieConsent,
     selectItem,
     unselectItem,
     toggleItem,

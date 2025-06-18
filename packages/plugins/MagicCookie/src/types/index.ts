@@ -4,6 +4,7 @@ export interface CookieItem {
   optional?: boolean
   maxAge?: number
   timestamp?: number
+  set?: boolean
 }
 
 export interface CookieState {

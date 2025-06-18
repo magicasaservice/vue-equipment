@@ -41,6 +41,7 @@ export function useCookieItem(args: UseCookieItemArgs) {
       optional: mappedOptional,
       timestamp: timestamp,
       maxAge: maxAge,
+      set: false,
     }
 
     return reactive(item)
@@ -111,6 +112,9 @@ export function useCookieItem(args: UseCookieItemArgs) {
       path: '/',
       maxAge: item.maxAge,
     })
+
+    // Item is set, once user has set cookie consent
+    item.set = true
   }
 
   return {
