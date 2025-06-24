@@ -41,7 +41,7 @@ import {
 } from '@maas/vue-equipment/plugins'
 
 const component = defineAsyncComponent(
-  () => import('./components/EmitterToast.vue')
+  () => import('./components/EmitterDemoToast.vue')
 )
 
 const { add } = useMagicToast('magic-player-emitter-demo-toast')

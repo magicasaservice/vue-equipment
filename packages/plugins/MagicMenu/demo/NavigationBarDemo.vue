@@ -66,7 +66,7 @@
                       </m-badge>
                     </div>
 
-                    <menu-card
+                    <menu-demo-card
                       v-for="(data, k) in entry.list"
                       :key="k"
                       :data="data"
@@ -87,7 +87,7 @@ import { useTemplateRef, type ComponentPublicInstance } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
 import { MMenuBox, MBadge, MButton } from '@maas/mirror/vue'
 
-import MenuCard from './components/MenuCard.vue'
+import MenuDemoCard from './components/MenuDemoCard.vue'
 
 const viewRef = useTemplateRef<ComponentPublicInstance>('view')
 

@@ -28,7 +28,7 @@
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
         <div class="bg-surface-elevation-high w-[220px] rounded-2xl p-1">
-          <nested-menu
+          <nested-demo-menu
             v-for="(subItem, index) in item.items"
             :key="index"
             :item="subItem"
@@ -40,21 +40,20 @@
 </template>
 
 <script lang="ts" setup>
-import NestedMenu from '../components/NestedMenu.vue'
-
 import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
+import NestedDemoMenu from '../components/NestedDemoMenu.vue'
 
-interface RecursiveMenuItemProps {
+interface NestedDemoMenuProps {
   item: {
     label: string
     cmd?: string
-    items?: RecursiveMenuItemProps['item'][]
+    items?: NestedDemoMenuProps['item'][]
     disabled?: boolean
   }
 }
 
-defineProps<RecursiveMenuItemProps>()
+defineProps<NestedDemoMenuProps>()
 
 const offsetMiddleware = [offset({ crossAxis: -4, mainAxis: 8 })]
 </script>

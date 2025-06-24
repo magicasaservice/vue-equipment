@@ -1,7 +1,7 @@
 <template>
   <magic-cookie-provider
     id="magic-cookie-demo"
-    class="bg-surface-elevation-base p-8 rounded-surface-md flex flex-col max-w-xl"
+    class="bg-surface-elevation-base rounded-surface-md flex max-w-xl flex-col p-8"
   >
     <div class="type-surface-body-md text-surface">
       Vue Equipment does not use cookies to provide you a personalized
@@ -10,7 +10,7 @@
     </div>
     <magic-cookie-view>
       <div class="flex flex-col gap-6 pt-6">
-        <magic-cookie-item
+        <magic-cookie-demo-item
           v-for="cookie in cookies"
           :id="cookie.id"
           :key="cookie.id"
@@ -26,10 +26,10 @@
           <div class="type-surface-caption text-surface-subtle pl-8">
             {{ cookie.text }}
           </div>
-        </magic-cookie-item>
+        </magic-cookie-demo-item>
       </div>
     </magic-cookie-view>
-    <div class="flex flex-wrap sm:flex-nowrap gap-x-4 gap-y-2 pt-6">
+    <div class="flex flex-wrap gap-x-4 gap-y-2 pt-6 sm:flex-nowrap">
       <template v-if="viewActive">
         <m-button mode="plain" block @click="toggleView">Close</m-button>
         <m-button mode="translucent" block @click="onSave">Save</m-button>
@@ -55,6 +55,8 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins'
+
+import MagicCookieDemoItem from './MagicCookieDemoItem.vue'
 
 import type { MagicCookieCallbackArgs } from '../src/types'
 

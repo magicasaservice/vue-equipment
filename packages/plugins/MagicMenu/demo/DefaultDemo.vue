@@ -11,7 +11,7 @@
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
         <div class="bg-surface-elevation-high w-[220px] rounded-2xl p-1">
-          <nested-menu
+          <nested-demo-menu
             v-for="(item, itemIndex) in menuItem.items"
             :key="itemIndex"
             :item="item"
@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import NestedMenu from './components/NestedMenu.vue'
-
 import { MButton } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
+
+import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

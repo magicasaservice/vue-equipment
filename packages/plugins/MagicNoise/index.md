@@ -300,4 +300,4 @@ The component comes with some CSS variables for customization.
 
 ### Custom Color
 
-<ComponentPreview src="./demo/CustomColor.vue" />
+<ComponentPreview src="./demo/CustomColorDemo.vue" />

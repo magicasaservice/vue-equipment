@@ -8,9 +8,9 @@
       </magic-menu-trigger>
       <magic-menu-content>
         <div
-          class="bg-surface-elevation-high text-black p-1 rounded-2xl w-[220px]"
+          class="bg-surface-elevation-high w-[220px] rounded-2xl p-1 text-black"
         >
-          <nested-menu
+          <nested-demo-menu
             v-for="(item, itemIndex) in menu.items"
             :key="itemIndex"
             :item="item"
@@ -22,8 +22,9 @@
 </template>
 
 <script lang="ts" setup>
-import NestedMenu from './components/NestedMenu.vue'
 import { MButton } from '@maas/mirror/vue'
+
+import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 const menu = {
   label: 'Menu',
