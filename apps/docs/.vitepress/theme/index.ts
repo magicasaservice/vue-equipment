@@ -9,13 +9,36 @@ import * as Mirror from '@maas/mirror/vue'
 
 import './styles/main.css'
 import './styles/custom.css'
+import './styles/tailwind.css'
+
 import 'fonts/mirage/stylesheet.css'
 import 'fonts/index/stylesheet.css'
+
 import '@maas/mirror/css/index.css'
-import '../../../../.maas/tokens/css/components/index.css'
-import '../../../../.maas/tokens/css/theme/dark/components/index.css'
+
 import '../../../../.maas/tokens/css/application.css'
-import '../../../../.maas/tokens/css/theme/dark/application.css'
+
+import '../../../../.maas/tokens/css/component/badge.css'
+import '../../../../.maas/tokens/css/component/button.css'
+import '../../../../.maas/tokens/css/component/checkbox.css'
+import '../../../../.maas/tokens/css/component/menu-item.css'
+import '../../../../.maas/tokens/css/component/menu-box.css'
+
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/application.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/application.css'
+
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/component/badge.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/component/button.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/component/checkbox.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/component/menu-item.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/component/menu-box.css'
+
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/component/badge.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/component/button.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/component/checkbox.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/component/menu-item.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/component/menu-box.css'
+
 import './styles/tailwind.css'
 
 export default {

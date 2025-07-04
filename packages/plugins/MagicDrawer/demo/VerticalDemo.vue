@@ -1,7 +1,7 @@
 <template>
   <m-button @click="drawerApi.open">Open Drawer</m-button>
   <magic-drawer id="magic-drawer-vertical-demo" :options="{ focusTrap: false }">
-    <div class="bg-surface-elevation-base absolute inset-0" />
+    <div class="bg-surface-base absolute inset-0" />
   </magic-drawer>
 </template>
 

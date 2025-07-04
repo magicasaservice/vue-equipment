@@ -8,7 +8,7 @@
       initial: { snapPoint: snapPoints[0] },
     }"
   >
-    <div class="bg-surface-elevation-base absolute inset-0" />
+    <div class="bg-surface-base absolute inset-0" />
   </magic-drawer>
 </template>
 

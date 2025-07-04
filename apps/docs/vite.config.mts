@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import IconResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
+import tailwindcss from '@tailwindcss/vite'
 
 import { plugins } from '../../packages/metadata'
 
@@ -25,6 +26,7 @@ export default defineConfig(async () => {
       },
     },
     plugins: [
+      tailwindcss(),
       Components({
         resolvers: [IconResolver({ customCollections: ['maas'] })],
         dts: 'apps/docs/types/components.d.ts',
@@ -68,6 +70,10 @@ export default defineConfig(async () => {
         {
           find: '@maas/vue-equipment/utils',
           replacement: resolve(__dirname, '../../packages/utils'),
+        },
+        {
+          find: '@maas/mirror/tailwind',
+          replacement: resolve(__dirname, '../../.maas/tailwind.preset.css'),
         },
         {
           find: 'fonts',

@@ -1,7 +1,7 @@
 <template>
   <magic-scroll-provider
     :target="parentRef"
-    class="bg-surface-elevation-base aspect-square w-full"
+    class="bg-surface-base aspect-square w-full"
   >
     <div ref="parentRef" class="relative h-full w-full overflow-auto">
       <magic-scroll-scene
@@ -16,7 +16,7 @@
           v-for="i in 4"
           :id="`collision-${i}`"
           :key="i"
-          class="bg-surface-elevation-high flex aspect-square w-full items-center justify-center"
+          class="bg-surface-high flex aspect-square w-full items-center justify-center"
         >
           <m-badge size="lg" mode="tone">{{ `Collision ${i}` }}</m-badge>
         </magic-scroll-collision>

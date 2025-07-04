@@ -13,9 +13,7 @@
         </span>
       </magic-menu-trigger>
       <magic-menu-content>
-        <div
-          class="bg-surface-elevation-high w-[220px] rounded-2xl p-1 text-black"
-        >
+        <div class="bg-surface-high w-[220px] rounded-2xl p-1 text-black">
           <nested-demo-menu
             v-for="(item, itemIndex) in menu.items"
             :key="itemIndex"

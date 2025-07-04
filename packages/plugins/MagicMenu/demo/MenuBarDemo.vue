@@ -1,7 +1,7 @@
 <template>
   <magic-menu-provider
     id="magic-menu-menubar"
-    class="bg-surface-elevation-high inline-flex gap-2 rounded-2xl p-1"
+    class="bg-surface-high inline-flex gap-2 rounded-2xl p-1"
   >
     <magic-menu-view v-for="(menuItem, index) in menu" :key="index">
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
@@ -10,7 +10,7 @@
         </m-button>
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
-        <div class="bg-surface-elevation-high w-[220px] rounded-2xl p-1">
+        <div class="bg-surface-high w-[220px] rounded-2xl p-1">
           <nested-demo-menu
             v-for="(item, itemIndex) in menuItem.items"
             :key="itemIndex"

@@ -1,3 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import '@maas/mirror/tailwind';
+
+@source './../Layout.vue';
+@source './../**/*.vue';
+@source './../../../../../packages/plugins/**/*.vue';
+@source './../../../../../packages/plugins/**/demo/*.vue';
+@source './../../../../../packages/plugins/**/demo/**/*.vue';
+
+@theme {
+  --default-mono-font-family: var(--vt-font-family-mono);
+}
+
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbarwidth: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

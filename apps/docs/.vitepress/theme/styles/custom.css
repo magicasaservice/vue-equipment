@@ -41,12 +41,13 @@
  *   the page. Used for things like "carbon ads" or "table".
  * -------------------------------------------------------------------------- */
 
-:root {
-  --vp-c-bg: var(--app-color-surface-elevation-base-bg);
-  --vp-c-bg-alt: var(--app-color-surface-elevation-base-bg);
-  --vp-c-bg-elv: var(--app-color-surface-elevation-base-bg);
+[data-theme='vue-equipment'] {
+  --vp-c-bg: var(--app-color-surface-bg-base);
+  --vp-c-bg-alt: var(--app-color-surface-bg-base);
+  --vp-c-bg-elv: var(--app-color-surface-bg-base);
   --vp-c-bg-soft: var(--app-color-primary-bg-translucent);
   --vp-code-block-bg: var(--app-color-primary-bg-translucent);
+  --vp-sidebar-bg-color: var(--app-color-surface-bg-base);
 }
 
 /**
@@ -62,10 +63,10 @@
  *   the header and the lest of the page.
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-theme='vue-equipment'] {
   --vp-c-border: var(--app-color-surface-border);
   --vp-c-divider: var(--app-color-surface-border);
-  --vp-c-gutter: var(--app-color-surface-elevation-high-bg);
+  --vp-c-gutter: var(--app-color-surface-bg-high);
 }
 
 /**
@@ -78,7 +79,7 @@
  * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-theme='vue-equipment'] {
   --vp-c-text-1: var(--app-color-surface-fg);
   --vp-c-text-2: var(--app-color-surface-fg-muted);
   --vp-c-text-3: var(--app-color-surface-fg-subtle);
@@ -105,7 +106,7 @@
  * To understand the scaling system, refer to "Colors: Palette" section.
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-theme='vue-equipment'] {
   --vp-c-default-1: var(--app-color-primary-fg-solid);
   --vp-c-default-2: var(--app-color-primary-fg-muted);
   --vp-c-default-3: var(--app-color-primary-fg-subtle);

@@ -13,16 +13,15 @@
     }
   ],
   "devDependencies": {
-    "@maas/config": "^1.6.0",
+    "@maas/config": "^1.7.0",
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.5",
     "@types/node": "catalog:",
-    "eslint": "^9.26.0",
+    "eslint": "^9.30.1",
     "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "^0.6.11",
+    "prettier-plugin-tailwindcss": "^0.6.13",
     "release-it": "^18.1.2",
-    "tailwindcss": "catalog:",
-    "turbo": "^2.5.2",
+    "turbo": "^2.5.4",
     "typescript": "catalog:"
   },
   "exports": {
@@ -142,7 +141,7 @@
   "volta": {
     "node": "20.18.1"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.12.4",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"

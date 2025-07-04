@@ -1,13 +1,10 @@
 import * as path from 'path'
+import tailwindcss from '@tailwindcss/vite'
 
 const dist = '../../../dist'
 
 export default defineNuxtConfig({
-  modules: [
-    '@maas/vue-equipment/nuxt',
-    '@maas/mirror/nuxt',
-    '@nuxtjs/tailwindcss',
-  ],
+  modules: ['@maas/vue-equipment/nuxt', '@maas/mirror/nuxt'],
 
   vueEquipment: {
     plugins: true,
@@ -44,6 +41,7 @@ export default defineNuxtConfig({
   },
 
   css: [
+    './assets/tailwind.css',
     'fonts/index/stylesheet.css',
     'fonts/interface/stylesheet.css',
     'fonts/mirage/stylesheet.css',
@@ -60,6 +58,7 @@ export default defineNuxtConfig({
 
   // https://github.com/nuxt/nuxt/issues/31326
   vite: {
+    plugins: [tailwindcss()],
     build: {
       rollupOptions: {
         output: {

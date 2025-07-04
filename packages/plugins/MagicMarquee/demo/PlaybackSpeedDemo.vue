@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center gap-8">
     <magic-marquee
       id="magic-marquee-playback-speed-demo"
-      class="bg-surface-elevation-base text-surface rounded-surface-sm py-6"
+      class="bg-surface-base text-surface rounded-surface-sm py-6"
     >
       <span>Magic as a Service™</span>
       <span>Vue Equipment</span>
