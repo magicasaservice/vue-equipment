@@ -25,15 +25,9 @@ const { Layout } = DefaultTheme
 const { isDark } = useData()
 
 onMounted(() => {
-  document.body.setAttribute('data-theme', 'vue-equipment')
-  document.body.setAttribute('class', 'bg-surface-base')
   document.documentElement.setAttribute('data-theme', 'vue-equipment')
 
   watchEffect(() => {
-    document.body.setAttribute(
-      'data-color-mode',
-      isDark.value ? 'dark' : 'light'
-    )
     document.documentElement.setAttribute(
       'data-color-mode',
       isDark.value ? 'dark' : 'light'
