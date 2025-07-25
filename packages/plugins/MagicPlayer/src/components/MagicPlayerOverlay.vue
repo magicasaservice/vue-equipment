@@ -13,7 +13,7 @@
     @click.stop="togglePlay"
   >
     <transition :name="mappedOverlayTransition">
-      <div v-if="isVisible">
+      <div v-if="isVisible" class="magic-player-overlay__controls">
         <slot>
           <transition :name="mappedIconsTransition">
             <button
@@ -150,7 +150,7 @@ watch(
   cursor: pointer;
 }
 
-.magic-player-overlay div {
+.magic-player-overlay__controls {
   position: relative;
   width: 100%;
   height: 100%;
