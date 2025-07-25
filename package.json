@@ -13,17 +13,17 @@
     }
   ],
   "devDependencies": {
-    "@maas/config": "^1.6.0",
+    "@maas/config": "^1.9.0",
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.5",
     "@types/node": "catalog:",
-    "eslint": "^9.26.0",
+    "eslint": "^9.31.0",
     "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "release-it": "^18.1.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "release-it": "^19.0.4",
     "tailwindcss": "catalog:",
-    "turbo": "^2.5.2",
-    "typescript": "catalog:"
+    "turbo": "^2.5.5",
+    "typescript": "5.6.3"
   },
   "exports": {
     "./nuxt": {
@@ -58,17 +58,17 @@
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
     "@maas/vue-primitive": "^1",
-    "@nuxt/kit": "^3",
-    "@vueuse/core": "^12",
-    "@vueuse/integrations": "^12",
+    "@nuxt/kit": ">=3",
+    "@vueuse/core": ">=12",
+    "@vueuse/integrations": ">=12",
     "defu": "^6",
     "focus-trap": "^7",
     "hls.js": "^1",
     "luxon": "^3",
     "mitt": "^3",
     "motion": "^12",
-    "nuxt": "^3.15",
-    "universal-cookie": "^7",
+    "nuxt": ">=3.15",
+    "universal-cookie": ">=7",
     "vue": "^3.5",
     "wheel-gestures": "^2.2.48"
   },
@@ -142,7 +142,7 @@
   "volta": {
     "node": "20.18.1"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.13.1",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"
