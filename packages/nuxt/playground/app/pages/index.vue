@@ -19,7 +19,7 @@ import {
   composables,
   plugins,
   type VueEquipmentFunction,
-} from '../../../metadata'
+} from '../../../../metadata'
 
 const mappedPlugins = plugins.filter(
   (plugin: VueEquipmentFunction) => plugin.name !== 'MagicEmitter'

@@ -14,8 +14,8 @@ const route = useRoute()
 const defaultDemo = defineAsyncComponent(
   () =>
     import(
-      `../../../../plugins/${pascalCase(
-        route.params.slug[0]
+      `../../../../../plugins/${pascalCase(
+        route.params.slug?.[0] ?? ''
       )}/demo/DefaultDemo.vue`
     )
 )
