@@ -19,8 +19,8 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'vueEquipment',
   },
   defaults: {
-    plugins: true,
-    composables: true,
+    plugins: false,
+    composables: false,
   },
   async setup(options, nuxt) {
     let mappedPlugins: string[]
