@@ -6,12 +6,11 @@
 import { camelCase } from 'scule'
 
 const route = useRoute()
-const defaultDemo = defineAsyncComponent(
-  () =>
-    import(
-      `../../../../composables/${camelCase(
-        route.params.slug[0]
-      )}/demo/DefaultDemo.vue`
-    )
-)
+
+function getDemoComponent() {
+  const slug = route.params.slug?.[0] ?? ''
+  const pluginName = camelCase(slug)
+  return import(`../../../../../composables/${pluginName}/demo/DefaultDemo.vue`)
+}
+const defaultDemo = defineAsyncComponent(getDemoComponent)
 </script>
