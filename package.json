@@ -81,7 +81,7 @@
       "optional": false
     },
     "@nuxt/kit": {
-      "optional": false
+      "optional": true
     },
     "@maas/magic-timer": {
       "optional": false
@@ -101,6 +101,9 @@
     "defu": {
       "optional": false
     },
+    "focus-trap": {
+      "optional": false
+    },
     "hls.js": {
       "optional": false
     },
@@ -114,7 +117,7 @@
       "optional": false
     },
     "nuxt": {
-      "optional": false
+      "optional": true
     },
     "universal-cookie": {
       "optional": false
