@@ -34,6 +34,9 @@
       "types": "./dist/composables/*/index.d.ts",
       "import": "./dist/composables/*/index.js"
     },
+    "./plugins/MagicPlayer/css/*.css": {
+      "import": "./dist/plugins/MagicPlayer/src/css/*.css"
+    },
     "./plugins/*/nuxt": {
       "types": "./dist/plugins/*/nuxt.d.ts",
       "import": "./dist/plugins/*/nuxt.mjs"
@@ -42,15 +45,12 @@
       "types": "./dist/plugins/*/index.d.ts",
       "import": "./dist/plugins/*/index.mjs"
     },
-    "./plugins/MagicPlayer/css/*.css": {
-      "import": "./dist/plugins/MagicPlayer/src/css/*.css"
+    "./utils/css/*.css": {
+      "import": "./dist/utils/css/*.css"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
-    },
-    "./utils/css/*.css": {
-      "import": "./dist/utils/css/*.css"
     }
   },
   "files": [
