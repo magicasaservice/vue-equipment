@@ -14,7 +14,7 @@ import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useDrawerState } from './useDrawerState'
 import type { DrawerDefaultOptions } from '../../types'
 

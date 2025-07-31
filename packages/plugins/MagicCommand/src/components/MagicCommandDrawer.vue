@@ -11,11 +11,11 @@
 
 <script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import {
-  useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from '../symbols'
 import type { MagicCommandDrawerOptions } from '../types'

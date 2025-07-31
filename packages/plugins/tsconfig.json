@@ -2,7 +2,7 @@
   "extends": "@maas/config/tsconfig/vue-base.json",
   "compilerOptions": {
     "paths": {
-      "@maas/vue-equipment/plugins": ["./index.ts"]
+      "@maas/vue-equipment/plugins/*": ["./*"]
     }
   }
 }

@@ -37,7 +37,7 @@ If you are using Vue, import and add `MagicMenuPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicMenuPlugin } from '@maas/vue-equipment/plugins'
+import { MagicMenuPlugin } from '@maas/vue-equipment/plugins/MagicMenu'
 
 const app = createApp({})
 
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
 In order to interact with the menu from anywhere within your app, we provide a `useMagicMenu` composable. Import it directly when needed.
 
 ```js
-import { useMagicMenu } from '@maas/vue-equipment/plugins'
+import { useMagicMenu } from '@maas/vue-equipment/plugins/MagicMenu'
 
 const { selectView } = useMagicMenu('your-menu-id')
 

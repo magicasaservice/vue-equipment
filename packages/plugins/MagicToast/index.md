@@ -15,7 +15,7 @@ MagicToast let’s you trigger and display toasts from anywhere.
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { useMagicToast } from '@maas/vue-equipment/plugins'
+import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 
 const component = defineAsyncComponent(() => import('./YourToast.vue'))
 const { add } = useMagicToast('your-toast-id')
@@ -34,7 +34,7 @@ If you are using Vue, import and add `MagicToastPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicToastPlugin } from '@maas/vue-equipment/plugins'
+import { MagicToastPlugin } from '@maas/vue-equipment/plugins/MagicToast'
 
 const app = createApp({})
 

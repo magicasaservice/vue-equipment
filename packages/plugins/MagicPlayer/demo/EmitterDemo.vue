@@ -34,11 +34,11 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, defineAsyncComponent, useTemplateRef } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
+import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 import {
-  useMagicToast,
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 
 const component = defineAsyncComponent(
   () => import('./components/EmitterDemoToast.vue')

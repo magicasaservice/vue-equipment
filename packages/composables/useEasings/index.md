@@ -9,7 +9,7 @@ A standard set of easing functions neatly packaged into a composable.
 ## Anatomy
 
 ```js
-import { useEasings } from '@maas/vue-equipment/composables'
+import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 
 const { easeOutQuad } = useEasings()
 easeOutQuad(300)
@@ -25,5 +25,5 @@ Import the composable directly where you need it.
 import {
   useCountdown,
   type DateTimeArray,
-} from '@maas/vue-equipment/composables'
+} from '@maas/vue-equipment/composables/useEasings'
 ```

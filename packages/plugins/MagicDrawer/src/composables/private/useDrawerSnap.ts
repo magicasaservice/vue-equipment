@@ -8,7 +8,7 @@ import {
 } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { mapValue, interpolate } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
 

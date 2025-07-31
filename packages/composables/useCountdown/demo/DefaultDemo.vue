@@ -19,7 +19,7 @@ import { MBadge } from '@maas/mirror/vue'
 import {
   useCountdown,
   type DateTimeArray,
-} from '@maas/vue-equipment/composables'
+} from '@maas/vue-equipment/composables/useCountdown'
 
 const nextYear = computed(() => new Date().getFullYear() + 1)
 const refDate = ref(`${nextYear.value}-01-01 00:00:00`)

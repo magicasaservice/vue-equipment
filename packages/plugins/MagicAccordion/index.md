@@ -35,7 +35,7 @@ If you are using Vue, import and add `MagicAccordionPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins'
+import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins/MagicAccordion'
 
 const app = createApp({})
 
@@ -60,7 +60,7 @@ export default defineNuxtConfig({
 In order to interact with the accordion from anywhere within your app, we provide a `useMagicAccordion` composable. Import it directly when needed.
 
 ```js
-import { useMagicAccordion } from '@maas/vue-equipment/plugins'
+import { useMagicAccordion } from '@maas/vue-equipment/plugins/MagicAccordion'
 
 const { selectView } = useMagicAccordion('your-accordion-id')
 

@@ -62,7 +62,7 @@ If you are using Vue, import and add `MagicCommandPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicCommandPlugin } from '@maas/vue-equipment/plugins'
+import { MagicCommandPlugin } from '@maas/vue-equipment/plugins/MagicCommand'
 
 const app = createApp({})
 
@@ -87,7 +87,7 @@ export default defineNuxtConfig({
 In order to interact with the command palette from anywhere within your app, we provide a `useMagicCommand` composable. Import it directly when needed.
 
 ```js
-import { useMagicCommand } from '@maas/vue-equipment/plugins'
+import { useMagicCommand } from '@maas/vue-equipment/plugins/MagicCommand'
 
 const { selectView } = useMagicCommand('your-command-id')
 

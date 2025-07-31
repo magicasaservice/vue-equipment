@@ -22,7 +22,7 @@ If you are using Vue, import and add `MagicNoisePlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicNoisePlugin } from '@maas/vue-equipment/plugins'
+import { MagicNoisePlugin } from '@maas/vue-equipment/plugins/MagicNoise'
 
 const app = createApp({})
 
@@ -48,7 +48,7 @@ If you prefer a more granular approach, the component can also be directly impor
 
 ```vue
 <script setup>
-import { MagicNoise } from '@maas/vue-equipment/plugins'
+import { MagicNoise } from '@maas/vue-equipment/plugins/MagicNoise'
 </script>
 
 <template>

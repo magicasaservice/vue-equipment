@@ -28,7 +28,7 @@ If you are using Vue, import and add `MagicDraggablePlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicDraggablePlugin } from '@maas/vue-equipment/plugins'
+import { MagicDraggablePlugin } from '@maas/vue-equipment/plugins/MagicDraggable'
 
 const app = createApp({})
 
@@ -54,7 +54,7 @@ If you prefer a more granular approach, the component can also be directly impor
 
 ```vue
 <script setup>
-import { MagicDraggable } from '@maas/vue-equipment/plugins'
+import { MagicDraggable } from '@maas/vue-equipment/plugins/MagicDraggable'
 </script>
 
 <template>
@@ -69,7 +69,7 @@ import { MagicDraggable } from '@maas/vue-equipment/plugins'
 In order to interact with the component from anywhere within your app, we provide a `useMagicDraggable` composable. Import it directly when needed.
 
 ```js
-import { useMagicDraggable } from '@maas/vue-equipment/plugins'
+import { useMagicDraggable } from '@maas/vue-equipment/plugins/MagicDraggable'
 
 const { snapTo } = useMagicDraggable('your-draggable-id')
 

@@ -1,5 +1,5 @@
 import { toRefs, watch, toValue, type MaybeRef } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerEmitterArgs = {

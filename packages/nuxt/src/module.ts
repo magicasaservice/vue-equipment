@@ -30,13 +30,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.options.build.transpile.push('@maas/vue-equipment')
 
-    // Prevent vite from optimizing plugins
-    extendViteConfig((config) => {
-      config.optimizeDeps = config.optimizeDeps ?? {}
-      config.optimizeDeps.exclude = config.optimizeDeps.exclude ?? []
-      config.optimizeDeps.exclude.push('@maas/vue-equipment/plugins')
-    })
-
     // Aliases
     const packages = ['plugins', 'composables', 'utils']
     nuxt.options.alias = nuxt.options.alias ?? {}
@@ -54,8 +47,20 @@ export default defineNuxtModule<ModuleOptions>({
       mappedPlugins = options.plugins || []
     }
 
+    // Prevent vite from optimizing plugins
+    extendViteConfig((config) => {
+      config.optimizeDeps = config.optimizeDeps ?? {}
+      config.optimizeDeps.exclude = config.optimizeDeps.exclude ?? []
+
+      for (const plugin of mappedPlugins) {
+        config.optimizeDeps.exclude.push(
+          `@maas/vue-equipment/plugins/${plugin}`
+        )
+      }
+    })
+
+    // Install plugins
     for (const plugin of mappedPlugins) {
-      // Install plugin
       const nuxtPlugin = await resolver.resolvePath(
         `@maas/vue-equipment/plugins/${plugin}/nuxt`
       )
@@ -70,9 +75,11 @@ export default defineNuxtModule<ModuleOptions>({
       mappedComposables = options.composables || []
     }
 
-    addImportsSources({
-      from: '@maas/vue-equipment/composables',
-      imports: mappedComposables,
-    })
+    for (const composable of mappedComposables) {
+      addImportsSources({
+        from: `@maas/vue-equipment/composables/${composable}`,
+        imports: [composable],
+      })
+    }
   },
 })

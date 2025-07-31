@@ -14,7 +14,7 @@ If you are using Vue, import and add `MagicScrollPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicScrollPlugin } from '@maas/vue-equipment/plugins'
+import { MagicScrollPlugin } from '@maas/vue-equipment/plugins/MagicScroll'
 
 const app = createApp({})
 

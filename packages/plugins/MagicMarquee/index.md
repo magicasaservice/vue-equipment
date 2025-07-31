@@ -28,7 +28,7 @@ If you are using Vue, import and add `MagicMarqueePlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicMarqueePlugin } from '@maas/vue-equipment/plugins'
+import { MagicMarqueePlugin } from '@maas/vue-equipment/plugins/MagicMarquee'
 
 const app = createApp({})
 
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
 In order to interact with the marquee from anywhere within your app, we provide a `useMagicMarquee` composable. Import it directly when needed.
 
 ```js
-import { useMagicMarquee } from '@maas/vue-equipment/plugins'
+import { useMagicMarquee } from '@maas/vue-equipment/plugins/MagicMarquee'
 
 const { play } = useMagicMarquee('your-marquee-id')
 

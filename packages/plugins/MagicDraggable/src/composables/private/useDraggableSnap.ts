@@ -1,7 +1,7 @@
 import { ref, toRefs, computed, toValue, nextTick, type MaybeRef } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { defu } from 'defu'
 
 import { useDraggableState } from './useDraggableState'

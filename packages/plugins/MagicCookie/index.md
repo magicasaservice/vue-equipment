@@ -33,7 +33,7 @@ If you are using Vue, import and add `MagicCookiePlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicCookiePlugin } from '@maas/vue-equipment/plugins'
+import { MagicCookiePlugin } from '@maas/vue-equipment/plugins/MagicCookie'
 
 const app = createApp({})
 
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
 In order to interact with the cookie banner from anywhere within your app, we provide a `useMagicCookie` composable. Import it directly when needed.
 
 ```js
-import { useMagicCookie } from '@maas/vue-equipment/plugins'
+import { useMagicCookie } from '@maas/vue-equipment/plugins/MagicCookie'
 
 const { acceptAll } = useMagicCookie('your-cookie-id')
 

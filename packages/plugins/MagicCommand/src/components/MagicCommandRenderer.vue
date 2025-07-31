@@ -7,7 +7,7 @@ import { inject, onBeforeUnmount, useTemplateRef } from 'vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MagicCommandInstanceId } from './../symbols'
 
 import { useCommandState } from '../composables/private/useCommandState'

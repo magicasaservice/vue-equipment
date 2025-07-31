@@ -41,7 +41,7 @@ If you are using Vue, import and add `MagicPlayerPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicPlayerPlugin } from '@maas/vue-equipment/plugins'
+import { MagicPlayerPlugin } from '@maas/vue-equipment/plugins/MagicPlayer'
 
 const app = createApp({})
 
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
 In order to interact with the player from anywhere within your app, we provide a `useMagicPlayer` composable. Import it directly when needed.
 
 ```js
-import { useMagicPlayer } from '@maas/vue-equipment/plugins'
+import { useMagicPlayer } from '@maas/vue-equipment/plugins/MagicPlayer'
 
 const { playerApi } = useMagicPlayer('your-player-id')
 

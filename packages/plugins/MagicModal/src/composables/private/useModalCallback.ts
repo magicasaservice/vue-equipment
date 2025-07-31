@@ -1,5 +1,5 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicModalOptions } from '../../types'
 
 type UseModalCallbackArgs = {

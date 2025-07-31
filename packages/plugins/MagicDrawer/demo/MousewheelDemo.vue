@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
-import { useMagicDrawer } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 
 const drawerApi = useMagicDrawer('magic-drawer-mousewheel-demo')
 </script>
