@@ -36,6 +36,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     scrubbedPercentage,
     thumbPercentage,
     popoverOffsetX,
+    errors,
   } = toRefs(state)
 
   return {
@@ -65,6 +66,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     videoApi,
     controlsApi,
     playerRuntime,
+    errors,
   }
 }
 

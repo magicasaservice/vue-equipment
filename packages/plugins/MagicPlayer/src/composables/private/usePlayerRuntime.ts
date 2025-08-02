@@ -1,6 +1,7 @@
 import { shallowRef, toRefs, toValue, type MaybeRef, type Ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { usePlayerState } from './usePlayerState'
+import { usePlayerError } from './usePlayerError'
 
 import type Hls from 'hls.js'
 import type { MagicPlayerOptions } from '../../types'
@@ -22,7 +23,13 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   const state = initializeState()
   const { loaded } = toRefs(state)
 
-  // Private functions
+  const {
+    clearErrors,
+    handleHlsRuntimeError,
+    handleHlsInitError,
+    handleNativeInitError,
+  } = usePlayerError({ id })
+
   function useNative() {
     const el = toValue(mediaRef)
 
@@ -30,14 +37,23 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       return
     }
 
-    el.src = src
-    el.addEventListener(
-      'loadeddata',
-      () => {
-        loaded.value = true
-      },
-      { once: true }
-    )
+    clearErrors()
+
+    try {
+      el.src = src
+
+      el.addEventListener(
+        'loadeddata',
+        () => {
+          loaded.value = true
+        },
+        { once: true }
+      )
+    } catch (error) {
+      handleNativeInitError(
+        error instanceof Error ? error : new Error('Unknown error')
+      )
+    }
   }
 
   async function useHlsJS(autoplay = false) {
@@ -47,15 +63,25 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       return
     }
 
+    clearErrors()
+
     // If autoplay is true, hls.startLoad() needs to be deferred until hls is ready
     deferredLoading.value = autoplay
 
-    const { default: Hls } = await import('hls.js')
+    try {
+      const { default: Hls } = await import('hls.js')
+      hls = new Hls({ autoStartLoad: false })
 
-    hls = new Hls({ autoStartLoad: false })
-    if (!Hls.isSupported()) {
-      useNative()
-    } else if (src) {
+      if (!Hls.isSupported()) {
+        useNative()
+        return
+      }
+
+      if (!src) {
+        return
+      }
+
+      // HLS success events
       hls.on(Hls.Events.FRAG_LOADED, () => {
         loaded.value = true
       })
@@ -70,6 +96,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         }
       })
 
+      // HLS error handling
+      hls.on(Hls.Events.ERROR, (_event, data) => {
+        handleHlsRuntimeError({ data, hls })
+      })
+
       useEventListener(mediaRef, 'pause', () => {
         hls?.stopLoad()
       })
@@ -82,6 +113,10 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
       hls.loadSource(src)
       hls.attachMedia(el)
+    } catch (error) {
+      handleHlsInitError(
+        error instanceof Error ? error : new Error('Unknown error')
+      )
     }
   }
 
@@ -95,8 +130,13 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   }
 
   function destroy() {
-    hls?.destroy()
-    deferredLoading.value = false
+    try {
+      hls?.destroy()
+      clearErrors()
+    } finally {
+      hls = undefined
+      deferredLoading.value = false
+    }
   }
 
   return {

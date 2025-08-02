@@ -1,6 +1,7 @@
 import { toRefs, watch, unref, toValue, type Ref, type MaybeRef } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
 import { usePlayerState } from './usePlayerState'
+import { usePlayerError } from './usePlayerError'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
@@ -9,26 +10,30 @@ export type UsePlayerMediaApiArgs = {
 
 export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Private state
-  const { mediaRef, id } = args
+  const { id, mediaRef } = args
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
   const {
+    buffered,
     currentTime,
     duration,
-    seeking,
-    volume,
-    rate,
-    loaded,
-    waiting,
-    started,
     ended,
-    playing,
-    paused,
-    stalled,
-    buffered,
+    loaded,
     muted,
+    paused,
+    playing,
+    rate,
+    seeking,
+    stalled,
+    started,
+    volume,
+    waiting,
   } = toRefs(state)
+
+  const { handlePlayPromiseError, handleMediaElementError } = usePlayerError({
+    id,
+  })
 
   // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {
@@ -105,9 +110,10 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
       if (value) {
         const playPromise = el.play()
 
-        playPromise?.catch(() => {
+        playPromise?.catch((error) => {
           // Reset state if play was rejected
           playing.value = false
+          handlePlayPromiseError(error)
         })
       } else {
         el.pause()
@@ -186,6 +192,14 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     if (el) {
       volume.value = el.volume
       muted.value = el.muted
+    }
+  })
+
+  useEventListener(mediaRef, 'error', () => {
+    const el = toValue(mediaRef)
+
+    if (el?.error) {
+      handleMediaElementError(el.error)
     }
   })
 }
