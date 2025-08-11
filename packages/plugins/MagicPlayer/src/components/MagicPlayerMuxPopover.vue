@@ -25,6 +25,10 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
@@ -48,14 +52,25 @@ interface MuxStoryboard {
 
 const { playbackId } = defineProps<MagicPlayerMuxPopoverProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
-if (!instanceId || !injectedOptions) {
-  throw new Error(
-    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.'
-  )
-}
+magicError.assert(instanceId, {
+  message:
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
+  statusCode: 400,
+})
+
+magicError.assert(injectedOptions, {
+  message:
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
+  statusCode: 400,
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
@@ -141,9 +156,10 @@ async function initialize() {
       `https://image.mux.com/${mappedPlaybackId}/storyboard.json`
     ).then((res) => res.json())
 
-    if (!storyboard.value) {
-      throw new Error()
-    }
+    magicError.assert(storyboard.value, {
+      message: 'Failed to fetch storyboard',
+      statusCode: 404,
+    })
 
     image = new Image()
     image.src = storyboard.value.url

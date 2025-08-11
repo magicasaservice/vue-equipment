@@ -1,4 +1,5 @@
 import { reactive, computed, toValue, type MaybeRef } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from './useMenuState'
 import type { MenuView } from '../../types/index'
 
@@ -13,6 +14,10 @@ function isAbortError(error: unknown): boolean {
 export function useMenuView(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
+  const { logWarning } = useMagicError({
+    prefix: 'MagicMenu',
+    source: 'MagicMenu',
+  })
 
   // Cache current instance ID
   const currentInstanceId = toValue(instanceId)
@@ -171,7 +176,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       unselectUnrelatedViews(id)
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
-        console.log('selectView() was interrupted by a call to unselectView()')
+        logWarning('selectView() was interrupted by a call to unselectView()')
       }
     }
   }
@@ -196,7 +201,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
       view.active = false
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
-        console.log('unselectView() was interrupted by a call to selectView()')
+        logWarning('unselectView() was interrupted by a call to selectView()')
       }
     }
   }

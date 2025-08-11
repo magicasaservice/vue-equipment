@@ -8,7 +8,7 @@ MagicError is a composable and a class used throughout Vue Equipment for error h
 
 ```vue
 <script setup>
-import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError, type UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const { logError, logWarning, throwError } = useMagicError({
   prefix: 'CustomPrefix',
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
 In order to throw errors from anywhere within your app, import the `useMagicError` composable.
 
 ```js
-import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError, type UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const { throwError, logError, logWarning } = useMagicError({
   prefix: 'CustomPrefix',
@@ -93,3 +93,29 @@ bun install @nuxt/kit
 ```
 
 :::
+
+## Typescript
+
+The `useMagicError` composable is fully typesafe. The `UseMagicErrorReturn` type can be imported seperately.
+
+### Assert
+
+Due to how the typescript compiler works, you need to explicitly type the return value when calling `useMagicError` and refrain from destructuring it.
+
+```ts
+import { inject } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
+
+const magicError: UseMagicErrorReturn = useMagicError()
+const customRef = inject('custom-ref', undefined)
+
+magicError.assert(customRef, {
+  message: 'custom-ref must be provided',
+  statusCode: 400,
+})
+
+alert('customRef is valid')
+```

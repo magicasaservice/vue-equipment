@@ -1,7 +1,7 @@
 import { toRefs, watch, unref, toValue, type Ref, type MaybeRef } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
-import { usePlayerError } from './usePlayerError'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
@@ -11,6 +11,11 @@ export type UsePlayerMediaApiArgs = {
 export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Private state
   const { id, mediaRef } = args
+
+  const { throwError } = useMagicError({
+    prefix: 'MagicPlayer',
+    source: 'MagicPlayer',
+  })
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
@@ -31,9 +36,45 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     waiting,
   } = toRefs(state)
 
-  const { handlePlayPromiseError, handleMediaElementError } = usePlayerError({
-    id,
-  })
+  // Error handling functions
+  function handlePlayPromiseError(originalError: Error) {
+    let message = 'Play promise was rejected'
+
+    switch (originalError.name) {
+      case 'AbortError':
+        message = 'The play() request was aborted'
+        break
+      case 'NotAllowedError':
+        message = 'Autoplay was prevented, user interaction required'
+        break
+      case 'NotSupportedError':
+        message = 'Media format not supported'
+        break
+    }
+
+    throwError({ message, statusCode: 400, cause: originalError })
+  }
+
+  function handleMediaElementError(originalError: MediaError) {
+    let message = 'Media element error'
+
+    switch (originalError.code) {
+      case MediaError.MEDIA_ERR_ABORTED:
+        message = 'Media loading was aborted by the user'
+        break
+      case MediaError.MEDIA_ERR_NETWORK:
+        message = 'A network error occurred while loading the media'
+        break
+      case MediaError.MEDIA_ERR_DECODE:
+        message = 'An error occurred while decoding the media'
+        break
+      case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        message = 'The media source is not supported'
+        break
+    }
+
+    throwError({ message, statusCode: 400, cause: originalError })
+  }
 
   // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {

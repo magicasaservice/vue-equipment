@@ -18,6 +18,10 @@
 <script lang="ts" setup>
 import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
@@ -41,6 +45,12 @@ interface MagicMenuTriggerProps {
 
 const { instanceId, viewId, disabled, trigger } =
   defineProps<MagicMenuTriggerProps>()
+
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
+
 const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const injectedInstanceId = inject(MagicMenuInstanceId, undefined)
@@ -50,17 +60,17 @@ const itemId = inject(MagicMenuItemId, undefined)
 const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 const mappedViewId = computed(() => viewId ?? injectedViewId)
 
-if (!mappedInstanceId.value) {
-  throw new Error(
-    'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided'
-  )
-}
+magicError.assert(mappedInstanceId.value, {
+  message:
+    'MagicMenuTrigger must be nested inside MagicMenuProvider or an instanceId must be provided',
+  statusCode: 400,
+})
 
-if (!mappedViewId.value) {
-  throw new Error(
-    'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided'
-  )
-}
+magicError.assert(mappedViewId.value, {
+  message:
+    'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided',
+  statusCode: 400,
+})
 
 const { getView, getRelativeViewIndex } = useMenuView(mappedInstanceId.value)
 const view = getView(mappedViewId.value)

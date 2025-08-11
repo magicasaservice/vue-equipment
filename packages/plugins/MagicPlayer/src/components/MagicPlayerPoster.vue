@@ -6,16 +6,24 @@
 
 <script lang="ts" setup>
 import { inject, toRefs, computed } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId } from '../symbols'
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicPlayerPoster must be nested inside MagicPlayerProvider.'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicPlayerPoster must be nested inside MagicPlayerProvider.',
+  statusCode: 400,
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()

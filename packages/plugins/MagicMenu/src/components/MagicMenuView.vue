@@ -15,6 +15,10 @@ import {
   MagicMenuViewActive,
 } from '../symbols'
 import type { Placement } from '@floating-ui/vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from '../composables/private/useMenuState'
 
 interface MagicMenuViewProps {
@@ -24,13 +28,19 @@ interface MagicMenuViewProps {
 
 const { id, placement } = defineProps<MagicMenuViewProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
+
 const parentTree = inject(MagicMenuParentTree, [])
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const itemId = inject(MagicMenuItemId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuView must be nested inside MagicMenuProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicMenuView must be nested inside MagicMenuProvider',
+  statusCode: 400,
+})
 
 const mappedId = computed(() => id ?? `magic-menu-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])

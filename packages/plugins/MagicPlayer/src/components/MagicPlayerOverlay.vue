@@ -50,6 +50,10 @@
 <script lang="ts" setup>
 import { watch, ref, computed, inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -69,14 +73,18 @@ interface MagicPlayerOverlayProps {
 
 const { transition } = defineProps<MagicPlayerOverlayProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicPlayerOverlay must be nested inside MagicPlayerProvider.'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicPlayerOverlay must be nested inside MagicPlayerProvider.',
+  statusCode: 400,
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()

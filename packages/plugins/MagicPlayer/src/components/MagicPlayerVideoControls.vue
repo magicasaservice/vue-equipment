@@ -93,6 +93,10 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useIdle } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconVolumeOn from './icons/VolumeOn.vue'
@@ -125,16 +129,21 @@ const {
   transition,
 } = defineProps<MagicPlayerControlsProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 const mappedInstanceId = computed(() => id ?? injectedInstanceId)
 
-if (!mappedInstanceId.value) {
-  throw new Error(
-    'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.'
-  )
-}
+magicError.assert(mappedInstanceId.value, {
+  message:
+    'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.',
+  statusCode: 400,
+})
 
 const mappedTransition = computed(
   () => transition ?? injectedOptions?.transition?.videoControls

@@ -13,6 +13,10 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import {
   MagicMenuInstanceId,
@@ -30,21 +34,29 @@ interface MagicMenuChannelProps {
 
 const { transition, id } = defineProps<MagicMenuChannelProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
+
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 const contentId = inject(MagicMenuContentId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuChannel must be nested inside MagicMenuProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicMenuChannel must be nested inside MagicMenuProvider',
+  statusCode: 400,
+})
 
-if (!viewId) {
-  throw new Error('MagicMenuChannel must be nested inside MagicMenuView')
-}
+magicError.assert(viewId, {
+  message: 'MagicMenuChannel must be nested inside MagicMenuView',
+  statusCode: 400,
+})
 
-if (!id) {
-  throw new Error('MagicMenuChannel requires an id')
-}
+magicError.assert(id, {
+  message: 'MagicMenuChannel requires an id',
+  statusCode: 400,
+})
 
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()

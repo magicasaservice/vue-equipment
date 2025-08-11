@@ -27,6 +27,7 @@ import {
   useMagicEmitter,
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
@@ -59,6 +60,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     animation,
     scrollLock,
   } = args
+
+  const { logWarning } = useMagicError({
+    prefix: 'MagicDraggable',
+    source: 'MagicDraggable',
+  })
 
   // Private state
   const { initializeState } = useDraggableState(toValue(id))
@@ -169,7 +175,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     const parentRect = toValue(wrapperRect)
 
     if (!childRect || !parentRect) {
-      console.warn('MagicDraggable could not calculate sizing')
+      logWarning('could not calculate sizing')
       return
     }
 
@@ -178,7 +184,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       childRect.width > parentRect.width ||
       childRect.height > parentRect.height
     ) {
-      console.warn('MagicDraggable is too small for its content')
+      logWarning('is too small for its content')
       return
     }
   }
@@ -499,7 +505,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
         elRect.value.width > wrapperRect.value.width ||
         elRect.value.height > wrapperRect.value.height
       ) {
-        console.warn('MagicDraggable is too small for its content')
+        logWarning('is too small for its content')
         return
       }
     }

@@ -34,6 +34,10 @@
 
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import {
@@ -43,13 +47,18 @@ import {
   MagicPlayerBarRef,
 } from '../symbols'
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicPlayerTimeline must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
-  )
-}
+magicError.assert(instanceId, {
+  message:
+    'MagicPlayerTimeline must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.',
+  statusCode: 400,
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()

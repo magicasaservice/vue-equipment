@@ -2,6 +2,7 @@ import { ref, toRefs, computed, toValue, nextTick, type MaybeRef } from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { defu } from 'defu'
 
 import { useDraggableState } from './useDraggableState'
@@ -37,6 +38,10 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   // Private state
   const { initializeState } = useDraggableState(toValue(id))
   const state = initializeState()
+  const { logWarning } = useMagicError({
+    prefix: 'MagicDraggable',
+    source: 'MagicDraggable',
+  })
 
   const {
     lastDraggedX,
@@ -99,12 +104,12 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     snapPoint: DraggableSnapPoint
   ): Coordinates | undefined {
     if (!wrapperRect.value) {
-      console.warn('Wrapper rect is not defined')
+      logWarning('Wrapper rect is not defined')
       return undefined
     }
 
     if (!elRect.value) {
-      console.warn('Element rect is not defined')
+      logWarning('Element rect is not defined')
       return undefined
     }
 

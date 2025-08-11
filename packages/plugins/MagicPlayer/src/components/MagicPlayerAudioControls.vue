@@ -69,6 +69,10 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useIdle } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
@@ -87,16 +91,21 @@ interface MagicAudioPlayerControlsProps {
 
 const { instanceId } = defineProps<MagicAudioPlayerControlsProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 
-if (!mappedInstanceId.value) {
-  throw new Error(
-    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or an instanceId must be provided.'
-  )
-}
+magicError.assert(mappedInstanceId.value, {
+  message:
+    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or an instanceId must be provided.',
+  statusCode: 400,
+})
 
 const barRef = useTemplateRef('bar')
 const trackRef = useTemplateRef('track')

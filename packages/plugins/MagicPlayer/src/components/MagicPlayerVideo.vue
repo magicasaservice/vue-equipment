@@ -26,6 +26,10 @@ import {
   useEventListener,
   defaultWindow,
 } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
@@ -40,17 +44,24 @@ import {
   MagicPlayerRef,
 } from '../symbols'
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayer',
+})
+
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 const injectedPlayerRef = inject(MagicPlayerRef, undefined)
 
-if (!injectedInstanceId) {
-  throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
-}
+magicError.assert(injectedInstanceId, {
+  message: 'MagicPlayerVideo must be used within a MagicPlayerProvider',
+  statusCode: 400,
+})
 
-if (!injectedOptions) {
-  throw new Error('MagicPlayerVideo must be used within a MagicPlayerProvider')
-}
+magicError.assert(injectedOptions, {
+  message: 'MagicPlayerVideo must be used within a MagicPlayerProvider',
+  statusCode: 400,
+})
 
 const elRef = useTemplateRef('el')
 

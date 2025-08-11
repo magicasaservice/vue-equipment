@@ -1,5 +1,6 @@
 import { reactive, type MaybeRef } from 'vue'
 import { usePointer, watchOnce } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
@@ -17,6 +18,10 @@ type AddItemArgs = Pick<MenuItem, 'id' | 'disabled'>
 export function useMenuItem(args: UseMenuItemArgs) {
   const { instanceId, viewId } = args
 
+  const { throwError } = useMagicError({
+    prefix: 'MagicMenu',
+    source: 'MagicMenu',
+  })
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
 
@@ -24,7 +29,10 @@ export function useMenuItem(args: UseMenuItemArgs) {
   const view = getView(viewId)
 
   if (!view) {
-    throw new Error(`View ${viewId} not found`)
+    throwError({
+      message: `View ${viewId} not found`,
+      statusCode: 404,
+    })
   }
 
   // Private functions

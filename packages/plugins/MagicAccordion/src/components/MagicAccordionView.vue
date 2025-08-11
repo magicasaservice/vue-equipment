@@ -13,6 +13,10 @@
 import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
+import {
   MagicAccordionInstanceId,
   MagicAccordionViewActive,
   MagicAccordionViewId,
@@ -27,13 +31,17 @@ interface MagicAccordionViewProps {
 
 const { id, active } = defineProps<MagicAccordionViewProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicAccordion',
+  source: 'MagicAccordion',
+})
+
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicAccordionView must be nested inside MagicAccordionProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicAccordionView must be nested inside MagicAccordionProvider',
+  statusCode: 400,
+})
 
 const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)
 const mappedActive = computed(() => view.active)

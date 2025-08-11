@@ -36,6 +36,10 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
 import { useCommandCallback } from '../composables/private/useCommandCallback'
@@ -55,20 +59,25 @@ defineOptions({
   inheritAttrs: false,
 })
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommand',
+})
+
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
 
 const elRef = useTemplateRef('el')
 
-if (!instanceId) {
-  throw new Error(
-    'MagicCommandContent must be nested inside MagicCommandProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandContent must be nested inside MagicCommandProvider',
+  statusCode: 400,
+})
 
-if (!viewId) {
-  throw new Error('MagicCommandContent must be nested inside MagicCommandView')
-}
+magicError.assert(viewId, {
+  message: 'MagicCommandContent must be nested inside MagicCommandView',
+  statusCode: 400,
+})
 
 const { getView } = useCommandView(instanceId)
 const view = getView(viewId)

@@ -37,23 +37,6 @@ export interface RequiredMagicPlayerOptions {
 
 export type Buffered = [number, number][]
 
-export type PlayerErrorType =
-  | 'play-promise-rejected'
-  | 'media-element-error'
-  | 'hls-network-error'
-  | 'hls-media-error'
-  | 'hls-fatal-error'
-  | 'native-init-error'
-  | 'hls-init-error'
-  | 'unsupported-source'
-
-export interface PlayerError {
-  type: PlayerErrorType
-  message: string
-  timestamp?: number
-  originalError?: Error
-}
-
 export interface PlayerState {
   id: string
   buffered: Buffered
@@ -86,7 +69,6 @@ export interface PlayerState {
   controlsBarRect: DOMRect | undefined
   controlsTrackRect: DOMRect | undefined
   controlsPopoverRect: DOMRect | undefined
-  errors: PlayerError[]
 }
 
 export interface PlayerEvents {

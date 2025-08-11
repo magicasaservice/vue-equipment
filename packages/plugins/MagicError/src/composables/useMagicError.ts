@@ -11,8 +11,19 @@ export interface ThrowErrorArgs {
   cause?: unknown
 }
 
-export function useMagicError(args: UseMagicErrorArgs = {}) {
-  const { prefix = 'MagicError', source = 'Vue Equipment' } = args
+// Neeeded for the `assert` function to work correctly
+export interface UseMagicErrorReturn {
+  assert<T>(value: T, args: ThrowErrorArgs): asserts value is NonNullable<T>
+  throwError(args: ThrowErrorArgs): never
+  logError(message: string): void
+  logWarning(message: string): void
+  MagicError: typeof MagicError
+}
+
+export function useMagicError(
+  args: UseMagicErrorArgs = {}
+): UseMagicErrorReturn {
+  const { prefix = 'MagicError', source = 'vue-equipment' } = args
 
   function logError(message: string) {
     console.error(`[${prefix}]:`, message)
@@ -34,7 +45,17 @@ export function useMagicError(args: UseMagicErrorArgs = {}) {
     throw error
   }
 
+  function assert<T>(
+    value: T,
+    args: ThrowErrorArgs
+  ): asserts value is NonNullable<T> {
+    if (value === undefined || value === null) {
+      throwError(args)
+    }
+  }
+
   return {
+    assert,
     throwError,
     logError,
     logWarning,

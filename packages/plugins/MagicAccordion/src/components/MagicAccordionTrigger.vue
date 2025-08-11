@@ -17,6 +17,10 @@
 import { useTemplateRef, inject, computed, toValue, type MaybeRef } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { onKeyStroke } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useAccordionTrigger } from '../composables/private/useAccordionTrigger'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionView } from '../composables/private/useAccordionView'
@@ -38,6 +42,11 @@ const {
   asChild = false,
 } = defineProps<MagicAccordionTriggerProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicAccordion',
+  source: 'MagicAccordion',
+})
+
 const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
@@ -45,17 +54,16 @@ const injectedViewId = inject(MagicAccordionViewId, undefined)
 
 const mappedViewId = computed(() => viewId ?? injectedViewId)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicAccordionTrigger must be nested inside MagicAccordionProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider',
+  statusCode: 400,
+})
 
-if (!mappedViewId.value) {
-  throw new Error(
-    'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided'
-  )
-}
+magicError.assert(mappedViewId.value, {
+  message:
+    'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided',
+  statusCode: 400,
+})
 
 const { initializeState } = useAccordionState(instanceId)
 const state = initializeState()

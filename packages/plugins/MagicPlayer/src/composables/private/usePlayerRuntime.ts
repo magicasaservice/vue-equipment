@@ -1,7 +1,7 @@
 import { shallowRef, toRefs, toValue, type MaybeRef, type Ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
-import { usePlayerError } from './usePlayerError'
 
 import type Hls from 'hls.js'
 import type { MagicPlayerOptions } from '../../types'
@@ -19,16 +19,67 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   const { id, mediaRef, srcType, src } = args
 
+  const { logWarning, throwError } = useMagicError({
+    prefix: 'MagicPlayer',
+    source: 'MagicPlayer',
+  })
+
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
   const { loaded } = toRefs(state)
 
-  const {
-    clearErrors,
-    handleHlsRuntimeError,
-    handleHlsInitError,
-    handleNativeInitError,
-  } = usePlayerError({ id })
+  // Private functions
+  function handleHlsRuntimeError(args: {
+    data: { fatal: boolean; type: string; details?: string }
+    hls?: Hls
+  }) {
+    const { data, hls } = args
+    const error = new Error(data.details || 'HLS error')
+
+    if (!data.fatal) {
+      logWarning(
+        `HLS Non-fatal error [${data.type}]: ${data.details || 'Unknown'}`
+      )
+      return
+    }
+
+    switch (data.type) {
+      case 'networkError':
+        throwError({
+          message: 'HLS network error',
+          statusCode: 500,
+          cause: error,
+        })
+        break
+      case 'mediaError':
+        try {
+          if (hls) {
+            hls.recoverMediaError()
+            logWarning('HLS media error recovered')
+            return
+          }
+        } catch (recoveryError) {
+          throwError({
+            message: 'HLS media recovery failed',
+            statusCode: 500,
+            cause: recoveryError,
+          })
+        }
+
+        throwError({
+          message: 'HLS media error',
+          statusCode: 500,
+          cause: error,
+        })
+        break
+      default:
+        throwError({
+          message: 'HLS fatal error',
+          statusCode: 500,
+          cause: error,
+        })
+    }
+  }
 
   function useNative() {
     const el = toValue(mediaRef)
@@ -36,8 +87,6 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     if (!el || !src) {
       return
     }
-
-    clearErrors()
 
     try {
       el.src = src
@@ -50,9 +99,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         { once: true }
       )
     } catch (error) {
-      handleNativeInitError(
-        error instanceof Error ? error : new Error('Unknown error')
-      )
+      throwError({
+        message: 'Player initialization failed',
+        statusCode: 500,
+        cause: error,
+      })
     }
   }
 
@@ -62,8 +113,6 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     if (!el) {
       return
     }
-
-    clearErrors()
 
     // If autoplay is true, hls.startLoad() needs to be deferred until hls is ready
     deferredLoading.value = autoplay
@@ -114,9 +163,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       hls.loadSource(src)
       hls.attachMedia(el)
     } catch (error) {
-      handleHlsInitError(
-        error instanceof Error ? error : new Error('Unknown error')
-      )
+      throwError({
+        message: 'Player initialization failed',
+        statusCode: 500,
+        cause: error,
+      })
     }
   }
 
@@ -132,7 +183,6 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   function destroy() {
     try {
       hls?.destroy()
-      clearErrors()
     } finally {
       hls = undefined
       deferredLoading.value = false

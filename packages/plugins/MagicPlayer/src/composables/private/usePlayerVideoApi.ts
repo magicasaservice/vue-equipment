@@ -1,6 +1,7 @@
 import { toRefs, watch, toValue, type MaybeRef, type Ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
 
 export type UsePlayerVideoApiArgs = {
@@ -12,6 +13,11 @@ export type UsePlayerVideoApiArgs = {
 export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
   // Private state
   const { id, playerRef, videoRef } = args
+
+  const { logError } = useMagicError({
+    prefix: 'MagicPlayer',
+    source: 'MagicPlayer',
+  })
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
@@ -86,7 +92,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   function enterFullscreen() {
     if (!fullscreenTarget.value) {
-      console.error('No fullscreen target found')
+      logError('No fullscreen target found')
       return
     }
 
@@ -95,7 +101,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   function exitFullscreen() {
     if (!fullscreenTarget.value) {
-      console.error('No fullscreen target found')
+      logError('No fullscreen target found')
       return
     }
 

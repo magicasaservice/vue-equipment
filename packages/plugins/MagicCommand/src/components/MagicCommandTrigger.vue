@@ -16,6 +16,10 @@
 <script lang="ts" setup>
 import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandTrigger } from '../composables/private/useCommandTrigger'
 import {
@@ -46,6 +50,11 @@ const {
   trigger = ['click'] as Interaction[],
 } = defineProps<MagicCommandTriggerProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommand',
+})
+
 const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
 
 const instanceId = inject(MagicCommandInstanceId, undefined)
@@ -55,17 +64,16 @@ const itemDisabled = inject(MagicCommandItemDisabled, undefined)
 const injectedViewId = inject(MagicCommandViewId, undefined)
 const mappedViewId = computed(() => viewId ?? injectedViewId)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicCommandTrigger must be nested inside MagicCommandProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandTrigger must be nested inside MagicCommandProvider',
+  statusCode: 400,
+})
 
-if (!mappedViewId.value) {
-  throw new Error(
-    'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided'
-  )
-}
+magicError.assert(mappedViewId.value, {
+  message:
+    'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided',
+  statusCode: 400,
+})
 
 const { getView } = useCommandView(instanceId)
 const view = getView(mappedViewId.value)

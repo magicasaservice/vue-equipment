@@ -38,7 +38,6 @@ export function usePlayerState(id: MaybeRef<string>) {
       controlsBarRect: undefined,
       controlsTrackRect: undefined,
       controlsPopoverRect: undefined,
-      errors: [],
     }
 
     return reactive(state)
