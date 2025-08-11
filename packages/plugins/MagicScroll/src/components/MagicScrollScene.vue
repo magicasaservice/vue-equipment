@@ -15,6 +15,10 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useScrollApi } from '../composables/private/useScrollApi'
 import {
   MagicScrollTarget,
@@ -32,12 +36,18 @@ interface MagicScrollSceneProps {
 const { from = 'top-bottom', to = 'bottom-top' } =
   defineProps<MagicScrollSceneProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicScroll',
+  source: 'MagicScroll',
+})
+
 const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollTarget = inject(MagicScrollTarget, undefined)
 
-if (!scrollTarget) {
-  console.error('MagicScrollScene must be used within a MagicScrollProvider')
-}
+magicError.assert(scrollTarget, {
+  message: 'MagicScrollScene must be used within a MagicScrollProvider',
+  statusCode: 400,
+})
 
 const progress = shallowRef(0)
 const intersecting = shallowRef(false)

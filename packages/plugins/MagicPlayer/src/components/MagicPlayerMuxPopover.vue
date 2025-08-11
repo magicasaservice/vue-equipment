@@ -145,10 +145,11 @@ async function initialize() {
   const mappedPlaybackId = playbackId ?? parsedPlaybackId
 
   if (!mappedPlaybackId) {
-    console.error(
-      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
-    )
-    return
+    magicError.throwError({
+      statusCode: 400,
+      message:
+        'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided',
+    })
   }
 
   try {
@@ -169,8 +170,12 @@ async function initialize() {
 
     // Draw initial frame
     drawFrame(seekedTime.value)
-  } catch (e: unknown) {
-    console.error('Can not initialize timeline preview', e)
+  } catch (error: unknown) {
+    magicError.throwError({
+      statusCode: 500,
+      message: 'Can not initialize timeline preview',
+      cause: error,
+    })
   }
 }
 

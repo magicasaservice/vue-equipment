@@ -63,7 +63,9 @@ const state = initializeState()
 
 if (!contentId) {
   if (state.options.debug) {
-    console.warn('MagicMenuChannel is not nested inside MagicMenuContent')
+    magicError.logWarning(
+      'MagicMenuChannel is not nested inside MagicMenuContent'
+    )
   }
 }
 

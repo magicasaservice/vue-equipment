@@ -20,6 +20,10 @@ import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
 import type { CollisionOffset } from '../types'
 import { useIntersectionObserver } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicScrollCollisionProps {
   id?: string
@@ -27,14 +31,19 @@ interface MagicScrollCollisionProps {
 }
 
 const { id, offset } = defineProps<MagicScrollCollisionProps>()
+
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicScroll',
+  source: 'MagicScroll',
+})
+
 const scrollReturn = inject(MagicScrollReturn, undefined)
 const scrollTarget = inject(MagicScrollTarget)
 
-if (!scrollTarget) {
-  console.error(
-    'MagicScrollCollision must be used within a MagicScrollProvider'
-  )
-}
+magicError.assert(scrollTarget, {
+  message: 'MagicScrollCollision must be used within a MagicScrollProvider',
+  statusCode: 400,
+})
 
 const intersecting = shallowRef(false)
 const elRef = useTemplateRef('el')
