@@ -8,6 +8,7 @@ export interface MagicPlayerOptions {
   autoplay?: boolean
   playback?: ('viewport' | 'window')[] | false
   loop?: boolean
+  debug?: boolean
   transition?: {
     videoControls?: string
     overlay?: string
@@ -25,6 +26,7 @@ export interface RequiredMagicPlayerOptions {
   preload: 'auto' | 'metadata' | 'none'
   autoplay: boolean
   loop: boolean
+  debug: boolean
   transition: {
     videoControls: string
     overlay: string

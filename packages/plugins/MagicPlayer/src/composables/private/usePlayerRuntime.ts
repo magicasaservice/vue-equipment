@@ -11,13 +11,14 @@ export type UsePlayerRuntimeArgs = {
   mediaRef?: Ref<HTMLVideoElement | HTMLAudioElement | null>
   srcType?: MagicPlayerOptions['srcType']
   src?: string
+  debug?: boolean
 }
 
 export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   let hls: Hls | undefined
   const deferredLoading = shallowRef(false)
 
-  const { id, mediaRef, srcType, src } = args
+  const { id, mediaRef, srcType, src, debug = false } = args
 
   const { logWarning, throwError } = useMagicError({
     prefix: 'MagicPlayer',
@@ -37,9 +38,11 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     const error = new Error(data.details || 'HLS error')
 
     if (!data.fatal) {
-      logWarning(
-        `HLS Non-fatal error [${data.type}]: ${data.details || 'Unknown'}`
-      )
+      if (debug) {
+        logWarning(
+          `HLS Non-fatal error [${data.type}]: ${data.details || 'Unknown'}`
+        )
+      }
       return
     }
 
@@ -55,7 +58,9 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         try {
           if (hls) {
             hls.recoverMediaError()
-            logWarning('HLS media error recovered')
+            if (debug) {
+              logWarning('HLS media error recovered')
+            }
             return
           }
         } catch (recoveryError) {

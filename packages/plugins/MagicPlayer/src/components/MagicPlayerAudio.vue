@@ -61,6 +61,7 @@ const { initialize, destroy } = usePlayerRuntime({
   mediaRef: elRef,
   src: injectedOptions.src,
   srcType: injectedOptions.srcType,
+  debug: injectedOptions.debug,
 })
 
 usePlayerMediaApi({

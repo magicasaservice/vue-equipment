@@ -300,6 +300,20 @@ To customize the player override the necessary options. Any custom options will 
     },
     {
       items: [
+        { 
+          label: 'debug',
+          description: 'Enables logging for non-fatal hls.js errors.'
+        },
+        { 
+          label: 'boolean'
+         },
+        { 
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
         {
           label: 'transition.videoControls',
           description: 'Override the transition name of the video controls.'
