@@ -50,7 +50,7 @@ useMagicEmitter().off('*', callback)
 ```
 
 > [!TIP]
-> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+> If you have installed the emitter as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
 ## Peer Dependencies
 
