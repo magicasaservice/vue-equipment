@@ -1,6 +1,6 @@
 # MagicError
 
-MagicError is a composable and a class used throughout Vue Equipment for error handling and logging. It allows you to throw custom errors with additional metadata, such as status codes and timestamps.
+MagicError is a composable and a class used throughout Vue Equipment for error handling and logging. It allows you to throw custom errors including a source, status code, timestamp and an automatically prefixed message.
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
