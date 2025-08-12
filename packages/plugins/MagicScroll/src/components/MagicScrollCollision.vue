@@ -1,5 +1,5 @@
 <template>
-  <div ref="el" class="magic-scroll-collision">
+  <div ref="el" :data-id="mappedId" class="magic-scroll-collision">
     <slot />
   </div>
 </template>
