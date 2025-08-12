@@ -1,6 +1,7 @@
 <template>
   <div
     class="magic-cookie-item"
+    :data-id="mappedId"
     :data-optional="item.optional"
     :data-active="item.active"
   >
