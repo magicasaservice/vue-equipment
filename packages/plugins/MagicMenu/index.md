@@ -649,6 +649,109 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'useMenuItem' },
+        { label: 'view_id_not_found' },
+        { label: 'View {viewId} not found' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuKeyListener' },
+        { label: 'menu_not_active' },
+        { label: 'MagicMenu {state.id} is not active' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_content_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuContent' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuTrigger must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuTrigger must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuContent must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuContent must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuRemote must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuRemote must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'id_required' },
+        { label: 'id is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuView must be nested inside MagicMenuProvider' }
+      ]
+    }
+  ]"
+/>
+
 ## Examples
 
 The menu includes four different modes which preconfigure its appeareance and behavior. You can set the mode via the `options.mode` prop on the `MagicMenuProvider`.

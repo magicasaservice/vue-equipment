@@ -458,6 +458,25 @@ MagicToastView is used internally. Some CSS is configurable.
   ]"
 />
 
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [
+        { label: 'MagicToastView' }, 
+        { label: 'missing_instance_id' }, 
+        { label: 'MagicToastView must be used within a MagicToastProvider' }
+      ] 
+    }
+  ]"
+/>
+
 ## Examples
 
 ### Position

@@ -507,3 +507,50 @@ To customize the accordion, override the necessary options. Any custom options w
     }
   ]"
 />
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicAccordionContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionContent must be nested inside MagicAccordionProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicAccordionContent must be nested inside MagicAccordionView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionView must be nested inside MagicAccordionProvider' }
+      ]
+    }
+  ]"
+/>

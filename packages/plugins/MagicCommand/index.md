@@ -653,6 +653,88 @@ To customize the command palette, override the necessary options. Any custom opt
   ]"
 />
 
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicCommandDrawer' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandDrawer must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandTrigger must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandView must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandContent must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicCommandContent must be nested inside MagicCommandView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMagicCommand' },
+        { label: 'view_id_required' },
+        { label: 'viewId is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMagicCommand' },
+        { label: 'id_required' },
+        { label: 'id is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuItem' },
+        { label: 'view_id_not_found' },
+        { label: 'View {viewId} not found' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuKeyListener' },
+        { label: 'menu_not_active' },
+        { label: 'MagicMenu {state.id} is not active' }
+      ]
+    }
+  ]"
+/>
+
 ## Examples
 
 ### Modal
