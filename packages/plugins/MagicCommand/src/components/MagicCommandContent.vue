@@ -61,7 +61,7 @@ defineOptions({
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCommand',
-  source: 'MagicCommand',
+  source: 'MagicCommandContent',
 })
 
 const instanceId = inject(MagicCommandInstanceId, undefined)

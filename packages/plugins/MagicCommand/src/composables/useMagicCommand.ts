@@ -6,7 +6,7 @@ import { useCommandView } from './private/useCommandView'
 
 const { throwError } = useMagicError({
   prefix: 'MagicCommand',
-  source: 'MagicCommand',
+  source: 'useMagicCommand',
 })
 
 interface SelectItemArgs {

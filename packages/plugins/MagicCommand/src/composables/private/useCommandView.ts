@@ -15,7 +15,7 @@ export function useCommandView(id: MaybeRef<string>) {
   const { initializeState } = useCommandState(id)
   const { logWarning } = useMagicError({
     prefix: 'MagicCommand',
-    source: 'MagicCommand',
+    source: 'useCommandView',
   })
   const state = initializeState()
 

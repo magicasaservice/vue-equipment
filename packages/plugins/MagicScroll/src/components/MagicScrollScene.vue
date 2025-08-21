@@ -38,7 +38,7 @@ const { from = 'top-bottom', to = 'bottom-top' } =
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicScroll',
-  source: 'MagicScroll',
+  source: 'MagicScrollScene',
 })
 
 const scrollReturn = inject(MagicScrollReturn, undefined)

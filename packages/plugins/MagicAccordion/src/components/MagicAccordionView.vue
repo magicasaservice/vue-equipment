@@ -33,7 +33,7 @@ const { id, active } = defineProps<MagicAccordionViewProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicAccordion',
-  source: 'MagicAccordion',
+  source: 'MagicAccordionView',
 })
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)

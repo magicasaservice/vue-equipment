@@ -16,7 +16,7 @@ export function useMenuView(instanceId: MaybeRef<string>) {
   const state = initializeState()
   const { logWarning } = useMagicError({
     prefix: 'MagicMenu',
-    source: 'MagicMenu',
+    source: 'useMenuView',
   })
 
   // Cache current instance ID

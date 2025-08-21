@@ -22,7 +22,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   const { logWarning, throwError } = useMagicError({
     prefix: 'MagicPlayer',
-    source: 'MagicPlayer',
+    source: 'usePlayerRuntime',
   })
 
   const { initializeState } = usePlayerState(toValue(id))

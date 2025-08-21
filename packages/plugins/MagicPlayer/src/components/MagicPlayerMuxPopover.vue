@@ -54,7 +54,7 @@ const { playbackId } = defineProps<MagicPlayerMuxPopoverProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerMuxPopover',
 })
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)

@@ -36,7 +36,7 @@ defineProps<MagicCommandDrawerProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCommand',
-  source: 'MagicCommand',
+  source: 'MagicCommandDrawer',
 })
 
 const instanceId = inject(MagicCommandInstanceId, '')

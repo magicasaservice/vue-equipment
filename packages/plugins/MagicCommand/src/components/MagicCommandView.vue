@@ -28,7 +28,7 @@ const { id, initial = false } = defineProps<MagicCommandViewProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCommand',
-  source: 'MagicCommand',
+  source: 'MagicCommandView',
 })
 
 const parentTree = inject(MagicCommandParentTree, [])

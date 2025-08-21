@@ -23,7 +23,7 @@ const { type = 'current' } = defineProps<MagicPlayerDisplayTimeProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerDisplayTime',
 })
 
 const instanceId = inject(MagicPlayerInstanceId)

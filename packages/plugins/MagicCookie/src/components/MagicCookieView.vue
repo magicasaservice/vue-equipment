@@ -38,7 +38,7 @@ import '@maas/vue-equipment/utils/css/keyframes/auto-size-out.css'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCookie',
-  source: 'MagicCookie',
+  source: 'MagicCookieView',
 })
 
 const instanceId = inject(MagicCookieInstanceId, undefined)

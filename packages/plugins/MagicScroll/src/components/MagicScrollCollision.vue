@@ -34,7 +34,7 @@ const { id, offset } = defineProps<MagicScrollCollisionProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicScroll',
-  source: 'MagicScroll',
+  source: 'MagicScrollCollision',
 })
 
 const scrollReturn = inject(MagicScrollReturn, undefined)

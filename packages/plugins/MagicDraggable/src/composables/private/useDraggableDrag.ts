@@ -63,7 +63,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   const { logWarning } = useMagicError({
     prefix: 'MagicDraggable',
-    source: 'MagicDraggable',
+    source: 'useDraggableDrag',
   })
 
   // Private state

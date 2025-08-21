@@ -52,7 +52,7 @@ const {
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCommand',
-  source: 'MagicCommand',
+  source: 'MagicCommandTrigger',
 })
 
 const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')

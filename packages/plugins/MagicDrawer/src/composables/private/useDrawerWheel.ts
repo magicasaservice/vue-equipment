@@ -25,7 +25,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
 
   const { logError } = useMagicError({
     prefix: 'MagicDrawer',
-    source: 'MagicDrawer',
+    source: 'useDrawerWheel',
   })
 
   const { initializeState } = useDrawerState(toValue(id))

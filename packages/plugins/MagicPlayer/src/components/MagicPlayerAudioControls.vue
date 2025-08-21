@@ -93,7 +93,7 @@ const { instanceId } = defineProps<MagicAudioPlayerControlsProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerAudioControls',
 })
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)

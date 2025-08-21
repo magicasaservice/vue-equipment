@@ -32,7 +32,7 @@ const { id, optional, maxAge } = defineProps<MagicCookieItemProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCookie',
-  source: 'MagicCookie',
+  source: 'MagicCookieItem',
 })
 
 const instanceId = inject(MagicCookieInstanceId, undefined)

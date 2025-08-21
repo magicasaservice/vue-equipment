@@ -46,7 +46,7 @@ import {
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerVideo',
 })
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)

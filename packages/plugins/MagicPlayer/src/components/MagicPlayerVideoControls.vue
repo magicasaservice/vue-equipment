@@ -131,7 +131,7 @@ const {
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerVideoControls',
 })
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)

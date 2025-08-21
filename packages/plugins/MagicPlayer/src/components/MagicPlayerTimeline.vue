@@ -49,7 +49,7 @@ import {
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerTimeline',
 })
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)

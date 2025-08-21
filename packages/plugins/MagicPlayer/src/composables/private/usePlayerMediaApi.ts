@@ -14,7 +14,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
 
   const { throwError } = useMagicError({
     prefix: 'MagicPlayer',
-    source: 'MagicPlayer',
+    source: 'usePlayerMediaApi',
   })
 
   const { initializeState } = usePlayerState(toValue(id))

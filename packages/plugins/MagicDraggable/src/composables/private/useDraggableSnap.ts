@@ -40,7 +40,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   const state = initializeState()
   const { logWarning } = useMagicError({
     prefix: 'MagicDraggable',
-    source: 'MagicDraggable',
+    source: 'useDraggableSnap',
   })
 
   const {

@@ -75,7 +75,7 @@ const { transition } = defineProps<MagicPlayerOverlayProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerOverlay',
 })
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)

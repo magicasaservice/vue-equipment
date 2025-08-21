@@ -10,7 +10,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const state = initializeState()
   const { throwError, logWarning } = useMagicError({
     prefix: 'MagicMenu',
-    source: 'MagicMenu',
+    source: 'useMenuKeyListener',
   })
 
   const {

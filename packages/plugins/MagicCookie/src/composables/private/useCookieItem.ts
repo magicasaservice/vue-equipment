@@ -18,7 +18,7 @@ export function useCookieItem(args: UseCookieItemArgs) {
 
   const { logWarning } = useMagicError({
     prefix: 'MagicCookie',
-    source: 'MagicCookie',
+    source: 'useCookieItem',
   })
 
   const { initializeState } = useCookieState(instanceId)

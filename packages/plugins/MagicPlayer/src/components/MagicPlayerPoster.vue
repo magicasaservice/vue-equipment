@@ -15,7 +15,7 @@ import { MagicPlayerInstanceId } from '../symbols'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerPoster',
 })
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)

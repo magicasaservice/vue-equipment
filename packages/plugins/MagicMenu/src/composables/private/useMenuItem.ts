@@ -20,7 +20,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
 
   const { throwError } = useMagicError({
     prefix: 'MagicMenu',
-    source: 'MagicMenu',
+    source: 'useMenuItem',
   })
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()

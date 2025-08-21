@@ -43,7 +43,7 @@ const { id, index } = defineProps<MagicToastViewProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicToast',
-  source: 'MagicToast',
+  source: 'MagicToastView',
 })
 
 const instanceId = inject(MagicToastInstanceId, undefined)

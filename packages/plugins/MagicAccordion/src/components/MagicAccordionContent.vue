@@ -59,7 +59,7 @@ const { transition, animation } = defineProps<MagicAccordionContentProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicAccordion',
-  source: 'MagicAccordion',
+  source: 'MagicAccordionContent',
 })
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)

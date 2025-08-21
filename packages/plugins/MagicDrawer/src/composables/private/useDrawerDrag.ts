@@ -67,7 +67,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   const { logWarning } = useMagicError({
     prefix: 'MagicDrawer',
-    source: 'MagicDrawer',
+    source: 'useDrawerDrag',
   })
 
   // Private state

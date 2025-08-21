@@ -37,7 +37,7 @@ import {
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',
-  source: 'MagicPlayer',
+  source: 'MagicPlayerAudio',
 })
 
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)

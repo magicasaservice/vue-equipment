@@ -16,7 +16,7 @@ export function usePlayerVideoApi(args: UsePlayerVideoApiArgs) {
 
   const { logError } = useMagicError({
     prefix: 'MagicPlayer',
-    source: 'MagicPlayer',
+    source: 'usePlayerVideoApi',
   })
 
   const { initializeState } = usePlayerState(toValue(id))
