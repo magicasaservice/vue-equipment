@@ -299,3 +299,29 @@ The item registers and set the cookie with the given props.
     },
   ]"
 />
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [ 
+        { label: 'MagicCookieItem' }, 
+        { label: 'missing_instance_id' }, 
+        { label: 'MagicCookieItem must be nested inside MagicCookieProvider' } 
+      ] 
+    },
+    { 
+      items: [ 
+        { label: 'MagicCookieView' }, 
+        { label: 'missing_instance_id' }, 
+        { label: 'MagicCookieView must be used within a MagicCookieProvider' } 
+      ] 
+    }
+  ]"
+/>

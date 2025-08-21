@@ -15,6 +15,10 @@
 <script lang="ts" setup>
 import { computed, inject, watch } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
@@ -34,27 +38,33 @@ interface MagicMenuRemoteProps {
 const { disabled, channelId, instanceId, viewId, trigger } =
   defineProps<MagicMenuRemoteProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
+
 const injectedInstanceId = inject(MagicMenuInstanceId, instanceId)
 const injectedViewId = inject(MagicMenuViewId, viewId)
 
 const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 const mappedViewId = computed(() => viewId ?? injectedViewId)
 
-if (!mappedInstanceId.value) {
-  throw new Error(
-    'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided'
-  )
-}
+magicError.assert(mappedInstanceId.value, {
+  message:
+    'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided',
+  errorCode: 'missing_instance_id',
+})
 
-if (!mappedViewId.value) {
-  throw new Error(
-    'MagicMenuRemote must be nested inside MagicMenuView or a viewId must be provided'
-  )
-}
+magicError.assert(mappedViewId.value, {
+  message:
+    'MagicMenuRemote must be nested inside MagicMenuView or a viewId must be provided',
+  errorCode: 'missing_view_id',
+})
 
-if (!channelId) {
-  throw new Error('MagicMenuRemote requires a channelId')
-}
+magicError.assert(channelId, {
+  message: 'MagicMenuRemote requires a channelId',
+  errorCode: 'id_required',
+})
 
 const mappedChannelId = computed(() => `magic-menu-channel-${channelId}`)
 

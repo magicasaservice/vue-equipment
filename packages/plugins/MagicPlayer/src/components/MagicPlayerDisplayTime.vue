@@ -6,6 +6,10 @@
 
 <script lang="ts" setup>
 import { computed, inject, toRefs } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { formatTime } from '@maas/vue-equipment/utils'
 import { usePlayerState } from '../composables/private/usePlayerState'
 
@@ -17,13 +21,18 @@ interface MagicPlayerDisplayTimeProps {
 
 const { type = 'current' } = defineProps<MagicPlayerDisplayTimeProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayerDisplayTime',
+})
+
 const instanceId = inject(MagicPlayerInstanceId)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicPlayerDisplayTime must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.'
-  )
-}
+magicError.assert(instanceId, {
+  message:
+    'MagicPlayerDisplayTime must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls',
+  errorCode: 'missing_instance_id',
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()

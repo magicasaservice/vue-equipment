@@ -32,6 +32,10 @@ import { inject, computed } from 'vue'
 import { defu } from 'defu'
 import { AutoSize } from '@maas/vue-autosize'
 import { Primitive } from '@maas/vue-primitive'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionCallback } from '../composables/private/useAccordionCallback'
@@ -53,16 +57,23 @@ interface MagicAccordionContentProps {
 
 const { transition, animation } = defineProps<MagicAccordionContentProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicAccordion',
+  source: 'MagicAccordionContent',
+})
+
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const viewId = inject(MagicAccordionViewId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicAccordionContent must be nested inside MagicAccordionProvider',
+  errorCode: 'missing_instance_id',
+})
 
-if (!viewId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuView')
-}
+magicError.assert(viewId, {
+  message: 'MagicAccordionContent must be nested inside MagicAccordionView',
+  errorCode: 'missing_view_id',
+})
 
 const { initializeState } = useAccordionState(instanceId)
 const state = initializeState()

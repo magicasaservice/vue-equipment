@@ -72,6 +72,10 @@ import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuCallback } from '../composables/private/useMenuCallback'
 import { useMenuDOM } from '../composables/private/useMenuDOM'
 import { useMenuCursor } from '../composables/private/useMenuCursor'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { ModeTransitions } from '../utils/modeTransitionDefaults'
 import { ModeDelayMouseleave } from '../utils/modeDelayDefaults'
 import {
@@ -98,16 +102,23 @@ interface MagicMenuContentProps {
 
 const { arrow = undefined, transition } = defineProps<MagicMenuContentProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
+
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicMenuContent must be nested inside MagicMenuProvider',
+  errorCode: 'missing_instance_id',
+})
 
-if (!viewId) {
-  throw new Error('MagicMenuContent must be nested inside MagicMenuView')
-}
+magicError.assert(viewId, {
+  message: 'MagicMenuContent must be nested inside MagicMenuView',
+  errorCode: 'missing_view_id',
+})
 
 const { getView, unselectView } = useMenuView(instanceId)
 const view = getView(viewId)

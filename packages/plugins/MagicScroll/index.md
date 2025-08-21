@@ -277,6 +277,32 @@ MagicScrollCollision emits an event once the element’s top or bottom edge coll
   ]"
 />
 
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [ 
+        { label: 'MagicScrollScene' }, 
+        { label: 'missing_scroll_target' }, 
+        { label: 'MagicScrollScene must be used within a MagicScrollProvider' } 
+      ] 
+    },
+    { 
+      items: [ 
+        { label: 'MagicScrollCollision' }, 
+        { label: 'missing_scroll_target' }, 
+        { label: 'MagicScrollCollision must be used within a MagicScrollProvider' } 
+      ] 
+    }
+  ]"
+/>
+
 ## Examples
 
 ### Collision Detection

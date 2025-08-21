@@ -6,6 +6,10 @@
 
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, provide, useId, watch } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
@@ -22,13 +26,19 @@ interface MagicCommandViewProps {
 
 const { id, initial = false } = defineProps<MagicCommandViewProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommandView',
+})
+
 const parentTree = inject(MagicCommandParentTree, [])
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const itemId = inject(MagicCommandItemId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicCommandView must be nested inside MagicCommandProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandView must be nested inside MagicCommandProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const mappedId = computed(() => id ?? `magic-command-view-${useId()}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])

@@ -452,6 +452,25 @@ In order to provide its basic functionality the component comes with some CSS. T
  ]"
 />
 
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'ErrorCode' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicDraggable' },
+        { label: 'missing_snap_point' },
+        { label: 'MagicDraggable must have at least one snap point set' }
+      ]
+    }
+  ]"
+/>
+
 ## Examples
 
 ### Resize

@@ -18,6 +18,10 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
@@ -35,25 +39,35 @@ interface MagicMenuItemProps {
 }
 
 const { id, disabled } = defineProps<MagicMenuItemProps>()
+
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
+
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicMenu',
+  source: 'MagicMenu',
+})
 
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 const contentId = inject(MagicMenuContentId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicMenuItem must be nested inside MagicMenuProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicMenuItem must be nested inside MagicMenuProvider',
+  errorCode: 'missing_instance_id',
+})
 
-if (!viewId) {
-  throw new Error('MagicMenuItem must be nested inside MagicMenuView')
-}
+magicError.assert(viewId, {
+  message: 'MagicMenuItem must be nested inside MagicMenuView',
+  errorCode: 'missing_view_id',
+})
 
-if (!contentId) {
-  throw new Error('MagicMenuItem must be nested inside MagicMenuContent')
-}
+magicError.assert(contentId, {
+  message: 'MagicMenuItem must be nested inside MagicMenuContent',
+  errorCode: 'missing_content_id',
+})
+
 const mappedId = computed(() => id ?? `magic-menu-item-${useId()}`)
 const mappedActive = computed(() => item.active)
 

@@ -24,6 +24,10 @@
 <script lang="ts" setup>
 import { inject } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieState } from '../composables/private/useCookieState'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
 
@@ -32,13 +36,17 @@ import { MagicCookieInstanceId } from '../symbols'
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/auto-size-out.css'
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCookie',
+  source: 'MagicCookieView',
+})
+
 const instanceId = inject(MagicCookieInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicCookiePreferences must be used within a MagicCookieProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicCookieView must be used within a MagicCookieProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const { initializeState } = useCookieState(instanceId)
 const state = initializeState()

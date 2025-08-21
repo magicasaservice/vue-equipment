@@ -177,3 +177,29 @@ The pie comes with a simple set of props. Only the id is required.
 ### Flip
 
 <ComponentPreview src="./demo/FlipDemo.vue" />
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [ 
+        { label: 'MagicPie' }, 
+        { label: 'missing_points' }, 
+        { label: 'At least two points are required to generate a path' } 
+      ] 
+    },
+    { 
+      items: [ 
+        { label: 'MagicPie' }, 
+        { label: 'invalid_percentage' }, 
+        { label: 'percentage needs to be between 0 and 100' } 
+      ] 
+    }
+  ]"
+/>
