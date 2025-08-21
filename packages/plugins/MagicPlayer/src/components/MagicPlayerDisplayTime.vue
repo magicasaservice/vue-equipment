@@ -30,7 +30,7 @@ const instanceId = inject(MagicPlayerInstanceId)
 
 magicError.assert(instanceId, {
   message:
-    'MagicPlayerDisplayTime must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls.',
+    'MagicPlayerDisplayTime must be nested inside MagicPlayerVideoControls or MagicPlayerAudioControls',
   errorCode: 'missing_instance_id',
 })
 

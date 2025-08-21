@@ -21,7 +21,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 magicError.assert(instanceId, {
-  message: 'MagicPlayerPoster must be nested inside MagicPlayerProvider.',
+  message: 'MagicPlayerPoster must be nested inside MagicPlayerProvider',
   errorCode: 'missing_instance_id',
 })
 

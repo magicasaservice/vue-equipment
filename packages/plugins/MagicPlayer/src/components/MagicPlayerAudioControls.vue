@@ -103,7 +103,7 @@ const mappedInstanceId = computed(() => instanceId ?? injectedInstanceId)
 
 magicError.assert(mappedInstanceId.value, {
   message:
-    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or an instanceId must be provided.',
+    'MagicAudioPlayerControls must be nested inside MagicAudioPlayer or an instanceId must be provided',
   errorCode: 'missing_instance_id',
 })
 

@@ -62,13 +62,13 @@ const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 magicError.assert(instanceId, {
   message:
-    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls',
   errorCode: 'missing_instance_id',
 })
 
 magicError.assert(injectedOptions, {
   message:
-    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls',
   errorCode: 'missing_options',
 })
 
