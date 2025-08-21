@@ -49,14 +49,14 @@ export function useMagicCommand(id: MaybeRef<string>) {
     if (!viewId) {
       throwError({
         message: 'viewId is required to select an item',
-        statusCode: 400,
+        errorCode: 'view_id_required',
       })
     }
 
     if (!id) {
       throwError({
         message: 'id is required to select an item',
-        statusCode: 400,
+        errorCode: 'id_required',
       })
     }
 
@@ -74,14 +74,14 @@ export function useMagicCommand(id: MaybeRef<string>) {
     if (!viewId) {
       throwError({
         message: 'viewId is required to select an item',
-        statusCode: 400,
+        errorCode: 'view_id_required',
       })
     }
 
     if (!id) {
       throwError({
         message: 'id is required to select an item',
-        statusCode: 400,
+        errorCode: 'id_required',
       })
     }
 

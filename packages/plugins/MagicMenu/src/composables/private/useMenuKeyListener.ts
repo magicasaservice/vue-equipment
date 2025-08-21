@@ -32,7 +32,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       case !state.active && state.options.debug:
         throwError({
           message: `'MagicMenu ${state.id} is not active'`,
-          statusCode: 400,
+          errorCode: 'menu_not_active',
         })
       case state.active:
         state.input.type = 'keyboard'

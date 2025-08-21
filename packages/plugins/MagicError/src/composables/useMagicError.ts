@@ -7,7 +7,7 @@ export interface UseMagicErrorArgs {
 
 export interface ThrowErrorArgs {
   message: string
-  statusCode: number
+  errorCode: string | number
   cause?: unknown
 }
 
@@ -34,10 +34,10 @@ export function useMagicError(
   }
 
   function throwError(args: ThrowErrorArgs): never {
-    const { message, statusCode, cause } = args
+    const { message, errorCode, cause } = args
 
     const mappedMessage = `[${prefix}]: ${message}`
-    const error = new MagicError(mappedMessage, statusCode, source, {
+    const error = new MagicError(mappedMessage, errorCode, source, {
       cause,
     })
 

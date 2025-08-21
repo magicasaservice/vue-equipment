@@ -46,7 +46,7 @@ function generatePath(points: PiePoint[]): string {
   if (points.length < 2) {
     magicError.throwError({
       message: 'At least two points are required to generate a path',
-      statusCode: 400,
+      errorCode: 'missing_points',
     })
   }
 
@@ -65,7 +65,7 @@ function generatePie(percentage: number, flip?: boolean): string {
   if (percentage < 0 || percentage > 100) {
     magicError.throwError({
       message: 'percentage needs to be between 0 and 100',
-      statusCode: 400,
+      errorCode: 'invalid_percentage',
     })
   }
 

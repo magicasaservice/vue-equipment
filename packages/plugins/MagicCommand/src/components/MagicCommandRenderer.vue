@@ -26,7 +26,7 @@ const emitter = useMagicEmitter()
 
 magicError.assert(instanceId, {
   message: 'MagicCommandRenderer must be nested inside MagicCommandProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const elRef = useTemplateRef('el')

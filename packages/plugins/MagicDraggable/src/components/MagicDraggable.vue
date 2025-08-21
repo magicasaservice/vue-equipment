@@ -66,7 +66,7 @@ const mappedId = toValue(id)
 if (!mappedOptions.snapPoints.length) {
   magicError.throwError({
     message: 'MagicDraggable must have at least one snap point set',
-    statusCode: 400,
+    errorCode: 'missing_snap_point',
   })
 }
 

@@ -18,7 +18,7 @@ const { logError, logWarning, throwError } = useMagicError({
 logError('An error occurred')
 logWarning('This is a warning')
 
-throwError({ message: 'An error occurred', statusCode: 500 })
+throwError({ message: 'An error occurred', errorCode: 'custom_error_code' })
 </script>
 ```
 
@@ -114,7 +114,7 @@ const customRef = inject('custom-ref', undefined)
 
 magicError.assert(customRef, {
   message: 'custom-ref must be provided',
-  statusCode: 400,
+  errorCode: 'custom_ref_required',
 })
 
 alert('customRef is valid')

@@ -50,7 +50,7 @@ const instanceId = inject(MagicToastInstanceId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicToastView must be used within a MagicToastProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const { initializeState } = useToastState(instanceId)

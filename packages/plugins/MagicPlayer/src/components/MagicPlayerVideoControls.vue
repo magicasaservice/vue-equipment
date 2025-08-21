@@ -142,7 +142,7 @@ const mappedInstanceId = computed(() => id ?? injectedInstanceId)
 magicError.assert(mappedInstanceId.value, {
   message:
     'MagicPlayerVideoControls must be nested inside MagicPlayerProvider or be passed an id as a prop.',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const mappedTransition = computed(

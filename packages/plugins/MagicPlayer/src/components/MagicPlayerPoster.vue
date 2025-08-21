@@ -22,7 +22,7 @@ const instanceId = inject(MagicPlayerInstanceId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicPlayerPoster must be nested inside MagicPlayerProvider.',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const { initializeState } = usePlayerState(instanceId)

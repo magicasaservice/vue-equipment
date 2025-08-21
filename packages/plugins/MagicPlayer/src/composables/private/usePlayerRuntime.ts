@@ -50,7 +50,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       case 'networkError':
         throwError({
           message: 'HLS network error',
-          statusCode: 500,
+          errorCode: 'hls_network_error',
           cause: error,
         })
         break
@@ -66,21 +66,21 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         } catch (recoveryError) {
           throwError({
             message: 'HLS media recovery failed',
-            statusCode: 500,
+            errorCode: 'hls_media_recovery_failed',
             cause: recoveryError,
           })
         }
 
         throwError({
           message: 'HLS media error',
-          statusCode: 500,
+          errorCode: 'hls_media_error',
           cause: error,
         })
         break
       default:
         throwError({
           message: 'HLS fatal error',
-          statusCode: 500,
+          errorCode: 'hls_fatal_error',
           cause: error,
         })
     }
@@ -106,7 +106,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     } catch (error) {
       throwError({
         message: 'Player initialization failed',
-        statusCode: 500,
+        errorCode: 'player_initialization_failed',
         cause: error,
       })
     }
@@ -170,7 +170,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     } catch (error) {
       throwError({
         message: 'Player initialization failed',
-        statusCode: 500,
+        errorCode: 'player_initialization_failed',
         cause: error,
       })
     }

@@ -63,13 +63,13 @@ const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 magicError.assert(instanceId, {
   message:
     'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(injectedOptions, {
   message:
     'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.',
-  statusCode: 400,
+  errorCode: 'missing_options',
 })
 
 const { initializeState } = usePlayerState(instanceId)
@@ -146,7 +146,7 @@ async function initialize() {
 
   if (!mappedPlaybackId) {
     magicError.throwError({
-      statusCode: 400,
+      errorCode: 'missing_instance_id',
       message:
         'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided',
     })
@@ -158,8 +158,8 @@ async function initialize() {
     ).then((res) => res.json())
 
     magicError.assert(storyboard.value, {
-      message: 'Failed to fetch storyboard',
-      statusCode: 404,
+      message: 'Failed to fetch timeline preview',
+      errorCode: 'fetch_timeline_error',
     })
 
     image = new Image()
@@ -172,7 +172,7 @@ async function initialize() {
     drawFrame(seekedTime.value)
   } catch (error: unknown) {
     magicError.throwError({
-      statusCode: 500,
+      errorCode: 'initialize_timeline_error',
       message: 'Can not initialize timeline preview',
       cause: error,
     })

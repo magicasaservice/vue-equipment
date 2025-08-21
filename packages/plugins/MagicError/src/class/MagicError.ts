@@ -1,18 +1,18 @@
 export class MagicError extends Error {
-  public readonly statusCode: number
+  public readonly errorCode: string | number
   public readonly timestamp: number
   public readonly source: string
 
   constructor(
     message: string,
-    statusCode: number,
+    errorCode: string | number,
     source: string,
     options?: ErrorOptions
   ) {
     super(message, options)
 
     this.name = 'MagicError'
-    this.statusCode = statusCode
+    this.errorCode = errorCode
     this.timestamp = Date.now()
     this.source = source
 

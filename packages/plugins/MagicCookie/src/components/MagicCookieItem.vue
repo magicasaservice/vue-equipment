@@ -39,7 +39,7 @@ const instanceId = inject(MagicCookieInstanceId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicCookieItem must be nested inside MagicCookieProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const mappedId = computed(() => id ?? `magic-cookie-item-${useId()}`)

@@ -71,12 +71,12 @@ const elRef = useTemplateRef('el')
 
 magicError.assert(instanceId, {
   message: 'MagicCommandContent must be nested inside MagicCommandProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicCommandContent must be nested inside MagicCommandView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { getView } = useCommandView(instanceId)

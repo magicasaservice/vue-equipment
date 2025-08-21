@@ -52,18 +52,18 @@ const mappedViewId = computed(() => viewId ?? injectedViewId)
 magicError.assert(mappedInstanceId.value, {
   message:
     'MagicMenuRemote must be nested inside MagicMenuProvider or an instanceId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(mappedViewId.value, {
   message:
     'MagicMenuRemote must be nested inside MagicMenuView or a viewId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 magicError.assert(channelId, {
   message: 'MagicMenuRemote requires a channelId',
-  statusCode: 400,
+  errorCode: 'id_required',
 })
 
 const mappedChannelId = computed(() => `magic-menu-channel-${channelId}`)

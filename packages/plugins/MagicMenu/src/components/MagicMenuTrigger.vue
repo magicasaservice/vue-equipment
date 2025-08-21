@@ -63,13 +63,13 @@ const mappedViewId = computed(() => viewId ?? injectedViewId)
 magicError.assert(mappedInstanceId.value, {
   message:
     'MagicMenuTrigger must be nested inside MagicMenuProvider or an instanceId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(mappedViewId.value, {
   message:
     'MagicMenuTrigger must be nested inside MagicMenuView or a viewId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { getView, getRelativeViewIndex } = useMenuView(mappedInstanceId.value)

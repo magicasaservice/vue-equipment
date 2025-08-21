@@ -67,12 +67,12 @@ const viewId = inject(MagicAccordionViewId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicAccordionContent must be nested inside MagicAccordionProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicAccordionContent must be nested inside MagicAccordionView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { initializeState } = useAccordionState(instanceId)

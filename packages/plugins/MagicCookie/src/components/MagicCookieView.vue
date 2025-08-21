@@ -45,7 +45,7 @@ const instanceId = inject(MagicCookieInstanceId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicCookieView must be used within a MagicCookieProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const { initializeState } = useCookieState(instanceId)

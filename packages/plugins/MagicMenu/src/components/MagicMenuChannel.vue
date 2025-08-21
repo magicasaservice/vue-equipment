@@ -45,17 +45,17 @@ const contentId = inject(MagicMenuContentId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicMenuChannel must be nested inside MagicMenuProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicMenuChannel must be nested inside MagicMenuView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 magicError.assert(id, {
   message: 'MagicMenuChannel requires an id',
-  statusCode: 400,
+  errorCode: 'id_required',
 })
 
 const { initializeState } = useMenuState(instanceId)

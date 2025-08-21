@@ -31,7 +31,7 @@ export function useMenuItem(args: UseMenuItemArgs) {
   if (!view) {
     throwError({
       message: `View ${viewId} not found`,
-      statusCode: 404,
+      errorCode: 'view_id_not_found',
     })
   }
 

@@ -112,12 +112,12 @@ const viewId = inject(MagicMenuViewId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicMenuContent must be nested inside MagicMenuProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicMenuContent must be nested inside MagicMenuView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { getView, unselectView } = useMenuView(instanceId)

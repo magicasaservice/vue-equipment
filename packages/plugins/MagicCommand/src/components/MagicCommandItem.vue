@@ -66,17 +66,17 @@ const contentId = inject(MagicCommandContentId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicCommandItem must be nested inside MagicCommandProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicCommandItem must be nested inside MagicCommandView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 magicError.assert(contentId, {
   message: 'MagicCommandItem must be nested inside MagicCommandContent',
-  statusCode: 400,
+  errorCode: 'missing_content_id',
 })
 
 const mappedId = computed(() => id ?? `magic-command-item-${useId()}`)

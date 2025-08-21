@@ -66,13 +66,13 @@ const mappedViewId = computed(() => viewId ?? injectedViewId)
 
 magicError.assert(instanceId, {
   message: 'MagicCommandTrigger must be nested inside MagicCommandProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(mappedViewId.value, {
   message:
     'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { getView } = useCommandView(instanceId)

@@ -42,7 +42,7 @@ const scrollTarget = inject(MagicScrollTarget)
 
 magicError.assert(scrollTarget, {
   message: 'MagicScrollCollision must be used within a MagicScrollProvider',
-  statusCode: 400,
+  errorCode: 'missing_scroll_target',
 })
 
 const intersecting = shallowRef(false)

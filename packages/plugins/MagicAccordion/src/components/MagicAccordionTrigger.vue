@@ -56,13 +56,13 @@ const mappedViewId = computed(() => viewId ?? injectedViewId)
 
 magicError.assert(instanceId, {
   message: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(mappedViewId.value, {
   message:
     'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 const { initializeState } = useAccordionState(instanceId)

@@ -46,12 +46,12 @@ const injectedPlayerRef = inject(MagicPlayerRef, undefined)
 
 magicError.assert(injectedInstanceId, {
   message: 'MagicPlayerAudio must be used within a MagicPlayerProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(injectedOptions, {
   message: 'MagicPlayerAudio must be used within a MagicPlayerProvider',
-  statusCode: 400,
+  errorCode: 'missing_options',
 })
 
 const elRef = useTemplateRef('el')

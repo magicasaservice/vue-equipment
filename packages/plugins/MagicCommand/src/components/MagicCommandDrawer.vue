@@ -44,7 +44,7 @@ const emitter = useMagicEmitter()
 
 magicError.assert(instanceId, {
   message: 'MagicCommandDrawer must be nested inside MagicCommandProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {

@@ -40,7 +40,7 @@ const instanceId = inject(MagicAccordionInstanceId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicAccordionView must be nested inside MagicAccordionProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)

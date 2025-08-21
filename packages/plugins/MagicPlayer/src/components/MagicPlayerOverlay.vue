@@ -83,7 +83,7 @@ const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicPlayerOverlay must be nested inside MagicPlayerProvider.',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 const { initializeState } = usePlayerState(instanceId)

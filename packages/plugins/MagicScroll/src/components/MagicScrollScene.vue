@@ -46,7 +46,7 @@ const scrollTarget = inject(MagicScrollTarget, undefined)
 
 magicError.assert(scrollTarget, {
   message: 'MagicScrollScene must be used within a MagicScrollProvider',
-  statusCode: 400,
+  errorCode: 'missing_scroll_target',
 })
 
 const progress = shallowRef(0)

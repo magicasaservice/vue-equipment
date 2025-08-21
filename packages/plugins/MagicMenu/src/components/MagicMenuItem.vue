@@ -55,17 +55,17 @@ const contentId = inject(MagicMenuContentId, undefined)
 
 magicError.assert(instanceId, {
   message: 'MagicMenuItem must be nested inside MagicMenuProvider',
-  statusCode: 400,
+  errorCode: 'missing_instance_id',
 })
 
 magicError.assert(viewId, {
   message: 'MagicMenuItem must be nested inside MagicMenuView',
-  statusCode: 400,
+  errorCode: 'missing_view_id',
 })
 
 magicError.assert(contentId, {
   message: 'MagicMenuItem must be nested inside MagicMenuContent',
-  statusCode: 400,
+  errorCode: 'missing_content_id',
 })
 
 const mappedId = computed(() => id ?? `magic-menu-item-${useId()}`)
