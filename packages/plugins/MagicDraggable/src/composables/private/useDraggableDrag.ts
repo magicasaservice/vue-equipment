@@ -175,7 +175,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     const parentRect = toValue(wrapperRect)
 
     if (!childRect || !parentRect) {
-      logWarning('could not calculate sizing')
+      logWarning('Could not calculate sizing')
       return
     }
 
@@ -184,7 +184,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
       childRect.width > parentRect.width ||
       childRect.height > parentRect.height
     ) {
-      logWarning('is too small for its content')
+      logWarning('Element is too small for its content')
       return
     }
   }
