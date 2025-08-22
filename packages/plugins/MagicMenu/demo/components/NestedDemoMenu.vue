@@ -14,7 +14,7 @@
     </m-menu-item>
   </magic-menu-item>
   <magic-menu-item v-else v-slot="{ itemActive }">
-    <magic-menu-view v-slot="{ viewActive }">
+    <magic-menu-view v-slot="{ viewActive }" id="magic-menu-nested-demo-view">
       <magic-menu-trigger as-child>
         <m-menu-item size="xs" :active="itemActive ?? viewActive">
           <m-menu-item-child>{{ item.label }}</m-menu-item-child>

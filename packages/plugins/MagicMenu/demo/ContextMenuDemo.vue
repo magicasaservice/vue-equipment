@@ -1,10 +1,10 @@
 <template>
   <magic-menu-provider
-    id="magic-menu-context"
+    id="magic-menu-context-demo"
     :options="{ mode: 'context' }"
     class="w-full"
   >
-    <magic-menu-view>
+    <magic-menu-view id="magic-menu-context-view">
       <magic-menu-trigger
         class="border-surface flex h-36 w-full items-center justify-center rounded-lg border-2 border-dashed"
       >

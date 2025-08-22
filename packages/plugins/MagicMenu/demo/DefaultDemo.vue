@@ -3,7 +3,11 @@
     id="magic-menu-default-demo"
     class="bg-surface-high inline-flex gap-2 rounded-2xl p-1"
   >
-    <magic-menu-view v-for="(menuItem, index) in menu" :key="index">
+    <magic-menu-view
+      v-for="(menuItem, index) in menu"
+      :key="index"
+      :id="`magic-menu-default-demo-view-${menuItem.label}`"
+    >
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
         <m-button :mode="viewActive ? 'translucent' : 'ghost'" size="xs">
           {{ menuItem.label }}
