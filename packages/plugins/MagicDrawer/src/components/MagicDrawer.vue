@@ -251,7 +251,7 @@ function convertToPixels(value: string) {
     return 0
   }
 
-  const numericValue = parseFloat(match[1])
+  const numericValue = parseFloat(match[1] ?? '')
   const unit = match[2]
   const bodyFontSize = window.getComputedStyle(document.body).fontSize
   const rootFontSize = parseFloat(bodyFontSize) || 16
