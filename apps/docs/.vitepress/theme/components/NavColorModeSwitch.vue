@@ -1,5 +1,10 @@
 <template>
-  <m-toggle v-model="isDark" class="nav-color-mode-switch" @click="toggleMode">
+  <m-toggle
+    v-model="isDark"
+    class="nav-color-mode-switch"
+    @click="toggleMode"
+    size="sm"
+  >
     <template #checked>
       <i-maas-moon-500 />
     </template>
@@ -43,8 +48,6 @@ async function setMode(mode: 'dark' | 'light') {
   // eslint-disable-next-line
   const _ = window.getComputedStyle(css).opacity
   await new Promise((resolve) => requestAnimationFrame(resolve))
-
-  console.log('Setting color mode:', mode)
 
   switch (mode) {
     case 'dark':

@@ -116,9 +116,9 @@
   --vp-c-default-3: var(--app-color-primary-fg-subtle);
   --vp-c-default-soft: var(--app-color-primary-bg-translucent);
 
-  --vp-c-brand-1: var(--app-color-accent-fg-on-translucent);
-  --vp-c-brand-2: var(--app-color-accent-fg-muted);
-  --vp-c-brand-3: var(--app-color-accent-fg-subtle);
+  --vp-c-brand-1: var(--app-color-primary-fg-solid);
+  --vp-c-brand-2: var(--app-color-primary-fg-solid-hover);
+  --vp-c-brand-3: var(--app-color-primary-fg-solid-active);
   --vp-c-brand-soft: var(--app-color-accent-fg-subtle);
 
   --vp-c-tip-1: var(--app-color-warning-fg-solid);
