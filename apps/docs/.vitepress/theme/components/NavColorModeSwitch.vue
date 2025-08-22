@@ -2,8 +2,8 @@
   <m-toggle
     v-model="isDark"
     class="nav-color-mode-switch"
-    @click="toggleMode"
     size="sm"
+    @click="toggleMode"
   >
     <template #checked>
       <i-maas-moon-500 />
