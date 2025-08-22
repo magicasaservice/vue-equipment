@@ -1,5 +1,5 @@
 import { toValue, type MaybeRef } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 type UseCommandCallbackArgs = {
   instanceId: MaybeRef<string>

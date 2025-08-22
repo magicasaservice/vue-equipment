@@ -7,7 +7,7 @@ import {
   interpolate,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useToastState } from './useToastState'
 import { useToastView } from './useToastView'
 import { useToastScrollLock } from './useToastScrollLock'

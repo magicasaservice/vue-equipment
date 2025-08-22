@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import { MButton, MBadge } from '@maas/mirror/vue'
-import { useMagicPie } from '@maas/vue-equipment/plugins'
+import { useMagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 
 const flip = ref(false)
 

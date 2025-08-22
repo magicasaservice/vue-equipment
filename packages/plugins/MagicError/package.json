@@ -1,0 +1,40 @@
+{
+  "name": "@maas/magic-error",
+  "version": "0.0.0",
+  "description": "Vue composable for centralized error handling with custom error classes",
+  "keywords": [
+    "vue",
+    "composable",
+    "error",
+    "error-handling",
+    "typescript"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:types": "tsup --dts-only",
+    "dev": "tsup --watch",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vue/tsconfig": "^0.5.1"
+  }
+}

@@ -1,5 +1,6 @@
 import { reactive, toValue, type MaybeRef } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieState } from './useCookieState'
 
 import type { CookieItem } from '../../types'
@@ -14,6 +15,11 @@ type AddItemArgs = Omit<CookieItem, 'active'>
 
 export function useCookieItem(args: UseCookieItemArgs) {
   const { instanceId } = args
+
+  const { logWarning } = useMagicError({
+    prefix: 'MagicCookie',
+    source: 'useCookieItem',
+  })
 
   const { initializeState } = useCookieState(instanceId)
   const state = initializeState()
@@ -104,7 +110,7 @@ export function useCookieItem(args: UseCookieItemArgs) {
     const item = getItem(id)
 
     if (!item) {
-      console.warn(`Item ${id} not found. Cookie cannot be set.`)
+      logWarning(`Item ${id} not found. Cookie cannot be set.`)
       return
     }
 

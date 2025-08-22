@@ -7,6 +7,7 @@ const defaultOptions: RequiredMagicPlayerOptions = {
   preload: 'metadata',
   autoplay: false,
   loop: false,
+  debug: false,
   transition: {
     videoControls: 'magic-player-video-controls',
     overlay: 'magic-player-overlay',

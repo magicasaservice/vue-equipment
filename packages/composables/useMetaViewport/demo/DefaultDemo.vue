@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
-import { useMetaViewport } from '@maas/vue-equipment/composables'
+import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 
 const { setMetaViewport, resetMetaViewport } = useMetaViewport()
 </script>

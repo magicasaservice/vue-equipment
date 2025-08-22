@@ -5,21 +5,29 @@
 <script lang="ts" setup>
 import { inject, onBeforeUnmount, useTemplateRef } from 'vue'
 import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
+import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MagicCommandInstanceId } from './../symbols'
 
 import { useCommandState } from '../composables/private/useCommandState'
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommand',
+})
+
 const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
-if (!instanceId) {
-  throw new Error(
-    'MagicCommandRenderer must be nested inside MagicCommandProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandRenderer must be nested inside MagicCommandProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const elRef = useTemplateRef('el')
 

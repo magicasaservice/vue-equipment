@@ -13,7 +13,7 @@ export function useMenuRemote(args: UseMenuRemoteArgs) {
   const { viewId, instanceId, mappedChannelId, mappedTrigger } = args
 
   const { selectChannel } = useMenuChannel({
-    instanceId: instanceId,
+    instanceId,
     viewId,
   })
 

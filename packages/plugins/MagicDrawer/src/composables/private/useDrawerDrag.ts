@@ -26,7 +26,8 @@ import {
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicDrawer } from './../useMagicDrawer'
 import { useDrawerSnap } from './useDrawerSnap'
 import { useDrawerGuards } from './useDrawerGuards'
@@ -63,6 +64,11 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     preventDragClose,
     disabled,
   } = args
+
+  const { logWarning } = useMagicError({
+    prefix: 'MagicDrawer',
+    source: 'useDrawerDrag',
+  })
 
   // Private state
   const { initializeState } = useDrawerState(toValue(id))
@@ -364,7 +370,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
     if (payload.id === toValue(id)) {
       if (!toValue(isActive)) {
-        console.warn('Cannot snap to point when drawer is not open')
+        logWarning('Cannot snap to point when drawer is not open')
         return
       } else {
         snapTo({

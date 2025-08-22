@@ -1,6 +1,6 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
-import { useMetaViewport } from '@maas/vue-equipment/composables'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicDrawerOptions } from '../../types'
 
 type UseDrawerCallbackArgs = {

@@ -24,6 +24,10 @@ import {
   useId,
   onMounted,
 } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandState } from '../composables/private/useCommandState'
 import {
@@ -51,21 +55,30 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommand',
+})
+
 const instanceId = inject(MagicCommandInstanceId, undefined)
 const viewId = inject(MagicCommandViewId, undefined)
 const contentId = inject(MagicCommandContentId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicCommandItem must be nested inside MagicCommandProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandItem must be nested inside MagicCommandProvider',
+  errorCode: 'missing_instance_id',
+})
 
-if (!viewId) {
-  throw new Error('MagicCommandItem must be nested inside MagicCommandView')
-}
+magicError.assert(viewId, {
+  message: 'MagicCommandItem must be nested inside MagicCommandView',
+  errorCode: 'missing_view_id',
+})
 
-if (!contentId) {
-  throw new Error('MagicCommandItem must be nested inside MagicCommandContent')
-}
+magicError.assert(contentId, {
+  message: 'MagicCommandItem must be nested inside MagicCommandContent',
+  errorCode: 'missing_content_id',
+})
+
 const mappedId = computed(() => id ?? `magic-command-item-${useId()}`)
 
 // Register item

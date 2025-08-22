@@ -9,7 +9,7 @@ Scroll to an element with consistent speed.
 ## Anatomy
 
 ```js
-import { useScrollTo } from '@maas/vue-equipment/composables'
+import { useScrollTo } from '@maas/vue-equipment/composables/useScrollTo'
 
 const { scrollToTarget } = useScrollTo()
 

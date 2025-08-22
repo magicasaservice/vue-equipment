@@ -14,7 +14,7 @@ If you are using Vue, import and add `MagicScrollPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicScrollPlugin } from '@maas/vue-equipment/plugins'
+import { MagicScrollPlugin } from '@maas/vue-equipment/plugins/MagicScroll'
 
 const app = createApp({})
 
@@ -273,6 +273,32 @@ MagicScrollCollision emits an event once the element’s top or bottom edge coll
           label: 'false'
         }
       ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [ 
+        { label: 'MagicScrollScene' }, 
+        { label: 'missing_scroll_target' }, 
+        { label: 'MagicScrollScene must be used within a MagicScrollProvider' } 
+      ] 
+    },
+    { 
+      items: [ 
+        { label: 'MagicScrollCollision' }, 
+        { label: 'missing_scroll_target' }, 
+        { label: 'MagicScrollCollision must be used within a MagicScrollProvider' } 
+      ] 
     }
   ]"
 />

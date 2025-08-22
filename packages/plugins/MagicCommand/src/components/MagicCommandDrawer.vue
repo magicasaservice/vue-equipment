@@ -11,11 +11,15 @@
 
 <script lang="ts" setup>
 import { inject, watch, onBeforeUnmount } from 'vue'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import {
-  useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from '../symbols'
 import type { MagicCommandDrawerOptions } from '../types'
@@ -30,14 +34,18 @@ interface MagicCommandDrawerProps {
 
 defineProps<MagicCommandDrawerProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommandDrawer',
+})
+
 const instanceId = inject(MagicCommandInstanceId, '')
 const emitter = useMagicEmitter()
 
-if (!instanceId) {
-  throw new Error(
-    'MagicCommandDrawer must be nested inside MagicCommandProvider'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicCommandDrawer must be nested inside MagicCommandProvider',
+  errorCode: 'missing_instance_id',
+})
 
 function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
   if (typeof payload === 'string' && payload === instanceId) {

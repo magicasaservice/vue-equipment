@@ -50,11 +50,11 @@
 <script lang="ts" setup>
 import { watch, ref, onBeforeUnmount } from 'vue'
 import { useData, useRoute } from 'vitepress'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import {
-  useMagicDrawer,
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
 

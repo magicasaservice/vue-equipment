@@ -28,7 +28,7 @@ If you are using Vue, import and add `MagicDrawerPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicDrawerPlugin } from '@maas/vue-equipment/plugins'
+import { MagicDrawerPlugin } from '@maas/vue-equipment/plugins/MagicDrawer'
 
 const app = createApp({})
 
@@ -54,7 +54,7 @@ If you prefer a more granular approach, the drawer can also be directly imported
 
 ```vue
 <script setup>
-import { MagicDrawer } from '@maas/vue-equipment/plugins'
+import { MagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 </script>
 
 <template>
@@ -70,7 +70,7 @@ In order to interact with the drawer from anywhere within your app, we provide a
 
 ```js
 import { onMounted } from 'vue'
-import { useMagicDrawer } from '@maas/vue-equipment/plugins'
+import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 
 const { open } = useMagicDrawer('your-drawer-id')
 

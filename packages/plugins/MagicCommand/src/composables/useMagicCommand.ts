@@ -1,7 +1,13 @@
 import { computed, nextTick, type MaybeRef } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
+
+const { throwError } = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'useMagicCommand',
+})
 
 interface SelectItemArgs {
   id: string
@@ -41,11 +47,17 @@ export function useMagicCommand(id: MaybeRef<string>) {
     const { id, viewId } = args
 
     if (!viewId) {
-      throw new Error('viewId is required to select an item')
+      throwError({
+        message: 'viewId is required to select an item',
+        errorCode: 'view_id_required',
+      })
     }
 
     if (!id) {
-      throw new Error('id is required to select an item')
+      throwError({
+        message: 'id is required to select an item',
+        errorCode: 'id_required',
+      })
     }
 
     const { selectItem } = useCommandItem({
@@ -60,11 +72,17 @@ export function useMagicCommand(id: MaybeRef<string>) {
     const { id, viewId } = args
 
     if (!viewId) {
-      throw new Error('viewId is required to select an item')
+      throwError({
+        message: 'viewId is required to select an item',
+        errorCode: 'view_id_required',
+      })
     }
 
     if (!id) {
-      throw new Error('id is required to select an item')
+      throwError({
+        message: 'id is required to select an item',
+        errorCode: 'id_required',
+      })
     }
 
     const { unselectItem } = useCommandItem({

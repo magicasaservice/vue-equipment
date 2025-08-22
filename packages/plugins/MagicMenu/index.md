@@ -37,7 +37,7 @@ If you are using Vue, import and add `MagicMenuPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicMenuPlugin } from '@maas/vue-equipment/plugins'
+import { MagicMenuPlugin } from '@maas/vue-equipment/plugins/MagicMenu'
 
 const app = createApp({})
 
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
 In order to interact with the menu from anywhere within your app, we provide a `useMagicMenu` composable. Import it directly when needed.
 
 ```js
-import { useMagicMenu } from '@maas/vue-equipment/plugins'
+import { useMagicMenu } from '@maas/vue-equipment/plugins/MagicMenu'
 
 const { selectView } = useMagicMenu('your-menu-id')
 
@@ -644,6 +644,109 @@ To customize the menu, override the necessary options. Any custom options will b
         {
           label: 'false'
         }
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'useMenuItem' },
+        { label: 'view_id_not_found' },
+        { label: 'View {viewId} not found' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuKeyListener' },
+        { label: 'menu_not_active' },
+        { label: 'MagicMenu {state.id} is not active' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuItem' },
+        { label: 'missing_content_id' },
+        { label: 'MagicMenuItem must be nested inside MagicMenuContent' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuTrigger must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuTrigger must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuContent must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuContent must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuRemote must be nested inside MagicMenuProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'missing_view_id' },
+        { label: 'MagicMenuRemote must be nested inside MagicMenuView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuRemote' },
+        { label: 'id_required' },
+        { label: 'id is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicMenuView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicMenuView must be nested inside MagicMenuProvider' }
       ]
     }
   ]"

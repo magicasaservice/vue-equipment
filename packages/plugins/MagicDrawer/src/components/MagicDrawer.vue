@@ -73,7 +73,8 @@ import {
 } from 'vue'
 import { createDefu } from 'defu'
 import { onKeyStroke, unrefElement } from '@vueuse/core'
-import { useMetaViewport } from '@maas/vue-equipment/composables'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
+import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useDrawerDOM } from '../composables/private/useDrawerDOM'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
@@ -136,6 +137,11 @@ const {
 })
 
 const { isActive, open, close } = useMagicDrawer(id)
+
+const { logWarning } = useMagicError({
+  prefix: 'MagicDrawer',
+  source: 'MagicDrawer',
+})
 
 const overshoot = shallowRef(0)
 const {
@@ -238,9 +244,10 @@ function convertToPixels(value: string) {
   const match = value.match(regex)
 
   if (!match) {
-    console.error(
+    logWarning(
       `--magic-drawer-drag-overshoot (${value}) needs to be specified in px or rem`
     )
+
     return 0
   }
 

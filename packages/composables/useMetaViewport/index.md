@@ -9,7 +9,7 @@ Set and reset the meta viewport tag programatically.
 ## Anatomy
 
 ```ts
-import { useMetaViewport } from '@maas/vue-equipment/composables'
+import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 
 const { setMetaViewport, resetMetaViewport } = useMetaViewport()
 ```

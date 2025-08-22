@@ -1,4 +1,5 @@
 import { reactive, computed, toValue, type MaybeRef } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './useCommandState'
 import type { CommandView } from '../../types/index'
 
@@ -10,12 +11,16 @@ function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError'
 }
 
-export function useCommandView(instanceId: MaybeRef<string>) {
-  const { initializeState } = useCommandState(instanceId)
+export function useCommandView(id: MaybeRef<string>) {
+  const { initializeState } = useCommandState(id)
+  const { logWarning } = useMagicError({
+    prefix: 'MagicCommand',
+    source: 'useCommandView',
+  })
   const state = initializeState()
 
   // Cache current instance ID
-  const currentInstanceId = toValue(instanceId)
+  const currentInstanceId = toValue(id)
 
   const currentView = computed(() => {
     const activeViews = state.views.filter((view) => view.active)
@@ -160,7 +165,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
       activateView()
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
-        console.log('selectView() was interrupted by a call to unselectView()')
+        logWarning('selectView() was interrupted by a call to unselectView()')
       }
     }
   }
@@ -193,7 +198,7 @@ export function useCommandView(instanceId: MaybeRef<string>) {
       activateView()
     } catch (error) {
       if (isAbortError(error) && state.options.debug) {
-        console.log('unselectView() was interrupted by a call to selectView()')
+        logWarning('unselectView() was interrupted by a call to selectView()')
       }
     }
   }

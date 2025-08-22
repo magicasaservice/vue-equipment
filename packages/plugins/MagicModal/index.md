@@ -28,7 +28,7 @@ If you are using Vue, import and add `MagicModalPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicModalPlugin } from '@maas/vue-equipment/plugins'
+import { MagicModalPlugin } from '@maas/vue-equipment/plugins/MagicModal'
 
 const app = createApp({})
 
@@ -54,7 +54,7 @@ If you prefer a more granular approach, the modal can also be directly imported 
 
 ```vue
 <script setup>
-import { MagicModal } from '@maas/vue-equipment/plugins'
+import { MagicModal } from '@maas/vue-equipment/plugins/MagicModal'
 </script>
 
 <template>
@@ -70,7 +70,7 @@ In order to interact with the modal from anywhere within your app, we provide a 
 
 ```js
 import { onMounted } from 'vue'
-import { useMagicModal } from '@maas/vue-equipment/plugins'
+import { useMagicModal } from '@maas/vue-equipment/plugins/MagicModal'
 
 const { open } = useMagicModal('your-modal-id')
 

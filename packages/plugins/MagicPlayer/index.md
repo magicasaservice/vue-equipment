@@ -41,7 +41,7 @@ If you are using Vue, import and add `MagicPlayerPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicPlayerPlugin } from '@maas/vue-equipment/plugins'
+import { MagicPlayerPlugin } from '@maas/vue-equipment/plugins/MagicPlayer'
 
 const app = createApp({})
 
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
 In order to interact with the player from anywhere within your app, we provide a `useMagicPlayer` composable. Import it directly when needed.
 
 ```js
-import { useMagicPlayer } from '@maas/vue-equipment/plugins'
+import { useMagicPlayer } from '@maas/vue-equipment/plugins/MagicPlayer'
 
 const { playerApi } = useMagicPlayer('your-player-id')
 
@@ -289,6 +289,20 @@ To customize the player override the necessary options. Any custom options will 
         { 
           label: 'loop',
           description: 'Ignored for players with type `audio`.'
+        },
+        { 
+          label: 'boolean'
+         },
+        { 
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        { 
+          label: 'debug',
+          description: 'Enables logging for non-fatal hls.js errors.'
         },
         { 
           label: 'boolean'
@@ -589,6 +603,200 @@ This component is used internally by both the video and audio controls component
         {
           label: 'false'
         }
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicPlayerMuxPopover' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerMuxPopover' },
+        { label: 'missing_options' },
+        { label: 'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerMuxPopover' },
+        { label: 'fetch_timeline_error' },
+        { label: 'Failed to fetch timeline preview' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerMuxPopover' },
+        { label: 'initialize_timeline_error' },
+        { label: 'Can not initialize timeline preview' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerAudioControls' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerAudioControls must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerVideo' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerVideo must be used within a MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerVideo' },
+        { label: 'missing_options' },
+        { label: 'MagicPlayerVideo must be used within a MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerPoster' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerPoster must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerOverlay' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerOverlay must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerTimeline' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerTimeline must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerDisplayTime' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerDisplayTime must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicPlayerVideoControls' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicPlayerVideoControls must be nested inside MagicPlayerProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'play_promise_rejected' },
+        { label: 'Play promise was rejected' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'play_promise_aborted' },
+        { label: 'The play() request was aborted' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'play_promise_not_allowed' },
+        { label: 'Autoplay was prevented, user interaction required' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'play_promise_not_supported' },
+        { label: 'Media format not supported' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'media_element_error' },
+        { label: 'Media element error' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'media_element_aborted' },
+        { label: 'Media loading was aborted by the user' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'media_element_network' },
+        { label: 'A network error occurred while loading the media' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'media_element_decode' },
+        { label: 'An error occurred while decoding the media' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerMediaApi' },
+        { label: 'media_element_src_not_supported' },
+        { label: 'The media source is not supported' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerRuntime' },
+        { label: 'hls_network_error' },
+        { label: 'HLS network error' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerRuntime' },
+        { label: 'hls_media_recovery_failed' },
+        { label: 'HLS media recovery failed' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerRuntime' },
+        { label: 'hls_media_error' },
+        { label: 'HLS media error' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerRuntime' },
+        { label: 'hls_fatal_error' },
+        { label: 'HLS fatal error' }
+      ]
+    },
+    {
+      items: [
+        { label: 'usePlayerRuntime' },
+        { label: 'player_initialization_failed' },
+        { label: 'Player initialization failed' }
       ]
     }
   ]"

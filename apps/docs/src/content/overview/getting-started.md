@@ -21,7 +21,7 @@ If you are using Vue, import and add the plugins to your Vue app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicModalPlugin } from '@maas/vue-equipment/plugins'
+import { MagicModalPlugin } from '@maas/vue-equipment/plugins/MagicModal'
 
 const app = createApp({})
 

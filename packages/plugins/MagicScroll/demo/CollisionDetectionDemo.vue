@@ -31,11 +31,11 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, defineAsyncComponent, ref } from 'vue'
+import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 import {
-  useMagicToast,
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MBadge } from '@maas/mirror/vue'
 
 const parentRef = ref<HTMLElement | undefined>(undefined)

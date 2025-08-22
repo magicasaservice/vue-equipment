@@ -62,7 +62,7 @@ If you are using Vue, import and add `MagicCommandPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicCommandPlugin } from '@maas/vue-equipment/plugins'
+import { MagicCommandPlugin } from '@maas/vue-equipment/plugins/MagicCommand'
 
 const app = createApp({})
 
@@ -87,7 +87,7 @@ export default defineNuxtConfig({
 In order to interact with the command palette from anywhere within your app, we provide a `useMagicCommand` composable. Import it directly when needed.
 
 ```js
-import { useMagicCommand } from '@maas/vue-equipment/plugins'
+import { useMagicCommand } from '@maas/vue-equipment/plugins/MagicCommand'
 
 const { selectView } = useMagicCommand('your-command-id')
 
@@ -648,6 +648,88 @@ To customize the command palette, override the necessary options. Any custom opt
         {
           label: 'pointer'
         },
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicCommandDrawer' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandDrawer must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandTrigger must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandView must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicCommandContent must be nested inside MagicCommandProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicCommandContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicCommandContent must be nested inside MagicCommandView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMagicCommand' },
+        { label: 'view_id_required' },
+        { label: 'viewId is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMagicCommand' },
+        { label: 'id_required' },
+        { label: 'id is required to select an item' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuItem' },
+        { label: 'view_id_not_found' },
+        { label: 'View {viewId} not found' }
+      ]
+    },
+    {
+      items: [
+        { label: 'useMenuKeyListener' },
+        { label: 'menu_not_active' },
+        { label: 'MagicMenu {state.id} is not active' }
       ]
     }
   ]"

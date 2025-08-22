@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicScroll'
 import { MBadge } from '@maas/mirror/vue'
 
 interface CollisionToastProps {

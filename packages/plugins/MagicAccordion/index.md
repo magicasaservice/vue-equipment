@@ -35,7 +35,7 @@ If you are using Vue, import and add `MagicAccordionPlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins'
+import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins/MagicAccordion'
 
 const app = createApp({})
 
@@ -60,7 +60,7 @@ export default defineNuxtConfig({
 In order to interact with the accordion from anywhere within your app, we provide a `useMagicAccordion` composable. Import it directly when needed.
 
 ```js
-import { useMagicAccordion } from '@maas/vue-equipment/plugins'
+import { useMagicAccordion } from '@maas/vue-equipment/plugins/MagicAccordion'
 
 const { selectView } = useMagicAccordion('your-accordion-id')
 
@@ -503,6 +503,53 @@ To customize the accordion, override the necessary options. Any custom options w
         {
           label: 'not-allowed'
         },
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicAccordionContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionContent must be nested inside MagicAccordionProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionContent' },
+        { label: 'missing_view_id' },
+        { label: 'MagicAccordionContent must be nested inside MagicAccordionView' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionTrigger' },
+        { label: 'missing_view_id' },
+        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicAccordionView' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicAccordionView must be nested inside MagicAccordionProvider' }
       ]
     }
   ]"

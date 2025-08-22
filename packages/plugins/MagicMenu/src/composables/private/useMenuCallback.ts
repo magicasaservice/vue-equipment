@@ -1,5 +1,5 @@
 import { toValue, type MaybeRef, type Ref } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MenuState } from '../../types'
 import { ModeScrollLock } from '../../utils/modeScrollLockDefaults'
 

@@ -1,9 +1,13 @@
 import { defineConfig } from 'tsup'
-import { resolve } from 'node:path'
 
 export default defineConfig({
-  entry: [resolve(__dirname, './index.ts')],
-  outDir: resolve(__dirname, '../../dist/composables'),
+  entry: [
+    './useCountdown/index.ts',
+    './useEasings/index.ts',
+    './useMetaViewport/index.ts',
+    './useScrollTo/index.ts',
+  ],
+  outDir: '../../dist/composables',
   external: ['@maas/magic-timer', '@vueuse/core', 'luxon', 'vue'],
   format: ['esm'],
   dts: true,

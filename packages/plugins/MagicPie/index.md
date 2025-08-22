@@ -26,7 +26,7 @@ If you are using Vue, import and add `MagicPiePlugin` to your app.
 
 ```js
 import { createApp } from 'vue'
-import { MagicPiePlugin } from '@maas/vue-equipment/plugins'
+import { MagicPiePlugin } from '@maas/vue-equipment/plugins/MagicPie'
 
 const app = createApp({})
 
@@ -52,7 +52,7 @@ If you prefer a more granular approach, the pie can also be directly imported in
 
 ```vue
 <script setup>
-import { MagicPie } from '@maas/vue-equipment/plugins'
+import { MagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 </script>
 
 <template>
@@ -66,7 +66,7 @@ In order to interact with the pie from anywhere within your app, we provide a `u
 
 ```js
 import { onMounted } from 'vue'
-import { useMagicPie } from '@maas/vue-equipment/plugins'
+import { useMagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 
 const { setPercentage } = useMagicPie('your-pie-id')
 
@@ -177,3 +177,29 @@ The pie comes with a simple set of props. Only the id is required.
 ### Flip
 
 <ComponentPreview src="./demo/FlipDemo.vue" />
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    { 
+      items: [ 
+        { label: 'MagicPie' }, 
+        { label: 'missing_points' }, 
+        { label: 'At least two points are required to generate a path' } 
+      ] 
+    },
+    { 
+      items: [ 
+        { label: 'MagicPie' }, 
+        { label: 'invalid_percentage' }, 
+        { label: 'percentage needs to be between 0 and 100' } 
+      ] 
+    }
+  ]"
+/>

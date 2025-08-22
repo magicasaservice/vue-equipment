@@ -1,6 +1,7 @@
 <template>
   <div
     class="magic-cookie-item"
+    :data-id="mappedId"
     :data-optional="item.optional"
     :data-active="item.active"
   >
@@ -10,6 +11,10 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide, onBeforeUnmount, useId } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieItem } from '../composables/private/useCookieItem'
 import {
   MagicCookieInstanceId,
@@ -25,11 +30,17 @@ interface MagicCookieItemProps {
 
 const { id, optional, maxAge } = defineProps<MagicCookieItemProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicCookie',
+  source: 'MagicCookieItem',
+})
+
 const instanceId = inject(MagicCookieInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicCookieItem must be nested inside MagicCookieProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicCookieItem must be nested inside MagicCookieProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const mappedId = computed(() => id ?? `magic-cookie-item-${useId()}`)
 const mappedActive = computed(() => item.active)

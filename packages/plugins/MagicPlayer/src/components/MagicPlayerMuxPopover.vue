@@ -25,6 +25,10 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
 
@@ -48,14 +52,25 @@ interface MuxStoryboard {
 
 const { playbackId } = defineProps<MagicPlayerMuxPopoverProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayerMuxPopover',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
-if (!instanceId || !injectedOptions) {
-  throw new Error(
-    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls.'
-  )
-}
+magicError.assert(instanceId, {
+  message:
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls',
+  errorCode: 'missing_instance_id',
+})
+
+magicError.assert(injectedOptions, {
+  message:
+    'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls',
+  errorCode: 'missing_options',
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
@@ -130,10 +145,11 @@ async function initialize() {
   const mappedPlaybackId = playbackId ?? parsedPlaybackId
 
   if (!mappedPlaybackId) {
-    console.error(
-      'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided'
-    )
-    return
+    magicError.throwError({
+      errorCode: 'missing_instance_id',
+      message:
+        'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided',
+    })
   }
 
   try {
@@ -141,9 +157,10 @@ async function initialize() {
       `https://image.mux.com/${mappedPlaybackId}/storyboard.json`
     ).then((res) => res.json())
 
-    if (!storyboard.value) {
-      throw new Error()
-    }
+    magicError.assert(storyboard.value, {
+      message: 'Failed to fetch timeline preview',
+      errorCode: 'fetch_timeline_error',
+    })
 
     image = new Image()
     image.src = storyboard.value.url
@@ -153,8 +170,12 @@ async function initialize() {
 
     // Draw initial frame
     drawFrame(seekedTime.value)
-  } catch (e: unknown) {
-    console.error('Can not initialize timeline preview', e)
+  } catch (error: unknown) {
+    magicError.throwError({
+      errorCode: 'initialize_timeline_error',
+      message: 'Can not initialize timeline preview',
+      cause: error,
+    })
   }
 }
 

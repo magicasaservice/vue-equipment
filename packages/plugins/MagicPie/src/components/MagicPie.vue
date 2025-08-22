@@ -18,6 +18,10 @@
 
 <script lang="ts" setup>
 import { computed, toRefs, onBeforeUnmount } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { usePieState } from '../composables/private/usePieState'
 import type { MagicPieOptions, PiePoint } from '../types'
 
@@ -28,6 +32,11 @@ interface MagicPieProps {
 
 const { id, options } = defineProps<MagicPieProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPie',
+  source: 'MagicPie',
+})
+
 const { initializeState, deleteState } = usePieState(id)
 const state = initializeState()
 
@@ -35,7 +44,10 @@ const { percentage } = toRefs(state)
 
 function generatePath(points: PiePoint[]): string {
   if (points.length < 2) {
-    throw new Error('At least two points are required to generate a path.')
+    magicError.throwError({
+      message: 'At least two points are required to generate a path',
+      errorCode: 'missing_points',
+    })
   }
 
   // Start with the first point
@@ -51,7 +63,10 @@ function generatePath(points: PiePoint[]): string {
 
 function generatePie(percentage: number, flip?: boolean): string {
   if (percentage < 0 || percentage > 100) {
-    throw new Error('percentage needs to be between 0 and 100')
+    magicError.throwError({
+      message: 'percentage needs to be between 0 and 100',
+      errorCode: 'invalid_percentage',
+    })
   }
 
   const size = 100

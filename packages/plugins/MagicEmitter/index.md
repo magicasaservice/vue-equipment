@@ -9,7 +9,7 @@ MagicEmitter is a wrapper around [mitt](https://github.com/developit/mitt). The 
 ```vue
 <script setup>
 import { onBeforeUnmount } from 'vue'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 function callback(id, payload) {
   // your callback
@@ -43,14 +43,14 @@ export default defineNuxtConfig({
 In order to interact with the emitter from anywhere within your app, immport the `useMagicEmitter` composable.
 
 ```js
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 useMagicEmitter().on('*', callback)
 useMagicEmitter().off('*', callback)
 ```
 
 > [!TIP]
-> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+> If you have installed the emitter as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 
 ## Peer Dependencies
 
@@ -110,7 +110,7 @@ The emitter is fully typesafe. We provide types to import as well as some useful
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { ValueOf } from '@maas/vue-equipment/utils'
 
 function callback(
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 
 function callback(payload: MagicEmitterEvents['beforeEnter']) {
   // your callbck

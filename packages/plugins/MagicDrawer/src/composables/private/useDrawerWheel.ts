@@ -8,6 +8,7 @@ import {
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import WheelGestures, { type WheelEventState } from 'wheel-gestures'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDrawerState } from './useDrawerState'
 
 import type { DrawerDefaultOptions } from '../../types'
@@ -21,6 +22,11 @@ type UseDrawerWheelArgs = {
 
 export function useDrawerWheel(args: UseDrawerWheelArgs) {
   const { id, elRef, position, disabled } = args
+
+  const { logError } = useMagicError({
+    prefix: 'MagicDrawer',
+    source: 'useDrawerWheel',
+  })
 
   const { initializeState } = useDrawerState(toValue(id))
   const state = initializeState()
@@ -85,7 +91,7 @@ export function useDrawerWheel(args: UseDrawerWheelArgs) {
       dispatchEvent(startEvent)
       wheeling.value = true
     } catch (e) {
-      console.error(e)
+      logError(String(e))
       return destroyWheelListener()
     }
   }

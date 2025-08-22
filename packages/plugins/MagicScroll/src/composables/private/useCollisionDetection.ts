@@ -1,6 +1,6 @@
 import { shallowRef, reactive, computed, toValue, type MaybeRef } from 'vue'
 import { useElementBounding, useWindowSize } from '@vueuse/core'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type {
   CollisionEdge,

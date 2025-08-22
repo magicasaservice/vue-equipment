@@ -26,6 +26,10 @@
 
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { MagicToastInstanceId } from '../../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
@@ -37,11 +41,17 @@ interface MagicToastViewProps {
 
 const { id, index } = defineProps<MagicToastViewProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicToast',
+  source: 'MagicToastView',
+})
+
 const instanceId = inject(MagicToastInstanceId, undefined)
 
-if (!instanceId) {
-  throw new Error('MagicToastView must be used within a MagicToastProvider')
-}
+magicError.assert(instanceId, {
+  message: 'MagicToastView must be used within a MagicToastProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const { initializeState } = useToastState(instanceId)
 const state = initializeState()

@@ -54,7 +54,7 @@ import { MButton, MCheckbox } from '@maas/mirror/vue'
 import {
   useMagicEmitter,
   type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins'
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import MagicCookieDemoItem from './MagicCookieDemoItem.vue'
 

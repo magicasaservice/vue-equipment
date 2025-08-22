@@ -1,4 +1,5 @@
 import { type MaybeRef } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
@@ -7,6 +8,10 @@ import type { MenuView } from '../../types/index'
 export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
   const state = initializeState()
+  const { throwError, logWarning } = useMagicError({
+    prefix: 'MagicMenu',
+    source: 'useMenuKeyListener',
+  })
 
   const {
     selectView,
@@ -25,7 +30,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   function keyStrokeGuard(e: KeyboardEvent) {
     switch (true) {
       case !state.active && state.options.debug:
-        throw new Error(`'MagicMenu ${state.id} is not active'`)
+        throwError({
+          message: `'MagicMenu ${state.id} is not active'`,
+          errorCode: 'menu_not_active',
+        })
       case state.active:
         state.input.type = 'keyboard'
         e.stopPropagation()
@@ -50,7 +58,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     if (!state.input.view) {
@@ -86,7 +94,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     if (!state.input.view) {
@@ -119,7 +127,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     if (!state.input.view) {
@@ -154,7 +162,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     if (!state.input.view) {
@@ -182,7 +190,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     state.active = false
@@ -194,7 +202,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     try {
       keyStrokeGuard(e)
     } catch (e: unknown) {
-      console.warn(e)
+      logWarning(String(e))
     }
 
     if (!state.input.view) {
@@ -222,7 +230,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       try {
         keyStrokeGuard(e)
       } catch (e: unknown) {
-        console.warn(e)
+        logWarning(String(e))
       }
     }
   }

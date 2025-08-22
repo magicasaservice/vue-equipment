@@ -13,7 +13,7 @@
     @click.stop="togglePlay"
   >
     <transition :name="mappedOverlayTransition">
-      <div v-if="isVisible">
+      <div v-if="isVisible" class="magic-player-overlay__controls">
         <slot>
           <transition :name="mappedIconsTransition">
             <button
@@ -50,6 +50,10 @@
 <script lang="ts" setup>
 import { watch, ref, computed, inject, toRefs } from 'vue'
 import { useIdle } from '@vueuse/core'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
@@ -69,14 +73,18 @@ interface MagicPlayerOverlayProps {
 
 const { transition } = defineProps<MagicPlayerOverlayProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicPlayer',
+  source: 'MagicPlayerOverlay',
+})
+
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 
-if (!instanceId) {
-  throw new Error(
-    'MagicPlayerOverlay must be nested inside MagicPlayerProvider.'
-  )
-}
+magicError.assert(instanceId, {
+  message: 'MagicPlayerOverlay must be nested inside MagicPlayerProvider',
+  errorCode: 'missing_instance_id',
+})
 
 const { initializeState } = usePlayerState(instanceId)
 const state = initializeState()
@@ -150,7 +158,7 @@ watch(
   cursor: pointer;
 }
 
-.magic-player-overlay div {
+.magic-player-overlay__controls {
   position: relative;
   width: 100%;
   height: 100%;

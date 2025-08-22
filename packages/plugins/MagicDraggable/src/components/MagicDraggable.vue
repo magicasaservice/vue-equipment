@@ -26,6 +26,10 @@
 <script lang="ts" setup>
 import { useTemplateRef, computed, toValue, toRefs, type MaybeRef } from 'vue'
 import { createDefu } from 'defu'
+import {
+  useMagicError,
+  type UseMagicErrorReturn,
+} from '@maas/vue-equipment/plugins/MagicError'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
 import { defaultOptions } from '../utils/defaultOptions'
@@ -43,6 +47,11 @@ interface MagicDraggableProps {
 
 const { id, options = {} } = defineProps<MagicDraggableProps>()
 
+const magicError: UseMagicErrorReturn = useMagicError({
+  prefix: 'MagicDraggable',
+  source: 'MagicDraggable',
+})
+
 // Prevent deep merge of options.snapPoints
 const customDefu = createDefu((obj, key, value) => {
   if (key === 'snapPoints') {
@@ -55,7 +64,10 @@ const mappedOptions = customDefu(options, defaultOptions)
 const mappedId = toValue(id)
 
 if (!mappedOptions.snapPoints.length) {
-  throw new Error('MagicDraggable must have at least one snap point set')
+  magicError.throwError({
+    message: 'MagicDraggable must have at least one snap point set',
+    errorCode: 'missing_snap_point',
+  })
 }
 
 const elRef = useTemplateRef<HTMLElement>('el')

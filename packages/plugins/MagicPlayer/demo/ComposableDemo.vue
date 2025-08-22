@@ -21,6 +21,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useMagicPlayer } from '@maas/vue-equipment/plugins'
+import { useMagicPlayer } from '@maas/vue-equipment/plugins/MagicPlayer'
 const playerApi = useMagicPlayer('magic-player-composable-demo')
 </script>
