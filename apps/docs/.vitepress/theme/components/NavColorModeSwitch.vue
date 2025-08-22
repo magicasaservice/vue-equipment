@@ -1,5 +1,5 @@
 <template>
-  <m-toggle v-model="isDark" @click="toggleMode" class="nav-color-mode-switch">
+  <m-toggle v-model="isDark" class="nav-color-mode-switch" @click="toggleMode">
     <template #checked>
       <i-maas-moon-500 />
     </template>
