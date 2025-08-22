@@ -79,7 +79,7 @@ function mapEasings() {
 
   mappedEasings.value = easingsValues.map((easing, i) => {
     return {
-      name: easingsKeys[i],
+      name: easingsKeys[i] ?? '',
       style: isActive.value ? getStyle(easing) : {},
     }
   })
