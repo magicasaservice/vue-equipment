@@ -12,7 +12,7 @@
         <div class="bg-surface-high flex h-6 w-full rounded-full pr-5">
           <div class="h-full w-full">
             <div
-              class="m-1 h-4 w-4 rounded-full bg-[white] text-center"
+              class="bg-primary-tone m-1 h-4 w-4 rounded-full text-center"
               :style="easing.style"
             />
           </div>
