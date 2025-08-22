@@ -1,6 +1,6 @@
 <template>
   <div
-    class="prose-table border-surface my-5 w-full border-collapse overflow-auto rounded-lg border"
+    class="prose-table outline-(--app-color-surface-border) my-5 w-full border-collapse overflow-auto rounded-lg outline-2"
   >
     <table class="!table w-full !overflow-hidden">
       <thead>

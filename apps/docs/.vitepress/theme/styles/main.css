@@ -17,6 +17,14 @@ body {
   padding-bottom: 0;
 }
 
+[data-theme='vue-equipment'] nav .content {
+  border-left-width: 2px;
+}
+
+[data-theme='vue-equipment'] .outline-marker {
+  left: -2px;
+}
+
 [data-theme='vue-equipment'] .VPContent {
   padding-top: 4rem;
 }
@@ -56,8 +64,8 @@ body {
 [data-theme='vue-equipment'] .vp-doc td {
   border: none;
   border-top: none;
-  border-right: solid 1px var(--app-color-surface-border);
-  border-left: solid 1px var(--app-color-surface-border);
+  border-right: solid 2px var(--app-color-surface-border);
+  border-left: solid 2px var(--app-color-surface-border);
   &:first-child {
     border-left: none;
   }
@@ -76,5 +84,38 @@ body {
 
 [data-theme='vue-equipment'] .items .outline {
   outline: none;
-  border-top: solid 1px var(--app-color-surface-border);
+  border-top: solid 2px var(--app-color-surface-border);
+}
+
+[data-theme='vue-equipment'] .vp-doc h2 {
+  border-top-width: 2px;
+}
+
+[data-theme='vue-equipment'] .prev-next {
+  border-top-width: 2px;
+}
+
+[data-theme='vue-equipment'] .pager-link {
+  border-width: 2px;
+}
+
+[data-theme='vue-equipment'] .pager-link:hover {
+  border-color: var(--vp-c-divider);
+  background: var(--app-color-primary-bg-translucent);
+}
+
+[data-theme='vue-equipment'] .group + .group {
+  border-top-width: 2px;
+}
+
+[data-theme='vue-equipment'] .vp-code-group .tabs {
+  box-shadow: inset 0 -2px var(--vp-c-divider);
+}
+
+[data-theme='vue-equipment'] .vp-doc tr:nth-child(2n) {
+  background: transparent;
+}
+
+[data-theme='vue-equipment'] .vp-doc tr:not(:first-child) {
+  border-top: solid 2px var(--app-color-surface-border);
 }

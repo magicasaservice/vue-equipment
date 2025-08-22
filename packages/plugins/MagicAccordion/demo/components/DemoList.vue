@@ -11,7 +11,7 @@
       <ul class="!m-0 flex list-none flex-col !p-0">
         <li v-for="item in list" :key="item.label" class="!m-0 !p-0">
           <a :href="item.url" target="_blank" rel="noopener noreferrer">
-            <m-menu-item size="sm" mode="subtle">
+            <m-menu-item size="sm" mode="ghost">
               <m-menu-item-child class="w-full">
                 <span>{{ item.label }}</span>
                 <template v-if="item.badge" #end>
