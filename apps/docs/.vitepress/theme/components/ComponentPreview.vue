@@ -34,7 +34,7 @@
               { active: activeTab === 'code' },
             ]"
           >
-            <button title="Copy Code" class="copy" />
+            <!-- <button title="Copy Code" class="copy" /> -->
             <div v-html="mappedCode" />
           </div>
         </div>
