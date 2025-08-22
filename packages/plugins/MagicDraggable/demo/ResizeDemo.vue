@@ -1,7 +1,7 @@
 <template>
   <magic-draggable
     id="magic-draggable-resize-demo"
-    class="bg-surface-base h-[20rem] w-full rounded-md"
+    class="bg-surface-base rounded-md"
     :options="{
       threshold: {
         lock: 10,
@@ -37,5 +37,6 @@ function toggle() {
 [data-id='magic-draggable-resize-demo'] {
   --magic-draggable-position: relative;
   --magic-draggable-z-index: 50;
+  --magic-draggable-height: 20rem;
 }
 </style>

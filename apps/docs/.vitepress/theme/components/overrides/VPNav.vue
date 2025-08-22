@@ -6,7 +6,7 @@
       <VPNavBarTitle class="w-52" />
       <div class="flex gap-10">
         <nav-menu-bar class="hidden sm:block" />
-        <div class="flex gap-1">
+        <div class="flex gap-2">
           <nav-drawer class="block sm:hidden" />
           <nav-color-mode-switch class="block sm:hidden" />
           <div class="hidden gap-1 md:flex">

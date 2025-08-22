@@ -19,7 +19,7 @@
   "devDependencies": {
     "@nuxt/devtools": "1.7.0",
     "@nuxt/kit": "catalog:",
-    "@nuxt/module-builder": "^1.0.1",
+    "@nuxt/module-builder": "^1.0.2",
     "@nuxt/test-utils": "^3.19.2",
     "nuxt": "catalog:",
     "vitest": "^3.2.4"

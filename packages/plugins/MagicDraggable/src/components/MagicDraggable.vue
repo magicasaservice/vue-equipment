@@ -122,7 +122,6 @@ function guardedClick(event: PointerEvent) {
   z-index: var(--magic-draggable-z-index, 999);
   inset: var(--magic-draggable-inset, 0);
   pointer-events: none;
-  background: transparent;
   color: inherit;
   padding: 0;
   border: none;

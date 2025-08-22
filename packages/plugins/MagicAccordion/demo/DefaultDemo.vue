@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import DemoList, { type DemoListProps } from './components/DemoList.vue'
+import DemoList from './components/DemoList.vue'
+import type { DemoListProps } from './components/DemoList.vue'
 import { footer } from './data/footer.json'
 </script>

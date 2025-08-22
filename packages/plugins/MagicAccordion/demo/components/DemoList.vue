@@ -1,14 +1,14 @@
 <template>
-  <magic-accordion-view class="flex flex-col w-full">
+  <magic-accordion-view class="flex w-full flex-col">
     <magic-accordion-trigger v-slot="{ viewActive }">
-      <m-menu-item size="sm" mode="plain" :active="viewActive">
+      <m-menu-item size="sm" mode="ghost" :active="viewActive">
         <m-menu-item-child>
           <span>{{ headline }}</span>
         </m-menu-item-child>
       </m-menu-item>
     </magic-accordion-trigger>
     <magic-accordion-content>
-      <ul class="flex flex-col list-none !m-0 !p-0">
+      <ul class="!m-0 flex list-none flex-col !p-0">
         <li v-for="item in list" :key="item.label" class="!m-0 !p-0">
           <a :href="item.url" target="_blank" rel="noopener noreferrer">
             <m-menu-item size="sm" mode="subtle">
@@ -42,7 +42,7 @@ export interface DemoListProps {
     label: string
     badge?: {
       name: string
-      variant: 'info' | 'primary'
+      variant: 'primary' | 'accent'
       mode: 'translucent' | 'outline'
     }
     icon?: string
@@ -56,6 +56,8 @@ defineProps<DemoListProps>()
 .magic-accordion-view:not(:last-child):after {
   content: '';
   width: calc(100% - 2.25rem);
-  @apply block border-surface mx-auto my-2 border-b-2;
+  margin: 0.5rem auto;
+  display: block;
+  border-bottom: 2px solid var(--app-color-surface-border);
 }
 </style>

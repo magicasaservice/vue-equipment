@@ -1,63 +1,24 @@
 <template>
-  <magic-menu-provider
-    :id="MenuId.navColorModeSwitch"
-    :options="{
-      mode: 'dropdown',
-      scrollLock: false,
-    }"
-    class="nav-color-mode-switch"
-  >
-    <magic-menu-view :id="ViewId.navColorModeSwitch" v-slot="{ viewActive }">
-      <m-button as-child size="xs" :mode="viewActive ? 'translucent' : 'ghost'">
-        <magic-menu-trigger>
-          <i-maas-moon-500 v-if="isDark" />
-          <i-maas-sun-500 v-else-if="!isDark" />
-          <span>{{ currentColorMode }}</span>
-        </magic-menu-trigger>
-      </m-button>
-      <magic-menu-content :arrow="false" placement="bottom">
-        <div class="px-2 py-1">
-          <m-menu-box size="xs">
-            <magic-menu-item @click="setMode('dark')">
-              <m-menu-item mode="subtle" :active="isDark">
-                <template #start>
-                  <m-menu-item-child start>
-                    <i-maas-check-500 v-if="isDark" />
-                    <i-maas-spacer-500 v-else />
-                    <i-maas-moon-500 />
-                  </m-menu-item-child>
-                </template>
-                <m-menu-item-child end>Dark</m-menu-item-child>
-              </m-menu-item>
-            </magic-menu-item>
-            <magic-menu-item @click="setMode('light')">
-              <m-menu-item mode="subtle" :active="!isDark">
-                <template #start>
-                  <m-menu-item-child start>
-                    <i-maas-check-500 v-if="!isDark" />
-                    <i-maas-spacer-500 v-else />
-                    <i-maas-sun-500 />
-                  </m-menu-item-child>
-                </template>
-                <m-menu-item-child end>Light</m-menu-item-child>
-              </m-menu-item>
-            </magic-menu-item>
-          </m-menu-box>
-        </div>
-      </magic-menu-content>
-    </magic-menu-view>
-  </magic-menu-provider>
+  <m-toggle v-model="isDark" @click="toggleMode" class="nav-color-mode-switch">
+    <template #checked>
+      <i-maas-moon-500 />
+    </template>
+    <template #unchecked>
+      <i-maas-sun-500 />
+    </template>
+  </m-toggle>
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { useData } from 'vitepress'
-import { MButton, MMenuItem, MMenuItemChild, MMenuBox } from '@maas/mirror/vue'
-import { MenuId, ViewId } from '../utils/enums'
+import { MToggle } from '@maas/mirror/vue'
 
 const { isDark } = useData()
 
-const currentColorMode = computed(() => (isDark.value ? 'Dark' : 'Light'))
+function toggleMode() {
+  setMode(isDark.value ? 'light' : 'dark')
+}
 
 async function setMode(mode: 'dark' | 'light') {
   // Prevent transition when changing color mode

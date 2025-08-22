@@ -38,12 +38,14 @@ import '../../../../.maas/tokens/css/component/button.css'
 import '../../../../.maas/tokens/css/component/checkbox.css'
 import '../../../../.maas/tokens/css/component/menu-item.css'
 import '../../../../.maas/tokens/css/component/menu-box.css'
+import '../../../../.maas/tokens/css/component/toggle.css'
 
 import '../../../../.maas/tokens/css/theme/dark/component/badge.css'
 import '../../../../.maas/tokens/css/theme/dark/component/button.css'
 import '../../../../.maas/tokens/css/theme/dark/component/checkbox.css'
 import '../../../../.maas/tokens/css/theme/dark/component/menu-item.css'
 import '../../../../.maas/tokens/css/theme/dark/component/menu-box.css'
+import '../../../../.maas/tokens/css/theme/dark/component/toggle.css'
 
 import './styles/tailwind.css'
 

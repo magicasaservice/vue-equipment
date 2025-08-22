@@ -35,6 +35,6 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/tsconfig": "^0.5.1"
+    "@vue/tsconfig": "^0.8.1"
   }
 }

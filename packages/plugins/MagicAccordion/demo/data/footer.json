@@ -8,7 +8,7 @@
           "label": "Mirror Ui",
           "badge": {
             "name": "Pro",
-            "variant": "info",
+            "variant": "accent",
             "mode": "translucent"
           },
 
