@@ -14,16 +14,16 @@ import {
   MagicMenuItemId,
   MagicMenuViewActive,
 } from '../symbols'
-import type { Placement } from '@floating-ui/vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
 } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from '../composables/private/useMenuState'
+import type { MenuPlacement } from '../types'
 
 interface MagicMenuViewProps {
   id?: string
-  placement?: Placement
+  placement?: MenuPlacement
 }
 
 const { id, placement } = defineProps<MagicMenuViewProps>()
