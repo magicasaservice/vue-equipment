@@ -312,8 +312,8 @@ To customize the menu, override the necessary options. Any custom options will b
           description: 'Override the placement of the MenuView.'
         },
        {
-          label: 'Placement',
-          description: 'Please refer to the [Floating UI docs](https://floating-ui.com/docs/tutorial#placements).'
+          label: 'MenuPlacement',
+          description: '\'top\'| \'right\'| \'bottom\'| \'left\'| \'top-start\'| \'top-end\'| \'right-start\'| \'right-end\'| \'bottom-start\'| \'bottom-end\'| \'left-start\'| \'left-end\''
         },
         {
           label: 'false'

@@ -27,7 +27,7 @@
         </m-menu-item>
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
-        <div class="bg-surface-elevation-high w-[220px] rounded-2xl p-1">
+        <div class="bg-surface-high w-[220px] rounded-2xl p-1">
           <nested-demo-menu
             v-for="(subItem, index) in item.items"
             :key="index"

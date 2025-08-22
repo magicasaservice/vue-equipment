@@ -37,16 +37,16 @@ import {
   shift,
   limitShift,
   arrow as floatingArrow,
-  type Placement,
   type Middleware,
 } from '@floating-ui/vue'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
 import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
+import type { MenuPlacement } from '../types'
 
 interface MagicMenuFloatProps {
-  placement?: Placement
+  placement?: MenuPlacement
   middleware?: Middleware[]
   arrow?: boolean
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>

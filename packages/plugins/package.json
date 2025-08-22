@@ -1,6 +1,6 @@
 {
   "name": "plugins",
-  "version": "1.0.0-beta.35",
+  "version": "1.0.0-beta.32",
   "contributors": [
     {
       "name": "Robin Scholz",
@@ -12,7 +12,7 @@
     }
   ],
   "dependencies": {
-    "@floating-ui/dom": "^1.7.2",
+    "@floating-ui/dom": "^1.7.4",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
     "defu": "catalog:",
@@ -23,7 +23,7 @@
     "esno": "catalog:",
     "mkdist": "^2.3.0",
     "vue-sfc-transformer": "^0.1.16",
-    "vue-tsc": "^3.0.4"
+    "vue-tsc": "^3.0.6"
   },
   "exports": "./index.ts",
   "license": "MIT",

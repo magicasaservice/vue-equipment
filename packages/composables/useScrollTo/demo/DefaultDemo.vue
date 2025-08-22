@@ -2,17 +2,17 @@
   <div class="flex w-full flex-col items-center gap-4">
     <div
       ref="parent"
-      class="bg-surface-elevation-base aspect-[16/9] w-full snap-both snap-mandatory overflow-scroll"
+      class="bg-surface-base aspect-[16/9] w-full snap-both snap-mandatory overflow-scroll"
     >
       <div
         class="type-surface-body-sm text-surface-subtle relative h-[900px] w-[900px]"
       >
-        <div class="bg-surface-elevation-high absolute left-0 top-0 px-2 py-1">
+        <div class="bg-surface-high absolute left-0 top-0 px-2 py-1">
           Top Left
         </div>
         <div
           ref="el"
-          class="bg-surface-elevation-high absolute bottom-0 right-0 px-2 py-1"
+          class="bg-surface-high absolute bottom-0 right-0 px-2 py-1"
         >
           Bottom Right
         </div>

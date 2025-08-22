@@ -1,5 +1,3 @@
-import type { Placement } from '@floating-ui/vue'
-
 type MenuMode = 'dropdown' | 'menubar' | 'context' | 'navigation'
 
 export interface MagicMenuOptions {
@@ -51,6 +49,20 @@ export type Coordinates = {
   y: number
 }
 
+export type MenuPlacement =
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
+  | 'top-start'
+  | 'top-end'
+  | 'right-start'
+  | 'right-end'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left-start'
+  | 'left-end'
+
 export interface MenuItem {
   id: string
   active: boolean
@@ -68,7 +80,7 @@ export interface MenuView {
   items: MenuItem[]
   channels: MenuChannel[]
   parent: { item: string; views: string[] }
-  placement: Placement
+  placement: MenuPlacement
   state: {
     selectAbortController: AbortController
     unselectAbortController: AbortController

@@ -1,7 +1,7 @@
 <template>
   <m-button @click="modalApi.open">Open Modal</m-button>
   <magic-modal id="magic-modal-default-demo" :options="{ focusTrap: false }">
-    <div class="bg-surface-elevation-high aspect-[4/3] w-[40rem] rounded-md" />
+    <div class="bg-surface-high aspect-[4/3] w-[40rem] rounded-md" />
   </magic-modal>
 </template>
 

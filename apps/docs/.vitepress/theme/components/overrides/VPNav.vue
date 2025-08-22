@@ -1,10 +1,12 @@
 <template>
-  <header class="vp-nav-override fixed top-0 z-[999] w-full backdrop-blur-xl">
+  <header
+    class="vp-nav-override bg-surface-base border-surface fixed top-0 z-[999] w-full border-b-2"
+  >
     <div class="flex w-full items-center justify-between pl-6 pr-3 md:px-8">
       <VPNavBarTitle class="w-52" />
       <div class="flex gap-10">
         <nav-menu-bar class="hidden sm:block" />
-        <div class="flex gap-1">
+        <div class="flex gap-2">
           <nav-drawer class="block sm:hidden" />
           <nav-color-mode-switch class="block sm:hidden" />
           <div class="hidden gap-1 md:flex">

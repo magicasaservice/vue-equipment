@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+@source './../**/*.vue';
+@source './../../../plugins/**/*.vue';
+@source './../../../plugins/**/demo/*.vue';
+@source './../../../plugins/**/demo/**/*.vue';

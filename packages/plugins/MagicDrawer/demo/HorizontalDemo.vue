@@ -4,7 +4,7 @@
     id="magic-drawer-horizontal-demo"
     :options="{ focusTrap: false, position: 'right' }"
   >
-    <div class="bg-surface-elevation-base absolute inset-0" />
+    <div class="bg-surface-base absolute inset-0" />
   </magic-drawer>
 </template>
 

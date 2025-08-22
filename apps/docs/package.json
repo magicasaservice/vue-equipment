@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "1.0.0-beta.35",
+  "version": "1.0.0-beta.32",
   "private": true,
   "type": "module",
   "contributors": [
@@ -23,9 +23,9 @@
     "postcss": "^8.5.6",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",
-    "unplugin-icons": "^22.1.0",
-    "unplugin-vue-components": "^28.8.0",
-    "vite": "^7.0.6",
+    "unplugin-icons": "^22.2.0",
+    "unplugin-vue-components": "^29.0.0",
+    "vite": "^7.1.3",
     "vitepress": "1.6.3",
     "vue": "catalog:"
   },
@@ -41,7 +41,9 @@
     "@maas/vue-equipment/metadata": "workspace:metadata@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
     "@maas/vue-equipment/utils": "workspace:utils@*",
+    "@tailwindcss/vite": "catalog:",
     "markdown-it": "^14.1.0",
-    "scule": "^1.3.0"
+    "scule": "^1.3.0",
+    "tailwindcss": "catalog:"
   }
 }

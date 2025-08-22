@@ -41,12 +41,14 @@
  *   the page. Used for things like "carbon ads" or "table".
  * -------------------------------------------------------------------------- */
 
-:root {
-  --vp-c-bg: var(--app-color-surface-elevation-base-bg);
-  --vp-c-bg-alt: var(--app-color-surface-elevation-base-bg);
-  --vp-c-bg-elv: var(--app-color-surface-elevation-base-bg);
+[data-color-mode='dark'],
+[data-color-mode='light'] {
+  --vp-c-bg: var(--app-color-surface-bg-base);
+  --vp-c-bg-alt: var(--app-color-surface-bg-base);
+  --vp-c-bg-elv: var(--app-color-surface-bg-base);
   --vp-c-bg-soft: var(--app-color-primary-bg-translucent);
   --vp-code-block-bg: var(--app-color-primary-bg-translucent);
+  --vp-sidebar-bg-color: var(--app-color-surface-bg-base);
 }
 
 /**
@@ -62,10 +64,11 @@
  *   the header and the lest of the page.
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-color-mode='dark'],
+[data-color-mode='light'] {
   --vp-c-border: var(--app-color-surface-border);
   --vp-c-divider: var(--app-color-surface-border);
-  --vp-c-gutter: var(--app-color-surface-elevation-high-bg);
+  --vp-c-gutter: var(--app-color-surface-bg-high);
 }
 
 /**
@@ -78,7 +81,8 @@
  * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-color-mode='dark'],
+[data-color-mode='light'] {
   --vp-c-text-1: var(--app-color-surface-fg);
   --vp-c-text-2: var(--app-color-surface-fg-muted);
   --vp-c-text-3: var(--app-color-surface-fg-subtle);
@@ -105,15 +109,16 @@
  * To understand the scaling system, refer to "Colors: Palette" section.
  * -------------------------------------------------------------------------- */
 
-:root {
+[data-color-mode='dark'],
+[data-color-mode='light'] {
   --vp-c-default-1: var(--app-color-primary-fg-solid);
   --vp-c-default-2: var(--app-color-primary-fg-muted);
   --vp-c-default-3: var(--app-color-primary-fg-subtle);
   --vp-c-default-soft: var(--app-color-primary-bg-translucent);
 
-  --vp-c-brand-1: var(--app-color-accent-fg-on-translucent);
-  --vp-c-brand-2: var(--app-color-accent-fg-muted);
-  --vp-c-brand-3: var(--app-color-accent-fg-subtle);
+  --vp-c-brand-1: var(--app-color-primary-fg-solid);
+  --vp-c-brand-2: var(--app-color-primary-fg-solid-hover);
+  --vp-c-brand-3: var(--app-color-primary-fg-solid-active);
   --vp-c-brand-soft: var(--app-color-accent-fg-subtle);
 
   --vp-c-tip-1: var(--app-color-warning-fg-solid);

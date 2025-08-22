@@ -13,16 +13,16 @@
       <div class="flex flex-col items-center gap-8 px-4 text-center">
         <div class="flex flex-col items-center gap-6 px-4 text-center">
           <h1
-            class="type-surface-display-md -strong text-surface"
+            class="type-surface-display-md! -strong text-surface"
             v-html="frontmatter.hero.name"
           />
           <div class="flex flex-col items-center gap-4">
             <h2
-              class="type-surface-title-lg -strong"
+              class="type-surface-title-lg! -strong"
               v-html="frontmatter.hero.tagline"
             />
             <p
-              class="type-surface-callout-lg text-surface-subtle max-w-lg"
+              class="type-surface-callout-lg text-surface-muted max-w-lg"
               v-html="frontmatter.hero.text"
             />
           </div>

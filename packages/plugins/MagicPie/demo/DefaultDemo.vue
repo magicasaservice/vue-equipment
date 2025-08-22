@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col gap-4 items-center">
+  <div class="flex flex-col items-center gap-4">
     <magic-pie
       id="magic-pie-default-demo"
-      class="w-16 border-2 rounded-full border-surface"
+      class="border-surface w-16 rounded-full border-2"
     />
     <m-badge>{{ mappedPercentage }}</m-badge>
     <div class="flex gap-2">
@@ -56,8 +56,6 @@ const mappedPercentage = computed(() => {
 
 <style>
 [data-id='magic-pie-default-demo'] {
-  --magic-pie-background: theme(
-    'backgroundColor.surface.elevation.high.DEFAULT'
-  );
+  --magic-pie-background: var(--app-color-surface-high);
 }
 </style>

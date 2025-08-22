@@ -1,9 +1,9 @@
 <template>
   <magic-scroll-provider
     :target="parentRef"
-    class="w-full aspect-[16/9] bg-surface-elevation-base"
+    class="bg-surface-base aspect-[16/9] w-full"
   >
-    <div ref="parent" class="relative w-full h-full overflow-auto">
+    <div ref="parent" class="relative h-full w-full overflow-auto">
       <magic-scroll-scene
         v-slot="{ progress }"
         from="top-top"
@@ -11,16 +11,16 @@
         class="h-[500svh]"
       >
         <div
-          class="sticky w-full top-0 p-4 mb-[-100%] type-surface-body-sm text-surface-subtle flex justify-between"
+          class="type-surface-body-sm text-surface-subtle sticky top-0 mb-[-100%] flex w-full justify-between p-4"
         >
           <span>{{ Math.round(progress * 100) }}%</span>
           <span>Scroll down</span>
         </div>
         <magic-scroll-motion
           :sequence="sequence"
-          class="sticky w-full aspect-[16/9] top-0 flex items-center justify-center"
+          class="sticky top-0 flex aspect-[16/9] w-full items-center justify-center"
         >
-          <div class="w-20 h-20 bg-surface-elevation-high" />
+          <div class="bg-surface-high h-20 w-20" />
         </magic-scroll-motion>
       </magic-scroll-scene>
     </div>

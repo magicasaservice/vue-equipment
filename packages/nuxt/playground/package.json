@@ -3,7 +3,6 @@
   "name": "playground",
   "type": "module",
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "catalog:",
     "@types/node": "catalog:",
     "docs": "workspace:docs@*",
     "nuxt": "catalog:",
@@ -13,6 +12,8 @@
     "@maas/mirror": "catalog:",
     "@maas/vue-equipment/composables": "workspace:composables@*",
     "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
+    "@maas/vue-equipment/utils": "workspace:utils@*",
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

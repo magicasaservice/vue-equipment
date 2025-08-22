@@ -1,7 +1,7 @@
 {
   "name": "@maas/vue-equipment",
   "description": "Our Frontend Toolkit, Free and Open Source",
-  "version": "1.0.0-beta.35",
+  "version": "1.0.0-beta.32",
   "contributors": [
     {
       "name": "Robin Scholz",
@@ -17,40 +17,35 @@
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.5",
     "@types/node": "catalog:",
-    "eslint": "^9.32.0",
+    "eslint": "^9.33.0",
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "release-it": "^19.0.4",
-    "tailwindcss": "catalog:",
-    "turbo": "^2.5.5",
-    "typescript": "5.6.3"
+    "turbo": "^2.5.6",
+    "typescript": "catalog:"
   },
   "exports": {
     "./nuxt": {
       "types": "./dist/nuxt/types.d.mts",
       "import": "./dist/nuxt/module.mjs"
     },
-    "./composables/*": {
-      "types": "./dist/composables/*/index.d.ts",
-      "import": "./dist/composables/*/index.js"
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.mjs"
     },
     "./plugins/MagicPlayer/css/*.css": {
       "import": "./dist/plugins/MagicPlayer/src/css/*.css"
     },
-    "./plugins/*/nuxt": {
-      "types": "./dist/plugins/*/nuxt.d.ts",
-      "import": "./dist/plugins/*/nuxt.mjs"
-    },
-    "./plugins/*": {
-      "types": "./dist/plugins/*/index.d.ts",
-      "import": "./dist/plugins/*/index.mjs"
-    },
-    "./utils/css/*.css": {
-      "import": "./dist/utils/css/*.css"
-    },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
+    },
+    "./utils/css/*.css": {
+      "import": "./dist/utils/css/*.css"
     }
   },
   "files": [
@@ -62,17 +57,17 @@
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
     "@maas/vue-primitive": "^1",
-    "@nuxt/kit": ">=3",
-    "@vueuse/core": ">=12",
-    "@vueuse/integrations": ">=12",
+    "@nuxt/kit": "^3",
+    "@vueuse/core": "^12",
+    "@vueuse/integrations": "^12",
     "defu": "^6",
     "focus-trap": "^7",
     "hls.js": "^1",
     "luxon": "^3",
     "mitt": "^3",
     "motion": "^12",
-    "nuxt": ">=3.15",
-    "universal-cookie": ">=7",
+    "nuxt": "^3.15",
+    "universal-cookie": "^7",
     "vue": "^3.5",
     "wheel-gestures": "^2.2.48"
   },
@@ -81,7 +76,7 @@
       "optional": false
     },
     "@nuxt/kit": {
-      "optional": true
+      "optional": false
     },
     "@maas/magic-timer": {
       "optional": false
@@ -101,9 +96,6 @@
     "defu": {
       "optional": false
     },
-    "focus-trap": {
-      "optional": false
-    },
     "hls.js": {
       "optional": false
     },
@@ -117,7 +109,7 @@
       "optional": false
     },
     "nuxt": {
-      "optional": true
+      "optional": false
     },
     "universal-cookie": {
       "optional": false
@@ -149,7 +141,7 @@
   "volta": {
     "node": "20.18.1"
   },
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.15.0",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"

@@ -23,13 +23,34 @@ import * as Mirror from '@maas/mirror/vue'
 
 import './styles/main.css'
 import './styles/custom.css'
+import './styles/tailwind.css'
+
 import 'fonts/mirage/stylesheet.css'
 import 'fonts/index/stylesheet.css'
+
 import '@maas/mirror/css/index.css'
-import '../../../../.maas/tokens/css/components/index.css'
-import '../../../../.maas/tokens/css/theme/dark/components/index.css'
+
 import '../../../../.maas/tokens/css/application.css'
 import '../../../../.maas/tokens/css/theme/dark/application.css'
+
+import '../../../../.maas/tokens/css/component/avatar.css'
+import '../../../../.maas/tokens/css/component/badge.css'
+import '../../../../.maas/tokens/css/component/button.css'
+import '../../../../.maas/tokens/css/component/checkbox.css'
+import '../../../../.maas/tokens/css/component/menu-item.css'
+import '../../../../.maas/tokens/css/component/menu-card.css'
+import '../../../../.maas/tokens/css/component/menu-box.css'
+import '../../../../.maas/tokens/css/component/toggle.css'
+
+import '../../../../.maas/tokens/css/theme/dark/component/avatar.css'
+import '../../../../.maas/tokens/css/theme/dark/component/badge.css'
+import '../../../../.maas/tokens/css/theme/dark/component/button.css'
+import '../../../../.maas/tokens/css/theme/dark/component/checkbox.css'
+import '../../../../.maas/tokens/css/theme/dark/component/menu-item.css'
+import '../../../../.maas/tokens/css/theme/dark/component/menu-card.css'
+import '../../../../.maas/tokens/css/theme/dark/component/menu-box.css'
+import '../../../../.maas/tokens/css/theme/dark/component/toggle.css'
+
 import './styles/tailwind.css'
 
 export default {

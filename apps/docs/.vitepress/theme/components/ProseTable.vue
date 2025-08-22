@@ -1,6 +1,6 @@
 <template>
   <div
-    class="prose-table border-surface my-5 w-full border-collapse overflow-auto rounded-lg border"
+    class="prose-table outline-(--app-color-surface-border) my-5 w-full border-collapse overflow-auto rounded-lg outline-2"
   >
     <table class="!table w-full !overflow-hidden">
       <thead>
@@ -42,7 +42,7 @@
                 </magic-menu-trigger>
                 <magic-menu-content :arrow="false" class="vp-doc">
                   <div
-                    class="bg-surface-elevation-high type-surface-body-sm max-w-xs rounded-md px-2 py-2"
+                    class="bg-surface-high type-surface-body-sm max-w-xs rounded-md px-2 py-2"
                   >
                     <span v-html="cell.parsedDescription" />
                   </div>

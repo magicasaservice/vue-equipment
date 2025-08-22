@@ -1,7 +1,7 @@
 <template>
   <magic-cookie-provider
     id="magic-cookie-demo"
-    class="bg-surface-elevation-base rounded-surface-md flex max-w-xl flex-col p-8"
+    class="bg-surface-base rounded-surface-md flex max-w-xl flex-col p-8"
   >
     <div class="type-surface-body-md text-surface">
       Vue Equipment does not use cookies to provide you a personalized

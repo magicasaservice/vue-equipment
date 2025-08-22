@@ -1,8 +1,6 @@
 <template>
   <div class="flex w-full flex-col gap-8">
-    <div
-      class="bg-surface-elevation-base rounded-surface-md flex flex-col gap-4 p-8"
-    >
+    <div class="bg-surface-base rounded-surface-md flex flex-col gap-4 p-8">
       <div
         class="flex gap-2"
         v-for="easing in mappedEasings"
@@ -11,12 +9,10 @@
         <div class="w-40">
           <m-badge size="sm" mode="tone">{{ easing.name }}</m-badge>
         </div>
-        <div
-          class="bg-surface-elevation-high flex h-6 w-full rounded-full pr-5"
-        >
+        <div class="bg-surface-high flex h-6 w-full rounded-full pr-5">
           <div class="h-full w-full">
             <div
-              class="m-1 h-4 w-4 rounded-full bg-[white] text-center"
+              class="bg-primary-tone m-1 h-4 w-4 rounded-full text-center"
               :style="easing.style"
             />
           </div>
@@ -83,7 +79,7 @@ function mapEasings() {
 
   mappedEasings.value = easingsValues.map((easing, i) => {
     return {
-      name: easingsKeys[i],
+      name: easingsKeys[i] ?? '',
       style: isActive.value ? getStyle(easing) : {},
     }
   })

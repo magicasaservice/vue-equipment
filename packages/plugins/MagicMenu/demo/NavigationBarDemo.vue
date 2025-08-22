@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-15 border-surface bg-surface-elevation-high relative flex items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
+    class="h-15 border-surface bg-surface-high relative flex items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
   >
     <magic-menu-provider
       v-if="menu"
@@ -151,7 +151,7 @@ const menu = [
             label: 'Readme',
             badge: 'Blog',
 
-            callout: 'Written by MaaS™',
+            callout: 'Written by MaaS',
             icon: 'edit-alt',
           },
 
@@ -243,6 +243,6 @@ const menu = [
 <style>
 .navigation-bar__menu-box {
   --menu-box-box-shadow: none;
-  --menu-box-color-bg: theme('backgroundColor.surface.elevation.high.DEFAULT');
+  --menu-box-color-bg: var(--app-color-surface-bg-high);
 }
 </style>

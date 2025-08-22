@@ -24,7 +24,7 @@
         <magic-drawer :id="DrawerId.navDrawer" :options="{ focusTrap: false }">
           <div class="scrollbar-none relative h-full w-full overflow-auto">
             <div
-              class="bg-surface-elevation-high fixed inset-0 -z-10 overflow-hidden rounded-t-2xl"
+              class="bg-surface-high fixed inset-0 -z-10 overflow-hidden rounded-t-2xl"
             />
             <div class="flex w-full flex-col gap-6 pt-4">
               <nav-drawer-handle />

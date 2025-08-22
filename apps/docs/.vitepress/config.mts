@@ -1,6 +1,4 @@
 import { defineConfig } from 'vitepress'
-import tailwindcss from 'tailwindcss'
-import autoprefixer from 'autoprefixer'
 
 // https://github.com/vitejs/vite/issues/5370
 import { plugins, composables } from './../../../packages/metadata'
@@ -162,11 +160,6 @@ export default defineConfig({
   vite: {
     configFile: './vite.config.mts',
     publicDir: './apps/docs/public',
-    css: {
-      postcss: {
-        plugins: [tailwindcss, autoprefixer],
-      },
-    },
   },
   rewrites: {
     'apps/docs/src/content/index.md': 'index.md',
