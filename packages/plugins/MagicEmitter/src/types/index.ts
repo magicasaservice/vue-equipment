@@ -28,4 +28,4 @@ export type MagicEmitterEvents = Merge<
     ScrollEvents,
     ToastEvents,
   ]
->
+> & { '*': string }
