@@ -20,8 +20,12 @@
   },
   "devDependencies": {
     "@maas/mirror": "catalog:",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/test-utils": "^2.4.6",
     "esno": "catalog:",
+    "jsdom": "^26.1.0",
     "mkdist": "^2.3.0",
+    "vitest": "^3.2.4",
     "vue-sfc-transformer": "^0.1.16",
     "vue-tsc": "^3.0.6"
   },
@@ -30,7 +34,7 @@
   "private": true,
   "scripts": {
     "build": "esno ./scripts/build.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "lint": "eslint ."
   },
   "type": "module",
