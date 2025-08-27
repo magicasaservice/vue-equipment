@@ -7,8 +7,9 @@ import { plugins } from '../../packages/metadata'
 export default defineConfig({
   plugins: [vue()],
   test: {
-    environment: 'jsdom',
     globals: true,
+    watch: false,
+    environment: 'jsdom',
     include: ['**/test/**/*.spec.ts'],
   },
   resolve: {
@@ -36,6 +37,5 @@ export default defineConfig({
         replacement: resolve(__dirname, '../utils'),
       },
     ],
-    dedupe: ['vue'],
   },
 })
