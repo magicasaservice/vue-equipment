@@ -7,8 +7,5 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     include: ['**/test/**/*.spec.ts'],
-    coverage: {
-      reporter: ['text', 'json', 'html'],
-    },
   },
 })
