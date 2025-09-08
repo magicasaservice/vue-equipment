@@ -24,8 +24,12 @@ export function useMenuView(instanceId: MaybeRef<string>) {
 
   const currentView = computed(() => {
     const activeViews = state.views.filter((view) => view.active)
-    if (activeViews.length === 0) return undefined
-    if (activeViews.length === 1) return activeViews[0]
+    if (activeViews.length === 0) {
+      return undefined
+    }
+    if (activeViews.length === 1) {
+      return activeViews[0]
+    }
 
     return activeViews.reduce((a, b) =>
       a.parent.views.length >= b.parent.views.length ? a : b

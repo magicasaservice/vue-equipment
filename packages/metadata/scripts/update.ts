@@ -127,7 +127,9 @@ export async function readMetadata() {
 
   // interop related
   indexes.functions.forEach((fn) => {
-    if (!fn.related) return
+    if (!fn.related) {
+      return
+    }
 
     fn.related.forEach((name: string) => {
       const target = indexes.functions.find((f) => f.name === name)

@@ -95,13 +95,16 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         ? toValue(snapPoints)
         : [...toValue(snapPoints), 0]
 
-      const mapped = extended.reduce((acc, current) => {
-        const key = mapSnapPoint(current)
-        if (key || key === 0) {
-          acc[key] = current
-        }
-        return acc
-      }, {} as Record<number, DrawerSnapPoint>)
+      const mapped = extended.reduce(
+        (acc, current) => {
+          const key = mapSnapPoint(current)
+          if (key || key === 0) {
+            acc[key] = current
+          }
+          return acc
+        },
+        {} as Record<number, DrawerSnapPoint>
+      )
 
       return mapped
     }
@@ -186,33 +189,57 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       switch (position) {
         case 'bottom': {
           const rect = toValue(wrapperRect)
-          if (reversedSnapPoint === 1) return drawerHeight.value
-          if (reversedSnapPoint === 0) return 0
-          if (!rect) return 0
+          if (reversedSnapPoint === 1) {
+            return drawerHeight.value
+          }
+          if (reversedSnapPoint === 0) {
+            return 0
+          }
+          if (!rect) {
+            return 0
+          }
           return vh * reversedSnapPoint - rect.top
         }
 
         case 'top': {
           const rect = toValue(wrapperRect)
-          if (reversedSnapPoint === 1) return drawerHeight.value * -1
-          if (reversedSnapPoint === 0) return 0
-          if (!rect) return 0
+          if (reversedSnapPoint === 1) {
+            return drawerHeight.value * -1
+          }
+          if (reversedSnapPoint === 0) {
+            return 0
+          }
+          if (!rect) {
+            return 0
+          }
           return vh * reversedSnapPoint - rect.bottom
         }
 
         case 'right': {
           const rect = toValue(wrapperRect)
-          if (reversedSnapPoint === 1) return drawerWidth.value
-          if (reversedSnapPoint === 0) return 0
-          if (!rect) return 0
+          if (reversedSnapPoint === 1) {
+            return drawerWidth.value
+          }
+          if (reversedSnapPoint === 0) {
+            return 0
+          }
+          if (!rect) {
+            return 0
+          }
           return vw * reversedSnapPoint - rect.left
         }
 
         case 'left': {
           const rect = toValue(wrapperRect)
-          if (reversedSnapPoint === 1) return drawerWidth.value * -1
-          if (reversedSnapPoint === 0) return 0
-          if (!rect) return 0
+          if (reversedSnapPoint === 1) {
+            return drawerWidth.value * -1
+          }
+          if (reversedSnapPoint === 0) {
+            return 0
+          }
+          if (!rect) {
+            return 0
+          }
           return vw * reversedSnapPoint - rect.right
         }
 
@@ -254,7 +281,9 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'top':
       case 'bottom': {
         const mappedSnapPointY = mapSnapPoint(snapPoint)
-        if (!mappedSnapPointY && mappedSnapPointY !== 0) return
+        if (!mappedSnapPointY && mappedSnapPointY !== 0) {
+          return
+        }
 
         const closestY =
           findClosestSnapPoint({
@@ -279,7 +308,9 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       case 'left':
       case 'right': {
         const mappedSnapPointX = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointX && mappedSnapPointX !== 0) return
+        if (!mappedSnapPointX && mappedSnapPointX !== 0) {
+          return
+        }
 
         const closestX =
           findClosestSnapPoint({

@@ -136,7 +136,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     const viewId = state.input.view
     const inputView = getView(viewId)
-    if (!inputView) return
+    if (!inputView) {
+      return
+    }
 
     const enabledItems = getEnabledItems(inputView)
     const prevIndex = enabledItems.findIndex((item) => item.active) - 1
@@ -171,7 +173,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     const viewId = state.input.view
     const inputView = getView(viewId)
-    if (!inputView) return
+    if (!inputView) {
+      return
+    }
 
     const enabledItems = getEnabledItems(inputView)
     const nextIndex = enabledItems.findIndex((item) => item.active) + 1

@@ -106,7 +106,9 @@ export function useNoiseApi({
     const offCanvasHeight = offCanvasRef.value?.height
     const offCanvasWidth = offCanvasRef.value?.width
 
-    if (!offCanvasHeight || !offCanvasWidth) return
+    if (!offCanvasHeight || !offCanvasWidth) {
+      return
+    }
 
     // Calculate pixels
     pixels.value = calculatePixels({
@@ -207,7 +209,9 @@ export function useNoiseApi({
   }
 
   function draw() {
-    if (!offContext.value || !offCanvasRef.value) return
+    if (!offContext.value || !offCanvasRef.value) {
+      return
+    }
 
     offContext.value.clearRect(
       0,

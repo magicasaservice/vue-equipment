@@ -10,7 +10,9 @@ import { plugins } from '../../packages/metadata'
 
 function splitAtNumber(str: string) {
   const match = str.match(/\d/)
-  if (!match) return str
+  if (!match) {
+    return str
+  }
 
   const index = match.index
   return str.slice(0, index) + '-' + str.slice(index)

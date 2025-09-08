@@ -92,7 +92,9 @@ interface ProseTableProps {
 const { columns, rows } = defineProps<ProseTableProps>()
 
 function parseMarkdown(content: string) {
-  if (!content) return ''
+  if (!content) {
+    return ''
+  }
   return md.renderInline(content)
 }
 

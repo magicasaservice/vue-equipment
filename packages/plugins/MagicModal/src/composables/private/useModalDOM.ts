@@ -65,7 +65,9 @@ export function useModalDOM(args?: useModalDOMArgs) {
   }
 
   function addScrollLockPadding() {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      return
+    }
 
     const exclude = new RegExp(/magic-modal(__backdrop)?/)
 

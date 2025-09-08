@@ -25,7 +25,9 @@ export function useDraggableScrollLock() {
   }
 
   function addScrollLockPadding() {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      return
+    }
 
     const exclude = new RegExp(/magic-draggable/)
 

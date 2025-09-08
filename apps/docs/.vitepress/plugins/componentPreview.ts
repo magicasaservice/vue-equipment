@@ -24,7 +24,9 @@ const injectComponentImportScript = (
   componentName: string
 ) => {
   const scriptsCode = env.sfcBlocks?.scripts
-  if (!scriptsCode) return
+  if (!scriptsCode) {
+    return
+  }
 
   const scriptsSetupIndex = scriptsCode.findIndex((script: SfcBlock) => {
     if (

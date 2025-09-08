@@ -59,7 +59,9 @@ export function useCommandItem(args: UseCommandItemArgs) {
   }
 
   function deleteItem(id: string) {
-    if (!view?.items) return
+    if (!view?.items) {
+      return
+    }
     view.items = view.items.filter((x) => x.id !== id)
   }
 

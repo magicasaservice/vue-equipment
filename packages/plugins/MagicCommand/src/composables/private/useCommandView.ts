@@ -24,8 +24,13 @@ export function useCommandView(id: MaybeRef<string>) {
 
   const currentView = computed(() => {
     const activeViews = state.views.filter((view) => view.active)
-    if (activeViews.length === 0) return undefined
-    if (activeViews.length === 1) return activeViews[0]
+    if (activeViews.length === 0) {
+      return undefined
+    }
+
+    if (activeViews.length === 1) {
+      return activeViews[0]
+    }
 
     return activeViews.reduce((a, b) =>
       a.parent.views.length >= b.parent.views.length ? a : b
@@ -104,7 +109,9 @@ export function useCommandView(id: MaybeRef<string>) {
 
   function getRelativeViewIndex(id: string): number {
     const view = getView(id)
-    if (!view) return -1
+    if (!view) {
+      return -1
+    }
 
     const nestingLevel = view.parent.views.length
     return state.views.findIndex(
@@ -132,7 +139,9 @@ export function useCommandView(id: MaybeRef<string>) {
 
   function getParentView(id: string): CommandView | undefined {
     const view = getView(id)
-    if (!view) return undefined
+    if (!view) {
+      return undefined
+    }
 
     const parentId = view.parent.views[view.parent.views.length - 1]
     return parentId ? getView(parentId) : undefined
@@ -140,7 +149,9 @@ export function useCommandView(id: MaybeRef<string>) {
 
   function getUnrelatedViews(id: string): CommandView[] {
     const view = getView(id)
-    if (!view) return []
+    if (!view) {
+      return []
+    }
 
     const parentViewsSet = new Set(view.parent.views)
     return state.views.filter((v) => v.id !== id && !parentViewsSet.has(v.id))
@@ -148,7 +159,9 @@ export function useCommandView(id: MaybeRef<string>) {
 
   async function selectView(id: string, delayMs = 0): Promise<void> {
     const view = getView(id)
-    if (!view) return
+    if (!view) {
+      return
+    }
 
     if (view.state.unselectAbortController) {
       view.state.unselectAbortController.abort()
@@ -181,7 +194,9 @@ export function useCommandView(id: MaybeRef<string>) {
 
   async function unselectView(id: string, delayMs = 0): Promise<void> {
     const view = getView(id)
-    if (!view) return
+    if (!view) {
+      return
+    }
 
     if (view.state.selectAbortController) {
       view.state.selectAbortController.abort()

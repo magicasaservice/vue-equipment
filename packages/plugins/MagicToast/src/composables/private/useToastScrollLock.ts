@@ -24,7 +24,9 @@ export function useToastScrollLock() {
   }
 
   function addScrollLockPadding() {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      return
+    }
 
     document.body.style.setProperty(
       '--scrollbar-width',

@@ -184,9 +184,13 @@ export function useScrollTo() {
     easing = easeOutQuad,
   }: scrollToTargetParams) {
     const parentEl = unwrapParent(parent)
-    if (!parentEl) return
+    if (!parentEl) {
+      return
+    }
     const targetEl = unwrapTarget(target, parentEl)
-    if (!targetEl) return
+    if (!targetEl) {
+      return
+    }
 
     disableScrollSnap(parentEl)
 

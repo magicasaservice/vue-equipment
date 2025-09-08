@@ -70,7 +70,9 @@ export function useCookieItem(args: UseCookieItemArgs) {
   }
 
   function deleteItem(id: string) {
-    if (!state?.items) return
+    if (!state?.items) {
+      return
+    }
     state.items = state.items.filter((x) => x.id !== id)
   }
 
