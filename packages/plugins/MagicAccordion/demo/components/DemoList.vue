@@ -1,7 +1,7 @@
 <template>
   <magic-accordion-view class="flex w-full flex-col">
     <magic-accordion-trigger v-slot="{ viewActive }">
-      <m-menu-item size="sm" mode="ghost" :active="viewActive">
+      <m-menu-item size="sm" mode="ghost" :selected="viewActive">
         <m-menu-item-child>
           <span>{{ headline }}</span>
         </m-menu-item-child>

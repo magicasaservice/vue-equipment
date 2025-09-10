@@ -4,7 +4,7 @@
     v-slot="{ itemActive }"
     :disabled="item.disabled"
   >
-    <m-menu-item :active="itemActive" :disabled="item.disabled" size="xs">
+    <m-menu-item :selected="itemActive" :disabled="item.disabled" size="xs">
       <m-menu-item-child>{{ item.label }}</m-menu-item-child>
       <template v-if="item.cmd" #end>
         <m-menu-item-child end>
@@ -16,7 +16,7 @@
   <magic-menu-item v-else v-slot="{ itemActive }">
     <magic-menu-view v-slot="{ viewActive }" id="magic-menu-nested-demo-view">
       <magic-menu-trigger as-child>
-        <m-menu-item size="xs" :active="itemActive ?? viewActive">
+        <m-menu-item size="xs" :selected="itemActive ?? viewActive">
           <m-menu-item-child>{{ item.label }}</m-menu-item-child>
           <template #end>
             <m-menu-item-child end>

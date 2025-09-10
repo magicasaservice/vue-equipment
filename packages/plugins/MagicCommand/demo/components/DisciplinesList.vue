@@ -8,7 +8,7 @@
     v-slot="{ itemActive }"
     as-child
   >
-    <m-menu-item mode="ghost" size="sm" :active="itemActive">
+    <m-menu-item mode="ghost" size="sm" :selected="itemActive">
       <m-menu-item-child>{{ discipline.name }}</m-menu-item-child>
     </m-menu-item>
   </magic-command-item>
