@@ -1,9 +1,8 @@
 <template>
-  <!-- Filter -->
-  <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
+  <m-menu-item mode="ghost" size="sm" disabled class="pointer-events-none">
     <m-menu-item-child> Filter </m-menu-item-child>
   </m-menu-item>
-  <div class="flex gap-2 flex-wrap p-2">
+  <div class="flex flex-wrap gap-2 p-2">
     <magic-command-item
       v-for="tag in tags.slice(0, 30)"
       :key="tag.id"

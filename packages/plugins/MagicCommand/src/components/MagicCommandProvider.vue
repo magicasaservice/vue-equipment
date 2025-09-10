@@ -8,6 +8,7 @@
 import { shallowRef, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { Primitive } from '@maas/vue-primitive'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { createDefu } from 'defu'
 
 import { useCommandState } from '../composables/private/useCommandState'
@@ -69,9 +70,21 @@ const commandApi = useMagicCommand(id)
 
 const { open, close } = commandApi
 
+const { logWarning } = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'MagicCommandProvider',
+})
+
 if (mappedOptions.keyListener?.open) {
   for (const key of mappedOptions.keyListener.open) {
-    watch(keys[key], (value) => {
+    const mappedKey = keys[key]
+
+    if (!mappedKey) {
+      logWarning(`The key “${key}” is not supported by MagicCommand`)
+      continue
+    }
+
+    watch(mappedKey, (value) => {
       if (value) {
         open()
       }
@@ -81,7 +94,14 @@ if (mappedOptions.keyListener?.open) {
 
 if (mappedOptions.keyListener?.close) {
   for (const key of mappedOptions.keyListener.close) {
-    watch(keys[key], (value) => {
+    const mappedKey = keys[key]
+
+    if (!mappedKey) {
+      logWarning(`The key “${key}” is not supported by MagicCommand`)
+      continue
+    }
+
+    watch(mappedKey, (value) => {
       if (value) {
         close()
       }

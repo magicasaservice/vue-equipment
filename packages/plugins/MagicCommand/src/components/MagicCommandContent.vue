@@ -117,6 +117,7 @@ const {
 } = useCommandScroll(elRef)
 
 const keys = useMagicKeys()
+const { logWarning } = magicError
 
 const nextTimeout = ref<ReturnType<typeof setTimeout> | undefined>(undefined)
 const prevTimeout = ref<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -125,7 +126,14 @@ const prevInterval = ref<ReturnType<typeof setInterval> | undefined>(undefined)
 
 if (options?.keyListener?.next) {
   for (const key of options.keyListener.next) {
-    watch(keys[key], (value) => {
+    const mappedKey = keys[key]
+
+    if (!mappedKey) {
+      logWarning(`The key “${key}” is not supported by MagicCommand`)
+      continue
+    }
+
+    watch(mappedKey, (value) => {
       if (isIdle.value) {
         return
       }
@@ -149,7 +157,14 @@ if (options?.keyListener?.next) {
 
 if (options?.keyListener?.prev) {
   for (const key of options.keyListener.prev) {
-    watch(keys[key], (value) => {
+    const mappedKey = keys[key]
+
+    if (!mappedKey) {
+      logWarning(`The key “${key}” is not supported by MagicCommand`)
+      continue
+    }
+
+    watch(mappedKey, (value) => {
       if (isIdle.value) {
         return
       }

@@ -84,7 +84,7 @@ export function useNoiseApi({
       for (let x = 0; x < width; x += pixelSize) {
         let radian: number | undefined
         if (rotation) {
-          const angle = getRandomRotationAngle()
+          const angle = getRandomRotationAngle() ?? 0
           radian = getRadianFromAngle(angle)
         }
 

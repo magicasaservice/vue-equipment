@@ -342,6 +342,11 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]
+
+    if (!snapPoint && snapPoint !== 0) {
+      return
+    }
+
     emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
     switch (position) {

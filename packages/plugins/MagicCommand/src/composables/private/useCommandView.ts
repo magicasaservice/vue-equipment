@@ -11,12 +11,13 @@ function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError'
 }
 
+const { logWarning } = useMagicError({
+  prefix: 'MagicCommand',
+  source: 'useCommandView',
+})
+
 export function useCommandView(id: MaybeRef<string>) {
   const { initializeState } = useCommandState(id)
-  const { logWarning } = useMagicError({
-    prefix: 'MagicCommand',
-    source: 'useCommandView',
-  })
   const state = initializeState()
 
   // Cache current instance ID

@@ -106,10 +106,18 @@ watch(
 )
 
 const keys = useMagicKeys()
+const { logWarning } = magicError
 
 if (options?.keyListener?.enter) {
   for (const key of options.keyListener.enter) {
-    watch(keys[key], (value) => {
+    const mappedKey = keys[key]
+
+    if (!mappedKey) {
+      logWarning(`The key “${key}” is not supported by MagicCommand`)
+      continue
+    }
+
+    watch(mappedKey, (value) => {
       if (value) {
         onKeypress()
       }

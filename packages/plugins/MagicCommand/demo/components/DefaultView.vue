@@ -1,7 +1,7 @@
 <template>
   <magic-command-view :id="id" :initial="true">
-    <magic-command-content class="overflow-auto scrollbar-none">
-      <m-menu-item mode="plain" size="sm" disabled class="pointer-events-none">
+    <magic-command-content class="scrollbar-none overflow-auto">
+      <m-menu-item mode="ghost" size="sm" disabled class="pointer-events-none">
         <m-menu-item-child>Navigation</m-menu-item-child>
       </m-menu-item>
 

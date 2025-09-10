@@ -56,7 +56,9 @@ export function usePlayerState(id: MaybeRef<string>) {
       return entry.id === id
     })
 
-    if (!state) state = addState(toValue(id))
+    if (!state) {
+      state = addState(toValue(id))
+    }
     return state
   }
 

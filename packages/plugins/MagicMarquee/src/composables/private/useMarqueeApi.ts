@@ -36,8 +36,6 @@ export function useMarqueeApi({
     )
   )
 
-  // Public state
-
   // Private functions
   function calculateDuplicates() {
     const childWidth = childRect?.width.value
