@@ -1,4 +1,4 @@
-import { toValue, type MaybeRef, type Ref } from 'vue'
+import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
 import { useFocus } from '@vueuse/core'
 import { useAccordionView } from './useAccordionView'
@@ -9,12 +9,12 @@ interface UseAccordionTriggerArgs {
   instanceId: MaybeRef<string>
   viewId: string
   trigger: Interaction
-  disabled: MaybeRef<boolean>
+  mappedDisabled: ComputedRef<boolean>
   elRef: Ref<InstanceType<typeof Primitive> | null>
 }
 
 export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
-  const { instanceId, viewId, elRef, disabled, trigger } = args
+  const { instanceId, viewId, elRef, mappedDisabled, trigger } = args
 
   const { selectView, unselectView, getView } = useAccordionView(instanceId)
   const view = getView(viewId)
@@ -22,13 +22,13 @@ export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
   const { focused } = useFocus(elRef)
 
   function onMouseenter() {
-    if (!toValue(disabled) && trigger === 'mouseenter') {
+    if (!mappedDisabled.value && trigger === 'mouseenter') {
       selectView(viewId)
     }
   }
 
   function onClick() {
-    if (!toValue(disabled) && trigger === 'click') {
+    if (!mappedDisabled.value && trigger === 'click') {
       if (view?.active) {
         unselectView(viewId)
       } else {
@@ -38,7 +38,7 @@ export function useAccordionTrigger(args: UseAccordionTriggerArgs) {
   }
 
   function onKeypress(e: KeyboardEvent) {
-    if (focused.value && !toValue(disabled) && !view?.active) {
+    if (focused.value && !mappedDisabled.value && !view?.active) {
       e.preventDefault()
       e.stopPropagation()
 

@@ -72,14 +72,14 @@ const { getView } = useAccordionView(instanceId)
 const view = getView(mappedViewId.value)
 
 const mappedDisabled = computed(
-  () => toValue(disabled) || state.options.disabled
+  () => (toValue(disabled) || state.options.disabled) ?? false
 )
 
 const { onMouseenter, onClick, onKeypress } = useAccordionTrigger({
   elRef,
   instanceId,
+  mappedDisabled,
   viewId: mappedViewId.value,
-  disabled: disabled,
   trigger: trigger,
 })
 
