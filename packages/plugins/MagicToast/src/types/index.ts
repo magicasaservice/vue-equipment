@@ -11,7 +11,7 @@ type Position =
   | 'bottom'
   | 'bottom-right'
 
-export type ToastView = {
+export interface ToastView {
   id: string
   component: object
   props?: MaybeRef<Record<string, unknown>>
@@ -36,7 +36,7 @@ export type ToastView = {
   draggedY: number
 }
 
-export type ToastState = {
+export interface ToastState {
   id: string
   views: ToastView[]
   options: ToastDefaultOptions
@@ -44,7 +44,7 @@ export type ToastState = {
   animating: boolean
 }
 
-export type ActiveToast = {
+export interface ActiveToast {
   id: string
   height: number
   padding: {
@@ -62,7 +62,7 @@ export interface ToastEvents {
   afterLeave: string
 }
 
-export type MagicToastOptions = {
+export interface MagicToastOptions {
   debug?: boolean
   position?: Position
   duration?: number

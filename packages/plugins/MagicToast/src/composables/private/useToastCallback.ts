@@ -20,6 +20,7 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
     // Remove oldest view once threshold is reached
     if (
       state.views.length &&
+      state.views[0] &&
       state.options.layout?.max &&
       state.views.length > state.options.layout.max
     ) {

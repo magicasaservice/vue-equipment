@@ -3,7 +3,7 @@
     class="magic-toast-view"
     :data-id="id"
     :data-expanded="state.expanded"
-    :data-dragging="view.dragging"
+    :data-dragging="view?.dragging"
     :data-position="state.options.position"
     :data-debug="state.options.debug"
     :style="{
@@ -30,7 +30,7 @@ import {
   useMagicError,
   type UseMagicErrorReturn,
 } from '@maas/vue-equipment/plugins/MagicError'
-import { MagicToastInstanceId } from '../../symbols'
+import { MagicToastInstanceId } from '../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
 
@@ -60,7 +60,12 @@ const count = computed(() => state.views.length)
 const view = computed(() => state.views[index])
 const reversedIndex = computed(() => count.value - index - 1)
 
-const height = computed(() => `${view.value.dimensions?.height}px`)
+magicError.assert(view.value, {
+  message: 'MagicToastView could not be registered',
+  errorCode: 'missing_view',
+})
+
+const height = computed(() => `${view.value?.dimensions?.height}px`)
 const offset = computed(() => {
   const mapped = state.views
     .slice(0, reversedIndex.value)

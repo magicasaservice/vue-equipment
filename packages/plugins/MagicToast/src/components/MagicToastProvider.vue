@@ -57,7 +57,7 @@ import { useToastCallback } from '../composables/private/useToastCallback'
 import { useToastListener } from '../composables/private/useToastListener'
 
 import MagicToastView from './MagicToastView.vue'
-import { MagicToastInstanceId } from '../../symbols'
+import { MagicToastInstanceId } from '../symbols'
 
 import type { MagicToastOptions } from '../types/index'
 
