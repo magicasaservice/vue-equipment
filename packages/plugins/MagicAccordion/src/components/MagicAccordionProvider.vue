@@ -7,9 +7,9 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, provide, type MaybeRef } from 'vue'
 import { Primitive } from '@maas/vue-primitive'
+import { useAccordionState } from '../composables/private/useAccordionState'
 import { MagicAccordionInstanceId } from '../symbols'
 import type { MagicAccordionOptions } from '../types'
-import { useAccordionState } from '../composables/private/useAccordionState'
 
 interface MagicAccordionProviderProps {
   id: MaybeRef<string>

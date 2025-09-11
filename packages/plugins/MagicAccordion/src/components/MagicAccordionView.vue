@@ -2,10 +2,10 @@
   <primitive
     :as-child="asChild"
     :data-id="mappedId"
-    :data-active="view?.active"
+    :data-active="mappedActive"
     class="magic-accordion-view"
   >
-    <slot :view-active="view?.active" />
+    <slot :view-active="mappedActive" />
   </primitive>
 </template>
 
