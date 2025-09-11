@@ -1,15 +1,9 @@
 import { type MaybeRef } from 'vue'
 import { useAccordionView } from './private/useAccordionView'
 
-interface UseMagicAccordionArgs {
-  instanceId: MaybeRef<string>
-}
-
-export function useMagicAccordion(args: UseMagicAccordionArgs) {
-  const { instanceId } = args
-
+export function useMagicAccordion(id: MaybeRef<string>) {
   // Public functions
-  const { selectView, unselectView } = useAccordionView(instanceId)
+  const { selectView, unselectView } = useAccordionView(id)
 
   return {
     selectView,
