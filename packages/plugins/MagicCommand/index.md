@@ -555,20 +555,6 @@ To customize the command palette, override the necessary options. Any custom opt
     {
       items: [
         {
-          label: 'active',
-          description: 'Force active state. If the trigger is nested inside `MagicCommandItem`, it will inherit its active state, which in return activates the '
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
           label: 'trigger',
           description: 'Override the interactions that activate the trigger.'
         },
@@ -584,7 +570,7 @@ To customize the command palette, override the necessary options. Any custom opt
     {
       items: [
         {
-          label: 'Action',
+          label: 'action',
           description: 'Choose if the trigger opens or closes the related view.'
         },
         {

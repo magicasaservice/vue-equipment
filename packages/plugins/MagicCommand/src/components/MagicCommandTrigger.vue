@@ -35,7 +35,6 @@ import { useMagicKeys } from '@vueuse/core'
 
 interface MagicCommandTriggerProps {
   viewId?: string
-  active?: boolean
   disabled?: boolean
   action?: Action
   trigger?: Interaction[]
@@ -44,7 +43,6 @@ interface MagicCommandTriggerProps {
 
 const {
   viewId,
-  active = undefined,
   disabled = undefined,
   action = 'open' as Action,
   trigger = ['click'] as Interaction[],
@@ -78,7 +76,7 @@ magicError.assert(mappedViewId.value, {
 const { getView } = useCommandView(instanceId)
 const view = getView(mappedViewId.value)
 
-const mappedActive = computed(() => active ?? toValue(itemActive) ?? false)
+const mappedActive = computed(() => toValue(itemActive) ?? false)
 const mappedDisabled = computed(
   () => disabled ?? toValue(itemDisabled) ?? false
 )
