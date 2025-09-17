@@ -29,7 +29,7 @@ interface MagicAccordionViewProps {
   active?: boolean
 }
 
-const { id, active } = defineProps<MagicAccordionViewProps>()
+const { id, active = false } = defineProps<MagicAccordionViewProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicAccordion',
@@ -51,7 +51,7 @@ const { initializeView, deleteView } = useAccordionView(instanceId)
 
 const view = initializeView({
   id: mappedId.value,
-  active: active ?? false,
+  active,
 })
 
 // Pass id and active state to children

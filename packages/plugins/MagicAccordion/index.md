@@ -326,7 +326,7 @@ To customize the accordion, override the necessary options. Any custom options w
       items: [
         {
           label: 'active',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
+          description: 'Force active state on mounted.'
         },
         {
           label: 'boolean'
