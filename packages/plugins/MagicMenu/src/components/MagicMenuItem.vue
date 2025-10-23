@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts" setup>
+import { onKeyStroke } from '@vueuse/core'
 import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
 import {
   useMagicError,
@@ -42,6 +43,7 @@ const { id, disabled } = defineProps<MagicMenuItemProps>()
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
+  (e: 'enter'): void
 }>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
@@ -139,11 +141,19 @@ function onClick(event: MouseEvent) {
   }
 }
 
+function onReturn() {
+  if (!item.disabled && item.active) {
+    emit('enter')
+  }
+}
+
 // Pass id and active state to children
 provide(MagicMenuItemId, mappedId.value)
 provide(MagicMenuItemActive, mappedActive)
 
 // Lifecycle
+onKeyStroke('Enter', onReturn)
+
 onBeforeUnmount(() => {
   deleteItem(mappedId.value)
 })

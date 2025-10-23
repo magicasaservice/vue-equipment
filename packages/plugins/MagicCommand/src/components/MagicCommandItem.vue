@@ -38,6 +38,7 @@ import {
   MagicCommandItemActive,
   MagicCommandItemDisabled,
 } from '../symbols'
+import { onKeyStroke } from '@vueuse/core'
 
 interface MagicCommandItemProps {
   id?: string
@@ -53,6 +54,7 @@ const {
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
+  (e: 'enter'): void
 }>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
@@ -112,12 +114,20 @@ function onClick(event: MouseEvent) {
   guardedSelect()
 }
 
+function onReturn() {
+  if (!item.disabled && item.active) {
+    emit('enter')
+  }
+}
+
 // Pass id and states to children
 provide(MagicCommandItemId, mappedId.value)
 provide(MagicCommandItemActive, mappedActive)
 provide(MagicCommandItemDisabled, mappedDisabled)
 
 // Lifecycle
+onKeyStroke('Enter', onReturn)
+
 onMounted(() => {
   if (initial) {
     selectItem(mappedId.value)
