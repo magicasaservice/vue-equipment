@@ -1,8 +1,8 @@
-import { type MaybeRef } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
 import { useMenuItem } from './useMenuItem'
+import type { MaybeRef } from 'vue'
 import type { MenuView } from '../../types/index'
 
 export function useMenuKeyListener(instanceId: MaybeRef<string>) {
@@ -50,7 +50,11 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
   function selectFirstItem(view: MenuView) {
     const { selectItem } = useMenuItem({ instanceId, viewId: view.id })
-    selectItem(getEnabledItems(view)[0]?.id, true)
+    const firstItem = getEnabledItems(view)[0]
+
+    if (firstItem) {
+      selectItem(firstItem.id, true)
+    }
   }
 
   // Public functions
@@ -62,18 +66,25 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     }
 
     if (!state.input.view) {
+      console.log('no view selected')
       return
     }
 
     const viewId = state.input.view
     const inputView = getView(viewId)
 
+    console.log('inputView', inputView)
+
     if (inputView) {
       const activeItem = inputView.items.find((item) => item.active)
       const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
 
+      console.log('nestedView', nestedView)
+      console.log('activeItem', activeItem)
+
       if (nestedView) {
         selectView(nestedView.id)
+        console.log('nestedView', nestedView.id)
         await new Promise((resolve) => requestAnimationFrame(resolve))
         selectFirstItem(nestedView)
         return
@@ -146,14 +157,22 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     if (prevIndex >= 0) {
       // Select previous item
       const { selectItem } = useMenuItem({ instanceId, viewId })
-      selectItem(enabledItems[prevIndex]?.id, true)
+      const prevItem = enabledItems[prevIndex]
+
+      if (prevItem) {
+        selectItem(prevItem.id, true)
+      }
 
       // Unselect all views that are nested deeper than the view in focus
       unselectUnrelatedViews(viewId)
     } else if (prevIndex !== -1) {
       // Select last item
       const { selectItem } = useMenuItem({ instanceId, viewId })
-      selectItem(enabledItems[enabledItems.length - 1]?.id, true)
+      const lastItem = enabledItems[enabledItems.length - 1]
+
+      if (lastItem) {
+        selectItem(lastItem.id, true)
+      }
 
       // Unselect all views that are nested deeper than the view in focus
       unselectUnrelatedViews(viewId)
@@ -183,7 +202,11 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     if (nextIndex >= 0) {
       // Select next item
       const { selectItem } = useMenuItem({ instanceId, viewId })
-      selectItem(enabledItems[nextIndex]?.id, true)
+      const nextItem = enabledItems[nextIndex]
+
+      if (nextItem) {
+        selectItem(nextItem.id, true)
+      }
 
       // Unselect all views that are nested deeper than the view in focus
       unselectUnrelatedViews(viewId)

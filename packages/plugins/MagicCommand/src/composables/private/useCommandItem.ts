@@ -87,13 +87,11 @@ export function useCommandItem(args: UseCommandItemArgs) {
       (item) => item.id === activeItem.value?.id
     )
 
-    if (index !== undefined) {
-      const hasNext = view?.items[index + 1] !== undefined
-
-      if (hasNext) {
-        selectItem(view?.items[index + 1].id)
-      } else if (view && loop) {
-        selectItem(view.items[0].id)
+    if (index !== undefined && view) {
+      const nextItem =
+        view.items[index + 1] ?? (loop ? view.items[0] : undefined)
+      if (nextItem) {
+        selectItem(nextItem.id)
       }
     }
   }
@@ -103,13 +101,12 @@ export function useCommandItem(args: UseCommandItemArgs) {
       (item) => item.id === activeItem.value?.id
     )
 
-    if (index !== undefined) {
-      const hasPrev = view?.items[index - 1] !== undefined
-
-      if (hasPrev) {
-        selectItem(view?.items[index - 1].id)
-      } else if (view && loop) {
-        selectItem(view.items[view.items.length - 1].id)
+    if (index !== undefined && view) {
+      const prevItem =
+        view.items[index - 1] ??
+        (loop ? view.items[view.items.length - 1] : undefined)
+      if (prevItem) {
+        selectItem(prevItem.id)
       }
     }
   }
