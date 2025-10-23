@@ -66,25 +66,18 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     }
 
     if (!state.input.view) {
-      console.log('no view selected')
       return
     }
 
     const viewId = state.input.view
     const inputView = getView(viewId)
 
-    console.log('inputView', inputView)
-
     if (inputView) {
       const activeItem = inputView.items.find((item) => item.active)
       const nestedView = activeItem ? getNestedView(activeItem.id) : undefined
 
-      console.log('nestedView', nestedView)
-      console.log('activeItem', activeItem)
-
       if (nestedView) {
         selectView(nestedView.id)
-        console.log('nestedView', nestedView.id)
         await new Promise((resolve) => requestAnimationFrame(resolve))
         selectFirstItem(nestedView)
         return
