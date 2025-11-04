@@ -16,5 +16,5 @@
     "./interface/*": "./dist/interface/*",
     "./mirage/*": "./dist/mirage/*"
   },
-  "version": "1.0.0-beta.39"
+  "version": "1.0.0-beta.40"
 }
