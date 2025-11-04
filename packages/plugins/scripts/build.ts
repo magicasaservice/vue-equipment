@@ -35,5 +35,7 @@ mkdist({
     '!**/index.md',
     '!scripts/*',
     '!*.config.*',
+    '!.turbo',
+    '!**/.turbo',
   ],
 })
