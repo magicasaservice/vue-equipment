@@ -34,8 +34,12 @@
       "import": "./dist/composables/index.js"
     },
     "./plugins/*": {
-      "types": "./dist/plugins/*",
-      "import": "./dist/plugins/*"
+      "types": "./dist/plugins/*/index.d.ts",
+      "import": "./dist/plugins/*/index.mjs"
+    },
+    "./plugins/*/*": {
+      "types": "./dist/plugins/*/*",
+      "import": "./dist/plugins/*/*"
     },
     "./plugins/MagicPlayer/css/*.css": {
       "import": "./dist/plugins/MagicPlayer/src/css/*.css"
