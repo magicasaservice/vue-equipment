@@ -6,26 +6,26 @@ packages:
 catalog:
   '@floating-ui/vue': ^1.1.9
   '@maas/magic-timer': ^1.2.0
-  '@maas/mirror': ^1.0.0-beta.17
+  '@maas/mirror': ^1.0.0-beta.20
   '@maas/vue-primitive': ^1.3.0
-  '@nuxt/kit': ^4.0.3
-  '@tailwindcss/vite': ^4.1.12
+  '@nuxt/kit': ^4.2.0
+  '@tailwindcss/vite': ^4.1.16
   '@types/fs-extra': ^11.0.4
-  '@types/node': ^22.17.2
-  '@vueuse/core': '>=13.7.0'
-  '@vueuse/integrations': '>=13.7.0'
+  '@types/node': ^22.19.0
+  '@vueuse/core': '>=14.0.0'
+  '@vueuse/integrations': '>=14.0.0'
   defu: ^6.1.4
   esno: ^4.8.0
-  focus-trap: ^7.6.5
-  fs-extra: ^11.3.1
-  hls.js: ^1.6.10
-  luxon: ^3.7.1
+  focus-trap: ^7.6.6
+  fs-extra: ^11.3.2
+  hls.js: ^1.6.14
+  luxon: ^3.7.2
   mitt: ^3.0.1
-  tailwindcss: ^4.1.12
-  motion: ^12.23.12
-  nuxt: ^4.0.3
+  tailwindcss: ^4.1.16
+  motion: ^12.23.24
+  nuxt: ^4.2.0
   prettier: ^3.6.2
   tsup: ^8.5.0
-  typescript: ^5.9.2
+  typescript: ^5.9.3
   universal-cookie: ^8.0.1
-  vue: ^3.5.19
+  vue: ^3.5.22

@@ -17,11 +17,11 @@
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.5",
     "@types/node": "catalog:",
-    "eslint": "^9.33.0",
+    "eslint": "^9.39.1",
     "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "release-it": "^19.0.4",
-    "turbo": "^2.5.6",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "release-it": "^19.0.5",
+    "turbo": "^2.6.0",
     "typescript": "catalog:"
   },
   "exports": {
@@ -57,16 +57,16 @@
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
     "@maas/vue-primitive": "^1",
-    "@nuxt/kit": "^3",
-    "@vueuse/core": "^12",
-    "@vueuse/integrations": "^12",
+    "@nuxt/kit": ">=3",
+    "@vueuse/core": ">=12",
+    "@vueuse/integrations": ">=12",
     "defu": "^6",
     "focus-trap": "^7",
     "hls.js": "^1",
     "luxon": "^3",
     "mitt": "^3",
     "motion": "^12",
-    "nuxt": "^3.15",
+    "nuxt": ">=3.15",
     "universal-cookie": "^7",
     "vue": "^3.5",
     "wheel-gestures": "^2.2.48"
@@ -138,10 +138,7 @@
     "update:deps:major": "pnpm dlx taze major -r -w"
   },
   "type": "module",
-  "volta": {
-    "node": "20.18.1"
-  },
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.20.0",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"

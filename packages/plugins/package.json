@@ -21,9 +21,9 @@
   "devDependencies": {
     "@maas/mirror": "catalog:",
     "esno": "catalog:",
-    "mkdist": "^2.3.0",
-    "vue-sfc-transformer": "^0.1.16",
-    "vue-tsc": "^3.0.6"
+    "mkdist": "^2.4.1",
+    "vue-sfc-transformer": "^0.1.17",
+    "vue-tsc": "^3.1.3"
   },
   "exports": "./index.ts",
   "license": "MIT",
