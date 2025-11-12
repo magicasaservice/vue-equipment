@@ -534,6 +534,16 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (dragging.value) {
       return
     } else {
+      // Bail early for select elements
+      // Prevents a bug in safari related to pointer capture
+      const isSelect = ['SELECT', 'OPTION'].includes(
+        (e.target as HTMLElement).tagName
+      )
+
+      if (isSelect) {
+        return
+      }
+
       // Save state
       dragging.value = true
 

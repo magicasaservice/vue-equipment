@@ -207,6 +207,11 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
       easing = toValue(animation).snap?.easing,
     } = args
     const snapPoint = snapPointsMap.value[`x${x}y${y}`]
+
+    if (!snapPoint) {
+      return
+    }
+
     emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
     // Cancel any running interpolations

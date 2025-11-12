@@ -283,6 +283,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     for (let i = 0; i < mappedSnapPoints.value.length; i++) {
       const snapPoint = mappedSnapPoints.value[i]
 
+      if (!snapPoint) {
+        return
+      }
+
       const targetVector = vectorBetweenCoordinates(
         intermediateDraggedCoords,
         snapPoint
@@ -311,6 +315,10 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   function findClosestSnapPoint() {
     const draggedCoords = { x: draggedX.value, y: draggedY.value }
     const closestSnapPoint = mappedSnapPoints.value.reduce((a, b) => {
+      if (!a) {
+        return b
+      }
+
       return calculateDistance(a, draggedCoords) <
         calculateDistance(b, draggedCoords)
         ? a
@@ -427,6 +435,16 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
+    // Bail early for select elements
+    // Prevents a bug in safari related to pointer capture
+    const isSelect = ['SELECT', 'OPTION'].includes(
+      (e.target as HTMLElement).tagName
+    )
+
+    if (isSelect) {
+      return
+    }
+
     // Lock scroll as soon as the user starts dragging
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
