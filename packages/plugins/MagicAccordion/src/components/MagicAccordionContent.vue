@@ -19,9 +19,9 @@
         @leave="onLeave"
         @after-leave="onAfterLeave"
       >
-        <primitive v-show="view?.active" :as-child="asChild">
+        <vue-primitive v-show="view?.active" :as-child="asChild">
           <slot :view-active="view?.active" />
-        </primitive>
+        </vue-primitive>
       </transition>
     </auto-size>
   </div>
@@ -31,7 +31,7 @@
 import { inject, computed } from 'vue'
 import { defu } from 'defu'
 import { AutoSize } from '@maas/vue-autosize'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
   type UseMagicErrorReturn,

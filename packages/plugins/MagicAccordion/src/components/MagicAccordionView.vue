@@ -1,17 +1,17 @@
 <template>
-  <primitive
+  <vue-primitive
     :as-child="asChild"
     :data-id="mappedId"
     :data-active="mappedActive"
     class="magic-accordion-view"
   >
     <slot :view-active="mappedActive" />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
   type UseMagicErrorReturn,

@@ -1,12 +1,12 @@
 <template>
-  <primitive
+  <vue-primitive
     ref="el"
     :as-child="asChild"
     :data-id="id"
     class="magic-menu-provider"
   >
     <slot />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
@@ -20,7 +20,7 @@ import {
   type MaybeRef,
 } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import { defu } from 'defu'
 
 import { useMenuState } from '../composables/private/useMenuState'

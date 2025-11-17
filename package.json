@@ -60,7 +60,7 @@
     "@floating-ui/vue": "^1",
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
-    "@maas/vue-primitive": "^1",
+    "@maas/vue-primitive": "^1.4",
     "@nuxt/kit": ">=3",
     "@vueuse/core": ">=12",
     "@vueuse/integrations": ">=12",

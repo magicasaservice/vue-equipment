@@ -1,5 +1,5 @@
 <template>
-  <primitive
+  <vue-primitive
     ref="el"
     :as-child="asChild"
     :data-id="`${mappedViewId}-trigger`"
@@ -10,12 +10,12 @@
     @click="onClick"
   >
     <slot :view-active="view?.active" />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { useTemplateRef, inject, computed, toValue, type MaybeRef } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import { onKeyStroke } from '@vueuse/core'
 import {
   useMagicError,
@@ -47,7 +47,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
   source: 'MagicAccordion',
 })
 
-const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
+const elRef = useTemplateRef<InstanceType<typeof VuePrimitive>>('el')
 
 const instanceId = inject(MagicAccordionInstanceId, undefined)
 const injectedViewId = inject(MagicAccordionViewId, undefined)

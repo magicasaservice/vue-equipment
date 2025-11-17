@@ -1,5 +1,5 @@
 import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import { useFocus } from '@vueuse/core'
 import { useAccordionView } from './useAccordionView'
 
@@ -10,7 +10,7 @@ interface UseAccordionTriggerArgs {
   viewId: string
   trigger: Interaction
   mappedDisabled: ComputedRef<boolean>
-  elRef: Ref<InstanceType<typeof Primitive> | null>
+  elRef: Ref<InstanceType<typeof VuePrimitive> | null>
 }
 
 export function useAccordionTrigger(args: UseAccordionTriggerArgs) {

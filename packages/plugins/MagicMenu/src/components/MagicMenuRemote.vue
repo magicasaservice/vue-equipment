@@ -1,5 +1,5 @@
 <template>
-  <primitive
+  <vue-primitive
     class="magic-menu-remote"
     :data-id="`${channelId}-remote`"
     :data-disabled="disabled"
@@ -9,12 +9,12 @@
     @mouseenter="onMouseenter"
   >
     <slot :channel-active="channel?.active" :remote-disabled="disabled" />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject, watch } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
   type UseMagicErrorReturn,

@@ -1,5 +1,5 @@
 <template>
-  <primitive
+  <vue-primitive
     ref="el"
     :data-id="`${mappedViewId}-trigger`"
     :data-active="view?.active"
@@ -12,12 +12,12 @@
     @mouseenter="onMouseenter"
   >
     <slot :view-active="view?.active" :trigger-disabled="mappedDisabled" />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -51,7 +51,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
   source: 'MagicMenu',
 })
 
-const elRef = useTemplateRef<InstanceType<typeof Primitive>>('el')
+const elRef = useTemplateRef<InstanceType<typeof VuePrimitive>>('el')
 
 const injectedInstanceId = inject(MagicMenuInstanceId, undefined)
 const injectedViewId = inject(MagicMenuViewId, undefined)

@@ -1,12 +1,16 @@
 <template>
-  <primitive :data-id="id" :as-child="asChild" class="magic-accordion-provider">
+  <vue-primitive
+    :data-id="id"
+    :as-child="asChild"
+    class="magic-accordion-provider"
+  >
     <slot />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, provide, type MaybeRef } from 'vue'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { MagicAccordionInstanceId } from '../symbols'
 import type { MagicAccordionOptions } from '../types'

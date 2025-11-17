@@ -1,13 +1,17 @@
 <template>
-  <primitive :data-id="id" :as-child="asChild" class="magic-command-provider">
+  <vue-primitive
+    :data-id="id"
+    :as-child="asChild"
+    class="magic-command-provider"
+  >
     <slot />
-  </primitive>
+  </vue-primitive>
 </template>
 
 <script lang="ts" setup>
 import { shallowRef, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
-import { Primitive } from '@maas/vue-primitive'
+import { VuePrimitive } from '@maas/vue-primitive'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { createDefu } from 'defu'
 
