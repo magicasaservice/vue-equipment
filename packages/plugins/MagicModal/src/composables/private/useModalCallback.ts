@@ -1,46 +1,30 @@
 import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useModalDOM } from './useModalDOM'
 import type { MagicModalOptions } from '../../types'
 
 type UseModalCallbackArgs = {
   id: MaybeRef<string>
   mappedOptions: MagicModalOptions
-  addScrollLockPadding: () => void
-  removeScrollLockPadding: () => void
-  lockScroll: () => void
-  unlockScroll: () => void
   trapFocus: () => void
   releaseFocus: () => void
   wrapperActive: Ref<boolean>
 }
 
 export function useModalCallback(args: UseModalCallbackArgs) {
-  const {
-    id,
-    mappedOptions,
-    addScrollLockPadding,
-    removeScrollLockPadding,
-    lockScroll,
-    unlockScroll,
-    trapFocus,
-    releaseFocus,
-    wrapperActive,
-  } = args
+  const { id, mappedOptions, trapFocus, releaseFocus, wrapperActive } = args
 
   const emitter = useMagicEmitter()
+  const { lockScroll, unlockScroll } = useModalDOM()
 
   function onBeforeEnter() {
     emitter.emit('beforeEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
-      if (
+      lockScroll(
         typeof mappedOptions.scrollLock === 'object' &&
-        mappedOptions.scrollLock.padding
-      ) {
-        addScrollLockPadding()
-      }
-
-      lockScroll()
+          mappedOptions.scrollLock.padding
+      )
     }
   }
 
@@ -69,13 +53,10 @@ export function useModalCallback(args: UseModalCallbackArgs) {
     emitter.emit('afterLeave', toValue(id))
 
     if (mappedOptions.scrollLock) {
-      unlockScroll()
-      if (
+      unlockScroll(
         typeof mappedOptions.scrollLock === 'object' &&
-        mappedOptions.scrollLock.padding
-      ) {
-        removeScrollLockPadding()
-      }
+          mappedOptions.scrollLock.padding
+      )
     }
 
     if (mappedOptions.focusTrap) {

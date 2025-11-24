@@ -71,12 +71,7 @@ export function useToastDrag(args: UseToastDragArgs) {
   // Private functions
   const emitter = useMagicEmitter()
 
-  const {
-    lockScroll,
-    unlockScroll,
-    addScrollLockPadding,
-    removeScrollLockPadding,
-  } = useToastScrollLock()
+  const { lockScroll, unlockScroll } = useToastScrollLock()
 
   type InterpolateDraggedArgs = {
     to: number
@@ -275,10 +270,9 @@ export function useToastDrag(args: UseToastDragArgs) {
     // Unlock scroll
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
-      unlockScroll()
-      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
-        removeScrollLockPadding()
-      }
+      unlockScroll(
+        typeof scrollLockValue === 'object' && scrollLockValue.padding
+      )
     }
 
     if (hasDragged.value) {
@@ -323,11 +317,7 @@ export function useToastDrag(args: UseToastDragArgs) {
     // Lock scroll as soon as the user starts dragging
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
-      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
-        addScrollLockPadding()
-      }
-
-      lockScroll()
+      lockScroll(typeof scrollLockValue === 'object' && scrollLockValue.padding)
     }
 
     // Prevent dragging if we’re already dragging

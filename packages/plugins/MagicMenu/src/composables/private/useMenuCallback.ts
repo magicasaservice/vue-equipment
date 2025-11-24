@@ -1,7 +1,9 @@
 import { toValue, type MaybeRef, type Ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
-import type { MenuState } from '../../types'
+import { useMenuDOM } from './useMenuDOM'
 import { ModeScrollLock } from '../../utils/modeScrollLockDefaults'
+
+import type { MenuState } from '../../types'
 
 type UseMenuCallbackArgs = {
   state: MenuState
@@ -9,26 +11,15 @@ type UseMenuCallbackArgs = {
   viewId: string
   innerActive: Ref<boolean>
   wrapperActive: Ref<boolean>
-  lockScroll: () => void
-  unlockScroll: () => void
-  addScrollLockPadding: () => void
-  removeScrollLockPadding: () => void
+  parentTree: string[]
 }
 
 export function useMenuCallback(args: UseMenuCallbackArgs) {
-  const {
-    state,
-    instanceId,
-    viewId,
-    innerActive,
-    wrapperActive,
-    lockScroll,
-    unlockScroll,
-    addScrollLockPadding,
-    removeScrollLockPadding,
-  } = args
+  const { state, instanceId, viewId, innerActive, wrapperActive, parentTree } =
+    args
 
   const emitter = useMagicEmitter()
+  const { lockScroll, unlockScroll } = useMenuDOM()
 
   function onBeforeEnter() {
     emitter.emit('beforeEnter', { id: toValue(instanceId), viewId })
@@ -44,12 +35,9 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
     const scrollLock =
       state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
 
-    if (scrollLock) {
-      if (typeof scrollLock === 'object' && scrollLock.padding) {
-        addScrollLockPadding()
-      }
-
-      lockScroll()
+    // Only lock scroll if this is the top-level menu
+    if (scrollLock && parentTree.length === 2) {
+      lockScroll(typeof scrollLock === 'object' && scrollLock.padding)
     }
   }
 
@@ -67,12 +55,9 @@ export function useMenuCallback(args: UseMenuCallbackArgs) {
     const scrollLock =
       state.options.scrollLock ?? ModeScrollLock[state.options.mode].value
 
-    if (scrollLock) {
-      unlockScroll()
-
-      if (typeof scrollLock === 'object' && scrollLock.padding) {
-        removeScrollLockPadding()
-      }
+    // Only unlock scroll if this is the top-level menu
+    if (scrollLock && parentTree.length === 2) {
+      unlockScroll(typeof scrollLock === 'object' && scrollLock.padding)
     }
 
     // Only disable wrapperActive if innerActive is false

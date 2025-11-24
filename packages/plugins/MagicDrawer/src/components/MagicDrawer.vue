@@ -124,14 +124,7 @@ const elRef = useTemplateRef<HTMLElement>('el')
 const drawerRef = useTemplateRef('drawer')
 const wrapperRef = useTemplateRef('wrapper')
 
-const {
-  trapFocus,
-  releaseFocus,
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-} = useDrawerDOM({
+const { trapFocus, releaseFocus, unlockScroll } = useDrawerDOM({
   focusTarget: drawerRef,
   focusTrap: mappedOptions.focusTrap,
 })
@@ -203,10 +196,6 @@ const {
 } = useDrawerCallback({
   id,
   mappedOptions,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-  lockScroll,
-  unlockScroll,
   trapFocus,
   releaseFocus,
   wrapperActive,
@@ -348,13 +337,10 @@ onBeforeUnmount(() => {
 
 onUnmounted(() => {
   if (mappedOptions.scrollLock) {
-    unlockScroll()
-    if (
+    unlockScroll(
       typeof mappedOptions.scrollLock === 'object' &&
-      mappedOptions.scrollLock.padding
-    ) {
-      removeScrollLockPadding()
-    }
+        mappedOptions.scrollLock.padding
+    )
   }
 
   if (mappedOptions.focusTrap) {

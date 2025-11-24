@@ -82,6 +82,7 @@ import {
   MagicMenuInstanceId,
   MagicMenuViewId,
   MagicMenuContentId,
+  MagicMenuParentTree,
 } from '../symbols'
 
 import type { Middleware } from '@floating-ui/vue'
@@ -107,6 +108,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
   source: 'MagicMenu',
 })
 
+const parentTree = inject(MagicMenuParentTree, [])
 const instanceId = inject(MagicMenuInstanceId, undefined)
 const viewId = inject(MagicMenuViewId, undefined)
 
@@ -146,12 +148,6 @@ const innerActive = shallowRef(false)
 const wrapperActive = shallowRef(false)
 
 const {
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-} = useMenuDOM()
-const {
   onBeforeEnter,
   onEnter,
   onAfterEnter,
@@ -164,10 +160,7 @@ const {
   viewId,
   innerActive,
   wrapperActive,
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
+  parentTree,
 })
 
 // Handle state

@@ -132,12 +132,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   // Private functions
   const emitter = useMagicEmitter()
 
-  const {
-    lockScroll,
-    unlockScroll,
-    addScrollLockPadding,
-    removeScrollLockPadding,
-  } = useDraggableScrollLock()
+  const { lockScroll, unlockScroll } = useDraggableScrollLock()
 
   function getSizes() {
     elRect.value = unrefElement(elRef)?.getBoundingClientRect()
@@ -384,10 +379,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Unlock scroll
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
-      unlockScroll()
-      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
-        removeScrollLockPadding()
-      }
+      unlockScroll(
+        typeof scrollLockValue === 'object' && scrollLockValue.padding
+      )
     }
 
     // Release pointer capture
@@ -448,10 +442,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Lock scroll as soon as the user starts dragging
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {
-      if (typeof scrollLockValue === 'object' && scrollLockValue.padding) {
-        addScrollLockPadding()
-      }
-      lockScroll()
+      lockScroll(typeof scrollLockValue === 'object' && scrollLockValue.padding)
     }
 
     // Prevent dragging if we’re already dragging or interpolating

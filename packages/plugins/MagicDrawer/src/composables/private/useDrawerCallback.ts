@@ -2,14 +2,11 @@ import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicDrawerOptions } from '../../types'
+import { useDrawerDOM } from './useDrawerDOM'
 
 type UseDrawerCallbackArgs = {
   id: MaybeRef<string>
   mappedOptions: MagicDrawerOptions
-  addScrollLockPadding: () => void
-  removeScrollLockPadding: () => void
-  lockScroll: () => void
-  unlockScroll: () => void
   trapFocus: () => void
   releaseFocus: () => void
   wrapperActive: Ref<boolean>
@@ -20,16 +17,14 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   const {
     id,
     mappedOptions,
-    addScrollLockPadding,
-    removeScrollLockPadding,
-    lockScroll,
-    unlockScroll,
+
     trapFocus,
     releaseFocus,
     wrapperActive,
     wasActive,
   } = args
 
+  const { lockScroll, unlockScroll } = useDrawerDOM()
   const { setMetaViewport, resetMetaViewport } = useMetaViewport()
   const emitter = useMagicEmitter()
 
@@ -37,14 +32,10 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     emitter.emit('beforeEnter', toValue(id))
 
     if (mappedOptions.scrollLock) {
-      if (
+      lockScroll(
         typeof mappedOptions.scrollLock === 'object' &&
-        mappedOptions.scrollLock.padding
-      ) {
-        addScrollLockPadding()
-      }
-
-      lockScroll()
+          mappedOptions.scrollLock.padding
+      )
     }
 
     if (mappedOptions.preventZoom) {
@@ -79,13 +70,10 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
     emitter.emit('afterLeave', toValue(id))
 
     if (mappedOptions.scrollLock) {
-      unlockScroll()
-      if (
+      unlockScroll(
         typeof mappedOptions.scrollLock === 'object' &&
-        mappedOptions.scrollLock.padding
-      ) {
-        removeScrollLockPadding()
-      }
+          mappedOptions.scrollLock.padding
+      )
     }
 
     if (mappedOptions.focusTrap) {

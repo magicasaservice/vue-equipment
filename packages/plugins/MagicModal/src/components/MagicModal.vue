@@ -93,14 +93,7 @@ const mappedOptions = customDefu(options, defaultOptions)
 const mappedId = toValue(id)
 const modalRef = useTemplateRef('modal')
 
-const {
-  trapFocus,
-  releaseFocus,
-  lockScroll,
-  unlockScroll,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-} = useModalDOM({
+const { trapFocus, releaseFocus, unlockScroll } = useModalDOM({
   focusTarget: modalRef,
   focusTrap: mappedOptions.focusTrap,
 })
@@ -121,10 +114,6 @@ const {
 } = useModalCallback({
   id,
   mappedOptions,
-  addScrollLockPadding,
-  removeScrollLockPadding,
-  lockScroll,
-  unlockScroll,
   trapFocus,
   releaseFocus,
   wrapperActive,
@@ -163,13 +152,10 @@ onBeforeUnmount(() => {
 
 onUnmounted(() => {
   if (mappedOptions.scrollLock) {
-    unlockScroll()
-    if (
+    unlockScroll(
       typeof mappedOptions.scrollLock === 'object' &&
-      mappedOptions.scrollLock.padding
-    ) {
-      removeScrollLockPadding()
-    }
+        mappedOptions.scrollLock.padding
+    )
   }
 
   if (mappedOptions.focusTrap) {

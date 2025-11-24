@@ -1,12 +1,8 @@
-import { ref, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defu } from 'defu'
 import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import {
-  matchClass,
-  scrollbarGutterSupport,
-  scrollbarWidth,
-} from '@maas/vue-equipment/utils'
+import { useScrollLockPadding } from '@maas/vue-equipment/composables/useScrollLockPadding'
 
 import type { MagicDrawerOptions } from '../../types/index'
 
@@ -20,7 +16,6 @@ export type UseDrawerDOMArgs = Pick<
 const defaultOptions = {
   focusTrap: false,
   focusTarget: undefined,
-  scrollLock: true,
 }
 
 const scrollLock =
@@ -28,9 +23,12 @@ const scrollLock =
     ? useScrollLock(document?.documentElement)
     : shallowRef(false)
 
+const { add, remove } = useScrollLockPadding({
+  exclude: /magic-drawer(__backdrop)?/,
+})
+
 export function useDrawerDOM(args?: UseDrawerDOMArgs) {
   // Private state
-  const positionFixedElements = ref<HTMLElement[]>([])
   const mappedOptions = defu(args, defaultOptions)
 
   const focusTrap = mappedOptions.focusTarget
@@ -52,65 +50,18 @@ export function useDrawerDOM(args?: UseDrawerDOMArgs) {
     }
   }
 
-  function lockScroll() {
-    if (mappedOptions.scrollLock) {
-      scrollLock.value = true
+  function lockScroll(padding?: boolean) {
+    if (padding) {
+      add()
     }
+    scrollLock.value = true
   }
 
-  function unlockScroll() {
-    if (mappedOptions.scrollLock) {
-      scrollLock.value = false
+  function unlockScroll(padding?: boolean) {
+    scrollLock.value = false
+    if (padding) {
+      remove()
     }
-  }
-
-  function addScrollLockPadding() {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    const exclude = new RegExp(/magic-drawer(__backdrop)?/)
-
-    document.body.style.setProperty(
-      '--scrollbar-width',
-      `${scrollbarWidth()}px`
-    )
-
-    positionFixedElements.value = [
-      ...document.body.getElementsByTagName('*'),
-    ].filter(
-      (x) =>
-        getComputedStyle(x, null).getPropertyValue('position') === 'fixed' &&
-        getComputedStyle(x, null).getPropertyValue('right') === '0px' &&
-        !matchClass(x, exclude)
-    ) as HTMLElement[]
-
-    switch (scrollbarGutterSupport()) {
-      case true:
-        document.documentElement.style.scrollbarGutter = 'stable'
-        positionFixedElements.value.forEach((elem) => {
-          elem.style.scrollbarGutter = 'stable'
-          elem.style.overflow = 'auto'
-        })
-        break
-      case false:
-        document.body.style.paddingRight = 'var(--scrollbar-width)'
-        positionFixedElements.value.forEach(
-          (elem) => (elem.style.paddingRight = 'var(--scrollbar-width)')
-        )
-        break
-    }
-  }
-
-  function removeScrollLockPadding() {
-    document.documentElement.style.scrollbarGutter = ''
-    document.body.style.removeProperty('--scrollbar-width')
-    document.body.style.paddingRight = ''
-    positionFixedElements.value.forEach((elem) => {
-      elem.style.paddingRight = ''
-      elem.style.scrollbarGutter = ''
-      elem.style.overflow = ''
-    })
   }
 
   return {
@@ -118,7 +69,5 @@ export function useDrawerDOM(args?: UseDrawerDOMArgs) {
     releaseFocus,
     lockScroll,
     unlockScroll,
-    addScrollLockPadding,
-    removeScrollLockPadding,
   }
 }
