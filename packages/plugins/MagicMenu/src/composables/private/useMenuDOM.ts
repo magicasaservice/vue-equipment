@@ -17,13 +17,11 @@ export function useMenuDOM() {
     if (padding) {
       add()
     }
-
     scrollLock.value = true
   }
 
   function unlockScroll(padding?: boolean) {
     scrollLock.value = false
-
     if (padding) {
       remove()
     }
