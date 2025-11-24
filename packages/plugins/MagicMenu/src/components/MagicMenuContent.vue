@@ -70,7 +70,6 @@ import {
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuCallback } from '../composables/private/useMenuCallback'
-import { useMenuDOM } from '../composables/private/useMenuDOM'
 import { useMenuCursor } from '../composables/private/useMenuCursor'
 import {
   useMagicError,

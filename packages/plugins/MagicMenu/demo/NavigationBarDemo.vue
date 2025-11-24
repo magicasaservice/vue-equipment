@@ -10,7 +10,7 @@
       }"
       class="flex"
     >
-      <magic-menu-view ref="view" id="navigation-bar-demo-view">
+      <magic-menu-view id="navigation-bar-demo-view" ref="view">
         <div class="flex gap-1">
           <magic-menu-trigger
             v-for="(item, i) in menu"

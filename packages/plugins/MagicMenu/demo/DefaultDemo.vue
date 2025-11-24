@@ -5,8 +5,8 @@
   >
     <magic-menu-view
       v-for="(menuItem, index) in menu"
-      :key="index"
       :id="`magic-menu-default-demo-view-${menuItem.label}`"
+      :key="index"
     >
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
         <m-button :mode="viewActive ? 'translucent' : 'ghost'" size="xs">
