@@ -8,8 +8,8 @@
       </m-menu-item>
     </magic-accordion-trigger>
     <magic-accordion-content>
-      <ul class="!m-0 flex list-none flex-col !p-0">
-        <li v-for="item in list" :key="item.label" class="!m-0 !p-0">
+      <ul class="m-0! flex list-none flex-col p-0! pt-2!">
+        <li v-for="item in list" :key="item.label" class="m-0 p-0">
           <a :href="item.url" target="_blank" rel="noopener noreferrer">
             <m-menu-item size="sm" mode="ghost">
               <m-menu-item-child class="w-full">
