@@ -68,7 +68,8 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return 0
     }
 
-    const endBuffer = buffered.value?.length > 0 ? buffered.value[0][1] : 0
+    const endBuffer =
+      buffered.value?.length > 0 && buffered.value[0] ? buffered.value[0][1] : 0
     const percentage = (endBuffer / duration.value) * 100
 
     return clampValue(percentage, 0, thumbPercentage.value)

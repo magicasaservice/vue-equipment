@@ -70,8 +70,8 @@ watch(
 
 useIntersectionObserver(
   elRef,
-  ([{ isIntersecting }]) => {
-    intersecting.value = isIntersecting
+  ([entry]) => {
+    intersecting.value = entry?.isIntersecting ?? intersecting.value
   },
   { rootMargin: '150% 0px 150% 0px', immediate: true }
 )

@@ -164,6 +164,10 @@ export function useMenuCursor(view: MenuView, debug = false) {
       }
     }
 
+    if (!sidePoints[0] || !sidePoints[1]) {
+      return []
+    }
+
     const [a, b, c] = extendTriangle(
       [centerPoint, sidePoints[0], sidePoints[1]],
       16
@@ -178,6 +182,10 @@ export function useMenuCursor(view: MenuView, debug = false) {
     toBounding: DOMRect
   ) {
     const [a, b, c] = getTriangle(fromBounding, toBounding)
+
+    if (!a || !b || !c) {
+      return false
+    }
 
     return isPointInTriangle({
       p: cursor,
@@ -233,6 +241,10 @@ export function useMenuCursor(view: MenuView, debug = false) {
         from.forEach((trigger) => {
           const fromBounding = trigger.getBoundingClientRect()
           const [a, b, c] = getTriangle(fromBounding, toBounding)
+
+          if (!a || !b || !c) {
+            return
+          }
 
           allCoords.push(a, b, c)
         })

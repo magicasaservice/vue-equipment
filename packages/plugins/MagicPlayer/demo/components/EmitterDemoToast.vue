@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { MBadge } from '@maas/mirror/vue'
-import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicPlayer'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 interface CollisionToastProps {
   event: keyof MagicEmitterEvents

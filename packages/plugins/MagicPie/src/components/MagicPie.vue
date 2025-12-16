@@ -50,12 +50,26 @@ function generatePath(points: PiePoint[]): string {
     })
   }
 
+  if (!points[0]) {
+    magicError.throwError({
+      message: 'Points contain invalid coordinates',
+      errorCode: 'invalid_points',
+    })
+  }
+
   // Start with the first point
   let path = `M ${points[0][0]} ${points[0][1]}`
 
   // Iterate through the remaining points
   for (let i = 1; i < points.length; i++) {
-    path += ` L ${points[i][0]} ${points[i][1]}`
+    if (points[i]) {
+      magicError.throwError({
+        message: 'Points contain invalid coordinates',
+        errorCode: 'invalid_points',
+      })
+    }
+
+    path += ` L ${points[i]?.[0]} ${points[i]?.[1]}`
   }
 
   return path

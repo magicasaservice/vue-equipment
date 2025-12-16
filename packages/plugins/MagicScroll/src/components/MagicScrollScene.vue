@@ -86,9 +86,9 @@ watch(
 
 useIntersectionObserver(
   elRef,
-  ([{ isIntersecting }]) => {
-    intersecting.value = isIntersecting
-    if (isIntersecting) {
+  ([entry]) => {
+    intersecting.value = entry?.isIntersecting ?? intersecting.value
+    if (entry?.isIntersecting) {
       calculate()
     }
   },

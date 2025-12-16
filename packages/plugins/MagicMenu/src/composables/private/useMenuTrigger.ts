@@ -128,7 +128,7 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       e.preventDefault()
       e.stopPropagation()
 
-      if (control.value || shift.value) {
+      if (control?.value || shift?.value) {
         onRightClick(
           new MouseEvent(e.type, {
             ...e,

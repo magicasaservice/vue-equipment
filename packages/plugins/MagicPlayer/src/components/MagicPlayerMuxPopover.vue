@@ -116,7 +116,13 @@ function drawFrame(time: number | null) {
   let minDifference = Infinity
 
   for (let i = 0; i < tiles.length; i++) {
-    const { start } = tiles[i]
+    const tile = tiles[i]
+
+    if (!tile) {
+      continue
+    }
+
+    const { start } = tile
     const difference = Math.abs(start - time)
 
     if (difference < minDifference) {
@@ -126,6 +132,10 @@ function drawFrame(time: number | null) {
   }
 
   const tile = tiles[closestIndex]
+
+  if (!tile) {
+    return
+  }
 
   context.drawImage(
     image,
