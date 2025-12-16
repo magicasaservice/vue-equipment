@@ -16,7 +16,6 @@ import {
   provide,
   watch,
   toValue,
-  onBeforeUnmount,
   type MaybeRef,
 } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
@@ -42,7 +41,7 @@ const elRef = useTemplateRef('el')
 
 const mappedOptions = defu(options, defaultOptions)
 
-const { initializeState, deleteState } = useMenuState(id)
+const { initializeState } = useMenuState(id)
 const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
@@ -108,11 +107,6 @@ onClickOutside(
     ],
   }
 )
-
-// Lifecycle
-onBeforeUnmount(() => {
-  deleteState()
-})
 
 provide(MagicMenuInstanceId, id)
 </script>

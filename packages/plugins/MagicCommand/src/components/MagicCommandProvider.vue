@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, provide, watch, onBeforeUnmount, type MaybeRef } from 'vue'
+import { shallowRef, provide, watch, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -40,7 +40,7 @@ const customDefu = createDefu((obj, key, value) => {
 
 const mappedOptions = customDefu(options, defaultOptions)
 
-const { initializeState, deleteState } = useCommandState(id)
+const { initializeState } = useCommandState(id)
 const state = initializeState(mappedOptions)
 
 // If the mode changes, save the current pointer position
@@ -112,11 +112,6 @@ if (mappedOptions.keyListener?.close) {
     })
   }
 }
-
-// Lifecycle
-onBeforeUnmount(() => {
-  deleteState()
-})
 
 provide(MagicCommandInstanceId, id)
 provide(MagicCommandProviderOptions, mappedOptions)

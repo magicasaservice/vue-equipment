@@ -1,13 +1,18 @@
-import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import type { DraggableState } from '../../types/index'
 
-const draggableStateStore: Ref<DraggableState[]> = ref([])
+const getDraggableStateStore = createStateStore<DraggableState[]>(() => [])
 
 export function useDraggableState(id: MaybeRef<string>) {
+  const draggableStateStore = getDraggableStateStore()
+  let scopeCounted = false
+
   //Private functions
   function createState(id: string) {
     const state: DraggableState = {
       id: id,
+      refCount: 0,
       dragStart: undefined,
       dragging: false,
       interpolateTo: undefined,
@@ -34,24 +39,52 @@ export function useDraggableState(id: MaybeRef<string>) {
     return state
   }
 
-  // Public functions
-  function initializeState() {
-    let state = draggableStateStore.value.find((entry) => {
-      return entry.id === id
-    })
-
-    if (!state) state = addState(toValue(id))
-    return state
-  }
-
   function deleteState() {
+    const currentId = toValue(id)
     draggableStateStore.value = draggableStateStore.value.filter(
-      (x: DraggableState) => x.id !== id
+      (x: DraggableState) => x.id !== currentId
     )
   }
 
+  // Public functions
+  function initializeState() {
+    const currentId = toValue(id)
+    let state = draggableStateStore.value.find(
+      (entry) => entry.id === currentId
+    )
+
+    if (!state) {
+      state = addState(currentId)
+    }
+
+    if (!scopeCounted) {
+      state.refCount++
+      scopeCounted = true
+    }
+
+    return state
+  }
+
+  onScopeDispose(() => {
+    if (!scopeCounted) {
+      return
+    }
+
+    const currentId = toValue(id)
+    const state = draggableStateStore.value.find(
+      (entry) => entry.id === currentId
+    )
+
+    if (state) {
+      state.refCount--
+      if (state.refCount <= 0) {
+        deleteState()
+      }
+    }
+  })
+
   return {
     initializeState,
-    deleteState,
+    draggableStateStore,
   }
 }

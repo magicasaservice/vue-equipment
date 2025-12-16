@@ -90,6 +90,7 @@ export interface MenuView {
 
 export interface MenuState {
   id: string
+  refCount: number
   active: boolean
   views: MenuView[]
   options: CombinedMagicMenuOptions

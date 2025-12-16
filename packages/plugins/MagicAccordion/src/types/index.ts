@@ -17,6 +17,7 @@ export interface AccordionView {
 
 export interface AccordionState {
   id: string
+  refCount: number
   views: AccordionView[]
   options: MagicAccordionOptions
 }

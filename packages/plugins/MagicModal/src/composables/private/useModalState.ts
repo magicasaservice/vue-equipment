@@ -1,20 +1,20 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
-import type { PieState } from '../../types/index'
+import type { ModalState } from '../../types/index'
 
-const getPieStateStore = createStateStore<PieState[]>(() => [])
+// Initialize here to ensure single store per app instance
+const getModalStateStore = createStateStore<ModalState[]>(() => [])
 
-export function usePieState(id: MaybeRef<string>) {
-  const pieStateStore = getPieStateStore()
+export function useModalState(id: MaybeRef<string>) {
+  const modalStateStore = getModalStateStore()
   let scopeCounted = false
 
-  //Private functions
+  // Private functions
   function createState(id: string) {
-    const state: PieState = {
-      id: id,
+    const state: ModalState = {
+      id,
       refCount: 0,
-      percentage: 0,
-      interpolationId: undefined,
+      active: false,
     }
 
     return reactive(state)
@@ -22,22 +22,22 @@ export function usePieState(id: MaybeRef<string>) {
 
   function addState(id: string) {
     const state = createState(id)
-    pieStateStore.value = [...pieStateStore.value, state]
+    modalStateStore.value = [...modalStateStore.value, state]
 
     return state
   }
 
   function deleteState() {
     const currentId = toValue(id)
-    pieStateStore.value = pieStateStore.value.filter(
-      (x: PieState) => x.id !== currentId
+    modalStateStore.value = modalStateStore.value.filter(
+      (x) => x.id !== currentId
     )
   }
 
   // Public functions
   function initializeState() {
     const currentId = toValue(id)
-    let state = pieStateStore.value.find((entry) => entry.id === currentId)
+    let state = modalStateStore.value.find((entry) => entry.id === currentId)
 
     if (!state) {
       state = addState(currentId)
@@ -57,7 +57,7 @@ export function usePieState(id: MaybeRef<string>) {
     }
 
     const currentId = toValue(id)
-    const state = pieStateStore.value.find((entry) => entry.id === currentId)
+    const state = modalStateStore.value.find((entry) => entry.id === currentId)
 
     if (state) {
       state.refCount--
@@ -69,6 +69,6 @@ export function usePieState(id: MaybeRef<string>) {
 
   return {
     initializeState,
-    pieStateStore,
+    modalStateStore,
   }
 }

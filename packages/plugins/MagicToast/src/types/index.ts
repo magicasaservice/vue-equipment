@@ -38,6 +38,7 @@ export interface ToastView {
 
 export interface ToastState {
   id: string
+  refCount: number
   views: ToastView[]
   options: ToastDefaultOptions
   expanded: boolean

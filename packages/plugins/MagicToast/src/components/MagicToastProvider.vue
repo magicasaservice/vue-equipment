@@ -81,7 +81,7 @@ defineOptions({
 })
 
 const { deleteView } = useToastView(id)
-const { deleteState, initializeState } = useToastState(id)
+const { initializeState } = useToastState(id)
 const state = initializeState(options)
 
 const listRef = useTemplateRef('list')
@@ -110,10 +110,6 @@ watch(
     deep: true,
   }
 )
-
-onBeforeUnmount(() => {
-  deleteState()
-})
 
 provide(MagicToastInstanceId, id)
 </script>

@@ -176,7 +176,7 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   disabled,
 })
 
-const { initializeState, deleteState } = useDrawerState(id)
+const { initializeState } = useDrawerState(id)
 const state = initializeState()
 
 const { dragging, wheeling } = toRefs(state)
@@ -350,8 +350,6 @@ onUnmounted(() => {
   if (!mappedOptions.preventZoom) {
     resetMetaViewport()
   }
-
-  deleteState()
 })
 </script>
 

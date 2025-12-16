@@ -1,13 +1,18 @@
-import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import type { DrawerState } from '../../types/index'
 
-const drawerStateStore: Ref<DrawerState[]> = ref([])
+const getDrawerStateStore = createStateStore<DrawerState[]>(() => [])
 
 export function useDrawerState(id: MaybeRef<string>) {
+  const drawerStateStore = getDrawerStateStore()
+  let scopeCounted = false
+
   // Private functions
   function createState(id: string) {
     const state: DrawerState = {
       id: id,
+      refCount: 0,
       active: false,
       dragStart: undefined,
       dragging: false,
@@ -42,26 +47,47 @@ export function useDrawerState(id: MaybeRef<string>) {
     return state
   }
 
+  function deleteState() {
+    const currentId = toValue(id)
+    drawerStateStore.value = drawerStateStore.value.filter(
+      (x) => x.id !== currentId
+    )
+  }
+
   // Public functions
   function initializeState() {
-    let state = drawerStateStore.value.find((entry) => {
-      return entry.id === id
-    })
+    const currentId = toValue(id)
+    let state = drawerStateStore.value.find((entry) => entry.id === currentId)
 
     if (!state) {
-      state = addState(toValue(id))
+      state = addState(currentId)
     }
 
+    if (!scopeCounted) {
+      state.refCount++
+      scopeCounted = true
+    }
     return state
   }
 
-  function deleteState() {
-    drawerStateStore.value = drawerStateStore.value.filter((x) => x.id !== id)
-  }
+  onScopeDispose(() => {
+    if (!scopeCounted) {
+      return
+    }
+
+    const currentId = toValue(id)
+    const state = drawerStateStore.value.find((entry) => entry.id === currentId)
+
+    if (state) {
+      state.refCount--
+      if (state.refCount <= 0) {
+        deleteState()
+      }
+    }
+  })
 
   return {
     initializeState,
-    deleteState,
     drawerStateStore,
   }
 }

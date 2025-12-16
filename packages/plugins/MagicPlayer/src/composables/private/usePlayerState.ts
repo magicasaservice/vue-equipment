@@ -1,13 +1,19 @@
-import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import type { PlayerState } from '../../types/index'
 
-const playerStateStore: Ref<PlayerState[]> = ref([])
+// Initialize here to ensure single store per app instance
+const getPlayerStateStore = createStateStore<PlayerState[]>(() => [])
 
 export function usePlayerState(id: MaybeRef<string>) {
+  const playerStateStore = getPlayerStateStore()
+  let scopeCounted = false
+
   // Private functions
   function createState(id: string) {
     const state: PlayerState = {
       id: id,
+      refCount: 0,
       buffered: [],
       currentTime: 0,
       dragging: false,
@@ -50,25 +56,46 @@ export function usePlayerState(id: MaybeRef<string>) {
     return state
   }
 
+  function deleteState() {
+    const currentId = toValue(id)
+    playerStateStore.value = playerStateStore.value.filter(
+      (x) => x.id !== currentId
+    )
+  }
+
   // Public functions
   function initializeState() {
-    let state = playerStateStore.value.find((entry) => {
-      return entry.id === id
-    })
+    const currentId = toValue(id)
+    let state = playerStateStore.value.find((entry) => entry.id === currentId)
 
     if (!state) {
-      state = addState(toValue(id))
+      state = addState(currentId)
     }
+
+    if (!scopeCounted) {
+      state.refCount++
+      scopeCounted = true
+    }
+
     return state
   }
 
-  function deleteState() {
-    playerStateStore.value = playerStateStore.value.filter((x) => x.id !== id)
-  }
+  onScopeDispose(() => {
+    if (!scopeCounted) { return }
+
+    const currentId = toValue(id)
+    const state = playerStateStore.value.find((entry) => entry.id === currentId)
+
+    if (state) {
+      state.refCount--
+      if (state.refCount <= 0) {
+        deleteState()
+      }
+    }
+  })
 
   return {
     initializeState,
-    deleteState,
     playerStateStore,
   }
 }

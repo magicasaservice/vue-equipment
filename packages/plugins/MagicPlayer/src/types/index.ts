@@ -41,6 +41,7 @@ export type Buffered = [number, number][]
 
 export interface PlayerState {
   id: string
+  refCount: number
   buffered: Buffered
   currentTime: number
   dragging: boolean

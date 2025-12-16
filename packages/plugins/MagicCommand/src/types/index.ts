@@ -49,6 +49,7 @@ export interface CommandView {
 
 export interface CommandState {
   id: string
+  refCount: number
   active: boolean
   views: CommandView[]
   renderer: HTMLElement | null

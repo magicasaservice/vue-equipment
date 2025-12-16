@@ -4,6 +4,7 @@ export interface MagicPieOptions {
 
 export interface PieState {
   id: string
+  refCount: number
   percentage: number
   interpolationId: number | undefined
 }

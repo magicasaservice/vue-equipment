@@ -55,6 +55,7 @@ export type DraggableDefaultOptions = RequireAll<MagicDraggableOptions> & {
 
 export interface DraggableState {
   id: string
+  refCount: number
   dragStart: Date | undefined
   dragging: boolean
   interpolateTo: Coordinates | undefined

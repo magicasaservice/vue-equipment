@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, onMounted, onBeforeUnmount, type MaybeRef } from 'vue'
+import { useTemplateRef, onMounted, type MaybeRef } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 import { useMarqueeState } from '../composables/private/useMarqueeState'
 
@@ -30,7 +30,7 @@ interface MagicMarqueeProps {
 
 const { id, options } = defineProps<MagicMarqueeProps>()
 
-const { deleteState, initializeState } = useMarqueeState(id)
+const { initializeState } = useMarqueeState(id)
 initializeState(options)
 
 const parentRef = useTemplateRef('parent')
@@ -44,11 +44,6 @@ const { duplicates, initialize } = useMarqueeApi({
 
 onMounted(() => {
   initialize()
-})
-
-// Lifecycle
-onBeforeUnmount(() => {
-  deleteState()
 })
 </script>
 

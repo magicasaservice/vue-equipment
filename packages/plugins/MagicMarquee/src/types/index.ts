@@ -5,6 +5,7 @@ export interface MagicMarqueeOptions {
 
 export interface MarqueeState {
   id: string
+  refCount: number
   options: MagicMarqueeOptions
   playing: boolean
 }

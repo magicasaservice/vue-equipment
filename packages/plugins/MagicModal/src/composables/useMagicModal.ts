@@ -1,20 +1,20 @@
 import { computed, toValue, type MaybeRef } from 'vue'
-import { useModalStore } from './private/useModalStore'
+import { useModalState } from './private/useModalState'
 
 export function useMagicModal(id: MaybeRef<string>) {
-  // Private functions
-  const { modalStore, addInstance, removeInstance } = useModalStore()
+  const { initializeState } = useModalState(id)
+  const state = initializeState()
 
   // Public state
-  const isActive = computed(() => modalStore.value.includes(toValue(id)))
+  const isActive = computed(() => state.active)
 
   // Public functions
   function open() {
-    addInstance(toValue(id))
+    state.active = true
   }
 
   function close() {
-    removeInstance(toValue(id))
+    state.active = false
   }
 
   return {

@@ -26,3 +26,9 @@ export interface ModalEvents {
   leave: string
   afterLeave: string
 }
+
+export interface ModalState {
+  id: string
+  refCount: number
+  active: boolean
+}

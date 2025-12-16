@@ -9,6 +9,7 @@ export interface CookieItem {
 
 export interface CookieState {
   id: string
+  refCount: number
   options: MagicCookieOptions
   items: CookieItem[]
   viewActive: boolean

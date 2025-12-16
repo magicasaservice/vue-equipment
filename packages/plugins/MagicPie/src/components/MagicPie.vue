@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, toRefs, onBeforeUnmount } from 'vue'
+import { computed, toRefs } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -37,7 +37,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
   source: 'MagicPie',
 })
 
-const { initializeState, deleteState } = usePieState(id)
+const { initializeState } = usePieState(id)
 const state = initializeState()
 
 const { percentage } = toRefs(state)
@@ -192,11 +192,6 @@ function generatePie(percentage: number, flip?: boolean): string {
 
 const path = computed(() => {
   return generatePie(percentage.value, options?.flip)
-})
-
-// Lifecycle
-onBeforeUnmount(() => {
-  deleteState()
 })
 </script>
 

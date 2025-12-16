@@ -52,6 +52,7 @@ export type DrawerDefaultOptions = RequireAll<MagicDrawerOptions> & {
 
 export interface DrawerState {
   id: string
+  refCount: number
   active: boolean
   dragStart: Date | undefined
   dragging: boolean

@@ -1,11 +1,15 @@
-import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { defu } from 'defu'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { CommandState, MagicCommandOptions } from '../../types/index'
 
-const commandStateStore: Ref<CommandState[]> = ref([])
+const getCommandStateStore = createStateStore<CommandState[]>(() => [])
 
 export function useCommandState(instanceId: MaybeRef<string>) {
+  const commandStateStore = getCommandStateStore()
+  let scopeCounted = false
+
   // Private functions
   function createState(id: string) {
     const view = commandStateStore.value
@@ -14,6 +18,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
 
     const state: CommandState = {
       id: id,
+      refCount: 0,
       options: { ...defaultOptions },
       views: [],
       renderer: null,
@@ -34,14 +39,25 @@ export function useCommandState(instanceId: MaybeRef<string>) {
     return state
   }
 
+  function deleteState() {
+    const currentId = toValue(instanceId)
+    commandStateStore.value = commandStateStore.value.filter(
+      (x: CommandState) => x.id !== currentId
+    )
+  }
+
   // Public functions
   function initializeState(options?: MagicCommandOptions) {
-    let state = commandStateStore.value.find((entry) => {
-      return entry.id === toValue(instanceId)
-    })
+    const currentId = toValue(instanceId)
+    let state = commandStateStore.value.find((entry) => entry.id === currentId)
 
     if (!state) {
-      state = addState(toValue(instanceId))
+      state = addState(currentId)
+    }
+
+    if (!scopeCounted) {
+      state.refCount++
+      scopeCounted = true
     }
 
     if (options) {
@@ -52,15 +68,26 @@ export function useCommandState(instanceId: MaybeRef<string>) {
     return state
   }
 
-  function deleteState() {
-    commandStateStore.value = commandStateStore.value.filter(
-      (x: CommandState) => x.id !== toValue(instanceId)
+  onScopeDispose(() => {
+    if (!scopeCounted) {
+      return
+    }
+
+    const currentId = toValue(instanceId)
+    const state = commandStateStore.value.find(
+      (entry) => entry.id === currentId
     )
-  }
+
+    if (state) {
+      state.refCount--
+      if (state.refCount <= 0) {
+        deleteState()
+      }
+    }
+  })
 
   return {
     initializeState,
-    deleteState,
     commandStateStore,
   }
 }

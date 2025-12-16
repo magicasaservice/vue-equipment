@@ -52,7 +52,7 @@ interface MagicPlayerProps {
 const { id, options } = defineProps<MagicPlayerProps>()
 const mappedOptions = defu(options, defaultOptions)
 
-const { initializeState, deleteState } = usePlayerState(id)
+const { initializeState } = usePlayerState(id)
 const state = initializeState()
 const {
   playing,
@@ -73,10 +73,6 @@ const { initializeEmitter } = usePlayerEmitter({ id })
 
 onMounted(() => {
   initializeEmitter()
-})
-
-onUnmounted(() => {
-  deleteState()
 })
 
 provide(MagicPlayerInstanceId, id)

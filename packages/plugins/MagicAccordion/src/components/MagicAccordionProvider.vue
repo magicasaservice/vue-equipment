@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, provide, type MaybeRef } from 'vue'
+import { provide, type MaybeRef } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { MagicAccordionInstanceId } from '../symbols'
@@ -23,13 +23,8 @@ interface MagicAccordionProviderProps {
 
 const { id, asChild, options } = defineProps<MagicAccordionProviderProps>()
 
-const { deleteState, initializeState } = useAccordionState(id)
+const { initializeState } = useAccordionState(id)
 initializeState(options)
-
-// Lifecycle
-onBeforeUnmount(() => {
-  deleteState()
-})
 
 provide(MagicAccordionInstanceId, id)
 </script>

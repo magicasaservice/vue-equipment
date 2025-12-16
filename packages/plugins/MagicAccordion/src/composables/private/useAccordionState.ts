@@ -1,15 +1,20 @@
-import { ref, reactive, toValue, type Ref, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { defu } from 'defu'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { AccordionState, MagicAccordionOptions } from '../../types/index'
 
-const accordionStateStore: Ref<AccordionState[]> = ref([])
+const getAccordionStateStore = createStateStore<AccordionState[]>(() => [])
 
 export function useAccordionState(instanceId: MaybeRef<string>) {
+  const accordionStateStore = getAccordionStateStore()
+  let scopeCounted = false
+
   // Private functions
   function createState(id: string) {
     const state: AccordionState = {
       id: id,
+      refCount: 0,
       options: { ...defaultOptions },
       views: [],
     }
@@ -24,14 +29,27 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
     return state
   }
 
+  function deleteState() {
+    const currentId = toValue(instanceId)
+    accordionStateStore.value = accordionStateStore.value.filter(
+      (x: AccordionState) => x.id !== currentId
+    )
+  }
+
   // Public functions
   function initializeState(options?: MagicAccordionOptions) {
-    let state = accordionStateStore.value.find((entry) => {
-      return entry.id === toValue(instanceId)
-    })
+    const currentId = toValue(instanceId)
+    let state = accordionStateStore.value.find(
+      (entry) => entry.id === currentId
+    )
 
     if (!state) {
-      state = addState(toValue(instanceId))
+      state = addState(currentId)
+    }
+
+    if (!scopeCounted) {
+      state.refCount++
+      scopeCounted = true
     }
 
     if (options) {
@@ -42,15 +60,26 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
     return state
   }
 
-  function deleteState() {
-    accordionStateStore.value = accordionStateStore.value.filter(
-      (x: AccordionState) => x.id !== toValue(instanceId)
+  onScopeDispose(() => {
+    if (!scopeCounted) {
+      return
+    }
+
+    const currentId = toValue(instanceId)
+    const state = accordionStateStore.value.find(
+      (entry) => entry.id === currentId
     )
-  }
+
+    if (state) {
+      state.refCount--
+      if (state.refCount <= 0) {
+        deleteState()
+      }
+    }
+  })
 
   return {
     initializeState,
-    deleteState,
     accordionStateStore,
   }
 }
