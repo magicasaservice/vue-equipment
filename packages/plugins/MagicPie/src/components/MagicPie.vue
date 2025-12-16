@@ -62,7 +62,7 @@ function generatePath(points: PiePoint[]): string {
 
   // Iterate through the remaining points
   for (let i = 1; i < points.length; i++) {
-    if (points[i]) {
+    if (!points[i]) {
       continue
     }
 
