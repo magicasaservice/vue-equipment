@@ -145,6 +145,11 @@ const { idle } = useIdle(injectedOptions?.threshold?.idle)
 initialize()
 
 onBeforeUnmount(() => {
+  // Reset rects for garbage collection
+  state.controlsBarRect = undefined
+  state.controlsTrackRect = undefined
+  state.controlsPopoverRect = undefined
+
   destroy()
 })
 

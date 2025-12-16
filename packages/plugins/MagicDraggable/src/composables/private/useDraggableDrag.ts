@@ -4,7 +4,7 @@ import {
   toValue,
   nextTick,
   watch,
-  onBeforeUnmount,
+  onScopeDispose,
   toRefs,
   type Ref,
   type MaybeRef,
@@ -16,6 +16,7 @@ import {
   useResizeObserver,
   useThrottleFn,
   useIdle,
+  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -87,9 +88,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     activeSnapPoint,
   } = toRefs(state)
 
-  let cancelPointerup: (() => void) | undefined = undefined
-  let cancelPointermove: (() => void) | undefined = undefined
-  let cancelTouchend: (() => void) | undefined = undefined
+  let cancelPointerup: (() => void) | null = null
+  let cancelPointermove: (() => void) | null = null
+  let cancelTouchend: (() => void) | null = null
+  let resizeObserverEl: UseResizeObserverReturn | null = null
+  let resizeObserverWrapper: UseResizeObserverReturn | null = null
 
   const momentumThresholdReached = shallowRef(false)
   const distanceThresholdReached = shallowRef(false)
@@ -488,7 +491,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // Pointerup doesn’t fire on iOS, so we need to use touchend
     cancelTouchend = isIOS()
       ? useEventListener(document, 'touchend', onPointerup)
-      : undefined
+      : null
 
     // Save start time
     dragStart.value = new Date()
@@ -537,6 +540,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   function destroy() {
     emitter.off('snapTo', snapToCallback)
+    cancelPointermove?.()
+    cancelPointerup?.()
+    cancelTouchend?.()
+    resizeObserverEl?.stop()
+    resizeObserverWrapper?.stop()
   }
 
   // Lifecycle hooks and listeners
@@ -546,7 +554,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Make sure the element keeps the correct position when the container is resized
   // To achieve this, we update the snapPointsMap after the element has snapped
-  useResizeObserver(wrapperRef, async () => {
+  resizeObserverWrapper = useResizeObserver(wrapperRef, async () => {
     useThrottleFn(async () => {
       getSizes()
 
@@ -560,7 +568,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   // Make sure the element keeps the correct position when its size changes
   // To achieve this, we update the snapPointsMap after the element has snapped
-  useResizeObserver(elRef, async () => {
+  resizeObserverEl = useResizeObserver(elRef, async () => {
     useThrottleFn(async () => {
       getSizes()
 
@@ -582,7 +590,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
   })
 
-  onBeforeUnmount(() => {
+  onScopeDispose(() => {
     destroy()
   })
 

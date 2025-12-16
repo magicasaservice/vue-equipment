@@ -2,10 +2,10 @@ import {
   computed,
   onMounted,
   watch,
-  onBeforeUnmount,
   toValue,
   toRefs,
   nextTick,
+  onScopeDispose,
   type Ref,
   type MaybeRef,
   type WritableComputedRef,
@@ -16,6 +16,7 @@ import {
   useResizeObserver,
   useThrottleFn,
   useScrollLock,
+  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -100,6 +101,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
+  let resizeObserverEl: UseResizeObserverReturn | null = null
 
   const hasDragged = computed(() => {
     const hasDraggedX = !isWithinRange({
@@ -391,6 +393,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function destroy() {
     emitter.off('snapTo', snapToCallback)
     emitter.off('afterLeave', afterLeaveCallback)
+    cancelPointermove?.()
+    cancelPointerup?.()
+    cancelTouchend?.()
+    resizeObserverEl?.stop()
   }
 
   function onCancel() {
@@ -633,7 +639,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   // Make sure the drawer keeps the correct position when the window is resized
   // To achieve this, we update the snapPointsMap after the drawer has snapped
-  useResizeObserver(elRef, async () => {
+  resizeObserverEl = useResizeObserver(elRef, async () => {
     useThrottleFn(async () => {
       await getSizes()
 
@@ -644,7 +650,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }, 100)()
   })
 
-  onBeforeUnmount(() => {
+  onScopeDispose(() => {
     destroy()
   })
 

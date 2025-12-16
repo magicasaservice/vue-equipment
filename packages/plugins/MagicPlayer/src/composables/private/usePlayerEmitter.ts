@@ -1,4 +1,11 @@
-import { toRefs, watch, toValue, type MaybeRef } from 'vue'
+import {
+  toRefs,
+  watch,
+  toValue,
+  onScopeDispose,
+  type MaybeRef,
+  type WatchStopHandle,
+} from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { usePlayerState } from './usePlayerState'
 
@@ -9,6 +16,7 @@ export type UsePlayerEmitterArgs = {
 export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
   // Private state
   const { id } = args
+  let scopeInitialized = false
 
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
@@ -28,100 +36,147 @@ export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
     waiting,
   } = toRefs(state)
 
+  let stops: WatchStopHandle[] = []
+
   // Private functions
   const emitter = useMagicEmitter()
 
+  function destroyEmitter() {
+    for (const stop of stops) {
+      try {
+        stop()
+      } catch {}
+    }
+    stops = []
+  }
+
   // Public functions
   function initializeEmitter() {
-    watch(dragging, (newDragging) => {
-      if (newDragging) {
-        emitter.emit('onDragStart', toValue(id))
-      }
+    if (scopeInitialized) {
+      return
+    }
 
-      if (!newDragging) {
-        emitter.emit('onDragEnd', toValue(id))
-      }
-    })
+    scopeInitialized = true
 
-    watch(ended, (newEnded) => {
-      if (newEnded) {
-        emitter.emit('onEnd', toValue(id))
-      }
-    })
+    stops.push(
+      watch(dragging, (newDragging) => {
+        if (newDragging) {
+          emitter.emit('onDragStart', toValue(id))
+        }
 
-    watch(fullscreen, (newFullscreen) => {
-      if (newFullscreen) {
-        emitter.emit('onFullscreenEnter', toValue(id))
-      }
+        if (!newDragging) {
+          emitter.emit('onDragEnd', toValue(id))
+        }
+      })
+    )
 
-      if (!newFullscreen) {
-        emitter.emit('onFullscreenLeave', toValue(id))
-      }
-    })
+    stops.push(
+      watch(ended, (newEnded) => {
+        if (newEnded) {
+          emitter.emit('onEnd', toValue(id))
+        }
+      })
+    )
 
-    watch(loaded, (newLoaded) => {
-      if (newLoaded) {
-        emitter.emit('onLoad', toValue(id))
-      }
-    })
+    stops.push(
+      watch(fullscreen, (newFullscreen) => {
+        if (newFullscreen) {
+          emitter.emit('onFullscreenEnter', toValue(id))
+        }
 
-    watch(muted, (newMuted) => {
-      if (newMuted) {
-        emitter.emit('onMute', toValue(id))
-      }
-      if (!newMuted) {
-        emitter.emit('onUnmute', toValue(id))
-      }
-    })
+        if (!newFullscreen) {
+          emitter.emit('onFullscreenLeave', toValue(id))
+        }
+      })
+    )
 
-    watch(paused, (newPaused) => {
-      if (newPaused) {
-        emitter.emit('onPause', toValue(id))
-      }
-    })
+    stops.push(
+      watch(loaded, (newLoaded) => {
+        if (newLoaded) {
+          emitter.emit('onLoad', toValue(id))
+        }
+      })
+    )
 
-    watch(playing, (newPlaying) => {
-      if (newPlaying) {
-        emitter.emit('onPlay', toValue(id))
-      }
-    })
+    stops.push(
+      watch(muted, (newMuted) => {
+        if (newMuted) {
+          emitter.emit('onMute', toValue(id))
+        }
+        if (!newMuted) {
+          emitter.emit('onUnmute', toValue(id))
+        }
+      })
+    )
 
-    watch(rate, (newRate) => {
-      if (newRate) {
-        emitter.emit('onRateChange', toValue(id))
-      }
-    })
+    stops.push(
+      watch(paused, (newPaused) => {
+        if (newPaused) {
+          emitter.emit('onPause', toValue(id))
+        }
+      })
+    )
 
-    watch(started, (newStarted) => {
-      if (newStarted) {
-        emitter.emit('onStart', toValue(id))
-      }
-    })
+    stops.push(
+      watch(playing, (newPlaying) => {
+        if (newPlaying) {
+          emitter.emit('onPlay', toValue(id))
+        }
+      })
+    )
 
-    watch(stalled, (newStalled) => {
-      if (newStalled) {
-        emitter.emit('onStall', toValue(id))
-      }
-    })
+    stops.push(
+      watch(rate, (newRate) => {
+        if (newRate) {
+          emitter.emit('onRateChange', toValue(id))
+        }
+      })
+    )
 
-    watch(touched, (newTouched) => {
-      if (newTouched) {
-        emitter.emit('onTouch', toValue(id))
-      }
-    })
+    stops.push(
+      watch(started, (newStarted) => {
+        if (newStarted) {
+          emitter.emit('onStart', toValue(id))
+        }
+      })
+    )
 
-    watch(volume, (newVolume) => {
-      if (newVolume) {
-        emitter.emit('onVolumeChange', toValue(id))
-      }
-    })
+    stops.push(
+      watch(stalled, (newStalled) => {
+        if (newStalled) {
+          emitter.emit('onStall', toValue(id))
+        }
+      })
+    )
 
-    watch(waiting, (newWaiting) => {
-      if (newWaiting) {
-        emitter.emit('onWait', toValue(id))
-      }
-    })
+    stops.push(
+      watch(touched, (newTouched) => {
+        if (newTouched) {
+          emitter.emit('onTouch', toValue(id))
+        }
+      })
+    )
+
+    stops.push(
+      watch(volume, (newVolume) => {
+        if (newVolume) {
+          emitter.emit('onVolumeChange', toValue(id))
+        }
+      })
+    )
+
+    stops.push(
+      watch(waiting, (newWaiting) => {
+        if (newWaiting) {
+          emitter.emit('onWait', toValue(id))
+        }
+      })
+    )
   }
+
+  onScopeDispose(() => {
+    destroyEmitter()
+  })
 
   return {
     initializeEmitter,

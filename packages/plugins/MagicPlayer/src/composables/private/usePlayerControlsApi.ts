@@ -4,6 +4,7 @@ import {
   computed,
   watch,
   toValue,
+  onScopeDispose,
   type MaybeRef,
   type Ref,
   type WatchHandle,
@@ -310,7 +311,14 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
     resizeObserverPopover?.stop()
     resizeObserverBar?.stop()
     windowResizeCleanup?.()
+    cancelPointermove?.()
+    cancelPointerup?.()
+    cancelTouchend?.()
   }
+
+  onScopeDispose(() => {
+    destroy()
+  })
 
   return {
     initialize,

@@ -43,6 +43,9 @@ function enterCallback(payload: MagicEmitterEvents['enter']) {
 emitter.on('enter', enterCallback)
 
 onBeforeUnmount(() => {
+  // Reset renderer on unmount for garbage collection
+  state.renderer = null
+
   emitter.off('enter', enterCallback)
 })
 </script>

@@ -176,6 +176,9 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
+  // Reset fullscreen target for garbage collection
+  state.fullscreenTarget = null
+
   destroy()
 })
 </script>

@@ -60,6 +60,9 @@ export function useScrollLockPadding(args?: UseScrollLockPaddingArgs) {
       elem.style.scrollbarGutter = ''
       elem.style.overflow = ''
     })
+
+    // Drop nodes for garbage collection
+    positionFixedElements.value = []
   }
 
   return { add, remove }

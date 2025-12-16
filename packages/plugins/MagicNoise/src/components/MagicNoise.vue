@@ -8,7 +8,13 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
+import {
+  onMounted,
+  onUnmounted,
+  watch,
+  useTemplateRef,
+  onBeforeUnmount,
+} from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
 import type { MagicNoiseOptions } from '../types'
@@ -38,7 +44,10 @@ const {
   isReady,
 } = noiseApi
 
-useResizeObserver(canvasRef, useDebounceFn(initialize, 100))
+const resizeObserver = useResizeObserver(
+  canvasRef,
+  useDebounceFn(initialize, 100)
+)
 
 watch(
   () => pause,
@@ -56,6 +65,10 @@ watch(
 onMounted(() => {
   throttledDraw()
   throttledRotateAndTransfer()
+})
+
+onBeforeUnmount(() => {
+  resizeObserver.stop()
 })
 
 onUnmounted(() => {

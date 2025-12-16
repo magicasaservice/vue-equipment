@@ -1,4 +1,4 @@
-import { computed, nextTick, type MaybeRef } from 'vue'
+import { computed, nextTick, onScopeDispose, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCookieState } from './private/useCookieState'
 import { useCookieItem } from './private/useCookieItem'
@@ -94,6 +94,12 @@ export function useMagicCookie(id: MaybeRef<string>) {
   function onReject(callback: (args: MagicCookieCallbackArgs) => void) {
     emitter.on('rejectAll', callback)
   }
+
+  onScopeDispose(() => {
+    emitter.off('acceptAll')
+    emitter.off('acceptSelected')
+    emitter.off('rejectAll')
+  })
 
   return {
     cookies,
