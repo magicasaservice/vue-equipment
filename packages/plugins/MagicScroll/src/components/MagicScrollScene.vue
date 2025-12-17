@@ -13,6 +13,7 @@ import {
   nextTick,
   readonly,
   useTemplateRef,
+  onScopeDispose,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import {
@@ -84,7 +85,7 @@ watch(
   { once: true }
 )
 
-useIntersectionObserver(
+const intersectionObserver = useIntersectionObserver(
   elRef,
   ([entry]) => {
     intersecting.value = entry?.isIntersecting ?? intersecting.value
@@ -94,6 +95,10 @@ useIntersectionObserver(
   },
   { rootMargin: '150% 0px 150% 0px', immediate: true }
 )
+
+onScopeDispose(() => {
+  intersectionObserver.stop()
+})
 
 provide(MagicScrollProgress, readonly(progress))
 </script>

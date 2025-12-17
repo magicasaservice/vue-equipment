@@ -5,7 +5,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, computed, onMounted, watch, useTemplateRef } from 'vue'
+import {
+  ref,
+  inject,
+  computed,
+  onMounted,
+  watch,
+  useTemplateRef,
+  onScopeDispose,
+} from 'vue'
 import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
 import {
@@ -84,5 +92,10 @@ watch(
 
 onMounted(() => {
   createAnimation()
+})
+
+onScopeDispose(() => {
+  animation.value?.cancel()
+  animation.value = undefined
 })
 </script>
