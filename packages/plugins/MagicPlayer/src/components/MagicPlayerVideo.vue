@@ -20,6 +20,7 @@ import {
   onBeforeUnmount,
   shallowRef,
   computed,
+  onScopeDispose,
 } from 'vue'
 import {
   useElementVisibility,
@@ -53,6 +54,9 @@ const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 const injectedPlayerRef = inject(MagicPlayerRef, undefined)
 
+let cancelFocus: (() => void) | undefined = undefined
+let cancelBlur: (() => void) | undefined = undefined
+
 magicError.assert(injectedInstanceId, {
   message: 'MagicPlayerVideo must be used within a MagicPlayerProvider',
   errorCode: 'missing_instance_id',
@@ -65,7 +69,7 @@ magicError.assert(injectedOptions, {
 
 const elRef = useTemplateRef('el')
 
-const { initialize, destroy } = usePlayerRuntime({
+const { initialize } = usePlayerRuntime({
   id: injectedInstanceId,
   mediaRef: elRef,
   src: injectedOptions.src,
@@ -114,8 +118,8 @@ function onWindowBlur() {
 }
 
 if (manageWindow.value) {
-  useEventListener(defaultWindow, 'focus', onWindowFocus)
-  useEventListener(defaultWindow, 'blur', onWindowBlur)
+  cancelFocus = useEventListener(defaultWindow, 'focus', onWindowFocus)
+  cancelBlur = useEventListener(defaultWindow, 'blur', onWindowBlur)
 }
 
 // If viewport is managed, autoplay when the video
@@ -178,8 +182,11 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   // Reset fullscreen target for garbage collection
   state.fullscreenTarget = null
+})
 
-  destroy()
+onScopeDispose(() => {
+  cancelFocus?.()
+  cancelBlur?.()
 })
 </script>
 

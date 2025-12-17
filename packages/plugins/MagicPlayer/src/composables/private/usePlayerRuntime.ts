@@ -1,4 +1,11 @@
-import { shallowRef, toRefs, toValue, type MaybeRef, type Ref } from 'vue'
+import {
+  onScopeDispose,
+  shallowRef,
+  toRefs,
+  toValue,
+  type MaybeRef,
+  type Ref,
+} from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
@@ -28,6 +35,10 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   const { initializeState } = usePlayerState(toValue(id))
   const state = initializeState()
   const { loaded } = toRefs(state)
+
+  let cancelLoaded: (() => void) | undefined = undefined
+  let cancelPlay: (() => void) | undefined = undefined
+  let cancelPause: (() => void) | undefined = undefined
 
   // Private functions
   function handleHlsRuntimeError(args: {
@@ -87,6 +98,10 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   }
 
   function useNative() {
+    if (!mediaRef) {
+      return
+    }
+
     const el = toValue(mediaRef)
 
     if (!el || !src) {
@@ -96,7 +111,9 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     try {
       el.src = src
 
-      el.addEventListener(
+      cancelLoaded?.()
+      cancelLoaded = useEventListener(
+        mediaRef,
         'loadeddata',
         () => {
           loaded.value = true
@@ -155,13 +172,15 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         handleHlsRuntimeError({ data, hls })
       })
 
-      useEventListener(mediaRef, 'pause', () => {
+      cancelPause?.()
+      cancelPause = useEventListener(mediaRef, 'pause', () => {
         hls?.stopLoad()
       })
 
       // Start loading once the user requested it,
       // separate from any autoplay logic
-      useEventListener(mediaRef, 'play', () => {
+      cancelPlay?.()
+      cancelPlay = useEventListener(mediaRef, 'play', () => {
         hls?.startLoad()
       })
 
@@ -176,6 +195,19 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     }
   }
 
+  function destroy() {
+    cancelLoaded?.()
+    cancelPlay?.()
+    cancelPause?.()
+
+    try {
+      hls?.destroy()
+    } finally {
+      hls = undefined
+      deferredLoading.value = false
+    }
+  }
+
   // Public functions
   function initialize(autoplay = false) {
     if (srcType === 'native') {
@@ -185,18 +217,12 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     }
   }
 
-  function destroy() {
-    try {
-      hls?.destroy()
-    } finally {
-      hls = undefined
-      deferredLoading.value = false
-    }
-  }
+  onScopeDispose(() => {
+    destroy()
+  })
 
   return {
     initialize,
-    destroy,
   }
 }
 

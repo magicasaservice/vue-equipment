@@ -1,4 +1,12 @@
-import { toRefs, watch, unref, toValue, type Ref, type MaybeRef } from 'vue'
+import {
+  toRefs,
+  watch,
+  unref,
+  toValue,
+  type Ref,
+  type MaybeRef,
+  onScopeDispose,
+} from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
@@ -172,85 +180,150 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   )
 
   // Listener
-  useEventListener(mediaRef, 'timeupdate', () => {
+  function timeupdateCallback() {
     ignoreCurrentTimeUpdates(
       () => (currentTime.value = toValue(mediaRef)!.currentTime)
     )
-  })
+  }
 
-  useEventListener(mediaRef, 'durationchange', () => {
+  function durationChangeCallback() {
     duration.value = toValue(mediaRef)!.duration
-  })
+  }
 
-  useEventListener(mediaRef, 'progress', () => {
+  function progressCallback() {
     buffered.value = timeRangeToArray(toValue(mediaRef)!.buffered)
-  })
+  }
 
-  useEventListener(mediaRef, 'seeking', () => {
+  function seekingCallback() {
     seeking.value = true
-  })
+  }
 
-  useEventListener(mediaRef, 'seeked', () => {
+  function seekedCallback() {
     seeking.value = false
-  })
+  }
 
-  useEventListener(mediaRef, ['waiting', 'loadstart'], () => {
+  function waitingLoadstartCallback() {
     waiting.value = true
     ignorePlayingUpdates(() => (playing.value = false))
-  })
+  }
 
-  useEventListener(mediaRef, 'loadeddata', () => {
+  function loadeddataCallback() {
     waiting.value = false
-  })
+  }
 
-  useEventListener(mediaRef, 'playing', () => {
+  function playingCallback() {
     started.value = true
     waiting.value = false
     ended.value = false
     ignorePlayingUpdates(() => (playing.value = true))
-  })
+  }
 
-  useEventListener(mediaRef, 'ratechange', () => {
+  function ratechangeCallback() {
     rate.value = toValue(mediaRef)?.playbackRate ?? rate.value
-  })
+  }
 
-  useEventListener(mediaRef, 'stalled', () => {
+  function stalledCallback() {
     stalled.value = true
-  })
+  }
 
-  useEventListener(mediaRef, 'suspend', () => {
+  function suspendCallback() {
     waiting.value = false
-  })
+  }
 
-  useEventListener(mediaRef, 'ended', () => {
+  function endedCallback() {
     ended.value = true
-  })
+  }
 
-  useEventListener(mediaRef, 'pause', () => {
+  function pauseCallback() {
     playing.value = false
     paused.value = true
-  })
+  }
 
-  useEventListener(mediaRef, 'play', () => {
+  function playCallback() {
     playing.value = true
     started.value = true
-  })
+  }
 
-  useEventListener(mediaRef, 'volumechange', () => {
+  function volumechangeCallback() {
     const el = toValue(mediaRef)
 
     if (el) {
       volume.value = el.volume
       muted.value = el.muted
     }
-  })
+  }
 
-  useEventListener(mediaRef, 'error', () => {
+  function errorCallback() {
     const el = toValue(mediaRef)
 
     if (el?.error) {
       handleMediaElementError(el.error)
     }
+  }
+
+  const cancelTimeUpdate = useEventListener(
+    mediaRef,
+    'timeupdate',
+    timeupdateCallback
+  )
+  const cancelDurationChange = useEventListener(
+    mediaRef,
+    'durationchange',
+    durationChangeCallback
+  )
+  const cancelProgress = useEventListener(
+    mediaRef,
+    'progress',
+    progressCallback
+  )
+  const cancelSeeking = useEventListener(mediaRef, 'seeking', seekingCallback)
+  const cancelSeeked = useEventListener(mediaRef, 'seeked', seekedCallback)
+  const cancelWaitingLoadstart = useEventListener(
+    mediaRef,
+    ['waiting', 'loadstart'],
+    waitingLoadstartCallback
+  )
+  const cancelLoadeddata = useEventListener(
+    mediaRef,
+    'loadeddata',
+    loadeddataCallback
+  )
+  const cancelPlaying = useEventListener(mediaRef, 'playing', playingCallback)
+  const cancelRatechange = useEventListener(
+    mediaRef,
+    'ratechange',
+    ratechangeCallback
+  )
+  const cancelStalled = useEventListener(mediaRef, 'stalled', stalledCallback)
+  const cancelSuspend = useEventListener(mediaRef, 'suspend', suspendCallback)
+  const cancelEnded = useEventListener(mediaRef, 'ended', endedCallback)
+  const cancelPause = useEventListener(mediaRef, 'pause', pauseCallback)
+  const cancelPlay = useEventListener(mediaRef, 'play', playCallback)
+  const cancelVolumechange = useEventListener(
+    mediaRef,
+    'volumechange',
+    volumechangeCallback
+  )
+  const cancelError = useEventListener(mediaRef, 'error', errorCallback)
+
+  // Force cleanup on scope dispose
+  onScopeDispose(() => {
+    cancelTimeUpdate()
+    cancelDurationChange()
+    cancelProgress()
+    cancelSeeking()
+    cancelSeeked()
+    cancelWaitingLoadstart()
+    cancelLoadeddata()
+    cancelPlaying()
+    cancelRatechange()
+    cancelStalled()
+    cancelSuspend()
+    cancelEnded()
+    cancelPause()
+    cancelPlay()
+    cancelVolumechange()
+    cancelError()
   })
 }
 

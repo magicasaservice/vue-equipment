@@ -114,17 +114,12 @@ const { play, pause } = usePlayerAudioApi({
   id: mappedInstanceId.value,
 })
 
-const {
-  initialize,
-  destroy,
-  onMouseenter,
-  onMouseleave,
-  onMouseleaveTimeline,
-} = usePlayerControlsApi({
-  id: mappedInstanceId.value,
-  barRef: barRef,
-  trackRef: trackRef,
-})
+const { initialize, onMouseenter, onMouseleave, onMouseleaveTimeline } =
+  usePlayerControlsApi({
+    id: mappedInstanceId.value,
+    barRef: barRef,
+    trackRef: trackRef,
+  })
 
 const { initializeState } = usePlayerState(mappedInstanceId.value)
 const state = initializeState()
@@ -149,8 +144,6 @@ onBeforeUnmount(() => {
   state.controlsBarRect = undefined
   state.controlsTrackRect = undefined
   state.controlsPopoverRect = undefined
-
-  destroy()
 })
 
 provide(MagicPlayerInstanceId, mappedInstanceId.value)

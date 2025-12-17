@@ -174,18 +174,13 @@ const {
 const { play, pause, mute, unmute, enterFullscreen, exitFullscreen } =
   usePlayerVideoApi({ id: mappedInstanceId.value })
 
-const {
-  initialize,
-  destroy,
-  onMouseenter,
-  onMouseleave,
-  onMouseleaveTimeline,
-} = usePlayerControlsApi({
-  id: mappedInstanceId.value,
-  barRef: barRef,
-  trackRef: trackRef,
-  popoverRef: popoverRef,
-})
+const { initialize, onMouseenter, onMouseleave, onMouseleaveTimeline } =
+  usePlayerControlsApi({
+    id: mappedInstanceId.value,
+    barRef: barRef,
+    trackRef: trackRef,
+    popoverRef: popoverRef,
+  })
 
 const { idle } = useIdle(injectedOptions?.threshold?.idle)
 
@@ -215,8 +210,6 @@ onBeforeUnmount(() => {
   state.controlsBarRect = undefined
   state.controlsTrackRect = undefined
   state.controlsPopoverRect = undefined
-
-  destroy()
 })
 
 provide(MagicPlayerInstanceId, mappedInstanceId.value)

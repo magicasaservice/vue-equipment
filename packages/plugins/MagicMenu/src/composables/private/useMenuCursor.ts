@@ -1,4 +1,4 @@
-import { ref, shallowRef } from 'vue'
+import { onScopeDispose, ref, shallowRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { Coordinates, MenuView } from '../../types'
 
@@ -254,6 +254,7 @@ export function useMenuCursor(view: MenuView, debug = false) {
     }
   }
 
+  // Public functions
   function initialize() {
     cancelListener.abort()
     cancelListener = new AbortController()
@@ -271,6 +272,10 @@ export function useMenuCursor(view: MenuView, debug = false) {
 
     cancelListener.abort()
   }
+
+  onScopeDispose(() => {
+    destroy()
+  })
 
   return {
     coords,

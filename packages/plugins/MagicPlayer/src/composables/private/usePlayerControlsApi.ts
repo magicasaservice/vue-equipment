@@ -322,7 +322,6 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   return {
     initialize,
-    destroy,
     bufferedPercentage,
     onMouseenter,
     onMouseleave,
