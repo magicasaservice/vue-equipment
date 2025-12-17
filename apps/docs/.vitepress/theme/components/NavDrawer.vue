@@ -22,7 +22,9 @@
           </m-button>
         </magic-menu-remote>
         <magic-drawer :id="DrawerId.navDrawer" :options="{ focusTrap: false }">
-          <div class="scrollbar-none relative h-full w-full overflow-auto">
+          <div
+            class="scrollbar-none relative h-full w-full overflow-auto scroll-smooth"
+          >
             <div
               class="bg-surface-high fixed inset-0 -z-10 overflow-hidden rounded-t-2xl"
             />
