@@ -1,4 +1,4 @@
-import { computed, toRefs, toValue, type MaybeRef } from 'vue'
+import { computed, onScopeDispose, toRefs, toValue, type MaybeRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -47,6 +47,7 @@ export function useToastDrag(args: UseToastDragArgs) {
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
+  let cancelTouchcancel: (() => void) | undefined = undefined
 
   const hasDragged = computed(() => {
     const hasDraggedX = !isWithinRange({
@@ -227,6 +228,7 @@ export function useToastDrag(args: UseToastDragArgs) {
     cancelTouchend?.()
     cancelPointerup?.()
     cancelPointermove?.()
+    cancelTouchcancel?.()
   }
 
   function onPointerup(e: PointerEvent) {
@@ -312,6 +314,13 @@ export function useToastDrag(args: UseToastDragArgs) {
     })
   }
 
+  function destroy() {
+    cancelPointermove?.()
+    cancelPointerup?.()
+    cancelTouchend?.()
+    cancelTouchcancel?.()
+  }
+
   // Public functions
   function onPointerdown(e: PointerEvent) {
     // Lock scroll as soon as the user starts dragging
@@ -350,6 +359,7 @@ export function useToastDrag(args: UseToastDragArgs) {
 
       // Add listeners
       cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
+      cancelTouchcancel = useEventListener(document, 'touchcancel', onPointerup)
       cancelPointermove = useEventListener(
         document,
         'pointermove',
@@ -388,6 +398,10 @@ export function useToastDrag(args: UseToastDragArgs) {
       state.expanded = true
     }
   }
+
+  onScopeDispose(() => {
+    destroy()
+  })
 
   return {
     onPointerdown,

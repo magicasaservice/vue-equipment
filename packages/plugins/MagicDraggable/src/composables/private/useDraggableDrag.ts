@@ -90,6 +90,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   let cancelPointerup: (() => void) | null = null
   let cancelPointermove: (() => void) | null = null
+  let cancelPointercancel: (() => void) | null = null
   let cancelTouchend: (() => void) | null = null
   let resizeObserverEl: UseResizeObserverReturn | null = null
   let resizeObserverWrapper: UseResizeObserverReturn | null = null
@@ -154,6 +155,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     distanceThresholdReached.value = false
     cancelTouchend?.()
     cancelPointerup?.()
+    cancelPointercancel?.()
     cancelPointermove?.()
   }
 
@@ -481,6 +483,11 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
+    cancelPointercancel = useEventListener(
+      document,
+      'pointercancel',
+      onPointerup
+    )
     cancelPointermove = useEventListener(
       document,
       'pointermove',
