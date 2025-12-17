@@ -131,6 +131,7 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 .magic-toast-view__drag {
   display: block;
+  touch-action: none;
 }
 
 .magic-toast-view[data-dragging='true'] {
