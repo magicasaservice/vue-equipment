@@ -21,6 +21,7 @@ import {
 import {
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
+  isAndroid,
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
@@ -99,7 +100,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
+  let cancelPointercancel: (() => void) | undefined = undefined
+  let cancelTouchmove: (() => void) | undefined = undefined
   let cancelTouchend: (() => void) | undefined = undefined
+  let cancelTouchcancel: (() => void) | undefined = undefined
   let scrollLock: WritableComputedRef<boolean> | undefined = undefined
   let resizeObserverEl: UseResizeObserverReturn | null = null
 
@@ -328,13 +332,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
-  function resetStateAndListeners() {
-    dragging.value = false
-    shouldClose.value = false
-    interpolateTo.value = undefined
+  function resetListeners() {
+    cancelTouchmove?.()
     cancelTouchend?.()
+    cancelTouchcancel?.()
     cancelPointerup?.()
     cancelPointermove?.()
+    cancelPointercancel?.()
   }
 
   function resetScrollLock() {
@@ -345,7 +349,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     scrollLock = undefined
   }
 
-  function resetState() {
+  function resetDragState() {
+    dragging.value = false
+    shouldClose.value = false
+    interpolateTo.value = undefined
+  }
+
+  function resetCalcState() {
     draggedX.value = 0
     draggedY.value = 0
     lastDraggedX.value = 0
@@ -356,7 +366,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     wrapperRect.value = undefined
   }
 
-  function resetSnapped() {
+  function resetSnapState() {
     snappedX.value = 0
     snappedY.value = 0
     activeSnapPoint.value = undefined
@@ -364,8 +374,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   function afterLeaveCallback(payload: MagicEmitterEvents['afterLeave']) {
     if (payload === toValue(id)) {
-      resetState()
-      resetSnapped()
+      resetCalcState()
+      resetSnapState()
     }
   }
 
@@ -393,10 +403,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   function destroy() {
     emitter.off('snapTo', snapToCallback)
     emitter.off('afterLeave', afterLeaveCallback)
-    cancelPointermove?.()
-    cancelPointerup?.()
-    cancelTouchend?.()
     resizeObserverEl?.stop()
+    resetDragState()
+    resetListeners()
   }
 
   function onCancel() {
@@ -416,8 +425,61 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         break
     }
 
-    resetStateAndListeners()
+    resetDragState()
+    resetListeners()
     resetScrollLock()
+  }
+
+  function onPointermove(e: PointerEvent) {
+    // Prevent real mousemove while wheeling
+    if (e.isTrusted && wheeling.value) {
+      return
+    }
+
+    // Prevent dragging with a secondary pointer
+    if (e.isTrusted && !e.isPrimary) {
+      return
+    }
+
+    // Prevent event bubbling
+    e.stopImmediatePropagation()
+    e.stopPropagation()
+
+    // Reset shouldClose before checking
+    shouldClose.value = false
+
+    // Save pointermove direction
+    checkDirection({ x: e.screenX, y: e.screenY })
+
+    // Possibly lock scroll
+    if (!scrollLock) {
+      const scrollLockTarget = lockScroll(e.target!)
+      if (scrollLockTarget) {
+        scrollLock = useScrollLock(scrollLockTarget)
+        scrollLock.value = true
+      }
+    }
+
+    // Check if we should be dragging
+    const dragTarget = pointerdownTarget ?? (e.target as HTMLElement)
+    if (!canDrag(dragTarget)) {
+      return
+    }
+
+    // Save dragged value
+    setDragged({ x: e.screenX, y: e.screenY })
+
+    //Check if we should close or snap based on momentum
+    checkMomentum()
+
+    // Check if we should close based on distance
+    checkPosition()
+
+    emitter.emit('drag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
   }
 
   function onPointerup(e: PointerEvent) {
@@ -472,7 +534,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     })
 
     // Reset state
-    resetStateAndListeners()
+    resetDragState()
+    resetListeners()
     resetScrollLock()
 
     if (hasDragged.value) {
@@ -483,30 +546,31 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     guardedReleasePointerCapture({ event: e, element: pointerdownTarget })
   }
 
-  function onPointermove(e: PointerEvent) {
-    // Prevent real mousemove while wheeling
-    if (e.isTrusted && wheeling.value) {
-      return
-    }
-
-    // Prevent dragging with a secondary pointer
-    if (e.isTrusted && !e.isPrimary) {
-      return
-    }
-
-    // Prevent event bubbling, helpful on iOS
+  function onTouchmove(e: TouchEvent) {
+    // Prevent event bubbling
     e.stopImmediatePropagation()
     e.stopPropagation()
 
     // Reset shouldClose before checking
     shouldClose.value = false
 
+    const firstTouch = e.touches[0]
+    if (!firstTouch) {
+      return
+    }
+
     // Save pointermove direction
-    checkDirection({ x: e.screenX, y: e.screenY })
+    checkDirection({ x: firstTouch.screenX, y: firstTouch.screenY })
+
+    // Reset shouldClose before checking
+    shouldClose.value = false
+
+    // Save pointermove direction
+    checkDirection({ x: firstTouch.screenX, y: firstTouch.screenY })
 
     // Possibly lock scroll
     if (!scrollLock) {
-      const scrollLockTarget = lockScroll(e.target!)
+      const scrollLockTarget = lockScroll(firstTouch.target)
       if (scrollLockTarget) {
         scrollLock = useScrollLock(scrollLockTarget)
         scrollLock.value = true
@@ -514,12 +578,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Check if we should be dragging
-    if (!canDrag(e.target!)) {
+    const dragTarget = pointerdownTarget ?? (e.target as HTMLElement)
+    if (!canDrag(dragTarget)) {
       return
     }
 
+    // Prevent default if we have dragged
+    if (hasDragged.value) {
+      e.preventDefault()
+    }
+
     // Save dragged value
-    setDragged({ x: e.screenX, y: e.screenY })
+    setDragged({ x: firstTouch.screenX, y: firstTouch.screenY })
 
     //Check if we should close or snap based on momentum
     checkMomentum()
@@ -532,6 +602,67 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       x: draggedX.value,
       y: draggedY.value,
     })
+  }
+
+  function onTouchend(e: TouchEvent) {
+    if (shouldClose.value) {
+      close()
+    } else if (interpolateTo.value || interpolateTo.value === 0) {
+      // If scroll is locked, interpolate to snap point
+      // Scroll should only be locked at one end!
+      if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
+        interpolateDragged({
+          to: interpolateTo.value,
+        })
+      }
+
+      // Save the snap point we’re snapping to
+      // both the input value, as well as the actual pixel value
+      activeSnapPoint.value = snapPointsMap.value[interpolateTo.value]
+
+      switch (position) {
+        case 'bottom':
+        case 'top':
+          snappedY.value = interpolateTo.value
+          break
+
+        case 'right':
+        case 'left':
+          snappedX.value = interpolateTo.value
+          break
+      }
+    } else {
+      switch (position) {
+        case 'bottom':
+        case 'top':
+          interpolateDragged({
+            to: snappedY.value,
+          })
+          break
+
+        case 'right':
+        case 'left':
+          interpolateDragged({
+            to: snappedX.value,
+          })
+          break
+      }
+    }
+
+    emitter.emit('afterDrag', {
+      id: toValue(id),
+      x: draggedX.value,
+      y: draggedY.value,
+    })
+
+    // Reset state
+    resetDragState()
+    resetListeners()
+    resetScrollLock()
+
+    if (hasDragged.value) {
+      e.preventDefault()
+    }
   }
 
   // Public functions
@@ -559,7 +690,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       pointerdownTarget = e.target as HTMLElement
       guardedSetPointerCapture({
         event: e,
-        element: e.target as HTMLElement,
+        element: pointerdownTarget,
       })
 
       emitter.emit('beforeDrag', {
@@ -574,8 +705,16 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     lastDraggedX.value = draggedX.value
     lastDraggedY.value = draggedY.value
 
+    // Reset listeners to avoid memory leaks
+    resetListeners()
+
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
+    cancelPointercancel = useEventListener(
+      document,
+      'pointercancel',
+      onPointerup
+    )
     cancelPointermove = useEventListener(
       document,
       'pointermove',
@@ -583,10 +722,20 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       { passive: false }
     )
 
-    // Pointerup doesn’t fire on iOS, so we need to use touchend
-    cancelTouchend = isIOS()
-      ? useEventListener(document, 'touchend', onPointerup)
+    // Add touch listeners for Android and iOS
+    cancelTouchmove = isAndroid()
+      ? useEventListener(document, 'touchmove', onTouchmove, {
+          passive: false,
+        })
       : undefined
+    cancelTouchend =
+      isIOS() || isAndroid()
+        ? useEventListener(document, 'touchend', onTouchend)
+        : undefined
+    cancelTouchcancel =
+      isIOS() || isAndroid()
+        ? useEventListener(document, 'touchcancel', onTouchend)
+        : undefined
 
     // Origin is the distance between pointer event and last dragged position
     originX.value = e.screenX - draggedX.value
@@ -597,6 +746,69 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
     // Set initial transform
     onPointermove(e)
+  }
+
+  function onTouchstart(e: TouchEvent) {
+    // Only handle touch on Android
+    if (!isAndroid()) {
+      return
+    }
+
+    if (dragging.value) {
+      return
+    } else {
+      // Bail early for select elements
+      // Prevents a bug in safari related to pointer capture
+      const isSelect = ['SELECT', 'OPTION'].includes(
+        (e.target as HTMLElement).tagName
+      )
+
+      if (isSelect) {
+        return
+      }
+
+      e.stopImmediatePropagation()
+      e.stopPropagation()
+
+      // Save state
+      dragging.value = true
+
+      // Save pointerdown target
+      // Capture the target, not the elRef, since this would break canDrag
+      pointerdownTarget = e.target as HTMLElement
+
+      emitter.emit('beforeDrag', {
+        id: toValue(id),
+        x: draggedX.value,
+        y: draggedY.value,
+      })
+    }
+
+    cancelTouchmove?.()
+    cancelTouchmove = useEventListener(document, 'touchmove', onTouchmove, {
+      passive: false,
+    })
+    cancelTouchend?.()
+    cancelTouchend = useEventListener(document, 'touchend', onTouchend, {
+      passive: false,
+    })
+    cancelTouchcancel?.()
+    cancelTouchcancel = useEventListener(document, 'touchcancel', onTouchend)
+
+    const firstTouch = e.touches[0]
+    if (!firstTouch) {
+      return
+    }
+
+    // Origin is the distance between pointer event and last dragged position
+    originX.value = firstTouch.screenX - draggedX.value
+    originY.value = firstTouch.screenY - draggedY.value
+
+    // Save start time
+    dragStart.value = new Date()
+
+    // Set initial transform
+    onTouchmove(e)
   }
 
   function onClick(e: MouseEvent) {
@@ -656,6 +868,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   return {
     onPointerdown,
+    onTouchstart,
+    onTouchmove,
     onClick,
     style,
     hasDragged,

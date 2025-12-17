@@ -9,6 +9,7 @@
       class="magic-drawer"
       :data-id="mappedId"
       :data-dragging="dragging"
+      :data-dragged="hasDragged"
       :data-wheeling="wheeling"
       :data-disabled="disabled"
       :data-position="mappedOptions.position"
@@ -45,6 +46,7 @@
               class="magic-drawer__drag"
               :style="style"
               @pointerdown="guardedPointerdown"
+              @touchstart="guardedTouchstart"
               @click="guardedClick"
             >
               <slot />
@@ -155,19 +157,20 @@ const disabled = computed(() => {
   }
 })
 
-const { onPointerdown, onClick, style, hasDragged } = useDrawerDrag({
-  id,
-  elRef,
-  wrapperRef,
-  position,
-  snapPoints,
-  threshold,
-  overshoot,
-  animation,
-  initial,
-  preventDragClose,
-  disabled,
-})
+const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
+  useDrawerDrag({
+    id,
+    elRef,
+    wrapperRef,
+    position,
+    snapPoints,
+    threshold,
+    overshoot,
+    animation,
+    initial,
+    preventDragClose,
+    disabled,
+  })
 
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   id,
@@ -274,6 +277,12 @@ function onClose() {
 function guardedPointerdown(event: PointerEvent) {
   if (!disabled.value) {
     onPointerdown(event)
+  }
+}
+
+function guardedTouchstart(event: TouchEvent) {
+  if (!disabled.value) {
+    onTouchstart(event)
   }
 }
 
@@ -513,6 +522,8 @@ dialog.magic-drawer__drag::backdrop {
 
 .magic-drawer__drag > * {
   padding: var(--magic-drawer-padding);
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .magic-drawer__overlay {
