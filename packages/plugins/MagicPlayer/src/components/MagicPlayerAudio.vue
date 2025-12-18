@@ -11,7 +11,7 @@ import {
   onMounted,
   shallowRef,
   computed,
-  onScopeDispose,
+  onBeforeUnmount,
 } from 'vue'
 import {
   useElementVisibility,
@@ -131,7 +131,7 @@ onMounted(() => {
   initialize()
 })
 
-onScopeDispose(() => {
+onBeforeUnmount(() => {
   cancelFocus?.()
   cancelBlur?.()
 })

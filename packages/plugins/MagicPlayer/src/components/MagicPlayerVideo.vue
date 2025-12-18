@@ -17,10 +17,9 @@ import {
   watch,
   onMounted,
   inject,
-  onBeforeUnmount,
   shallowRef,
   computed,
-  onScopeDispose,
+  onBeforeUnmount,
 } from 'vue'
 import {
   useElementVisibility,
@@ -182,9 +181,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   // Reset fullscreen target for garbage collection
   state.fullscreenTarget = null
-})
 
-onScopeDispose(() => {
   cancelFocus?.()
   cancelBlur?.()
 })

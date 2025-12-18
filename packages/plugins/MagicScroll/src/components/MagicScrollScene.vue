@@ -13,7 +13,7 @@ import {
   nextTick,
   readonly,
   useTemplateRef,
-  onScopeDispose,
+  onBeforeUnmount,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import {
@@ -96,7 +96,7 @@ const intersectionObserver = useIntersectionObserver(
   { rootMargin: '150% 0px 150% 0px', immediate: true }
 )
 
-onScopeDispose(() => {
+onBeforeUnmount(() => {
   intersectionObserver.stop()
 })
 
