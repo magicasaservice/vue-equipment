@@ -1,4 +1,12 @@
-import { ref, toRefs, computed, toValue, nextTick, type MaybeRef } from 'vue'
+import {
+  ref,
+  toRefs,
+  computed,
+  toValue,
+  nextTick,
+  type MaybeRef,
+  onScopeDispose,
+} from 'vue'
 import { computedWithControl } from '@vueuse/core'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
@@ -292,6 +300,11 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     // Save value for resize events
     activeSnapPoint.value = snapPoint
   }
+
+  onScopeDispose(() => {
+    // Cancel any running interpolations
+    cancelInterpolation()
+  })
 
   return {
     mappedActiveSnapPoint,

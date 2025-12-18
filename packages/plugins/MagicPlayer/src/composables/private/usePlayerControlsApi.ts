@@ -5,6 +5,7 @@ import {
   watch,
   toValue,
   onScopeDispose,
+  markRaw,
   type MaybeRef,
   type Ref,
   type WatchHandle,
@@ -115,7 +116,9 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return
     }
 
-    controlsTrackRect.value = toValue(trackRef)!.getBoundingClientRect()
+    controlsTrackRect.value = markRaw(
+      toValue(trackRef)!.getBoundingClientRect()
+    )
 
     thumbPercentage.value =
       100 -
@@ -128,8 +131,10 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
       return
     }
 
-    controlsBarRect.value = toValue(barRef)!.getBoundingClientRect()
-    controlsPopoverRect.value = toValue(popoverRef)!.getBoundingClientRect()
+    controlsBarRect.value = markRaw(toValue(barRef)!.getBoundingClientRect())
+    controlsPopoverRect.value = markRaw(
+      toValue(popoverRef)!.getBoundingClientRect()
+    )
   }
 
   function getSizes() {

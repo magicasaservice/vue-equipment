@@ -5,10 +5,11 @@ import {
   nextTick,
   watch,
   onScopeDispose,
+  onMounted,
   toRefs,
+  markRaw,
   type Ref,
   type MaybeRef,
-  onMounted,
 } from 'vue'
 import {
   useEventListener,
@@ -139,8 +140,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
   const { lockScroll, unlockScroll } = useDraggableScrollLock()
 
   function getSizes() {
-    elRect.value = unrefElement(elRef)?.getBoundingClientRect()
-    wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
+    const el = unrefElement(elRef)
+    const wrapper = unrefElement(wrapperRef)
+
+    elRect.value = el ? markRaw(el.getBoundingClientRect()) : undefined
+    wrapperRect.value = wrapper
+      ? markRaw(wrapper.getBoundingClientRect())
+      : undefined
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {

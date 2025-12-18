@@ -6,6 +6,7 @@ import {
   toRefs,
   nextTick,
   onScopeDispose,
+  markRaw,
   type Ref,
   type MaybeRef,
   type WritableComputedRef,
@@ -164,8 +165,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   const emitter = useMagicEmitter()
 
   async function getSizes() {
-    elRect.value = unrefElement(elRef)?.getBoundingClientRect()
-    wrapperRect.value = unrefElement(wrapperRef)?.getBoundingClientRect()
+    const el = unrefElement(elRef)
+    const wrapper = unrefElement(wrapperRef)
+
+    elRect.value = el ? markRaw(el.getBoundingClientRect()) : undefined
+    wrapperRect.value = wrapper
+      ? markRaw(wrapper.getBoundingClientRect())
+      : undefined
     await nextTick()
   }
 
