@@ -44,14 +44,15 @@ const component = defineAsyncComponent(
 )
 
 const { add } = useMagicToast('magic-scroll-collision-detection-demo')
+const emitter = useMagicEmitter()
 
 function callback(payload: MagicEmitterEvents['collision']) {
   add({ component, duration: 5000, props: { payload } })
 }
 
-useMagicEmitter().on('collision', callback)
+emitter.on('collision', callback)
 
 onBeforeUnmount(() => {
-  useMagicEmitter().off('collision', callback)
+  emitter.off('collision', callback)
 })
 </script>

@@ -30,6 +30,7 @@ type ResetItemArgs = {
 
 export function useCollisionDetection(args: UseCollisionDetectionArgs) {
   const { id, scrollY, child, parent, offset } = args
+  const magicEmitter = useMagicEmitter()
 
   const alerted = reactive({
     up: {
@@ -165,7 +166,7 @@ export function useCollisionDetection(args: UseCollisionDetectionArgs) {
       (direction === 'up' && mappedChildEdge >= mappedParentEdge)
     ) {
       alerted[direction][childEdge][parentEdge] = true
-      useMagicEmitter().emit('collision', {
+      magicEmitter.emit('collision', {
         id,
         direction,
         parentEdge,

@@ -48,6 +48,7 @@ const { add } = useMagicToast('magic-player-emitter-demo-toast')
 
 const elRef = useTemplateRef('el')
 const isVisible = useElementVisibility(elRef)
+const emitter = useMagicEmitter()
 
 function callback(
   id: keyof MagicEmitterEvents,
@@ -58,10 +59,10 @@ function callback(
   }
 }
 
-useMagicEmitter().on('*', callback)
+emitter.on('*', callback)
 
 onBeforeUnmount(() => {
-  useMagicEmitter().off('*', callback)
+  emitter.off('*', callback)
 })
 </script>
 

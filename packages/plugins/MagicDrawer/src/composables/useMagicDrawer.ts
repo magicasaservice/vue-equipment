@@ -9,6 +9,7 @@ export function useMagicDrawer(id: MaybeRef<string>) {
   const { initializeState } = useDrawerState(toValue(id))
   const state = initializeState()
   const { progress, active } = toRefs(state)
+  const emitter = useMagicEmitter()
 
   // Public state
   const isActive = computed(() => active.value)
@@ -23,7 +24,7 @@ export function useMagicDrawer(id: MaybeRef<string>) {
   }
 
   function snapTo(snapPoint: DrawerSnapPoint, duration?: number) {
-    useMagicEmitter().emit('snapTo', {
+    emitter.emit('snapTo', {
       id: toValue(id),
       snapPoint,
       duration,

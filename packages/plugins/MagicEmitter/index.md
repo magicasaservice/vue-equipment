@@ -15,10 +15,12 @@ function callback(id, payload) {
   // your callback
 }
 
-useMagicEmitter().on('*', callback)
+const emitter = useMagicEmitter()
+
+emitter.on('*', callback)
 
 onBeforeUnmount(() => {
-  useMagicEmitter().off('*', callback)
+  emitter.off('*', callback)
 })
 </script>
 ```
@@ -45,8 +47,10 @@ In order to interact with the emitter from anywhere within your app, immport the
 ```js
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
-useMagicEmitter().on('*', callback)
-useMagicEmitter().off('*', callback)
+const emitter = useMagicEmitter()
+
+emitter.on('*', callback)
+emitter.off('*', callback)
 ```
 
 > [!TIP]
@@ -120,10 +124,12 @@ function callback(
   // your callbck
 }
 
-useMagicEmitter().on('*', callback)
+const emitter = useMagicEmitter()
+
+emitter.on('*', callback)
 
 onBeforeUnmount(() => {
-  useMagicEmitter().off('*', callback)
+  emitter.off('*', callback)
 })
 ```
 
@@ -139,9 +145,11 @@ function callback(payload: MagicEmitterEvents['beforeEnter']) {
   // your callbck
 }
 
-useMagicEmitter().on('beforeEnter', callback)
+const emitter = useMagicEmitter()
+
+emitter.on('beforeEnter', callback)
 
 onBeforeUnmount(() => {
-  useMagicEmitter().off('beforeEnter', callback)
+  emitter.off('beforeEnter', callback)
 })
 ```
