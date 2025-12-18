@@ -4,7 +4,10 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { CookieState, MagicCookieOptions } from '../../types/index'
 
-const getCookieStateStore = createStateStore<CookieState[]>(() => [])
+const getCookieStateStore = createStateStore<CookieState[]>(
+  'MagicCookie',
+  () => []
+)
 
 export function useCookieState(instanceId: MaybeRef<string>) {
   const cookieStateStore = getCookieStateStore()

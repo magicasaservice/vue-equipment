@@ -3,8 +3,9 @@ import mitt, { type Emitter } from 'mitt'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { MagicEmitterEvents } from '../types/index'
 
-const getEmitter = createStateStore<Emitter<MagicEmitterEvents>>(() =>
-  mitt<MagicEmitterEvents>()
+const getEmitter = createStateStore<Emitter<MagicEmitterEvents>>(
+  'MagicEmitter',
+  () => mitt<MagicEmitterEvents>()
 )
 
 export function useMagicEmitter() {

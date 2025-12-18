@@ -4,7 +4,10 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { MarqueeState, MagicMarqueeOptions } from '../../types/index'
 
-const getMarqueeStateStore = createStateStore<MarqueeState[]>(() => [])
+const getMarqueeStateStore = createStateStore<MarqueeState[]>(
+  'MagicMarquee',
+  () => []
+)
 
 export function useMarqueeState(instanceId: MaybeRef<string>) {
   const marqueeStateStore = getMarqueeStateStore()

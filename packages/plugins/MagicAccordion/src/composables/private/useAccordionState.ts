@@ -4,7 +4,10 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { AccordionState, MagicAccordionOptions } from '../../types/index'
 
-const getAccordionStateStore = createStateStore<AccordionState[]>(() => [])
+const getAccordionStateStore = createStateStore<AccordionState[]>(
+  'MagicAccordion',
+  () => []
+)
 
 export function useAccordionState(instanceId: MaybeRef<string>) {
   const accordionStateStore = getAccordionStateStore()

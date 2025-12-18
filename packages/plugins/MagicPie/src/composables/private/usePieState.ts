@@ -2,7 +2,7 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { PieState } from '../../types/index'
 
-const getPieStateStore = createStateStore<PieState[]>(() => [])
+const getPieStateStore = createStateStore<PieState[]>('MagicPie', () => [])
 
 export function usePieState(id: MaybeRef<string>) {
   const pieStateStore = getPieStateStore()

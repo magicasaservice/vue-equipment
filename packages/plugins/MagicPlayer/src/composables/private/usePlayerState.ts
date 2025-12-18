@@ -3,7 +3,10 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import type { PlayerState } from '../../types/index'
 
 // Initialize here to ensure single store per app instance
-const getPlayerStateStore = createStateStore<PlayerState[]>(() => [])
+const getPlayerStateStore = createStateStore<PlayerState[]>(
+  'MagicPlayer',
+  () => []
+)
 
 export function usePlayerState(id: MaybeRef<string>) {
   const playerStateStore = getPlayerStateStore()
@@ -81,7 +84,9 @@ export function usePlayerState(id: MaybeRef<string>) {
   }
 
   onScopeDispose(() => {
-    if (!scopeCounted) { return }
+    if (!scopeCounted) {
+      return
+    }
 
     const currentId = toValue(id)
     const state = playerStateStore.value.find((entry) => entry.id === currentId)

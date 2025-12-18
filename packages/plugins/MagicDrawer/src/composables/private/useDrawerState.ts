@@ -2,7 +2,10 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { DrawerState } from '../../types/index'
 
-const getDrawerStateStore = createStateStore<DrawerState[]>(() => [])
+const getDrawerStateStore = createStateStore<DrawerState[]>(
+  'MagicDrawer',
+  () => []
+)
 
 export function useDrawerState(id: MaybeRef<string>) {
   const drawerStateStore = getDrawerStateStore()

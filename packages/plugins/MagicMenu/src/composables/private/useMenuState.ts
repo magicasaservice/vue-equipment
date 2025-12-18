@@ -4,7 +4,7 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { MenuState, MagicMenuOptions } from '../../types/index'
 
-const getMenuStateStore = createStateStore<MenuState[]>(() => [])
+const getMenuStateStore = createStateStore<MenuState[]>('MagicMenu', () => [])
 
 export function useMenuState(instanceId: MaybeRef<string>) {
   const menuStateStore = getMenuStateStore()

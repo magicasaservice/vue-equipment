@@ -9,7 +9,10 @@ import type {
   ToastDefaultOptions,
 } from '../../types/index'
 
-const getToastStateStore = createStateStore<ToastState[]>(() => [])
+const getToastStateStore = createStateStore<ToastState[]>(
+  'MagicToast',
+  () => []
+)
 
 export function useToastState(instanceId: MaybeRef<string>) {
   const toastStateStore = getToastStateStore()

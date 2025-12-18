@@ -4,7 +4,10 @@ import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { CommandState, MagicCommandOptions } from '../../types/index'
 
-const getCommandStateStore = createStateStore<CommandState[]>(() => [])
+const getCommandStateStore = createStateStore<CommandState[]>(
+  'MagicCommand',
+  () => []
+)
 
 export function useCommandState(instanceId: MaybeRef<string>) {
   const commandStateStore = getCommandStateStore()

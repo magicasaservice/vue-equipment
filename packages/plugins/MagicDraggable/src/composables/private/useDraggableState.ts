@@ -2,7 +2,10 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { DraggableState } from '../../types/index'
 
-const getDraggableStateStore = createStateStore<DraggableState[]>(() => [])
+const getDraggableStateStore = createStateStore<DraggableState[]>(
+  'MagicDraggable',
+  () => []
+)
 
 export function useDraggableState(id: MaybeRef<string>) {
   const draggableStateStore = getDraggableStateStore()
