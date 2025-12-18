@@ -12,7 +12,7 @@ import {
   onMounted,
   watch,
   useTemplateRef,
-  onScopeDispose,
+  onUnmounted,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
@@ -94,7 +94,7 @@ onMounted(() => {
   createAnimation()
 })
 
-onScopeDispose(() => {
+onUnmounted(() => {
   animation.value?.cancel()
   animation.value = undefined
 })
