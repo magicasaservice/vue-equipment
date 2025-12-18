@@ -276,9 +276,9 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
   function initialize() {
     hasControls.value = true
 
-    watchTrack = watch(() => trackRef, getTimelineTrackSize)
-    watchPopover = watch(() => popoverRef, getPopoverSizes)
-    watchBar = watch(() => barRef, getPopoverSizes)
+    watchTrack = watch(() => trackRef?.value, getTimelineTrackSize)
+    watchPopover = watch(() => popoverRef?.value, getPopoverSizes)
+    watchBar = watch(() => barRef?.value, getPopoverSizes)
 
     watchCurrentTime = watch(currentTime, (value) => {
       const percentage = (value / duration?.value) * 100
