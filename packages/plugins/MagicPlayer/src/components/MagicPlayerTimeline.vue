@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onBeforeUnmount, toRefs } from 'vue'
+import { inject, toRefs } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,

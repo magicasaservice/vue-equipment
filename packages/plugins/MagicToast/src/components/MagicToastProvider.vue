@@ -42,14 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  toValue,
-  useTemplateRef,
-  provide,
-  watch,
-  onBeforeUnmount,
-  type MaybeRef,
-} from 'vue'
+import { toValue, useTemplateRef, provide, watch, type MaybeRef } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastView } from '../composables/private/useToastView'

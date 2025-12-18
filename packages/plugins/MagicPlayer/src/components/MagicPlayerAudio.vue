@@ -9,7 +9,6 @@ import {
   inject,
   watch,
   onMounted,
-  onBeforeUnmount,
   shallowRef,
   computed,
   onScopeDispose,

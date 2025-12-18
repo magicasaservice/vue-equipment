@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, type MaybeRef } from 'vue'
 import { useModalState } from './private/useModalState'
 
 export function useMagicModal(id: MaybeRef<string>) {

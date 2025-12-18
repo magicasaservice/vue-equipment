@@ -21,14 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  toRefs,
-  provide,
-  onMounted,
-  onUnmounted,
-  useTemplateRef,
-  type MaybeRef,
-} from 'vue'
+import { toRefs, provide, onMounted, useTemplateRef, type MaybeRef } from 'vue'
 import defu from 'defu'
 
 import { usePlayerState } from '../composables/private/usePlayerState'
