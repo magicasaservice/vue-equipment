@@ -734,6 +734,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
           passive: false,
         })
       : undefined
+    // Pointerup does not fire on iOS, use touchend instead
     cancelTouchend =
       isIOS() || isAndroid()
         ? useEventListener(document, 'touchend', onTouchend)
