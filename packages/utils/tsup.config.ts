@@ -10,6 +10,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   minify: false,
+  external: ['vue'],
   onSuccess: async () => {
     // Copy type utils to dist
     await cpSync(
