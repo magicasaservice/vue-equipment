@@ -65,7 +65,7 @@ export function usePieState(id: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

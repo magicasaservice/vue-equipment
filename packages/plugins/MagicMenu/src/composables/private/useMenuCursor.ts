@@ -275,7 +275,7 @@ export function useMenuCursor(view: MenuView, debug = false) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     coords,

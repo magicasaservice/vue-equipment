@@ -85,7 +85,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

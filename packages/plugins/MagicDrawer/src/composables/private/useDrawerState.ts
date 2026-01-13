@@ -87,7 +87,7 @@ export function useDrawerState(id: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

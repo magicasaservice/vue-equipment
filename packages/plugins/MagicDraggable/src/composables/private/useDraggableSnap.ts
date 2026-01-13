@@ -304,7 +304,7 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
   onScopeDispose(() => {
     // Cancel any running interpolations
     cancelInterpolation()
-  })
+  }, true)
 
   return {
     mappedActiveSnapPoint,

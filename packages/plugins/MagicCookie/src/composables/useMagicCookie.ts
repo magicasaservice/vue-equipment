@@ -99,7 +99,7 @@ export function useMagicCookie(id: MaybeRef<string>) {
     emitter.off('acceptAll')
     emitter.off('acceptSelected')
     emitter.off('rejectAll')
-  })
+  }, true)
 
   return {
     cookies,

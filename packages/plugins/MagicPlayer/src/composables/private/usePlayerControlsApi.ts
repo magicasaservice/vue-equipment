@@ -323,7 +323,7 @@ export function usePlayerControlsApi(args: UsePlayerControlsApiArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     initialize,

@@ -2,7 +2,6 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { PlayerState } from '../../types/index'
 
-// Initialize here to ensure single store per app instance
 const getPlayerStateStore = createStateStore<PlayerState[]>(
   'MagicPlayer',
   () => []

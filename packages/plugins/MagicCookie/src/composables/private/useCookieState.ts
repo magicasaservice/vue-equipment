@@ -76,7 +76,7 @@ export function useCookieState(instanceId: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

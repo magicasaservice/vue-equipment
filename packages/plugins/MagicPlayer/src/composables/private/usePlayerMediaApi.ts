@@ -324,7 +324,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
     cancelPlay()
     cancelVolumechange()
     cancelError()
-  })
+  }, true)
 }
 
 export type UsePlayerMediaApiReturn = ReturnType<typeof usePlayerMediaApi>

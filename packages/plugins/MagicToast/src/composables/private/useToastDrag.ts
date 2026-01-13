@@ -401,7 +401,7 @@ export function useToastDrag(args: UseToastDragArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     onPointerdown,

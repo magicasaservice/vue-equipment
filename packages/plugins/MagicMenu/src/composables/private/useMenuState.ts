@@ -78,7 +78,7 @@ export function useMenuState(instanceId: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,
