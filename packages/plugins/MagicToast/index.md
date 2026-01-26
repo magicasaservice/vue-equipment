@@ -498,3 +498,11 @@ MagicToastView is used internally. Some CSS is configurable.
 ### Clear All
 
 <component-preview src="./demo/ClearAllDemo.vue" />
+
+### Slot
+
+<component-preview src="./demo/SlotDemo.vue" />
+
+### Slotted Component
+
+<component-preview src="./demo/NestedSlotDemo.vue" />

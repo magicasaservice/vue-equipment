@@ -5,7 +5,8 @@ import type { ToastView } from '../types'
 
 export interface AddArgs {
   component: ToastView['component']
-  props: ToastView['props']
+  props?: ToastView['props']
+  slots?: ToastView['slots']
   duration?: number
   id?: string
 }
@@ -23,8 +24,8 @@ export function useMagicToast(id: MaybeRef<string>) {
 
   // Public functions
   function add(args: AddArgs) {
-    const { id, component, props, duration } = args
-    const view = initializeView({ id, component, props })
+    const { id, component, props, slots, duration } = args
+    const view = initializeView({ id, component, props, slots })
 
     const mappedDuration = duration ?? state.options.duration
 
