@@ -59,6 +59,7 @@ const state = initializeState()
 const count = computed(() => state.views.length)
 const view = computed(() => state.views[index])
 const reversedIndex = computed(() => count.value - index - 1)
+const reversedViews = computed(() => [...state.views].reverse())
 
 magicError.assert(view.value, {
   message: 'MagicToastView could not be registered',
@@ -67,7 +68,7 @@ magicError.assert(view.value, {
 
 const height = computed(() => `${view.value?.dimensions?.height}px`)
 const offset = computed(() => {
-  const mapped = state.views
+  const mapped = reversedViews.value
     .slice(0, reversedIndex.value)
     .reduce((acc, view) => acc + (view.dimensions?.height ?? 0), 0)
 
