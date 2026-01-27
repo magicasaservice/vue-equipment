@@ -1,5 +1,6 @@
 import type { MaybeRef, Slots } from 'vue'
 import type { RequireAll } from '@maas/vue-equipment/utils'
+import type { UseToastTimeout } from '../composables/private/useToastTimeout'
 
 type Position =
   | 'top-left'
@@ -35,6 +36,7 @@ export interface ToastView {
   lastDraggedY: number
   draggedX: number
   draggedY: number
+  timeout: UseToastTimeout | undefined
 }
 
 export interface ToastState {

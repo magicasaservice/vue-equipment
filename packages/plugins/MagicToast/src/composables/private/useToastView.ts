@@ -38,6 +38,7 @@ export function useToastView(instanceId: MaybeRef<string>) {
       lastDraggedY: 0,
       draggedX: 0,
       draggedY: 0,
+      timeout: undefined,
     }
 
     return reactive(view)

@@ -1,4 +1,5 @@
 import { computed, toValue, nextTick, type MaybeRef } from 'vue'
+import { useToastTimeout } from './private/useToastTimeout'
 import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
 import type { ToastView } from '../types'
@@ -31,9 +32,10 @@ export function useMagicToast(id: MaybeRef<string>) {
 
     // Remove after timeout
     if (mappedDuration > 0) {
-      setTimeout(() => {
-        deleteView(view.id)
-      }, mappedDuration)
+      view.timeout = useToastTimeout(() => deleteView(view.id), {
+        delay: mappedDuration,
+        immediate: true,
+      })
     }
 
     return view.id
