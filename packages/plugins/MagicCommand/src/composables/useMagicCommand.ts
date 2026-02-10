@@ -26,6 +26,7 @@ export function useMagicCommand(id: MaybeRef<string>) {
   // Public state
   const state = initializeState()
   const isActive = computed(() => state.active)
+  const activeView = computed(() => state.views.find((view) => view.active))
 
   // Public functions
   const { selectView, unselectView, selectInitialView, unselectAllViews } =
@@ -95,6 +96,7 @@ export function useMagicCommand(id: MaybeRef<string>) {
 
   return {
     isActive,
+    activeView,
     open,
     close,
     selectItem,
