@@ -216,7 +216,7 @@ To customize the menu, override the necessary options. Any custom options will b
           description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of nested `MagicMenuContent` elements.'
         },
         { label: 'string' },
-        { label: 'magic-menu-content--fade' }
+        { label: '\'magic-menu-content--fade\'' }
       ]
     },
     {
@@ -226,7 +226,7 @@ To customize the menu, override the necessary options. Any custom options will b
           description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the `MagicMenuChannel`.'
         },
         { label: 'string' },
-        { label: 'magic-menu-channel' }
+        { label: '\'magic-menu-channel\'' }
       ]
     },
     {
