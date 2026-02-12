@@ -120,10 +120,6 @@
   --vp-c-brand-2: var(--app-color-primary-fg-solid-hover);
   --vp-c-brand-3: var(--app-color-primary-fg-solid-active);
   --vp-c-brand-soft: var(--app-color-accent-fg-subtle);
-
-  --vp-c-tip-1: var(--app-color-warning-fg-solid);
-  --vp-c-tip-2: var(--app-color-warning-fg-muted);
-  --vp-c-tip-3: var(--app-color-warning-fg-subtle);
   --vp-c-tip-soft: var(--app-color-primary-bg-translucent);
 
   --vp-c-note-1: var(--vp-c-brand-1);

@@ -279,6 +279,9 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
+> [!TIP]
+> Make sure to not use `translate3D` or similar properties for custom transitions. This can interfere with positioning and cause the menu to be misplaced.
+
 ### MagicMenuView
 
 #### Props

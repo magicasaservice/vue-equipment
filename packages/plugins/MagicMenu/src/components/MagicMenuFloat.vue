@@ -29,6 +29,7 @@ import {
   toValue,
   type MaybeRef,
   type ComponentPublicInstance,
+  onBeforeUnmount,
 } from 'vue'
 import {
   useFloating,
@@ -44,6 +45,10 @@ import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
 import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 import type { MenuPlacement } from '../types'
+import {
+  useMagicEmitter,
+  type MagicEmitterEvents,
+} from '@maas/vue-equipment/plugins/MagicEmitter'
 
 interface MagicMenuFloatProps {
   placement?: MenuPlacement
@@ -182,6 +187,7 @@ const mappedStrategy = computed(() => {
 })
 
 const {
+  update,
   floatingStyles,
   placement: floatingPlacement,
   middlewareData,
@@ -230,6 +236,25 @@ const polygonPoints = computed(() => {
     default:
       return undefined
   }
+})
+
+// Make sure position is up to date on afterEnter
+const emitter = useMagicEmitter()
+
+function afterEnterCallback(payload: MagicEmitterEvents['afterEnter']) {
+  if (
+    typeof payload === 'object' &&
+    payload.viewId === viewId &&
+    payload.id === instanceId
+  ) {
+    update()
+  }
+}
+
+emitter.on('afterEnter', afterEnterCallback)
+
+onBeforeUnmount(() => {
+  emitter.off('afterEnter', afterEnterCallback)
 })
 </script>
 
