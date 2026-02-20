@@ -77,7 +77,7 @@ export function useMarqueeState(instanceId: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

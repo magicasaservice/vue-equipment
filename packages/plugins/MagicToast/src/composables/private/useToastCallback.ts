@@ -1,4 +1,4 @@
-import { toValue, type MaybeRef } from 'vue'
+import { nextTick, toValue, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useToastView } from './useToastView'
 import { useToastState } from './useToastState'
@@ -14,8 +14,27 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
     emitter.emit('beforeEnter', toValue(instanceId))
   }
 
-  function onEnter() {
+  function onEnter(el: Element) {
     emitter.emit('enter', toValue(instanceId))
+
+    void nextTick(() => {
+      const mappedEl = el as HTMLElement
+      const view = getView(mappedEl.dataset.id ?? '')
+
+      if (view) {
+        const style = window.getComputedStyle(mappedEl)
+
+        const dimensions = {
+          height: mappedEl.offsetHeight,
+          padding: {
+            top: parseInt(style.paddingTop),
+            bottom: parseInt(style.paddingBottom),
+          },
+        }
+
+        view.dimensions = dimensions
+      }
+    })
 
     // Remove oldest view once threshold is reached
     if (
@@ -28,27 +47,8 @@ export function useToastCallback(instanceId: MaybeRef<string>) {
     }
   }
 
-  function onAfterEnter(el: Element) {
+  function onAfterEnter() {
     emitter.emit('afterEnter', toValue(instanceId))
-
-    // Save dimensions
-    const mappedEl = el as HTMLElement
-    const view = getView(mappedEl.dataset.id ?? '')
-
-    if (view) {
-      const mappedEl = el as HTMLElement
-      const style = window.getComputedStyle(mappedEl)
-
-      const dimensions = {
-        height: mappedEl.offsetHeight,
-        padding: {
-          top: parseInt(style.paddingTop),
-          bottom: parseInt(style.paddingBottom),
-        },
-      }
-
-      view.dimensions = dimensions
-    }
   }
 
   function onBeforeLeave() {

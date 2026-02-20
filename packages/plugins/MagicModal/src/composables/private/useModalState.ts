@@ -2,7 +2,6 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import type { ModalState } from '../../types/index'
 
-// Initialize here to ensure single store per app instance
 const getModalStateStore = createStateStore<ModalState[]>(
   'MagicModal',
   () => []
@@ -68,7 +67,7 @@ export function useModalState(id: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

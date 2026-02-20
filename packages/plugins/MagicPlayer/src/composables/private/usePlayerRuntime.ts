@@ -219,7 +219,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     initialize,

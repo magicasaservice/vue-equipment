@@ -84,7 +84,7 @@ export function useDraggableState(id: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

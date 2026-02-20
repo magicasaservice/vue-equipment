@@ -277,6 +277,15 @@ export function useToastDrag(args: UseToastDragArgs) {
       )
     }
 
+    // Restart timeouts
+    // Only if not expanded via hover
+    // Mouseenter/leave take precedence
+    if (state.options.layout?.expand !== 'hover' && state.expanded) {
+      state.views.forEach((view) => {
+        view.timeout?.play()
+      })
+    }
+
     if (hasDragged.value) {
       e.preventDefault()
     }
@@ -335,6 +344,11 @@ export function useToastDrag(args: UseToastDragArgs) {
     } else {
       // Save state
       dragging.value = true
+
+      // Pause timeouts
+      state.views.forEach((view) => {
+        view.timeout?.pause()
+      })
 
       // Save pointerdown target and capture pointer
       // Capture the target, not the elRef, since this would break canDrag
@@ -401,7 +415,7 @@ export function useToastDrag(args: UseToastDragArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     onPointerdown,

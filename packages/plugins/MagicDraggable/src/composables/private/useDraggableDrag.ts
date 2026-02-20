@@ -605,7 +605,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     initialize,

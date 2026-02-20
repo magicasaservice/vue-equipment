@@ -2,7 +2,7 @@ import { reactive, markRaw, type MaybeRef } from 'vue'
 import { useToastState } from './useToastState'
 import { type ToastView } from '../../types'
 
-export type AddViewArgs = Pick<ToastView, 'component' | 'props'> & {
+export type AddViewArgs = Pick<ToastView, 'component' | 'props' | 'slots'> & {
   id?: string
 }
 
@@ -19,11 +19,12 @@ export function useToastView(instanceId: MaybeRef<string>) {
   }
 
   function createView(args: CreateViewArgs) {
-    const { id = uuid(), props, component } = args
+    const { id = uuid(), props, slots, component } = args
 
     const view: ToastView = {
       component: markRaw(component),
       props,
+      slots,
       id,
       dragStart: undefined,
       dragging: false,
@@ -37,6 +38,7 @@ export function useToastView(instanceId: MaybeRef<string>) {
       lastDraggedY: 0,
       draggedX: 0,
       draggedY: 0,
+      timeout: undefined,
     }
 
     return reactive(view)

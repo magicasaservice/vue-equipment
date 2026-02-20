@@ -79,7 +79,7 @@ export function useAccordionState(instanceId: MaybeRef<string>) {
         deleteState()
       }
     }
-  })
+  }, true)
 
   return {
     initializeState,

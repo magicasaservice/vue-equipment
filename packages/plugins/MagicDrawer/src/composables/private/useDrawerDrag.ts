@@ -871,7 +871,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   onScopeDispose(() => {
     destroy()
-  })
+  }, true)
 
   return {
     onPointerdown,

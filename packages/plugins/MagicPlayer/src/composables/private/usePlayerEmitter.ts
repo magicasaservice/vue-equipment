@@ -176,7 +176,7 @@ export function usePlayerEmitter(args: UsePlayerEmitterArgs) {
 
   onScopeDispose(() => {
     destroyEmitter()
-  })
+  }, true)
 
   return {
     initializeEmitter,

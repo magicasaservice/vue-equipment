@@ -68,7 +68,7 @@ magicError.assert(view.value, {
 const height = computed(() => `${view.value?.dimensions?.height}px`)
 const offset = computed(() => {
   const mapped = state.views
-    .slice(0, reversedIndex.value)
+    .slice(index + 1)
     .reduce((acc, view) => acc + (view.dimensions?.height ?? 0), 0)
 
   return `${mapped}px`
