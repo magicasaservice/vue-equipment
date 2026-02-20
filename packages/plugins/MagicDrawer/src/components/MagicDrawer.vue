@@ -327,7 +327,7 @@ watch(isActive, async (value) => {
   }
 })
 
-// Save overshoot, as soon as drawer apepars in the DOM
+// Save overshoot, as soon as drawer appears in the DOM
 watch(innerActive, () => {
   saveOvershoot()
 })
@@ -491,7 +491,7 @@ onUnmounted(() => {
   justify-content: var(--magic-drawer-justify-content);
   overflow-x: var(--magic-drawer-content-overflow-x, hidden);
   overflow-y: var(--magic-drawer-content-overflow-y, hidden);
-  cursor: grab;
+  cursor: var(--magic-drawer-cursor, grab);
 }
 
 /* Reset default dialog styles */

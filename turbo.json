@@ -16,7 +16,6 @@
       "persistent": true,
       "dependsOn": ["update", "composables#build", "plugins#build"]
     },
-
     "build": {
       "outputs": ["./dist/**"],
       "dependsOn": ["update"]
@@ -37,7 +36,6 @@
     "nuxt#build": {
       "dependsOn": ["update", "composables#build", "plugins#build"]
     },
-
     "lint": {
       "cache": true,
       "outputs": []
@@ -46,7 +44,6 @@
       "cache": false,
       "outputs": ["./packages/metadata/index.json"]
     },
-
     "//#t:release": {
       "cache": false,
       "dependsOn": [
