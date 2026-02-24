@@ -508,7 +508,7 @@ dialog.magic-drawer__drag::backdrop {
 }
 
 .magic-drawer[data-dragging='true'] .magic-drawer__drag {
-  cursor: grabbing;
+  cursor: var(--magic-drawer-cursor-dragging, grabbing);
   user-select: none;
 }
 
