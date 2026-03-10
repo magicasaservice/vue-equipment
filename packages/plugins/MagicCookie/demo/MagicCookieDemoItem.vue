@@ -31,7 +31,8 @@ if (!instanceId) {
   throw new Error('MagicCookieItem must be nested inside MagicCookieProvider')
 }
 
-const mappedId = computed(() => id ?? `magic-cookie-item-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-cookie-item-${uuid}`)
 const mappedActive = computed(() => item.active)
 
 // Register item

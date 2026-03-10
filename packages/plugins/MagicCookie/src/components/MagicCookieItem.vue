@@ -42,7 +42,8 @@ magicError.assert(instanceId, {
   errorCode: 'missing_instance_id',
 })
 
-const mappedId = computed(() => id ?? `magic-cookie-item-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-cookie-item-${uuid}`)
 const mappedActive = computed(() => item.active)
 
 // Register item

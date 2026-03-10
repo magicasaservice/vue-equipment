@@ -81,7 +81,8 @@ magicError.assert(contentId, {
   errorCode: 'missing_content_id',
 })
 
-const mappedId = computed(() => id ?? `magic-command-item-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-command-item-${uuid}`)
 
 // Register item
 const { initializeItem, deleteItem, selectItem } = useCommandItem({

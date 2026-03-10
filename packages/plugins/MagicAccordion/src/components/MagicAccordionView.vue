@@ -43,7 +43,8 @@ magicError.assert(instanceId, {
   errorCode: 'missing_instance_id',
 })
 
-const mappedId = computed(() => id ?? `magic-accordion-view-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-accordion-view-${uuid}`)
 const mappedActive = computed(() => view.active)
 
 // Register view

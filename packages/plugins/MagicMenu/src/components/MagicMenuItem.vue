@@ -70,7 +70,8 @@ magicError.assert(contentId, {
   errorCode: 'missing_content_id',
 })
 
-const mappedId = computed(() => id ?? `magic-menu-item-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-menu-item-${uuid}`)
 const mappedActive = computed(() => item.active)
 
 // Register item

@@ -48,8 +48,9 @@ magicError.assert(scrollTarget, {
 const intersecting = shallowRef(false)
 const elRef = useTemplateRef('el')
 
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-scroll-collision-${uuid}`)
 const scrollY = computed(() => toValue(scrollReturn?.y) || 0)
-const mappedId = computed(() => id ?? `magic-scroll-collision-${useId()}`)
 
 const { observe } = useCollisionDetection({
   id: mappedId.value,

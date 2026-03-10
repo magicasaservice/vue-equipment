@@ -40,7 +40,8 @@ magicError.assert(instanceId, {
   errorCode: 'missing_instance_id',
 })
 
-const mappedId = computed(() => id ?? `magic-command-view-${useId()}`)
+const uuid = useId()
+const mappedId = computed(() => id ?? `magic-command-view-${uuid}`)
 const mappedParentTree = computed(() => [...parentTree, mappedId.value])
 const mappedActive = computed(() => view.active)
 
