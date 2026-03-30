@@ -10,7 +10,8 @@
       :data-id="mappedId"
       v-bind="$attrs"
       aria-modal="true"
-      @click.self="close"
+      @pointerdown="onPointerdown"
+      @click.self="closeIfSelf"
     >
       <transition
         v-if="mappedOptions.backdrop || !!$slots.backdrop"
@@ -19,7 +20,7 @@
         <div
           v-show="innerActive"
           class="magic-modal__backdrop"
-          @click.self="close"
+          @click.self="closeIfSelf"
         >
           <slot name="backdrop" />
         </div>
@@ -37,7 +38,7 @@
           :is="mappedOptions.tag"
           v-show="innerActive"
           class="magic-modal__content"
-          @click.self="close"
+          @click.self="closeIfSelf"
         >
           <slot />
         </component>
@@ -99,6 +100,19 @@ const { trapFocus, releaseFocus, unlockScroll } = useModalDOM({
 })
 
 const { isActive, close } = useMagicModal(id)
+
+let pointerdownTarget: EventTarget | null = null
+
+function onPointerdown(e: PointerEvent) {
+  pointerdownTarget = e.target
+}
+
+function closeIfSelf(e: MouseEvent) {
+  if (pointerdownTarget === e.currentTarget) {
+    close()
+  }
+  pointerdownTarget = null
+}
 
 // Split isActive into two values to animate modal smoothly
 const innerActive = shallowRef(false)
