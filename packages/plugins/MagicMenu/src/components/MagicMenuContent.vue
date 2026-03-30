@@ -1,5 +1,9 @@
 <template>
-  <teleport v-if="wrapperActive" to="body">
+  <teleport
+    v-if="wrapperActive"
+    :to="mappedTeleport.to"
+    :disabled="mappedTeleport.disabled"
+  >
     <transition
       :name="mappedTransition"
       @before-enter="onBeforeEnter"
@@ -66,6 +70,7 @@ import {
   onBeforeUnmount,
   type MaybeRef,
   type ComponentPublicInstance,
+  type RendererElement,
 } from 'vue'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
@@ -98,9 +103,17 @@ interface MagicMenuContentProps {
   middleware?: Middleware[]
   transition?: string
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
+  teleport?: {
+    to: string | RendererElement
+    disabled?: boolean
+  }
 }
 
-const { arrow = undefined, transition } = defineProps<MagicMenuContentProps>()
+const {
+  arrow = undefined,
+  transition,
+  teleport,
+} = defineProps<MagicMenuContentProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicMenu',
@@ -128,6 +141,10 @@ const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 
 const pointerDisabled = computed(() => state.input.disabled.includes('pointer'))
+
+const mappedTeleport = computed(() => {
+  return { to: teleport?.to ?? 'body', disabled: teleport?.disabled ?? false }
+})
 
 const mappedTransition = computed(() => {
   switch (true) {

@@ -368,6 +368,34 @@ To customize the menu, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'teleport',
+          description: 'Override the [teleport target](https://vuejs.org/guide/built-ins/teleport#basic-usage) or disable teleporting.'
+        },
+        {
+          label: '{ to: string | RendererElement, disabled?: boolean }',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'middleware',
+          description: 'Inject custom Floating UI [middleware](https://floating-ui.com/docs/middleware).'
+        },
+        {
+          label: 'Middleware[]',
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'referenceEl',
           description: 'Override the reference element used for positioning the content element.'
         },
