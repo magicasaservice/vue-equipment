@@ -10,8 +10,7 @@
       :data-id="mappedId"
       v-bind="$attrs"
       aria-modal="true"
-      @pointerdown="onPointerdown"
-      @click.self="closeIfSelf"
+      @pointerdown.self="onPointerdown"
     >
       <transition
         v-if="mappedOptions.backdrop || !!$slots.backdrop"
@@ -19,8 +18,9 @@
       >
         <div
           v-show="innerActive"
+          ref="backdrop"
           class="magic-modal__backdrop"
-          @click.self="closeIfSelf"
+          @pointerdown.self="onPointerdown"
         >
           <slot name="backdrop" />
         </div>
@@ -35,10 +35,11 @@
         @after-leave="onAfterLeave"
       >
         <component
+          ref="component"
           :is="mappedOptions.tag"
           v-show="innerActive"
           class="magic-modal__content"
-          @click.self="closeIfSelf"
+          @pointerdown.self="onPointerdown"
         >
           <slot />
         </component>
@@ -54,12 +55,11 @@ import {
   watch,
   nextTick,
   toValue,
-  onBeforeUnmount,
   onUnmounted,
   type MaybeRef,
 } from 'vue'
 import { createDefu } from 'defu'
-import { onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, useEventListener } from '@vueuse/core'
 import { defaultOptions } from './../utils/defaultOptions'
 import { useModalDOM } from '../composables/private/useModalDOM'
 import { useModalCallback } from '../composables/private/useModalCallback'
@@ -69,6 +69,10 @@ import type { MagicModalOptions } from './../types/index'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
+import {
+  guardedReleasePointerCapture,
+  guardedSetPointerCapture,
+} from '@maas/vue-equipment/utils'
 
 defineOptions({
   inheritAttrs: false,
@@ -101,17 +105,29 @@ const { trapFocus, releaseFocus, unlockScroll } = useModalDOM({
 
 const { isActive, close } = useMagicModal(id)
 
-let pointerdownTarget: EventTarget | null = null
+function onPointerup(e: PointerEvent) {
+  const target = e.target as HTMLElement
 
-function onPointerdown(e: PointerEvent) {
-  pointerdownTarget = e.target
-}
-
-function closeIfSelf(e: MouseEvent) {
-  if (pointerdownTarget === e.currentTarget) {
+  if (target.hasPointerCapture(e.pointerId)) {
     close()
   }
-  pointerdownTarget = null
+
+  guardedReleasePointerCapture({
+    event: e,
+    element: target,
+  })
+}
+
+function onPointerdown(e: PointerEvent) {
+  const target = e.target as HTMLElement
+
+  guardedSetPointerCapture({
+    event: e,
+    element: target,
+    mouse: true,
+  })
+
+  useEventListener(document, 'pointerup', onPointerup, { once: true })
 }
 
 // Split isActive into two values to animate modal smoothly
@@ -157,11 +173,6 @@ watch(isActive, async (value) => {
   } else {
     onClose()
   }
-})
-
-// Reset state on unmount
-onBeforeUnmount(() => {
-  close()
 })
 
 onUnmounted(() => {

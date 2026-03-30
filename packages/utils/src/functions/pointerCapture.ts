@@ -1,6 +1,7 @@
 interface GuardedSetPointerCaptureArgs {
   event: PointerEvent
   element?: Element | null
+  mouse?: boolean
   debug?: boolean
 }
 
@@ -12,13 +13,13 @@ interface GuardedReleasePointerCaptureArgs {
 export function guardedSetPointerCapture(
   args: GuardedSetPointerCaptureArgs
 ): void {
-  const { event, element, debug } = args
-  if (element && event.isPrimary && event.pointerType !== 'mouse') {
+  const { event, element, mouse, debug } = args
+  if (element && event.isPrimary && (mouse || event.pointerType !== 'mouse')) {
     try {
       const coalescedEvents: PointerEvent[] =
         'getCoalescedEvents' in event ? event.getCoalescedEvents() : [event]
 
-      if (coalescedEvents.length > 0) {
+      if (coalescedEvents.length > 0 || mouse) {
         element?.setPointerCapture(event.pointerId)
       }
     } catch (error) {
