@@ -1,14 +1,7 @@
 <template>
   <magic-menu-provider
     id="magic-menu-dropdown-demo"
-    :options="{
-      mode: 'dropdown',
-      transition: {
-        content: {
-          default: 'test',
-        },
-      },
-    }"
+    :options="{ mode: 'dropdown' }"
   >
     <magic-menu-view id="magic-menu-dropdown-demo-view">
       <magic-menu-trigger as-child>
@@ -69,20 +62,5 @@ const menu = {
 <style>
 :root {
   --magic-menu-float-arrow-color: var(--app-color-surface-bg-high);
-}
-
-@keyframes test {
-  0% {
-    opacity: 0;
-    transform: scale(97%) translateY(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(100%) translateY(0px);
-  }
-}
-
-.test-enter-active {
-  animation: test 300ms ease-out;
 }
 </style>
