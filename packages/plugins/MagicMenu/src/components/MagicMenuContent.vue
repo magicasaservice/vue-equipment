@@ -104,7 +104,7 @@ interface MagicMenuContentProps {
   transition?: string
   referenceEl?: MaybeRef<HTMLElement | ComponentPublicInstance>
   teleport?: {
-    to: string | RendererElement
+    to?: string | RendererElement
     disabled?: boolean
   }
 }
