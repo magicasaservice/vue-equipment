@@ -17,12 +17,16 @@
     "@maas/mirror": "catalog:",
     "@release-it/bumper": "^7.0.5",
     "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vitest/browser-playwright": "^4.1.2",
     "eslint": "^9.39.1",
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "release-it": "^19.0.5",
     "turbo": "^2.6.0",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^4.1.2",
+    "vitest-browser-vue": "^2.1.0"
   },
   "exports": {
     "./nuxt": {
