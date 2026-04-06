@@ -3,7 +3,7 @@ import { userEvent } from 'vitest/browser'
 import { defineComponent, nextTick, reactive, ref } from 'vue'
 import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
-import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from './test-utils'
 
 function createEventTrackingWrapper(
@@ -19,7 +19,7 @@ function createEventTrackingWrapper(
       const events = reactive<string[]>([])
       const lastPayload = ref<unknown>(null)
 
-      emitter.on('beforeEnter', (data) => {
+      emitter.on('beforeEnter', (data: unknown) => {
         events.push('beforeEnter')
         lastPayload.value = data
       })
@@ -28,13 +28,13 @@ function createEventTrackingWrapper(
       emitter.on('beforeLeave', () => events.push('beforeLeave'))
       emitter.on('leave', () => events.push('leave'))
       emitter.on('afterLeave', () => events.push('afterLeave'))
-      emitter.on('beforeDrag', (data) => {
+      emitter.on('beforeDrag', (data: unknown) => {
         events.push('beforeDrag')
         lastPayload.value = data
       })
       emitter.on('drag', () => events.push('drag'))
       emitter.on('afterDrag', () => events.push('afterDrag'))
-      emitter.on('snapTo', (data) => {
+      emitter.on('snapTo', (data: unknown) => {
         events.push('snapTo')
         lastPayload.value = data
       })
