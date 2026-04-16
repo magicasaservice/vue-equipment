@@ -17,10 +17,10 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="${drawerId}" :options="options">
-          <div data-testid="drawer-content" style="height: 200px; width: 100%;">Content</div>
+          <div data-test-id="drawer-content" style="height: 200px; width: 100%;">Content</div>
         </MagicDrawer>
       </div>
     `,
@@ -59,12 +59,12 @@ function createRapidWrapper(drawerId: string) {
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <button data-testid="close-btn" @click="close">Close</button>
-        <button data-testid="rapid-btn" @click="rapidToggle">Rapid</button>
-        <button data-testid="double-open-btn" @click="doubleOpen">DblOpen</button>
-        <button data-testid="double-close-btn" @click="openThenDoubleClose">DblClose</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <button data-test-id="close-btn" @click="close">Close</button>
+        <button data-test-id="rapid-btn" @click="rapidToggle">Rapid</button>
+        <button data-test-id="double-open-btn" @click="doubleOpen">DblOpen</button>
+        <button data-test-id="double-close-btn" @click="openThenDoubleClose">DblClose</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="${drawerId}">
           <div>Content</div>
         </MagicDrawer>
@@ -115,9 +115,9 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <button data-testid="snap-btn" @click="trySnap">Snap</button>
-            <span data-testid="is-active">{{ isActive }}</span>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <button data-test-id="snap-btn" @click="trySnap">Snap</button>
+            <span data-test-id="is-active">{{ isActive }}</span>
             <MagicDrawer id="warn-snap" :options="{ snapPoints: [0.5, 1] }">
               <div>Content</div>
             </MagicDrawer>
@@ -161,8 +161,8 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <span data-testid="is-active">{{ isActive }}</span>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <span data-test-id="is-active">{{ isActive }}</span>
             <MagicDrawer id="overshoot-warn" style="--magic-drawer-drag-overshoot: invalid">
               <div>Content</div>
             </MagicDrawer>
@@ -233,7 +233,7 @@ describe('MagicDrawer - Edge Cases', () => {
 
       // Double close (button calls close() twice via DOM click — behind drawer)
       const dblCloseBtn = document.querySelector(
-        '[data-testid="double-close-btn"]'
+        '[data-test-id="double-close-btn"]'
       ) as HTMLElement
       dblCloseBtn.click()
       await nextTick()
@@ -266,9 +266,9 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <button data-testid="toggle-btn" @click="showDrawer = !showDrawer">Toggle</button>
-            <span data-testid="is-active">{{ isActive }}</span>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <button data-test-id="toggle-btn" @click="showDrawer = !showDrawer">Toggle</button>
+            <span data-test-id="is-active">{{ isActive }}</span>
             <MagicDrawer v-if="showDrawer" id="unmount-drawer">
               <div>Content</div>
             </MagicDrawer>
@@ -287,7 +287,7 @@ describe('MagicDrawer - Edge Cases', () => {
 
       // Toggle-btn is behind the drawer, use DOM click
       const toggleBtn = document.querySelector(
-        '[data-testid="toggle-btn"]'
+        '[data-test-id="toggle-btn"]'
       ) as HTMLElement
       toggleBtn.click()
       await nextTick()
@@ -310,8 +310,8 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <button data-testid="toggle-btn" @click="showDrawer = !showDrawer">Toggle</button>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <button data-test-id="toggle-btn" @click="showDrawer = !showDrawer">Toggle</button>
             <MagicDrawer
               v-if="showDrawer"
               id="cleanup-scroll"
@@ -331,7 +331,7 @@ describe('MagicDrawer - Edge Cases', () => {
 
       // Unmount via DOM click
       const toggleBtn = document.querySelector(
-        '[data-testid="toggle-btn"]'
+        '[data-test-id="toggle-btn"]'
       ) as HTMLElement
       toggleBtn.click()
       await nextTick()
@@ -354,8 +354,8 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <span data-testid="is-active">{{ isActive }}</span>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <span data-test-id="is-active">{{ isActive }}</span>
             <MagicDrawer id="overshoot-px" style="--magic-drawer-drag-overshoot: 32px">
               <div>Content</div>
             </MagicDrawer>
@@ -382,8 +382,8 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-btn" @click="open">Open</button>
-            <span data-testid="is-active">{{ isActive }}</span>
+            <button data-test-id="open-btn" @click="open">Open</button>
+            <span data-test-id="is-active">{{ isActive }}</span>
             <MagicDrawer id="overshoot-rem" style="--magic-drawer-drag-overshoot: 2rem">
               <div>Content</div>
             </MagicDrawer>
@@ -423,10 +423,10 @@ describe('MagicDrawer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-testid="open-all" @click="openAll">Open All</button>
-            <span data-testid="active-1">{{ isActive1 }}</span>
-            <span data-testid="active-2">{{ isActive2 }}</span>
-            <span data-testid="active-3">{{ isActive3 }}</span>
+            <button data-test-id="open-all" @click="openAll">Open All</button>
+            <span data-test-id="active-1">{{ isActive1 }}</span>
+            <span data-test-id="active-2">{{ isActive2 }}</span>
+            <span data-test-id="active-3">{{ isActive3 }}</span>
             <MagicDrawer id="concurrent-1"><div>1</div></MagicDrawer>
             <MagicDrawer id="concurrent-2"><div>2</div></MagicDrawer>
             <MagicDrawer id="concurrent-3"><div>3</div></MagicDrawer>

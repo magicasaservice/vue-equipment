@@ -14,10 +14,10 @@ function createWrapper(options: Record<string, unknown> = {}) {
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="interact-drawer" :options="options">
-          <div data-testid="drawer-content" style="height: 300px; width: 100%; background: white;">
+          <div data-test-id="drawer-content" style="height: 300px; width: 100%; background: white;">
             Drawer Content
           </div>
         </MagicDrawer>
@@ -38,10 +38,10 @@ function createDisabledWrapper() {
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="disabled-drawer" :options="{ disabled: true }">
-          <div data-testid="drawer-content">Content</div>
+          <div data-test-id="drawer-content">Content</div>
         </MagicDrawer>
       </div>
     `,
@@ -57,8 +57,8 @@ function createCustomKeyWrapper(keys: string[] | false) {
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="key-drawer" :options="{ keyListener: { close: keys } }">
           <div>Content</div>
         </MagicDrawer>
@@ -105,7 +105,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const content = document.querySelector(
-        '[data-testid="drawer-content"]'
+        '[data-test-id="drawer-content"]'
       ) as HTMLElement
       content.click()
       await nextTick()
@@ -122,12 +122,11 @@ describe('MagicDrawer - Interactions', () => {
       const backdrop = document.querySelector(
         '.magic-drawer__backdrop'
       ) as HTMLElement
-      if (backdrop) {
-        const style = window.getComputedStyle(backdrop)
-        expect(style.pointerEvents).toBe('none')
-      }
+      expect(backdrop).not.toBeNull()
 
-      // Drawer should still be active — clicking disabled backdrop does nothing
+      const style = window.getComputedStyle(backdrop)
+      expect(style.pointerEvents).toBe('none')
+
       await expect
         .element(page.getByTestId('is-active'))
         .toHaveTextContent('true')

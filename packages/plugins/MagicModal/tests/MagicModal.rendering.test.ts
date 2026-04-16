@@ -2,24 +2,23 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
-import { MagicDrawer } from '../index'
-import { useMagicDrawer } from '../src/composables/useMagicDrawer'
+import { MagicModal } from '../index'
+import { useMagicModal } from '../src/composables/useMagicModal'
 
-// Helper to render MagicDrawer inside a parent that can control it
 function createWrapper(options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawer },
+    components: { MagicModal },
     setup() {
-      const { open, close, isActive } = useMagicDrawer('test-drawer')
+      const { open, close, isActive } = useMagicModal('test-modal')
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <button data-testid="close-btn" @click="close">Close</button>
-        <MagicDrawer id="test-drawer" :options="options">
-          <div data-testid="drawer-content">Drawer Content</div>
-        </MagicDrawer>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <button data-test-id="close-btn" @click="close">Close</button>
+        <MagicModal id="test-modal" :options="options">
+          <div data-test-id="modal-content">Modal Content</div>
+        </MagicModal>
       </div>
     `,
     data() {
@@ -30,32 +29,29 @@ function createWrapper(options: Record<string, unknown> = {}) {
 
 function createWrapperWithBackdropSlot() {
   return defineComponent({
-    components: { MagicDrawer },
+    components: { MagicModal },
     setup() {
-      const { open, close } = useMagicDrawer('test-drawer-slot')
+      const { open, close } = useMagicModal('test-modal-slot')
       return { open, close }
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <MagicDrawer id="test-drawer-slot">
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <MagicModal id="test-modal-slot">
           <template #backdrop>
-            <div data-testid="custom-backdrop">Custom Backdrop</div>
+            <div data-test-id="custom-backdrop">Custom Backdrop</div>
           </template>
-          <div data-testid="drawer-content">Content</div>
-        </MagicDrawer>
+          <div data-test-id="modal-content">Content</div>
+        </MagicModal>
       </div>
     `,
   })
 }
 
-describe('MagicDrawer - Rendering', () => {
+describe('MagicModal - Rendering', () => {
   it('does not render when inactive', () => {
     render(createWrapper())
-    // Drawer should not be in the DOM when closed
-    expect(
-      document.querySelector('.magic-drawer')
-    ).toBeNull()
+    expect(document.querySelector('.magic-modal')).toBeNull()
   })
 
   it('renders with correct class structure when opened', async () => {
@@ -64,12 +60,10 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer__backdrop')).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer__wrapper')).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer__content')).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer__drag')).not.toBeNull()
+    const modal = document.querySelector('.magic-modal')
+    expect(modal).not.toBeNull()
+    expect(modal!.querySelector('.magic-modal__backdrop')).not.toBeNull()
+    expect(modal!.querySelector('.magic-modal__content')).not.toBeNull()
   })
 
   it('sets data-id attribute', async () => {
@@ -78,18 +72,8 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('data-id')).toBe('test-drawer')
-  })
-
-  it('sets data-position attribute to bottom by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('data-position')).toBe('bottom')
+    const modal = document.querySelector('.magic-modal')
+    expect(modal!.getAttribute('data-id')).toBe('test-modal')
   })
 
   it('sets aria-modal attribute', async () => {
@@ -98,8 +82,8 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('aria-modal')).toBe('true')
+    const modal = document.querySelector('.magic-modal')
+    expect(modal!.getAttribute('aria-modal')).toBe('true')
   })
 
   it('uses dialog element by default', async () => {
@@ -108,8 +92,8 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const drag = document.querySelector('.magic-drawer__drag')
-    expect(drag!.tagName.toLowerCase()).toBe('dialog')
+    const content = document.querySelector('.magic-modal__content')
+    expect(content!.tagName.toLowerCase()).toBe('dialog')
   })
 
   it('uses div element when tag option is div', async () => {
@@ -118,8 +102,8 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const drag = document.querySelector('.magic-drawer__drag')
-    expect(drag!.tagName.toLowerCase()).toBe('div')
+    const content = document.querySelector('.magic-modal__content')
+    expect(content!.tagName.toLowerCase()).toBe('div')
   })
 
   it('teleports to body by default', async () => {
@@ -128,9 +112,8 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    // The drawer should be a direct child of body (via teleport)
-    const drawer = document.body.querySelector(':scope > .magic-drawer')
-    expect(drawer).not.toBeNull()
+    const modal = document.body.querySelector(':scope > .magic-modal')
+    expect(modal).not.toBeNull()
   })
 
   it('renders backdrop when backdrop option is true (default)', async () => {
@@ -139,7 +122,7 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-drawer__backdrop')
+    const backdrop = document.querySelector('.magic-modal__backdrop')
     expect(backdrop).not.toBeNull()
   })
 
@@ -149,7 +132,7 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-drawer__backdrop')
+    const backdrop = document.querySelector('.magic-modal__backdrop')
     expect(backdrop).toBeNull()
   })
 
@@ -160,7 +143,7 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
 
     await expect
-      .element(page.getByTestId('drawer-content'))
+      .element(page.getByTestId('modal-content'))
       .toBeInTheDocument()
   })
 
@@ -175,23 +158,27 @@ describe('MagicDrawer - Rendering', () => {
       .toBeInTheDocument()
   })
 
-  it('sets data-disabled attribute', async () => {
-    const screen = render(createWrapper({ disabled: true }))
-    await screen.getByTestId('open-btn').click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('data-disabled')).toBe('true')
-  })
-
-  it('sets data-dragging to false when not dragging', async () => {
+  it('has fixed positioning', async () => {
     const screen = render(createWrapper())
     await screen.getByTestId('open-btn').click()
     await nextTick()
     await nextTick()
 
-    const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('data-dragging')).toBe('false')
+    const modal = document.querySelector('.magic-modal') as HTMLElement
+    const style = window.getComputedStyle(modal)
+    expect(style.position).toBe('fixed')
+  })
+
+  it('is centered with flexbox', async () => {
+    const screen = render(createWrapper())
+    await screen.getByTestId('open-btn').click()
+    await nextTick()
+    await nextTick()
+
+    const modal = document.querySelector('.magic-modal') as HTMLElement
+    const style = window.getComputedStyle(modal)
+    expect(style.display).toBe('flex')
+    expect(style.justifyContent).toBe('center')
+    expect(style.alignItems).toBe('center')
   })
 })

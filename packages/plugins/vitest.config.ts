@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vitest/config'
 import { playwright } from '@vitest/browser-playwright'
 import { resolve } from 'node:path'
 
@@ -35,8 +35,11 @@ export default defineConfig({
       provider: playwright(),
       headless: true,
       instances: [{ browser: 'chromium' }],
+      locators: {
+        testIdAttribute: 'data-test-id',
+      },
     },
-    include: ['**/__tests__/**/*.test.ts'],
+    include: ['*/tests/**/*.test.ts'],
     globals: true,
   },
 })

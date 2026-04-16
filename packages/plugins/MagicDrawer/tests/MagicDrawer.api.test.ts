@@ -18,13 +18,13 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <span data-testid="is-active">{{ isActive }}</span>
-        <span data-testid="progress-x">{{ progress.x }}</span>
-        <span data-testid="progress-y">{{ progress.y }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
+        <span data-test-id="progress-x">{{ progress.x }}</span>
+        <span data-test-id="progress-y">{{ progress.y }}</span>
         <MagicDrawer id="${drawerId}" :options="options">
-          <div data-testid="drawer-content" style="height: 200px; width: 100%;">
-            <button data-testid="close-btn" @click="close">Close</button>
+          <div data-test-id="drawer-content" style="height: 200px; width: 100%;">
+            <button data-test-id="close-btn" @click="close">Close</button>
             Content
           </div>
         </MagicDrawer>
@@ -53,10 +53,10 @@ function createMultiDrawerWrapper() {
     },
     template: `
       <div>
-        <button data-testid="open-1" @click="open1">Open 1</button>
-        <button data-testid="open-2" @click="open2">Open 2</button>
-        <span data-testid="active-1">{{ isActive1 }}</span>
-        <span data-testid="active-2">{{ isActive2 }}</span>
+        <button data-test-id="open-1" @click="open1">Open 1</button>
+        <button data-test-id="open-2" @click="open2">Open 2</button>
+        <span data-test-id="active-1">{{ isActive1 }}</span>
+        <span data-test-id="active-2">{{ isActive2 }}</span>
         <MagicDrawer id="drawer-1">
           <div>Drawer 1</div>
         </MagicDrawer>
@@ -99,7 +99,7 @@ describe('MagicDrawer - Public API', () => {
         .element(page.getByTestId('is-active'))
         .toHaveTextContent('true')
 
-      // Close via Escape key (drawer covers the page, can't click behind it)
+      // Close via Escape key (drawer covers the page, can’t click behind it)
       await userEvent.keyboard('{Escape}')
       await nextTick()
 

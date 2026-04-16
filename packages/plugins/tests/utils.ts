@@ -19,7 +19,7 @@ export function mountWithApp(component: Component) {
     },
     async getByTestId(id: string) {
       await nextTick()
-      return container.querySelector(`[data-testid="${id}"]`) as HTMLElement
+      return container.querySelector(`[data-test-id="${id}"]`) as HTMLElement
     },
   }
 }

@@ -17,11 +17,11 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-testid="open-btn" @click="open">Open</button>
-        <button data-testid="close-btn" @click="close">Close</button>
-        <span data-testid="is-active">{{ isActive }}</span>
+        <button data-test-id="open-btn" @click="open">Open</button>
+        <button data-test-id="close-btn" @click="close">Close</button>
+        <span data-test-id="is-active">{{ isActive }}</span>
         <MagicDrawer id="${drawerId}" :options="options">
-          <div data-testid="drawer-content" style="height: 200px; width: 100%;"><button>Focusable</button></div>
+          <div data-test-id="drawer-content" style="height: 200px; width: 100%;"><button>Focusable</button></div>
         </MagicDrawer>
       </div>
     `,
