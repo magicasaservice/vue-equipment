@@ -1,5 +1,5 @@
 export function useDrawerUtils() {
-  function clamp(value: number, from: number, to: number) {
+  function clamp(value: number, from: number, to: number, flip: boolean) {
     if (from > to) {
       if (value > from) {
         return value
@@ -20,10 +20,14 @@ export function useDrawerUtils() {
       }
     } else {
       // Prevent overdragging, when overshoot is 0
-      if (value < to) {
-        return to
-      } else {
-        return value
+      // Flip conditionally clamps value to the "to" value, based on direction of dragging
+      switch (flip) {
+        case true:
+          return value > to ? to : value
+        case false:
+          return value < to ? to : value
+        default:
+          return value < to ? to : value
       }
     }
   }
