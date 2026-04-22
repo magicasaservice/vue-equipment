@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
+  },
+  "include": ["**/tests/**/*.ts", "**/src/**/*.ts", "**/src/**/*.vue", "shims-vue.d.ts", "tests/**/*.ts"]
+}

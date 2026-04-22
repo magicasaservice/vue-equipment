@@ -5,6 +5,8 @@ node_modules
 
 # testing
 coverage
+.vitest-attachments
+__screenshots__
 
 # misc
 .DS_Store

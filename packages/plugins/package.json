@@ -30,7 +30,8 @@
   "private": true,
   "scripts": {
     "build": "esno ./scripts/build.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
     "lint": "eslint ."
   },
   "type": "module",
