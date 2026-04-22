@@ -4,21 +4,26 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
+import { DrawerId, TestId } from './enums'
 
-// Helper to render MagicDrawer inside a parent that can control it
-function createWrapper(options: Record<string, unknown> = {}) {
+// ─── Factories ────────────────────────────────────────────────────────────────
+
+function createWrapper(
+  drawerId: DrawerId = DrawerId.TestDrawer,
+  options: Record<string, unknown> = {}
+) {
   return defineComponent({
     components: { MagicDrawer },
     setup() {
-      const { open, close, isActive } = useMagicDrawer('test-drawer')
+      const { open, close, isActive } = useMagicDrawer(drawerId)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <MagicDrawer id="test-drawer" :options="options">
-          <div data-test-id="drawer-content">Drawer Content</div>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <MagicDrawer id="${drawerId}" :options="options">
+          <div data-test-id="${TestId.DrawerContent}">Drawer Content</div>
         </MagicDrawer>
       </div>
     `,
@@ -32,35 +37,34 @@ function createWrapperWithBackdropSlot() {
   return defineComponent({
     components: { MagicDrawer },
     setup() {
-      const { open, close } = useMagicDrawer('test-drawer-slot')
+      const { open, close } = useMagicDrawer(DrawerId.TestDrawerSlot)
       return { open, close }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <MagicDrawer id="test-drawer-slot">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <MagicDrawer id="${DrawerId.TestDrawerSlot}">
           <template #backdrop>
-            <div data-test-id="custom-backdrop">Custom Backdrop</div>
+            <div data-test-id="${TestId.CustomBackdrop}">Custom Backdrop</div>
           </template>
-          <div data-test-id="drawer-content">Content</div>
+          <div data-test-id="${TestId.DrawerContent}">Content</div>
         </MagicDrawer>
       </div>
     `,
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicDrawer - Rendering', () => {
   it('does not render when inactive', () => {
     render(createWrapper())
-    // Drawer should not be in the DOM when closed
-    expect(
-      document.querySelector('.magic-drawer')
-    ).toBeNull()
+    expect(document.querySelector('.magic-drawer')).toBeNull()
   })
 
   it('renders with correct class structure when opened', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -74,17 +78,17 @@ describe('MagicDrawer - Rendering', () => {
 
   it('sets data-id attribute', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     const drawer = document.querySelector('.magic-drawer')
-    expect(drawer!.getAttribute('data-id')).toBe('test-drawer')
+    expect(drawer!.getAttribute('data-id')).toBe(DrawerId.TestDrawer)
   })
 
   it('sets data-position attribute to bottom by default', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -94,7 +98,7 @@ describe('MagicDrawer - Rendering', () => {
 
   it('sets aria-modal attribute', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -104,7 +108,7 @@ describe('MagicDrawer - Rendering', () => {
 
   it('uses dialog element by default', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -113,8 +117,8 @@ describe('MagicDrawer - Rendering', () => {
   })
 
   it('uses div element when tag option is div', async () => {
-    const screen = render(createWrapper({ tag: 'div' }))
-    await screen.getByTestId('open-btn').click()
+    const screen = render(createWrapper(DrawerId.TestDrawer, { tag: 'div' }))
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -124,60 +128,57 @@ describe('MagicDrawer - Rendering', () => {
 
   it('teleports to body by default', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
-    // The drawer should be a direct child of body (via teleport)
     const drawer = document.body.querySelector(':scope > .magic-drawer')
     expect(drawer).not.toBeNull()
   })
 
   it('renders backdrop when backdrop option is true (default)', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-drawer__backdrop')
-    expect(backdrop).not.toBeNull()
+    expect(document.querySelector('.magic-drawer__backdrop')).not.toBeNull()
   })
 
   it('does not render backdrop when backdrop option is false', async () => {
-    const screen = render(createWrapper({ backdrop: false }))
-    await screen.getByTestId('open-btn').click()
+    const screen = render(createWrapper(DrawerId.TestDrawer, { backdrop: false }))
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-drawer__backdrop')
-    expect(backdrop).toBeNull()
+    expect(document.querySelector('.magic-drawer__backdrop')).toBeNull()
   })
 
   it('renders default slot content', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     await expect
-      .element(page.getByTestId('drawer-content'))
+      .element(page.getByTestId(TestId.DrawerContent))
       .toBeInTheDocument()
   })
 
   it('renders backdrop slot content', async () => {
     const screen = render(createWrapperWithBackdropSlot())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     await expect
-      .element(page.getByTestId('custom-backdrop'))
+      .element(page.getByTestId(TestId.CustomBackdrop))
       .toBeInTheDocument()
   })
 
   it('sets data-disabled attribute', async () => {
-    const screen = render(createWrapper({ disabled: true }))
-    await screen.getByTestId('open-btn').click()
+    const screen = render(createWrapper(DrawerId.TestDrawer, { disabled: true }))
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -187,7 +188,7 @@ describe('MagicDrawer - Rendering', () => {
 
   it('sets data-dragging to false when not dragging', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 

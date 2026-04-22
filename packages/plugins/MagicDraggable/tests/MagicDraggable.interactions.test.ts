@@ -2,11 +2,14 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { nextTick } from 'vue'
 import { createDraggable } from './test-utils'
+import { DraggableId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicDraggable - Interactions', () => {
   describe('pointer events', () => {
     it('pointerdown sets data-dragging to true', async () => {
-      render(createDraggable('int-pdown'))
+      render(createDraggable(DraggableId.PDown))
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
@@ -23,28 +26,22 @@ describe('MagicDraggable - Interactions', () => {
       )
       await nextTick()
 
-      const el = document.querySelector('[data-id="int-pdown"]')
+      const el = document.querySelector(`[data-id="${DraggableId.PDown}"]`)
       expect(el!.getAttribute('data-dragging')).toBe('true')
 
       document.dispatchEvent(
-        new PointerEvent('pointerup', {
-          bubbles: true,
-          pointerId: 1,
-        })
+        new PointerEvent('pointerup', { bubbles: true, pointerId: 1 })
       )
     })
 
     it('pointermove updates transform with translate3d', async () => {
-      render(
-        createDraggable('int-move', { threshold: { lock: 0 } })
-      )
+      render(createDraggable(DraggableId.Move, { threshold: { lock: 0 } }))
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
       const drag = document.querySelector(
         '.magic-draggable__drag'
       ) as HTMLElement
-      const initialTransform = drag.style.transform
 
       drag.dispatchEvent(
         new PointerEvent('pointerdown', {
@@ -69,17 +66,14 @@ describe('MagicDraggable - Interactions', () => {
       expect(drag.style.transform).toContain('translate3d')
 
       document.dispatchEvent(
-        new PointerEvent('pointerup', {
-          bubbles: true,
-          pointerId: 1,
-        })
+        new PointerEvent('pointerup', { bubbles: true, pointerId: 1 })
       )
     })
   })
 
   describe('disabled state', () => {
-    it('disabled draggable ignores pointer events', async () => {
-      render(createDraggable('int-disabled', { disabled: true }))
+    it('disabled draggable ignores pointer events — transform unchanged', async () => {
+      render(createDraggable(DraggableId.IntDisabled, { disabled: true }))
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
@@ -111,10 +105,7 @@ describe('MagicDraggable - Interactions', () => {
       expect(drag.style.transform).toBe(transformBefore)
 
       document.dispatchEvent(
-        new PointerEvent('pointerup', {
-          bubbles: true,
-          pointerId: 1,
-        })
+        new PointerEvent('pointerup', { bubbles: true, pointerId: 1 })
       )
     })
   })

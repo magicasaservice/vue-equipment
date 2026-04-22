@@ -4,20 +4,26 @@ import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
+import { DrawerId, TestId } from './enums'
 
-function createWrapper(options: Record<string, unknown> = {}) {
+// ─── Factories ────────────────────────────────────────────────────────────────
+
+function createWrapper(
+  drawerId: DrawerId = DrawerId.Interact,
+  options: Record<string, unknown> = {}
+) {
   return defineComponent({
     components: { MagicDrawer },
     setup() {
-      const { open, close, isActive } = useMagicDrawer('interact-drawer')
+      const { open, close, isActive } = useMagicDrawer(drawerId)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <MagicDrawer id="interact-drawer" :options="options">
-          <div data-test-id="drawer-content" style="height: 300px; width: 100%; background: white;">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <MagicDrawer id="${drawerId}" :options="options">
+          <div data-test-id="${TestId.DrawerContent}" style="height: 300px; width: 100%; background: white;">
             Drawer Content
           </div>
         </MagicDrawer>
@@ -33,15 +39,15 @@ function createDisabledWrapper() {
   return defineComponent({
     components: { MagicDrawer },
     setup() {
-      const { open, close, isActive } = useMagicDrawer('disabled-drawer')
+      const { open, close, isActive } = useMagicDrawer(DrawerId.Disabled)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <MagicDrawer id="disabled-drawer" :options="{ disabled: true }">
-          <div data-test-id="drawer-content">Content</div>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <MagicDrawer id="${DrawerId.Disabled}" :options="{ disabled: true }">
+          <div data-test-id="${TestId.DrawerContent}">Content</div>
         </MagicDrawer>
       </div>
     `,
@@ -52,14 +58,14 @@ function createCustomKeyWrapper(keys: string[] | false) {
   return defineComponent({
     components: { MagicDrawer },
     setup() {
-      const { open, close, isActive } = useMagicDrawer('key-drawer')
+      const { open, close, isActive } = useMagicDrawer(DrawerId.Key)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <MagicDrawer id="key-drawer" :options="{ keyListener: { close: keys } }">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <MagicDrawer id="${DrawerId.Key}" :options="{ keyListener: { close: keys } }">
           <div>Content</div>
         </MagicDrawer>
       </div>
@@ -71,11 +77,13 @@ function createCustomKeyWrapper(keys: string[] | false) {
 }
 
 async function openDrawer(screen: ReturnType<typeof render>) {
-  await screen.getByTestId('open-btn').click()
+  await screen.getByTestId(TestId.OpenBtn).click()
   await nextTick()
   await nextTick()
   await new Promise((r) => setTimeout(r, 350))
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicDrawer - Interactions', () => {
   describe('backdrop click', () => {
@@ -84,19 +92,18 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       const backdrop = document.querySelector(
         '.magic-drawer__backdrop'
       ) as HTMLElement
       expect(backdrop).not.toBeNull()
-      // Use DOM click since backdrop is a real interactive element
       backdrop.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
@@ -105,13 +112,13 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const content = document.querySelector(
-        '[data-test-id="drawer-content"]'
+        `[data-test-id="${TestId.DrawerContent}"]`
       ) as HTMLElement
       content.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
 
@@ -128,7 +135,7 @@ describe('MagicDrawer - Interactions', () => {
       expect(style.pointerEvents).toBe('none')
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -139,14 +146,14 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
@@ -155,7 +162,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
@@ -163,7 +170,7 @@ describe('MagicDrawer - Interactions', () => {
       await new Promise((r) => setTimeout(r, 50))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -178,7 +185,6 @@ describe('MagicDrawer - Interactions', () => {
       ) as HTMLElement
       expect(drag).not.toBeNull()
 
-      // Simulate pointer down + move
       drag.dispatchEvent(
         new PointerEvent('pointerdown', {
           clientX: 200,
@@ -202,7 +208,6 @@ describe('MagicDrawer - Interactions', () => {
       const drawer = document.querySelector('.magic-drawer')
       expect(drawer!.getAttribute('data-dragging')).toBe('true')
 
-      // Release
       drag.dispatchEvent(
         new PointerEvent('pointerup', {
           clientX: 200,
@@ -219,14 +224,12 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const drawer = document.querySelector('.magic-drawer')
-      // Before any drag, data-dragged should be false
       expect(drawer!.getAttribute('data-dragged')).toBe('false')
 
       const drag = document.querySelector(
         '.magic-drawer__drag'
       ) as HTMLElement
 
-      // Simulate pointerdown — sets dragging state and registers pointermove listener
       drag.dispatchEvent(
         new PointerEvent('pointerdown', {
           clientX: 200,
@@ -239,10 +242,8 @@ describe('MagicDrawer - Interactions', () => {
         })
       )
 
-      // Small delay to ensure pointermove listener is registered on document
       await new Promise((r) => setTimeout(r, 10))
 
-      // Dispatch pointermove on document (where the listener is registered)
       document.dispatchEvent(
         new PointerEvent('pointermove', {
           clientX: 200,
@@ -258,10 +259,8 @@ describe('MagicDrawer - Interactions', () => {
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      // After drag, data-dragged should be true
       expect(drawer!.getAttribute('data-dragged')).toBe('true')
 
-      // Cleanup
       document.dispatchEvent(
         new PointerEvent('pointerup', {
           clientX: 200,
@@ -312,14 +311,15 @@ describe('MagicDrawer - Interactions', () => {
 
   describe('preventDragClose', () => {
     it('preventDragClose prevents swipe-to-dismiss', async () => {
-      const screen = render(createWrapper({ preventDragClose: true }))
+      const screen = render(
+        createWrapper(DrawerId.Interact, { preventDragClose: true })
+      )
       await openDrawer(screen)
 
       const drag = document.querySelector(
         '.magic-drawer__drag'
       ) as HTMLElement
 
-      // Simulate a large downward drag (for bottom drawer, this would close)
       drag.dispatchEvent(
         new PointerEvent('pointerdown', {
           clientX: 200,
@@ -353,7 +353,7 @@ describe('MagicDrawer - Interactions', () => {
       await new Promise((r) => setTimeout(r, 400))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })

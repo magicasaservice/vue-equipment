@@ -7,14 +7,19 @@ import MagicAccordionView from '../src/components/MagicAccordionView.vue'
 import MagicAccordionTrigger from '../src/components/MagicAccordionTrigger.vue'
 import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
+import { AccordionId, ViewId, TestId } from './enums'
+
+// ─── Stubs ────────────────────────────────────────────────────────────────────
 
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
 function createWrapper(
-  accordionId: string,
+  accordionId: AccordionId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -31,30 +36,30 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="select-v1" @click="selectView('v1')">Select V1</button>
-        <button data-test-id="select-v2" @click="selectView('v2')">Select V2</button>
-        <button data-test-id="unselect-v1" @click="unselectView('v1')">Unselect V1</button>
+        <button data-test-id="${TestId.SelectV1}" @click="selectView('${ViewId.V1}')">Select V1</button>
+        <button data-test-id="${TestId.SelectV2}" @click="selectView('${ViewId.V2}')">Select V2</button>
+        <button data-test-id="${TestId.UnselectV1}" @click="unselectView('${ViewId.V1}')">Unselect V1</button>
         <MagicAccordionProvider id="${accordionId}" :options="options">
-          <MagicAccordionView id="v1">
+          <MagicAccordionView id="${ViewId.V1}">
             <template #default="{ viewActive }">
               <MagicAccordionTrigger>
                 <span>Trigger 1</span>
               </MagicAccordionTrigger>
               <MagicAccordionContent>
-                <div data-test-id="content-v1">Content 1</div>
+                <div data-test-id="${TestId.ContentV1}">Content 1</div>
               </MagicAccordionContent>
-              <span data-test-id="active-v1">{{ viewActive }}</span>
+              <span data-test-id="${TestId.ActiveV1}">{{ viewActive }}</span>
             </template>
           </MagicAccordionView>
-          <MagicAccordionView id="v2">
+          <MagicAccordionView id="${ViewId.V2}">
             <template #default="{ viewActive }">
               <MagicAccordionTrigger>
                 <span>Trigger 2</span>
               </MagicAccordionTrigger>
               <MagicAccordionContent>
-                <div data-test-id="content-v2">Content 2</div>
+                <div data-test-id="${TestId.ContentV2}">Content 2</div>
               </MagicAccordionContent>
-              <span data-test-id="active-v2">{{ viewActive }}</span>
+              <span data-test-id="${TestId.ActiveV2}">{{ viewActive }}</span>
             </template>
           </MagicAccordionView>
         </MagicAccordionProvider>
@@ -66,93 +71,95 @@ function createWrapper(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicAccordion - API', () => {
   describe('selectView', () => {
     it('selectView() opens a panel', async () => {
-      const screen = render(createWrapper('api-select'), {
+      const screen = render(createWrapper(AccordionId.ApiSelect), {
         global: { stubs: { AutoSize } },
       })
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
     })
 
     it('selectView() in single mode closes other panels', async () => {
-      const screen = render(createWrapper('api-single'), {
+      const screen = render(createWrapper(AccordionId.ApiSingle), {
         global: { stubs: { AutoSize } },
       })
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('select-v2').click()
+      await screen.getByTestId(TestId.SelectV2).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
       await expect
-        .element(page.getByTestId('active-v2'))
+        .element(page.getByTestId(TestId.ActiveV2))
         .toHaveTextContent('true')
     })
 
     it('selectView() in multiple mode keeps other panels open', async () => {
       const screen = render(
-        createWrapper('api-multiple', { mode: 'multiple' }),
+        createWrapper(AccordionId.ApiMultiple, { mode: 'multiple' }),
         { global: { stubs: { AutoSize } } }
       )
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
 
-      await screen.getByTestId('select-v2').click()
+      await screen.getByTestId(TestId.SelectV2).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('active-v2'))
+        .element(page.getByTestId(TestId.ActiveV2))
         .toHaveTextContent('true')
     })
   })
 
   describe('unselectView', () => {
     it('unselectView() closes a panel', async () => {
-      const screen = render(createWrapper('api-unselect'), {
+      const screen = render(createWrapper(AccordionId.ApiUnselect), {
         global: { stubs: { AutoSize } },
       })
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('unselect-v1').click()
+      await screen.getByTestId(TestId.UnselectV1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
     })
   })
 
   describe('initial active state', () => {
-    it('view with active=true starts open', async () => {
+    it('view with :active="true" starts open', async () => {
       const wrapper = defineComponent({
         components: {
           MagicAccordionProvider,
@@ -162,18 +169,18 @@ describe('MagicAccordion - API', () => {
           AutoSize,
         },
         setup() {
-          useMagicAccordion('api-initial')
+          useMagicAccordion(AccordionId.ApiInitial)
           return {}
         },
         template: `
-          <MagicAccordionProvider id="api-initial">
-            <MagicAccordionView id="init-view" :active="true">
+          <MagicAccordionProvider id="${AccordionId.ApiInitial}">
+            <MagicAccordionView id="${ViewId.InitView}" :active="true">
               <template #default="{ viewActive }">
                 <MagicAccordionTrigger><span>Trigger</span></MagicAccordionTrigger>
                 <MagicAccordionContent>
                   <div>Content</div>
                 </MagicAccordionContent>
-                <span data-test-id="active">{{ viewActive }}</span>
+                <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
               </template>
             </MagicAccordionView>
           </MagicAccordionProvider>
@@ -184,18 +191,18 @@ describe('MagicAccordion - API', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
   })
 
   describe('composable return shape', () => {
-    it('returns selectView and unselectView', () => {
+    it('returns selectView and unselectView functions', () => {
       let api: ReturnType<typeof useMagicAccordion> | undefined
 
       const wrapper = defineComponent({
         setup() {
-          api = useMagicAccordion('api-shape')
+          api = useMagicAccordion(AccordionId.ApiShape)
           return {}
         },
         template: '<div>test</div>',

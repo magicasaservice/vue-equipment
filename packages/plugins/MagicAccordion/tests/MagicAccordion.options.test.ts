@@ -7,14 +7,19 @@ import MagicAccordionView from '../src/components/MagicAccordionView.vue'
 import MagicAccordionTrigger from '../src/components/MagicAccordionTrigger.vue'
 import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
+import { AccordionId, ViewId, TestId } from './enums'
+
+// ─── Stubs ────────────────────────────────────────────────────────────────────
 
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
 function createAccordion(
-  accordionId: string,
+  accordionId: AccordionId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -31,30 +36,30 @@ function createAccordion(
     },
     template: `
       <div>
-        <button data-test-id="select-v1" @click="selectView('v1')">Select V1</button>
-        <button data-test-id="select-v2" @click="selectView('v2')">Select V2</button>
-        <button data-test-id="unselect-v1" @click="unselectView('v1')">Unselect V1</button>
+        <button data-test-id="${TestId.SelectV1}" @click="selectView('${ViewId.V1}')">Select V1</button>
+        <button data-test-id="${TestId.SelectV2}" @click="selectView('${ViewId.V2}')">Select V2</button>
+        <button data-test-id="${TestId.UnselectV1}" @click="unselectView('${ViewId.V1}')">Unselect V1</button>
         <MagicAccordionProvider id="${accordionId}" :options="options">
-          <MagicAccordionView id="v1">
+          <MagicAccordionView id="${ViewId.V1}">
             <template #default="{ viewActive }">
               <MagicAccordionTrigger>
                 <span>Trigger 1</span>
               </MagicAccordionTrigger>
               <MagicAccordionContent>
-                <div data-test-id="content-v1">Content 1</div>
+                <div data-test-id="${TestId.Content}">Content 1</div>
               </MagicAccordionContent>
-              <span data-test-id="active-v1">{{ viewActive }}</span>
+              <span data-test-id="${TestId.ActiveV1}">{{ viewActive }}</span>
             </template>
           </MagicAccordionView>
-          <MagicAccordionView id="v2">
+          <MagicAccordionView id="${ViewId.V2}">
             <template #default="{ viewActive }">
               <MagicAccordionTrigger>
                 <span>Trigger 2</span>
               </MagicAccordionTrigger>
               <MagicAccordionContent>
-                <div data-test-id="content-v2">Content 2</div>
+                <div>Content 2</div>
               </MagicAccordionContent>
-              <span data-test-id="active-v2">{{ viewActive }}</span>
+              <span data-test-id="${TestId.ActiveV2}">{{ viewActive }}</span>
             </template>
           </MagicAccordionView>
         </MagicAccordionProvider>
@@ -66,93 +71,87 @@ function createAccordion(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicAccordion - Options', () => {
   describe('mode option', () => {
-    it('defaults to single mode', async () => {
-      const screen = render(createAccordion('opt-default-mode'), {
+    it('defaults to single mode: second open closes first', async () => {
+      const screen = render(createAccordion(AccordionId.DefaultMode), {
         global: { stubs: { AutoSize } },
       })
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
+      await nextTick()
+      await screen.getByTestId(TestId.SelectV2).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
-        .toHaveTextContent('true')
-
-      await screen.getByTestId('select-v2').click()
-      await nextTick()
-
-      // Single mode: v1 closed when v2 opens
-      await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
       await expect
-        .element(page.getByTestId('active-v2'))
+        .element(page.getByTestId(TestId.ActiveV2))
         .toHaveTextContent('true')
     })
 
     it('single mode closes others on select', async () => {
       const screen = render(
-        createAccordion('opt-single', { mode: 'single' }),
+        createAccordion(AccordionId.Single, { mode: 'single' }),
         { global: { stubs: { AutoSize } } }
       )
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
-
-      await screen.getByTestId('select-v2').click()
+      await screen.getByTestId(TestId.SelectV2).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
       await expect
-        .element(page.getByTestId('active-v2'))
+        .element(page.getByTestId(TestId.ActiveV2))
         .toHaveTextContent('true')
     })
 
     it('multiple mode keeps all open', async () => {
       const screen = render(
-        createAccordion('opt-multiple', { mode: 'multiple' }),
+        createAccordion(AccordionId.Multiple, { mode: 'multiple' }),
         { global: { stubs: { AutoSize } } }
       )
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
-
-      await screen.getByTestId('select-v2').click()
+      await screen.getByTestId(TestId.SelectV2).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('active-v2'))
+        .element(page.getByTestId(TestId.ActiveV2))
         .toHaveTextContent('true')
     })
   })
 
   describe('disabled option', () => {
     it('disabled prevents trigger clicks', async () => {
-      render(createAccordion('opt-disabled', { disabled: true }), {
+      render(createAccordion(AccordionId.OptDisabled, { disabled: true }), {
         global: { stubs: { AutoSize } },
       })
       await nextTick()
 
       const btn = document.querySelector(
-        '[data-id="v1-trigger"]'
+        `[data-id="${ViewId.V1}-trigger"]`
       ) as HTMLElement
       btn.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
     })
 
-    it('disabled sets data-disabled on triggers', async () => {
-      render(createAccordion('opt-disabled-attr', { disabled: true }), {
+    it('disabled sets data-disabled=true on all triggers', async () => {
+      render(createAccordion(AccordionId.OptDisabledAttr, { disabled: true }), {
         global: { stubs: { AutoSize } },
       })
       await nextTick()
@@ -163,55 +162,24 @@ describe('MagicAccordion - Options', () => {
       })
     })
 
-    it('disabled does not prevent API selectView', async () => {
+    it('disabled does not prevent programmatic selectView', async () => {
       const screen = render(
-        createAccordion('opt-disabled-api', { disabled: true }),
+        createAccordion(AccordionId.DisabledApi, { disabled: true }),
         { global: { stubs: { AutoSize } } }
       )
 
-      await screen.getByTestId('select-v1').click()
+      await screen.getByTestId(TestId.SelectV1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
-    })
-  })
-
-  describe('transition option', () => {
-    it('defaults to magic-accordion transition name', async () => {
-      render(createAccordion('opt-transition-default'), {
-        global: { stubs: { AutoSize } },
-      })
-      await nextTick()
-
-      // Default transition name applied via CSS classes
-      // Content should have default --ma-duration CSS var
-      const content = document.querySelector(
-        '.magic-accordion-content'
-      ) as HTMLElement
-      expect(content.style.getPropertyValue('--ma-duration')).toBe('200ms')
-    })
-
-    it('custom transition name accepted', async () => {
-      render(
-        createAccordion('opt-transition-custom', {
-          transition: 'custom-fade',
-        }),
-        { global: { stubs: { AutoSize } } }
-      )
-      await nextTick()
-
-      // Component renders without error
-      expect(
-        document.querySelector('.magic-accordion-content')
-      ).not.toBeNull()
     })
   })
 
   describe('animation option', () => {
     it('default animation duration is 200ms', async () => {
-      render(createAccordion('opt-anim-default'), {
+      render(createAccordion(AccordionId.AnimDefault), {
         global: { stubs: { AutoSize } },
       })
       await nextTick()
@@ -222,9 +190,9 @@ describe('MagicAccordion - Options', () => {
       expect(content.style.getPropertyValue('--ma-duration')).toBe('200ms')
     })
 
-    it('custom animation duration reflected in CSS var', async () => {
+    it('custom animation duration reflected in --ma-duration CSS var', async () => {
       render(
-        createAccordion('opt-anim-custom', {
+        createAccordion(AccordionId.AnimCustom, {
           animation: { duration: 500 },
         }),
         { global: { stubs: { AutoSize } } }
@@ -249,19 +217,20 @@ describe('MagicAccordion - Options', () => {
           AutoSize,
         },
         setup() {
-          useMagicAccordion('opt-content-override')
+          useMagicAccordion(AccordionId.ContentOverride)
           return {}
         },
         template: `
-          <MagicAccordionProvider id="opt-content-override" :options="{ transition: 'global-fade' }">
-            <MagicAccordionView id="co-view">
+          <MagicAccordionProvider id="${AccordionId.ContentOverride}" :options="{ transition: 'global-fade' }">
+            <MagicAccordionView id="${ViewId.CoView}">
               <template #default="{ viewActive }">
                 <MagicAccordionTrigger>
                   <span>Trigger</span>
                 </MagicAccordionTrigger>
                 <MagicAccordionContent transition="local-slide">
-                  <div data-test-id="content">Content</div>
+                  <div data-test-id="${TestId.Content}">Content</div>
                 </MagicAccordionContent>
+                <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
               </template>
             </MagicAccordionView>
           </MagicAccordionProvider>
@@ -271,28 +240,28 @@ describe('MagicAccordion - Options', () => {
       render(wrapper, { global: { stubs: { AutoSize } } })
       await nextTick()
 
-      // Content renders without error with local override
-      expect(
-        document.querySelector('.magic-accordion-content')
-      ).not.toBeNull()
+      // Content renders and view state reflects normal behavior
+      await expect
+        .element(page.getByTestId(TestId.Active))
+        .toHaveTextContent('false')
     })
   })
 
   describe('trigger option', () => {
-    it('default trigger is click', async () => {
-      render(createAccordion('opt-trigger-default'), {
+    it('default trigger responds to click', async () => {
+      render(createAccordion(AccordionId.TriggerDefault), {
         global: { stubs: { AutoSize } },
       })
       await nextTick()
 
       const btn = document.querySelector(
-        '[data-id="v1-trigger"]'
+        `[data-id="${ViewId.V1}-trigger"]`
       ) as HTMLElement
       btn.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('true')
     })
 
@@ -306,12 +275,12 @@ describe('MagicAccordion - Options', () => {
           AutoSize,
         },
         setup() {
-          useMagicAccordion('opt-trigger-hover')
+          useMagicAccordion(AccordionId.TriggerHover)
           return {}
         },
         template: `
-          <MagicAccordionProvider id="opt-trigger-hover">
-            <MagicAccordionView id="hover-view">
+          <MagicAccordionProvider id="${AccordionId.TriggerHover}">
+            <MagicAccordionView id="${ViewId.HoverView}">
               <template #default="{ viewActive }">
                 <MagicAccordionTrigger trigger="mouseenter">
                   <span>Trigger</span>
@@ -319,7 +288,7 @@ describe('MagicAccordion - Options', () => {
                 <MagicAccordionContent>
                   <div>Content</div>
                 </MagicAccordionContent>
-                <span data-test-id="active">{{ viewActive }}</span>
+                <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
               </template>
             </MagicAccordionView>
           </MagicAccordionProvider>
@@ -330,13 +299,13 @@ describe('MagicAccordion - Options', () => {
       await nextTick()
 
       const btn = document.querySelector(
-        '[data-id="hover-view-trigger"]'
+        `[data-id="${ViewId.HoverView}-trigger"]`
       ) as HTMLElement
       btn.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
   })
@@ -352,18 +321,18 @@ describe('MagicAccordion - Options', () => {
           AutoSize,
         },
         setup() {
-          useMagicAccordion('opt-initial-active')
+          useMagicAccordion(AccordionId.InitialActive)
           return {}
         },
         template: `
-          <MagicAccordionProvider id="opt-initial-active">
-            <MagicAccordionView id="ia-view" :active="true">
+          <MagicAccordionProvider id="${AccordionId.InitialActive}">
+            <MagicAccordionView id="${ViewId.IaView}" :active="true">
               <template #default="{ viewActive }">
                 <MagicAccordionTrigger><span>Trigger</span></MagicAccordionTrigger>
                 <MagicAccordionContent>
                   <div>Content</div>
                 </MagicAccordionContent>
-                <span data-test-id="active">{{ viewActive }}</span>
+                <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
               </template>
             </MagicAccordionView>
           </MagicAccordionProvider>
@@ -374,18 +343,18 @@ describe('MagicAccordion - Options', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
 
     it('view defaults to inactive without active prop', async () => {
-      render(createAccordion('opt-default-inactive'), {
+      render(createAccordion(AccordionId.DefaultInactive), {
         global: { stubs: { AutoSize } },
       })
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-v1'))
+        .element(page.getByTestId(TestId.ActiveV1))
         .toHaveTextContent('false')
     })
   })

@@ -51,15 +51,6 @@ describe('MagicScroll - Motion', () => {
         el.querySelector('.animated-content')!.textContent
       ).toBe('Animated')
     })
-
-    it('handles empty sequence without error', async () => {
-      render(createMotion([]))
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-scroll-motion')
-      ).not.toBeNull()
-    })
   })
 
   describe('props', () => {

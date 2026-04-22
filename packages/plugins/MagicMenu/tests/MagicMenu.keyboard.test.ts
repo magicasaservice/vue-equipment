@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render } from 'vitest-browser-vue'
-
 import { defineComponent, nextTick } from 'vue'
 import MagicMenuProvider from '../src/components/MagicMenuProvider.vue'
 import MagicMenuTrigger from '../src/components/MagicMenuTrigger.vue'
@@ -11,6 +10,9 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { MenuId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Global config ────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -27,7 +29,9 @@ const gc = {
   },
 }
 
-function createDropdown(id: string) {
+// ─── Factory ─────────────────────────────────────────────────────────────────
+
+function createDropdown(menuId: MenuId) {
   return defineComponent({
     components: {
       MagicMenuProvider,
@@ -37,24 +41,24 @@ function createDropdown(id: string) {
       MagicMenuItem,
     },
     setup() {
-      useMagicMenu({ instanceId: id, viewId: 'v0' })
+      useMagicMenu({ instanceId: menuId, viewId: ViewId.V0 })
       return {}
     },
     template: `
-      <MagicMenuProvider id="${id}" :options="{ mode: 'dropdown' }">
-        <MagicMenuView id="v0">
+      <MagicMenuProvider id="${menuId}" :options="{ mode: 'dropdown' }">
+        <MagicMenuView id="${ViewId.V0}">
           <MagicMenuTrigger>
-            <button data-test-id="trigger">Open</button>
+            <button data-test-id="${TestId.Trigger}">Open</button>
           </MagicMenuTrigger>
           <MagicMenuContent :teleport="{ disabled: true }">
-            <MagicMenuItem id="kb-item-1">
-              <div data-test-id="item-1">Item 1</div>
+            <MagicMenuItem id="${ItemId.KbItem1}">
+              <div data-test-id="${TestId.Item1}">Item 1</div>
             </MagicMenuItem>
-            <MagicMenuItem id="kb-item-2">
-              <div data-test-id="item-2">Item 2</div>
+            <MagicMenuItem id="${ItemId.KbItem2}">
+              <div data-test-id="${TestId.Item2}">Item 2</div>
             </MagicMenuItem>
-            <MagicMenuItem id="kb-item-3">
-              <div data-test-id="item-3">Item 3</div>
+            <MagicMenuItem id="${ItemId.KbItem3}">
+              <div data-test-id="${TestId.Item3}">Item 3</div>
             </MagicMenuItem>
           </MagicMenuContent>
         </MagicMenuView>
@@ -62,6 +66,8 @@ function createDropdown(id: string) {
     `,
   })
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicMenu - Keyboard Navigation', () => {
   // Suppress MagicError unhandled rejections
@@ -89,10 +95,10 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
   describe('escape', () => {
     it('Escape closes open menu', async () => {
-      const screen = render(createDropdown('kb-escape'), gc)
+      const screen = render(createDropdown(MenuId.KbEscape), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
 
@@ -106,10 +112,10 @@ describe('MagicMenu - Keyboard Navigation', () => {
     })
 
     it('Escape resets trigger data-active', async () => {
-      const screen = render(createDropdown('kb-escape-attr'), gc)
+      const screen = render(createDropdown(MenuId.KbEscapeAttr), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const trigger = document.querySelector('.magic-menu-trigger')
@@ -127,20 +133,17 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
   describe('enter on trigger', () => {
     it('Enter on focused trigger opens menu', async () => {
-      const screen = render(createDropdown('kb-enter'), gc)
+      render(createDropdown(MenuId.KbEnter), gc)
       await nextTick()
 
-      // Focus the trigger element (has tabindex=0 in dropdown mode)
       const trigger = document.querySelector('.magic-menu-trigger') as HTMLElement
       trigger.focus()
       await nextTick()
       await nextTick()
 
-      // onKeyStroke('Enter') on MagicMenuTrigger listens on window
       window.dispatchEvent(
         new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
       )
-      // onOpen() is async: wrapperActive → nextTick → innerActive → nextTick
       await nextTick()
       await nextTick()
       await nextTick()
@@ -152,10 +155,10 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
   describe('tab prevention', () => {
     it('Tab is intercepted when menu is active', async () => {
-      const screen = render(createDropdown('kb-tab'), gc)
+      const screen = render(createDropdown(MenuId.KbTab), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       let defaultPrevented = false
@@ -175,7 +178,6 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
       window.removeEventListener('keydown', handler)
 
-      // Tab event should have been prevented by the menu's key listener
       expect(defaultPrevented).toBe(true)
     })
   })

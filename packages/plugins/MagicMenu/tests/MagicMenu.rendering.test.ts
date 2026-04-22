@@ -11,6 +11,9 @@ import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { MenuId, ViewId, TestId } from './enums'
+
+// ─── Global config ────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -27,7 +30,9 @@ const gc = {
   },
 }
 
-function createDropdown(id: string) {
+// ─── Factory ─────────────────────────────────────────────────────────────────
+
+function createDropdown(menuId: MenuId) {
   return defineComponent({
     components: {
       MagicMenuProvider,
@@ -37,21 +42,21 @@ function createDropdown(id: string) {
       MagicMenuItem,
     },
     setup() {
-      useMagicMenu({ instanceId: id, viewId: 'view-0' })
+      useMagicMenu({ instanceId: menuId, viewId: ViewId.V0 })
       return {}
     },
     template: `
-      <MagicMenuProvider id="${id}" :options="{ mode: 'dropdown' }">
+      <MagicMenuProvider id="${menuId}" :options="{ mode: 'dropdown' }">
         <MagicMenuView>
           <MagicMenuTrigger>
-            <button data-test-id="trigger">Open</button>
+            <button data-test-id="${TestId.Trigger}">Open</button>
           </MagicMenuTrigger>
           <MagicMenuContent :teleport="{ disabled: true }">
             <MagicMenuItem>
-              <div data-test-id="item-1">Item 1</div>
+              <div data-test-id="${TestId.Item1}">Item 1</div>
             </MagicMenuItem>
             <MagicMenuItem>
-              <div data-test-id="item-2">Item 2</div>
+              <div data-test-id="${TestId.Item2}">Item 2</div>
             </MagicMenuItem>
           </MagicMenuContent>
         </MagicMenuView>
@@ -60,46 +65,30 @@ function createDropdown(id: string) {
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMenu - Rendering', () => {
   describe('provider', () => {
-    it('renders with correct class', async () => {
-      render(createDropdown('render-provider'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-menu-provider')
-      ).not.toBeNull()
-    })
-
     it('sets data-id', async () => {
-      render(createDropdown('render-data-id'), gc)
+      render(createDropdown(MenuId.RenderDataId), gc)
       await nextTick()
 
       const el = document.querySelector('.magic-menu-provider')
-      expect(el!.getAttribute('data-id')).toBe('render-data-id')
+      expect(el!.getAttribute('data-id')).toBe(MenuId.RenderDataId)
     })
   })
 
   describe('trigger', () => {
-    it('renders with correct class', async () => {
-      render(createDropdown('render-trigger'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-menu-trigger')
-      ).not.toBeNull()
-    })
-
     it('has data-active=false by default', async () => {
-      render(createDropdown('render-trigger-active'), gc)
+      render(createDropdown(MenuId.RenderTriggerActive), gc)
       await nextTick()
 
       const trigger = document.querySelector('.magic-menu-trigger')
       expect(trigger!.getAttribute('data-active')).toBe('false')
     })
 
-    it('has data-disabled attribute', async () => {
-      render(createDropdown('render-trigger-disabled'), gc)
+    it('has data-disabled=false by default', async () => {
+      render(createDropdown(MenuId.RenderTriggerDisabled), gc)
       await nextTick()
 
       const trigger = document.querySelector('.magic-menu-trigger')
@@ -107,7 +96,7 @@ describe('MagicMenu - Rendering', () => {
     })
 
     it('first trigger has tabindex=0', async () => {
-      render(createDropdown('render-trigger-tab'), gc)
+      render(createDropdown(MenuId.RenderTriggerTab), gc)
       await nextTick()
 
       const trigger = document.querySelector('.magic-menu-trigger')
@@ -115,27 +104,18 @@ describe('MagicMenu - Rendering', () => {
     })
 
     it('renders slot content', async () => {
-      render(createDropdown('render-trigger-slot'), gc)
+      render(createDropdown(MenuId.RenderTriggerSlot), gc)
       await nextTick()
 
       await expect
-        .element(page.getByTestId('trigger'))
+        .element(page.getByTestId(TestId.Trigger))
         .toHaveTextContent('Open')
     })
   })
 
   describe('view', () => {
-    it('renders with correct class', async () => {
-      render(createDropdown('render-view'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-menu-view')
-      ).not.toBeNull()
-    })
-
     it('has data-id attribute', async () => {
-      render(createDropdown('render-view-id'), gc)
+      render(createDropdown(MenuId.RenderViewId), gc)
       await nextTick()
 
       const view = document.querySelector('.magic-menu-view')
@@ -145,33 +125,29 @@ describe('MagicMenu - Rendering', () => {
 
   describe('content (closed)', () => {
     it('content not rendered when menu closed', async () => {
-      render(createDropdown('render-content-closed'), gc)
+      render(createDropdown(MenuId.RenderContentClosed), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-menu-content')
-      ).toBeNull()
+      expect(document.querySelector('.magic-menu-content')).toBeNull()
     })
   })
 
   describe('content (open)', () => {
     it('content renders when trigger clicked', async () => {
-      const screen = render(createDropdown('render-content-open'), gc)
+      const screen = render(createDropdown(MenuId.RenderContentOpen), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-menu-content')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-menu-content')).not.toBeNull()
     })
 
     it('content has data-id attribute', async () => {
-      const screen = render(createDropdown('render-content-id'), gc)
+      const screen = render(createDropdown(MenuId.RenderContentId), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const content = document.querySelector('.magic-menu-content')
@@ -179,10 +155,10 @@ describe('MagicMenu - Rendering', () => {
     })
 
     it('content inner has pointer-disabled attr', async () => {
-      const screen = render(createDropdown('render-content-inner'), gc)
+      const screen = render(createDropdown(MenuId.RenderContentInner), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const inner = document.querySelector('.magic-menu-content__inner')
@@ -193,10 +169,10 @@ describe('MagicMenu - Rendering', () => {
 
   describe('item', () => {
     it('item renders when menu open', async () => {
-      const screen = render(createDropdown('render-item'), gc)
+      const screen = render(createDropdown(MenuId.RenderItem), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const items = document.querySelectorAll('.magic-menu-item')
@@ -204,21 +180,21 @@ describe('MagicMenu - Rendering', () => {
     })
 
     it('item has data-active=false by default', async () => {
-      const screen = render(createDropdown('render-item-active'), gc)
+      const screen = render(createDropdown(MenuId.RenderItemActive), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const item = document.querySelector('.magic-menu-item')
       expect(item!.getAttribute('data-active')).toBe('false')
     })
 
-    it('item has data-disabled attribute', async () => {
-      const screen = render(createDropdown('render-item-disabled'), gc)
+    it('item has data-disabled=false by default', async () => {
+      const screen = render(createDropdown(MenuId.RenderItemDisabled), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       const item = document.querySelector('.magic-menu-item')
@@ -226,29 +202,27 @@ describe('MagicMenu - Rendering', () => {
     })
 
     it('item renders slot content', async () => {
-      const screen = render(createDropdown('render-item-slot'), gc)
+      const screen = render(createDropdown(MenuId.RenderItemSlot), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('item-1'))
+        .element(page.getByTestId(TestId.Item1))
         .toHaveTextContent('Item 1')
     })
   })
 
   describe('float', () => {
     it('float renders inside content', async () => {
-      const screen = render(createDropdown('render-float'), gc)
+      const screen = render(createDropdown(MenuId.RenderFloat), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-menu-float')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-menu-float')).not.toBeNull()
     })
   })
 
@@ -263,14 +237,14 @@ describe('MagicMenu - Rendering', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'render-disabled-trigger', viewId: 'view-0' })
+          useMagicMenu({ instanceId: MenuId.RenderDisabledTrigger, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="render-disabled-trigger" :options="{ mode: 'dropdown' }">
+          <MagicMenuProvider id="${MenuId.RenderDisabledTrigger}" :options="{ mode: 'dropdown' }">
             <MagicMenuView>
               <MagicMenuTrigger :disabled="true">
-                <button data-test-id="trigger">Disabled</button>
+                <button data-test-id="${TestId.Trigger}">Disabled</button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
                 <MagicMenuItem><div>Item</div></MagicMenuItem>

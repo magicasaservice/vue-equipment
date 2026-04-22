@@ -4,6 +4,7 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   props: { message: { type: String, default: 'Toast' } },
@@ -11,7 +12,7 @@ const SimpleToast = defineComponent({
   template: '<div class="toast-content">{{ message }}</div>',
 })
 
-function createWrapper(toastId: string) {
+function createWrapper(toastId: ToastId) {
   return defineComponent({
     components: { MagicToastProvider },
     setup() {
@@ -37,12 +38,12 @@ function createWrapper(toastId: string) {
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="addToast()">Add</button>
-        <button data-test-id="remove-btn" @click="removeLast">Remove</button>
-        <button data-test-id="clear-btn" @click="clear()">Clear</button>
-        <button data-test-id="expand-btn" @click="expand">Expand</button>
-        <button data-test-id="collapse-btn" @click="collapse">Collapse</button>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="addToast()">Add</button>
+        <button data-test-id="${TestId.RemoveBtn}" @click="removeLast">Remove</button>
+        <button data-test-id="${TestId.ClearBtn}" @click="clear()">Clear</button>
+        <button data-test-id="${TestId.ExpandBtn}" @click="expand">Expand</button>
+        <button data-test-id="${TestId.CollapseBtn}" @click="collapse">Collapse</button>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" />
       </div>
     `,
@@ -52,18 +53,18 @@ function createWrapper(toastId: string) {
 describe('MagicToast - API', () => {
   describe('add', () => {
     it('add() creates a toast and increments count', async () => {
-      const screen = render(createWrapper('api-add'))
+      const screen = render(createWrapper(ToastId.ApiAdd))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
     })
 
@@ -71,7 +72,7 @@ describe('MagicToast - API', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('api-return-id')
+          const api = useMagicToast(ToastId.ApiReturnId)
           let returnedId = ''
 
           function addAndCapture() {
@@ -88,14 +89,14 @@ describe('MagicToast - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addAndCapture">Add</button>
-            <MagicToastProvider id="api-return-id" />
+            <button data-test-id="${TestId.AddBtn}" @click="addAndCapture">Add</button>
+            <MagicToastProvider id="${ToastId.ApiReturnId}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       const views = document.querySelectorAll('.magic-toast-view')
@@ -108,7 +109,7 @@ describe('MagicToast - API', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('api-custom-id')
+          const api = useMagicToast(ToastId.ApiCustomId)
           function addCustom() {
             api.add({ component: SimpleToast, id: 'custom-toast-123' })
           }
@@ -116,14 +117,14 @@ describe('MagicToast - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addCustom">Add</button>
-            <MagicToastProvider id="api-custom-id" />
+            <button data-test-id="${TestId.AddBtn}" @click="addCustom">Add</button>
+            <MagicToastProvider id="${ToastId.ApiCustomId}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -135,7 +136,7 @@ describe('MagicToast - API', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('api-with-props')
+          const api = useMagicToast(ToastId.ApiWithProps)
           function addWithProps() {
             api.add({
               component: SimpleToast,
@@ -146,14 +147,14 @@ describe('MagicToast - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addWithProps">Add</button>
-            <MagicToastProvider id="api-with-props" />
+            <button data-test-id="${TestId.AddBtn}" @click="addWithProps">Add</button>
+            <MagicToastProvider id="${ToastId.ApiWithProps}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -162,15 +163,15 @@ describe('MagicToast - API', () => {
     })
 
     it('multiple add() calls stack toasts', async () => {
-      const screen = render(createWrapper('api-stack'))
+      const screen = render(createWrapper(ToastId.ApiStack))
 
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('3')
 
       const views = document.querySelectorAll('.magic-toast-view')
@@ -183,7 +184,7 @@ describe('MagicToast - API', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('api-remove')
+          const api = useMagicToast(ToastId.ApiRemove)
           let toastId = ''
 
           function addAndSave() {
@@ -198,78 +199,78 @@ describe('MagicToast - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addAndSave">Add</button>
-            <button data-test-id="remove-btn" @click="removeIt">Remove</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="api-remove" />
+            <button data-test-id="${TestId.AddBtn}" @click="addAndSave">Add</button>
+            <button data-test-id="${TestId.RemoveBtn}" @click="removeIt">Remove</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.ApiRemove}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
-      await screen.getByTestId('remove-btn').click()
+      await screen.getByTestId(TestId.RemoveBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
 
   describe('clear', () => {
     it('clear() removes all toasts', async () => {
-      const screen = render(createWrapper('api-clear'))
+      const screen = render(createWrapper(ToastId.ApiClear))
 
       // Add 3 toasts
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('3')
 
-      await screen.getByTestId('clear-btn').click()
+      await screen.getByTestId(TestId.ClearBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
 
   describe('expand and collapse', () => {
     it('expand() sets expanded state', async () => {
-      const screen = render(createWrapper('api-expand'))
+      const screen = render(createWrapper(ToastId.ApiExpand))
 
       const provider = document.querySelector('.magic-toast-provider')
       expect(provider!.getAttribute('data-expanded')).toBe('false')
 
-      await screen.getByTestId('expand-btn').click()
+      await screen.getByTestId(TestId.ExpandBtn).click()
       await nextTick()
 
       expect(provider!.getAttribute('data-expanded')).toBe('true')
     })
 
     it('collapse() unsets expanded state', async () => {
-      const screen = render(createWrapper('api-collapse'))
+      const screen = render(createWrapper(ToastId.ApiCollapse))
 
-      await screen.getByTestId('expand-btn').click()
+      await screen.getByTestId(TestId.ExpandBtn).click()
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
       expect(provider!.getAttribute('data-expanded')).toBe('true')
 
-      await screen.getByTestId('collapse-btn').click()
+      await screen.getByTestId(TestId.CollapseBtn).click()
       await nextTick()
 
       expect(provider!.getAttribute('data-expanded')).toBe('false')
@@ -281,7 +282,7 @@ describe('MagicToast - API', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('api-toasts-ref')
+          const api = useMagicToast(ToastId.ApiToastsRef)
           function addToast() {
             api.add({ component: SimpleToast })
           }
@@ -289,31 +290,31 @@ describe('MagicToast - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <span data-test-id="ids">{{ toasts.map(t => t.id).join(',') }}</span>
-            <MagicToastProvider id="api-toasts-ref" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <span data-test-id="${TestId.Ids}">{{ toasts.map(t => t.id).join(',') }}</span>
+            <MagicToastProvider id="${ToastId.ApiToastsRef}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       const ids = document.querySelector(
-        '[data-test-id="ids"]'
+        `[data-test-id="${TestId.Ids}"]`
       )!.textContent
       // Should have 2 comma-separated IDs
       expect(ids!.split(',').length).toBe(2)
     })
 
     it('count is 0 when no toasts', async () => {
-      render(createWrapper('api-count-zero'))
+      render(createWrapper(ToastId.ApiCountZero))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })

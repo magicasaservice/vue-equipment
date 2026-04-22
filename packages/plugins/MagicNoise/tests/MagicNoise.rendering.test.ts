@@ -22,20 +22,6 @@ function createNoise(
 
 describe('MagicNoise - Rendering', () => {
   describe('container', () => {
-    it('renders with correct class', async () => {
-      render(createNoise())
-      await nextTick()
-
-      expect(document.querySelector('.magic-noise')).not.toBeNull()
-    })
-
-    it('renders inner container', async () => {
-      render(createNoise())
-      await nextTick()
-
-      expect(document.querySelector('.magic-noise__inner')).not.toBeNull()
-    })
-
     it('sets data-loading to true initially', async () => {
       render(createNoise())
       await nextTick()

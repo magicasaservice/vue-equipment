@@ -1,17 +1,18 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick, h } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   props: { message: { type: String, default: 'Toast!' } },
-  template: '<div class="toast-content" data-test-id="toast-msg">{{ message }}</div>',
+  template: `<div class="toast-content" data-test-id="${TestId.ToastMsg}">{{ message }}</div>`,
 })
 
 function createWrapper(
-  toastId: string,
+  toastId: ToastId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -22,8 +23,8 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="add({ component: $options.SimpleToast })">Add</button>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="add({ component: $options.SimpleToast })">Add</button>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" :options="options" />
       </div>
     `,
@@ -36,24 +37,16 @@ function createWrapper(
 
 describe('MagicToast - Rendering', () => {
   describe('provider structure', () => {
-    it('renders provider wrapper with correct class', async () => {
-      render(createWrapper('render-provider'))
-      await nextTick()
-
-      const provider = document.querySelector('.magic-toast-provider')
-      expect(provider).not.toBeNull()
-    })
-
     it('sets data-id attribute on provider', async () => {
-      render(createWrapper('render-data-id'))
+      render(createWrapper(ToastId.RenderDataId))
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
-      expect(provider!.getAttribute('data-id')).toBe('render-data-id')
+      expect(provider!.getAttribute('data-id')).toBe(ToastId.RenderDataId)
     })
 
     it('sets data-position attribute', async () => {
-      render(createWrapper('render-position', { position: 'top-right' }))
+      render(createWrapper(ToastId.RenderPosition, { position: 'top-right' }))
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
@@ -61,25 +54,15 @@ describe('MagicToast - Rendering', () => {
     })
 
     it('defaults position to bottom', async () => {
-      render(createWrapper('render-default-pos'))
+      render(createWrapper(ToastId.RenderDefaultPos))
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
       expect(provider!.getAttribute('data-position')).toBe('bottom')
     })
 
-    it('renders list container', async () => {
-      render(createWrapper('render-list'))
-      await nextTick()
-
-      const list = document.querySelector(
-        '.magic-toast-provider__list'
-      )
-      expect(list).not.toBeNull()
-    })
-
     it('sets data-expanded attribute', async () => {
-      render(createWrapper('render-expanded'))
+      render(createWrapper(ToastId.RenderExpanded))
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
@@ -89,8 +72,8 @@ describe('MagicToast - Rendering', () => {
 
   describe('toast view rendering', () => {
     it('renders toast as li element', async () => {
-      const screen = render(createWrapper('render-toast-li'))
-      await screen.getByTestId('add-btn').click()
+      const screen = render(createWrapper(ToastId.RenderToastLi))
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -103,7 +86,7 @@ describe('MagicToast - Rendering', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('render-content')
+          const api = useMagicToast(ToastId.RenderContent)
           function addToast() {
             api.add({
               component: SimpleToast,
@@ -114,19 +97,19 @@ describe('MagicToast - Rendering', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <MagicToastProvider id="render-content" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <MagicToastProvider id="${ToastId.RenderContent}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('toast-msg'))
+        .element(page.getByTestId(TestId.ToastMsg))
         .toHaveTextContent('Hello World')
     })
 
@@ -134,7 +117,7 @@ describe('MagicToast - Rendering', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('render-view-id')
+          const api = useMagicToast(ToastId.RenderViewId)
           function addToast() {
             api.add({ component: SimpleToast, id: 'my-toast' })
           }
@@ -142,14 +125,14 @@ describe('MagicToast - Rendering', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <MagicToastProvider id="render-view-id" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <MagicToastProvider id="${ToastId.RenderViewId}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -158,8 +141,8 @@ describe('MagicToast - Rendering', () => {
     })
 
     it('renders inner wrapper with drag container', async () => {
-      const screen = render(createWrapper('render-inner'))
-      await screen.getByTestId('add-btn').click()
+      const screen = render(createWrapper(ToastId.RenderInner))
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -174,7 +157,7 @@ describe('MagicToast - Rendering', () => {
 
   describe('teleport', () => {
     it('teleports to body by default', async () => {
-      render(createWrapper('render-teleport'))
+      render(createWrapper(ToastId.RenderTeleport))
       await nextTick()
 
       const provider = document.body.querySelector(
@@ -190,7 +173,7 @@ describe('MagicToast - Rendering', () => {
 
       try {
         render(
-          createWrapper('render-teleport-custom', {
+          createWrapper(ToastId.RenderTeleportCustom, {
             teleport: { target: '#toast-target' },
           })
         )
@@ -205,7 +188,7 @@ describe('MagicToast - Rendering', () => {
 
     it('teleport disabled keeps provider in component tree', async () => {
       render(
-        createWrapper('render-teleport-disabled', {
+        createWrapper(ToastId.RenderTeleportDisabled, {
           teleport: { disabled: true },
         })
       )

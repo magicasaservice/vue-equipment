@@ -9,6 +9,7 @@ import MagicPlayerOverlay from '../src/components/MagicPlayerOverlay.vue'
 import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -19,7 +20,8 @@ const gc = {
   },
 }
 
-function createPlayer(playerId: string) {
+
+function createPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
     preload: 'none' as const,
@@ -38,16 +40,16 @@ function createPlayer(playerId: string) {
     },
     template: `
       <div>
-        <span data-test-id="playing">{{ playing }}</span>
-        <span data-test-id="paused">{{ paused }}</span>
-        <span data-test-id="muted">{{ muted }}</span>
-        <span data-test-id="touched">{{ touched }}</span>
-        <span data-test-id="started">{{ started }}</span>
-        <span data-test-id="dragging">{{ dragging }}</span>
-        <button data-test-id="play-btn" @click="videoApi.play()">Play</button>
-        <button data-test-id="pause-btn" @click="videoApi.pause()">Pause</button>
-        <button data-test-id="toggle-btn" @click="videoApi.togglePlay()">Toggle</button>
-        <button data-test-id="mute-btn" @click="videoApi.mute()">Mute</button>
+        <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+        <span data-test-id="${TestId.Paused}">{{ paused }}</span>
+        <span data-test-id="${TestId.Muted}">{{ muted }}</span>
+        <span data-test-id="${TestId.Touched}">{{ touched }}</span>
+        <span data-test-id="${TestId.Started}">{{ started }}</span>
+        <span data-test-id="${TestId.Dragging}">{{ dragging }}</span>
+        <button data-test-id="${TestId.PlayBtn}" @click="videoApi.play()">Play</button>
+        <button data-test-id="${TestId.PauseBtn}" @click="videoApi.pause()">Pause</button>
+        <button data-test-id="${TestId.ToggleBtn}" @click="videoApi.togglePlay()">Toggle</button>
+        <button data-test-id="${TestId.MuteBtn}" @click="videoApi.mute()">Mute</button>
         <MagicPlayerProvider id="${playerId}" :options="opts">
           <MagicPlayerVideo />
           <MagicPlayerOverlay />
@@ -61,52 +63,52 @@ function createPlayer(playerId: string) {
 describe('MagicPlayer - Interactions', () => {
   describe('play/pause via buttons', () => {
     it('play button starts playback', async () => {
-      const screen = render(createPlayer('int-play-btn'), gc)
+      const screen = render(createPlayer(PlayerId.IntPlayBtn), gc)
       await nextTick()
 
-      await screen.getByTestId('play-btn').click()
+      await screen.getByTestId(TestId.PlayBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     })
 
     it('toggle play twice pauses', async () => {
-      const screen = render(createPlayer('int-toggle-btn'), gc)
+      const screen = render(createPlayer(PlayerId.IntToggleBtn), gc)
       await nextTick()
 
-      await screen.getByTestId('toggle-btn').click()
+      await screen.getByTestId(TestId.ToggleBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('toggle-btn').click()
+      await screen.getByTestId(TestId.ToggleBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('paused'))
+        .element(page.getByTestId(TestId.Paused))
         .toHaveTextContent('true')
     })
 
     it('mute button toggles mute', async () => {
-      const screen = render(createPlayer('int-mute-btn'), gc)
+      const screen = render(createPlayer(PlayerId.IntMuteBtn), gc)
       await nextTick()
 
-      await screen.getByTestId('mute-btn').click()
+      await screen.getByTestId(TestId.MuteBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('true')
     })
   })
 
   describe('overlay interaction', () => {
     it('overlay renders and is clickable', async () => {
-      render(createPlayer('int-overlay-render'), gc)
+      render(createPlayer(PlayerId.IntOverlayRender), gc)
       await nextTick()
 
       const overlay = document.querySelector(
@@ -118,7 +120,7 @@ describe('MagicPlayer - Interactions', () => {
 
   describe('provider pointer events', () => {
     it('pointerdown on provider sets touched=true', async () => {
-      render(createPlayer('int-provider-touch'), gc)
+      render(createPlayer(PlayerId.IntProviderTouch), gc)
       await nextTick()
 
       const provider = document.querySelector(
@@ -133,14 +135,14 @@ describe('MagicPlayer - Interactions', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('touched'))
+        .element(page.getByTestId(TestId.Touched))
         .toHaveTextContent('true')
     })
   })
 
   describe('controls visibility', () => {
     it('standalone controls are always visible', async () => {
-      render(createPlayer('int-standalone-visible'), gc)
+      render(createPlayer(PlayerId.IntStandaloneVisible), gc)
       await nextTick()
 
       const bar = document.querySelector(
@@ -152,7 +154,7 @@ describe('MagicPlayer - Interactions', () => {
 
   describe('timeline scrubbing', () => {
     it('pointerdown on timeline target initiates drag', async () => {
-      render(createPlayer('int-timeline-drag'), gc)
+      render(createPlayer(PlayerId.IntTimelineDrag), gc)
       await nextTick()
 
       const target = document.querySelector(
@@ -170,7 +172,7 @@ describe('MagicPlayer - Interactions', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('dragging'))
+        .element(page.getByTestId(TestId.Dragging))
         .toHaveTextContent('true')
 
       // Cleanup
@@ -183,7 +185,7 @@ describe('MagicPlayer - Interactions', () => {
     })
 
     it('pointerup ends drag', async () => {
-      render(createPlayer('int-timeline-dragend'), gc)
+      render(createPlayer(PlayerId.IntTimelineDragend), gc)
       await nextTick()
 
       const target = document.querySelector(
@@ -209,14 +211,14 @@ describe('MagicPlayer - Interactions', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('dragging'))
+        .element(page.getByTestId(TestId.Dragging))
         .toHaveTextContent('false')
     })
   })
 
   describe('video element interaction', () => {
     it('video element exists inside provider', async () => {
-      render(createPlayer('int-video-el'), gc)
+      render(createPlayer(PlayerId.IntVideoEl), gc)
       await nextTick()
 
       const video = document.querySelector('.magic-player-video') as HTMLVideoElement
@@ -238,16 +240,16 @@ describe('MagicPlayer - Interactions', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api = useMagicPlayer('int-media-start')
+          const api = useMagicPlayer(PlayerId.IntMediaStart)
           return { ...api, opts }
         },
         template: `
           <div>
-            <button data-test-id="play" @click="videoApi.play()">Play</button>
-            <span data-test-id="loaded">{{ loaded }}</span>
-            <span data-test-id="started">{{ started }}</span>
-            <span data-test-id="playing">{{ playing }}</span>
-            <MagicPlayerProvider id="int-media-start" :options="opts">
+            <button data-test-id="${TestId.Play}" @click="videoApi.play()">Play</button>
+            <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+            <span data-test-id="${TestId.Started}">{{ started }}</span>
+            <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+            <MagicPlayerProvider id="${PlayerId.IntMediaStart}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -259,19 +261,19 @@ describe('MagicPlayer - Interactions', () => {
 
       // Wait for media to load
       await expect
-        .element(page.getByTestId('loaded'), { timeout: 10000 })
+        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
         .toHaveTextContent('true')
 
       // Play via trusted click
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
 
       // Wait for started (media 'playing' event)
       await expect
-        .element(page.getByTestId('started'), { timeout: 5000 })
+        .element(page.getByTestId(TestId.Started), { timeout: 5000 })
         .toHaveTextContent('true')
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     }, 20000)
   })

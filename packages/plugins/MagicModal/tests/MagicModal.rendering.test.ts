@@ -4,20 +4,26 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
+import { ModalId, TestId } from './enums'
 
-function createWrapper(options: Record<string, unknown> = {}) {
+// ─── Factories ────────────────────────────────────────────────────────────────
+
+function createWrapper(
+  modalId: ModalId = ModalId.TestModal,
+  options: Record<string, unknown> = {}
+) {
   return defineComponent({
     components: { MagicModal },
     setup() {
-      const { open, close, isActive } = useMagicModal('test-modal')
+      const { open, close, isActive } = useMagicModal(modalId)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <MagicModal id="test-modal" :options="options">
-          <div data-test-id="modal-content">Modal Content</div>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <MagicModal id="${modalId}" :options="options">
+          <div data-test-id="${TestId.ModalContent}">Modal Content</div>
         </MagicModal>
       </div>
     `,
@@ -31,22 +37,24 @@ function createWrapperWithBackdropSlot() {
   return defineComponent({
     components: { MagicModal },
     setup() {
-      const { open, close } = useMagicModal('test-modal-slot')
+      const { open, close } = useMagicModal(ModalId.TestModalSlot)
       return { open, close }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <MagicModal id="test-modal-slot">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <MagicModal id="${ModalId.TestModalSlot}">
           <template #backdrop>
-            <div data-test-id="custom-backdrop">Custom Backdrop</div>
+            <div data-test-id="${TestId.CustomBackdrop}">Custom Backdrop</div>
           </template>
-          <div data-test-id="modal-content">Content</div>
+          <div data-test-id="${TestId.ModalContent}">Content</div>
         </MagicModal>
       </div>
     `,
   })
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicModal - Rendering', () => {
   it('does not render when inactive', () => {
@@ -56,7 +64,7 @@ describe('MagicModal - Rendering', () => {
 
   it('renders with correct class structure when opened', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -68,17 +76,17 @@ describe('MagicModal - Rendering', () => {
 
   it('sets data-id attribute', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     const modal = document.querySelector('.magic-modal')
-    expect(modal!.getAttribute('data-id')).toBe('test-modal')
+    expect(modal!.getAttribute('data-id')).toBe(ModalId.TestModal)
   })
 
   it('sets aria-modal attribute', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -88,7 +96,7 @@ describe('MagicModal - Rendering', () => {
 
   it('uses dialog element by default', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -97,8 +105,8 @@ describe('MagicModal - Rendering', () => {
   })
 
   it('uses div element when tag option is div', async () => {
-    const screen = render(createWrapper({ tag: 'div' }))
-    await screen.getByTestId('open-btn').click()
+    const screen = render(createWrapper(ModalId.TestModal, { tag: 'div' }))
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -108,7 +116,7 @@ describe('MagicModal - Rendering', () => {
 
   it('teleports to body by default', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -118,49 +126,47 @@ describe('MagicModal - Rendering', () => {
 
   it('renders backdrop when backdrop option is true (default)', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-modal__backdrop')
-    expect(backdrop).not.toBeNull()
+    expect(document.querySelector('.magic-modal__backdrop')).not.toBeNull()
   })
 
   it('does not render backdrop when backdrop option is false', async () => {
-    const screen = render(createWrapper({ backdrop: false }))
-    await screen.getByTestId('open-btn').click()
+    const screen = render(createWrapper(ModalId.TestModal, { backdrop: false }))
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
-    const backdrop = document.querySelector('.magic-modal__backdrop')
-    expect(backdrop).toBeNull()
+    expect(document.querySelector('.magic-modal__backdrop')).toBeNull()
   })
 
   it('renders default slot content', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     await expect
-      .element(page.getByTestId('modal-content'))
+      .element(page.getByTestId(TestId.ModalContent))
       .toBeInTheDocument()
   })
 
   it('renders backdrop slot content', async () => {
     const screen = render(createWrapperWithBackdropSlot())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
     await expect
-      .element(page.getByTestId('custom-backdrop'))
+      .element(page.getByTestId(TestId.CustomBackdrop))
       .toBeInTheDocument()
   })
 
   it('has fixed positioning', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 
@@ -171,7 +177,7 @@ describe('MagicModal - Rendering', () => {
 
   it('is centered with flexbox', async () => {
     const screen = render(createWrapper())
-    await screen.getByTestId('open-btn').click()
+    await screen.getByTestId(TestId.OpenBtn).click()
     await nextTick()
     await nextTick()
 

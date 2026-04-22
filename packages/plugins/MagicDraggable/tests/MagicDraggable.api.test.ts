@@ -3,12 +3,14 @@ import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick } from 'vue'
 import MagicDraggable from '../src/components/MagicDraggable.vue'
 import { useMagicDraggable } from '../src/composables/useMagicDraggable'
+import { DraggableId, TestId } from './enums'
+
+// ─── Factory ──────────────────────────────────────────────────────────────────
 
 function createDraggableWithSnap(
-  draggableId: string,
+  draggableId: DraggableId,
   snapTarget: string,
-  duration: number = 0,
-  options: Record<string, unknown> = {}
+  duration: number = 0
 ) {
   return defineComponent({
     components: { MagicDraggable },
@@ -18,7 +20,7 @@ function createDraggableWithSnap(
     },
     template: `
       <div>
-        <button data-test-id="snap" style="position:relative;z-index:10000"
+        <button data-test-id="${TestId.Snap}" style="position:relative;z-index:10000"
           @click="snapTo('${snapTarget}', ${duration})">Snap</button>
         <MagicDraggable id="${draggableId}" :options="options">
           <div style="width:50px;height:50px;">Box</div>
@@ -29,12 +31,13 @@ function createDraggableWithSnap(
       return {
         options: {
           initial: { snapPoint: 'top-left' },
-          ...options,
         },
       }
     },
   })
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicDraggable - API', () => {
   describe('composable return shape', () => {
@@ -44,7 +47,7 @@ describe('MagicDraggable - API', () => {
       render(
         defineComponent({
           setup() {
-            api = useMagicDraggable('api-shape')
+            api = useMagicDraggable(DraggableId.Shape)
             return {}
           },
           template: '<div>test</div>',
@@ -58,39 +61,33 @@ describe('MagicDraggable - API', () => {
   describe('snapTo', () => {
     it('changes active snap point immediately with duration 0', async () => {
       const screen = render(
-        createDraggableWithSnap('api-snap', 'bottom-right', 0)
+        createDraggableWithSnap(DraggableId.Snap, 'bottom-right', 0)
       )
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      const el = document.querySelector('[data-id="api-snap"]')
-      expect(el!.getAttribute('data-active-snap-point')).toBe(
-        'top-left'
-      )
+      const el = document.querySelector(`[data-id="${DraggableId.Snap}"]`)
+      expect(el!.getAttribute('data-active-snap-point')).toBe('top-left')
 
-      await screen.getByTestId('snap').click()
+      await screen.getByTestId(TestId.Snap).click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      expect(el!.getAttribute('data-active-snap-point')).toBe(
-        'bottom-right'
-      )
+      expect(el!.getAttribute('data-active-snap-point')).toBe('bottom-right')
     })
 
     it('changes active snap point after animated duration', async () => {
       const screen = render(
-        createDraggableWithSnap('api-snap-anim', 'bottom-right', 200)
+        createDraggableWithSnap(DraggableId.SnapAnim, 'bottom-right', 200)
       )
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      await screen.getByTestId('snap').click()
+      await screen.getByTestId(TestId.Snap).click()
       await new Promise((r) => setTimeout(r, 300))
 
-      const el = document.querySelector('[data-id="api-snap-anim"]')
-      expect(el!.getAttribute('data-active-snap-point')).toBe(
-        'bottom-right'
-      )
+      const el = document.querySelector(`[data-id="${DraggableId.SnapAnim}"]`)
+      expect(el!.getAttribute('data-active-snap-point')).toBe('bottom-right')
     })
   })
 })

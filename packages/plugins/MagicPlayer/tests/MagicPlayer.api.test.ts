@@ -10,6 +10,7 @@ import MagicPlayerAudioControls from '../src/components/MagicPlayerAudioControls
 import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -18,7 +19,8 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
-function createVideoPlayer(playerId: string) {
+
+function createVideoPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
     preload: 'none' as const,
@@ -36,21 +38,21 @@ function createVideoPlayer(playerId: string) {
     },
     template: `
       <div>
-        <button data-test-id="play" @click="videoApi.play()">Play</button>
-        <button data-test-id="pause" @click="videoApi.pause()">Pause</button>
-        <button data-test-id="toggle" @click="videoApi.togglePlay()">Toggle</button>
-        <button data-test-id="mute" @click="videoApi.mute()">Mute</button>
-        <button data-test-id="unmute" @click="videoApi.unmute()">Unmute</button>
-        <button data-test-id="seek-10" @click="videoApi.seek(10)">Seek 10</button>
-        <span data-test-id="playing">{{ playing }}</span>
-        <span data-test-id="paused">{{ paused }}</span>
-        <span data-test-id="muted">{{ muted }}</span>
-        <span data-test-id="started">{{ started }}</span>
-        <span data-test-id="loaded">{{ loaded }}</span>
-        <span data-test-id="fullscreen">{{ fullscreen }}</span>
-        <span data-test-id="volume">{{ volume }}</span>
-        <span data-test-id="duration">{{ duration }}</span>
-        <span data-test-id="current-time">{{ currentTime }}</span>
+        <button data-test-id="${TestId.Play}" @click="videoApi.play()">Play</button>
+        <button data-test-id="${TestId.Pause}" @click="videoApi.pause()">Pause</button>
+        <button data-test-id="${TestId.Toggle}" @click="videoApi.togglePlay()">Toggle</button>
+        <button data-test-id="${TestId.Mute}" @click="videoApi.mute()">Mute</button>
+        <button data-test-id="${TestId.Unmute}" @click="videoApi.unmute()">Unmute</button>
+        <button data-test-id="${TestId.Seek10}" @click="videoApi.seek(10)">Seek 10</button>
+        <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+        <span data-test-id="${TestId.Paused}">{{ paused }}</span>
+        <span data-test-id="${TestId.Muted}">{{ muted }}</span>
+        <span data-test-id="${TestId.Started}">{{ started }}</span>
+        <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+        <span data-test-id="${TestId.Fullscreen}">{{ fullscreen }}</span>
+        <span data-test-id="${TestId.Volume}">{{ volume }}</span>
+        <span data-test-id="${TestId.Duration}">{{ duration }}</span>
+        <span data-test-id="${TestId.CurrentTime}">{{ currentTime }}</span>
         <MagicPlayerProvider id="${playerId}" :options="opts">
           <MagicPlayerVideo />
           <MagicPlayerVideoControls :standalone="true" />
@@ -60,7 +62,7 @@ function createVideoPlayer(playerId: string) {
   })
 }
 
-function createAudioPlayer(playerId: string) {
+function createAudioPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
     mode: 'audio' as const,
@@ -79,14 +81,14 @@ function createAudioPlayer(playerId: string) {
     },
     template: `
       <div>
-        <button data-test-id="play" @click="audioApi.play()">Play</button>
-        <button data-test-id="pause" @click="audioApi.pause()">Pause</button>
-        <button data-test-id="toggle" @click="audioApi.togglePlay()">Toggle</button>
-        <button data-test-id="mute" @click="audioApi.mute()">Mute</button>
-        <button data-test-id="unmute" @click="audioApi.unmute()">Unmute</button>
-        <span data-test-id="playing">{{ playing }}</span>
-        <span data-test-id="paused">{{ paused }}</span>
-        <span data-test-id="muted">{{ muted }}</span>
+        <button data-test-id="${TestId.Play}" @click="audioApi.play()">Play</button>
+        <button data-test-id="${TestId.Pause}" @click="audioApi.pause()">Pause</button>
+        <button data-test-id="${TestId.Toggle}" @click="audioApi.togglePlay()">Toggle</button>
+        <button data-test-id="${TestId.Mute}" @click="audioApi.mute()">Mute</button>
+        <button data-test-id="${TestId.Unmute}" @click="audioApi.unmute()">Unmute</button>
+        <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+        <span data-test-id="${TestId.Paused}">{{ paused }}</span>
+        <span data-test-id="${TestId.Muted}">{{ muted }}</span>
         <MagicPlayerProvider id="${playerId}" :options="opts">
           <MagicPlayerAudio />
           <MagicPlayerAudioControls />
@@ -103,7 +105,7 @@ describe('MagicPlayer - API', () => {
       render(
         defineComponent({
           setup() {
-            api = useMagicPlayer('api-shape')
+            api = useMagicPlayer(PlayerId.ApiShape)
             return {}
           },
           template: '<div />',
@@ -127,7 +129,7 @@ describe('MagicPlayer - API', () => {
       render(
         defineComponent({
           setup() {
-            api = useMagicPlayer('api-objects')
+            api = useMagicPlayer(PlayerId.ApiObjects)
             return {}
           },
           template: '<div />',
@@ -145,7 +147,7 @@ describe('MagicPlayer - API', () => {
       render(
         defineComponent({
           setup() {
-            api = useMagicPlayer('api-vid-m')
+            api = useMagicPlayer(PlayerId.ApiVidM)
             return {}
           },
           template: '<div />',
@@ -167,7 +169,7 @@ describe('MagicPlayer - API', () => {
       render(
         defineComponent({
           setup() {
-            api = useMagicPlayer('api-aud-m')
+            api = useMagicPlayer(PlayerId.ApiAudM)
             return {}
           },
           template: '<div />',
@@ -183,128 +185,128 @@ describe('MagicPlayer - API', () => {
 
   describe('video api state mutations', () => {
     it('play() sets playing=true', async () => {
-      const screen = render(createVideoPlayer('api-v-play'), gc)
-      await screen.getByTestId('play').click()
+      const screen = render(createVideoPlayer(PlayerId.ApiVPlay), gc)
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     })
 
     it('pause() after play() sets paused=true', async () => {
-      const screen = render(createVideoPlayer('api-v-pause'), gc)
-      await screen.getByTestId('play').click()
+      const screen = render(createVideoPlayer(PlayerId.ApiVPause), gc)
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
-      await screen.getByTestId('pause').click()
+      await screen.getByTestId(TestId.Pause).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('paused'))
+        .element(page.getByTestId(TestId.Paused))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('false')
     })
 
     it('togglePlay() toggles playing state', async () => {
-      const screen = render(createVideoPlayer('api-v-toggle'), gc)
+      const screen = render(createVideoPlayer(PlayerId.ApiVToggle), gc)
 
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('false')
     })
 
     it('mute() sets muted=true', async () => {
-      const screen = render(createVideoPlayer('api-v-mute'), gc)
-      await screen.getByTestId('mute').click()
+      const screen = render(createVideoPlayer(PlayerId.ApiVMute), gc)
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('true')
     })
 
     it('unmute() sets muted=false', async () => {
-      const screen = render(createVideoPlayer('api-v-unmute'), gc)
-      await screen.getByTestId('mute').click()
+      const screen = render(createVideoPlayer(PlayerId.ApiVUnmute), gc)
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
-      await screen.getByTestId('unmute').click()
+      await screen.getByTestId(TestId.Unmute).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('false')
     })
 
     it('seek() updates currentTime', async () => {
-      const screen = render(createVideoPlayer('api-v-seek'), gc)
-      await screen.getByTestId('seek-10').click()
+      const screen = render(createVideoPlayer(PlayerId.ApiVSeek), gc)
+      await screen.getByTestId(TestId.Seek10).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('current-time'))
+        .element(page.getByTestId(TestId.CurrentTime))
         .toHaveTextContent('10')
     })
   })
 
   describe('audio api state mutations', () => {
     it('play() sets playing=true', async () => {
-      const screen = render(createAudioPlayer('api-a-play'), gc)
-      await screen.getByTestId('play').click()
+      const screen = render(createAudioPlayer(PlayerId.ApiAPlay), gc)
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     })
 
     it('pause() sets paused=true', async () => {
-      const screen = render(createAudioPlayer('api-a-pause'), gc)
-      await screen.getByTestId('play').click()
+      const screen = render(createAudioPlayer(PlayerId.ApiAPause), gc)
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
-      await screen.getByTestId('pause').click()
+      await screen.getByTestId(TestId.Pause).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('paused'))
+        .element(page.getByTestId(TestId.Paused))
         .toHaveTextContent('true')
     })
 
     it('mute()/unmute() toggles muted', async () => {
-      const screen = render(createAudioPlayer('api-a-mute'), gc)
-      await screen.getByTestId('mute').click()
+      const screen = render(createAudioPlayer(PlayerId.ApiAMute), gc)
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('unmute').click()
+      await screen.getByTestId(TestId.Unmute).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('false')
     })
   })
 
   describe('initial state defaults', () => {
     it('starts with all boolean states false', async () => {
-      render(createVideoPlayer('api-defaults'), gc)
+      render(createVideoPlayer(PlayerId.ApiDefaults), gc)
       await nextTick()
 
-      for (const id of ['playing', 'paused', 'muted', 'started', 'fullscreen']) {
+      for (const id of [TestId.Playing, TestId.Paused, TestId.Muted, TestId.Started, TestId.Fullscreen]) {
         await expect
           .element(page.getByTestId(id))
           .toHaveTextContent('false')
@@ -312,29 +314,29 @@ describe('MagicPlayer - API', () => {
     })
 
     it('volume defaults to 1', async () => {
-      render(createVideoPlayer('api-vol-default'), gc)
+      render(createVideoPlayer(PlayerId.ApiVolDefault), gc)
       await nextTick()
 
       await expect
-        .element(page.getByTestId('volume'))
+        .element(page.getByTestId(TestId.Volume))
         .toHaveTextContent('1')
     })
 
     it('currentTime defaults to 0', async () => {
-      render(createVideoPlayer('api-ct-default'), gc)
+      render(createVideoPlayer(PlayerId.ApiCtDefault), gc)
       await nextTick()
 
       await expect
-        .element(page.getByTestId('current-time'))
+        .element(page.getByTestId(TestId.CurrentTime))
         .toHaveTextContent('0')
     })
 
     it('duration defaults to 0', async () => {
-      render(createVideoPlayer('api-dur-default'), gc)
+      render(createVideoPlayer(PlayerId.ApiDurDefault), gc)
       await nextTick()
 
       await expect
-        .element(page.getByTestId('duration'))
+        .element(page.getByTestId(TestId.Duration))
         .toHaveTextContent('0')
     })
   })
@@ -352,14 +354,14 @@ describe('MagicPlayer - API', () => {
           MagicPlayerVideo,
         },
         setup() {
-          const api = useMagicPlayer('api-media-load')
+          const api = useMagicPlayer(PlayerId.ApiMediaLoad)
           return { ...api, opts }
         },
         template: `
           <div>
-            <span data-test-id="loaded">{{ loaded }}</span>
-            <span data-test-id="duration">{{ duration }}</span>
-            <MagicPlayerProvider id="api-media-load" :options="opts">
+            <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+            <span data-test-id="${TestId.Duration}">{{ duration }}</span>
+            <MagicPlayerProvider id="${PlayerId.ApiMediaLoad}" :options="opts">
               <MagicPlayerVideo />
             </MagicPlayerProvider>
           </div>
@@ -370,12 +372,12 @@ describe('MagicPlayer - API', () => {
 
       // Wait for video to load
       await expect
-        .element(page.getByTestId('loaded'), { timeout: 10000 })
+        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
         .toHaveTextContent('true')
 
       // Duration should be set after loading
       const durationEl = document.querySelector(
-        '[data-test-id="duration"]'
+        `[data-test-id="${TestId.Duration}"]`
       ) as HTMLElement
       const duration = parseFloat(durationEl.textContent || '0')
       expect(duration).toBeGreaterThan(0)

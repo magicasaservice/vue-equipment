@@ -4,20 +4,23 @@ import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
+import { ModalId, TestId } from './enums'
+
+// ─── Factories ────────────────────────────────────────────────────────────────
 
 function createWrapper(options: Record<string, unknown> = {}) {
   return defineComponent({
     components: { MagicModal },
     setup() {
-      const { open, close, isActive } = useMagicModal('interact-modal')
+      const { open, close, isActive } = useMagicModal(ModalId.Interact)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <MagicModal id="interact-modal" :options="options">
-          <div data-test-id="modal-content" style="width: 300px; height: 200px; background: white;">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <MagicModal id="${ModalId.Interact}" :options="options">
+          <div data-test-id="${TestId.ModalContent}" style="width: 300px; height: 200px; background: white;">
             Modal Content
           </div>
         </MagicModal>
@@ -33,14 +36,14 @@ function createCustomKeyWrapper(keys: string[] | false) {
   return defineComponent({
     components: { MagicModal },
     setup() {
-      const { open, close, isActive } = useMagicModal('key-modal')
+      const { open, close, isActive } = useMagicModal(ModalId.Key)
       return { open, close, isActive }
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <MagicModal id="key-modal" :options="{ keyListener: { close: keys } }">
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <MagicModal id="${ModalId.Key}" :options="{ keyListener: { close: keys } }">
           <div>Content</div>
         </MagicModal>
       </div>
@@ -52,11 +55,13 @@ function createCustomKeyWrapper(keys: string[] | false) {
 }
 
 async function openModal(screen: ReturnType<typeof render>) {
-  await screen.getByTestId('open-btn').click()
+  await screen.getByTestId(TestId.OpenBtn).click()
   await nextTick()
   await nextTick()
   await new Promise((r) => setTimeout(r, 350))
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicModal - Interactions', () => {
   describe('backdrop click', () => {
@@ -65,7 +70,7 @@ describe('MagicModal - Interactions', () => {
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       // Pointer capture requires real browser interaction.
@@ -77,7 +82,7 @@ describe('MagicModal - Interactions', () => {
       await new Promise((r) => setTimeout(r, 300))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
@@ -86,13 +91,13 @@ describe('MagicModal - Interactions', () => {
       await openModal(screen)
 
       const content = document.querySelector(
-        '[data-test-id="modal-content"]'
+        `[data-test-id="${TestId.ModalContent}"]`
       ) as HTMLElement
       content.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
 
@@ -104,7 +109,7 @@ describe('MagicModal - Interactions', () => {
       expect(backdrop).toBeNull()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -115,14 +120,14 @@ describe('MagicModal - Interactions', () => {
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
@@ -131,7 +136,7 @@ describe('MagicModal - Interactions', () => {
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
@@ -139,7 +144,7 @@ describe('MagicModal - Interactions', () => {
       await new Promise((r) => setTimeout(r, 50))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })

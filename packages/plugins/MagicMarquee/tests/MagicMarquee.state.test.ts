@@ -4,9 +4,12 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { useMagicMarquee } from '../src/composables/useMagicMarquee'
+import { MarqueeId, TestId } from './enums'
+
+// ─── Factory ─────────────────────────────────────────────────────────────────
 
 function createMarquee(
-  marqueeId: string,
+  marqueeId: MarqueeId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -17,11 +20,11 @@ function createMarquee(
     },
     template: `
       <div>
-        <span data-test-id="id">{{ state.id }}</span>
-        <span data-test-id="playing">{{ state.playing }}</span>
-        <span data-test-id="is-playing">{{ isPlaying }}</span>
-        <button data-test-id="pause" @click="pause()">Pause</button>
-        <button data-test-id="play" @click="play()">Play</button>
+        <span data-test-id="${TestId.Id}">{{ state.id }}</span>
+        <span data-test-id="${TestId.Playing}">{{ state.playing }}</span>
+        <span data-test-id="${TestId.IsPlaying}">{{ isPlaying }}</span>
+        <button data-test-id="${TestId.Pause}" @click="pause()">Pause</button>
+        <button data-test-id="${TestId.Play}" @click="play()">Play</button>
         <MagicMarquee id="${marqueeId}" :options="options">
           <span>Item</span>
         </MagicMarquee>
@@ -33,36 +36,38 @@ function createMarquee(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMarquee - State', () => {
   describe('shared state', () => {
     it('composable and component share state via id', async () => {
-      render(createMarquee('state-shared'))
+      render(createMarquee(MarqueeId.StateShared))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('id'))
-        .toHaveTextContent('state-shared')
+        .element(page.getByTestId(TestId.Id))
+        .toHaveTextContent(MarqueeId.StateShared)
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     })
 
     it('state mutations from composable reflect in state', async () => {
-      const screen = render(createMarquee('state-mutate'))
+      const screen = render(createMarquee(MarqueeId.StateMutate))
       await nextTick()
 
-      await screen.getByTestId('pause').click()
+      await screen.getByTestId(TestId.Pause).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing'))
+        .element(page.getByTestId(TestId.Playing))
         .toHaveTextContent('true')
     })
   })
@@ -71,18 +76,19 @@ describe('MagicMarquee - State', () => {
     it('two marquees have independent state', async () => {
       let api1: ReturnType<typeof useMagicMarquee> | undefined
       let api2: ReturnType<typeof useMagicMarquee> | undefined
+
       render(
         defineComponent({
           components: { MagicMarquee },
           setup() {
-            api1 = useMagicMarquee('state-ind-1')
-            api2 = useMagicMarquee('state-ind-2')
+            api1 = useMagicMarquee(MarqueeId.StateInd1)
+            api2 = useMagicMarquee(MarqueeId.StateInd2)
             return {}
           },
           template: `
             <div>
-              <MagicMarquee id="state-ind-1"><span>A</span></MagicMarquee>
-              <MagicMarquee id="state-ind-2"><span>B</span></MagicMarquee>
+              <MagicMarquee id="${MarqueeId.StateInd1}"><span>A</span></MagicMarquee>
+              <MagicMarquee id="${MarqueeId.StateInd2}"><span>B</span></MagicMarquee>
             </div>
           `,
         })

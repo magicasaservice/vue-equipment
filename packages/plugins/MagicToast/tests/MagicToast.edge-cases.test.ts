@@ -4,6 +4,7 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   props: { message: { type: String, default: 'Toast' } },
@@ -11,7 +12,7 @@ const SimpleToast = defineComponent({
 })
 
 function createWrapper(
-  toastId: string,
+  toastId: ToastId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -30,9 +31,9 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="addToast()">Add</button>
-        <button data-test-id="clear-btn" @click="clear()">Clear</button>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="addToast()">Add</button>
+        <button data-test-id="${TestId.ClearBtn}" @click="clear()">Clear</button>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" :options="options" />
       </div>
     `,
@@ -45,13 +46,13 @@ function createWrapper(
 describe('MagicToast - Edge Cases', () => {
   describe('zero configuration', () => {
     it('works with no options (all defaults)', async () => {
-      const screen = render(createWrapper('edge-defaults'))
+      const screen = render(createWrapper(ToastId.EdgeDefaults))
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
       expect(
@@ -68,7 +69,7 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-rapid-add')
+          const api = useMagicToast(ToastId.EdgeRapidAdd)
 
           function rapidAdd() {
             for (let i = 0; i < 10; i++) {
@@ -83,22 +84,22 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="rapid-btn" @click="rapidAdd">Rapid Add</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="edge-rapid-add" />
+            <button data-test-id="${TestId.RapidBtn}" @click="rapidAdd">Rapid Add</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.EdgeRapidAdd}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('rapid-btn').click()
+      await screen.getByTestId(TestId.RapidBtn).click()
       await nextTick()
       await nextTick()
 
       // Count should be capped at max (default 3) after transitions
       await new Promise((r) => setTimeout(r, 500))
       const count = parseInt(
-        document.querySelector('[data-test-id="count"]')!.textContent ||
+        document.querySelector(`[data-test-id="${TestId.Count}"]`)!.textContent ||
           '0'
       )
       expect(count).toBeGreaterThan(0)
@@ -109,7 +110,7 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-add-clear')
+          const api = useMagicToast(ToastId.EdgeAddClear)
 
           function addThenClear() {
             api.add({ component: SimpleToast })
@@ -121,19 +122,19 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="addThenClear">Go</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="edge-add-clear" />
+            <button data-test-id="${TestId.Btn}" @click="addThenClear">Go</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.EdgeAddClear}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
@@ -143,7 +144,7 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-remove-invalid')
+          const api = useMagicToast(ToastId.EdgeRemoveInvalid)
 
           function removeInvalid() {
             api.remove('nonexistent-id')
@@ -153,34 +154,34 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="removeInvalid">Remove</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="edge-remove-invalid" />
+            <button data-test-id="${TestId.Btn}" @click="removeInvalid">Remove</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.EdgeRemoveInvalid}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
       // Should not throw
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
 
   describe('clear empty', () => {
     it('clearing with no toasts does not error', async () => {
-      const screen = render(createWrapper('edge-clear-empty'))
+      const screen = render(createWrapper(ToastId.EdgeClearEmpty))
 
       // Should not throw
-      await screen.getByTestId('clear-btn').click()
+      await screen.getByTestId(TestId.ClearBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
@@ -190,8 +191,8 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api1 = useMagicToast('edge-concurrent-1')
-          const api2 = useMagicToast('edge-concurrent-2')
+          const api1 = useMagicToast(ToastId.EdgeConcurrent1)
+          const api2 = useMagicToast(ToastId.EdgeConcurrent2)
 
           function addTo1() {
             api1.add({ component: SimpleToast })
@@ -210,26 +211,26 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-1" @click="addTo1">Add 1</button>
-            <button data-test-id="add-2" @click="addTo2">Add 2</button>
-            <span data-test-id="count-1">{{ count1 }}</span>
-            <span data-test-id="count-2">{{ count2 }}</span>
-            <MagicToastProvider id="edge-concurrent-1" />
-            <MagicToastProvider id="edge-concurrent-2" />
+            <button data-test-id="${TestId.Add1}" @click="addTo1">Add 1</button>
+            <button data-test-id="${TestId.Add2}" @click="addTo2">Add 2</button>
+            <span data-test-id="${TestId.Count1}">{{ count1 }}</span>
+            <span data-test-id="${TestId.Count2}">{{ count2 }}</span>
+            <MagicToastProvider id="${ToastId.EdgeConcurrent1}" />
+            <MagicToastProvider id="${ToastId.EdgeConcurrent2}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-1').click()
-      await screen.getByTestId('add-1').click()
+      await screen.getByTestId(TestId.Add1).click()
+      await screen.getByTestId(TestId.Add1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count-1'))
+        .element(page.getByTestId(TestId.Count1))
         .toHaveTextContent('2')
       await expect
-        .element(page.getByTestId('count-2'))
+        .element(page.getByTestId(TestId.Count2))
         .toHaveTextContent('0')
     })
   })
@@ -239,7 +240,7 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-duration-override')
+          const api = useMagicToast(ToastId.EdgeDurationOverride)
 
           function addShort() {
             api.add({ component: SimpleToast, duration: 200 })
@@ -253,28 +254,28 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-short" @click="addShort">Short</button>
-            <button data-test-id="add-long" @click="addLong">Long</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="edge-duration-override" />
+            <button data-test-id="${TestId.AddShort}" @click="addShort">Short</button>
+            <button data-test-id="${TestId.AddLong}" @click="addLong">Long</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.EdgeDurationOverride}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-short').click()
-      await screen.getByTestId('add-long').click()
+      await screen.getByTestId(TestId.AddShort).click()
+      await screen.getByTestId(TestId.AddLong).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('2')
 
       // Wait for short one to close
       await new Promise((r) => setTimeout(r, 400))
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
     })
   })
@@ -284,13 +285,13 @@ describe('MagicToast - Edge Cases', () => {
       const SelfClosing = defineComponent({
         emits: ['remove'],
         template:
-          '<button data-test-id="close-self" @click="$emit(\'remove\')">Close</button>',
+          `<button data-test-id="${TestId.CloseSelf}" @click="$emit('remove')">Close</button>`,
       })
 
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-self-remove')
+          const api = useMagicToast(ToastId.EdgeSelfRemove)
 
           function addToast() {
             api.add({ component: SelfClosing })
@@ -300,32 +301,32 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="edge-self-remove" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.EdgeSelfRemove}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
       // Click self-close button inside toast
       const closeBtn = document.querySelector(
-        '[data-test-id="close-self"]'
+        `[data-test-id="${TestId.CloseSelf}"]`
       ) as HTMLElement
       expect(closeBtn).not.toBeNull()
       closeBtn.click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
@@ -335,7 +336,7 @@ describe('MagicToast - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('edge-toggle-rapid')
+          const api = useMagicToast(ToastId.EdgeToggleRapid)
 
           function rapidToggle() {
             api.expand()
@@ -349,14 +350,14 @@ describe('MagicToast - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="toggle-btn" @click="rapidToggle">Toggle</button>
-            <MagicToastProvider id="edge-toggle-rapid" />
+            <button data-test-id="${TestId.ToggleBtn}" @click="rapidToggle">Toggle</button>
+            <MagicToastProvider id="${ToastId.EdgeToggleRapid}" />
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('toggle-btn').click()
+      await screen.getByTestId(TestId.ToggleBtn).click()
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')

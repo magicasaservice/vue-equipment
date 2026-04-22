@@ -4,12 +4,13 @@ import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
 import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   template: '<div class="toast-content" style="height: 50px;">Toast</div>',
 })
 
-function createEventWrapper(toastId: string) {
+function createEventWrapper(toastId: ToastId) {
   return defineComponent({
     components: { MagicToastProvider },
     setup() {
@@ -37,18 +38,18 @@ function createEventWrapper(toastId: string) {
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="addToast">Add</button>
-        <button data-test-id="clear-btn" @click="clear()">Clear</button>
-        <button data-test-id="clear-events" @click="clearEvents">Clear Events</button>
-        <span data-test-id="events">{{ events.join(',') }}</span>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+        <button data-test-id="${TestId.ClearBtn}" @click="clear()">Clear</button>
+        <button data-test-id="${TestId.ClearEvents}" @click="clearEvents">Clear Events</button>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" />
       </div>
     `,
   })
 }
 
-function getTestText(id: string): string {
+function getTestText(id: TestId): string {
   return (
     document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
   )
@@ -58,19 +59,19 @@ describe('MagicToast - Events', () => {
   describe('enter transition events', () => {
     it('emits beforeEnter and enter on add', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-enter')
+        createEventWrapper(ToastId.EventEnter)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="add-btn"]'
+          `[data-test-id="${TestId.AddBtn}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
         await new Promise((r) => setTimeout(r, 400))
 
-        const events = getTestText('events')
+        const events = getTestText(TestId.Events)
         expect(events).toContain('beforeEnter')
         expect(events).toContain('enter')
       } finally {
@@ -80,18 +81,18 @@ describe('MagicToast - Events', () => {
 
     it('emits afterEnter after transition completes', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-after-enter')
+        createEventWrapper(ToastId.EventAfterEnter)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="add-btn"]'
+          `[data-test-id="${TestId.AddBtn}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await new Promise((r) => setTimeout(r, 600))
 
-        const events = getTestText('events')
+        const events = getTestText(TestId.Events)
         expect(events).toContain('afterEnter')
       } finally {
         unmount()
@@ -102,13 +103,13 @@ describe('MagicToast - Events', () => {
   describe('leave transition events', () => {
     it('emits leave events on clear', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-leave')
+        createEventWrapper(ToastId.EventLeave)
       )
 
       try {
         // Add toast
         const addBtn = container.querySelector(
-          '[data-test-id="add-btn"]'
+          `[data-test-id="${TestId.AddBtn}"]`
         ) as HTMLElement
         addBtn.click()
         await nextTick()
@@ -116,20 +117,20 @@ describe('MagicToast - Events', () => {
 
         // Clear events
         const clearEventsBtn = container.querySelector(
-          '[data-test-id="clear-events"]'
+          `[data-test-id="${TestId.ClearEvents}"]`
         ) as HTMLElement
         clearEventsBtn.click()
         await nextTick()
 
         // Clear toasts
         const clearBtn = container.querySelector(
-          '[data-test-id="clear-btn"]'
+          `[data-test-id="${TestId.ClearBtn}"]`
         ) as HTMLElement
         clearBtn.click()
         await nextTick()
         await new Promise((r) => setTimeout(r, 400))
 
-        const events = getTestText('events')
+        const events = getTestText(TestId.Events)
         expect(events).toContain('beforeLeave')
         expect(events).toContain('leave')
       } finally {
@@ -141,18 +142,18 @@ describe('MagicToast - Events', () => {
   describe('event order', () => {
     it('enter events fire in correct order', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-order')
+        createEventWrapper(ToastId.EventOrder)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="add-btn"]'
+          `[data-test-id="${TestId.AddBtn}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await new Promise((r) => setTimeout(r, 600))
 
-        const text = getTestText('events')
+        const text = getTestText(TestId.Events)
         const events = text.split(',')
 
         const beforeIdx = events.indexOf('beforeEnter')

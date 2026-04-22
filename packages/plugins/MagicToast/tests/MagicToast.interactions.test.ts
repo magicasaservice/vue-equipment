@@ -5,6 +5,7 @@ import { defineComponent, nextTick } from 'vue'
 import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
 import { useMagicEmitter } from '../../MagicEmitter'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   template:
@@ -12,7 +13,7 @@ const SimpleToast = defineComponent({
 })
 
 function createWrapper(
-  toastId: string,
+  toastId: ToastId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -26,8 +27,8 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="addToast">Add</button>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" :options="options" />
       </div>
     `,
@@ -55,7 +56,7 @@ function pointerEvent(
 async function addAndGetDragEl(
   screen: ReturnType<typeof render>
 ): Promise<HTMLElement> {
-  await screen.getByTestId('add-btn').click()
+  await screen.getByTestId(TestId.AddBtn).click()
   await nextTick()
   await nextTick()
 
@@ -69,7 +70,7 @@ async function addAndGetDragEl(
 describe('MagicToast - Interactions', () => {
   describe('drag state', () => {
     it('pointerdown sets data-dragging to true', async () => {
-      const screen = render(createWrapper('int-drag-state'))
+      const screen = render(createWrapper(ToastId.IntDragState))
       const dragEl = await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
@@ -86,7 +87,7 @@ describe('MagicToast - Interactions', () => {
     })
 
     it('pointerup resets data-dragging to false', async () => {
-      const screen = render(createWrapper('int-drag-reset'))
+      const screen = render(createWrapper(ToastId.IntDragReset))
       const dragEl = await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
@@ -106,7 +107,7 @@ describe('MagicToast - Interactions', () => {
   describe('drag direction constraints', () => {
     it('bottom position: drag down moves toast', async () => {
       const screen = render(
-        createWrapper('int-drag-bottom', { position: 'bottom' })
+        createWrapper(ToastId.IntDragBottom, { position: 'bottom' })
       )
       const dragEl = await addAndGetDragEl(screen)
 
@@ -139,7 +140,7 @@ describe('MagicToast - Interactions', () => {
 
     it('bottom position: drag up is constrained to 0', async () => {
       const screen = render(
-        createWrapper('int-drag-bottom-up', { position: 'bottom' })
+        createWrapper(ToastId.IntDragBottomUp, { position: 'bottom' })
       )
       const dragEl = await addAndGetDragEl(screen)
 
@@ -166,7 +167,7 @@ describe('MagicToast - Interactions', () => {
 
     it('top position: drag up moves toast', async () => {
       const screen = render(
-        createWrapper('int-drag-top', { position: 'top' })
+        createWrapper(ToastId.IntDragTop, { position: 'top' })
       )
       const dragEl = await addAndGetDragEl(screen)
 
@@ -195,7 +196,7 @@ describe('MagicToast - Interactions', () => {
   describe('drag to dismiss', () => {
     it('dragging past threshold removes toast', async () => {
       const screen = render(
-        createWrapper('int-dismiss', {
+        createWrapper(ToastId.IntDismiss, {
           position: 'bottom',
           threshold: { distance: 20, lock: 4, momentum: 100 },
         })
@@ -203,7 +204,7 @@ describe('MagicToast - Interactions', () => {
       const dragEl = await addAndGetDragEl(screen)
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
       const inner = document.querySelector(
@@ -224,13 +225,13 @@ describe('MagicToast - Interactions', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
 
     it('small drag snaps back without dismissing', async () => {
       const screen = render(
-        createWrapper('int-snap-back', {
+        createWrapper(ToastId.IntSnapBack, {
           position: 'bottom',
           threshold: { distance: 100, lock: 4, momentum: 100 },
           animation: { snap: { duration: 50 } },
@@ -256,7 +257,7 @@ describe('MagicToast - Interactions', () => {
 
       // Toast should still exist
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
     })
   })
@@ -264,7 +265,7 @@ describe('MagicToast - Interactions', () => {
   describe('click to expand', () => {
     it('clicking toast expands stack when layout.expand is click', async () => {
       const screen = render(
-        createWrapper('int-click-expand', {
+        createWrapper(ToastId.IntClickExpand, {
           layout: { expand: 'click' },
         })
       )
@@ -285,7 +286,7 @@ describe('MagicToast - Interactions', () => {
 
     it('clicking toast does not expand when layout.expand is false', async () => {
       const screen = render(
-        createWrapper('int-click-no-expand', {
+        createWrapper(ToastId.IntClickNoExpand, {
           layout: { expand: false },
         })
       )
@@ -309,7 +310,7 @@ describe('MagicToast - Interactions', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('int-event-before-drag')
+          const api = useMagicToast(ToastId.IntEventBeforeDrag)
           const emitter = useMagicEmitter()
           emitter.on('beforeDrag', handler)
 
@@ -320,8 +321,8 @@ describe('MagicToast - Interactions', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <MagicToastProvider id="int-event-before-drag" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <MagicToastProvider id="${ToastId.IntEventBeforeDrag}" />
           </div>
         `,
       })
@@ -347,7 +348,7 @@ describe('MagicToast - Interactions', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('int-event-drag')
+          const api = useMagicToast(ToastId.IntEventDrag)
           const emitter = useMagicEmitter()
           emitter.on('drag', handler)
 
@@ -358,8 +359,8 @@ describe('MagicToast - Interactions', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <MagicToastProvider id="int-event-drag" :options="{ position: 'bottom' }" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <MagicToastProvider id="${ToastId.IntEventDrag}" :options="{ position: 'bottom' }" />
           </div>
         `,
       })
@@ -391,7 +392,7 @@ describe('MagicToast - Interactions', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('int-event-after-drag')
+          const api = useMagicToast(ToastId.IntEventAfterDrag)
           const emitter = useMagicEmitter()
           emitter.on('afterDrag', handler)
 
@@ -402,8 +403,8 @@ describe('MagicToast - Interactions', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <MagicToastProvider id="int-event-after-drag" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <MagicToastProvider id="${ToastId.IntEventAfterDrag}" />
           </div>
         `,
       })
@@ -429,7 +430,7 @@ describe('MagicToast - Interactions', () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
-          const api = useMagicToast('int-timeout-pause')
+          const api = useMagicToast(ToastId.IntTimeoutPause)
           function addToast() {
             api.add({ component: SimpleToast, duration: 300 })
           }
@@ -437,9 +438,9 @@ describe('MagicToast - Interactions', () => {
         },
         template: `
           <div>
-            <button data-test-id="add-btn" @click="addToast">Add</button>
-            <span data-test-id="count">{{ count }}</span>
-            <MagicToastProvider id="int-timeout-pause" />
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.IntTimeoutPause}" />
           </div>
         `,
       })
@@ -459,7 +460,7 @@ describe('MagicToast - Interactions', () => {
 
       // Toast should still be alive because drag paused timer
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
       // Cleanup

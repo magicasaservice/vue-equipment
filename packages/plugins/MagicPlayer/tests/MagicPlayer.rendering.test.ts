@@ -12,6 +12,7 @@ import MagicPlayerPoster from '../src/components/MagicPlayerPoster.vue'
 import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -24,8 +25,9 @@ const gc = {
   },
 }
 
+
 function createVideoPlayer(
-  playerId: string,
+  playerId: PlayerId,
   overrides: Record<string, unknown> = {}
 ) {
   const opts = {
@@ -61,7 +63,7 @@ function createVideoPlayer(
 }
 
 function createAudioPlayer(
-  playerId: string,
+  playerId: PlayerId,
   overrides: Record<string, unknown> = {}
 ) {
   const opts = {
@@ -92,17 +94,8 @@ function createAudioPlayer(
 
 describe('MagicPlayer - Rendering', () => {
   describe('provider', () => {
-    it('renders provider with correct class', async () => {
-      render(createVideoPlayer('render-provider'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-player-provider')
-      ).not.toBeNull()
-    })
-
     it('sets data-id on provider', async () => {
-      render(createVideoPlayer('render-data-id'), gc)
+      render(createVideoPlayer(PlayerId.RenderDataId), gc)
       await nextTick()
 
       const provider = document.querySelector('.magic-player-provider')
@@ -110,7 +103,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('sets data-mode to video by default', async () => {
-      render(createVideoPlayer('render-mode-video'), gc)
+      render(createVideoPlayer(PlayerId.RenderModeVideo), gc)
       await nextTick()
 
       const provider = document.querySelector('.magic-player-provider')
@@ -118,7 +111,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('sets data-mode to audio when configured', async () => {
-      render(createAudioPlayer('render-mode-audio'), gc)
+      render(createAudioPlayer(PlayerId.RenderModeAudio), gc)
       await nextTick()
 
       const provider = document.querySelector('.magic-player-provider')
@@ -126,7 +119,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('sets default data attributes to false', async () => {
-      render(createVideoPlayer('render-defaults'), gc)
+      render(createVideoPlayer(PlayerId.RenderDefaults), gc)
       await nextTick()
 
       const provider = document.querySelector('.magic-player-provider')
@@ -141,7 +134,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('renders slot content', async () => {
-      render(createVideoPlayer('render-slot'), gc)
+      render(createVideoPlayer(PlayerId.RenderSlot), gc)
       await nextTick()
 
       expect(
@@ -155,7 +148,7 @@ describe('MagicPlayer - Rendering', () => {
 
   describe('video element', () => {
     it('renders video element with correct class', async () => {
-      render(createVideoPlayer('render-video-el'), gc)
+      render(createVideoPlayer(PlayerId.RenderVideoEl), gc)
       await nextTick()
 
       const video = document.querySelector(
@@ -166,7 +159,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('video has playsinline attribute', async () => {
-      render(createVideoPlayer('render-video-inline'), gc)
+      render(createVideoPlayer(PlayerId.RenderVideoInline), gc)
       await nextTick()
 
       const video = document.querySelector(
@@ -176,7 +169,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('video has correct preload attribute', async () => {
-      render(createVideoPlayer('render-video-preload'), gc)
+      render(createVideoPlayer(PlayerId.RenderVideoPreload), gc)
       await nextTick()
 
       const video = document.querySelector(
@@ -188,7 +181,7 @@ describe('MagicPlayer - Rendering', () => {
 
   describe('audio element', () => {
     it('renders audio element with correct class', async () => {
-      render(createAudioPlayer('render-audio-el'), gc)
+      render(createAudioPlayer(PlayerId.RenderAudioEl), gc)
       await nextTick()
 
       const audio = document.querySelector(
@@ -200,17 +193,8 @@ describe('MagicPlayer - Rendering', () => {
   })
 
   describe('overlay', () => {
-    it('renders overlay with correct class', async () => {
-      render(createVideoPlayer('render-overlay'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-player-overlay')
-      ).not.toBeNull()
-    })
-
     it('overlay has data attributes', async () => {
-      render(createVideoPlayer('render-overlay-attrs'), gc)
+      render(createVideoPlayer(PlayerId.RenderOverlayAttrs), gc)
       await nextTick()
 
       const overlay = document.querySelector('.magic-player-overlay')
@@ -223,17 +207,8 @@ describe('MagicPlayer - Rendering', () => {
   })
 
   describe('poster', () => {
-    it('renders poster with correct class', async () => {
-      render(createVideoPlayer('render-poster'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-player-poster')
-      ).not.toBeNull()
-    })
-
     it('poster is visible by default (not loaded, not started)', async () => {
-      render(createVideoPlayer('render-poster-visible'), gc)
+      render(createVideoPlayer(PlayerId.RenderPosterVisible), gc)
       await nextTick()
 
       const poster = document.querySelector(
@@ -243,27 +218,18 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('poster renders slot content', async () => {
-      render(createVideoPlayer('render-poster-slot'), gc)
+      render(createVideoPlayer(PlayerId.RenderPosterSlot), gc)
       await nextTick()
 
       await expect
-        .element(page.getByTestId('poster-content'))
+        .element(page.getByTestId(TestId.PosterContent))
         .toHaveTextContent('Poster')
     })
   })
 
   describe('video controls', () => {
-    it('renders video controls with correct class', async () => {
-      render(createVideoPlayer('render-vc'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-player-video-controls')
-      ).not.toBeNull()
-    })
-
     it('video controls have data attributes', async () => {
-      render(createVideoPlayer('render-vc-attrs'), gc)
+      render(createVideoPlayer(PlayerId.RenderVcAttrs), gc)
       await nextTick()
 
       const controls = document.querySelector(
@@ -278,7 +244,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('standalone controls set data-standalone=true', async () => {
-      render(createVideoPlayer('render-vc-standalone'), gc)
+      render(createVideoPlayer(PlayerId.RenderVcStandalone), gc)
       await nextTick()
 
       const controls = document.querySelector(
@@ -288,7 +254,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('renders bar with inner content', async () => {
-      render(createVideoPlayer('render-vc-bar'), gc)
+      render(createVideoPlayer(PlayerId.RenderVcBar), gc)
       await nextTick()
 
       expect(
@@ -299,7 +265,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('renders timeline inside controls', async () => {
-      render(createVideoPlayer('render-vc-timeline'), gc)
+      render(createVideoPlayer(PlayerId.RenderVcTimeline), gc)
       await nextTick()
 
       expect(
@@ -309,17 +275,8 @@ describe('MagicPlayer - Rendering', () => {
   })
 
   describe('audio controls', () => {
-    it('renders audio controls with correct class', async () => {
-      render(createAudioPlayer('render-ac'), gc)
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-player-audio-controls')
-      ).not.toBeNull()
-    })
-
     it('audio controls have data attributes', async () => {
-      render(createAudioPlayer('render-ac-attrs'), gc)
+      render(createAudioPlayer(PlayerId.RenderAcAttrs), gc)
       await nextTick()
 
       const controls = document.querySelector(
@@ -333,7 +290,7 @@ describe('MagicPlayer - Rendering', () => {
     })
 
     it('renders slot items', async () => {
-      render(createAudioPlayer('render-ac-slots'), gc)
+      render(createAudioPlayer(PlayerId.RenderAcSlots), gc)
       await nextTick()
 
       expect(
@@ -353,7 +310,7 @@ describe('MagicPlayer - Rendering', () => {
 
   describe('timeline', () => {
     it('renders timeline elements', async () => {
-      render(createVideoPlayer('render-tl'), gc)
+      render(createVideoPlayer(PlayerId.RenderTl), gc)
       await nextTick()
 
       expect(

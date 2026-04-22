@@ -3,6 +3,9 @@ import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick, reactive } from 'vue'
 import { useMagicEmitter } from '../index'
+import { TestId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicEmitter - Integration', () => {
   describe('cross-component communication', () => {
@@ -15,8 +18,7 @@ describe('MagicEmitter - Integration', () => {
           }
           return { send }
         },
-        template:
-          '<button data-test-id="send-btn" @click="send">Send</button>',
+        template: `<button data-test-id="${TestId.SendBtn}" @click="send">Send</button>`,
       })
 
       const Receiver = defineComponent({
@@ -28,8 +30,7 @@ describe('MagicEmitter - Integration', () => {
           })
           return { received }
         },
-        template:
-          '<span data-test-id="received">{{ received.join(",") }}</span>',
+        template: `<span data-test-id="${TestId.Received}">{{ received.join(",") }}</span>`,
       })
 
       const App = defineComponent({
@@ -38,11 +39,11 @@ describe('MagicEmitter - Integration', () => {
       })
 
       const screen = render(App)
-      await screen.getByTestId('send-btn').click()
+      await screen.getByTestId(TestId.SendBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('received'))
+        .element(page.getByTestId(TestId.Received))
         .toHaveTextContent('from-sender')
     })
 
@@ -55,8 +56,7 @@ describe('MagicEmitter - Integration', () => {
           }
           return { send }
         },
-        template:
-          '<button data-test-id="child-btn" @click="send">Child Send</button>',
+        template: `<button data-test-id="${TestId.ChildBtn}" @click="send">Child Send</button>`,
       })
 
       const Parent = defineComponent({
@@ -71,18 +71,18 @@ describe('MagicEmitter - Integration', () => {
         },
         template: `
           <div>
-            <span data-test-id="parent-received">{{ received.join(",") }}</span>
+            <span data-test-id="${TestId.ParentReceived}">{{ received.join(",") }}</span>
             <Child />
           </div>
         `,
       })
 
       const screen = render(Parent)
-      await screen.getByTestId('child-btn').click()
+      await screen.getByTestId(TestId.ChildBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('parent-received'))
+        .element(page.getByTestId(TestId.ParentReceived))
         .toHaveTextContent('child-event')
     })
   })
@@ -104,12 +104,11 @@ describe('MagicEmitter - Integration', () => {
 
           return { emitThrice }
         },
-        template:
-          '<button data-test-id="btn" @click="emitThrice">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="emitThrice">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledTimes(3)
@@ -125,7 +124,6 @@ describe('MagicEmitter - Integration', () => {
 
       const wrapper = defineComponent({
         setup() {
-          // Two separate calls to useMagicEmitter
           const emitter1 = useMagicEmitter()
           const emitter2 = useMagicEmitter()
 
@@ -137,15 +135,13 @@ describe('MagicEmitter - Integration', () => {
 
           return { emitViaSecond }
         },
-        template:
-          '<button data-test-id="btn" @click="emitViaSecond">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="emitViaSecond">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
-      // Handler registered on emitter1 fires from emitter2 emission
       expect(handler).toHaveBeenCalledWith('shared')
     })
   })

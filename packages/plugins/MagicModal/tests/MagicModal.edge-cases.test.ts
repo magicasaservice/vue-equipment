@@ -4,9 +4,12 @@ import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
+import { ModalId, TestId } from './enums'
+
+// ─── Factories ────────────────────────────────────────────────────────────────
 
 function createWrapper(
-  modalId: string,
+  modalId: ModalId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -17,11 +20,11 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
         <MagicModal id="${modalId}" :options="options">
-          <div data-test-id="modal-content" style="height: 200px; width: 100%;">Content</div>
+          <div data-test-id="${TestId.ModalContent}" style="height: 200px; width: 100%;">Content</div>
         </MagicModal>
       </div>
     `,
@@ -31,7 +34,7 @@ function createWrapper(
   })
 }
 
-function createRapidWrapper(modalId: string) {
+function createRapidWrapper(modalId: ModalId) {
   return defineComponent({
     components: { MagicModal },
     setup() {
@@ -66,12 +69,12 @@ function createRapidWrapper(modalId: string) {
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <button data-test-id="rapid-btn" @click="rapidToggle">Rapid</button>
-        <button data-test-id="double-open-btn" @click="doubleOpen">DblOpen</button>
-        <button data-test-id="double-close-btn" @click="doubleClose">DblClose</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <button data-test-id="${TestId.RapidBtn}" @click="rapidToggle">Rapid</button>
+        <button data-test-id="${TestId.DoubleOpenBtn}" @click="doubleOpen">DblOpen</button>
+        <button data-test-id="${TestId.DoubleCloseBtn}" @click="doubleClose">DblClose</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
         <MagicModal id="${modalId}">
           <div>Content</div>
         </MagicModal>
@@ -80,16 +83,18 @@ function createRapidWrapper(modalId: string) {
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicModal - Edge Cases', () => {
   describe('default configuration', () => {
     it('works with zero options (all defaults)', async () => {
-      const screen = render(createWrapper('default-modal'))
-      await screen.getByTestId('open-btn').click()
+      const screen = render(createWrapper(ModalId.Default))
+      await screen.getByTestId(TestId.OpenBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       expect(document.querySelector('.magic-modal')).not.toBeNull()
@@ -98,72 +103,72 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
   })
 
   describe('rapid state changes', () => {
     it('rapid open/close does not break state', async () => {
-      const screen = render(createRapidWrapper('rapid-modal'))
+      const screen = render(createRapidWrapper(ModalId.Rapid))
 
-      await screen.getByTestId('rapid-btn').click()
+      await screen.getByTestId(TestId.RapidBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
 
     it('double open does not break state', async () => {
-      const screen = render(createRapidWrapper('double-open-modal'))
+      const screen = render(createRapidWrapper(ModalId.DoubleOpen))
 
-      await screen.getByTestId('double-open-btn').click()
+      await screen.getByTestId(TestId.DoubleOpenBtn).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
     it('double close does not break state', async () => {
-      const screen = render(createRapidWrapper('double-close-modal'))
+      const screen = render(createRapidWrapper(ModalId.DoubleClose))
 
-      await screen.getByTestId('open-btn').click()
+      await screen.getByTestId(TestId.OpenBtn).click()
       await nextTick()
       await nextTick()
 
       // Double close via DOM click (button behind modal)
       const dblCloseBtn = document.querySelector(
-        '[data-test-id="double-close-btn"]'
+        `[data-test-id="${TestId.DoubleCloseBtn}"]`
       ) as HTMLElement
       dblCloseBtn.click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 400))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
 
       // Should still be openable via DOM click (modal may still overlay)
       const openBtn = document.querySelector(
-        '[data-test-id="open-btn"]'
+        `[data-test-id="${TestId.OpenBtn}"]`
       ) as HTMLElement
       openBtn.click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -173,7 +178,7 @@ describe('MagicModal - Edge Cases', () => {
       const container = defineComponent({
         components: { MagicModal },
         setup() {
-          const { open, close, isActive } = useMagicModal('unmount-modal')
+          const { open, close, isActive } = useMagicModal(ModalId.Unmount)
           return { open, close, isActive }
         },
         data() {
@@ -181,10 +186,10 @@ describe('MagicModal - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="open-btn" @click="open">Open</button>
-            <button data-test-id="toggle-btn" @click="showModal = !showModal">Toggle</button>
-            <span data-test-id="is-active">{{ isActive }}</span>
-            <MagicModal v-if="showModal" id="unmount-modal">
+            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+            <button data-test-id="${TestId.ToggleBtn}" @click="showModal = !showModal">Toggle</button>
+            <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+            <MagicModal v-if="showModal" id="${ModalId.Unmount}">
               <div>Content</div>
             </MagicModal>
           </div>
@@ -192,7 +197,7 @@ describe('MagicModal - Edge Cases', () => {
       })
 
       const screen = render(container)
-      await screen.getByTestId('open-btn').click()
+      await screen.getByTestId(TestId.OpenBtn).click()
       await nextTick()
       await nextTick()
 
@@ -200,7 +205,7 @@ describe('MagicModal - Edge Cases', () => {
 
       // Toggle button is behind modal, use DOM click
       const toggleBtn = document.querySelector(
-        '[data-test-id="toggle-btn"]'
+        `[data-test-id="${TestId.ToggleBtn}"]`
       ) as HTMLElement
       toggleBtn.click()
       await nextTick()
@@ -215,7 +220,7 @@ describe('MagicModal - Edge Cases', () => {
       const container = defineComponent({
         components: { MagicModal },
         setup() {
-          const { open, isActive } = useMagicModal('cleanup-scroll-modal')
+          const { open, isActive } = useMagicModal(ModalId.CleanupScroll)
           return { open, isActive }
         },
         data() {
@@ -223,11 +228,11 @@ describe('MagicModal - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="open-btn" @click="open">Open</button>
-            <button data-test-id="toggle-btn" @click="showModal = !showModal">Toggle</button>
+            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+            <button data-test-id="${TestId.ToggleBtn}" @click="showModal = !showModal">Toggle</button>
             <MagicModal
               v-if="showModal"
-              id="cleanup-scroll-modal"
+              id="${ModalId.CleanupScroll}"
               :options="{ scrollLock: true }"
             >
               <div>Content</div>
@@ -237,14 +242,14 @@ describe('MagicModal - Edge Cases', () => {
       })
 
       const screen = render(container)
-      await screen.getByTestId('open-btn').click()
+      await screen.getByTestId(TestId.OpenBtn).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 500))
 
       // Unmount via DOM click
       const toggleBtn = document.querySelector(
-        '[data-test-id="toggle-btn"]'
+        `[data-test-id="${TestId.ToggleBtn}"]`
       ) as HTMLElement
       toggleBtn.click()
       await nextTick()
@@ -261,9 +266,9 @@ describe('MagicModal - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicModal },
         setup() {
-          const m1 = useMagicModal('concurrent-m1')
-          const m2 = useMagicModal('concurrent-m2')
-          const m3 = useMagicModal('concurrent-m3')
+          const m1 = useMagicModal(ModalId.Concurrent1)
+          const m2 = useMagicModal(ModalId.Concurrent2)
+          const m3 = useMagicModal(ModalId.Concurrent3)
           return {
             openAll: () => {
               m1.open()
@@ -277,30 +282,30 @@ describe('MagicModal - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="open-all" @click="openAll">Open All</button>
-            <span data-test-id="active-1">{{ isActive1 }}</span>
-            <span data-test-id="active-2">{{ isActive2 }}</span>
-            <span data-test-id="active-3">{{ isActive3 }}</span>
-            <MagicModal id="concurrent-m1"><div>1</div></MagicModal>
-            <MagicModal id="concurrent-m2"><div>2</div></MagicModal>
-            <MagicModal id="concurrent-m3"><div>3</div></MagicModal>
+            <button data-test-id="${TestId.OpenAll}" @click="openAll">Open All</button>
+            <span data-test-id="${TestId.Active1}">{{ isActive1 }}</span>
+            <span data-test-id="${TestId.Active2}">{{ isActive2 }}</span>
+            <span data-test-id="${TestId.Active3}">{{ isActive3 }}</span>
+            <MagicModal id="${ModalId.Concurrent1}"><div>1</div></MagicModal>
+            <MagicModal id="${ModalId.Concurrent2}"><div>2</div></MagicModal>
+            <MagicModal id="${ModalId.Concurrent3}"><div>3</div></MagicModal>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('open-all').click()
+      await screen.getByTestId(TestId.OpenAll).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-1'))
+        .element(page.getByTestId(TestId.Active1))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('active-2'))
+        .element(page.getByTestId(TestId.Active2))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('active-3'))
+        .element(page.getByTestId(TestId.Active3))
         .toHaveTextContent('true')
     })
   })

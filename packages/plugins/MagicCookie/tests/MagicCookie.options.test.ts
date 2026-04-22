@@ -6,6 +6,9 @@ import MagicCookieProvider from '../src/components/MagicCookieProvider.vue'
 import MagicCookieView from '../src/components/MagicCookieView.vue'
 import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
+import { CookieId, ItemId, TestId } from './enums'
+
+// ─── Stubs ────────────────────────────────────────────────────────────────────
 
 const ClientOnly = defineComponent({
   name: 'ClientOnly',
@@ -17,68 +20,63 @@ const AutoSize = defineComponent({
   template: '<div><slot /></div>',
 })
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCookie - Options', () => {
   describe('maxAge', () => {
-    it('uses default maxAge when not specified', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-max-age-default')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-max-age-default">
-            <MagicCookieItem id="age-cookie">
-              <template #default="{ item }">
-                <span data-test-id="item-data">{{ JSON.stringify(item) }}</span>
-              </template>
-            </MagicCookieItem>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+    it('uses default maxAge (24 * 60 * 60 * 60) when not specified', async () => {
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.MaxAgeDefault)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.MaxAgeDefault}">
+              <MagicCookieItem id="${ItemId.AgeCookie}">
+                <template #default="{ item }">
+                  <span data-test-id="${TestId.ItemData}">{{ JSON.stringify(item) }}</span>
+                </template>
+              </MagicCookieItem>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
       const data = JSON.parse(
-        document.querySelector('[data-test-id="item-data"]')!
+        document.querySelector(`[data-test-id="${TestId.ItemData}"]`)!
           .textContent || '{}'
       )
-      // Default maxAge: 24 * 60 * 60 * 60
       expect(data.maxAge).toBe(24 * 60 * 60 * 60)
     })
 
     it('item-level maxAge overrides provider default', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-max-age-override')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-max-age-override">
-            <MagicCookieItem id="custom-age" :max-age="3600">
-              <template #default="{ item }">
-                <span data-test-id="item-data">{{ JSON.stringify(item) }}</span>
-              </template>
-            </MagicCookieItem>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.MaxAgeOverride)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.MaxAgeOverride}">
+              <MagicCookieItem id="${ItemId.CustomAge}" :max-age="3600">
+                <template #default="{ item }">
+                  <span data-test-id="${TestId.ItemData}">{{ JSON.stringify(item) }}</span>
+                </template>
+              </MagicCookieItem>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
       const data = JSON.parse(
-        document.querySelector('[data-test-id="item-data"]')!
+        document.querySelector(`[data-test-id="${TestId.ItemData}"]`)!
           .textContent || '{}'
       )
       expect(data.maxAge).toBe(3600)
@@ -86,226 +84,169 @@ describe('MagicCookie - Options', () => {
   })
 
   describe('transition', () => {
-    it('uses default transition class name', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieView,
-          ClientOnly,
-        },
-        setup() {
-          const { showView } = useMagicCookie('opt-transition-default')
-          showView()
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-transition-default">
-            <MagicCookieView>
-              <div>Content</div>
-            </MagicCookieView>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
-      await nextTick()
-
-      // View should render and transition name is applied internally
-      const view = document.querySelector('.magic-cookie-view')
-      expect(view).not.toBeNull()
-    })
-
-    it('custom transition option is accepted', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieView,
-          ClientOnly,
-        },
-        setup() {
-          const { showView } = useMagicCookie('opt-transition-custom')
-          showView()
-          return {}
-        },
-        template: `
-          <MagicCookieProvider
-            id="opt-transition-custom"
-            :options="{ transition: 'my-custom-transition' }"
-          >
-            <MagicCookieView>
-              <div data-test-id="custom-content">Content</div>
-            </MagicCookieView>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+    it('custom transition option allows content to be visible', async () => {
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          setup() {
+            const { showView } = useMagicCookie(CookieId.TransitionCustom)
+            showView()
+            return {}
+          },
+          template: `
+            <MagicCookieProvider
+              id="${CookieId.TransitionCustom}"
+              :options="{ transition: 'my-custom-transition' }"
+            >
+              <MagicCookieView>
+                <div data-test-id="${TestId.CustomContent}">Content</div>
+              </MagicCookieView>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('custom-content'))
+        .element(page.getByTestId(TestId.CustomContent))
         .toBeVisible()
     })
   })
 
   describe('animation', () => {
-    it('custom animation duration is applied as CSS variable', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieView,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-animation-duration')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider
-            id="opt-animation-duration"
-            :options="{ animation: { duration: 500, easing: (t) => t } }"
-          >
-            <MagicCookieView>
-              <div>Content</div>
-            </MagicCookieView>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+    it('custom animation.duration is applied as --mc-duration CSS variable', async () => {
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.AnimDuration)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider
+              id="${CookieId.AnimDuration}"
+              :options="{ animation: { duration: 500, easing: (t) => t } }"
+            >
+              <MagicCookieView><div>Content</div></MagicCookieView>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
-      const view = document.querySelector(
-        '.magic-cookie-view'
-      ) as HTMLElement
+      const view = document.querySelector('.magic-cookie-view') as HTMLElement
       expect(view.style.getPropertyValue('--mc-duration')).toBe('500ms')
     })
 
     it('default animation duration is 300ms', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieView,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-animation-default')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-animation-default">
-            <MagicCookieView>
-              <div>Content</div>
-            </MagicCookieView>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.AnimDefault)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.AnimDefault}">
+              <MagicCookieView><div>Content</div></MagicCookieView>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
-      const view = document.querySelector(
-        '.magic-cookie-view'
-      ) as HTMLElement
+      const view = document.querySelector('.magic-cookie-view') as HTMLElement
       expect(view.style.getPropertyValue('--mc-duration')).toBe('300ms')
     })
   })
 
   describe('optional vs required items', () => {
     it('optional items default to inactive', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-optional-default')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-optional-default">
-            <MagicCookieItem id="opt-cookie" :optional="true">
-              <template #default="{ item }">
-                <span data-test-id="active">{{ item.active }}</span>
-              </template>
-            </MagicCookieItem>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.OptionalDefault)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.OptionalDefault}">
+              <MagicCookieItem id="${ItemId.OptCookie}" :optional="true">
+                <template #default="{ item }">
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
+                </template>
+              </MagicCookieItem>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
 
     it('required items default to active', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-required-default')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-required-default">
-            <MagicCookieItem id="req-cookie" :optional="false">
-              <template #default="{ item }">
-                <span data-test-id="active">{{ item.active }}</span>
-              </template>
-            </MagicCookieItem>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.RequiredDefault)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.RequiredDefault}">
+              <MagicCookieItem id="${ItemId.ReqCookie}" :optional="false">
+                <template #default="{ item }">
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
+                </template>
+              </MagicCookieItem>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
 
-    it('omitting optional prop treats item as required (Vue boolean casting)', async () => {
-      const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
-        setup() {
-          useMagicCookie('opt-optional-unset')
-          return {}
-        },
-        template: `
-          <MagicCookieProvider id="opt-optional-unset">
-            <MagicCookieItem id="unset-cookie">
-              <template #default="{ item }">
-                <span data-test-id="optional">{{ item.optional }}</span>
-                <span data-test-id="active">{{ item.active }}</span>
-              </template>
-            </MagicCookieItem>
-          </MagicCookieProvider>
-        `,
-      })
-
-      render(wrapper, { global: { stubs: { ClientOnly, AutoSize } } })
+    it('omitting :optional prop treats item as required (Vue boolean casting → false)', async () => {
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          setup() {
+            useMagicCookie(CookieId.OptionalUnset)
+            return {}
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.OptionalUnset}">
+              <MagicCookieItem id="${ItemId.UnsetCookie}">
+                <template #default="{ item }">
+                  <span data-test-id="${TestId.Optional}">{{ item.optional }}</span>
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
+                </template>
+              </MagicCookieItem>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { ClientOnly, AutoSize } } }
+      )
       await nextTick()
 
-      // Vue boolean casting: unpassed boolean prop defaults to false
       await expect
-        .element(page.getByTestId('optional'))
+        .element(page.getByTestId(TestId.Optional))
         .toHaveTextContent('false')
-      // Required items (optional=false) default to active
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
   })

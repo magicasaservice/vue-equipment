@@ -12,6 +12,7 @@ import MagicPlayerPoster from '../src/components/MagicPlayerPoster.vue'
 import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -20,8 +21,9 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
+
 function createPlayer(
-  playerId: string,
+  playerId: PlayerId,
   overrides: Record<string, unknown> = {}
 ) {
   const opts = {
@@ -44,15 +46,15 @@ function createPlayer(
     },
     template: `
       <div>
-        <span data-test-id="playing">{{ playing }}</span>
-        <span data-test-id="muted">{{ muted }}</span>
-        <span data-test-id="loaded">{{ loaded }}</span>
-        <span data-test-id="started">{{ started }}</span>
+        <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+        <span data-test-id="${TestId.Muted}">{{ muted }}</span>
+        <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+        <span data-test-id="${TestId.Started}">{{ started }}</span>
         <MagicPlayerProvider id="${playerId}" :options="opts">
           <MagicPlayerVideo />
           <MagicPlayerOverlay />
           <MagicPlayerPoster>
-            <div data-test-id="poster">Poster</div>
+            <div data-test-id="${TestId.Poster}">Poster</div>
           </MagicPlayerPoster>
           <MagicPlayerVideoControls :standalone="true" />
         </MagicPlayerProvider>
@@ -64,7 +66,7 @@ function createPlayer(
 describe('MagicPlayer - Options', () => {
   describe('mode option', () => {
     it('defaults to video mode', async () => {
-      render(createPlayer('opt-mode-default'), gc)
+      render(createPlayer(PlayerId.OptModeDefault), gc)
       await nextTick()
 
       const provider = document.querySelector('.magic-player-provider')
@@ -85,11 +87,11 @@ describe('MagicPlayer - Options', () => {
           MagicPlayerAudioControls,
         },
         setup() {
-          useMagicPlayer('opt-audio-mode')
+          useMagicPlayer(PlayerId.OptAudioMode)
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="opt-audio-mode" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.OptAudioMode}" :options="opts">
             <MagicPlayerAudio />
             <MagicPlayerAudioControls />
           </MagicPlayerProvider>
@@ -106,7 +108,7 @@ describe('MagicPlayer - Options', () => {
 
   describe('poster visibility logic', () => {
     it('poster visible when not loaded and not started', async () => {
-      render(createPlayer('opt-poster-visible'), gc)
+      render(createPlayer(PlayerId.OptPosterVisible), gc)
       await nextTick()
 
       const poster = document.querySelector(
@@ -124,7 +126,7 @@ describe('MagicPlayer - Options', () => {
           MagicPlayerPoster,
         },
         setup() {
-          const api = useMagicPlayer('opt-poster-hide')
+          const api = useMagicPlayer(PlayerId.OptPosterHide)
           api.loaded.value = true
           api.started.value = true
           const opts = {
@@ -135,10 +137,10 @@ describe('MagicPlayer - Options', () => {
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="opt-poster-hide" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.OptPosterHide}" :options="opts">
             <MagicPlayerVideo />
             <MagicPlayerPoster>
-              <div data-test-id="poster">Poster</div>
+              <div data-test-id="${TestId.Poster}">Poster</div>
             </MagicPlayerPoster>
             <MagicPlayerVideoControls :standalone="true" />
           </MagicPlayerProvider>
@@ -163,7 +165,7 @@ describe('MagicPlayer - Options', () => {
           MagicPlayerPoster,
         },
         setup() {
-          const api = useMagicPlayer('opt-poster-loaded-only')
+          const api = useMagicPlayer(PlayerId.OptPosterLoadedOnly)
           api.loaded.value = true
           const opts = {
             src: VIDEO_SRC,
@@ -173,7 +175,7 @@ describe('MagicPlayer - Options', () => {
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="opt-poster-loaded-only" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.OptPosterLoadedOnly}" :options="opts">
             <MagicPlayerVideo />
             <MagicPlayerPoster>
               <div>Poster</div>
@@ -195,7 +197,7 @@ describe('MagicPlayer - Options', () => {
 
   describe('standalone controls', () => {
     it('standalone controls always visible', async () => {
-      render(createPlayer('opt-standalone'), gc)
+      render(createPlayer(PlayerId.OptStandalone), gc)
       await nextTick()
 
       const bar = document.querySelector(
@@ -217,11 +219,11 @@ describe('MagicPlayer - Options', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          useMagicPlayer('opt-non-standalone')
+          useMagicPlayer(PlayerId.OptNonStandalone)
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="opt-non-standalone" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.OptNonStandalone}" :options="opts">
             <MagicPlayerVideo />
             <MagicPlayerVideoControls />
           </MagicPlayerProvider>
@@ -240,7 +242,7 @@ describe('MagicPlayer - Options', () => {
 
   describe('overlay sets hasOverlay', () => {
     it('overlay presence affects controls visibility logic', async () => {
-      render(createPlayer('opt-has-overlay'), gc)
+      render(createPlayer(PlayerId.OptHasOverlay), gc)
       await nextTick()
 
       expect(
@@ -251,7 +253,7 @@ describe('MagicPlayer - Options', () => {
 
   describe('playback option', () => {
     it('playback=false accepted without error', async () => {
-      render(createPlayer('opt-playback-false', { playback: false }), gc)
+      render(createPlayer(PlayerId.OptPlaybackFalse, { playback: false }), gc)
       await nextTick()
 
       expect(
@@ -273,13 +275,13 @@ describe('MagicPlayer - Options', () => {
           MagicPlayerVideo,
         },
         setup() {
-          const api = useMagicPlayer('opt-preload-auto')
+          const api = useMagicPlayer(PlayerId.OptPreloadAuto)
           return { ...api, opts }
         },
         template: `
           <div>
-            <span data-test-id="loaded">{{ loaded }}</span>
-            <MagicPlayerProvider id="opt-preload-auto" :options="opts">
+            <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+            <MagicPlayerProvider id="${PlayerId.OptPreloadAuto}" :options="opts">
               <MagicPlayerVideo />
             </MagicPlayerProvider>
           </div>
@@ -289,7 +291,7 @@ describe('MagicPlayer - Options', () => {
       render(wrapper, gc)
 
       await expect
-        .element(page.getByTestId('loaded'), { timeout: 10000 })
+        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
         .toHaveTextContent('true')
     }, 15000)
   })

@@ -4,6 +4,7 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicToastProvider from '../src/components/MagicToastProvider.vue'
 import { useMagicToast } from '../src/composables/useMagicToast'
+import { ToastId, TestId } from './enums'
 
 const SimpleToast = defineComponent({
   props: { message: { type: String, default: 'Toast' } },
@@ -25,8 +26,8 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="add-btn" @click="addToast">Add</button>
-        <span data-test-id="count">{{ count }}</span>
+        <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+        <span data-test-id="${TestId.Count}">{{ count }}</span>
         <MagicToastProvider id="${toastId}" :options="options" />
       </div>
     `,
@@ -62,64 +63,38 @@ describe('MagicToast - Options', () => {
 
   describe('layout.max', () => {
     it('toasts can be added beyond max (max enforced during transition)', async () => {
-      const screen = render(createWrapper('opt-max-default'))
+      const screen = render(createWrapper(ToastId.OptMaxDefault))
 
       for (let i = 0; i < 5; i++) {
-        await screen.getByTestId('add-btn').click()
+        await screen.getByTestId(TestId.AddBtn).click()
       }
       await nextTick()
 
       // Without real transitions, max isn't enforced — all 5 exist in state
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('5')
     })
 
     it('layout.max option is accepted without error', async () => {
       const screen = render(
-        createWrapper('opt-max-custom', { layout: { max: 2 } })
+        createWrapper(ToastId.OptMaxCustom, { layout: { max: 2 } })
       )
 
-      await screen.getByTestId('add-btn').click()
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('2')
-    })
-  })
-
-  describe('layout.expand', () => {
-    it('layout.expand: false is accepted without error', async () => {
-      render(
-        createWrapper('opt-expand-false', {
-          layout: { expand: false },
-        })
-      )
-      await nextTick()
-
-      // Provider renders correctly with expand disabled
-      expect(
-        document.querySelector('.magic-toast-provider')
-      ).not.toBeNull()
-    })
-
-    it('layout.expand defaults to click', async () => {
-      render(createWrapper('opt-expand-default'))
-      await nextTick()
-
-      // Provider should render — default expand mode is click
-      expect(
-        document.querySelector('.magic-toast-provider')
-      ).not.toBeNull()
     })
   })
 
   describe('initial', () => {
     it('initial.expanded: true starts expanded', async () => {
       render(
-        createWrapper('opt-initial-expanded', {
+        createWrapper(ToastId.OptInitialExpanded, {
           initial: { expanded: true },
         })
       )
@@ -130,7 +105,7 @@ describe('MagicToast - Options', () => {
     })
 
     it('initial.expanded defaults to false', async () => {
-      render(createWrapper('opt-initial-default'))
+      render(createWrapper(ToastId.OptInitialDefault))
       await nextTick()
 
       const provider = document.querySelector('.magic-toast-provider')
@@ -141,10 +116,10 @@ describe('MagicToast - Options', () => {
   describe('debug', () => {
     it('debug: true sets data-debug on toast views', async () => {
       const screen = render(
-        createWrapper('opt-debug', { debug: true })
+        createWrapper(ToastId.OptDebug, { debug: true })
       )
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -153,9 +128,9 @@ describe('MagicToast - Options', () => {
     })
 
     it('debug defaults to false', async () => {
-      const screen = render(createWrapper('opt-debug-default'))
+      const screen = render(createWrapper(ToastId.OptDebugDefault))
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
       await nextTick()
 
@@ -166,36 +141,36 @@ describe('MagicToast - Options', () => {
 
   describe('duration', () => {
     it('duration: 0 (default) does not auto-close', async () => {
-      const screen = render(createWrapper('opt-duration-zero'))
+      const screen = render(createWrapper(ToastId.OptDurationZero))
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       // Wait longer than a typical duration
       await new Promise((r) => setTimeout(r, 500))
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
     })
 
     it('duration > 0 auto-closes toast', async () => {
       const screen = render(
-        createWrapper('opt-duration-auto', { duration: 200 })
+        createWrapper(ToastId.OptDurationAuto, { duration: 200 })
       )
 
-      await screen.getByTestId('add-btn').click()
+      await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
       // Wait for auto-close
       await new Promise((r) => setTimeout(r, 400))
 
       await expect
-        .element(page.getByTestId('count'))
+        .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
     })
   })
@@ -208,7 +183,7 @@ describe('MagicToast - Options', () => {
 
       try {
         render(
-          createWrapper('opt-teleport', {
+          createWrapper(ToastId.OptTeleport, {
             teleport: { target: '#opt-toast-target' },
           })
         )

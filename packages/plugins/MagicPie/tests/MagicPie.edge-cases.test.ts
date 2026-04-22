@@ -3,6 +3,9 @@ import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick } from 'vue'
 import MagicPie from '../src/components/MagicPie.vue'
 import { useMagicPie } from '../src/composables/useMagicPie'
+import { PieId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicPie - Edge Cases', () => {
   describe('path correctness at different percentages', () => {
@@ -12,10 +15,10 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api = useMagicPie('edge-diff-paths')
+            api = useMagicPie(PieId.EdgeDiffPaths)
             return {}
           },
-          template: `<MagicPie id="edge-diff-paths" />`,
+          template: `<MagicPie id="${PieId.EdgeDiffPaths}" />`,
         })
       )
       await nextTick()
@@ -41,10 +44,10 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api = useMagicPie('edge-25-50')
+            api = useMagicPie(PieId.Edge2550)
             return {}
           },
-          template: `<MagicPie id="edge-25-50" />`,
+          template: `<MagicPie id="${PieId.Edge2550}" />`,
         })
       )
       await nextTick()
@@ -70,10 +73,10 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api = useMagicPie('edge-full')
+            api = useMagicPie(PieId.EdgeFull)
             return {}
           },
-          template: `<MagicPie id="edge-full" />`,
+          template: `<MagicPie id="${PieId.EdgeFull}" />`,
         })
       )
       await nextTick()
@@ -95,10 +98,10 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api = useMagicPie('edge-easing')
+            api = useMagicPie(PieId.EdgeEasing)
             return {}
           },
-          template: `<MagicPie id="edge-easing" />`,
+          template: `<MagicPie id="${PieId.EdgeEasing}" />`,
         })
       )
       await nextTick()
@@ -123,14 +126,14 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api1 = useMagicPie('edge-flip-normal')
-            api2 = useMagicPie('edge-flip-flipped')
+            api1 = useMagicPie(PieId.EdgeFlipNormal)
+            api2 = useMagicPie(PieId.EdgeFlipFlipped)
             return {}
           },
           template: `
             <div>
-              <MagicPie id="edge-flip-normal" />
-              <MagicPie id="edge-flip-flipped" :options="{ flip: true }" />
+              <MagicPie id="${PieId.EdgeFlipNormal}" />
+              <MagicPie id="${PieId.EdgeFlipFlipped}" :options="{ flip: true }" />
             </div>
           `,
         })
@@ -156,14 +159,14 @@ describe('MagicPie - Edge Cases', () => {
         defineComponent({
           components: { MagicPie },
           setup() {
-            api1 = useMagicPie('edge-multi-1')
-            api2 = useMagicPie('edge-multi-2')
+            api1 = useMagicPie(PieId.EdgeMulti1)
+            api2 = useMagicPie(PieId.EdgeMulti2)
             return {}
           },
           template: `
             <div>
-              <MagicPie id="edge-multi-1" />
-              <MagicPie id="edge-multi-2" />
+              <MagicPie id="${PieId.EdgeMulti1}" />
+              <MagicPie id="${PieId.EdgeMulti2}" />
             </div>
           `,
         })

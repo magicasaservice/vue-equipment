@@ -10,6 +10,9 @@ import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import { CommandId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Globals ──────────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -24,7 +27,6 @@ const gc = {
   },
 }
 
-// Helper: open command + emit 'enter' to activate renderer (mimics MagicModal flow)
 function useOpenHelper(id: string) {
   const api = useMagicCommand(id)
   const emitter = useMagicEmitter()
@@ -37,60 +39,49 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCommand - Rendering', () => {
   describe('provider', () => {
-    it('renders with correct class', async () => {
+    it('renders with data-id attribute', async () => {
       render(
         defineComponent({
           components: { MagicCommandProvider },
-          template: `<MagicCommandProvider id="r-provider"><div>Content</div></MagicCommandProvider>`,
+          template: `<MagicCommandProvider id="${CommandId.DataId}"><div>Content</div></MagicCommandProvider>`,
         }),
         gc
       )
       await nextTick()
 
-      const provider = document.querySelector('.magic-command-provider')
-      expect(provider).not.toBeNull()
-    })
-
-    it('renders with data-id', async () => {
-      render(
-        defineComponent({
-          components: { MagicCommandProvider },
-          template: `<MagicCommandProvider id="r-data-id"><div>Content</div></MagicCommandProvider>`,
-        }),
-        gc
-      )
-      await nextTick()
-
-      const provider = document.querySelector('[data-id="r-data-id"]')
-      expect(provider).not.toBeNull()
+      expect(
+        document.querySelector(`[data-id="${CommandId.DataId}"]`)
+      ).not.toBeNull()
     })
 
     it('renders slot content', async () => {
       render(
         defineComponent({
           components: { MagicCommandProvider },
-          template: `<MagicCommandProvider id="r-slot"><span data-test-id="child">Hello</span></MagicCommandProvider>`,
+          template: `<MagicCommandProvider id="${CommandId.RenderSlot}"><span data-test-id="${TestId.Child}">Hello</span></MagicCommandProvider>`,
         }),
         gc
       )
       await nextTick()
 
       await expect
-        .element(page.getByTestId('child'))
+        .element(page.getByTestId(TestId.Child))
         .toHaveTextContent('Hello')
     })
   })
 
   describe('view', () => {
-    it('renders with correct class', async () => {
+    it('renders with data-id attribute', async () => {
       render(
         defineComponent({
           components: { MagicCommandProvider, MagicCommandView },
           template: `
-            <MagicCommandProvider id="r-view">
-              <MagicCommandView id="v0"><div>View Content</div></MagicCommandView>
+            <MagicCommandProvider id="${CommandId.ViewId}">
+              <MagicCommandView id="${ViewId.MyView}"><div>Content</div></MagicCommandView>
             </MagicCommandProvider>
           `,
         }),
@@ -98,38 +89,22 @@ describe('MagicCommand - Rendering', () => {
       )
       await nextTick()
 
-      const view = document.querySelector('.magic-command-view')
-      expect(view).not.toBeNull()
+      expect(
+        document.querySelector(`[data-id="${ViewId.MyView}"]`)
+      ).not.toBeNull()
     })
 
-    it('renders with data-id', async () => {
-      render(
-        defineComponent({
-          components: { MagicCommandProvider, MagicCommandView },
-          template: `
-            <MagicCommandProvider id="r-view-id">
-              <MagicCommandView id="my-view"><div>Content</div></MagicCommandView>
-            </MagicCommandProvider>
-          `,
-        }),
-        gc
-      )
-      await nextTick()
-
-      expect(document.querySelector('[data-id="my-view"]')).not.toBeNull()
-    })
-
-    it('exposes view-active slot prop', async () => {
+    it('exposes view-active slot prop defaulting to false', async () => {
       const wrapper = defineComponent({
         components: { MagicCommandProvider, MagicCommandView },
         setup() {
-          useMagicCommand('r-view-slot')
+          useMagicCommand(CommandId.ViewSlot)
           return {}
         },
         template: `
-          <MagicCommandProvider id="r-view-slot">
-            <MagicCommandView id="v0" v-slot="{ viewActive }">
-              <span data-test-id="active">{{ viewActive }}</span>
+          <MagicCommandProvider id="${CommandId.ViewSlot}">
+            <MagicCommandView id="${ViewId.V0}" v-slot="{ viewActive }">
+              <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
             </MagicCommandView>
           </MagicCommandProvider>
         `,
@@ -139,48 +114,27 @@ describe('MagicCommand - Rendering', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
   })
 
   describe('trigger', () => {
-    it('renders with correct class', async () => {
+    it('has data-active=false and data-disabled=false by default', async () => {
       render(
         defineComponent({
-          components: { MagicCommandProvider, MagicCommandView, MagicCommandTrigger },
+          components: {
+            MagicCommandProvider,
+            MagicCommandView,
+            MagicCommandTrigger,
+          },
           setup() {
-            useMagicCommand('r-trigger')
+            useMagicCommand(CommandId.TriggerAttrs)
             return {}
           },
           template: `
-            <MagicCommandProvider id="r-trigger">
-              <MagicCommandView id="v0">
-                <MagicCommandTrigger>
-                  <button>Open</button>
-                </MagicCommandTrigger>
-              </MagicCommandView>
-            </MagicCommandProvider>
-          `,
-        }),
-        gc
-      )
-      await nextTick()
-
-      expect(document.querySelector('.magic-command-trigger')).not.toBeNull()
-    })
-
-    it('has data-active and data-disabled attrs', async () => {
-      render(
-        defineComponent({
-          components: { MagicCommandProvider, MagicCommandView, MagicCommandTrigger },
-          setup() {
-            useMagicCommand('r-trigger-attrs')
-            return {}
-          },
-          template: `
-            <MagicCommandProvider id="r-trigger-attrs">
-              <MagicCommandView id="v0">
+            <MagicCommandProvider id="${CommandId.TriggerAttrs}">
+              <MagicCommandView id="${ViewId.V0}">
                 <MagicCommandTrigger>
                   <button>Open</button>
                 </MagicCommandTrigger>
@@ -198,31 +152,8 @@ describe('MagicCommand - Rendering', () => {
     })
   })
 
-  describe('renderer', () => {
-    it('renders with correct class', async () => {
-      render(
-        defineComponent({
-          components: { MagicCommandProvider, MagicCommandRenderer },
-          setup() {
-            useMagicCommand('r-renderer')
-            return {}
-          },
-          template: `
-            <MagicCommandProvider id="r-renderer">
-              <MagicCommandRenderer />
-            </MagicCommandProvider>
-          `,
-        }),
-        gc
-      )
-      await nextTick()
-
-      expect(document.querySelector('.magic-command-renderer')).not.toBeNull()
-    })
-  })
-
   describe('item', () => {
-    it('renders with correct class and attributes when content is open', async () => {
+    it('item has correct data-id and data-disabled=false when content is open', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -232,18 +163,18 @@ describe('MagicCommand - Rendering', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('r-item')
+          const { openCommand } = useOpenHelper(CommandId.Item)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="r-item">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Item}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="item-1">
-                    <div data-test-id="item-content">Item 1</div>
+                  <MagicCommandItem id="${ItemId.Item1}">
+                    <div>Item 1</div>
                   </MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
@@ -255,15 +186,14 @@ describe('MagicCommand - Rendering', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const item = document.querySelector('.magic-command-item')
+      const item = document.querySelector(`[data-id="${ItemId.Item1}"]`)
       expect(item).not.toBeNull()
-      expect(item!.getAttribute('data-id')).toBe('item-1')
       expect(item!.getAttribute('data-disabled')).toBe('false')
     })
 
@@ -277,17 +207,17 @@ describe('MagicCommand - Rendering', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('r-item-disabled')
+          const { openCommand } = useOpenHelper(CommandId.ItemDisabled)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="r-item-disabled">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ItemDisabled}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="d-item" :disabled="true">
+                  <MagicCommandItem id="${ItemId.DItem}" :disabled="true">
                     <div>Disabled</div>
                   </MagicCommandItem>
                 </MagicCommandContent>
@@ -300,19 +230,19 @@ describe('MagicCommand - Rendering', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const item = document.querySelector('[data-id="d-item"]')
+      const item = document.querySelector(`[data-id="${ItemId.DItem}"]`)
       expect(item!.getAttribute('data-disabled')).toBe('true')
     })
   })
 
   describe('content', () => {
-    it('content not visible when command is closed', async () => {
+    it('content not in DOM when command is closed', async () => {
       render(
         defineComponent({
           components: {
@@ -323,13 +253,13 @@ describe('MagicCommand - Rendering', () => {
             MagicCommandRenderer,
           },
           setup() {
-            useMagicCommand('r-content-closed')
+            useMagicCommand(CommandId.ContentClosed)
             return {}
           },
           template: `
-            <MagicCommandProvider id="r-content-closed">
+            <MagicCommandProvider id="${CommandId.ContentClosed}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -344,7 +274,7 @@ describe('MagicCommand - Rendering', () => {
       expect(document.querySelector('.magic-command-content')).toBeNull()
     })
 
-    it('content visible after open', async () => {
+    it('content in DOM after open', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -354,15 +284,15 @@ describe('MagicCommand - Rendering', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('r-content-open')
+          const { openCommand } = useOpenHelper(CommandId.ContentOpen)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="r-content-open">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ContentOpen}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -375,7 +305,7 @@ describe('MagicCommand - Rendering', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()

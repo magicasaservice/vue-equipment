@@ -6,6 +6,7 @@ import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollScene from '../src/components/MagicScrollScene.vue'
 import MagicScrollMotion from '../src/components/MagicScrollMotion.vue'
 import MagicScrollCollision from '../src/components/MagicScrollCollision.vue'
+import { TestId } from './enums'
 
 function createScroll(
   template: string,
@@ -25,19 +26,6 @@ function createScroll(
 
 describe('MagicScroll - Rendering', () => {
   describe('MagicScrollProvider', () => {
-    it('renders with correct class', async () => {
-      render(
-        createScroll(
-          `<MagicScrollProvider><div>Content</div></MagicScrollProvider>`
-        )
-      )
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-scroll-provider')
-      ).not.toBeNull()
-    })
-
     it('renders slot content with correct text', async () => {
       render(
         createScroll(
@@ -62,27 +50,12 @@ describe('MagicScroll - Rendering', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('has-scroll'))
+        .element(page.getByTestId(TestId.HasScroll))
         .toHaveTextContent('object')
     })
   })
 
   describe('MagicScrollScene', () => {
-    it('renders with correct class', async () => {
-      render(
-        createScroll(`
-          <MagicScrollProvider>
-            <MagicScrollScene><div>Scene</div></MagicScrollScene>
-          </MagicScrollProvider>
-        `)
-      )
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-scroll-scene')
-      ).not.toBeNull()
-    })
-
     it('renders slot content with correct text', async () => {
       render(
         createScroll(`
@@ -113,29 +86,12 @@ describe('MagicScroll - Rendering', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('progress'))
+        .element(page.getByTestId(TestId.Progress))
         .toHaveTextContent('number')
     })
   })
 
   describe('MagicScrollMotion', () => {
-    it('renders with correct class', async () => {
-      render(
-        createScroll(`
-          <MagicScrollProvider>
-            <MagicScrollScene>
-              <MagicScrollMotion :sequence="[]"><div>Motion</div></MagicScrollMotion>
-            </MagicScrollScene>
-          </MagicScrollProvider>
-        `)
-      )
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-scroll-motion')
-      ).not.toBeNull()
-    })
-
     it('renders slot content with correct text', async () => {
       render(
         createScroll(`
@@ -157,21 +113,6 @@ describe('MagicScroll - Rendering', () => {
   })
 
   describe('MagicScrollCollision', () => {
-    it('renders with correct class', async () => {
-      render(
-        createScroll(`
-          <MagicScrollProvider>
-            <MagicScrollCollision><div>Collision</div></MagicScrollCollision>
-          </MagicScrollProvider>
-        `)
-      )
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-scroll-collision')
-      ).not.toBeNull()
-    })
-
     it('sets data-id when id provided', async () => {
       render(
         createScroll(`

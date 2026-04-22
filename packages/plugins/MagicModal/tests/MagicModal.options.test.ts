@@ -4,9 +4,12 @@ import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
+import { ModalId, TestId } from './enums'
+
+// ─── Factory ──────────────────────────────────────────────────────────────────
 
 function createWrapper(
-  modalId: string,
+  modalId: ModalId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -17,11 +20,11 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
         <MagicModal id="${modalId}" :options="options">
-          <div data-test-id="modal-content" style="width: 300px; height: 200px;">
+          <div data-test-id="${TestId.ModalContent}" style="width: 300px; height: 200px;">
             <button>Focusable</button>
           </div>
         </MagicModal>
@@ -34,16 +37,18 @@ function createWrapper(
 }
 
 async function openModal(screen: ReturnType<typeof render>) {
-  await screen.getByTestId('open-btn').click()
+  await screen.getByTestId(TestId.OpenBtn).click()
   await nextTick()
   await nextTick()
   await new Promise((r) => setTimeout(r, 350))
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicModal - Options', () => {
   describe('backdrop', () => {
     it('backdrop: true (default) renders backdrop', async () => {
-      const screen = render(createWrapper('opt-backdrop-true'))
+      const screen = render(createWrapper(ModalId.OptBackdropTrue))
       await openModal(screen)
 
       expect(
@@ -53,7 +58,7 @@ describe('MagicModal - Options', () => {
 
     it('backdrop: false hides backdrop', async () => {
       const screen = render(
-        createWrapper('opt-backdrop-false', { backdrop: false })
+        createWrapper(ModalId.OptBackdropFalse, { backdrop: false })
       )
       await openModal(screen)
 
@@ -63,7 +68,7 @@ describe('MagicModal - Options', () => {
 
   describe('tag', () => {
     it('tag: dialog (default) uses dialog element', async () => {
-      const screen = render(createWrapper('opt-tag-dialog'))
+      const screen = render(createWrapper(ModalId.OptTagDialog))
       await openModal(screen)
 
       const content = document.querySelector('.magic-modal__content')
@@ -72,7 +77,7 @@ describe('MagicModal - Options', () => {
 
     it('tag: div uses div element', async () => {
       const screen = render(
-        createWrapper('opt-tag-div', { tag: 'div' })
+        createWrapper(ModalId.OptTagDiv, { tag: 'div' })
       )
       await openModal(screen)
 
@@ -83,7 +88,7 @@ describe('MagicModal - Options', () => {
 
   describe('teleport', () => {
     it('teleports to body by default', async () => {
-      const screen = render(createWrapper('opt-teleport-body'))
+      const screen = render(createWrapper(ModalId.OptTeleportBody))
       await openModal(screen)
 
       const modal = document.body.querySelector(':scope > .magic-modal')
@@ -98,7 +103,7 @@ describe('MagicModal - Options', () => {
 
       try {
         const screen = render(
-          createWrapper('opt-teleport-custom', {
+          createWrapper(ModalId.OptTeleportCustom, {
             teleport: { target: '#modal-target' },
           })
         )
@@ -113,7 +118,7 @@ describe('MagicModal - Options', () => {
 
     it('teleport disabled keeps modal in component tree', async () => {
       const screen = render(
-        createWrapper('opt-teleport-disabled', {
+        createWrapper(ModalId.OptTeleportDisabled, {
           teleport: { disabled: true },
         })
       )
@@ -132,20 +137,20 @@ describe('MagicModal - Options', () => {
 
   describe('keyListener', () => {
     it('default Escape key closes modal', async () => {
-      const screen = render(createWrapper('opt-key-default'))
+      const screen = render(createWrapper(ModalId.OptKeyDefault))
       await openModal(screen)
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
     })
 
     it('keyListener.close: false disables key close', async () => {
       const screen = render(
-        createWrapper('opt-key-disabled', {
+        createWrapper(ModalId.OptKeyDisabled, {
           keyListener: { close: false },
         })
       )
@@ -156,7 +161,7 @@ describe('MagicModal - Options', () => {
       await new Promise((r) => setTimeout(r, 50))
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -164,23 +169,23 @@ describe('MagicModal - Options', () => {
   describe('scrollLock', () => {
     it('scrollLock option is accepted without error', async () => {
       const screen = render(
-        createWrapper('opt-scroll', { scrollLock: true })
+        createWrapper(ModalId.OptScroll, { scrollLock: true })
       )
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
 
     it('scrollLock: false is accepted without error', async () => {
       const screen = render(
-        createWrapper('opt-scroll-false', { scrollLock: false })
+        createWrapper(ModalId.OptScrollFalse, { scrollLock: false })
       )
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })
@@ -188,7 +193,7 @@ describe('MagicModal - Options', () => {
   describe('transition', () => {
     it('custom transition classes are applied', async () => {
       const screen = render(
-        createWrapper('opt-transition', {
+        createWrapper(ModalId.OptTransition, {
           transition: {
             content: 'custom-content-transition',
             backdrop: 'custom-backdrop-transition',
@@ -205,12 +210,12 @@ describe('MagicModal - Options', () => {
   describe('focusTrap', () => {
     it('focusTrap: false is accepted without error', async () => {
       const screen = render(
-        createWrapper('opt-focus-false', { focusTrap: false })
+        createWrapper(ModalId.OptFocusFalse, { focusTrap: false })
       )
       await openModal(screen)
 
       await expect
-        .element(page.getByTestId('is-active'))
+        .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
   })

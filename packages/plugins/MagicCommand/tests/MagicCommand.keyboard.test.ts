@@ -9,6 +9,9 @@ import MagicCommandItem from '../src/components/MagicCommandItem.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import { CommandId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Globals ──────────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -34,7 +37,7 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
-function createCommand(id: string) {
+function createCommand(commandId: CommandId) {
   return defineComponent({
     components: {
       MagicCommandProvider,
@@ -44,26 +47,26 @@ function createCommand(id: string) {
       MagicCommandRenderer,
     },
     setup() {
-      const { api, openCommand } = useOpenHelper(id)
+      const { api, openCommand } = useOpenHelper(commandId)
       return { api, openCommand }
     },
     template: `
       <div>
-        <span data-test-id="active">{{ api.isActive.value }}</span>
-        <button data-test-id="open" @click="openCommand()">Open</button>
-        <button data-test-id="close" @click="api.close()">Close</button>
-        <MagicCommandProvider id="${id}">
+        <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+        <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+        <button data-test-id="${TestId.Close}" @click="api.close()">Close</button>
+        <MagicCommandProvider id="${commandId}">
           <MagicCommandRenderer />
-          <MagicCommandView id="v0" :initial="true">
+          <MagicCommandView id="${ViewId.V0}" :initial="true">
             <MagicCommandContent>
-              <MagicCommandItem id="kb-item-1">
-                <div data-test-id="item-1">Item 1</div>
+              <MagicCommandItem id="${ItemId.KbItem1}">
+                <div>Item 1</div>
               </MagicCommandItem>
-              <MagicCommandItem id="kb-item-2">
-                <div data-test-id="item-2">Item 2</div>
+              <MagicCommandItem id="${ItemId.KbItem2}">
+                <div>Item 2</div>
               </MagicCommandItem>
-              <MagicCommandItem id="kb-item-3">
-                <div data-test-id="item-3">Item 3</div>
+              <MagicCommandItem id="${ItemId.KbItem3}">
+                <div>Item 3</div>
               </MagicCommandItem>
             </MagicCommandContent>
           </MagicCommandView>
@@ -75,16 +78,14 @@ function createCommand(id: string) {
 
 // useMagicKeys needs keydown+keyup on window
 async function pressKey(key: string) {
-  window.dispatchEvent(
-    new KeyboardEvent('keydown', { key, bubbles: true })
-  )
+  window.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }))
   await nextTick()
-  window.dispatchEvent(
-    new KeyboardEvent('keyup', { key, bubbles: true })
-  )
+  window.dispatchEvent(new KeyboardEvent('keyup', { key, bubbles: true }))
   await nextTick()
   await new Promise((r) => setTimeout(r, 50))
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicCommand - Keyboard', () => {
   let rejectHandler: (e: PromiseRejectionEvent) => void
@@ -102,68 +103,70 @@ describe('MagicCommand - Keyboard', () => {
 
   describe('escape', () => {
     it('Escape closes command palette', async () => {
-      const screen = render(createCommand('kb-esc'), gc)
+      const screen = render(createCommand(CommandId.Escape), gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
       await pressKey('Escape')
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
   })
 
   describe('arrow navigation', () => {
-    it('ArrowDown selects next item', async () => {
-      const screen = render(createCommand('kb-arrow-down'), gc)
+    it('ArrowDown selects first item', async () => {
+      const screen = render(createCommand(CommandId.ArrowDown), gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
-      await nextTick()
-      await nextTick()
-      await nextTick()
-      await new Promise((r) => setTimeout(r, 100))
-
-      // Content should be rendered
-      const content = document.querySelector('.magic-command-content')
-      expect(content).not.toBeNull()
-
-      await pressKey('ArrowDown')
-
-      const item1 = document.querySelector('[data-id="kb-item-1"]')
-      expect(item1!.getAttribute('data-active')).toBe('true')
-    })
-
-    it('multiple ArrowDown cycles through items', async () => {
-      const screen = render(createCommand('kb-arrow-cycle'), gc)
-      await nextTick()
-
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
       await pressKey('ArrowDown')
-      await pressKey('ArrowDown')
 
-      const item2 = document.querySelector('[data-id="kb-item-2"]')
-      expect(item2!.getAttribute('data-active')).toBe('true')
+      expect(
+        document
+          .querySelector(`[data-id="${ItemId.KbItem1}"]`)!
+          .getAttribute('data-active')
+      ).toBe('true')
     })
 
-    it('ArrowUp selects previous item', async () => {
-      const screen = render(createCommand('kb-arrow-up'), gc)
+    it('two ArrowDown presses select second item', async () => {
+      const screen = render(createCommand(CommandId.ArrowCycle), gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      await pressKey('ArrowDown')
+      await pressKey('ArrowDown')
+
+      expect(
+        document
+          .querySelector(`[data-id="${ItemId.KbItem2}"]`)!
+          .getAttribute('data-active')
+      ).toBe('true')
+    })
+
+    it('ArrowUp after two ArrowDown selects first item', async () => {
+      const screen = render(createCommand(CommandId.ArrowUp), gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
@@ -173,8 +176,11 @@ describe('MagicCommand - Keyboard', () => {
       await pressKey('ArrowDown')
       await pressKey('ArrowUp')
 
-      const item1 = document.querySelector('[data-id="kb-item-1"]')
-      expect(item1!.getAttribute('data-active')).toBe('true')
+      expect(
+        document
+          .querySelector(`[data-id="${ItemId.KbItem1}"]`)!
+          .getAttribute('data-active')
+      ).toBe('true')
     })
   })
 })

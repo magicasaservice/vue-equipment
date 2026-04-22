@@ -12,6 +12,7 @@ import MagicPlayerPoster from '../src/components/MagicPlayerPoster.vue'
 import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -23,6 +24,7 @@ const gc = {
     components: { MagicPlayerTimeline, MagicPlayerDisplayTime },
   },
 }
+
 
 describe('MagicPlayer - Edge Cases', () => {
   describe('multiple instances', () => {
@@ -36,8 +38,8 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api1 = useMagicPlayer('edge-multi-1')
-          const api2 = useMagicPlayer('edge-multi-2')
+          const api1 = useMagicPlayer(PlayerId.EdgeMulti1)
+          const api2 = useMagicPlayer(PlayerId.EdgeMulti2)
           return {
             play1: api1.videoApi.play,
             play2: api2.videoApi.play,
@@ -49,15 +51,15 @@ describe('MagicPlayer - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="play-1" @click="play1()">Play 1</button>
-            <button data-test-id="play-2" @click="play2()">Play 2</button>
-            <span data-test-id="playing-1">{{ playing1 }}</span>
-            <span data-test-id="playing-2">{{ playing2 }}</span>
-            <MagicPlayerProvider id="edge-multi-1" :options="opts1">
+            <button data-test-id="${TestId.Play1}" @click="play1()">Play 1</button>
+            <button data-test-id="${TestId.Play2}" @click="play2()">Play 2</button>
+            <span data-test-id="${TestId.Playing1}">{{ playing1 }}</span>
+            <span data-test-id="${TestId.Playing2}">{{ playing2 }}</span>
+            <MagicPlayerProvider id="${PlayerId.EdgeMulti1}" :options="opts1">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
-            <MagicPlayerProvider id="edge-multi-2" :options="opts2">
+            <MagicPlayerProvider id="${PlayerId.EdgeMulti2}" :options="opts2">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -67,14 +69,14 @@ describe('MagicPlayer - Edge Cases', () => {
 
       const screen = render(wrapper, gc)
 
-      await screen.getByTestId('play-1').click()
+      await screen.getByTestId(TestId.Play1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('playing-1'))
+        .element(page.getByTestId(TestId.Playing1))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('playing-2'))
+        .element(page.getByTestId(TestId.Playing2))
         .toHaveTextContent('false')
     })
   })
@@ -89,15 +91,15 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api = useMagicPlayer('edge-rapid')
+          const api = useMagicPlayer(PlayerId.EdgeRapid)
           return { ...api, opts }
         },
         template: `
           <div>
-            <button data-test-id="play" @click="videoApi.play()">Play</button>
-            <button data-test-id="pause" @click="videoApi.pause()">Pause</button>
-            <span data-test-id="paused">{{ paused }}</span>
-            <MagicPlayerProvider id="edge-rapid" :options="opts">
+            <button data-test-id="${TestId.Play}" @click="videoApi.play()">Play</button>
+            <button data-test-id="${TestId.Pause}" @click="videoApi.pause()">Pause</button>
+            <span data-test-id="${TestId.Paused}">{{ paused }}</span>
+            <MagicPlayerProvider id="${PlayerId.EdgeRapid}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -108,14 +110,14 @@ describe('MagicPlayer - Edge Cases', () => {
       const screen = render(wrapper, gc)
 
       for (let i = 0; i < 4; i++) {
-        await screen.getByTestId('play').click()
+        await screen.getByTestId(TestId.Play).click()
         await nextTick()
-        await screen.getByTestId('pause').click()
+        await screen.getByTestId(TestId.Pause).click()
         await nextTick()
       }
 
       await expect
-        .element(page.getByTestId('paused'))
+        .element(page.getByTestId(TestId.Paused))
         .toHaveTextContent('true')
     })
   })
@@ -126,13 +128,13 @@ describe('MagicPlayer - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicPlayerProvider, MagicPlayerVideo },
         setup() {
-          useMagicPlayer('edge-no-controls')
+          useMagicPlayer(PlayerId.EdgeNoControls)
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="edge-no-controls" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.EdgeNoControls}" :options="opts">
             <MagicPlayerVideo />
-            <div data-test-id="child">No controls</div>
+            <div data-test-id="${TestId.Child}">No controls</div>
           </MagicPlayerProvider>
         `,
       })
@@ -141,7 +143,7 @@ describe('MagicPlayer - Edge Cases', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('child'))
+        .element(page.getByTestId(TestId.Child))
         .toHaveTextContent('No controls')
       expect(
         document.querySelector('.magic-player-provider')
@@ -162,14 +164,14 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api = useMagicPlayer('edge-shared')
+          const api = useMagicPlayer(PlayerId.EdgeShared)
           return { ...api, opts }
         },
         template: `
           <div>
-            <span data-test-id="muted">{{ muted }}</span>
-            <button data-test-id="mute" @click="videoApi.mute()">Mute</button>
-            <MagicPlayerProvider id="edge-shared" :options="opts">
+            <span data-test-id="${TestId.Muted}">{{ muted }}</span>
+            <button data-test-id="${TestId.Mute}" @click="videoApi.mute()">Mute</button>
+            <MagicPlayerProvider id="${PlayerId.EdgeShared}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -179,11 +181,11 @@ describe('MagicPlayer - Edge Cases', () => {
 
       const screen = render(wrapper, gc)
 
-      await screen.getByTestId('mute').click()
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('true')
 
       const provider = document.querySelector('.magic-player-provider')
@@ -201,11 +203,11 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerAudioControls,
         },
         setup() {
-          useMagicPlayer('edge-display-time')
+          useMagicPlayer(PlayerId.EdgeDisplayTime)
           return { opts }
         },
         template: `
-          <MagicPlayerProvider id="edge-display-time" :options="opts">
+          <MagicPlayerProvider id="${PlayerId.EdgeDisplayTime}" :options="opts">
             <MagicPlayerAudio />
             <MagicPlayerAudioControls />
           </MagicPlayerProvider>
@@ -234,13 +236,13 @@ describe('MagicPlayer - Edge Cases', () => {
         },
         setup() {
           const show = ref(true)
-          useMagicPlayer('edge-unmount')
+          useMagicPlayer(PlayerId.EdgeUnmount)
           return { show, opts }
         },
         template: `
           <div>
-            <button data-test-id="toggle" @click="show = !show">Toggle</button>
-            <MagicPlayerProvider v-if="show" id="edge-unmount" :options="opts">
+            <button data-test-id="${TestId.Toggle}" @click="show = !show">Toggle</button>
+            <MagicPlayerProvider v-if="show" id="${PlayerId.EdgeUnmount}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -258,7 +260,7 @@ describe('MagicPlayer - Edge Cases', () => {
         document.querySelector('.magic-player-video')
       ).not.toBeNull()
 
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
       expect(
@@ -280,16 +282,16 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          useMagicPlayer('edge-explicit-id')
+          useMagicPlayer(PlayerId.EdgeExplicitId)
           return { opts }
         },
         template: `
           <div>
-            <MagicPlayerProvider id="edge-explicit-id" :options="opts">
+            <MagicPlayerProvider id="${PlayerId.EdgeExplicitId}" :options="opts">
               <MagicPlayerVideo />
               <div>Provider content</div>
             </MagicPlayerProvider>
-            <MagicPlayerVideoControls id="edge-explicit-id" :standalone="true" />
+            <MagicPlayerVideoControls id="${PlayerId.EdgeExplicitId}" :standalone="true" />
           </div>
         `,
       })
@@ -318,14 +320,14 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api = useMagicPlayer('edge-data-mute')
+          const api = useMagicPlayer(PlayerId.EdgeDataMute)
           return { ...api, opts }
         },
         template: `
           <div>
-            <button data-test-id="mute" @click="videoApi.mute()">Mute</button>
-            <span data-test-id="muted">{{ muted }}</span>
-            <MagicPlayerProvider id="edge-data-mute" :options="opts">
+            <button data-test-id="${TestId.Mute}" @click="videoApi.mute()">Mute</button>
+            <span data-test-id="${TestId.Muted}">{{ muted }}</span>
+            <MagicPlayerProvider id="${PlayerId.EdgeDataMute}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -339,12 +341,12 @@ describe('MagicPlayer - Edge Cases', () => {
       const provider = document.querySelector('.magic-player-provider')
       expect(provider!.getAttribute('data-muted')).toBe('false')
 
-      await screen.getByTestId('mute').click()
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
 
       expect(provider!.getAttribute('data-muted')).toBe('true')
       await expect
-        .element(page.getByTestId('muted'))
+        .element(page.getByTestId(TestId.Muted))
         .toHaveTextContent('true')
     })
 
@@ -357,15 +359,15 @@ describe('MagicPlayer - Edge Cases', () => {
           MagicPlayerVideoControls,
         },
         setup() {
-          const api = useMagicPlayer('edge-data-play')
+          const api = useMagicPlayer(PlayerId.EdgeDataPlay)
           return { ...api, opts }
         },
         template: `
           <div>
-            <button data-test-id="play" @click="videoApi.play()">Play</button>
-            <span data-test-id="loaded">{{ loaded }}</span>
-            <span data-test-id="playing">{{ playing }}</span>
-            <MagicPlayerProvider id="edge-data-play" :options="opts">
+            <button data-test-id="${TestId.Play}" @click="videoApi.play()">Play</button>
+            <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+            <span data-test-id="${TestId.Playing}">{{ playing }}</span>
+            <MagicPlayerProvider id="${PlayerId.EdgeDataPlay}" :options="opts">
               <MagicPlayerVideo />
               <MagicPlayerVideoControls :standalone="true" />
             </MagicPlayerProvider>
@@ -377,16 +379,16 @@ describe('MagicPlayer - Edge Cases', () => {
 
       // Wait for media to load first
       await expect
-        .element(page.getByTestId('loaded'), { timeout: 10000 })
+        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
         .toHaveTextContent('true')
 
       const provider = document.querySelector('.magic-player-provider')
       expect(provider!.getAttribute('data-playing')).toBe('false')
 
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
 
       await expect
-        .element(page.getByTestId('playing'), { timeout: 5000 })
+        .element(page.getByTestId(TestId.Playing), { timeout: 5000 })
         .toHaveTextContent('true')
 
       expect(provider!.getAttribute('data-playing')).toBe('true')
@@ -399,13 +401,13 @@ describe('MagicPlayer - Edge Cases', () => {
       const wrapper = defineComponent({
         components: { MagicPlayerProvider, MagicPlayerVideo },
         setup() {
-          const api = useMagicPlayer('edge-video-src')
+          const api = useMagicPlayer(PlayerId.EdgeVideoSrc)
           return { ...api, opts }
         },
         template: `
           <div>
-            <span data-test-id="loaded">{{ loaded }}</span>
-            <MagicPlayerProvider id="edge-video-src" :options="opts">
+            <span data-test-id="${TestId.Loaded}">{{ loaded }}</span>
+            <MagicPlayerProvider id="${PlayerId.EdgeVideoSrc}" :options="opts">
               <MagicPlayerVideo />
             </MagicPlayerProvider>
           </div>
@@ -420,7 +422,7 @@ describe('MagicPlayer - Edge Cases', () => {
 
       // Wait for actual media loading
       await expect
-        .element(page.getByTestId('loaded'), { timeout: 10000 })
+        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
         .toHaveTextContent('true')
     }, 15000)
   })

@@ -7,8 +7,11 @@ import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
 import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
+import { AccordionId, ViewId, TestId } from './enums'
 
-function createEventWrapper(accordionId: string) {
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
+function createEventWrapper(accordionId: AccordionId) {
   return defineComponent({
     components: {
       MagicAccordionProvider,
@@ -51,13 +54,13 @@ function createEventWrapper(accordionId: string) {
     },
     template: `
       <div>
-        <button data-test-id="open" @click="selectView('ev-view')">Open</button>
-        <button data-test-id="close" @click="unselectView('ev-view')">Close</button>
-        <span data-test-id="events">{{ events.join(',') }}</span>
-        <span data-test-id="payload-id">{{ lastPayload.id }}</span>
-        <span data-test-id="payload-view">{{ lastPayload.viewId }}</span>
+        <button data-test-id="${TestId.Open}" @click="selectView('${ViewId.EvView}')">Open</button>
+        <button data-test-id="${TestId.Close}" @click="unselectView('${ViewId.EvView}')">Close</button>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <span data-test-id="${TestId.PayloadId}">{{ lastPayload.id }}</span>
+        <span data-test-id="${TestId.PayloadView}">{{ lastPayload.viewId }}</span>
         <MagicAccordionProvider id="${accordionId}">
-          <MagicAccordionView id="ev-view">
+          <MagicAccordionView id="${ViewId.EvView}">
             <template #default="{ viewActive }">
               <MagicAccordionTrigger>
                 <span>Trigger</span>
@@ -65,7 +68,7 @@ function createEventWrapper(accordionId: string) {
               <MagicAccordionContent>
                 <div>Content</div>
               </MagicAccordionContent>
-              <span data-test-id="active">{{ viewActive }}</span>
+              <span data-test-id="${TestId.Active}">{{ viewActive }}</span>
             </template>
           </MagicAccordionView>
         </MagicAccordionProvider>
@@ -74,28 +77,30 @@ function createEventWrapper(accordionId: string) {
   })
 }
 
-function getTestText(container: HTMLElement, id: string): string {
+function getTestText(container: HTMLElement, id: TestId): string {
   return (
     container.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
   )
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicAccordion - Events', () => {
   describe('enter events', () => {
     it('fires beforeEnter on open', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-before-enter')
+        createEventWrapper(AccordionId.BeforeEnter)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'events')).toContain('beforeEnter')
+        expect(getTestText(container, TestId.Events)).toContain('beforeEnter')
       } finally {
         unmount()
       }
@@ -103,18 +108,18 @@ describe('MagicAccordion - Events', () => {
 
     it('fires enter on open', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-enter')
+        createEventWrapper(AccordionId.Enter)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'events')).toContain('enter')
+        expect(getTestText(container, TestId.Events)).toContain('enter')
       } finally {
         unmount()
       }
@@ -122,47 +127,53 @@ describe('MagicAccordion - Events', () => {
 
     it('fires afterEnter after transition completes', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-after-enter')
+        createEventWrapper(AccordionId.AfterEnter)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
-        // Wait for transition to complete
-        await new Promise((r) => setTimeout(r, 300))
+        // Wait for Vue transition (200ms default + buffer)
+        await new Promise((r) => setTimeout(r, 400))
 
-        expect(getTestText(container, 'events')).toContain('afterEnter')
+        expect(getTestText(container, TestId.Events)).toContain('afterEnter')
       } finally {
         unmount()
       }
     })
 
-    it('enter events fire in correct order', async () => {
+    it('enter events fire in correct order: beforeEnter → enter → afterEnter', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-enter-order')
+        createEventWrapper(AccordionId.EnterOrder)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
-        const events = getTestText(container, 'events')
-        const idx = {
-          before: events.indexOf('beforeEnter'),
-          enter: events.indexOf('enter'),
-          after: events.indexOf('afterEnter'),
-        }
-        expect(idx.before).toBeLessThan(idx.enter)
-        expect(idx.enter).toBeLessThan(idx.after)
+        const eventsText = getTestText(container, TestId.Events)
+        const events = eventsText.split(',').filter(Boolean)
+
+        expect(events).toContain('beforeEnter')
+        expect(events).toContain('enter')
+        expect(events).toContain('afterEnter')
+
+        const beforeIdx = events.indexOf('beforeEnter')
+        const enterIdx = events.indexOf('enter')
+        const afterIdx = events.indexOf('afterEnter')
+
+        expect(beforeIdx).toBeGreaterThanOrEqual(0)
+        expect(beforeIdx).toBeLessThan(enterIdx)
+        expect(enterIdx).toBeLessThan(afterIdx)
       } finally {
         unmount()
       }
@@ -172,28 +183,26 @@ describe('MagicAccordion - Events', () => {
   describe('leave events', () => {
     it('fires beforeLeave on close', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-before-leave')
+        createEventWrapper(AccordionId.BeforeLeave)
       )
 
       try {
-        // Open first
         const openBtn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         openBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
-        // Close
         const closeBtn = container.querySelector(
-          '[data-test-id="close"]'
+          `[data-test-id="${TestId.Close}"]`
         ) as HTMLElement
         closeBtn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'events')).toContain('beforeLeave')
+        expect(getTestText(container, TestId.Events)).toContain('beforeLeave')
       } finally {
         unmount()
       }
@@ -201,26 +210,26 @@ describe('MagicAccordion - Events', () => {
 
     it('fires leave on close', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-leave')
+        createEventWrapper(AccordionId.Leave)
       )
 
       try {
         const openBtn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         openBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
         const closeBtn = container.querySelector(
-          '[data-test-id="close"]'
+          `[data-test-id="${TestId.Close}"]`
         ) as HTMLElement
         closeBtn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'events')).toContain('leave')
+        expect(getTestText(container, TestId.Events)).toContain('leave')
       } finally {
         unmount()
       }
@@ -228,62 +237,69 @@ describe('MagicAccordion - Events', () => {
 
     it('fires afterLeave after close transition completes', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-after-leave')
+        createEventWrapper(AccordionId.AfterLeave)
       )
 
       try {
         const openBtn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         openBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
         const closeBtn = container.querySelector(
-          '[data-test-id="close"]'
+          `[data-test-id="${TestId.Close}"]`
         ) as HTMLElement
         closeBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
-        expect(getTestText(container, 'events')).toContain('afterLeave')
+        expect(getTestText(container, TestId.Events)).toContain('afterLeave')
       } finally {
         unmount()
       }
     })
 
-    it('leave events fire in correct order', async () => {
+    it('leave events fire in correct order: beforeLeave → leave → afterLeave', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-leave-order')
+        createEventWrapper(AccordionId.LeaveOrder)
       )
 
       try {
         const openBtn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         openBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
         const closeBtn = container.querySelector(
-          '[data-test-id="close"]'
+          `[data-test-id="${TestId.Close}"]`
         ) as HTMLElement
         closeBtn.click()
         await nextTick()
         await nextTick()
-        await new Promise((r) => setTimeout(r, 300))
+        await new Promise((r) => setTimeout(r, 400))
 
-        const events = getTestText(container, 'events')
-        const idx = {
-          before: events.indexOf('beforeLeave'),
-          leave: events.indexOf('leave,'),
-          after: events.indexOf('afterLeave'),
-        }
-        expect(idx.before).toBeLessThan(idx.leave)
-        expect(idx.leave).toBeLessThan(idx.after)
+        const eventsText = getTestText(container, TestId.Events)
+        const events = eventsText.split(',').filter(Boolean)
+
+        // Only assert leave events (after the enter events)
+        expect(events).toContain('beforeLeave')
+        expect(events).toContain('leave')
+        expect(events).toContain('afterLeave')
+
+        const beforeIdx = events.lastIndexOf('beforeLeave')
+        const leaveIdx = events.lastIndexOf('leave')
+        const afterIdx = events.lastIndexOf('afterLeave')
+
+        expect(beforeIdx).toBeGreaterThanOrEqual(0)
+        expect(beforeIdx).toBeLessThan(leaveIdx)
+        expect(leaveIdx).toBeLessThan(afterIdx)
       } finally {
         unmount()
       }
@@ -291,39 +307,41 @@ describe('MagicAccordion - Events', () => {
   })
 
   describe('event payload', () => {
-    it('enter events include accordion id', async () => {
+    it('enter event payload includes accordion id', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-payload-id')
+        createEventWrapper(AccordionId.PayloadId)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'payload-id')).toBe('evt-payload-id')
+        expect(getTestText(container, TestId.PayloadId)).toBe(
+          AccordionId.PayloadId
+        )
       } finally {
         unmount()
       }
     })
 
-    it('enter events include viewId', async () => {
+    it('enter event payload includes viewId', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('evt-payload-view')
+        createEventWrapper(AccordionId.PayloadView)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="open"]'
+          `[data-test-id="${TestId.Open}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText(container, 'payload-view')).toBe('ev-view')
+        expect(getTestText(container, TestId.PayloadView)).toBe(ViewId.EvView)
       } finally {
         unmount()
       }

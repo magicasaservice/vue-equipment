@@ -2,16 +2,9 @@ import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick } from 'vue'
 import { useMagicEmitter } from '../index'
+import { TestId } from './enums'
 
-function createEmitterWrapper() {
-  return defineComponent({
-    setup() {
-      const emitter = useMagicEmitter()
-      return { emitter }
-    },
-    template: '<div data-test-id="wrapper">emitter</div>',
-  })
-}
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicEmitter - API', () => {
   describe('emit and on', () => {
@@ -26,13 +19,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="emit-btn" @click="emitter.emit('beforeEnter', 'test-id')">Emit</button>
+            <button data-test-id="${TestId.EmitBtn}" @click="emitter.emit('beforeEnter', 'test-id')">Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('emit-btn').click()
+      await screen.getByTestId(TestId.EmitBtn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledOnce()
@@ -55,13 +48,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="emit-btn" @click="emitEvent">Emit</button>
+            <button data-test-id="${TestId.EmitBtn}" @click="emitEvent">Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('emit-btn').click()
+      await screen.getByTestId(TestId.EmitBtn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledWith('modal-123')
@@ -87,13 +80,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="emit-btn" @click="emitEvent">Emit</button>
+            <button data-test-id="${TestId.EmitBtn}" @click="emitEvent">Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('emit-btn').click()
+      await screen.getByTestId(TestId.EmitBtn).click()
       await nextTick()
 
       expect(handler1).toHaveBeenCalledOnce()
@@ -119,13 +112,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="emit-btn" @click="emitEnter">Emit Enter</button>
+            <button data-test-id="${TestId.EmitBtn}" @click="emitEnter">Emit Enter</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('emit-btn').click()
+      await screen.getByTestId(TestId.EmitBtn).click()
       await nextTick()
 
       expect(enterHandler).toHaveBeenCalledOnce()
@@ -145,14 +138,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="emit-btn" @click="emitEvent">Emit</button>
+            <button data-test-id="${TestId.EmitBtn}" @click="emitEvent">Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      // Should not throw
-      await screen.getByTestId('emit-btn').click()
+      await screen.getByTestId(TestId.EmitBtn).click()
       await nextTick()
     })
   })
@@ -175,13 +167,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="removeAndEmit">Remove & Emit</button>
+            <button data-test-id="${TestId.Btn}" @click="removeAndEmit">Remove & Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).not.toHaveBeenCalled()
@@ -206,13 +198,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="removeFirstAndEmit">Go</button>
+            <button data-test-id="${TestId.Btn}" @click="removeFirstAndEmit">Go</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler1).not.toHaveBeenCalled()
@@ -238,17 +230,16 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="emitMultiple">Emit</button>
+            <button data-test-id="${TestId.Btn}" @click="emitMultiple">Emit</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(wildHandler).toHaveBeenCalledTimes(2)
-      // Wildcard receives (eventName, payload)
       expect(wildHandler).toHaveBeenCalledWith('beforeEnter', 'id-1')
       expect(wildHandler).toHaveBeenCalledWith('afterLeave', 'id-2')
     })
@@ -270,13 +261,13 @@ describe('MagicEmitter - API', () => {
         },
         template: `
           <div>
-            <button data-test-id="btn" @click="removeAndEmit">Go</button>
+            <button data-test-id="${TestId.Btn}" @click="removeAndEmit">Go</button>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(wildHandler).not.toHaveBeenCalled()

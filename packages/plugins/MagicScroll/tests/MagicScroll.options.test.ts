@@ -5,6 +5,7 @@ import { defineComponent, nextTick, ref } from 'vue'
 import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollScene from '../src/components/MagicScrollScene.vue'
 import MagicScrollCollision from '../src/components/MagicScrollCollision.vue'
+import { TestId } from './enums'
 
 function createScroll(template: string) {
   return defineComponent({
@@ -46,7 +47,7 @@ describe('MagicScroll - Options', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('progress'))
+        .element(page.getByTestId(TestId.Progress))
         .toHaveTextContent('0')
     })
 
@@ -68,16 +69,16 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progressBefore = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller"]'
+        `[data-test-id="${TestId.Scroller}"]`
       ) as HTMLElement
       await scrollTo(scroller, 500)
 
       const progressAfter = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       // Custom target scroll should update progress
@@ -100,7 +101,7 @@ describe('MagicScroll - Options', () => {
 
       // Scene renders and exposes progress as number (proves defaults work)
       await expect
-        .element(page.getByTestId('progress'))
+        .element(page.getByTestId(TestId.Progress))
         .toHaveTextContent('number')
     })
 
@@ -122,14 +123,14 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller"]'
+        `[data-test-id="${TestId.Scroller}"]`
       ) as HTMLElement
 
       // Scroll to bottom
       await scrollTo(scroller, scroller.scrollHeight)
 
       const progress = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       expect(progress).toBe(1)
@@ -153,7 +154,7 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progress = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       // Progress should be a valid number between 0 and 1
@@ -191,15 +192,15 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller"]'
+        `[data-test-id="${TestId.Scroller}"]`
       ) as HTMLElement
       await scrollTo(scroller, 300)
 
       const progressA = parseFloat(
-        document.querySelector('[data-test-id="progress-a"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.ProgressA}"]`)!.textContent!
       )
       const progressB = parseFloat(
-        document.querySelector('[data-test-id="progress-b"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.ProgressB}"]`)!.textContent!
       )
 
       // Different intersection configs at the same scroll position
@@ -227,7 +228,7 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progress = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       // At scroll position 0, element top is at viewport top, so progress = 0
@@ -252,14 +253,14 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller"]'
+        `[data-test-id="${TestId.Scroller}"]`
       ) as HTMLElement
 
       // Scroll to bottom
       await scrollTo(scroller, scroller.scrollHeight)
 
       const progress = parseFloat(
-        document.querySelector('[data-test-id="progress"]')!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
       )
 
       expect(progress).toBe(1)

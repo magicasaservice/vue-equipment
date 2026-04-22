@@ -10,6 +10,9 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { MenuId, ViewId, TestId } from './enums'
+
+// ─── Global config ────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -26,6 +29,8 @@ const gc = {
   },
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMenu - API', () => {
   describe('composable return shape', () => {
     it('returns selectView and unselectView', () => {
@@ -34,10 +39,10 @@ describe('MagicMenu - API', () => {
         defineComponent({
           components: { MagicMenuProvider },
           setup() {
-            api = useMagicMenu({ instanceId: 'api-shape', viewId: 'v0' })
+            api = useMagicMenu({ instanceId: MenuId.ApiShape, viewId: ViewId.V0 })
             return {}
           },
-          template: `<MagicMenuProvider id="api-shape"><div /></MagicMenuProvider>`,
+          template: `<MagicMenuProvider id="${MenuId.ApiShape}"><div /></MagicMenuProvider>`,
         }),
         gc
       )
@@ -52,10 +57,10 @@ describe('MagicMenu - API', () => {
         defineComponent({
           components: { MagicMenuProvider },
           setup() {
-            api = useMagicMenu({ instanceId: 'api-channel', viewId: 'v0' })
+            api = useMagicMenu({ instanceId: MenuId.ApiChannel, viewId: ViewId.V0 })
             return {}
           },
-          template: `<MagicMenuProvider id="api-channel"><div /></MagicMenuProvider>`,
+          template: `<MagicMenuProvider id="${MenuId.ApiChannel}"><div /></MagicMenuProvider>`,
         }),
         gc
       )
@@ -76,20 +81,20 @@ describe('MagicMenu - API', () => {
           MagicMenuItem,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: 'api-select', viewId: 'v0' })
+          const api = useMagicMenu({ instanceId: MenuId.ApiSelect, viewId: ViewId.V0 })
           return { api }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="api.selectView('v0')">Open</button>
-            <button data-test-id="close" @click="api.unselectView('v0')">Close</button>
-            <MagicMenuProvider id="api-select" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Open}" @click="api.selectView('${ViewId.V0}')">Open</button>
+            <button data-test-id="${TestId.Close}" @click="api.unselectView('${ViewId.V0}')">Close</button>
+            <MagicMenuProvider id="${MenuId.ApiSelect}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
                   <button>Trigger</button>
                 </MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
-                  <MagicMenuItem><div data-test-id="item">Item</div></MagicMenuItem>
+                  <MagicMenuItem><div data-test-id="${TestId.Item}">Item</div></MagicMenuItem>
                 </MagicMenuContent>
               </MagicMenuView>
             </MagicMenuProvider>
@@ -102,7 +107,7 @@ describe('MagicMenu - API', () => {
 
       expect(document.querySelector('.magic-menu-content')).toBeNull()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
@@ -118,15 +123,15 @@ describe('MagicMenu - API', () => {
           MagicMenuItem,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: 'api-unselect', viewId: 'v0' })
+          const api = useMagicMenu({ instanceId: MenuId.ApiUnselect, viewId: ViewId.V0 })
           return { api }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="api.selectView('v0')">Open</button>
-            <button data-test-id="close" @click="api.unselectView('v0')">Close</button>
-            <MagicMenuProvider id="api-unselect" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Open}" @click="api.selectView('${ViewId.V0}')">Open</button>
+            <button data-test-id="${TestId.Close}" @click="api.unselectView('${ViewId.V0}')">Close</button>
+            <MagicMenuProvider id="${MenuId.ApiUnselect}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
                   <button>Trigger</button>
                 </MagicMenuTrigger>
@@ -142,16 +147,15 @@ describe('MagicMenu - API', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
 
-      await screen.getByTestId('close').click()
+      await screen.getByTestId(TestId.Close).click()
       await nextTick()
       await nextTick()
-
-      // Content removed after transition
       await new Promise((r) => setTimeout(r, 300))
+
       expect(document.querySelector('.magic-menu-content')).toBeNull()
     })
   })
@@ -169,23 +173,23 @@ describe('MagicMenu - API', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: 'api-ch-select', viewId: 'v0' })
+          const api = useMagicMenu({ instanceId: MenuId.ApiChSelect, viewId: ViewId.V0 })
           return { api }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="api.selectView('v0')">Open</button>
-            <MagicMenuProvider id="api-ch-select" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Open}" @click="api.selectView('${ViewId.V0}')">Open</button>
+            <MagicMenuProvider id="${MenuId.ApiChSelect}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger><button>Trigger</button></MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
                   <MagicMenuItem>
                     <MagicMenuRemote channel-id="ch-a">
-                      <div data-test-id="remote-a">Remote A</div>
+                      <div data-test-id="${TestId.RemoteA}">Remote A</div>
                     </MagicMenuRemote>
                   </MagicMenuItem>
                   <MagicMenuChannel id="ch-a">
-                    <div data-test-id="channel-a">Channel A</div>
+                    <div data-test-id="${TestId.ChannelA}">Channel A</div>
                   </MagicMenuChannel>
                 </MagicMenuContent>
               </MagicMenuView>
@@ -197,21 +201,17 @@ describe('MagicMenu - API', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
-      // Channel not active yet
-      expect(
-        document.querySelector('[data-test-id="channel-a"]')
-      ).toBeNull()
+      expect(document.querySelector(`[data-test-id="${TestId.ChannelA}"]`)).toBeNull()
 
-      // Activate channel via remote hover
       const remote = document.querySelector('.magic-menu-remote') as HTMLElement
       remote.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
       expect(
-        document.querySelector('[data-test-id="channel-a"]')
+        document.querySelector(`[data-test-id="${TestId.ChannelA}"]`)
       ).not.toBeNull()
     })
   })

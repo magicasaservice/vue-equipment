@@ -10,6 +10,9 @@ import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import { CommandId, ViewId, TestId } from './enums'
+
+// ─── Globals ──────────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -36,6 +39,8 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCommand - API', () => {
   describe('composable return shape', () => {
     it('returns expected functions and state', () => {
@@ -44,10 +49,10 @@ describe('MagicCommand - API', () => {
         defineComponent({
           components: { MagicCommandProvider },
           setup() {
-            api = useMagicCommand('api-shape')
+            api = useMagicCommand(CommandId.ApiShape)
             return {}
           },
-          template: `<MagicCommandProvider id="api-shape"><div /></MagicCommandProvider>`,
+          template: `<MagicCommandProvider id="${CommandId.ApiShape}"><div /></MagicCommandProvider>`,
         }),
         gc
       )
@@ -74,16 +79,16 @@ describe('MagicCommand - API', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('api-open')
+          const { api, openCommand } = useOpenHelper(CommandId.ApiOpen)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="active">{{ api.isActive.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="api-open">
+            <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ApiOpen}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -97,14 +102,14 @@ describe('MagicCommand - API', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
 
@@ -118,16 +123,16 @@ describe('MagicCommand - API', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('api-initial')
+          const { api, openCommand } = useOpenHelper(CommandId.ApiInitial)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="view">{{ api.activeView.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="api-initial">
+            <span data-test-id="${TestId.View}">{{ api.activeView.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ApiInitial}">
               <MagicCommandRenderer />
-              <MagicCommandView id="main-view" :initial="true">
+              <MagicCommandView id="${ViewId.MainView}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -140,13 +145,13 @@ describe('MagicCommand - API', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('view'))
-        .toHaveTextContent('main-view')
+        .element(page.getByTestId(TestId.View))
+        .toHaveTextContent(ViewId.MainView)
     })
 
     it('close deactivates command', async () => {
@@ -159,17 +164,17 @@ describe('MagicCommand - API', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('api-close')
+          const { api, openCommand } = useOpenHelper(CommandId.ApiClose)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="active">{{ api.isActive.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <button data-test-id="close" @click="api.close()">Close</button>
-            <MagicCommandProvider id="api-close">
+            <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <button data-test-id="${TestId.Close}" @click="api.close()">Close</button>
+            <MagicCommandProvider id="${CommandId.ApiClose}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -182,18 +187,18 @@ describe('MagicCommand - API', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('close').click()
+      await screen.getByTestId(TestId.Close).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
   })
@@ -209,22 +214,22 @@ describe('MagicCommand - API', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('api-sv')
+          const { api, openCommand } = useOpenHelper(CommandId.ApiSv)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="view">{{ api.activeView.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <button data-test-id="select-b" @click="api.unselectView('view-a').then(() => api.selectView('view-b'))">B</button>
-            <MagicCommandProvider id="api-sv">
+            <span data-test-id="${TestId.View}">{{ api.activeView.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <button data-test-id="${TestId.SelectB}" @click="api.unselectView('${ViewId.ViewA}').then(() => api.selectView('${ViewId.ViewB}'))">B</button>
+            <MagicCommandProvider id="${CommandId.ApiSv}">
               <MagicCommandRenderer />
-              <MagicCommandView id="view-a" :initial="true">
+              <MagicCommandView id="${ViewId.ViewA}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>A</div></MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
-              <MagicCommandView id="view-b">
+              <MagicCommandView id="${ViewId.ViewB}">
                 <MagicCommandContent>
                   <MagicCommandItem><div>B</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -237,15 +242,15 @@ describe('MagicCommand - API', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
-      await screen.getByTestId('select-b').click()
+      await screen.getByTestId(TestId.SelectB).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('view'))
-        .toHaveTextContent('view-b')
+        .element(page.getByTestId(TestId.View))
+        .toHaveTextContent(ViewId.ViewB)
     })
   })
 })

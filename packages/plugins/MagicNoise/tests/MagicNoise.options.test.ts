@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick, ref } from 'vue'
 import MagicNoise from '../src/components/MagicNoise.vue'
+import { TestId } from './enums'
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function getCanvasData(canvas: HTMLCanvasElement): string {
   const ctx = canvas.getContext('2d')
@@ -37,6 +40,8 @@ function createNoise(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicNoise - Options', () => {
   describe('pause prop', () => {
     it('pause prop stops canvas animation updates', async () => {
@@ -50,7 +55,7 @@ describe('MagicNoise - Options', () => {
           template: `
             <div style="width:100px;height:100px">
               <MagicNoise :pause="paused" :options="{ fps: 60 }" />
-              <button data-test-id="pause" @click="paused = true" style="position:relative;z-index:10000">Pause</button>
+              <button data-test-id="${TestId.Pause}" @click="paused = true" style="position:relative;z-index:10000">Pause</button>
             </div>
           `,
         })
@@ -64,7 +69,7 @@ describe('MagicNoise - Options', () => {
       expect(canvas).not.toBeNull()
 
       // Now pause via trusted click
-      await screen.getByTestId('pause').click()
+      await screen.getByTestId(TestId.Pause).click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 200))
 

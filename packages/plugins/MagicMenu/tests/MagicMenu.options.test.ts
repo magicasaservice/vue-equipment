@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
-
 import { defineComponent, nextTick } from 'vue'
 import MagicMenuProvider from '../src/components/MagicMenuProvider.vue'
 import MagicMenuTrigger from '../src/components/MagicMenuTrigger.vue'
@@ -11,6 +10,9 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { MenuId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Global config ────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -27,7 +29,9 @@ const gc = {
   },
 }
 
-function createMenu(id: string, mode: string) {
+// ─── Factory ─────────────────────────────────────────────────────────────────
+
+function createMenu(menuId: MenuId, mode: string) {
   return defineComponent({
     components: {
       MagicMenuProvider,
@@ -37,21 +41,21 @@ function createMenu(id: string, mode: string) {
       MagicMenuItem,
     },
     setup() {
-      useMagicMenu({ instanceId: id, viewId: 'v0' })
+      useMagicMenu({ instanceId: menuId, viewId: ViewId.V0 })
       return { mode }
     },
     template: `
-      <MagicMenuProvider id="${id}" :options="{ mode: '${mode}' }">
-        <MagicMenuView id="v0">
+      <MagicMenuProvider id="${menuId}" :options="{ mode: '${mode}' }">
+        <MagicMenuView id="${ViewId.V0}">
           <MagicMenuTrigger>
-            <button data-test-id="trigger">Open</button>
+            <button data-test-id="${TestId.Trigger}">Open</button>
           </MagicMenuTrigger>
           <MagicMenuContent :teleport="{ disabled: true }">
-            <MagicMenuItem id="item-1">
-              <div data-test-id="item-1">Item 1</div>
+            <MagicMenuItem id="${ItemId.Item1}">
+              <div data-test-id="${TestId.Item1}">Item 1</div>
             </MagicMenuItem>
-            <MagicMenuItem id="item-2">
-              <div data-test-id="item-2">Item 2</div>
+            <MagicMenuItem id="${ItemId.Item2}">
+              <div data-test-id="${TestId.Item2}">Item 2</div>
             </MagicMenuItem>
           </MagicMenuContent>
         </MagicMenuView>
@@ -60,13 +64,15 @@ function createMenu(id: string, mode: string) {
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMenu - Options', () => {
   describe('mode: dropdown', () => {
     it('click trigger opens menu', async () => {
-      const screen = render(createMenu('opt-dropdown', 'dropdown'), gc)
+      const screen = render(createMenu(MenuId.OptDropdown, 'dropdown'), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
@@ -75,10 +81,10 @@ describe('MagicMenu - Options', () => {
 
   describe('mode: menubar', () => {
     it('click trigger opens menubar', async () => {
-      const screen = render(createMenu('opt-menubar', 'menubar'), gc)
+      const screen = render(createMenu(MenuId.OptMenubar, 'menubar'), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
@@ -96,14 +102,14 @@ describe('MagicMenu - Options', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'opt-context', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.OptContext, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="opt-context" :options="{ mode: 'context' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.OptContext}" :options="{ mode: 'context' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger>
-                <div data-test-id="area" style="width: 200px; height: 200px;">Area</div>
+                <div data-test-id="${TestId.Area}" style="width: 200px; height: 200px;">Area</div>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
                 <MagicMenuItem><div>Cut</div></MagicMenuItem>
@@ -116,7 +122,7 @@ describe('MagicMenu - Options', () => {
       render(wrapper, gc)
       await nextTick()
 
-      const area = document.querySelector('[data-test-id="area"]') as HTMLElement
+      const area = document.querySelector(`[data-test-id="${TestId.Area}"]`) as HTMLElement
       area.dispatchEvent(
         new MouseEvent('contextmenu', {
           bubbles: true,
@@ -125,7 +131,6 @@ describe('MagicMenu - Options', () => {
           clientY: 100,
         })
       )
-      // onOpen() is async: wrapperActive → nextTick → innerActive → nextTick
       await nextTick()
       await nextTick()
       await nextTick()
@@ -146,14 +151,14 @@ describe('MagicMenu - Options', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'opt-nav', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.OptNav, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="opt-nav" :options="{ mode: 'navigation' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.OptNav}" :options="{ mode: 'navigation' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger>
-                <div data-test-id="trigger" style="width: 100px; height: 40px;">Nav</div>
+                <div data-test-id="${TestId.Trigger}" style="width: 100px; height: 40px;">Nav</div>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
                 <MagicMenuItem><div>Link 1</div></MagicMenuItem>
@@ -178,16 +183,12 @@ describe('MagicMenu - Options', () => {
 
   describe('teleport option', () => {
     it('teleport disabled keeps content inline', async () => {
-      const screen = render(createMenu('opt-teleport-disabled', 'dropdown'), gc)
+      const screen = render(createMenu(MenuId.OptTeleportDisabled, 'dropdown'), gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      // Content should be inside provider (not teleported to body)
-      const provider = document.querySelector('.magic-menu-provider')
-      const content = provider!.querySelector('.magic-menu-content')
-      // With teleport disabled: content is in DOM but may be in provider subtree
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
     })
   })
@@ -203,14 +204,14 @@ describe('MagicMenu - Options', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'opt-placement', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.OptPlacement, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="opt-placement" :options="{ mode: 'dropdown' }">
-            <MagicMenuView id="v0" placement="top">
+          <MagicMenuProvider id="${MenuId.OptPlacement}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}" placement="top">
               <MagicMenuTrigger>
-                <button data-test-id="trigger">Open</button>
+                <button data-test-id="${TestId.Trigger}">Open</button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
                 <MagicMenuItem><div>Item</div></MagicMenuItem>
@@ -223,12 +224,10 @@ describe('MagicMenu - Options', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      // Float should have placement class
-      const float = document.querySelector('.magic-menu-float')
-      expect(float).not.toBeNull()
+      expect(document.querySelector('.magic-menu-float')).not.toBeNull()
     })
   })
 })

@@ -1,8 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 
-import { defineComponent, nextTick, onBeforeUnmount, reactive } from 'vue'
+import { defineComponent, nextTick, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '../index'
+import { TestId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicEmitter - Edge Cases', () => {
   describe('handler reference identity', () => {
@@ -16,19 +19,17 @@ describe('MagicEmitter - Edge Cases', () => {
           emitter.on('beforeEnter', handler)
 
           function tryRemoveAndEmit() {
-            // Remove with different reference — should NOT remove handler
             emitter.off('beforeEnter', differentFn)
             emitter.emit('beforeEnter', 'still-here')
           }
 
           return { tryRemoveAndEmit }
         },
-        template:
-          '<button data-test-id="btn" @click="tryRemoveAndEmit">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="tryRemoveAndEmit">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledOnce()
@@ -52,12 +53,11 @@ describe('MagicEmitter - Edge Cases', () => {
 
           return { rapidFire }
         },
-        template:
-          '<button data-test-id="btn" @click="rapidFire">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="rapidFire">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledTimes(100)
@@ -91,8 +91,8 @@ describe('MagicEmitter - Edge Cases', () => {
         },
         template: `
           <div>
-            <button data-test-id="toggle" @click="showChild = !showChild">Toggle</button>
-            <button data-test-id="emit" @click="emitter.emit('beforeLeave', 'test')">Emit</button>
+            <button data-test-id="${TestId.Toggle}" @click="showChild = !showChild">Toggle</button>
+            <button data-test-id="${TestId.Emit}" @click="emitter.emit('beforeLeave', 'test')">Emit</button>
             <Child v-if="showChild" />
           </div>
         `,
@@ -100,19 +100,16 @@ describe('MagicEmitter - Edge Cases', () => {
 
       const screen = render(Parent)
 
-      // Emit while child mounted — handler fires
-      await screen.getByTestId('emit').click()
+      await screen.getByTestId(TestId.Emit).click()
       await nextTick()
       expect(handler).toHaveBeenCalledOnce()
 
       handler.mockClear()
 
-      // Unmount child
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
-      // Emit after unmount — handler should NOT fire
-      await screen.getByTestId('emit').click()
+      await screen.getByTestId(TestId.Emit).click()
       await nextTick()
       expect(handler).not.toHaveBeenCalled()
     })
@@ -131,11 +128,11 @@ describe('MagicEmitter - Edge Cases', () => {
           }
           return { go }
         },
-        template: '<button data-test-id="btn" @click="go">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="go">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledWith('hello')
@@ -153,11 +150,11 @@ describe('MagicEmitter - Edge Cases', () => {
           }
           return { go }
         },
-        template: '<button data-test-id="btn" @click="go">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="go">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledWith({ id: 'test', x: 10, y: 20 })
@@ -179,11 +176,11 @@ describe('MagicEmitter - Edge Cases', () => {
           }
           return { go }
         },
-        template: '<button data-test-id="btn" @click="go">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="go">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
       expect(handler).toHaveBeenCalledTimes(2)
@@ -204,15 +201,13 @@ describe('MagicEmitter - Edge Cases', () => {
           }
           return { removeOneAndEmit }
         },
-        template:
-          '<button data-test-id="btn" @click="removeOneAndEmit">Go</button>',
+        template: `<button data-test-id="${TestId.Btn}" @click="removeOneAndEmit">Go</button>`,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId('btn').click()
+      await screen.getByTestId(TestId.Btn).click()
       await nextTick()
 
-      // mitt removes first matching handler — one left
       expect(handler).toHaveBeenCalledTimes(1)
     })
   })

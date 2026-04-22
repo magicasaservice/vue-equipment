@@ -5,9 +5,12 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
+import { ModalId, TestId } from './enums'
+
+// ─── Factory ──────────────────────────────────────────────────────────────────
 
 function createEventTrackingWrapper(
-  modalId: string,
+  modalId: ModalId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -45,14 +48,14 @@ function createEventTrackingWrapper(
     },
     template: `
       <div>
-        <button data-test-id="open-btn" @click="open">Open</button>
-        <button data-test-id="close-btn" @click="close">Close</button>
-        <button data-test-id="clear-events" @click="clearEvents">Clear</button>
-        <span data-test-id="is-active">{{ isActive }}</span>
-        <span data-test-id="events">{{ events.join(',') }}</span>
-        <span data-test-id="last-payload">{{ JSON.stringify(lastPayload) }}</span>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <button data-test-id="${TestId.ClearEvents}" @click="clearEvents">Clear</button>
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <span data-test-id="${TestId.LastPayload}">{{ JSON.stringify(lastPayload) }}</span>
         <MagicModal id="${modalId}" :options="options">
-          <div data-test-id="modal-content" style="height: 200px; width: 100%;">
+          <div data-test-id="${TestId.ModalContent}" style="height: 200px; width: 100%;">
             <button>Focusable</button>
           </div>
         </MagicModal>
@@ -66,7 +69,7 @@ function createEventTrackingWrapper(
 
 async function openModal(container: HTMLElement) {
   const btn = container.querySelector(
-    '[data-test-id="open-btn"]'
+    `[data-test-id="${TestId.OpenBtn}"]`
   ) as HTMLElement
   btn.click()
   await nextTick()
@@ -74,23 +77,25 @@ async function openModal(container: HTMLElement) {
   await new Promise((r) => setTimeout(r, 600))
 }
 
-function getTestText(id: string): string {
+function getTestText(id: TestId): string {
   return (
     document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
   )
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicModal - Events', () => {
   describe('transition lifecycle events', () => {
     it('emits beforeEnter, enter, afterEnter on open', async () => {
       const { container, unmount } = mountWithApp(
-        createEventTrackingWrapper('event-modal-open')
+        createEventTrackingWrapper(ModalId.EventOpen)
       )
 
       try {
         await openModal(container)
 
-        const events = getTestText('events')
+        const events = getTestText(TestId.Events)
         expect(events).toContain('beforeEnter')
         expect(events).toContain('enter')
         expect(events).toContain('afterEnter')
@@ -101,7 +106,7 @@ describe('MagicModal - Events', () => {
 
     it('emits beforeLeave, leave, afterLeave on close', async () => {
       const { container, unmount } = mountWithApp(
-        createEventTrackingWrapper('event-modal-close')
+        createEventTrackingWrapper(ModalId.EventClose)
       )
 
       try {
@@ -109,7 +114,7 @@ describe('MagicModal - Events', () => {
 
         // Clear events
         const clearBtn = container.querySelector(
-          '[data-test-id="clear-events"]'
+          `[data-test-id="${TestId.ClearEvents}"]`
         ) as HTMLElement
         clearBtn.click()
         await nextTick()
@@ -119,7 +124,7 @@ describe('MagicModal - Events', () => {
         await nextTick()
         await new Promise((r) => setTimeout(r, 600))
 
-        const events = getTestText('events')
+        const events = getTestText(TestId.Events)
         expect(events).toContain('beforeLeave')
         expect(events).toContain('leave')
         expect(events).toContain('afterLeave')
@@ -130,13 +135,13 @@ describe('MagicModal - Events', () => {
 
     it('enter events fire in correct order', async () => {
       const { container, unmount } = mountWithApp(
-        createEventTrackingWrapper('event-modal-order')
+        createEventTrackingWrapper(ModalId.EventOrder)
       )
 
       try {
         await openModal(container)
 
-        const text = getTestText('events')
+        const text = getTestText(TestId.Events)
         const events = text.split(',')
 
         const beforeIdx = events.indexOf('beforeEnter')
@@ -153,14 +158,14 @@ describe('MagicModal - Events', () => {
 
     it('leave events fire in correct order', async () => {
       const { container, unmount } = mountWithApp(
-        createEventTrackingWrapper('event-modal-leave-order')
+        createEventTrackingWrapper(ModalId.EventLeaveOrder)
       )
 
       try {
         await openModal(container)
 
         const clearBtn = container.querySelector(
-          '[data-test-id="clear-events"]'
+          `[data-test-id="${TestId.ClearEvents}"]`
         ) as HTMLElement
         clearBtn.click()
         await nextTick()
@@ -169,7 +174,7 @@ describe('MagicModal - Events', () => {
         await nextTick()
         await new Promise((r) => setTimeout(r, 600))
 
-        const text = getTestText('events')
+        const text = getTestText(TestId.Events)
         const events = text.split(',')
 
         const beforeIdx = events.indexOf('beforeLeave')
@@ -186,14 +191,15 @@ describe('MagicModal - Events', () => {
 
     it('enter events include modal id as payload', async () => {
       const { container, unmount } = mountWithApp(
-        createEventTrackingWrapper('event-modal-payload')
+        createEventTrackingWrapper(ModalId.EventPayload)
       )
 
       try {
         await openModal(container)
 
-        const payload = getTestText('last-payload')
-        expect(payload).toContain('event-modal-payload')
+        const payloadRaw = getTestText(TestId.LastPayload)
+        const payload = JSON.parse(payloadRaw)
+        expect(payload.id).toBe(ModalId.EventPayload)
       } finally {
         unmount()
       }

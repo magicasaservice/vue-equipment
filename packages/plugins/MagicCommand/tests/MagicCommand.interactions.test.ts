@@ -10,6 +10,9 @@ import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import { CommandId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Globals ──────────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -36,6 +39,8 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCommand - Interactions', () => {
   describe('trigger click', () => {
     it('trigger click activates command', async () => {
@@ -49,17 +54,17 @@ describe('MagicCommand - Interactions', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api } = useOpenHelper('int-trigger')
+          const { api } = useOpenHelper(CommandId.Trigger)
           return { api }
         },
         template: `
           <div>
-            <span data-test-id="active">{{ api.isActive.value }}</span>
-            <MagicCommandProvider id="int-trigger">
+            <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+            <MagicCommandProvider id="${CommandId.Trigger}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0">
+              <MagicCommandView id="${ViewId.V0}">
                 <MagicCommandTrigger>
-                  <button data-test-id="trigger">Open</button>
+                  <button data-test-id="${TestId.Trigger}">Open</button>
                 </MagicCommandTrigger>
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
@@ -73,12 +78,12 @@ describe('MagicCommand - Interactions', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
   })
@@ -94,20 +99,20 @@ describe('MagicCommand - Interactions', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('int-hover')
+          const { openCommand } = useOpenHelper(CommandId.Hover)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="int-hover">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Hover}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="item-1">
+                  <MagicCommandItem id="${ItemId.Item1}">
                     <div>Item 1</div>
                   </MagicCommandItem>
-                  <MagicCommandItem id="item-2">
+                  <MagicCommandItem id="${ItemId.Item2}">
                     <div>Item 2</div>
                   </MagicCommandItem>
                 </MagicCommandContent>
@@ -120,13 +125,15 @@ describe('MagicCommand - Interactions', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const item = document.querySelector('[data-id="item-1"]') as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.Item1}"]`
+      ) as HTMLElement
       expect(item).not.toBeNull()
 
       item.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }))
@@ -139,7 +146,7 @@ describe('MagicCommand - Interactions', () => {
   })
 
   describe('item click', () => {
-    it('clicking item emits click event', async () => {
+    it('clicking item fires click handler', async () => {
       let clicked = false
 
       const wrapper = defineComponent({
@@ -151,18 +158,20 @@ describe('MagicCommand - Interactions', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('int-click')
-          function onItemClick() { clicked = true }
+          const { openCommand } = useOpenHelper(CommandId.Click)
+          function onItemClick() {
+            clicked = true
+          }
           return { openCommand, onItemClick }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="int-click">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Click}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="click-item" @click="onItemClick">
+                  <MagicCommandItem id="${ItemId.ClickItem}" @click="onItemClick">
                     <div>Click me</div>
                   </MagicCommandItem>
                 </MagicCommandContent>
@@ -175,13 +184,15 @@ describe('MagicCommand - Interactions', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const item = document.querySelector('[data-id="click-item"]') as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.ClickItem}"]`
+      ) as HTMLElement
       item.click()
       await nextTick()
 
@@ -190,7 +201,7 @@ describe('MagicCommand - Interactions', () => {
   })
 
   describe('initial item selection', () => {
-    it('item with initial prop is selected on mount', async () => {
+    it('item with :initial="true" is selected on open', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -200,18 +211,18 @@ describe('MagicCommand - Interactions', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('int-initial')
+          const { openCommand } = useOpenHelper(CommandId.Initial)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="int-initial">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Initial}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="first"><div>First</div></MagicCommandItem>
-                  <MagicCommandItem id="second" :initial="true"><div>Second</div></MagicCommandItem>
+                  <MagicCommandItem id="${ItemId.First}"><div>First</div></MagicCommandItem>
+                  <MagicCommandItem id="${ItemId.Second}" :initial="true"><div>Second</div></MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
             </MagicCommandProvider>
@@ -222,22 +233,27 @@ describe('MagicCommand - Interactions', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const second = document.querySelector('[data-id="second"]')
-      expect(second!.getAttribute('data-active')).toBe('true')
-
-      const first = document.querySelector('[data-id="first"]')
-      expect(first!.getAttribute('data-active')).toBe('false')
+      expect(
+        document
+          .querySelector(`[data-id="${ItemId.Second}"]`)!
+          .getAttribute('data-active')
+      ).toBe('true')
+      expect(
+        document
+          .querySelector(`[data-id="${ItemId.First}"]`)!
+          .getAttribute('data-active')
+      ).toBe('false')
     })
   })
 
-  describe('close trigger', () => {
-    it('close via API after open', async () => {
+  describe('close via API', () => {
+    it('close() after open deactivates command', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -247,17 +263,17 @@ describe('MagicCommand - Interactions', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('int-close-api')
+          const { api, openCommand } = useOpenHelper(CommandId.CloseApi)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="active">{{ api.isActive.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <button data-test-id="close" @click="api.close()">Close</button>
-            <MagicCommandProvider id="int-close-api">
+            <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <button data-test-id="${TestId.Close}" @click="api.close()">Close</button>
+            <MagicCommandProvider id="${CommandId.CloseApi}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -270,19 +286,19 @@ describe('MagicCommand - Interactions', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('close').click()
+      await screen.getByTestId(TestId.Close).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
   })

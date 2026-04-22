@@ -9,6 +9,7 @@ import MagicPlayerTimeline from '../src/components/MagicPlayerTimeline.vue'
 import MagicPlayerDisplayTime from '../src/components/MagicPlayerDisplayTime.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
 import { useMagicEmitter } from '../../MagicEmitter'
+import { PlayerId, TestId } from './enums'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -17,7 +18,8 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
-function createEventPlayer(playerId: string) {
+
+function createEventPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
     preload: 'none' as const,
@@ -48,11 +50,11 @@ function createEventPlayer(playerId: string) {
     },
     template: `
       <div>
-        <button data-test-id="play" @click="videoApi.play()">Play</button>
-        <button data-test-id="pause" @click="videoApi.pause()">Pause</button>
-        <button data-test-id="mute" @click="videoApi.mute()">Mute</button>
-        <button data-test-id="unmute" @click="videoApi.unmute()">Unmute</button>
-        <span data-test-id="events">{{ events.join(',') }}</span>
+        <button data-test-id="${TestId.Play}" @click="videoApi.play()">Play</button>
+        <button data-test-id="${TestId.Pause}" @click="videoApi.pause()">Pause</button>
+        <button data-test-id="${TestId.Mute}" @click="videoApi.mute()">Mute</button>
+        <button data-test-id="${TestId.Unmute}" @click="videoApi.unmute()">Unmute</button>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
         <MagicPlayerProvider id="${playerId}" :options="opts">
           <MagicPlayerVideo />
           <MagicPlayerVideoControls :standalone="true" />
@@ -63,7 +65,7 @@ function createEventPlayer(playerId: string) {
 }
 
 function getEventsText(): string {
-  return document.querySelector('[data-test-id="events"]')?.textContent || ''
+  return document.querySelector(`[data-test-id="${TestId.Events}"]`)?.textContent || ''
 }
 
 describe('MagicPlayer - Events', () => {
@@ -85,10 +87,10 @@ describe('MagicPlayer - Events', () => {
 
   describe('play/pause events', () => {
     it('emits onPlay when play is called', async () => {
-      const screen = render(createEventPlayer('evt-play'), gc)
+      const screen = render(createEventPlayer(PlayerId.EvtPlay), gc)
       await nextTick()
 
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
       await nextTick()
 
@@ -96,13 +98,13 @@ describe('MagicPlayer - Events', () => {
     })
 
     it('emits onPause when pause is called', async () => {
-      const screen = render(createEventPlayer('evt-pause'), gc)
+      const screen = render(createEventPlayer(PlayerId.EvtPause), gc)
       await nextTick()
 
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
 
-      await screen.getByTestId('pause').click()
+      await screen.getByTestId(TestId.Pause).click()
       await nextTick()
       await nextTick()
 
@@ -110,10 +112,10 @@ describe('MagicPlayer - Events', () => {
     })
 
     it('emits onPlay on first play', async () => {
-      const screen = render(createEventPlayer('evt-start'), gc)
+      const screen = render(createEventPlayer(PlayerId.EvtStart), gc)
       await nextTick()
 
-      await screen.getByTestId('play').click()
+      await screen.getByTestId(TestId.Play).click()
       await nextTick()
       await nextTick()
 
@@ -123,10 +125,10 @@ describe('MagicPlayer - Events', () => {
 
   describe('mute events', () => {
     it('emits onMute when mute is called', async () => {
-      const screen = render(createEventPlayer('evt-mute'), gc)
+      const screen = render(createEventPlayer(PlayerId.EvtMute), gc)
       await nextTick()
 
-      await screen.getByTestId('mute').click()
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
       await nextTick()
 
@@ -134,13 +136,13 @@ describe('MagicPlayer - Events', () => {
     })
 
     it('emits onUnmute when unmute is called', async () => {
-      const screen = render(createEventPlayer('evt-unmute'), gc)
+      const screen = render(createEventPlayer(PlayerId.EvtUnmute), gc)
       await nextTick()
 
-      await screen.getByTestId('mute').click()
+      await screen.getByTestId(TestId.Mute).click()
       await nextTick()
 
-      await screen.getByTestId('unmute').click()
+      await screen.getByTestId(TestId.Unmute).click()
       await nextTick()
       await nextTick()
 
@@ -150,7 +152,7 @@ describe('MagicPlayer - Events', () => {
 
   describe('touch event', () => {
     it('emits onTouch on pointerdown on provider', async () => {
-      render(createEventPlayer('evt-touch'), gc)
+      render(createEventPlayer(PlayerId.EvtTouch), gc)
       await nextTick()
 
       const provider = document.querySelector(

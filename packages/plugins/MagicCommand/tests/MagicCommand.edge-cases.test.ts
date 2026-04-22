@@ -10,6 +10,9 @@ import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import { CommandId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Globals ──────────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -36,6 +39,8 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCommand - Edge Cases', () => {
   describe('multiple instances', () => {
     it('two command instances have independent state', async () => {
@@ -48,8 +53,8 @@ describe('MagicCommand - Edge Cases', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const h1 = useOpenHelper('edge-multi-1')
-          const h2 = useOpenHelper('edge-multi-2')
+          const h1 = useOpenHelper(CommandId.Multi1)
+          const h2 = useOpenHelper(CommandId.Multi2)
           return {
             api1: h1.api,
             open1: h1.openCommand,
@@ -58,20 +63,20 @@ describe('MagicCommand - Edge Cases', () => {
         },
         template: `
           <div>
-            <span data-test-id="active-1">{{ api1.isActive.value }}</span>
-            <span data-test-id="active-2">{{ api2.isActive.value }}</span>
-            <button data-test-id="open-1" @click="open1()">Open 1</button>
-            <MagicCommandProvider id="edge-multi-1">
+            <span data-test-id="${TestId.Active1}">{{ api1.isActive.value }}</span>
+            <span data-test-id="${TestId.Active2}">{{ api2.isActive.value }}</span>
+            <button data-test-id="${TestId.Open1}" @click="open1()">Open 1</button>
+            <MagicCommandProvider id="${CommandId.Multi1}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>A</div></MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
             </MagicCommandProvider>
-            <MagicCommandProvider id="edge-multi-2">
+            <MagicCommandProvider id="${CommandId.Multi2}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>B</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -84,14 +89,14 @@ describe('MagicCommand - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open-1').click()
+      await screen.getByTestId(TestId.Open1).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-1'))
+        .element(page.getByTestId(TestId.Active1))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('active-2'))
+        .element(page.getByTestId(TestId.Active2))
         .toHaveTextContent('false')
     })
   })
@@ -107,17 +112,17 @@ describe('MagicCommand - Edge Cases', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { api, openCommand } = useOpenHelper('edge-cycle')
+          const { api, openCommand } = useOpenHelper(CommandId.Cycle)
           return { api, openCommand }
         },
         template: `
           <div>
-            <span data-test-id="active">{{ api.isActive.value }}</span>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <button data-test-id="close" @click="api.close()">Close</button>
-            <MagicCommandProvider id="edge-cycle">
+            <span data-test-id="${TestId.Active}">{{ api.isActive.value }}</span>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <button data-test-id="${TestId.Close}" @click="api.close()">Close</button>
+            <MagicCommandProvider id="${CommandId.Cycle}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
                   <MagicCommandItem><div>Item</div></MagicCommandItem>
                 </MagicCommandContent>
@@ -130,22 +135,22 @@ describe('MagicCommand - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('close').click()
+      await screen.getByTestId(TestId.Close).click()
       await nextTick()
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
   })
@@ -161,18 +166,18 @@ describe('MagicCommand - Edge Cases', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('edge-disabled')
+          const { openCommand } = useOpenHelper(CommandId.Disabled)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="edge-disabled">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Disabled}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="enabled"><div>Enabled</div></MagicCommandItem>
-                  <MagicCommandItem id="disabled" :disabled="true"><div>Disabled</div></MagicCommandItem>
+                  <MagicCommandItem id="${ItemId.Enabled}"><div>Enabled</div></MagicCommandItem>
+                  <MagicCommandItem id="${ItemId.Disabled}" :disabled="true"><div>Disabled</div></MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
             </MagicCommandProvider>
@@ -183,13 +188,15 @@ describe('MagicCommand - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const disabled = document.querySelector('[data-id="disabled"]') as HTMLElement
+      const disabled = document.querySelector(
+        `[data-id="${ItemId.Disabled}"]`
+      ) as HTMLElement
       disabled.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }))
       await nextTick()
       disabled.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
@@ -200,7 +207,7 @@ describe('MagicCommand - Edge Cases', () => {
   })
 
   describe('nested views', () => {
-    it('nested view renders inside parent content', async () => {
+    it('nested view and items render inside parent content', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -210,21 +217,21 @@ describe('MagicCommand - Edge Cases', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('edge-nested')
+          const { openCommand } = useOpenHelper(CommandId.Nested)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="edge-nested">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.Nested}">
               <MagicCommandRenderer />
-              <MagicCommandView id="parent-view" :initial="true">
+              <MagicCommandView id="${ViewId.ParentView}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="parent-item">
+                  <MagicCommandItem id="${ItemId.ParentItem}">
                     <div>Parent</div>
-                    <MagicCommandView id="child-view">
+                    <MagicCommandView id="${ViewId.ChildView}">
                       <MagicCommandContent>
-                        <MagicCommandItem id="child-item"><div>Child</div></MagicCommandItem>
+                        <MagicCommandItem id="${ItemId.ChildItem}"><div>Child</div></MagicCommandItem>
                       </MagicCommandContent>
                     </MagicCommandView>
                   </MagicCommandItem>
@@ -238,19 +245,23 @@ describe('MagicCommand - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      expect(document.querySelector('[data-id="parent-item"]')).not.toBeNull()
-      expect(document.querySelector('[data-id="child-view"]')).not.toBeNull()
+      expect(
+        document.querySelector(`[data-id="${ItemId.ParentItem}"]`)
+      ).not.toBeNull()
+      expect(
+        document.querySelector(`[data-id="${ViewId.ChildView}"]`)
+      ).not.toBeNull()
     })
   })
 
   describe('slot props', () => {
-    it('item slot exposes active and disabled props', async () => {
+    it('item slot exposes itemActive=true and itemDisabled=false for initial item', async () => {
       const wrapper = defineComponent({
         components: {
           MagicCommandProvider,
@@ -260,19 +271,19 @@ describe('MagicCommand - Edge Cases', () => {
           MagicCommandRenderer,
         },
         setup() {
-          const { openCommand } = useOpenHelper('edge-slot')
+          const { openCommand } = useOpenHelper(CommandId.EdgeSlot)
           return { openCommand }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="openCommand()">Open</button>
-            <MagicCommandProvider id="edge-slot">
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.EdgeSlot}">
               <MagicCommandRenderer />
-              <MagicCommandView id="v0" :initial="true">
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
                 <MagicCommandContent>
-                  <MagicCommandItem id="s-item" :initial="true" v-slot="{ itemActive, itemDisabled }">
-                    <span data-test-id="slot-active">{{ itemActive }}</span>
-                    <span data-test-id="slot-disabled">{{ itemDisabled }}</span>
+                  <MagicCommandItem id="${ItemId.SItem}" :initial="true" v-slot="{ itemActive, itemDisabled }">
+                    <span data-test-id="${TestId.SlotActive}">{{ itemActive }}</span>
+                    <span data-test-id="${TestId.SlotDisabled}">{{ itemDisabled }}</span>
                   </MagicCommandItem>
                 </MagicCommandContent>
               </MagicCommandView>
@@ -284,17 +295,17 @@ describe('MagicCommand - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
       await expect
-        .element(page.getByTestId('slot-active'))
+        .element(page.getByTestId(TestId.SlotActive))
         .toHaveTextContent('true')
       await expect
-        .element(page.getByTestId('slot-disabled'))
+        .element(page.getByTestId(TestId.SlotDisabled))
         .toHaveTextContent('false')
     })
   })

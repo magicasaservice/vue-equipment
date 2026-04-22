@@ -4,9 +4,12 @@ import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { useMagicMarquee } from '../src/composables/useMagicMarquee'
+import { MarqueeId, TestId } from './enums'
+
+// ─── Factory ─────────────────────────────────────────────────────────────────
 
 function createMarquee(
-  marqueeId: string,
+  marqueeId: MarqueeId,
   options: Record<string, unknown> = {}
 ) {
   return defineComponent({
@@ -17,8 +20,8 @@ function createMarquee(
     },
     template: `
       <div>
-        <span data-test-id="direction">{{ state.options.direction }}</span>
-        <span data-test-id="speed">{{ state.options.speed }}</span>
+        <span data-test-id="${TestId.Direction}">{{ state.options.direction }}</span>
+        <span data-test-id="${TestId.Speed}">{{ state.options.speed }}</span>
         <MagicMarquee id="${marqueeId}" :options="options">
           <span>Item</span>
         </MagicMarquee>
@@ -30,43 +33,45 @@ function createMarquee(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMarquee - Options', () => {
   describe('direction', () => {
     it('defaults to normal', async () => {
-      render(createMarquee('opt-dir-default'))
+      render(createMarquee(MarqueeId.OptDirDefault))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('direction'))
+        .element(page.getByTestId(TestId.Direction))
         .toHaveTextContent('normal')
     })
 
     it('accepts reverse direction', async () => {
-      render(createMarquee('opt-dir-reverse', { direction: 'reverse' }))
+      render(createMarquee(MarqueeId.OptDirReverse, { direction: 'reverse' }))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('direction'))
+        .element(page.getByTestId(TestId.Direction))
         .toHaveTextContent('reverse')
     })
   })
 
   describe('speed', () => {
     it('defaults to 1', async () => {
-      render(createMarquee('opt-speed-default'))
+      render(createMarquee(MarqueeId.OptSpeedDefault))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('speed'))
+        .element(page.getByTestId(TestId.Speed))
         .toHaveTextContent('1')
     })
 
     it('accepts custom speed', async () => {
-      render(createMarquee('opt-speed-custom', { speed: 3 }))
+      render(createMarquee(MarqueeId.OptSpeedCustom, { speed: 3 }))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('speed'))
+        .element(page.getByTestId(TestId.Speed))
         .toHaveTextContent('3')
     })
   })

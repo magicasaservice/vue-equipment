@@ -5,6 +5,7 @@ import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollCollision from '../src/components/MagicScrollCollision.vue'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { mountWithApp } from '../../tests/utils'
+import { TestId } from './enums'
 
 async function scrollTo(el: HTMLElement, top: number) {
   el.scrollTop = top
@@ -108,7 +109,7 @@ describe('MagicScroll - Collision', () => {
       await new Promise((r) => setTimeout(r, 300))
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller"]'
+        `[data-test-id="${TestId.Scroller}"]`
       ) as HTMLElement
 
       // The collision element starts at top, immediately visible.
@@ -161,7 +162,7 @@ describe('MagicScroll - Collision', () => {
       await new Promise((r) => setTimeout(r, 300))
 
       const scroller = document.querySelector(
-        '[data-test-id="scroller2"]'
+        `[data-test-id="${TestId.Scroller2}"]`
       ) as HTMLElement
 
       await scrollTo(scroller, 50)

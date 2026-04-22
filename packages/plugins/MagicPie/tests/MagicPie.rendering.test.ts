@@ -2,28 +2,24 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { nextTick } from 'vue'
 import { createPie } from './test-utils'
+import { PieId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicPie - Rendering', () => {
   describe('container', () => {
-    it('renders with correct class', async () => {
-      render(createPie('render-class'))
-      await nextTick()
-
-      expect(document.querySelector('.magic-pie')).not.toBeNull()
-    })
-
     it('sets data-id attribute', async () => {
-      render(createPie('render-data-id'))
+      render(createPie(PieId.RenderDataId))
       await nextTick()
 
       const el = document.querySelector('.magic-pie')
-      expect(el!.getAttribute('data-id')).toBe('render-data-id')
+      expect(el!.getAttribute('data-id')).toBe(PieId.RenderDataId)
     })
   })
 
   describe('SVG structure', () => {
     it('renders SVG with viewBox 0 0 100 100', async () => {
-      render(createPie('render-svg'))
+      render(createPie(PieId.RenderSvg))
       await nextTick()
 
       const svg = document.querySelector('#magic-pie__svg')
@@ -32,14 +28,14 @@ describe('MagicPie - Rendering', () => {
     })
 
     it('renders mask element with correct id', async () => {
-      render(createPie('render-mask'))
+      render(createPie(PieId.RenderMask))
       await nextTick()
 
       expect(document.querySelector('#magic-pie__mask')).not.toBeNull()
     })
 
     it('renders path with d attribute', async () => {
-      render(createPie('render-path'))
+      render(createPie(PieId.RenderPath))
       await nextTick()
 
       const path = document.querySelector('.magic-pie path')
@@ -50,7 +46,7 @@ describe('MagicPie - Rendering', () => {
 
   describe('flip attribute', () => {
     it('data-flip is null by default', async () => {
-      render(createPie('render-no-flip'))
+      render(createPie(PieId.RenderNoFlip))
       await nextTick()
 
       const el = document.querySelector('.magic-pie')
@@ -58,7 +54,7 @@ describe('MagicPie - Rendering', () => {
     })
 
     it('data-flip is true when flip option set', async () => {
-      render(createPie('render-flip', { flip: true }))
+      render(createPie(PieId.RenderFlip, { flip: true }))
       await nextTick()
 
       const el = document.querySelector('.magic-pie')

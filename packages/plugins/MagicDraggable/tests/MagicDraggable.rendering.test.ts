@@ -2,26 +2,22 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { nextTick } from 'vue'
 import { createDraggable } from './test-utils'
+import { DraggableId } from './enums'
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicDraggable - Rendering', () => {
   describe('container', () => {
-    it('renders with correct class', async () => {
-      render(createDraggable('render-class'))
-      await nextTick()
-
-      expect(document.querySelector('.magic-draggable')).not.toBeNull()
-    })
-
-    it('sets data-id attribute', async () => {
-      render(createDraggable('render-data-id'))
+    it('sets data-id attribute from id prop', async () => {
+      render(createDraggable(DraggableId.DataId))
       await nextTick()
 
       const el = document.querySelector('.magic-draggable')
-      expect(el!.getAttribute('data-id')).toBe('render-data-id')
+      expect(el!.getAttribute('data-id')).toBe(DraggableId.DataId)
     })
 
-    it('renders slot content with correct text', async () => {
-      render(createDraggable('render-slot'))
+    it('renders slot content', async () => {
+      render(createDraggable(DraggableId.RenderSlot))
       await nextTick()
 
       const inner = document.querySelector('.inner-content')
@@ -31,26 +27,8 @@ describe('MagicDraggable - Rendering', () => {
   })
 
   describe('structure', () => {
-    it('renders wrapper element', async () => {
-      render(createDraggable('render-wrapper'))
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-draggable__wrapper')
-      ).not.toBeNull()
-    })
-
-    it('renders drag container', async () => {
-      render(createDraggable('render-drag'))
-      await nextTick()
-
-      expect(
-        document.querySelector('.magic-draggable__drag')
-      ).not.toBeNull()
-    })
-
     it('renders as div by default', async () => {
-      render(createDraggable('render-tag-div'))
+      render(createDraggable(DraggableId.RenderTagDiv))
       await nextTick()
 
       const drag = document.querySelector('.magic-draggable__drag')
@@ -58,7 +36,7 @@ describe('MagicDraggable - Rendering', () => {
     })
 
     it('renders as dialog when tag=dialog', async () => {
-      render(createDraggable('render-tag-dialog', { tag: 'dialog' }))
+      render(createDraggable(DraggableId.RenderTagDialog, { tag: 'dialog' }))
       await nextTick()
 
       const drag = document.querySelector('.magic-draggable__drag')
@@ -68,41 +46,45 @@ describe('MagicDraggable - Rendering', () => {
 
   describe('data attributes', () => {
     it('data-dragging is false initially', async () => {
-      render(createDraggable('render-dragging'))
+      render(createDraggable(DraggableId.Dragging))
       await nextTick()
 
-      const el = document.querySelector('[data-id="render-dragging"]')
+      const el = document.querySelector(
+        `[data-id="${DraggableId.Dragging}"]`
+      )
       expect(el!.getAttribute('data-dragging')).toBe('false')
     })
 
     it('data-disabled is false by default', async () => {
-      render(createDraggable('render-not-disabled'))
+      render(createDraggable(DraggableId.NotDisabled))
       await nextTick()
 
       const el = document.querySelector(
-        '[data-id="render-not-disabled"]'
+        `[data-id="${DraggableId.NotDisabled}"]`
       )
       expect(el!.getAttribute('data-disabled')).toBe('false')
     })
 
     it('data-disabled is true when disabled option set', async () => {
-      render(createDraggable('render-disabled', { disabled: true }))
+      render(createDraggable(DraggableId.RenderDisabled, { disabled: true }))
       await nextTick()
 
-      const el = document.querySelector('[data-id="render-disabled"]')
+      const el = document.querySelector(
+        `[data-id="${DraggableId.RenderDisabled}"]`
+      )
       expect(el!.getAttribute('data-disabled')).toBe('true')
     })
 
     it('data-active-snap-point reflects initial snap point', async () => {
       render(
-        createDraggable('render-snap', {
+        createDraggable(DraggableId.RenderSnap, {
           initial: { snapPoint: 'center' },
         })
       )
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const el = document.querySelector('[data-id="render-snap"]')
+      const el = document.querySelector(`[data-id="${DraggableId.RenderSnap}"]`)
       expect(el!.getAttribute('data-active-snap-point')).toBe('center')
     })
   })

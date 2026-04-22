@@ -6,6 +6,9 @@ import MagicCookieProvider from '../src/components/MagicCookieProvider.vue'
 import MagicCookieView from '../src/components/MagicCookieView.vue'
 import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
+import { CookieId, ItemId, TestId } from './enums'
+
+// ─── Stubs ────────────────────────────────────────────────────────────────────
 
 const ClientOnly = defineComponent({
   name: 'ClientOnly',
@@ -17,11 +20,13 @@ const AutoSize = defineComponent({
   template: '<div><slot /></div>',
 })
 
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
 function createWrapper(
-  cookieId: string,
+  cookieId: CookieId,
   items: Array<{ id: string; optional?: boolean }> = [
-    { id: 'analytics', optional: true },
-    { id: 'necessary', optional: false },
+    { id: ItemId.Analytics, optional: true },
+    { id: ItemId.Necessary, optional: false },
   ]
 ) {
   return defineComponent({
@@ -37,17 +42,17 @@ function createWrapper(
     },
     template: `
       <div>
-        <button data-test-id="show-view" @click="showView">Show</button>
-        <button data-test-id="hide-view" @click="hideView">Hide</button>
-        <button data-test-id="toggle-view" @click="toggleView">Toggle</button>
-        <button data-test-id="accept-all" @click="acceptAll">Accept All</button>
-        <button data-test-id="reject-all" @click="rejectAll">Reject All</button>
-        <button data-test-id="accept-selected" @click="acceptSelected">Accept Selected</button>
-        <span data-test-id="cookies">{{ JSON.stringify(cookies) }}</span>
-        <span data-test-id="cookies-set">{{ cookiesSet }}</span>
+        <button data-test-id="${TestId.ShowView}" @click="showView">Show</button>
+        <button data-test-id="${TestId.HideView}" @click="hideView">Hide</button>
+        <button data-test-id="${TestId.ToggleView}" @click="toggleView">Toggle</button>
+        <button data-test-id="${TestId.AcceptAll}" @click="acceptAll">Accept All</button>
+        <button data-test-id="${TestId.RejectAll}" @click="rejectAll">Reject All</button>
+        <button data-test-id="${TestId.AcceptSelected}" @click="acceptSelected">Accept Selected</button>
+        <span data-test-id="${TestId.Cookies}">{{ JSON.stringify(cookies) }}</span>
+        <span data-test-id="${TestId.CookiesSet}">{{ cookiesSet }}</span>
         <MagicCookieProvider id="${cookieId}">
           <MagicCookieView>
-            <div data-test-id="view-content">Cookie Banner</div>
+            <div>Cookie Banner</div>
           </MagicCookieView>
           ${items
             .map(
@@ -66,14 +71,16 @@ function createWrapper(
   })
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicCookie - API', () => {
   describe('view management', () => {
     it('showView() makes the view visible', async () => {
-      const screen = render(createWrapper('api-show'), {
+      const screen = render(createWrapper(CookieId.Show), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
 
-      await screen.getByTestId('show-view').click()
+      await screen.getByTestId(TestId.ShowView).click()
       await nextTick()
       await nextTick()
 
@@ -84,14 +91,14 @@ describe('MagicCookie - API', () => {
     })
 
     it('hideView() hides the view', async () => {
-      const screen = render(createWrapper('api-hide'), {
+      const screen = render(createWrapper(CookieId.Hide), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
 
-      await screen.getByTestId('show-view').click()
+      await screen.getByTestId(TestId.ShowView).click()
       await nextTick()
 
-      await screen.getByTestId('hide-view').click()
+      await screen.getByTestId(TestId.HideView).click()
       await nextTick()
       await nextTick()
 
@@ -102,25 +109,20 @@ describe('MagicCookie - API', () => {
     })
 
     it('toggleView() toggles visibility', async () => {
-      const screen = render(createWrapper('api-toggle'), {
+      const screen = render(createWrapper(CookieId.Toggle), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
 
       const inner = () =>
-        document.querySelector(
-          '.magic-cookie-view__inner'
-        ) as HTMLElement
+        document.querySelector('.magic-cookie-view__inner') as HTMLElement
 
-      // Initially hidden
       expect(inner().style.display).toBe('none')
 
-      // Toggle on
-      await screen.getByTestId('toggle-view').click()
+      await screen.getByTestId(TestId.ToggleView).click()
       await nextTick()
       expect(inner().style.display).not.toBe('none')
 
-      // Toggle off
-      await screen.getByTestId('toggle-view').click()
+      await screen.getByTestId(TestId.ToggleView).click()
       await nextTick()
       expect(inner().style.display).toBe('none')
     })
@@ -129,23 +131,18 @@ describe('MagicCookie - API', () => {
   describe('item selection', () => {
     it('selectItem() activates a cookie', async () => {
       const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
+        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
         setup() {
-          const api = useMagicCookie('api-select')
+          const api = useMagicCookie(CookieId.Select)
           return { ...api }
         },
         template: `
           <div>
-            <button data-test-id="select" @click="selectItem('my-cookie')">Select</button>
-            <span data-test-id="cookies">{{ JSON.stringify(cookies) }}</span>
-            <MagicCookieProvider id="api-select">
-              <MagicCookieItem id="my-cookie" :optional="true">
+            <button data-test-id="${TestId.Select}" @click="selectItem('${ItemId.MyCookie}')">Select</button>
+            <MagicCookieProvider id="${CookieId.Select}">
+              <MagicCookieItem id="${ItemId.MyCookie}" :optional="true">
                 <template #default="{ item }">
-                  <span data-test-id="active">{{ item.active }}</span>
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
                 </template>
               </MagicCookieItem>
             </MagicCookieProvider>
@@ -158,38 +155,33 @@ describe('MagicCookie - API', () => {
       })
       await nextTick()
 
-      // Initially inactive (optional defaults to false)
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('select').click()
+      await screen.getByTestId(TestId.Select).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
     })
 
     it('unselectItem() deactivates a cookie', async () => {
       const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
+        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
         setup() {
-          const api = useMagicCookie('api-unselect')
+          const api = useMagicCookie(CookieId.Unselect)
           return { ...api }
         },
         template: `
           <div>
-            <button data-test-id="select" @click="selectItem('uns-cookie')">Select</button>
-            <button data-test-id="unselect" @click="unselectItem('uns-cookie')">Unselect</button>
-            <MagicCookieProvider id="api-unselect">
-              <MagicCookieItem id="uns-cookie" :optional="true">
+            <button data-test-id="${TestId.Select}" @click="selectItem('${ItemId.UnsCookie}')">Select</button>
+            <button data-test-id="${TestId.Unselect}" @click="unselectItem('${ItemId.UnsCookie}')">Unselect</button>
+            <MagicCookieProvider id="${CookieId.Unselect}">
+              <MagicCookieItem id="${ItemId.UnsCookie}" :optional="true">
                 <template #default="{ item }">
-                  <span data-test-id="active">{{ item.active }}</span>
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
                 </template>
               </MagicCookieItem>
             </MagicCookieProvider>
@@ -202,39 +194,35 @@ describe('MagicCookie - API', () => {
       })
       await nextTick()
 
-      await screen.getByTestId('select').click()
+      await screen.getByTestId(TestId.Select).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('unselect').click()
+      await screen.getByTestId(TestId.Unselect).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
 
     it("toggleItem() toggles a cookie's active state", async () => {
       const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
+        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
         setup() {
-          const api = useMagicCookie('api-toggle-item')
+          const api = useMagicCookie(CookieId.ToggleItem)
           return { ...api }
         },
         template: `
           <div>
-            <button data-test-id="toggle" @click="toggleItem('tog-cookie')">Toggle</button>
-            <MagicCookieProvider id="api-toggle-item">
-              <MagicCookieItem id="tog-cookie" :optional="true">
+            <button data-test-id="${TestId.Toggle}" @click="toggleItem('${ItemId.TogCookie}')">Toggle</button>
+            <MagicCookieProvider id="${CookieId.ToggleItem}">
+              <MagicCookieItem id="${ItemId.TogCookie}" :optional="true">
                 <template #default="{ item }">
-                  <span data-test-id="active">{{ item.active }}</span>
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
                 </template>
               </MagicCookieItem>
             </MagicCookieProvider>
@@ -248,124 +236,117 @@ describe('MagicCookie - API', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
 
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active'))
+        .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('false')
     })
   })
 
   describe('acceptAll', () => {
     it('acceptAll() sets all cookies to active', async () => {
-      const screen = render(createWrapper('api-accept-all'), {
+      const screen = render(createWrapper(CookieId.AcceptAll), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
-      await screen.getByTestId('accept-all').click()
+      await screen.getByTestId(TestId.AcceptAll).click()
       await nextTick()
       await nextTick()
 
       const cookies = JSON.parse(
-        document.querySelector('[data-test-id="cookies"]')!
+        document.querySelector(`[data-test-id="${TestId.Cookies}"]`)!
           .textContent || '{}'
       )
-      expect(cookies.analytics).toBe(true)
-      expect(cookies.necessary).toBe(true)
+      expect(cookies[ItemId.Analytics]).toBe(true)
+      expect(cookies[ItemId.Necessary]).toBe(true)
     })
 
-    it('acceptAll() marks all items as set', async () => {
-      const screen = render(createWrapper('api-accept-set'), {
+    it('acceptAll() sets cookiesSet to true', async () => {
+      const screen = render(createWrapper(CookieId.AcceptSet), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
-      await screen.getByTestId('accept-all').click()
+      await screen.getByTestId(TestId.AcceptAll).click()
       await nextTick()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('cookies-set'))
+        .element(page.getByTestId(TestId.CookiesSet))
         .toHaveTextContent('true')
     })
   })
 
   describe('rejectAll', () => {
     it('rejectAll() deactivates optional cookies', async () => {
-      const screen = render(createWrapper('api-reject-all'), {
+      const screen = render(createWrapper(CookieId.RejectAll), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
-      // First select all
-      await screen.getByTestId('accept-all').click()
+      await screen.getByTestId(TestId.AcceptAll).click()
       await nextTick()
       await nextTick()
 
-      // Then reject
-      await screen.getByTestId('reject-all').click()
+      await screen.getByTestId(TestId.RejectAll).click()
       await nextTick()
       await nextTick()
 
       const cookies = JSON.parse(
-        document.querySelector('[data-test-id="cookies"]')!
+        document.querySelector(`[data-test-id="${TestId.Cookies}"]`)!
           .textContent || '{}'
       )
-      expect(cookies.analytics).toBe(false)
+      expect(cookies[ItemId.Analytics]).toBe(false)
     })
 
     it('rejectAll() keeps required cookies active', async () => {
-      const screen = render(createWrapper('api-reject-required'), {
+      const screen = render(createWrapper(CookieId.RejectRequired), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
-      await screen.getByTestId('reject-all').click()
+      await screen.getByTestId(TestId.RejectAll).click()
       await nextTick()
       await nextTick()
 
       const cookies = JSON.parse(
-        document.querySelector('[data-test-id="cookies"]')!
+        document.querySelector(`[data-test-id="${TestId.Cookies}"]`)!
           .textContent || '{}'
       )
-      // Required cookies (optional=false) always return true
-      expect(cookies.necessary).toBe(true)
+      expect(cookies[ItemId.Necessary]).toBe(true)
     })
   })
 
   describe('acceptSelected', () => {
-    it('acceptSelected() saves current selection', async () => {
+    it('acceptSelected() saves current selection and sets cookiesSet=true', async () => {
       const wrapper = defineComponent({
-        components: {
-          MagicCookieProvider,
-          MagicCookieItem,
-          ClientOnly,
-        },
+        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
         setup() {
-          const api = useMagicCookie('api-accept-selected')
+          const api = useMagicCookie(CookieId.AcceptSelected)
           return { ...api }
         },
         template: `
           <div>
-            <button data-test-id="select" @click="selectItem('sel-analytics')">Select</button>
-            <button data-test-id="accept" @click="acceptSelected">Accept Selected</button>
-            <span data-test-id="cookies-set">{{ cookiesSet }}</span>
-            <MagicCookieProvider id="api-accept-selected">
-              <MagicCookieItem id="sel-analytics" :optional="true">
+            <button data-test-id="${TestId.Select}" @click="selectItem('${ItemId.SelAnalytics}')">Select</button>
+            <button data-test-id="${TestId.AcceptSelected}" @click="acceptSelected">Accept Selected</button>
+            <span data-test-id="${TestId.CookiesSet}">{{ cookiesSet }}</span>
+            <MagicCookieProvider id="${CookieId.AcceptSelected}">
+              <MagicCookieItem id="${ItemId.SelAnalytics}" :optional="true">
                 <template #default="{ item }">
-                  <span data-test-id="active">{{ item.active }}</span>
+                  <span data-test-id="${TestId.Active}">{{ item.active }}</span>
                 </template>
               </MagicCookieItem>
             </MagicCookieProvider>
@@ -378,44 +359,43 @@ describe('MagicCookie - API', () => {
       })
       await nextTick()
 
-      await screen.getByTestId('select').click()
+      await screen.getByTestId(TestId.Select).click()
       await nextTick()
 
-      await screen.getByTestId('accept').click()
+      await screen.getByTestId(TestId.AcceptSelected).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('cookies-set'))
+        .element(page.getByTestId(TestId.CookiesSet))
         .toHaveTextContent('true')
     })
   })
 
   describe('cookies computed', () => {
-    it('cookies reflects current consent state', async () => {
-      const screen = render(createWrapper('api-cookies-state'), {
+    it('cookies reflects initial state: optional=false, required=true', async () => {
+      render(createWrapper(CookieId.CookiesState), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
       const cookies = JSON.parse(
-        document.querySelector('[data-test-id="cookies"]')!
+        document.querySelector(`[data-test-id="${TestId.Cookies}"]`)!
           .textContent || '{}'
       )
-      // Optional defaults to false, required (optional=false) always true
-      expect(cookies.analytics).toBe(false)
-      expect(cookies.necessary).toBe(true)
+      expect(cookies[ItemId.Analytics]).toBe(false)
+      expect(cookies[ItemId.Necessary]).toBe(true)
     })
   })
 
   describe('cookiesSet', () => {
-    it('cookiesSet is false initially', async () => {
-      render(createWrapper('api-not-set'), {
+    it('cookiesSet is false before any accept/reject', async () => {
+      render(createWrapper(CookieId.NotSet), {
         global: { stubs: { ClientOnly, AutoSize } },
       })
       await nextTick()
 
       await expect
-        .element(page.getByTestId('cookies-set'))
+        .element(page.getByTestId(TestId.CookiesSet))
         .toHaveTextContent('false')
     })
   })

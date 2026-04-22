@@ -4,19 +4,20 @@ import MagicCookieProvider from '../src/components/MagicCookieProvider.vue'
 import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { mountWithApp } from '../../tests/utils'
+import { CookieId, ItemId, TestId } from './enums'
+
+// ─── Stubs ────────────────────────────────────────────────────────────────────
 
 const ClientOnly = defineComponent({
   name: 'ClientOnly',
   template: '<slot />',
 })
 
-function createEventWrapper(cookieId: string) {
+// ─── Factory ──────────────────────────────────────────────────────────────────
+
+function createEventWrapper(cookieId: CookieId) {
   return defineComponent({
-    components: {
-      MagicCookieProvider,
-      MagicCookieItem,
-      ClientOnly,
-    },
+    components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
     setup() {
       const api = useMagicCookie(cookieId)
       const events = reactive<string[]>([])
@@ -37,30 +38,22 @@ function createEventWrapper(cookieId: string) {
         lastPayload.value = args
       })
 
-      return {
-        ...api,
-        events,
-        lastPayload,
-      }
+      return { ...api, events, lastPayload }
     },
     template: `
       <div>
-        <button data-test-id="accept-all" @click="acceptAll">Accept All</button>
-        <button data-test-id="reject-all" @click="rejectAll">Reject All</button>
-        <button data-test-id="select-analytics" @click="selectItem('evt-analytics')">Select</button>
-        <button data-test-id="accept-selected" @click="acceptSelected">Accept Selected</button>
-        <span data-test-id="events">{{ events.join(',') }}</span>
-        <span data-test-id="payload">{{ JSON.stringify(lastPayload) }}</span>
+        <button data-test-id="${TestId.AcceptAll}" @click="acceptAll">Accept All</button>
+        <button data-test-id="${TestId.RejectAll}" @click="rejectAll">Reject All</button>
+        <button data-test-id="${TestId.SelectAnalytics}" @click="selectItem('${ItemId.EvtAnalytics}')">Select</button>
+        <button data-test-id="${TestId.AcceptSelected}" @click="acceptSelected">Accept Selected</button>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <span data-test-id="${TestId.Payload}">{{ JSON.stringify(lastPayload) }}</span>
         <MagicCookieProvider id="${cookieId}">
-          <MagicCookieItem id="evt-analytics" :optional="true">
-            <template #default="{ item }">
-              <span>{{ item.active }}</span>
-            </template>
+          <MagicCookieItem id="${ItemId.EvtAnalytics}" :optional="true">
+            <template #default="{ item }"><span>{{ item.active }}</span></template>
           </MagicCookieItem>
-          <MagicCookieItem id="evt-necessary" :optional="false">
-            <template #default="{ item }">
-              <span>{{ item.active }}</span>
-            </template>
+          <MagicCookieItem id="${ItemId.EvtNecessary}" :optional="false">
+            <template #default="{ item }"><span>{{ item.active }}</span></template>
           </MagicCookieItem>
         </MagicCookieProvider>
       </div>
@@ -68,28 +61,28 @@ function createEventWrapper(cookieId: string) {
   })
 }
 
-function getTestText(id: string): string {
-  return (
-    document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
-  )
+function getTestText(id: TestId): string {
+  return document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('MagicCookie - Events', () => {
   describe('acceptAll event', () => {
     it('fires onAccept callback when acceptAll() is called', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-accept')
+        createEventWrapper(CookieId.Accept)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="accept-all"]'
+          `[data-test-id="${TestId.AcceptAll}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText('events')).toContain('acceptAll')
+        expect(getTestText(TestId.Events)).toContain('acceptAll')
       } finally {
         unmount()
       }
@@ -97,20 +90,20 @@ describe('MagicCookie - Events', () => {
 
     it('acceptAll payload contains all cookies as true', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-accept-payload')
+        createEventWrapper(CookieId.AcceptPayload)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="accept-all"]'
+          `[data-test-id="${TestId.AcceptAll}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        const payload = JSON.parse(getTestText('payload'))
-        expect(payload['evt-analytics']).toBe(true)
-        expect(payload['evt-necessary']).toBe(true)
+        const payload = JSON.parse(getTestText(TestId.Payload))
+        expect(payload[ItemId.EvtAnalytics]).toBe(true)
+        expect(payload[ItemId.EvtNecessary]).toBe(true)
       } finally {
         unmount()
       }
@@ -120,40 +113,39 @@ describe('MagicCookie - Events', () => {
   describe('rejectAll event', () => {
     it('fires onReject callback when rejectAll() is called', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-reject')
+        createEventWrapper(CookieId.Reject)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="reject-all"]'
+          `[data-test-id="${TestId.RejectAll}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        expect(getTestText('events')).toContain('rejectAll')
+        expect(getTestText(TestId.Events)).toContain('rejectAll')
       } finally {
         unmount()
       }
     })
 
-    it('rejectAll payload has optional cookies as false', async () => {
+    it('rejectAll payload has optional cookies as false, required as true', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-reject-payload')
+        createEventWrapper(CookieId.RejectPayload)
       )
 
       try {
         const btn = container.querySelector(
-          '[data-test-id="reject-all"]'
+          `[data-test-id="${TestId.RejectAll}"]`
         ) as HTMLElement
         btn.click()
         await nextTick()
         await nextTick()
 
-        const payload = JSON.parse(getTestText('payload'))
-        expect(payload['evt-analytics']).toBe(false)
-        // Required cookies stay true in consent map
-        expect(payload['evt-necessary']).toBe(true)
+        const payload = JSON.parse(getTestText(TestId.Payload))
+        expect(payload[ItemId.EvtAnalytics]).toBe(false)
+        expect(payload[ItemId.EvtNecessary]).toBe(true)
       } finally {
         unmount()
       }
@@ -163,24 +155,23 @@ describe('MagicCookie - Events', () => {
   describe('acceptSelected event', () => {
     it('fires onAcceptSelected callback', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-selected')
+        createEventWrapper(CookieId.Selected)
       )
 
       try {
-        // Select one item
         const selectBtn = container.querySelector(
-          '[data-test-id="select-analytics"]'
+          `[data-test-id="${TestId.SelectAnalytics}"]`
         ) as HTMLElement
         selectBtn.click()
         await nextTick()
 
         const acceptBtn = container.querySelector(
-          '[data-test-id="accept-selected"]'
+          `[data-test-id="${TestId.AcceptSelected}"]`
         ) as HTMLElement
         acceptBtn.click()
         await nextTick()
 
-        expect(getTestText('events')).toContain('acceptSelected')
+        expect(getTestText(TestId.Events)).toContain('acceptSelected')
       } finally {
         unmount()
       }
@@ -188,26 +179,25 @@ describe('MagicCookie - Events', () => {
 
     it('acceptSelected payload reflects current selection', async () => {
       const { container, unmount } = mountWithApp(
-        createEventWrapper('event-selected-payload')
+        createEventWrapper(CookieId.SelectedPayload)
       )
 
       try {
-        // Select analytics
         const selectBtn = container.querySelector(
-          '[data-test-id="select-analytics"]'
+          `[data-test-id="${TestId.SelectAnalytics}"]`
         ) as HTMLElement
         selectBtn.click()
         await nextTick()
 
         const acceptBtn = container.querySelector(
-          '[data-test-id="accept-selected"]'
+          `[data-test-id="${TestId.AcceptSelected}"]`
         ) as HTMLElement
         acceptBtn.click()
         await nextTick()
 
-        const payload = JSON.parse(getTestText('payload'))
-        expect(payload['evt-analytics']).toBe(true)
-        expect(payload['evt-necessary']).toBe(true)
+        const payload = JSON.parse(getTestText(TestId.Payload))
+        expect(payload[ItemId.EvtAnalytics]).toBe(true)
+        expect(payload[ItemId.EvtNecessary]).toBe(true)
       } finally {
         unmount()
       }

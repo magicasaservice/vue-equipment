@@ -11,6 +11,9 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { MenuId, ViewId, ItemId, TestId } from './enums'
+
+// ─── Global config ────────────────────────────────────────────────────────────
 
 const gc = {
   global: {
@@ -27,6 +30,8 @@ const gc = {
   },
 }
 
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
 describe('MagicMenu - Edge Cases', () => {
   describe('nested menus', () => {
     it('nested view and trigger render inside parent content', async () => {
@@ -39,25 +44,25 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'edge-nested', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeNested, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="edge-nested" :options="{ mode: 'dropdown' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.EdgeNested}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger>
-                <button data-test-id="trigger">Open</button>
+                <button data-test-id="${TestId.Trigger}">Open</button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
-                <MagicMenuItem id="parent-item">
-                  <div data-test-id="parent">Parent</div>
-                  <MagicMenuView id="v1">
+                <MagicMenuItem id="${ItemId.ParentItem}">
+                  <div data-test-id="${TestId.Parent}">Parent</div>
+                  <MagicMenuView id="${ViewId.V1}">
                     <MagicMenuTrigger>
-                      <div data-test-id="sub-trigger">Sub ></div>
+                      <div data-test-id="${TestId.SubTrigger}">Sub ></div>
                     </MagicMenuTrigger>
                     <MagicMenuContent :teleport="{ disabled: true }">
-                      <MagicMenuItem id="sub-item">
-                        <div data-test-id="sub-item">Sub Item</div>
+                      <MagicMenuItem id="${ItemId.SubItem}">
+                        <div data-test-id="${TestId.SubItem}">Sub Item</div>
                       </MagicMenuItem>
                     </MagicMenuContent>
                   </MagicMenuView>
@@ -71,21 +76,18 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      // Open main menu
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      // Main content renders
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
 
-      // Nested view and trigger are rendered inside parent content
-      const nestedView = document.querySelector('[data-id="v1"]')
+      const nestedView = document.querySelector(`[data-id="${ViewId.V1}"]`)
       expect(nestedView).not.toBeNull()
 
-      const subTrigger = document.querySelector('[data-id="v1-trigger"]')
+      const subTrigger = document.querySelector(`[data-id="${ViewId.V1}-trigger"]`)
       expect(subTrigger).not.toBeNull()
       expect(subTrigger!.classList.contains('magic-menu-trigger')).toBe(true)
     })
@@ -102,29 +104,29 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'edge-multi-1', viewId: 'v0' })
-          useMagicMenu({ instanceId: 'edge-multi-2', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeMulti1, viewId: ViewId.V0 })
+          useMagicMenu({ instanceId: MenuId.EdgeMulti2, viewId: ViewId.V0 })
           return {}
         },
         template: `
           <div>
-            <MagicMenuProvider id="edge-multi-1" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <MagicMenuProvider id="${MenuId.EdgeMulti1}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
-                  <button data-test-id="trigger-1">Menu 1</button>
+                  <button data-test-id="${TestId.Trigger1}">Menu 1</button>
                 </MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
-                  <MagicMenuItem><div data-test-id="item-m1">M1 Item</div></MagicMenuItem>
+                  <MagicMenuItem><div data-test-id="${TestId.ItemM1}">M1 Item</div></MagicMenuItem>
                 </MagicMenuContent>
               </MagicMenuView>
             </MagicMenuProvider>
-            <MagicMenuProvider id="edge-multi-2" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <MagicMenuProvider id="${MenuId.EdgeMulti2}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
-                  <button data-test-id="trigger-2">Menu 2</button>
+                  <button data-test-id="${TestId.Trigger2}">Menu 2</button>
                 </MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
-                  <MagicMenuItem><div data-test-id="item-m2">M2 Item</div></MagicMenuItem>
+                  <MagicMenuItem><div data-test-id="${TestId.ItemM2}">M2 Item</div></MagicMenuItem>
                 </MagicMenuContent>
               </MagicMenuView>
             </MagicMenuProvider>
@@ -135,16 +137,11 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      // Open menu 1
-      await screen.getByTestId('trigger-1').click()
+      await screen.getByTestId(TestId.Trigger1).click()
       await nextTick()
 
-      expect(
-        document.querySelector('[data-test-id="item-m1"]')
-      ).not.toBeNull()
-      expect(
-        document.querySelector('[data-test-id="item-m2"]')
-      ).toBeNull()
+      expect(document.querySelector(`[data-test-id="${TestId.ItemM1}"]`)).not.toBeNull()
+      expect(document.querySelector(`[data-test-id="${TestId.ItemM2}"]`)).toBeNull()
     })
   })
 
@@ -160,16 +157,16 @@ describe('MagicMenu - Edge Cases', () => {
         },
         setup() {
           const show = ref(true)
-          useMagicMenu({ instanceId: 'edge-unmount', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeUnmount, viewId: ViewId.V0 })
           return { show }
         },
         template: `
           <div>
-            <button data-test-id="toggle" @click="show = !show">Toggle</button>
-            <MagicMenuProvider v-if="show" id="edge-unmount" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Toggle}" @click="show = !show">Toggle</button>
+            <MagicMenuProvider v-if="show" id="${MenuId.EdgeUnmount}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
-                  <button data-test-id="trigger">Open</button>
+                  <button data-test-id="${TestId.Trigger}">Open</button>
                 </MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
                   <MagicMenuItem><div>Item</div></MagicMenuItem>
@@ -183,16 +180,10 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-menu-provider')
-      ).not.toBeNull()
-
-      await screen.getByTestId('toggle').click()
+      await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-menu-provider')
-      ).toBeNull()
+      expect(document.querySelector('.magic-menu-provider')).toBeNull()
     })
   })
 
@@ -207,14 +198,14 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'edge-rapid', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeRapid, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="edge-rapid" :options="{ mode: 'dropdown' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.EdgeRapid}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger>
-                <button data-test-id="trigger">Open</button>
+                <button data-test-id="${TestId.Trigger}">Open</button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
                 <MagicMenuItem><div>Item</div></MagicMenuItem>
@@ -228,11 +219,10 @@ describe('MagicMenu - Edge Cases', () => {
       await nextTick()
 
       for (let i = 0; i < 4; i++) {
-        await screen.getByTestId('trigger').click()
+        await screen.getByTestId(TestId.Trigger).click()
         await nextTick()
       }
 
-      // After even number of clicks → closed
       await new Promise((r) => setTimeout(r, 300))
       expect(document.querySelector('.magic-menu-content')).toBeNull()
     })
@@ -249,15 +239,15 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'edge-slot-prop', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeSlotProp, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="edge-slot-prop" :options="{ mode: 'dropdown' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.EdgeSlotProp}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger v-slot="{ viewActive }">
-                <button data-test-id="trigger">
-                  <span data-test-id="active-state">{{ viewActive }}</span>
+                <button data-test-id="${TestId.Trigger}">
+                  <span data-test-id="${TestId.ActiveState}">{{ viewActive }}</span>
                 </button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
@@ -272,14 +262,14 @@ describe('MagicMenu - Edge Cases', () => {
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-state'))
+        .element(page.getByTestId(TestId.ActiveState))
         .toHaveTextContent('false')
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('active-state'))
+        .element(page.getByTestId(TestId.ActiveState))
         .toHaveTextContent('true')
     })
 
@@ -293,18 +283,18 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: 'edge-item-slot', viewId: 'v0' })
+          useMagicMenu({ instanceId: MenuId.EdgeItemSlot, viewId: ViewId.V0 })
           return {}
         },
         template: `
-          <MagicMenuProvider id="edge-item-slot" :options="{ mode: 'dropdown' }">
-            <MagicMenuView id="v0">
+          <MagicMenuProvider id="${MenuId.EdgeItemSlot}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}">
               <MagicMenuTrigger>
-                <button data-test-id="trigger">Open</button>
+                <button data-test-id="${TestId.Trigger}">Open</button>
               </MagicMenuTrigger>
               <MagicMenuContent :teleport="{ disabled: true }">
-                <MagicMenuItem id="slot-item" v-slot="{ itemActive }">
-                  <div data-test-id="item-active">{{ itemActive }}</div>
+                <MagicMenuItem id="${ItemId.SlotItem}" v-slot="{ itemActive }">
+                  <div data-test-id="${TestId.ItemActive}">{{ itemActive }}</div>
                 </MagicMenuItem>
               </MagicMenuContent>
             </MagicMenuView>
@@ -315,20 +305,19 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('trigger').click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
       await expect
-        .element(page.getByTestId('item-active'))
+        .element(page.getByTestId(TestId.ItemActive))
         .toHaveTextContent('false')
 
-      // Hover item
-      const item = document.querySelector('[data-id="slot-item"]') as HTMLElement
+      const item = document.querySelector(`[data-id="${ItemId.SlotItem}"]`) as HTMLElement
       item.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
       await expect
-        .element(page.getByTestId('item-active'))
+        .element(page.getByTestId(TestId.ItemActive))
         .toHaveTextContent('true')
     })
   })
@@ -346,25 +335,25 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: 'edge-channel', viewId: 'v0' })
+          const api = useMagicMenu({ instanceId: MenuId.EdgeChannel, viewId: ViewId.V0 })
           return { api }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="api.selectView('v0')">Open</button>
-            <MagicMenuProvider id="edge-channel" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Open}" @click="api.selectView('${ViewId.V0}')">Open</button>
+            <MagicMenuProvider id="${MenuId.EdgeChannel}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger>
                   <button>Trigger</button>
                 </MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
                   <MagicMenuItem>
                     <MagicMenuRemote channel-id="ch-1">
-                      <div data-test-id="remote-1">Tab 1</div>
+                      <div data-test-id="${TestId.Remote1}">Tab 1</div>
                     </MagicMenuRemote>
                   </MagicMenuItem>
                   <MagicMenuChannel id="ch-1">
-                    <div data-test-id="channel-content">Channel 1 Content</div>
+                    <div data-test-id="${TestId.ChannelContent}">Channel 1 Content</div>
                   </MagicMenuChannel>
                 </MagicMenuContent>
               </MagicMenuView>
@@ -376,21 +365,17 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
-      // Channel not active yet
-      expect(
-        document.querySelector('[data-test-id="channel-content"]')
-      ).toBeNull()
+      expect(document.querySelector(`[data-test-id="${TestId.ChannelContent}"]`)).toBeNull()
 
-      // Activate channel via remote hover
       const remote = document.querySelector('.magic-menu-remote') as HTMLElement
       remote.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
       expect(
-        document.querySelector('[data-test-id="channel-content"]')
+        document.querySelector(`[data-test-id="${TestId.ChannelContent}"]`)
       ).not.toBeNull()
     })
 
@@ -406,14 +391,14 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: 'edge-remote-attr', viewId: 'v0' })
+          const api = useMagicMenu({ instanceId: MenuId.EdgeRemoteAttr, viewId: ViewId.V0 })
           return { api }
         },
         template: `
           <div>
-            <button data-test-id="open" @click="api.selectView('v0')">Open</button>
-            <MagicMenuProvider id="edge-remote-attr" :options="{ mode: 'dropdown' }">
-              <MagicMenuView id="v0">
+            <button data-test-id="${TestId.Open}" @click="api.selectView('${ViewId.V0}')">Open</button>
+            <MagicMenuProvider id="${MenuId.EdgeRemoteAttr}" :options="{ mode: 'dropdown' }">
+              <MagicMenuView id="${ViewId.V0}">
                 <MagicMenuTrigger><button>Trigger</button></MagicMenuTrigger>
                 <MagicMenuContent :teleport="{ disabled: true }">
                   <MagicMenuItem>
@@ -434,7 +419,7 @@ describe('MagicMenu - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      await screen.getByTestId('open').click()
+      await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
       const remote = document.querySelector('.magic-menu-remote')
