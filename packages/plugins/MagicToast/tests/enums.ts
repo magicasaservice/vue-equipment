@@ -1,8 +1,4 @@
-// ─── ToastId ──────────────────────────────────────────────────────────────────
-// Merged from all MagicToast test files
-
 export enum ToastId {
-  // api.test.ts
   ApiAdd = 'api-add',
   ApiReturnId = 'api-return-id',
   ApiCustomId = 'api-custom-id',
@@ -14,7 +10,6 @@ export enum ToastId {
   ApiCollapse = 'api-collapse',
   ApiToastsRef = 'api-toasts-ref',
   ApiCountZero = 'api-count-zero',
-  // edge-cases.test.ts
   EdgeDefaults = 'edge-defaults',
   EdgeRapidAdd = 'edge-rapid-add',
   EdgeAddClear = 'edge-add-clear',
@@ -25,12 +20,10 @@ export enum ToastId {
   EdgeDurationOverride = 'edge-duration-override',
   EdgeSelfRemove = 'edge-self-remove',
   EdgeToggleRapid = 'edge-toggle-rapid',
-  // events.test.ts
   EventEnter = 'event-enter',
   EventAfterEnter = 'event-after-enter',
   EventLeave = 'event-leave',
   EventOrder = 'event-order',
-  // interactions.test.ts
   IntDragState = 'int-drag-state',
   IntDragReset = 'int-drag-reset',
   IntDragBottom = 'int-drag-bottom',
@@ -44,7 +37,6 @@ export enum ToastId {
   IntEventDrag = 'int-event-drag',
   IntEventAfterDrag = 'int-event-after-drag',
   IntTimeoutPause = 'int-timeout-pause',
-  // options.test.ts
   OptMaxDefault = 'opt-max-default',
   OptMaxCustom = 'opt-max-custom',
   OptInitialExpanded = 'opt-initial-expanded',
@@ -54,7 +46,6 @@ export enum ToastId {
   OptDurationZero = 'opt-duration-zero',
   OptDurationAuto = 'opt-duration-auto',
   OptTeleport = 'opt-teleport',
-  // rendering.test.ts
   RenderDataId = 'render-data-id',
   RenderPosition = 'render-position',
   RenderDefaultPos = 'render-default-pos',
@@ -68,19 +59,14 @@ export enum ToastId {
   RenderTeleportDisabled = 'render-teleport-disabled',
 }
 
-// ─── TestId ───────────────────────────────────────────────────────────────────
-
 export enum TestId {
-  // shared across multiple files
   AddBtn = 'add-btn',
   Count = 'count',
-  // api.test.ts
   RemoveBtn = 'remove-btn',
   ClearBtn = 'clear-btn',
   ExpandBtn = 'expand-btn',
   CollapseBtn = 'collapse-btn',
   Ids = 'ids',
-  // edge-cases.test.ts
   RapidBtn = 'rapid-btn',
   Btn = 'btn',
   ToggleBtn = 'toggle-btn',
@@ -91,9 +77,7 @@ export enum TestId {
   AddShort = 'add-short',
   AddLong = 'add-long',
   CloseSelf = 'close-self',
-  // events.test.ts
   ClearEvents = 'clear-events',
   Events = 'events',
-  // rendering.test.ts
   ToastMsg = 'toast-msg',
 }

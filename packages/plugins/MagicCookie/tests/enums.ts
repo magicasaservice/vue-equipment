@@ -1,7 +1,4 @@
-// ─── Enums ────────────────────────────────────────────────────────────────────
-
 export enum CookieId {
-  // api.test.ts
   Show = 'api-show',
   Hide = 'api-hide',
   Toggle = 'api-toggle',
@@ -15,7 +12,6 @@ export enum CookieId {
   AcceptSelected = 'api-accept-selected',
   CookiesState = 'api-cookies-state',
   NotSet = 'api-not-set',
-  // edge-cases.test.ts
   AutoId = 'edge-auto-id',
   Required = 'edge-required',
   MultiItems = 'edge-multi-items',
@@ -23,14 +19,12 @@ export enum CookieId {
   Rapid = 'edge-rapid',
   Sequence = 'edge-sequence',
   NoOpts = 'edge-no-opts',
-  // events.test.ts
   Accept = 'event-accept',
   AcceptPayload = 'event-accept-payload',
   Reject = 'event-reject',
   RejectPayload = 'event-reject-payload',
   Selected = 'event-selected',
   SelectedPayload = 'event-selected-payload',
-  // options.test.ts
   MaxAgeDefault = 'opt-max-age-default',
   MaxAgeOverride = 'opt-max-age-override',
   TransitionCustom = 'opt-transition-custom',
@@ -39,7 +33,6 @@ export enum CookieId {
   OptionalDefault = 'opt-optional-default',
   RequiredDefault = 'opt-required-default',
   OptionalUnset = 'opt-optional-unset',
-  // rendering.test.ts
   ViewHidden = 'render-view-hidden',
   ViewVisible = 'render-view-visible',
   ScopedSlot = 'render-scoped-slot',
@@ -51,14 +44,12 @@ export enum CookieId {
 }
 
 export enum ItemId {
-  // api.test.ts
   Analytics = 'analytics',
   Necessary = 'necessary',
   MyCookie = 'my-cookie',
   UnsCookie = 'uns-cookie',
   TogCookie = 'tog-cookie',
   SelAnalytics = 'sel-analytics',
-  // edge-cases.test.ts
   RequiredCookie = 'required-cookie',
   CookieA = 'cookie-a',
   CookieB = 'cookie-b',
@@ -68,22 +59,18 @@ export enum ItemId {
   SeqOpt = 'seq-opt',
   SeqReq = 'seq-req',
   BasicCookie = 'basic-cookie',
-  // events.test.ts (prefixed to avoid collision with api Analytics/Necessary)
   EvtAnalytics = 'evt-analytics',
   EvtNecessary = 'evt-necessary',
-  // options.test.ts
   AgeCookie = 'age-cookie',
   CustomAge = 'custom-age',
   OptCookie = 'opt-cookie',
   ReqCookie = 'req-cookie',
   UnsetCookie = 'unset-cookie',
-  // rendering.test.ts
   ActiveCookie = 'active-cookie',
   SlotCookie = 'slot-cookie',
 }
 
 export enum TestId {
-  // api.test.ts
   ShowView = 'show-view',
   HideView = 'hide-view',
   ToggleView = 'toggle-view',
@@ -96,7 +83,6 @@ export enum TestId {
   Select = 'select',
   Unselect = 'unselect',
   Toggle = 'toggle',
-  // edge-cases.test.ts
   ItemId = 'item-id',
   Reject = 'reject',
   SelectA = 'select-a',
@@ -107,15 +93,12 @@ export enum TestId {
   OptActive = 'opt-active',
   ReqActive = 'req-active',
   View = 'view',
-  // events.test.ts
   SelectAnalytics = 'select-analytics',
   Events = 'events',
   Payload = 'payload',
-  // options.test.ts
   ItemData = 'item-data',
   Optional = 'optional',
   CustomContent = 'custom-content',
-  // rendering.test.ts
   SlotValue = 'slot-value',
   ItemActive = 'item-active',
   ItemOptional = 'item-optional',

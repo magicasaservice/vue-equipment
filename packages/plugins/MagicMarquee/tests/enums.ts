@@ -1,8 +1,4 @@
-// ─── MarqueeId ────────────────────────────────────────────────────────────────
-// Merged from all MagicMarquee test files
-
 export enum MarqueeId {
-  // api.test.ts
   ApiShape = 'api-shape',
   ApiDefaultPlay = 'api-default-play',
   ApiPause = 'api-pause',
@@ -17,26 +13,20 @@ export enum MarqueeId {
   ApiCssPlay = 'api-css-play',
   ApiCssReverse = 'api-css-reverse',
   ApiCssSpeed = 'api-css-speed',
-  // options.test.ts
   OptDirDefault = 'opt-dir-default',
   OptDirReverse = 'opt-dir-reverse',
   OptSpeedDefault = 'opt-speed-default',
   OptSpeedCustom = 'opt-speed-custom',
-  // rendering.test.ts
   RenderSlot = 'render-slot',
   RenderDup = 'render-dup',
   RenderAria = 'render-aria',
-  // state.test.ts
   StateShared = 'state-shared',
   StateMutate = 'state-mutate',
   StateInd1 = 'state-ind-1',
   StateInd2 = 'state-ind-2',
 }
 
-// ─── TestId ───────────────────────────────────────────────────────────────────
-
 export enum TestId {
-  // api.test.ts
   Play = 'play',
   Pause = 'pause',
   Reverse = 'reverse',
@@ -47,7 +37,6 @@ export enum TestId {
   IsPlaying = 'is-playing',
   Direction = 'direction',
   Speed = 'speed',
-  // state.test.ts
   Id = 'id',
   Playing = 'playing',
 }

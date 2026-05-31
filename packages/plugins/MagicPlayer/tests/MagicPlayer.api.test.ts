@@ -15,6 +15,8 @@ import { PlayerId, TestId } from './enums'
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
 
+const PLAYLIST_SRCS = [VIDEO_SRC, VIDEO_SRC, VIDEO_SRC]
+
 const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
@@ -382,5 +384,223 @@ describe('MagicPlayer - API', () => {
       const duration = parseFloat(durationEl.textContent || '0')
       expect(duration).toBeGreaterThan(0)
     }, 15000)
+  })
+
+  describe('playlist', () => {
+    function createPlaylistPlayer(
+      playerId: PlayerId,
+      overrides: Record<string, unknown> = {}
+    ) {
+      const opts = {
+        src: PLAYLIST_SRCS,
+        preload: 'none' as const,
+        playback: false as const,
+        ...overrides,
+      }
+      return defineComponent({
+        components: { MagicPlayerProvider, MagicPlayerVideo },
+        setup() {
+          const api = useMagicPlayer(playerId)
+          return { ...api, opts }
+        },
+        template: `
+          <div>
+            <span data-test-id="${TestId.PlaylistIndex}">{{ playlistIndex }}</span>
+            <span data-test-id="${TestId.PlaylistCount}">{{ playlistCount }}</span>
+            <span data-test-id="${TestId.Skipping}">{{ skipping }}</span>
+            <button data-test-id="${TestId.PlaylistNext}" @click="next()">Next</button>
+            <button data-test-id="${TestId.PlaylistPrev}" @click="prev()">Prev</button>
+            <button data-test-id="${TestId.PlaylistGoTo1}" @click="goTo(1)">GoTo 1</button>
+            <button data-test-id="${TestId.PlaylistGoTo2}" @click="goTo(2)">GoTo 2</button>
+            <MagicPlayerProvider id="${playerId}" :options="opts">
+              <MagicPlayerVideo />
+            </MagicPlayerProvider>
+          </div>
+        `,
+      })
+    }
+
+    it('exposes playlistIndex, playlistCount, next, prev, goTo', () => {
+      let api: ReturnType<typeof useMagicPlayer> | undefined
+      render(
+        defineComponent({
+          setup() {
+            api = useMagicPlayer(PlayerId.PlApiShape)
+            return {}
+          },
+          template: '<div />',
+        })
+      )
+
+      expect(api!.playlistIndex).toBeDefined()
+      expect(api!.playlistCount).toBeDefined()
+      expect(typeof api!.next).toBe('function')
+      expect(typeof api!.prev).toBe('function')
+      expect(typeof api!.goTo).toBe('function')
+    })
+
+    it('playlistIndex starts at 0 and playlistCount reflects array length', async () => {
+      render(createPlaylistPlayer(PlayerId.PlInit))
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('0')
+      await expect
+        .element(page.getByTestId(TestId.PlaylistCount))
+        .toHaveTextContent('3')
+    })
+
+    it('single string src gives playlistCount of 1', async () => {
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
+      render(
+        defineComponent({
+          components: { MagicPlayerProvider, MagicPlayerVideo },
+          setup() {
+            const api = useMagicPlayer(PlayerId.PlSingleSrc)
+            return { ...api, opts }
+          },
+          template: `
+            <div>
+              <span data-test-id="${TestId.PlaylistIndex}">{{ playlistIndex }}</span>
+              <span data-test-id="${TestId.PlaylistCount}">{{ playlistCount }}</span>
+              <MagicPlayerProvider id="${PlayerId.PlSingleSrc}" :options="opts">
+                <MagicPlayerVideo />
+              </MagicPlayerProvider>
+            </div>
+          `,
+        })
+      )
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistCount))
+        .toHaveTextContent('1')
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('0')
+    })
+
+    it('next() increments playlistIndex', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlNext))
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('1')
+    })
+
+    it('next() does not advance past the last track without loop', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlBoundaryNext))
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('2')
+    })
+
+    it('next() wraps to 0 at the last track when loop is true', async () => {
+      const screen = render(
+        createPlaylistPlayer(PlayerId.PlLoopNext, { loop: true })
+      )
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('0')
+    })
+
+    it('prev() decrements playlistIndex', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlPrev))
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+      await screen.getByTestId(TestId.PlaylistPrev).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('1')
+    })
+
+    it('prev() does not go below 0 without loop', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlBoundaryPrev))
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistPrev).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('0')
+    })
+
+    it('prev() wraps to last track at index 0 when loop is true', async () => {
+      const screen = render(
+        createPlaylistPlayer(PlayerId.PlLoopPrev, { loop: true })
+      )
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistPrev).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('2')
+    })
+
+    it('goTo() jumps to the given index', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlGoTo))
+      await nextTick()
+
+      await screen.getByTestId(TestId.PlaylistGoTo2).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.PlaylistIndex))
+        .toHaveTextContent('2')
+    })
+
+    it('skipping is true during navigation and clears after load', async () => {
+      const screen = render(createPlaylistPlayer(PlayerId.PlSkipping))
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Skipping))
+        .toHaveTextContent('false')
+
+      await screen.getByTestId(TestId.PlaylistNext).click()
+      await nextTick()
+
+      // With preload=none the media never fires loadeddata,
+      // so skipping stays true until the track is actually loaded.
+      await expect
+        .element(page.getByTestId(TestId.Skipping))
+        .toHaveTextContent('true')
+    })
   })
 })

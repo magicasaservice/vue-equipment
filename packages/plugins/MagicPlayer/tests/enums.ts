@@ -1,8 +1,4 @@
-// ─── PlayerId ─────────────────────────────────────────────────────────────────
-// Merged from all MagicPlayer test files
-
 export enum PlayerId {
-  // api.test.ts
   ApiShape = 'api-shape',
   ApiObjects = 'api-objects',
   ApiVidM = 'api-vid-m',
@@ -21,7 +17,6 @@ export enum PlayerId {
   ApiCtDefault = 'api-ct-default',
   ApiDurDefault = 'api-dur-default',
   ApiMediaLoad = 'api-media-load',
-  // edge-cases.test.ts
   EdgeMulti1 = 'edge-multi-1',
   EdgeMulti2 = 'edge-multi-2',
   EdgeRapid = 'edge-rapid',
@@ -33,14 +28,12 @@ export enum PlayerId {
   EdgeDataMute = 'edge-data-mute',
   EdgeDataPlay = 'edge-data-play',
   EdgeVideoSrc = 'edge-video-src',
-  // events.test.ts
   EvtPlay = 'evt-play',
   EvtPause = 'evt-pause',
   EvtStart = 'evt-start',
   EvtMute = 'evt-mute',
   EvtUnmute = 'evt-unmute',
   EvtTouch = 'evt-touch',
-  // interactions.test.ts
   IntPlayBtn = 'int-play-btn',
   IntToggleBtn = 'int-toggle-btn',
   IntMuteBtn = 'int-mute-btn',
@@ -51,7 +44,6 @@ export enum PlayerId {
   IntTimelineDragend = 'int-timeline-dragend',
   IntVideoEl = 'int-video-el',
   IntMediaStart = 'int-media-start',
-  // options.test.ts
   OptModeDefault = 'opt-mode-default',
   OptAudioMode = 'opt-audio-mode',
   OptPosterVisible = 'opt-poster-visible',
@@ -62,7 +54,17 @@ export enum PlayerId {
   OptHasOverlay = 'opt-has-overlay',
   OptPlaybackFalse = 'opt-playback-false',
   OptPreloadAuto = 'opt-preload-auto',
-  // rendering.test.ts
+  PlApiShape = 'pl-api-shape',
+  PlSingleSrc = 'pl-single-src',
+  PlInit = 'pl-init',
+  PlNext = 'pl-next',
+  PlPrev = 'pl-prev',
+  PlGoTo = 'pl-goto',
+  PlBoundaryNext = 'pl-boundary-next',
+  PlBoundaryPrev = 'pl-boundary-prev',
+  PlLoopNext = 'pl-loop-next',
+  PlLoopPrev = 'pl-loop-prev',
+  PlSkipping = 'pl-skipping',
   RenderProvider = 'render-provider',
   RenderDataId = 'render-data-id',
   RenderModeVideo = 'render-mode-video',
@@ -89,10 +91,7 @@ export enum PlayerId {
   RenderTl = 'render-tl',
 }
 
-// ─── TestId ───────────────────────────────────────────────────────────────────
-
 export enum TestId {
-  // api.test.ts
   Play = 'play',
   Pause = 'pause',
   Toggle = 'toggle',
@@ -108,23 +107,25 @@ export enum TestId {
   Volume = 'volume',
   Duration = 'duration',
   CurrentTime = 'current-time',
-  // edge-cases.test.ts
   Play1 = 'play-1',
   Play2 = 'play-2',
   Playing1 = 'playing-1',
   Playing2 = 'playing-2',
   Child = 'child',
-  // events.test.ts
   Events = 'events',
-  // interactions.test.ts
   Touched = 'touched',
   Dragging = 'dragging',
   PlayBtn = 'play-btn',
   PauseBtn = 'pause-btn',
   ToggleBtn = 'toggle-btn',
   MuteBtn = 'mute-btn',
-  // options.test.ts
+  PlaylistIndex = 'playlist-index',
+  PlaylistCount = 'playlist-count',
+  PlaylistNext = 'playlist-next',
+  PlaylistPrev = 'playlist-prev',
+  PlaylistGoTo1 = 'playlist-goto-1',
+  PlaylistGoTo2 = 'playlist-goto-2',
+  Skipping = 'skipping',
   Poster = 'poster',
-  // rendering.test.ts
   PosterContent = 'poster-content',
 }
