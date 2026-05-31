@@ -202,10 +202,10 @@ To customize the player override the necessary options. Any custom options will 
       items: [
         { 
           label: 'src',
-          description: 'Can be a video file, a streaming link (.m3u8 or an audio file.'
+          description: 'A single media URL (video, audio, or streaming link) or an array of URLs to create a playlist. When an array is provided the player advances to the next item automatically when the current one ends.'
         },
         { 
-          label: 'string'
+          label: 'string | string[]'
         },
         { 
           label: '–' 
@@ -288,7 +288,7 @@ To customize the player override the necessary options. Any custom options will 
       items: [
         { 
           label: 'loop',
-          description: 'Ignored for players with type `audio`.'
+          description: 'For single-source players, loops the media element. For playlists, loops back to the first item after the last one ends. Also controls whether `next()` and `prev()` wrap around.'
         },
         { 
           label: 'boolean'
@@ -608,6 +608,83 @@ This component is used internally by both the video and audio controls component
   ]"
 />
 
+### Playlist
+
+Pass an array of URLs to `options.src` to enable playlist mode. The player advances automatically when each track ends. Use the `useMagicPlayer` composable to navigate between tracks manually.
+
+```vue
+<template>
+  <magic-player-provider
+    id="my-player"
+    :options="{
+      src: [
+        'https://example.com/track-1.mp4',
+        'https://example.com/track-2.mp4',
+        'https://example.com/track-3.mp4',
+      ],
+    }"
+  >
+    <magic-player-video />
+    <magic-player-overlay />
+    <magic-player-video-controls />
+  </magic-player-provider>
+</template>
+
+<script lang="ts" setup>
+import { useMagicPlayer } from '@maas/vue-equipment/plugins/MagicPlayer'
+
+const { playlistIndex, playlistCount, next, prev, goTo } =
+  useMagicPlayer('my-player')
+</script>
+```
+
+#### Playlist API
+
+<ProseTable
+  :columns="[
+    { label: 'Name' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'playlistIndex' },
+        { label: 'Ref\<number\>', escape: true },
+        { label: 'Zero-based index of the currently active track.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'playlistCount' },
+        { label: 'Ref\<number\>', escape: true },
+        { label: 'Total number of tracks in the playlist.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'next()' },
+        { label: '() => void' },
+        { label: 'Advance to the next track. Wraps to the first track when `loop` is true.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'prev()' },
+        { label: '() => void' },
+        { label: 'Go back to the previous track. Wraps to the last track when `loop` is true.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'goTo(index)' },
+        { label: '(index: number) => void' },
+        { label: 'Jump to a specific track by its zero-based index.' }
+      ]
+    }
+  ]"
+/>
+
 ## Errors
 
 <ProseTable
@@ -831,6 +908,10 @@ This component is used internally by both the video and audio controls component
 ### Poster Image
 
 <component-preview src="./demo/ImagePosterDemo.vue" />
+
+### Playlist
+
+<component-preview src="./demo/PlaylistDemo.vue" />
 
 ### Composable
 

@@ -46,6 +46,10 @@ export function usePlayerState(id: MaybeRef<string>) {
       controlsBarRect: undefined,
       controlsTrackRect: undefined,
       controlsPopoverRect: undefined,
+      playlistIndex: 0,
+      playlistCount: 0,
+      loop: false,
+      skipping: false,
     }
 
     return reactive(state)

@@ -3,6 +3,7 @@ import {
   shallowRef,
   toRefs,
   toValue,
+  watch,
   type MaybeRef,
   type Ref,
 } from 'vue'
@@ -17,7 +18,7 @@ export type UsePlayerRuntimeArgs = {
   id: MaybeRef<string>
   mediaRef?: Ref<HTMLVideoElement | HTMLAudioElement | null>
   srcType?: MagicPlayerOptions['srcType']
-  src?: string
+  src?: MaybeRef<string>
   debug?: boolean
 }
 
@@ -39,6 +40,9 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   let cancelLoaded: (() => void) | undefined = undefined
   let cancelPlay: (() => void) | undefined = undefined
   let cancelPause: (() => void) | undefined = undefined
+  let cancelResumeOnLoad: (() => void) | undefined = undefined
+
+  let initialized = false
 
   // Private functions
   function handleHlsRuntimeError(args: {
@@ -103,13 +107,14 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     }
 
     const el = toValue(mediaRef)
+    const currentSrc = toValue(src)
 
-    if (!el || !src) {
+    if (!el || !currentSrc) {
       return
     }
 
     try {
-      el.src = src
+      el.src = currentSrc
 
       cancelLoaded?.()
       cancelLoaded = useEventListener(
@@ -136,6 +141,12 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
       return
     }
 
+    const currentSrc = toValue(src)
+
+    if (!currentSrc) {
+      return
+    }
+
     // If autoplay is true, hls.startLoad() needs to be deferred until hls is ready
     deferredLoading.value = autoplay
 
@@ -145,10 +156,6 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
 
       if (!Hls.isSupported()) {
         useNative()
-        return
-      }
-
-      if (!src) {
         return
       }
 
@@ -184,7 +191,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
         hls?.startLoad()
       })
 
-      hls.loadSource(src)
+      hls.loadSource(currentSrc)
       hls.attachMedia(el)
     } catch (error) {
       throwError({
@@ -199,6 +206,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     cancelLoaded?.()
     cancelPlay?.()
     cancelPause?.()
+    cancelResumeOnLoad?.()
 
     try {
       hls?.destroy()
@@ -208,8 +216,55 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     }
   }
 
+  function resetState() {
+    state.playing = false
+    state.loaded = false
+    state.started = false
+    state.ended = false
+    state.currentTime = 0
+    state.duration = 0
+    state.buffered = []
+    state.waiting = false
+    state.stalled = false
+  }
+
+  // Watch playlist index so re-init fires even when consecutive tracks share the same URL
+  watch(
+    () => state.playlistIndex,
+    (newIndex, oldIndex) => {
+      if (!initialized || newIndex === oldIndex || state.playlistCount <= 1)
+        return
+
+      const wasPlaying = state.playing
+
+      state.skipping = true
+      resetState()
+      destroy()
+
+      cancelResumeOnLoad = watch(loaded, (value) => {
+        if (value) {
+          state.skipping = false
+
+          if (wasPlaying) {
+            state.playing = true
+          }
+
+          cancelResumeOnLoad?.()
+          cancelResumeOnLoad = undefined
+        }
+      })
+
+      if (srcType === 'native') {
+        useNative()
+      } else if (srcType === 'hls') {
+        useHlsJS(wasPlaying)
+      }
+    }
+  )
+
   // Public functions
   function initialize(autoplay = false) {
+    initialized = true
     if (srcType === 'native') {
       useNative()
     } else if (srcType === 'hls') {
