@@ -1,5 +1,5 @@
 <template>
-  <div ref="el" class="aspect-[16/9] w-full">
+  <div ref="el" class="aspect-16/9 w-full">
     <magic-player-provider
       id="magic-player-emitter-demo"
       :options="{
