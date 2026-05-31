@@ -4,12 +4,14 @@ import { usePlayerAudioApi } from './private/usePlayerAudioApi'
 import { usePlayerRuntime } from './private/usePlayerRuntime'
 import { usePlayerControlsApi } from './private/usePlayerControlsApi'
 import { usePlayerState } from './private/usePlayerState'
+import { usePlayerPlaylistApi } from './private/usePlayerPlaylistApi'
 
 export function useMagicPlayer(id: MaybeRef<string>) {
   const audioApi = usePlayerAudioApi({ id })
   const videoApi = usePlayerVideoApi({ id })
   const controlsApi = usePlayerControlsApi({ id })
   const playerRuntime = usePlayerRuntime({ id })
+  const { next, prev, goTo } = usePlayerPlaylistApi({ id })
 
   const { initializeState } = usePlayerState(id)
   const state = initializeState()
@@ -36,6 +38,8 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     scrubbedPercentage,
     thumbPercentage,
     popoverOffsetX,
+    playlistIndex,
+    playlistCount,
   } = toRefs(state)
 
   return {
@@ -61,6 +65,11 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     scrubbedPercentage,
     thumbPercentage,
     popoverOffsetX,
+    playlistIndex,
+    playlistCount,
+    next,
+    prev,
+    goTo,
     audioApi,
     videoApi,
     controlsApi,

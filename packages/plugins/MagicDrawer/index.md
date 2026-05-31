@@ -585,6 +585,36 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
     {
       items: [
         {
+          label: '--magic-drawer-position'
+        },
+        {
+          label: 'fixed'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-inset'
+        },
+        {
+          label: '0'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-display'
+        },
+        {
+          label: 'flex'
+        },
+      ]
+    },
+    {
+      items: [
+        {
           label: '--magic-drawer-height'
         },
         {
@@ -619,6 +649,26 @@ In order to provide its basic functionality the drawer comes with some CSS. To e
         },
         {
           label: 'none'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-content-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-drawer-content-max-height'
+        },
+        {
+          label: '100%'
         },
       ]
     },

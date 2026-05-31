@@ -21,15 +21,25 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, provide, onMounted, useTemplateRef, type MaybeRef } from 'vue'
+import {
+  toRefs,
+  provide,
+  onMounted,
+  useTemplateRef,
+  computed,
+  watch,
+  type MaybeRef,
+} from 'vue'
 import defu from 'defu'
 
 import { usePlayerState } from '../composables/private/usePlayerState'
+import { usePlayerPlaylistApi } from '../composables/private/usePlayerPlaylistApi'
 
 import {
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
+  MagicPlayerCurrentSrcKey,
 } from '../symbols'
 import { defaultOptions } from '../utils/defaultOptions'
 
@@ -58,6 +68,26 @@ const {
   touched,
 } = toRefs(state)
 
+// Normalize src into an array and set playlist state
+const rawSrc = options?.src ?? ''
+const srcs = Array.isArray(rawSrc) ? rawSrc : [rawSrc]
+state.playlistCount = srcs.length
+state.loop = mappedOptions.loop
+
+const currentSrc = computed(() => srcs[state.playlistIndex] ?? '')
+
+const { next } = usePlayerPlaylistApi({ id })
+
+// Auto-advance to next track when the current track ends
+watch(
+  () => state.ended,
+  (value) => {
+    if (value && state.playlistCount > 1) {
+      next()
+    }
+  }
+)
+
 const { onMouseenter, onMouseleave, onPointerdown } = usePlayerProvider(id)
 
 // Lifecycle hooks
@@ -71,6 +101,7 @@ onMounted(() => {
 provide(MagicPlayerInstanceId, id)
 provide(MagicPlayerOptionsKey, mappedOptions)
 provide(MagicPlayerRef, playerRef)
+provide(MagicPlayerCurrentSrcKey, currentSrc)
 </script>
 
 <style>

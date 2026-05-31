@@ -1,7 +1,7 @@
 <template>
   <magic-scroll-provider
     :target="parentRef"
-    class="bg-surface-base aspect-[16/9] w-full"
+    class="bg-surface-base aspect-16/9 w-full"
   >
     <div ref="parent" class="relative h-full w-full overflow-auto">
       <magic-scroll-scene
@@ -18,7 +18,7 @@
         </div>
         <magic-scroll-motion
           :sequence="sequence"
-          class="sticky top-0 flex aspect-[16/9] w-full items-center justify-center"
+          class="sticky top-0 flex aspect-16/9 w-full items-center justify-center"
         >
           <div class="bg-surface-high h-20 w-20" />
         </magic-scroll-motion>

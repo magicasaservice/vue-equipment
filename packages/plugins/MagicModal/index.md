@@ -364,10 +364,110 @@ In order to provide its basic functionality the modal comes with some CSS. To en
     {
       items: [
         {
+          label: '--magic-modal-position'
+        },
+        {
+          label: 'fixed'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-inset'
+        },
+        {
+          label: '0'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-height'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-display'
+        },
+        {
+          label: 'flex'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-justify-content'
+        },
+        {
+          label: 'center'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-align-items'
+        },
+        {
+          label: 'center'
+        },
+      ]
+    },
+    {
+      items: [
+        {
           label: '--magic-modal-z-index'
         },
         {
           label: '999'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-content-max-height'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-content-width'
+        },
+        {
+          label: '100%'
+        },
+      ]
+    },
+    {
+      items: [
+        {
+          label: '--magic-modal-content-display'
+        },
+        {
+          label: 'flex'
         },
       ]
     },

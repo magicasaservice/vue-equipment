@@ -1,7 +1,7 @@
 type PlayerMode = 'audio' | 'video'
 
 export interface MagicPlayerOptions {
-  src: string
+  src: string | string[]
   mode?: PlayerMode
   srcType?: 'native' | 'hls'
   preload?: 'auto' | 'metadata' | 'none'
@@ -20,7 +20,7 @@ export interface MagicPlayerOptions {
 }
 
 export interface RequiredMagicPlayerOptions {
-  src: string
+  src: string | string[]
   mode: 'audio' | 'video'
   srcType: 'native' | 'hls'
   preload: 'auto' | 'metadata' | 'none'
@@ -72,6 +72,10 @@ export interface PlayerState {
   controlsBarRect: DOMRect | undefined
   controlsTrackRect: DOMRect | undefined
   controlsPopoverRect: DOMRect | undefined
+  playlistIndex: number
+  playlistCount: number
+  loop: boolean
+  skipping: boolean
 }
 
 export interface PlayerEvents {

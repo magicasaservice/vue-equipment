@@ -33,6 +33,7 @@ import {
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
+  MagicPlayerCurrentSrcKey,
 } from '../symbols'
 
 const magicError: UseMagicErrorReturn = useMagicError({
@@ -43,6 +44,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 const injectedPlayerRef = inject(MagicPlayerRef, undefined)
+const injectedCurrentSrc = inject(MagicPlayerCurrentSrcKey, undefined)
 
 let cancelFocus: (() => void) | undefined = undefined
 let cancelBlur: (() => void) | undefined = undefined
@@ -62,7 +64,7 @@ const elRef = useTemplateRef('el')
 const { initialize } = usePlayerRuntime({
   id: injectedInstanceId,
   mediaRef: elRef,
-  src: injectedOptions.src,
+  src: injectedCurrentSrc,
   srcType: injectedOptions.srcType,
   debug: injectedOptions.debug,
 })

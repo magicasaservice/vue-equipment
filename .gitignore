@@ -44,3 +44,8 @@ packages/metadata/index.json
 # tokens
 .maas/tokens
 .maas/tailwind.preset.js
+
+# ai
+.claude
+.agents
+skills-lock.json

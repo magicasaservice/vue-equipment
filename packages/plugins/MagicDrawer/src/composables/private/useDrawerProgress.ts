@@ -37,6 +37,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   const maxX = computed(
     () => drawerRect.width.value - elRect.width.value + toValue(overshoot)
   )
+
   const maxY = computed(
     () => drawerRect.height.value - elRect.height.value + toValue(overshoot)
   )
@@ -84,7 +85,7 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         rawY = mapValue(
           elRect.top.value * -1,
           drawerRect.height.value,
-          maxX.value,
+          maxY.value,
           0,
           1
         )
@@ -108,6 +109,10 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         )
         break
     }
+
+    // Normalize -0 for rawX and rawY to 0
+    rawX = rawX === -0 ? 0 : rawX
+    rawY = rawY === -0 ? 0 : rawY
 
     // Clamp the values between 0 and 1
     const x = clampValue(rawX, 0, 1)

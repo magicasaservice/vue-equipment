@@ -1,6 +1,6 @@
 <template>
   <div class="flex w-full flex-col items-center gap-4">
-    <div class="aspect-[16/9] w-full">
+    <div class="aspect-16/9 w-full">
       <magic-player-provider
         id="magic-player-composable-demo"
         :options="{
