@@ -35,9 +35,9 @@
         @after-leave="onAfterLeave"
       >
         <component
-          ref="component"
           :is="mappedOptions.tag"
           v-show="innerActive"
+          ref="component"
           class="magic-modal__content"
           @pointerdown.self="onPointerdown"
         >
@@ -213,13 +213,13 @@ onUnmounted(() => {
 }
 
 .magic-modal {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: var(--magic-modal-position, fixed);
+  inset: var(--magic-modal-inset, 0);
+  width: var(--magic-modal-width, 100%);
+  height: var(--magic-modal-height, 100%);
+  display: var(--magic-modal-display, flex);
+  justify-content: var(--magic-modal-justify-content, center);
+  align-items: var(--magic-modal-align-items, center);
   z-index: var(--magic-modal-z-index, 999);
   background: transparent;
   color: inherit;
@@ -230,9 +230,9 @@ onUnmounted(() => {
 .magic-modal__content {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  max-height: 100%;
-  width: 100%;
-  display: flex;
+  max-height: var(--magic-modal-content-max-height, 100%);
+  width: var(--magic-modal-content-width, 100%);
+  display: var(--magic-modal-content-display, flex);
   align-items: var(--magic-modal-content-align-items, center);
   justify-content: var(--magic-modal-content-justify-content, center);
   overflow-y: var(--magic-modal-content-overflow-y, auto);
