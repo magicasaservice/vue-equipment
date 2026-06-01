@@ -24,6 +24,10 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
 
   // Private functions
   function canScrollY(element: HTMLElement): boolean {
+    if (!(element instanceof Element)) {
+      return false
+    }
+
     const style = window.getComputedStyle(element)
     const overflowY = style.overflowY
 
@@ -35,6 +39,9 @@ export function useDrawerGuards(args: UseDrawerGuardsArgs) {
   }
 
   function canScrollX(element: HTMLElement): boolean {
+    if (!(element instanceof Element)) {
+      return false
+    }
     const style = window.getComputedStyle(element)
     const overflowX = style.overflowX
 
