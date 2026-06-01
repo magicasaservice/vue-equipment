@@ -137,6 +137,7 @@
     "build": "turbo run build --filter=!playground",
     "build:types": "turbo run build:types",
     "build:docs": "pnpm exec playwright install chromium --with-deps && turbo run build --filter=docs",
+    "tokens": "pnpm dlx @maas/mirror@beta tokens --skip true && pnpm dlx @maas/mirror@beta tailwind --skip true",
     "preview:docs": "turbo run preview --filter=docs",
     "update:metadata": "turbo run update --filter=metadata",
     "test": "turbo run test",

@@ -27,9 +27,12 @@
     "build:types": {
       "outputs": ["$TURBO_ROOT$/types/**"]
     },
+    "//#tokens": {
+      "cache": false
+    },
     "docs#build": {
       "cache": false,
-      "dependsOn": ["update", "^build:types", "^build"]
+      "dependsOn": ["//#tokens", "update", "^build:types", "^build"]
     },
     "plugins#build": {
       "outputs": ["$TURBO_ROOT$/dist/plugins/**"],
