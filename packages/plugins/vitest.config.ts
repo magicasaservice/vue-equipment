@@ -42,7 +42,7 @@ export default defineConfig({
     include: ['*/tests/**/*.test.ts'],
     globals: true,
     onConsoleLog(log) {
-      if (log.includes('decodeEntities')) return false
+      if (log.includes('decodeEntities')) {return false}
     },
   },
 })

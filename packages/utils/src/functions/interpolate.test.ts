@@ -27,7 +27,12 @@ afterEach(() => {
 
 describe('interpolate', () => {
   it('returns a requestAnimationFrame ID', () => {
-    const id = interpolate({ from: 0, to: 100, duration: 1000, callback: () => {} })
+    const id = interpolate({
+      from: 0,
+      to: 100,
+      duration: 1000,
+      callback: () => {},
+    })
     expect(typeof id).toBe('number')
     expect(id).toBeGreaterThan(0)
   })
@@ -49,7 +54,13 @@ describe('interpolate', () => {
 
   it('calls callback with an intermediate value mid-animation', () => {
     const callback = vi.fn()
-    interpolate({ from: 0, to: 100, duration: 1000, callback, easing: (t) => t })
+    interpolate({
+      from: 0,
+      to: 100,
+      duration: 1000,
+      callback,
+      easing: (t) => t,
+    })
     tick(16)
     tick(516)
     expect(callback).toHaveBeenCalledWith(50)
@@ -65,7 +76,13 @@ describe('interpolate', () => {
 
   it('calls interpolationIdCallback with the next frame ID', () => {
     const interpolationIdCallback = vi.fn()
-    interpolate({ from: 0, to: 100, duration: 1000, callback: () => {}, interpolationIdCallback })
+    interpolate({
+      from: 0,
+      to: 100,
+      duration: 1000,
+      callback: () => {},
+      interpolationIdCallback,
+    })
     tick(0)
     expect(interpolationIdCallback).toHaveBeenCalledWith(expect.any(Number))
   })

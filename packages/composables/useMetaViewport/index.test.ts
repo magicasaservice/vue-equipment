@@ -17,16 +17,22 @@ describe('useMetaViewport', () => {
     it('updates viewport content to the default value', () => {
       const { setMetaViewport } = useMetaViewport()
       setMetaViewport()
-      const meta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+      const meta = document.querySelector(
+        'meta[name="viewport"]'
+      ) as HTMLMetaElement
       expect(meta.content).toBe(
         'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
       )
     })
 
     it('updates viewport content to a custom value', () => {
-      const { setMetaViewport } = useMetaViewport({ content: 'width=device-width' })
+      const { setMetaViewport } = useMetaViewport({
+        content: 'width=device-width',
+      })
       setMetaViewport()
-      const meta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+      const meta = document.querySelector(
+        'meta[name="viewport"]'
+      ) as HTMLMetaElement
       expect(meta.content).toBe('width=device-width')
     })
   })
@@ -36,14 +42,18 @@ describe('useMetaViewport', () => {
       const { setMetaViewport, resetMetaViewport } = useMetaViewport()
       setMetaViewport()
       resetMetaViewport()
-      const meta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+      const meta = document.querySelector(
+        'meta[name="viewport"]'
+      ) as HTMLMetaElement
       expect(meta.content).toBe('width=device-width, initial-scale=1.0')
     })
 
     it('does nothing if setMetaViewport was never called', () => {
       const { resetMetaViewport } = useMetaViewport()
       resetMetaViewport()
-      const meta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+      const meta = document.querySelector(
+        'meta[name="viewport"]'
+      ) as HTMLMetaElement
       expect(meta.content).toBe('width=device-width, initial-scale=1.0')
     })
   })

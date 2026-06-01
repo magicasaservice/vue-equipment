@@ -280,7 +280,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     switch (position) {
       case 'bottom': {
         const newDraggedB = clamp(y - originY.value, 0, os * -1, false)
-        if (newDraggedB === draggedY.value) break
+        if (newDraggedB === draggedY.value) {break}
 
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
@@ -289,7 +289,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'top': {
         const newDraggedT = clamp(y - originY.value, 0, os, true)
-        if (newDraggedT === draggedY.value) break
+        if (newDraggedT === draggedY.value) {break}
 
         relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
@@ -298,7 +298,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'right': {
         const newDraggedR = clamp(x - originX.value, 0, os * -1, false)
-        if (newDraggedR === draggedX.value) break
+        if (newDraggedR === draggedX.value) {break}
 
         relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
@@ -307,7 +307,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'left': {
         const newDraggedL = clamp(x - originX.value, 0, os, true)
-        if (newDraggedL === draggedX.value) break
+        if (newDraggedL === draggedX.value) {break}
 
         relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL

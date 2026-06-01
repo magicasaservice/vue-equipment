@@ -233,7 +233,7 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
     () => state.playlistIndex,
     (newIndex, oldIndex) => {
       if (!initialized || newIndex === oldIndex || state.playlistCount <= 1)
-        return
+        {return}
 
       const wasPlaying = state.playing
 

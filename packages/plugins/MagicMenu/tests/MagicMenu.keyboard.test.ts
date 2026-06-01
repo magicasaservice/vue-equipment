@@ -160,7 +160,7 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
       let defaultPrevented = false
       const handler = (e: KeyboardEvent) => {
-        if (e.key === 'Tab') defaultPrevented = e.defaultPrevented
+        if (e.key === 'Tab') {defaultPrevented = e.defaultPrevented}
       }
       window.addEventListener('keydown', handler)
 

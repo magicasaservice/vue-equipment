@@ -21,7 +21,9 @@ export function interpolate(args: InterpolateArgs) {
   let interpolationId: number
 
   function animate(timestamp: number) {
-    if (!startTime) startTime = timestamp
+    if (!startTime) {
+      startTime = timestamp
+    }
 
     const progress = Math.min(1, (timestamp - startTime) / duration)
     const easedProgress = easing(progress)

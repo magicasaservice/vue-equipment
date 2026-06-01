@@ -4,6 +4,7 @@ import { defineComponent, nextTick, ref } from 'vue'
 import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollCollision from '../src/components/MagicScrollCollision.vue'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
+import type { ScrollEvents } from '../src/types/index'
 import { mountWithApp } from '../../tests/utils'
 import { TestId } from './enums'
 
@@ -135,7 +136,7 @@ describe('MagicScroll - Collision', () => {
     })
 
     it('collision fires with down direction on downward scroll', async () => {
-      const events: any[] = []
+      const events: ScrollEvents['collision'][] = []
 
       const { unmount } = mountWithApp(
         defineComponent({
@@ -143,7 +144,7 @@ describe('MagicScroll - Collision', () => {
           setup() {
             const scrollTarget = ref<HTMLElement | null>(null)
             const emitter = useMagicEmitter()
-            emitter.on('collision', (e: any) => events.push(e))
+            emitter.on('collision', (e) => events.push(e))
             return { scrollTarget }
           },
           template: `

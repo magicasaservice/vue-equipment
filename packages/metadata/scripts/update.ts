@@ -39,7 +39,9 @@ export async function readMetadata() {
   }
 
   for (const info of packages) {
-    if (info.utils) continue
+    if (info.utils) {
+      continue
+    }
 
     const dir = join(DIR_SRC, info.name)
 
@@ -86,19 +88,21 @@ export async function readMetadata() {
         const { content: md, data: frontmatter } = matter(mdRaw)
 
         let alias = frontmatter.alias
-        if (typeof alias === 'string')
+        if (typeof alias === 'string') {
           alias = alias
             .split(',')
             .map((s) => s.trim())
             .filter(Boolean)
+        }
         let related = frontmatter.related
-        if (typeof related === 'string')
+        if (typeof related === 'string') {
           related = related
             .split(',')
             .map((s) => s.trim())
             .filter(Boolean)
-        else if (Array.isArray(related))
+        } else if (Array.isArray(related)) {
           related = related.map((s) => s.trim()).filter(Boolean)
+        }
 
         let description =
           (md
@@ -109,14 +113,21 @@ export async function readMetadata() {
 
         fn.description = description
 
-        if (description.includes('DEPRECATED') || frontmatter.deprecated)
+        if (description.includes('DEPRECATED') || frontmatter.deprecated) {
           fn.deprecated = true
+        }
 
-        if (alias?.length) fn.alias = alias
+        if (alias?.length) {
+          fn.alias = alias
+        }
 
-        if (related?.length) fn.related = related
+        if (related?.length) {
+          fn.related = related
+        }
 
-        if (pkg.submodules) fn.importPath = `${pkg.name}/${fn.name}`
+        if (pkg.submodules) {
+          fn.importPath = `${pkg.name}/${fn.name}`
+        }
 
         indexes.functions.push(fn)
       })
@@ -133,9 +144,15 @@ export async function readMetadata() {
 
     fn.related.forEach((name: string) => {
       const target = indexes.functions.find((f) => f.name === name)
-      if (!target) throw new Error(`Unknown related function: ${name}`)
-      if (!target.related) target.related = []
-      if (!target.related.includes(fn.name)) target.related.push(fn.name)
+      if (!target) {
+        throw new Error(`Unknown related function: ${name}`)
+      }
+      if (!target.related) {
+        target.related = []
+      }
+      if (!target.related.includes(fn.name)) {
+        target.related.push(fn.name)
+      }
     })
   })
   indexes.functions.forEach((fn) => fn.related?.sort())

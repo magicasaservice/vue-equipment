@@ -33,7 +33,7 @@ const injectComponentImportScript = (
       scriptSetupRegEx.test(script.tagOpen) ||
       scriptLangTsRegEx.test(script.tagOpen)
     )
-      return true
+      {return true}
     return false
   })
 

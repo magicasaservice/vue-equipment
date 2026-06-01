@@ -97,7 +97,7 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
     for (let i = 0; i < timeRanges.length; ++i)
-      ranges = [...ranges, [timeRanges.start(i), timeRanges.end(i)]]
+      {ranges = [...ranges, [timeRanges.start(i), timeRanges.end(i)]]}
     return ranges
   }
 

@@ -95,7 +95,7 @@ export function useCommandView(id: MaybeRef<string>) {
     let view = viewMap.get(id)
     if (!view) {
       view = state.views.find((v) => v.id === id)
-      if (view) viewMap.set(id, view)
+      if (view) {viewMap.set(id, view)}
     }
     return view
   }

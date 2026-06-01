@@ -29,8 +29,12 @@ export function slugify(string: string, options?: SlugifyOptions): string {
     .split('')
     .reduce(function (result, ch) {
       let appendChar = charMap[ch]
-      if (appendChar === undefined) appendChar = ch
-      if (appendChar === _options?.separator) appendChar = ' '
+      if (appendChar === undefined) {
+        appendChar = ch
+      }
+      if (appendChar === _options?.separator) {
+        appendChar = ' '
+      }
       return (
         result +
         appendChar.replace(_options?.remove || /[^\w\s$*_+~.()'"!\-:@]+/g, '')

@@ -7,7 +7,7 @@ import { TestId } from './enums'
 // Helpers
 function getCanvasData(canvas: HTMLCanvasElement): string {
   const ctx = canvas.getContext('2d')
-  if (!ctx) return ''
+  if (!ctx) {return ''}
   const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data
   let hash = ''
   for (let i = 0; i < data.length; i += 100) {
@@ -18,7 +18,7 @@ function getCanvasData(canvas: HTMLCanvasElement): string {
 
 function getCanvasPixels(canvas: HTMLCanvasElement): Uint8ClampedArray | null {
   const ctx = canvas.getContext('2d')
-  if (!ctx) return null
+  if (!ctx) {return null}
   return ctx.getImageData(0, 0, canvas.width, canvas.height).data
 }
 

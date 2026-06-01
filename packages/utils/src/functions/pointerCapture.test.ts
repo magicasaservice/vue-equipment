@@ -1,16 +1,27 @@
 import { describe, it, expect, vi } from 'vitest'
-import { guardedSetPointerCapture, guardedReleasePointerCapture } from './pointerCapture'
+import {
+  guardedSetPointerCapture,
+  guardedReleasePointerCapture,
+} from './pointerCapture'
 
 describe('guardedSetPointerCapture', () => {
   function makeEl() {
     const el = document.createElement('div')
     const setPointerCapture = vi.fn()
-    Object.defineProperty(el, 'setPointerCapture', { value: setPointerCapture, configurable: true })
+    Object.defineProperty(el, 'setPointerCapture', {
+      value: setPointerCapture,
+      configurable: true,
+    })
     return { el, setPointerCapture }
   }
 
   function makeEvent(overrides: Partial<PointerEvent> = {}): PointerEvent {
-    return { pointerId: 1, isPrimary: true, pointerType: 'touch', ...overrides } as PointerEvent
+    return {
+      pointerId: 1,
+      isPrimary: true,
+      pointerType: 'touch',
+      ...overrides,
+    } as PointerEvent
   }
 
   it('captures a primary touch pointer', () => {
@@ -21,19 +32,29 @@ describe('guardedSetPointerCapture', () => {
 
   it('does not capture a non-primary pointer', () => {
     const { el, setPointerCapture } = makeEl()
-    guardedSetPointerCapture({ event: makeEvent({ isPrimary: false }), element: el })
+    guardedSetPointerCapture({
+      event: makeEvent({ isPrimary: false }),
+      element: el,
+    })
     expect(setPointerCapture).not.toHaveBeenCalled()
   })
 
   it('does not capture a mouse pointer when mouse flag is not set', () => {
     const { el, setPointerCapture } = makeEl()
-    guardedSetPointerCapture({ event: makeEvent({ pointerType: 'mouse' }), element: el })
+    guardedSetPointerCapture({
+      event: makeEvent({ pointerType: 'mouse' }),
+      element: el,
+    })
     expect(setPointerCapture).not.toHaveBeenCalled()
   })
 
   it('captures a mouse pointer when mouse flag is true', () => {
     const { el, setPointerCapture } = makeEl()
-    guardedSetPointerCapture({ event: makeEvent({ pointerType: 'mouse' }), element: el, mouse: true })
+    guardedSetPointerCapture({
+      event: makeEvent({ pointerType: 'mouse' }),
+      element: el,
+      mouse: true,
+    })
     expect(setPointerCapture).toHaveBeenCalledWith(1)
   })
 

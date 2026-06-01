@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { defineComponent, nextTick, reactive } from 'vue'
 import MagicAccordionProvider from '../src/components/MagicAccordionProvider.vue'
 import MagicAccordionView from '../src/components/MagicAccordionView.vue'

@@ -71,7 +71,7 @@ describe('MagicToast - Interactions', () => {
   describe('drag state', () => {
     it('pointerdown sets data-dragging to true', async () => {
       const screen = render(createWrapper(ToastId.IntDragState))
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -88,7 +88,7 @@ describe('MagicToast - Interactions', () => {
 
     it('pointerup resets data-dragging to false', async () => {
       const screen = render(createWrapper(ToastId.IntDragReset))
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -109,7 +109,7 @@ describe('MagicToast - Interactions', () => {
       const screen = render(
         createWrapper(ToastId.IntDragBottom, { position: 'bottom' })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -142,7 +142,7 @@ describe('MagicToast - Interactions', () => {
       const screen = render(
         createWrapper(ToastId.IntDragBottomUp, { position: 'bottom' })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -169,7 +169,7 @@ describe('MagicToast - Interactions', () => {
       const screen = render(
         createWrapper(ToastId.IntDragTop, { position: 'top' })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -201,7 +201,7 @@ describe('MagicToast - Interactions', () => {
           threshold: { distance: 20, lock: 4, momentum: 100 },
         })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       await expect
         .element(page.getByTestId(TestId.Count))
@@ -237,7 +237,7 @@ describe('MagicToast - Interactions', () => {
           animation: { snap: { duration: 50 } },
         })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'
@@ -269,7 +269,7 @@ describe('MagicToast - Interactions', () => {
           layout: { expand: 'click' },
         })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const provider = document.querySelector('.magic-toast-provider')
       expect(provider!.getAttribute('data-expanded')).toBe('false')
@@ -290,7 +290,7 @@ describe('MagicToast - Interactions', () => {
           layout: { expand: false },
         })
       )
-      const dragEl = await addAndGetDragEl(screen)
+      await addAndGetDragEl(screen)
 
       const inner = document.querySelector(
         '.magic-toast-view__inner'

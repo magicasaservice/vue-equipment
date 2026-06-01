@@ -17,18 +17,29 @@ describe('useScrollLockPadding', () => {
     it('sets --scrollbar-width on body', () => {
       const { add } = useScrollLockPadding()
       add()
-      expect(document.body.style.getPropertyValue('--scrollbar-width')).toMatch(/^\d+px$/)
+      expect(document.body.style.getPropertyValue('--scrollbar-width')).toMatch(
+        /^\d+px$/
+      )
     })
 
     it('applies padding compensation to fixed-position elements aligned to the right edge', () => {
       const fixed = document.createElement('div')
       Object.defineProperty(fixed, 'style', {
-        value: { position: 'fixed', right: '0px', paddingRight: '', scrollbarGutter: '', overflow: '' },
+        value: {
+          position: 'fixed',
+          right: '0px',
+          paddingRight: '',
+          scrollbarGutter: '',
+          overflow: '',
+        },
         writable: true,
       })
       vi.spyOn(window, 'getComputedStyle').mockImplementation((el) => {
         if (el === fixed) {
-          return { getPropertyValue: (p: string) => p === 'position' ? 'fixed' : p === 'right' ? '0px' : '' } as CSSStyleDeclaration
+          return {
+            getPropertyValue: (p: string) =>
+              p === 'position' ? 'fixed' : p === 'right' ? '0px' : '',
+          } as CSSStyleDeclaration
         }
         return window.getComputedStyle(el)
       })
@@ -45,7 +56,9 @@ describe('useScrollLockPadding', () => {
     it('skips elements matching the exclude regex', () => {
       const { add } = useScrollLockPadding({ exclude: /excluded/ })
       add()
-      expect(document.body.style.getPropertyValue('--scrollbar-width')).toMatch(/^\d+px$/)
+      expect(document.body.style.getPropertyValue('--scrollbar-width')).toMatch(
+        /^\d+px$/
+      )
     })
   })
 

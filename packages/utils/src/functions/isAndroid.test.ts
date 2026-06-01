@@ -8,8 +8,7 @@ afterEach(() => {
 describe('isAndroid', () => {
   it('returns true for an Android user agent', () => {
     vi.stubGlobal('navigator', {
-      userAgent:
-        'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36',
+      userAgent: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36',
     })
     expect(isAndroid()).toBe(true)
   })

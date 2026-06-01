@@ -144,7 +144,9 @@ export function useScrollTo() {
     const { x: fromX, y: fromY } = getScrollPosition(parent)
 
     if (fromX === top && fromY === left) {
-      if (callback) callback()
+      if (callback) {
+        callback()
+      }
       return
     }
 

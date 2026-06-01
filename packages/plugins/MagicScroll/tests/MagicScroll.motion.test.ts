@@ -37,7 +37,7 @@ describe('MagicScroll - Motion', () => {
     it('renders with sequence prop', async () => {
       const sequence = [
         [{ opacity: [0, 1] }, { duration: 1 }],
-      ] as any
+      ]
 
       render(createMotion(sequence))
       await nextTick()
@@ -73,7 +73,7 @@ describe('MagicScroll - Motion', () => {
                 },
                 { duration: 0.5 },
               ],
-            ] as any
+            ]
             const sequenceOptions = { duration: 2, delay: 0.1 }
             return { sequence, sequenceOptions }
           },
@@ -99,7 +99,7 @@ describe('MagicScroll - Motion', () => {
     it('accepts direct progress prop', async () => {
       const sequence = [
         [{ opacity: [0, 1] }, { duration: 1 }],
-      ] as any
+      ]
 
       render(createMotion(sequence, ':progress="0.5"'))
       await nextTick()

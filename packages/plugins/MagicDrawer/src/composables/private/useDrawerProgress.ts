@@ -110,8 +110,8 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         break
     }
 
-    if (Object.is(rawX, -0)) rawX = 0
-    if (Object.is(rawY, -0)) rawY = 0
+    if (Object.is(rawX, -0)) {rawX = 0}
+    if (Object.is(rawY, -0)) {rawY = 0}
 
     // Clamp the values between 0 and 1
     const x = clampValue(rawX, 0, 1)

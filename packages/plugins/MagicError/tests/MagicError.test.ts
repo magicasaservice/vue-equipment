@@ -80,9 +80,9 @@ describe('MagicError', () => {
         const api = useMagicError({ prefix: 'MyPlugin' })
         try {
           api.throwError({ message: 'broke', errorCode: 'ERR' })
-        } catch (e: any) {
-          expect(e.message).toContain('[MyPlugin]')
-          expect(e.message).toContain('broke')
+        } catch (e: unknown) {
+          expect((e as MagicError).message).toContain('[MyPlugin]')
+          expect((e as MagicError).message).toContain('broke')
         }
       })
 
@@ -90,8 +90,8 @@ describe('MagicError', () => {
         const api = useMagicError()
         try {
           api.throwError({ message: 'fail', errorCode: 'SPECIFIC_CODE' })
-        } catch (e: any) {
-          expect(e.errorCode).toBe('SPECIFIC_CODE')
+        } catch (e: unknown) {
+          expect((e as MagicError).errorCode).toBe('SPECIFIC_CODE')
         }
       })
 
@@ -99,8 +99,8 @@ describe('MagicError', () => {
         const api = useMagicError({ source: 'MySource' })
         try {
           api.throwError({ message: 'fail', errorCode: 'ERR' })
-        } catch (e: any) {
-          expect(e.source).toBe('MySource')
+        } catch (e: unknown) {
+          expect((e as MagicError).source).toBe('MySource')
         }
       })
 
@@ -109,8 +109,8 @@ describe('MagicError', () => {
         const cause = new Error('root')
         try {
           api.throwError({ message: 'fail', errorCode: 'ERR', cause })
-        } catch (e: any) {
-          expect(e.cause).toBe(cause)
+        } catch (e: unknown) {
+          expect((e as MagicError).cause).toBe(cause)
         }
       })
     })
@@ -184,8 +184,8 @@ describe('MagicError', () => {
         const api = useMagicError()
         try {
           api.throwError({ message: 'test', errorCode: 'ERR' })
-        } catch (e: any) {
-          expect(e.message).toContain('[MagicError]')
+        } catch (e: unknown) {
+          expect((e as MagicError).message).toContain('[MagicError]')
         }
       })
 
@@ -193,8 +193,8 @@ describe('MagicError', () => {
         const api = useMagicError()
         try {
           api.throwError({ message: 'test', errorCode: 'ERR' })
-        } catch (e: any) {
-          expect(e.source).toBe('vue-equipment')
+        } catch (e: unknown) {
+          expect((e as MagicError).source).toBe('vue-equipment')
         }
       })
     })
