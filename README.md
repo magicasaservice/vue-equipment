@@ -17,7 +17,7 @@ For the full documentation visit [vue.equipment](https://vue.equipment). We are 
 
 ## 🐛 Found a Bug?
 
-> If you see something that doesn't look right, [submit a bug report](https://github.com/magicasaservice/vue-equipment/issues/new?assignees=&labels=bug%2Cpending+triage&template=bug_report.yml). See it. Say it. Sorted.
+> If you see something that doesn’t look right, [submit a bug report](https://github.com/magicasaservice/vue-equipment/issues/new?assignees=&labels=bug%2Cpending+triage&template=bug_report.yml). See it. Say it. Sorted.
 
 ## 📄 License
 
