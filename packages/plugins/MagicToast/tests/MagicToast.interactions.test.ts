@@ -244,6 +244,8 @@ describe('MagicToast - Interactions', () => {
       ) as HTMLElement
       inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
       await nextTick()
+      // keep velocity (distance/elapsed) below 0.5 px/ms dismiss threshold
+      await new Promise((r) => setTimeout(r, 200))
 
       // Small drag (under threshold of 100)
       document.dispatchEvent(
