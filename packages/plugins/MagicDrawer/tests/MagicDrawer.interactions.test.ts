@@ -6,8 +6,7 @@ import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   drawerId: DrawerId = DrawerId.Interact,
   options: Record<string, unknown> = {}
@@ -83,8 +82,7 @@ async function openDrawer(screen: ReturnType<typeof render>) {
   await new Promise((r) => setTimeout(r, 350))
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Interactions', () => {
   describe('backdrop click', () => {
     it('clicking backdrop closes the drawer', async () => {

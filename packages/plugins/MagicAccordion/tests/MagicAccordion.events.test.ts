@@ -9,8 +9,7 @@ import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
 import { AccordionId, ViewId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createEventWrapper(accordionId: AccordionId) {
   return defineComponent({
     components: {
@@ -83,8 +82,7 @@ function getTestText(container: HTMLElement, id: TestId): string {
   )
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicAccordion - Events', () => {
   describe('enter events', () => {
     it('fires beforeEnter on open', async () => {

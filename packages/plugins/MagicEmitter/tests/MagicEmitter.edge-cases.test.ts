@@ -5,8 +5,7 @@ import { defineComponent, nextTick, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '../index'
 import { TestId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicEmitter - Edge Cases', () => {
   describe('handler reference identity', () => {
     it('off() with wrong reference does not remove handler', async () => {

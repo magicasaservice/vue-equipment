@@ -9,15 +9,13 @@ import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
 import { AccordionId, ViewId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicAccordion - Edge Cases', () => {
   describe('auto-generated IDs', () => {
     it('view without id prop gets auto-generated id starting with "magic-accordion-view-"', async () => {

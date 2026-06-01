@@ -12,8 +12,7 @@ import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
 import { MenuId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Global config ────────────────────────────────────────────────────────────
-
+// Global config
 const gc = {
   global: {
     components: {
@@ -29,8 +28,7 @@ const gc = {
   },
 }
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createMenu(menuId: MenuId, mode: string) {
   return defineComponent({
     components: {
@@ -64,8 +62,7 @@ function createMenu(menuId: MenuId, mode: string) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMenu - Options', () => {
   describe('mode: dropdown', () => {
     it('click trigger opens menu', async () => {

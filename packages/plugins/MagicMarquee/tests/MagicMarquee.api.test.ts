@@ -6,8 +6,7 @@ import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { useMagicMarquee } from '../src/composables/useMagicMarquee'
 import { MarqueeId, TestId } from './enums'
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createMarquee(
   marqueeId: MarqueeId,
   options: Record<string, unknown> = {}
@@ -41,8 +40,7 @@ function createMarquee(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMarquee - API', () => {
   describe('composable return shape', () => {
     it('returns expected functions and state', () => {

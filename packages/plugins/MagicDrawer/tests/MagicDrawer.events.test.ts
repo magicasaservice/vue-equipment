@@ -7,8 +7,7 @@ import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createEventTrackingWrapper(
   drawerId: DrawerId,
   options: Record<string, unknown> = {}
@@ -94,8 +93,7 @@ function getTestText(id: TestId): string {
   return document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Events', () => {
   describe('transition lifecycle events', () => {
     it('emits beforeEnter, enter, afterEnter on open', async () => {
@@ -208,7 +206,7 @@ describe('MagicDrawer - Events', () => {
 
         const payloadRaw = getTestText(TestId.LastPayload)
         const payload = JSON.parse(payloadRaw)
-        expect(payload.id).toBe(DrawerId.EventPayload)
+        expect(payload).toBe(DrawerId.EventPayload)
       } finally {
         unmount()
       }

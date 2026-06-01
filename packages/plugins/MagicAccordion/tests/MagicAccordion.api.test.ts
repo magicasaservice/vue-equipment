@@ -9,15 +9,13 @@ import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
 import { AccordionId, ViewId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createWrapper(
   accordionId: AccordionId,
   options: Record<string, unknown> = {}
@@ -71,8 +69,7 @@ function createWrapper(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicAccordion - API', () => {
   describe('selectView', () => {
     it('selectView() opens a panel', async () => {

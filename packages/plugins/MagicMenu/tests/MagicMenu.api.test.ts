@@ -12,8 +12,7 @@ import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
 import { MenuId, ViewId, TestId } from './enums'
 
-// ─── Global config ────────────────────────────────────────────────────────────
-
+// Global config
 const gc = {
   global: {
     components: {
@@ -29,8 +28,7 @@ const gc = {
   },
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMenu - API', () => {
   describe('composable return shape', () => {
     it('returns selectView and unselectView', () => {

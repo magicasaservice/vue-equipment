@@ -6,8 +6,7 @@ import { useMagicDraggable } from '../src/composables/useMagicDraggable'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { DraggableId, TestId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDraggable - Events', () => {
   describe('snap events', () => {
     it('snapTo emits snapTo event with correct payload', async () => {

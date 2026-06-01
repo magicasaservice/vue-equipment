@@ -5,8 +5,7 @@ import MagicPie from '../src/components/MagicPie.vue'
 import { useMagicPie } from '../src/composables/useMagicPie'
 import { PieId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicPie - Edge Cases', () => {
   describe('path correctness at different percentages', () => {
     it('0% and 100% generate different paths', async () => {

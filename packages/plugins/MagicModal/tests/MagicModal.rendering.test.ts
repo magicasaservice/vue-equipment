@@ -6,8 +6,7 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   modalId: ModalId = ModalId.TestModal,
   options: Record<string, unknown> = {}
@@ -54,8 +53,7 @@ function createWrapperWithBackdropSlot() {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - Rendering', () => {
   it('does not render when inactive', () => {
     render(createWrapper())

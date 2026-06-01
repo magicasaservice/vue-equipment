@@ -4,8 +4,7 @@ import { nextTick } from 'vue'
 import { createDraggable } from './test-utils'
 import { DraggableId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDraggable - Interactions', () => {
   describe('pointer events', () => {
     it('pointerdown sets data-dragging to true', async () => {

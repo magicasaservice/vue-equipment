@@ -5,8 +5,7 @@ import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { createMarquee } from './test-utils'
 import { MarqueeId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMarquee - Rendering', () => {
   describe('slot content', () => {
     it('renders slot content with correct text', async () => {

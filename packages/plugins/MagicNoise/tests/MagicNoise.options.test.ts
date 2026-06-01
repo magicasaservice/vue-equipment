@@ -4,8 +4,7 @@ import { defineComponent, nextTick, ref } from 'vue'
 import MagicNoise from '../src/components/MagicNoise.vue'
 import { TestId } from './enums'
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
+// Helpers
 function getCanvasData(canvas: HTMLCanvasElement): string {
   const ctx = canvas.getContext('2d')
   if (!ctx) return ''
@@ -40,8 +39,7 @@ function createNoise(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicNoise - Options', () => {
   describe('pause prop', () => {
     it('pause prop stops canvas animation updates', async () => {

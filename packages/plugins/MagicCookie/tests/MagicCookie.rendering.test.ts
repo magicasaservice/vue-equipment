@@ -8,26 +8,19 @@ import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { CookieId, ItemId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
-const ClientOnly = defineComponent({
-  name: 'ClientOnly',
-  template: '<slot />',
-})
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCookie - Rendering', () => {
   describe('view component', () => {
     it('view inner is hidden (display:none) when view is not active', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.ViewHidden)
             return {}
@@ -39,8 +32,7 @@ describe('MagicCookie - Rendering', () => {
               </MagicCookieView>
             </MagicCookieProvider>
           `,
-        }),
-        { global: { stubs: { ClientOnly } } }
+        })
       )
       await nextTick()
 
@@ -54,7 +46,7 @@ describe('MagicCookie - Rendering', () => {
     it('view inner is visible when showView() is called', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             const { showView } = useMagicCookie(CookieId.ViewVisible)
             showView()
@@ -68,7 +60,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
       await nextTick()
@@ -83,7 +75,7 @@ describe('MagicCookie - Rendering', () => {
     it('exposes viewActive=true via scoped slot after showView()', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             const { showView } = useMagicCookie(CookieId.ScopedSlot)
             showView()
@@ -99,7 +91,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
       await nextTick()
@@ -112,7 +104,7 @@ describe('MagicCookie - Rendering', () => {
     it('sets --mc-duration CSS variable to 300ms by default', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             useMagicCookie(CookieId.CssVar)
             return {}
@@ -122,8 +114,7 @@ describe('MagicCookie - Rendering', () => {
               <MagicCookieView><div>Content</div></MagicCookieView>
             </MagicCookieProvider>
           `,
-        }),
-        { global: { stubs: { ClientOnly } } }
+        })
       )
       await nextTick()
 
@@ -136,7 +127,7 @@ describe('MagicCookie - Rendering', () => {
     it('sets data-id attribute from id prop', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.DataId)
             return {}
@@ -149,7 +140,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -160,7 +151,7 @@ describe('MagicCookie - Rendering', () => {
     it('sets data-optional=true and data-optional=false correctly', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.Optional)
             return {}
@@ -176,7 +167,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -188,7 +179,7 @@ describe('MagicCookie - Rendering', () => {
     it('optional item has data-active=false by default', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.Active)
             return {}
@@ -201,7 +192,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -212,7 +203,7 @@ describe('MagicCookie - Rendering', () => {
     it('exposes item data via scoped slot with correct values', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.ItemSlot)
             return {}
@@ -229,7 +220,7 @@ describe('MagicCookie - Rendering', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 

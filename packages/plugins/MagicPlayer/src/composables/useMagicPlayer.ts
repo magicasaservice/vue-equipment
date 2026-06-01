@@ -40,6 +40,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     popoverOffsetX,
     playlistIndex,
     playlistCount,
+    skipping,
   } = toRefs(state)
 
   return {
@@ -67,6 +68,7 @@ export function useMagicPlayer(id: MaybeRef<string>) {
     popoverOffsetX,
     playlistIndex,
     playlistCount,
+    skipping,
     next,
     prev,
     goTo,

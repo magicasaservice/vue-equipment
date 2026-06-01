@@ -6,8 +6,7 @@ import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   drawerId: DrawerId = DrawerId.TestDrawer,
   options: Record<string, unknown> = {}
@@ -54,8 +53,7 @@ function createWrapperWithBackdropSlot() {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Rendering', () => {
   it('does not render when inactive', () => {
     render(createWrapper())

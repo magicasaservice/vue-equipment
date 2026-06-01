@@ -5,8 +5,7 @@ import MagicDraggable from '../src/components/MagicDraggable.vue'
 import { useMagicDraggable } from '../src/composables/useMagicDraggable'
 import { DraggableId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createDraggableWithSnap(
   draggableId: DraggableId,
   snapTarget: string,
@@ -37,8 +36,7 @@ function createDraggableWithSnap(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDraggable - API', () => {
   describe('composable return shape', () => {
     it('returns snapTo function', () => {

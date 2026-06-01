@@ -4,8 +4,7 @@ import { nextTick } from 'vue'
 import { createDraggable } from './test-utils'
 import { DraggableId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDraggable - Rendering', () => {
   describe('container', () => {
     it('sets data-id attribute from id prop', async () => {

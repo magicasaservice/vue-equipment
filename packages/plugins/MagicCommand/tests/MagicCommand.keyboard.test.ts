@@ -11,8 +11,7 @@ import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { CommandId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Globals ──────────────────────────────────────────────────────────────────
-
+// Globals
 const gc = {
   global: {
     components: {
@@ -85,8 +84,7 @@ async function pressKey(key: string) {
   await new Promise((r) => setTimeout(r, 50))
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCommand - Keyboard', () => {
   let rejectHandler: (e: PromiseRejectionEvent) => void
   beforeEach(() => {

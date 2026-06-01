@@ -6,8 +6,7 @@ import MagicPie from '../src/components/MagicPie.vue'
 import { useMagicPie } from '../src/composables/useMagicPie'
 import { PieId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createPie(pieId: PieId, options: Record<string, unknown> = {}) {
   return defineComponent({
     components: { MagicPie },
@@ -31,8 +30,7 @@ function createPie(pieId: PieId, options: Record<string, unknown> = {}) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicPie - API', () => {
   describe('composable return shape', () => {
     it('returns expected functions and state', () => {

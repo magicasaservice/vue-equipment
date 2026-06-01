@@ -8,20 +8,13 @@ import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { CookieId, ItemId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
-const ClientOnly = defineComponent({
-  name: 'ClientOnly',
-  template: '<slot />',
-})
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createWrapper(
   cookieId: CookieId,
   items: Array<{ id: string; optional?: boolean }> = [
@@ -34,7 +27,6 @@ function createWrapper(
       MagicCookieProvider,
       MagicCookieView,
       MagicCookieItem,
-      ClientOnly,
     },
     setup() {
       const api = useMagicCookie(cookieId)
@@ -71,13 +63,12 @@ function createWrapper(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCookie - API', () => {
   describe('view management', () => {
     it('showView() makes the view visible', async () => {
       const screen = render(createWrapper(CookieId.Show), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
 
       await screen.getByTestId(TestId.ShowView).click()
@@ -92,7 +83,7 @@ describe('MagicCookie - API', () => {
 
     it('hideView() hides the view', async () => {
       const screen = render(createWrapper(CookieId.Hide), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
 
       await screen.getByTestId(TestId.ShowView).click()
@@ -110,7 +101,7 @@ describe('MagicCookie - API', () => {
 
     it('toggleView() toggles visibility', async () => {
       const screen = render(createWrapper(CookieId.Toggle), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
 
       const inner = () =>
@@ -131,7 +122,7 @@ describe('MagicCookie - API', () => {
   describe('item selection', () => {
     it('selectItem() activates a cookie', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Select)
           return { ...api }
@@ -151,7 +142,7 @@ describe('MagicCookie - API', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -169,7 +160,7 @@ describe('MagicCookie - API', () => {
 
     it('unselectItem() deactivates a cookie', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Unselect)
           return { ...api }
@@ -190,7 +181,7 @@ describe('MagicCookie - API', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -211,7 +202,7 @@ describe('MagicCookie - API', () => {
 
     it("toggleItem() toggles a cookie's active state", async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.ToggleItem)
           return { ...api }
@@ -231,7 +222,7 @@ describe('MagicCookie - API', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -258,7 +249,7 @@ describe('MagicCookie - API', () => {
   describe('acceptAll', () => {
     it('acceptAll() sets all cookies to active', async () => {
       const screen = render(createWrapper(CookieId.AcceptAll), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -276,7 +267,7 @@ describe('MagicCookie - API', () => {
 
     it('acceptAll() sets cookiesSet to true', async () => {
       const screen = render(createWrapper(CookieId.AcceptSet), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -293,7 +284,7 @@ describe('MagicCookie - API', () => {
   describe('rejectAll', () => {
     it('rejectAll() deactivates optional cookies', async () => {
       const screen = render(createWrapper(CookieId.RejectAll), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -314,7 +305,7 @@ describe('MagicCookie - API', () => {
 
     it('rejectAll() keeps required cookies active', async () => {
       const screen = render(createWrapper(CookieId.RejectRequired), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -333,7 +324,7 @@ describe('MagicCookie - API', () => {
   describe('acceptSelected', () => {
     it('acceptSelected() saves current selection and sets cookiesSet=true', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.AcceptSelected)
           return { ...api }
@@ -355,7 +346,7 @@ describe('MagicCookie - API', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -374,7 +365,7 @@ describe('MagicCookie - API', () => {
   describe('cookies computed', () => {
     it('cookies reflects initial state: optional=false, required=true', async () => {
       render(createWrapper(CookieId.CookiesState), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -390,7 +381,7 @@ describe('MagicCookie - API', () => {
   describe('cookiesSet', () => {
     it('cookiesSet is false before any accept/reject', async () => {
       render(createWrapper(CookieId.NotSet), {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 

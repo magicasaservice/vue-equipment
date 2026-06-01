@@ -12,8 +12,7 @@ import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
 import { MenuId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Global config ────────────────────────────────────────────────────────────
-
+// Global config
 const gc = {
   global: {
     components: {
@@ -29,8 +28,7 @@ const gc = {
   },
 }
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createDropdown(menuId: MenuId) {
   return defineComponent({
     components: {
@@ -67,8 +65,7 @@ function createDropdown(menuId: MenuId) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMenu - Keyboard Navigation', () => {
   // Suppress MagicError unhandled rejections
   let rejectHandler: (e: PromiseRejectionEvent) => void

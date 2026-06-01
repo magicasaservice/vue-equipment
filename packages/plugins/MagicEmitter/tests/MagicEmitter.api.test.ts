@@ -4,8 +4,7 @@ import { defineComponent, nextTick } from 'vue'
 import { useMagicEmitter } from '../index'
 import { TestId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicEmitter - API', () => {
   describe('emit and on', () => {
     it('on() receives emitted events', async () => {

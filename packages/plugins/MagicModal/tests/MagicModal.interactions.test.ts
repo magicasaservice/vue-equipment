@@ -6,8 +6,7 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(options: Record<string, unknown> = {}) {
   return defineComponent({
     components: { MagicModal },
@@ -61,8 +60,7 @@ async function openModal(screen: ReturnType<typeof render>) {
   await new Promise((r) => setTimeout(r, 350))
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - Interactions', () => {
   describe('backdrop click', () => {
     it('clicking backdrop closes the modal', async () => {

@@ -6,8 +6,7 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createWrapper(
   modalId: ModalId,
   options: Record<string, unknown> = {}
@@ -43,8 +42,7 @@ async function openModal(screen: ReturnType<typeof render>) {
   await new Promise((r) => setTimeout(r, 350))
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - Options', () => {
   describe('backdrop', () => {
     it('backdrop: true (default) renders backdrop', async () => {

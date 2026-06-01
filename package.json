@@ -138,7 +138,7 @@
     "build:docs": "turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
     "update:metadata": "turbo run update --filter=metadata",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "turbo run test",
     "lint": "turbo run lint",
     "uninstall": "pnpm dlx rimraf --glob ./**/node_modules --glob ./**/pnpm-lock.yaml",
     "release": "turbo run t:release && release-it",

@@ -5,8 +5,7 @@ import { defineComponent, nextTick, reactive } from 'vue'
 import { useMagicEmitter } from '../index'
 import { TestId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicEmitter - Integration', () => {
   describe('cross-component communication', () => {
     it('emitter works across sibling components', async () => {

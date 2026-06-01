@@ -13,7 +13,9 @@
   ],
   "devDependencies": {
     "@types/node": "catalog:",
-    "tsup": "catalog:"
+    "jsdom": "^26.0.0",
+    "tsup": "catalog:",
+    "vitest": "^4.1.2"
   },
   "exports": {
     ".": "./index.ts",
@@ -23,7 +25,8 @@
   "private": true,
   "scripts": {
     "build": "tsup --config tsup.config.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
     "lint": "eslint ."
   },
   "type": "module",

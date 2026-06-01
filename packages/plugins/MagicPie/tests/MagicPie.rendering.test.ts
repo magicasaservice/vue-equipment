@@ -4,8 +4,7 @@ import { nextTick } from 'vue'
 import { createPie } from './test-utils'
 import { PieId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicPie - Rendering', () => {
   describe('container', () => {
     it('sets data-id attribute', async () => {

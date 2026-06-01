@@ -6,18 +6,11 @@ import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { mountWithApp } from '../../tests/utils'
 import { CookieId, ItemId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
-const ClientOnly = defineComponent({
-  name: 'ClientOnly',
-  template: '<slot />',
-})
-
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Stubs
+// Factory
 function createEventWrapper(cookieId: CookieId) {
   return defineComponent({
-    components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+    components: { MagicCookieProvider, MagicCookieItem },
     setup() {
       const api = useMagicCookie(cookieId)
       const events = reactive<string[]>([])
@@ -65,8 +58,7 @@ function getTestText(id: TestId): string {
   return document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCookie - Events', () => {
   describe('acceptAll event', () => {
     it('fires onAccept callback when acceptAll() is called', async () => {

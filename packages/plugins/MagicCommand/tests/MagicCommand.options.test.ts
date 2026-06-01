@@ -11,8 +11,7 @@ import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { CommandId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Globals ──────────────────────────────────────────────────────────────────
-
+// Globals
 const gc = {
   global: {
     components: {
@@ -37,8 +36,7 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCommand - Options', () => {
   describe('keyListener', () => {
     it('keyListener.open=false prevents keyboard shortcut from opening', async () => {

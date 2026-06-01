@@ -6,8 +6,7 @@ import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createWrapper(
   drawerId: DrawerId,
   options: Record<string, unknown> = {}
@@ -41,8 +40,7 @@ async function openDrawer(screen: ReturnType<typeof render>) {
   await new Promise((r) => setTimeout(r, 50))
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Options', () => {
   describe('position', () => {
     const positions = [

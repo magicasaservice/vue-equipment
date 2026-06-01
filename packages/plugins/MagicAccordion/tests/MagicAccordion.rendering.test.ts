@@ -9,15 +9,13 @@ import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
 import { AccordionId, ViewId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createAccordion(
   accordionId: AccordionId,
   options: Record<string, unknown> = {},
@@ -65,8 +63,7 @@ function createAccordion(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicAccordion - Rendering', () => {
   describe('provider', () => {
     it('sets data-id on provider', async () => {

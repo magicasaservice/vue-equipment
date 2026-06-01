@@ -13,8 +13,7 @@ import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
 import { MenuId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Global config ────────────────────────────────────────────────────────────
-
+// Global config
 const gc = {
   global: {
     components: {
@@ -30,8 +29,7 @@ const gc = {
   },
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMenu - Edge Cases', () => {
   describe('nested menus', () => {
     it('nested view and trigger render inside parent content', async () => {

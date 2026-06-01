@@ -6,8 +6,7 @@ import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { useMagicMarquee } from '../src/composables/useMagicMarquee'
 import { MarqueeId, TestId } from './enums'
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createMarquee(
   marqueeId: MarqueeId,
   options: Record<string, unknown> = {}
@@ -36,8 +35,7 @@ function createMarquee(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMarquee - State', () => {
   describe('shared state', () => {
     it('composable and component share state via id', async () => {

@@ -12,8 +12,7 @@ import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { CommandId, ViewId, ItemId, TestId } from './enums'
 
-// ─── Globals ──────────────────────────────────────────────────────────────────
-
+// Globals
 const gc = {
   global: {
     components: {
@@ -39,8 +38,7 @@ function useOpenHelper(id: string) {
   return { api, openCommand }
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCommand - Rendering', () => {
   describe('provider', () => {
     it('renders with data-id attribute', async () => {

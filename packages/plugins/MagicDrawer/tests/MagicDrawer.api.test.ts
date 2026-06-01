@@ -6,8 +6,7 @@ import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   drawerId: DrawerId = DrawerId.ApiDrawer,
   options: Record<string, unknown> = {}
@@ -71,8 +70,7 @@ function createMultiDrawerWrapper() {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Public API', () => {
   describe('open / close / isActive', () => {
     it('isActive is false initially', async () => {

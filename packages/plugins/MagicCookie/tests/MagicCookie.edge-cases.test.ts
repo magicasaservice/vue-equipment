@@ -8,26 +8,19 @@ import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { CookieId, ItemId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
-const ClientOnly = defineComponent({
-  name: 'ClientOnly',
-  template: '<slot />',
-})
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCookie - Edge Cases', () => {
   describe('auto-generated IDs', () => {
     it('item without id gets auto-generated id starting with "magic-cookie-item-"', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.AutoId)
             return {}
@@ -41,8 +34,7 @@ describe('MagicCookie - Edge Cases', () => {
               </MagicCookieItem>
             </MagicCookieProvider>
           `,
-        }),
-        { global: { stubs: { ClientOnly } } }
+        })
       )
       await nextTick()
 
@@ -57,7 +49,7 @@ describe('MagicCookie - Edge Cases', () => {
   describe('required cookie protection', () => {
     it('required cookies always return true in cookies computed after rejectAll()', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Required)
           return { ...api }
@@ -78,7 +70,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -97,7 +89,7 @@ describe('MagicCookie - Edge Cases', () => {
   describe('multiple items', () => {
     it('selecting one item does not affect another', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.MultiItems)
           return { ...api }
@@ -122,7 +114,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -141,7 +133,7 @@ describe('MagicCookie - Edge Cases', () => {
   describe('item cleanup on unmount', () => {
     it('unmounted item is removed from cookies computed', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Cleanup)
           return { ...api }
@@ -166,7 +158,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -192,7 +184,7 @@ describe('MagicCookie - Edge Cases', () => {
   describe('rapid state changes', () => {
     it("rapid select/unselect settles to final state", async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Rapid)
 
@@ -221,7 +213,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -237,7 +229,7 @@ describe('MagicCookie - Edge Cases', () => {
   describe('acceptAll then rejectAll sequence', () => {
     it('optional deactivates after accept→reject; required stays active', async () => {
       const wrapper = defineComponent({
-        components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+        components: { MagicCookieProvider, MagicCookieItem },
         setup() {
           const api = useMagicCookie(CookieId.Sequence)
           return { ...api }
@@ -263,7 +255,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
 
@@ -295,7 +287,6 @@ describe('MagicCookie - Edge Cases', () => {
           MagicCookieProvider,
           MagicCookieView,
           MagicCookieItem,
-          ClientOnly,
         },
         setup() {
           const api = useMagicCookie(CookieId.NoOpts)
@@ -320,7 +311,7 @@ describe('MagicCookie - Edge Cases', () => {
       })
 
       const screen = render(wrapper, {
-        global: { stubs: { ClientOnly, AutoSize } },
+        global: { stubs: { AutoSize } },
       })
       await nextTick()
       await nextTick()

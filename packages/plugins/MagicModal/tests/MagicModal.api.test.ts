@@ -6,8 +6,7 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createWrapper(modalId: ModalId) {
   return defineComponent({
     components: { MagicModal },
@@ -28,8 +27,7 @@ function createWrapper(modalId: ModalId) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - API', () => {
   describe('open and close', () => {
     it('open() activates the modal', async () => {

@@ -6,8 +6,7 @@ import { useMagicDraggable } from '../src/composables/useMagicDraggable'
 import { createDraggable } from './test-utils'
 import { DraggableId, TestId } from './enums'
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDraggable - Edge Cases', () => {
   describe('multiple instances', () => {
     it('two draggables maintain independent snap state', async () => {

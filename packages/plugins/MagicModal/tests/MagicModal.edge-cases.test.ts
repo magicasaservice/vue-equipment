@@ -6,8 +6,7 @@ import { MagicModal } from '../index'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   modalId: ModalId,
   options: Record<string, unknown> = {}
@@ -83,8 +82,7 @@ function createRapidWrapper(modalId: ModalId) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - Edge Cases', () => {
   describe('default configuration', () => {
     it('works with zero options (all defaults)', async () => {

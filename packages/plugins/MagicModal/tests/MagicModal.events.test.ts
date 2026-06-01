@@ -7,8 +7,7 @@ import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
 import { ModalId, TestId } from './enums'
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createEventTrackingWrapper(
   modalId: ModalId,
   options: Record<string, unknown> = {}
@@ -83,8 +82,7 @@ function getTestText(id: TestId): string {
   )
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicModal - Events', () => {
   describe('transition lifecycle events', () => {
     it('emits beforeEnter, enter, afterEnter on open', async () => {
@@ -199,7 +197,7 @@ describe('MagicModal - Events', () => {
 
         const payloadRaw = getTestText(TestId.LastPayload)
         const payload = JSON.parse(payloadRaw)
-        expect(payload.id).toBe(ModalId.EventPayload)
+        expect(payload).toBe(ModalId.EventPayload)
       } finally {
         unmount()
       }

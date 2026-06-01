@@ -9,15 +9,13 @@ import MagicAccordionContent from '../src/components/MagicAccordionContent.vue'
 import { useMagicAccordion } from '../src/composables/useMagicAccordion'
 import { AccordionId, ViewId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Factory ──────────────────────────────────────────────────────────────────
-
+// Factory
 function createAccordion(
   accordionId: AccordionId,
   opts: {
@@ -69,8 +67,7 @@ function createAccordion(
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicAccordion - Interactions', () => {
   describe('click trigger', () => {
     it('clicking trigger opens panel', async () => {

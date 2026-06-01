@@ -8,26 +8,19 @@ import MagicCookieItem from '../src/components/MagicCookieItem.vue'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { CookieId, ItemId, TestId } from './enums'
 
-// ─── Stubs ────────────────────────────────────────────────────────────────────
-
-const ClientOnly = defineComponent({
-  name: 'ClientOnly',
-  template: '<slot />',
-})
-
+// Stubs
 const AutoSize = defineComponent({
   name: 'AutoSize',
   template: '<div><slot /></div>',
 })
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicCookie - Options', () => {
   describe('maxAge', () => {
     it('uses default maxAge (24 * 60 * 60 * 60) when not specified', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.MaxAgeDefault)
             return {}
@@ -42,7 +35,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -56,7 +49,7 @@ describe('MagicCookie - Options', () => {
     it('item-level maxAge overrides provider default', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.MaxAgeOverride)
             return {}
@@ -71,7 +64,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -87,7 +80,7 @@ describe('MagicCookie - Options', () => {
     it('custom transition option allows content to be visible', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             const { showView } = useMagicCookie(CookieId.TransitionCustom)
             showView()
@@ -104,7 +97,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
       await nextTick()
@@ -119,7 +112,7 @@ describe('MagicCookie - Options', () => {
     it('custom animation.duration is applied as --mc-duration CSS variable', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             useMagicCookie(CookieId.AnimDuration)
             return {}
@@ -133,7 +126,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -144,7 +137,7 @@ describe('MagicCookie - Options', () => {
     it('default animation duration is 300ms', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieView, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieView },
           setup() {
             useMagicCookie(CookieId.AnimDefault)
             return {}
@@ -155,7 +148,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -168,7 +161,7 @@ describe('MagicCookie - Options', () => {
     it('optional items default to inactive', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.OptionalDefault)
             return {}
@@ -183,7 +176,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -195,7 +188,7 @@ describe('MagicCookie - Options', () => {
     it('required items default to active', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.RequiredDefault)
             return {}
@@ -210,7 +203,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 
@@ -222,7 +215,7 @@ describe('MagicCookie - Options', () => {
     it('omitting :optional prop treats item as required (Vue boolean casting → false)', async () => {
       render(
         defineComponent({
-          components: { MagicCookieProvider, MagicCookieItem, ClientOnly },
+          components: { MagicCookieProvider, MagicCookieItem },
           setup() {
             useMagicCookie(CookieId.OptionalUnset)
             return {}
@@ -238,7 +231,7 @@ describe('MagicCookie - Options', () => {
             </MagicCookieProvider>
           `,
         }),
-        { global: { stubs: { ClientOnly, AutoSize } } }
+        { global: { stubs: { AutoSize } } }
       )
       await nextTick()
 

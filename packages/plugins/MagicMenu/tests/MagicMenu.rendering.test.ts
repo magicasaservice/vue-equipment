@@ -13,8 +13,7 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
 import { MenuId, ViewId, TestId } from './enums'
 
-// ─── Global config ────────────────────────────────────────────────────────────
-
+// Global config
 const gc = {
   global: {
     components: {
@@ -30,8 +29,7 @@ const gc = {
   },
 }
 
-// ─── Factory ─────────────────────────────────────────────────────────────────
-
+// Factory
 function createDropdown(menuId: MenuId) {
   return defineComponent({
     components: {
@@ -65,8 +63,7 @@ function createDropdown(menuId: MenuId) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicMenu - Rendering', () => {
   describe('provider', () => {
     it('sets data-id', async () => {

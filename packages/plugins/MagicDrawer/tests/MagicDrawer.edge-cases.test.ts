@@ -6,8 +6,7 @@ import { MagicDrawer } from '../index'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// ─── Factories ────────────────────────────────────────────────────────────────
-
+// Factories
 function createWrapper(
   drawerId: DrawerId,
   options: Record<string, unknown> = {}
@@ -75,8 +74,7 @@ function createRapidWrapper(drawerId: DrawerId) {
   })
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
-
+// Tests
 describe('MagicDrawer - Edge Cases', () => {
   describe('default configuration', () => {
     it('works with zero options (all defaults)', async () => {
