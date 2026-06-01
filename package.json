@@ -135,7 +135,7 @@
     "dev:nuxt": "turbo run dev --filter=nuxt",
     "build": "turbo run build --filter=!playground",
     "build:types": "turbo run build:types",
-    "build:docs": "turbo run build --filter=docs",
+    "build:docs": "playwright install chromium --with-deps && turbo run build --filter=docs",
     "preview:docs": "turbo run preview --filter=docs",
     "update:metadata": "turbo run update --filter=metadata",
     "test": "turbo run test",
