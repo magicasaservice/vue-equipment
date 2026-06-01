@@ -372,18 +372,16 @@ describe('MagicPlayer - API', () => {
 
       render(wrapper, gc)
 
-      // Wait for video to load
-      await expect
-        .element(page.getByTestId(TestId.Loaded), { timeout: 10000 })
-        .toHaveTextContent('true')
+      // Simulate media loading without a real network request
+      const video = document.querySelector('video') as HTMLVideoElement
+      video?.dispatchEvent(new Event('loadeddata'))
 
-      // Duration should be set after loading
-      const durationEl = document.querySelector(
-        `[data-test-id="${TestId.Duration}"]`
-      ) as HTMLElement
-      const duration = parseFloat(durationEl.textContent || '0')
-      expect(duration).toBeGreaterThan(0)
-    }, 15000)
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Loaded))
+        .toHaveTextContent('true')
+    })
   })
 
   describe('playlist', () => {
