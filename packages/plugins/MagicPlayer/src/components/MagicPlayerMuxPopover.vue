@@ -30,7 +30,11 @@ import {
   type UseMagicErrorReturn,
 } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
-import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+import {
+  MagicPlayerInstanceId,
+  MagicPlayerOptionsKey,
+  MagicPlayerCurrentSrcKey,
+} from '../symbols'
 
 interface MagicPlayerMuxPopoverProps {
   playbackId?: string
@@ -59,6 +63,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
 
 const instanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
+const injectedCurrentSrc = inject(MagicPlayerCurrentSrcKey, undefined)
 
 magicError.assert(instanceId, {
   message:
@@ -151,7 +156,7 @@ function drawFrame(time: number | null) {
 }
 
 async function initialize() {
-  const parsedPlaybackId = getMuxId(injectedOptions?.src)
+  const parsedPlaybackId = getMuxId(injectedCurrentSrc?.value)
   const mappedPlaybackId = playbackId ?? parsedPlaybackId
 
   if (!mappedPlaybackId) {

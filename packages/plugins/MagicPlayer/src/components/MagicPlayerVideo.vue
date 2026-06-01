@@ -5,7 +5,7 @@
     playsinline
     disablePictureInPicture
     :preload="injectedOptions.preload"
-    :loop="injectedOptions.loop"
+    :loop="playlistCount <= 1 && injectedOptions.loop"
     :muted="muted"
   />
 </template>
@@ -42,6 +42,7 @@ import {
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
+  MagicPlayerCurrentSrcKey,
 } from '../symbols'
 
 const magicError: UseMagicErrorReturn = useMagicError({
@@ -52,6 +53,7 @@ const magicError: UseMagicErrorReturn = useMagicError({
 const injectedInstanceId = inject(MagicPlayerInstanceId, undefined)
 const injectedOptions = inject(MagicPlayerOptionsKey, undefined)
 const injectedPlayerRef = inject(MagicPlayerRef, undefined)
+const injectedCurrentSrc = inject(MagicPlayerCurrentSrcKey, undefined)
 
 let cancelFocus: (() => void) | undefined = undefined
 let cancelBlur: (() => void) | undefined = undefined
@@ -71,14 +73,14 @@ const elRef = useTemplateRef('el')
 const { initialize } = usePlayerRuntime({
   id: injectedInstanceId,
   mediaRef: elRef,
-  src: injectedOptions.src,
+  src: injectedCurrentSrc,
   srcType: injectedOptions.srcType,
   debug: injectedOptions.debug,
 })
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { muted, playing, started, loaded } = toRefs(state)
+const { muted, playing, started, loaded, playlistCount } = toRefs(state)
 
 usePlayerMediaApi({
   id: injectedInstanceId,

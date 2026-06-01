@@ -379,15 +379,15 @@ onUnmounted(() => {
   --magic-drawer-padding: 0px;
   --magic-drawer-drag-overshoot-x: 0px;
   --magic-drawer-drag-overshoot-y: 0px;
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  pointer-events: none;
+  position: var(--magic-drawer-position, fixed);
+  inset: var(--magic-drawer-inset, 0);
+  display: var(--magic-drawer-display, flex);
   justify-content: var(--magic-drawer-justify-content);
   align-items: var(--magic-drawer-align-items);
   z-index: var(--magic-drawer-z-index, 999);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   background: transparent;
   color: inherit;
   padding: 0;
@@ -472,8 +472,8 @@ onUnmounted(() => {
 }
 
 .magic-drawer__content {
-  width: 100%;
-  max-height: 100%;
+  width: var(--magic-drawer-content-width, 100%);
+  max-height: var(--magic-drawer-content-max-height, 100%);
   height: var(--magic-drawer-content-height, 100%);
   position: relative;
 }

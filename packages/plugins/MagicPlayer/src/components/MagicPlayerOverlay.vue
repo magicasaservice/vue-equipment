@@ -98,6 +98,7 @@ const {
   loaded,
   waiting,
   hasOverlay,
+  skipping,
 } = toRefs(state)
 
 // Immediately set hasOverlay to true
@@ -120,6 +121,7 @@ const { idle } = useIdle(injectedOptions?.threshold?.idle)
 
 const isVisible = computed(() => {
   switch (true) {
+    case skipping.value:
     case playing.value && idle.value:
     case playing.value && !mouseEntered.value:
     case injectedOptions?.autoplay && (!started.value || !mouseEntered.value):

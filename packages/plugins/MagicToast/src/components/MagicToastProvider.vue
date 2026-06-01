@@ -35,7 +35,11 @@
             v-bind="view.props"
             @remove="deleteView(view.id)"
           >
-            <template v-for="(slot, name) in view.slots" #[name]="slotProps">
+            <template
+              v-for="(slot, name) in view.slots"
+              :key="name"
+              #[name]="slotProps"
+            >
               <component :is="slot" v-bind="slotProps" />
             </template>
           </component>

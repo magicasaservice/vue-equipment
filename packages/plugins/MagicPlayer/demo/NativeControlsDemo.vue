@@ -1,5 +1,5 @@
 <template>
-  <div class="aspect-[16/9] w-full">
+  <div class="aspect-16/9 w-full">
     <magic-player-provider
       id="magic-player-native-controls-demo"
       :options="{
