@@ -53,6 +53,9 @@ export default defineNuxtConfig({
 })
 ```
 
+> [!WARNING]
+> In SSR contexts, wrap `MagicCookieProvider` in `<ClientOnly>` to prevent hydration mismatches.
+
 ### Composable
 
 In order to interact with the cookie banner from anywhere within your app, we provide a `useMagicCookie` composable. Import it directly when needed.

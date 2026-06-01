@@ -1,9 +1,7 @@
 <template>
-  <client-only>
-    <div class="magic-cookie-provider" v-bind="$attrs">
-      <slot />
-    </div>
-  </client-only>
+  <div class="magic-cookie-provider">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -14,10 +12,6 @@ import { defaultOptions } from '../utils/defaultOptions'
 import { MagicCookieInstanceId } from '../symbols'
 
 import type { MagicCookieOptions } from '../types'
-
-defineOptions({
-  inheritAttrs: false,
-})
 
 type MagicCookieProviderProps = {
   id: MaybeRef<string>
