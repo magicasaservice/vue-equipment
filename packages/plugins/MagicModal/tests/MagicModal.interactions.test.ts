@@ -71,11 +71,10 @@ describe('MagicModal - Interactions', () => {
         .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
-      // Pointer capture requires real browser interaction.
-      // Click top-left corner of root modal div to avoid hitting centered content.
-      const modal = document.querySelector('.magic-modal') as HTMLElement
-      expect(modal).not.toBeNull()
-      await userEvent.click(modal, { position: { x: 5, y: 5 } })
+      // Click the backdrop to close the modal.
+      const backdrop = document.querySelector('.magic-modal-backdrop') as HTMLElement
+      expect(backdrop).not.toBeNull()
+      await userEvent.click(backdrop, { position: { x: 5, y: 5 } })
       await nextTick()
       await new Promise((r) => setTimeout(r, 300))
 
@@ -103,7 +102,7 @@ describe('MagicModal - Interactions', () => {
       const screen = render(createWrapper({ backdrop: false }))
       await openModal(screen)
 
-      const backdrop = document.querySelector('.magic-modal__backdrop')
+      const backdrop = document.querySelector('.magic-modal-backdrop')
       expect(backdrop).toBeNull()
 
       await expect

@@ -8,6 +8,10 @@ MagicModal is a flexible, unstyled modal component. Useful for things like confi
 
 ## Anatomy
 
+MagicModal can be used as a single self-contained component or composed from its individual parts for full control.
+
+### Simple
+
 ```vue
 <template>
   <magic-modal id="your-modal-id">
@@ -19,6 +23,27 @@ MagicModal is a flexible, unstyled modal component. Useful for things like confi
 const { open } = useMagicModal('your-modal-id')
 </script>
 ```
+
+### Composed
+
+```vue
+<template>
+  <magic-modal-provider id="your-modal-id" :options="{}">
+    <magic-modal-trigger as-child>
+      <button>Open</button>
+    </magic-modal-trigger>
+    <magic-modal-teleport>
+      <magic-modal-backdrop />
+      <magic-modal-content>
+        <!-- your content -->
+      </magic-modal-content>
+    </magic-modal-teleport>
+  </magic-modal-provider>
+</template>
+```
+
+> [!TIP]
+> `MagicModalTeleport` is optional. Omit it to keep the modal mounted at all times, with visibility controlled via `v-show`.
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
@@ -50,18 +75,18 @@ export default defineNuxtConfig({
 
 ### Direct Import
 
-If you prefer a more granular approach, the modal can also be directly imported into any Vue component.
+If you prefer a more granular approach, components can be directly imported.
 
 ```vue
 <script setup>
-import { MagicModal } from '@maas/vue-equipment/plugins/MagicModal'
+import {
+  MagicModalProvider,
+  MagicModalTeleport,
+  MagicModalBackdrop,
+  MagicModalContent,
+  MagicModalTrigger,
+} from '@maas/vue-equipment/plugins/MagicModal'
 </script>
-
-<template>
-  <magic-modal id="your-modal-id">
-    <!-- your content -->
-  </magic-modal>
-</template>
 ```
 
 ### Composable
@@ -153,9 +178,11 @@ bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap
 
 ## API Reference
 
-### Props
+### MagicModalProvider
 
-The modal comes with a simple set of props. Only the id is required.
+The MagicModalProvider wraps the modal and configures all child components according to the provided [options](#options).
+
+#### Props
 
 <ProseTable
   :columns="[
@@ -196,7 +223,7 @@ The modal comes with a simple set of props. Only the id is required.
   ]"
 />
 
-### Options
+#### Options
 
 To customize the modal override the necessary options. Any custom options will be merged with the default options.
 
@@ -211,7 +238,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'backdrop',
-          description: 'Show or hide a backdrop element. Only visible when the modal is open.'
+          description: 'Show or hide a backdrop element in the simple `MagicModal` component. Has no effect when composing manually.'
         },
         {
           label: 'boolean'
@@ -225,7 +252,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'tag',
-          description: 'Specify the modal’s HTML element.'
+          description: 'Specify the modal\'s HTML element.'
         },
         {
           label: 'string',
@@ -282,7 +309,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'teleport.target',
-          description: 'Specify the teleport target or disable teleporting the modal completely.'
+          description: 'Default teleport target used by `MagicModalTeleport` unless overridden on the component itself.'
         },
         {
           label: 'string'
@@ -296,7 +323,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'teleport.disabled',
-          description: 'Specify the teleport target or disable teleporting the modal completely.'
+          description: 'Disable teleporting entirely when using the default target.'
         },
         {
           label: 'boolean'
@@ -310,7 +337,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'transition.content',
-          description: 'Set the transition name for the modal itself.'
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the modal panel.'
         },
         {
           label: 'string'
@@ -324,7 +351,7 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'transition.backdrop',
-          description: 'Set the transition name for the modal’s backdrop.'
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the backdrop.'
         },
         {
           label: 'string'
@@ -338,10 +365,10 @@ To customize the modal override the necessary options. Any custom options will b
       items: [
         {
           label: 'keyListener.close',
-          description: 'Set keyboard keys to close the modal.'
+          description: 'Set keyboard keys to close the modal. Set to false to disable the key listener entirely.'
         },
         {
-          label: 'string[]'
+          label: 'string[] | false'
         },
         {
           label: '[\'Escape\']'
@@ -351,175 +378,382 @@ To customize the modal override the necessary options. Any custom options will b
   ]"
 />
 
-### CSS Variables
+### MagicModalTeleport
 
-In order to provide its basic functionality the modal comes with some CSS. To ensure that the modal is customizable, relevant values are available as CSS variables.
+Teleports all child components to a target in the DOM. Uses `v-if` to mount and unmount its contents when the modal opens and closes — keeping the DOM clean when the modal is inactive. Omit this component if you want the modal to remain mounted at all times.
+
+
+#### Props
 
 <ProseTable
   :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
   ]"
   :rows="[
     {
       items: [
         {
-          label: '--magic-modal-position'
+          label: 'to',
+          description: 'Override the teleport target set in the provider options.'
         },
         {
-          label: 'fixed'
+          label: 'string | RendererElement'
         },
+        {
+          label: 'false'
+        }
       ]
     },
     {
       items: [
         {
-          label: '--magic-modal-inset'
+          label: 'disabled',
+          description: 'Disable teleporting, rendering children in place instead.'
         },
         {
-          label: '0'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-width'
+          label: 'boolean'
         },
         {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-height'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-display'
-        },
-        {
-          label: 'flex'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-justify-content'
-        },
-        {
-          label: 'center'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-align-items'
-        },
-        {
-          label: 'center'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-z-index'
-        },
-        {
-          label: '999'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-max-height'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-width'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-display'
-        },
-        {
-          label: 'flex'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-align-items'
-        },
-        {
-          label: 'center'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-justify-content'
-        },
-        {
-          label: 'center'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-content-overflow-y'
-        },
-        {
-          label: 'auto'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-backdrop-color'
-        },
-        {
-          label: 'rgba(0, 0, 0, 0.5)'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-modal-backdrop-filter'
-        },
-        {
-          label: 'unset'
-        },
+          label: 'false'
+        }
       ]
     }
   ]"
 />
+
+### MagicModalBackdrop
+
+Renders a full-viewport overlay behind the modal panel. Closes the modal when clicked. Must be nested inside `MagicModalProvider`.
+
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-modal-backdrop-color' },
+        { label: 'rgba(0, 0, 0, 0.5)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-filter' },
+        { label: 'unset' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-z-index' },
+        { label: '998' }
+      ]
+    }
+  ]"
+/>
+
+### MagicModalContent
+
+Handles the modal’s internal logic. Must be nested inside `MagicModalProvider`.
+
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-modal-position' },
+        { label: 'fixed' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-inset' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-display' },
+        { label: 'flex' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-justify-content' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-align-items' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-z-index' },
+        { label: '999' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-max-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-display' },
+        { label: 'flex' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-align-items' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-justify-content' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-content-overflow-y' },
+        { label: 'auto' }
+      ]
+    }
+  ]"
+/>
+
+### MagicModalTrigger
+
+Opens or closes the modal on click. Must either be nested inside `MagicModalProvider`, or receive an `id` prop that references a modal outside the component tree.
+
+#### Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'The modal id. Only required when the trigger is used outside a `MagicModalProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the trigger.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'asChild',
+          description: 'Prevent the component from rendering its own element and pass all functionality to the child element instead.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'active' },
+        { label: 'boolean' },
+        { label: 'Whether the modal is currently open.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the trigger is currently disabled.' }
+      ]
+    }
+  ]"
+/>
+
+### MagicModal
+
+A self-contained component that composes all primitives internally. Use this for simple cases where you don’t need to customise the markup.
+
+#### Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is required. Can either be a string or a ref.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'options',
+          description: 'Refer to the [options table](#options) for details.'
+        },
+        {
+          label: 'MagicModalOptions'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### Slots
+
+<ProseTable
+  :columns="[
+    { label: 'Slot' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'default' },
+        { label: 'Content rendered inside the modal panel.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'backdrop' },
+        { label: 'Content rendered inside the backdrop element. Also causes the backdrop to render when `options.backdrop` is false.' }
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicModalTeleport' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicModalTeleport must be nested inside MagicModalProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicModalBackdrop' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicModalBackdrop must be nested inside MagicModalProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicModalContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicModalContent must be nested inside MagicModalProvider' }
+      ]
+    },
+    {
+      items: [
+        { label: 'MagicModalTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicModalTrigger must be nested inside MagicModalProvider or an id must be provided' }
+      ]
+    }
+  ]"
+/>
+
+## Examples
+
+### Default
+
+<ComponentPreview src="./demo/DefaultDemo.vue" />
+
+### Composed
+
+<ComponentPreview src="./demo/ComposedDemo.vue" />

@@ -68,7 +68,7 @@ describe('MagicModal - Rendering', () => {
 
     const modal = document.querySelector('.magic-modal')
     expect(modal).not.toBeNull()
-    expect(modal!.querySelector('.magic-modal__backdrop')).not.toBeNull()
+    expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
     expect(modal!.querySelector('.magic-modal__content')).not.toBeNull()
   })
 
@@ -128,7 +128,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    expect(document.querySelector('.magic-modal__backdrop')).not.toBeNull()
+    expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
   })
 
   it('does not render backdrop when backdrop option is false', async () => {
@@ -137,7 +137,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    expect(document.querySelector('.magic-modal__backdrop')).toBeNull()
+    expect(document.querySelector('.magic-modal-backdrop')).toBeNull()
   })
 
   it('renders default slot content', async () => {

@@ -1,18 +1,19 @@
-import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
+import { toValue, nextTick, type MaybeRef } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useModalDOM } from './useModalDOM'
 import type { MagicModalOptions } from '../../types'
+import type { ModalActive } from '../../symbols'
 
 type UseModalCallbackArgs = {
   id: MaybeRef<string>
-  mappedOptions: MagicModalOptions
+  options: MagicModalOptions
   trapFocus: () => void
   releaseFocus: () => void
-  wrapperActive: Ref<boolean>
+  active: ModalActive
 }
 
 export function useModalCallback(args: UseModalCallbackArgs) {
-  const { id, mappedOptions, trapFocus, releaseFocus, wrapperActive } = args
+  const { id, options, trapFocus, releaseFocus, active } = args
 
   const emitter = useMagicEmitter()
   const { lockScroll, unlockScroll } = useModalDOM()
@@ -20,10 +21,10 @@ export function useModalCallback(args: UseModalCallbackArgs) {
   function onBeforeEnter() {
     emitter.emit('beforeEnter', toValue(id))
 
-    if (mappedOptions.scrollLock) {
+    if (options.scrollLock) {
       lockScroll(
-        typeof mappedOptions.scrollLock === 'object' &&
-          mappedOptions.scrollLock.padding
+        typeof options.scrollLock === 'object' &&
+          options.scrollLock.padding
       )
     }
   }
@@ -35,7 +36,7 @@ export function useModalCallback(args: UseModalCallbackArgs) {
   async function onAfterEnter() {
     emitter.emit('afterEnter', toValue(id))
 
-    if (mappedOptions.focusTrap) {
+    if (options.focusTrap) {
       await nextTick()
       trapFocus()
     }
@@ -52,18 +53,18 @@ export function useModalCallback(args: UseModalCallbackArgs) {
   function onAfterLeave() {
     emitter.emit('afterLeave', toValue(id))
 
-    if (mappedOptions.scrollLock) {
+    if (options.scrollLock) {
       unlockScroll(
-        typeof mappedOptions.scrollLock === 'object' &&
-          mappedOptions.scrollLock.padding
+        typeof options.scrollLock === 'object' &&
+          options.scrollLock.padding
       )
     }
 
-    if (mappedOptions.focusTrap) {
+    if (options.focusTrap) {
       releaseFocus()
     }
 
-    wrapperActive.value = false
+    active.wrapperActive = false
   }
 
   return {

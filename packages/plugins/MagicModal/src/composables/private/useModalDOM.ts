@@ -23,7 +23,7 @@ const scrollLock =
     : shallowRef(false)
 
 const { add, remove } = useScrollLockPadding({
-  exclude: /magic-modal(__backdrop)?/,
+  exclude: /magic-modal(-backdrop)?/,
 })
 
 export function useModalDOM(args?: useModalDOMArgs) {

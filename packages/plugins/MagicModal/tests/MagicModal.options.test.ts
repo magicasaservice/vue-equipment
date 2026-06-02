@@ -50,7 +50,7 @@ describe('MagicModal - Options', () => {
       await openModal(screen)
 
       expect(
-        document.querySelector('.magic-modal__backdrop')
+        document.querySelector('.magic-modal-backdrop')
       ).not.toBeNull()
     })
 
@@ -60,7 +60,7 @@ describe('MagicModal - Options', () => {
       )
       await openModal(screen)
 
-      expect(document.querySelector('.magic-modal__backdrop')).toBeNull()
+      expect(document.querySelector('.magic-modal-backdrop')).toBeNull()
     })
   })
 

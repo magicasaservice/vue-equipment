@@ -1,6 +1,6 @@
-import type { MagicModalOptions } from '../types'
+import type { RequiredMagicModalOptions } from '../types'
 
-const defaultOptions: Required<MagicModalOptions> = {
+const defaultOptions: RequiredMagicModalOptions = {
   backdrop: true,
   tag: 'dialog',
   focusTrap: {

@@ -18,6 +18,12 @@ export interface MagicModalOptions {
   }
 }
 
+export type RequiredMagicModalOptions = Required<MagicModalOptions> & {
+  teleport: Required<MagicModalOptions['teleport']>
+  transition: Required<MagicModalOptions['transition']>
+  keyListener: Required<MagicModalOptions['keyListener']>
+}
+
 export interface ModalEvents {
   beforeEnter: string
   enter: string
@@ -31,4 +37,5 @@ export interface ModalState {
   id: string
   refCount: number
   active: boolean
+  options: RequiredMagicModalOptions
 }
