@@ -1,5 +1,5 @@
 import { join, relative, resolve } from 'node:path'
-import { readFile } from 'node:fs/promises'
+import { readFile, stat } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { writeJSON } from 'fs-extra'
 import matter from 'gray-matter'
@@ -70,6 +70,12 @@ export async function readMetadata() {
               +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000
           } catch (e) {
             console.warn('git:', e)
+          }
+        } else {
+          try {
+            lastUpdated = (await stat(tsPath)).mtimeMs
+          } catch {
+            // file not found, lastUpdated stays 0
           }
         }
 
