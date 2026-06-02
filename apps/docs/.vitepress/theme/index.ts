@@ -1,3 +1,5 @@
+import type { EnhanceAppContext } from 'vitepress'
+import type { Component } from 'vue'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Layout from './Layout.vue'
 
@@ -60,7 +62,7 @@ import './styles/tailwind.css'
 export default {
   extends: DefaultTheme,
   Layout,
-  async enhanceApp({ app }) {
+  async enhanceApp({ app }: EnhanceAppContext) {
     app.component('ProseTable', ProseTable)
     app.component('ComponentPreview', ComponentPreview)
 
@@ -85,10 +87,11 @@ export default {
       app.use(plugin)
     })
 
-    for (const component in Mirror) {
-      // Filter out props, default, etc
-      if (!component.includes('Props')) {
-        app.component(component, Mirror[component])
+    for (const [name, comp] of Object.entries(
+      Mirror as Record<string, Component>
+    )) {
+      if (!name.includes('Props')) {
+        app.component(name, comp)
       }
     }
   },

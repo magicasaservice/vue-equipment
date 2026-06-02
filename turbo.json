@@ -9,12 +9,12 @@
     "docs#dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["update", "^build:types", "^build"]
+      "dependsOn": ["metadata#update", "^build:types", "^build"]
     },
     "nuxt#dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["update", "composables#build", "plugins#build"]
+      "dependsOn": ["composables#build", "plugins#build"]
     },
     "test": {
       "cache": true,
@@ -22,7 +22,7 @@
     },
     "build": {
       "outputs": ["./dist/**"],
-      "dependsOn": ["test", "update"]
+      "dependsOn": ["test"]
     },
     "build:types": {
       "outputs": ["$TURBO_ROOT$/types/**"]
@@ -32,23 +32,23 @@
     },
     "docs#build": {
       "cache": false,
-      "dependsOn": ["//#tokens", "update", "^build:types", "^build"]
+      "dependsOn": ["//#tokens", "metadata#update", "^build:types", "^build"]
     },
     "plugins#build": {
       "outputs": ["$TURBO_ROOT$/dist/plugins/**"],
-      "dependsOn": ["test", "update", "utils#build"]
+      "dependsOn": ["test", "utils#build"]
     },
     "composables#build": {
       "outputs": ["$TURBO_ROOT$/dist/composables/**"],
-      "dependsOn": ["test", "update"]
+      "dependsOn": ["test"]
     },
     "utils#build": {
       "outputs": ["$TURBO_ROOT$/dist/utils/**"],
-      "dependsOn": ["test", "update"]
+      "dependsOn": ["test"]
     },
     "nuxt#build": {
       "outputs": ["$TURBO_ROOT$/dist/nuxt/**"],
-      "dependsOn": ["test", "update", "composables#build", "plugins#build"]
+      "dependsOn": ["test", "composables#build", "plugins#build"]
     },
     "lint": {
       "cache": true,

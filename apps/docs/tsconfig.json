@@ -2,5 +2,11 @@
   "extends": "@maas/config/tsconfig/vue-base.json",
   "compilerOptions": {
     "noEmit": true
-  }
+  },
+  "include": [
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.vue",
+    "types/**/*.ts",
+    "vite.config.mts"
+  ]
 }
