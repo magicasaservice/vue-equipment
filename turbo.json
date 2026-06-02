@@ -54,9 +54,8 @@
       "cache": true,
       "outputs": []
     },
-    "update": {
-      "cache": false,
-      "outputs": ["./packages/metadata/index.json"]
+    "metadata#update": {
+      "cache": false
     },
     "//#t:release": {
       "cache": false,
