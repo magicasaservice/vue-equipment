@@ -27,8 +27,9 @@ const { options = {}, id } = defineProps<MagicModalProviderProps>()
 const { initializeState } = useModalState(id)
 const state = initializeState(options)
 
-function open() { state.active = true }
-function close() { state.active = false }
+function close() {
+  state.active = false
+}
 
 const active = reactive({
   wrapperActive: false,

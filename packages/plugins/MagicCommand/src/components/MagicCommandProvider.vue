@@ -13,11 +13,9 @@ import { shallowRef, provide, watch, type MaybeRef } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
-import { createDefu } from 'defu'
 
 import { useCommandState } from '../composables/private/useCommandState'
 import { useMagicCommand } from '../composables/useMagicCommand'
-import { defaultOptions } from '../utils/defaultOptions'
 import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
 
 import type { MagicCommandOptions } from '../types'

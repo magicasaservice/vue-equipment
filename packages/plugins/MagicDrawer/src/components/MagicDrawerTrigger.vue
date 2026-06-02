@@ -1,6 +1,5 @@
 <template>
   <vue-primitive
-    ref="el"
     class="magic-drawer-trigger"
     :as-child="asChild"
     :data-id="`${mappedId}-trigger`"
@@ -13,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, useTemplateRef, toValue, type MaybeRef } from 'vue'
+import { computed, inject, toValue, type MaybeRef } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
@@ -30,8 +29,6 @@ interface MagicDrawerTriggerProps {
 }
 
 const { id, disabled, asChild } = defineProps<MagicDrawerTriggerProps>()
-
-const elRef = useTemplateRef<InstanceType<typeof VuePrimitive>>('el')
 
 const injectedInstanceId = inject(MagicDrawerInstanceId, undefined)
 
@@ -59,7 +56,11 @@ const mappedDisabled = computed(() => disabled ?? state.options.disabled)
 
 function onClick() {
   if (!mappedDisabled.value) {
-    isActive.value ? close() : open()
+    if (!isActive.value) {
+      open()
+    } else {
+      close()
+    }
   }
 }
 </script>

@@ -82,7 +82,10 @@ defineOptions({
 })
 
 const instanceId = inject(MagicDrawerInstanceId, undefined)
-const active = inject(MagicDrawerActiveKey, { wrapperActive: false, innerActive: false })
+const active = inject(MagicDrawerActiveKey, {
+  wrapperActive: false,
+  innerActive: false,
+})
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicDrawer',
@@ -113,33 +116,40 @@ const { trapFocus, releaseFocus, unlockScroll } = useDrawerDOM({
 
 const wasActive = shallowRef(false)
 
-const { onBeforeEnter, onEnter, onAfterEnter, onBeforeLeave, onLeave, onAfterLeave } =
-  useDrawerCallback({
-    id: instanceId ?? '',
-    options: state.options,
-    trapFocus,
-    releaseFocus,
-    active,
-    wasActive,
-  })
+const {
+  onBeforeEnter,
+  onEnter,
+  onAfterEnter,
+  onBeforeLeave,
+  onLeave,
+  onAfterLeave,
+} = useDrawerCallback({
+  id: instanceId ?? '',
+  options: state.options,
+  trapFocus,
+  releaseFocus,
+  active,
+  wasActive,
+})
 
 const disabled = computed(() => state.options.disabled)
 
 const overshoot = shallowRef(0)
 
-const { onPointerdown, onTouchstart, onClick, style, hasDragged } = useDrawerDrag({
-  id: instanceId ?? '',
-  elRef,
-  wrapperRef,
-  position: state.options.position,
-  snapPoints: state.options.snapPoints,
-  threshold: state.options.threshold,
-  overshoot,
-  animation: state.options.animation,
-  initial: state.options.initial,
-  preventDragClose: state.options.preventDragClose,
-  disabled,
-})
+const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
+  useDrawerDrag({
+    id: instanceId ?? '',
+    elRef,
+    wrapperRef,
+    position: state.options.position,
+    snapPoints: state.options.snapPoints,
+    threshold: state.options.threshold,
+    overshoot,
+    animation: state.options.animation,
+    initial: state.options.initial,
+    preventDragClose: state.options.preventDragClose,
+    disabled,
+  })
 
 const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   id: instanceId ?? '',
@@ -148,7 +158,13 @@ const { initializeWheelListener, destroyWheelListener } = useDrawerWheel({
   disabled,
 })
 
-useDrawerProgress({ id: instanceId ?? '', elRef, drawerRef, position: state.options.position, overshoot })
+useDrawerProgress({
+  id: instanceId ?? '',
+  elRef,
+  drawerRef,
+  position: state.options.position,
+  overshoot,
+})
 
 const { resetMetaViewport } = useMetaViewport()
 
@@ -168,7 +184,11 @@ watch(
   (value) => {
     saveOvershoot()
     if (state.options.enableMousewheel) {
-      value ? initializeWheelListener() : destroyWheelListener()
+      if (value) {
+        initializeWheelListener()
+      } else {
+        destroyWheelListener()
+      }
     }
   }
 )
@@ -199,7 +219,9 @@ function convertToPixels(value: string) {
 
 function saveOvershoot() {
   const element = unrefElement(drawerRef)
-  if (!element) return
+  if (!element) {
+    return
+  }
 
   const overshootVar = getComputedStyle(element, null).getPropertyValue(
     '--magic-drawer-drag-overshoot'
@@ -208,15 +230,21 @@ function saveOvershoot() {
 }
 
 function guardedPointerdown(event: PointerEvent) {
-  if (!disabled.value) onPointerdown(event)
+  if (!disabled.value) {
+    onPointerdown(event)
+  }
 }
 
 function guardedTouchstart(event: TouchEvent) {
-  if (!disabled.value) onTouchstart(event)
+  if (!disabled.value) {
+    onTouchstart(event)
+  }
 }
 
 function guardedClick(event: PointerEvent) {
-  if (!disabled.value) onClick(event)
+  if (!disabled.value) {
+    onClick(event)
+  }
 }
 
 onBeforeUnmount(() => {
@@ -228,7 +256,8 @@ onBeforeUnmount(() => {
 onUnmounted(() => {
   if (state.options.scrollLock) {
     unlockScroll(
-      typeof state.options.scrollLock === 'object' && state.options.scrollLock.padding
+      typeof state.options.scrollLock === 'object' &&
+        state.options.scrollLock.padding
     )
   }
 

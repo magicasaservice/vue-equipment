@@ -1,6 +1,5 @@
 <template>
   <vue-primitive
-    ref="el"
     class="magic-modal-trigger"
     :as-child="asChild"
     :data-id="`${mappedId}-trigger`"
@@ -13,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, useTemplateRef, toValue, type MaybeRef } from 'vue'
+import { computed, inject, toValue, type MaybeRef } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import {
   useMagicError,
@@ -29,8 +28,6 @@ interface MagicModalTriggerProps {
 }
 
 const { id, disabled, asChild } = defineProps<MagicModalTriggerProps>()
-
-const elRef = useTemplateRef<InstanceType<typeof VuePrimitive>>('el')
 
 const injectedInstanceId = inject(MagicModalInstanceId, undefined)
 
@@ -55,7 +52,11 @@ const mappedDisabled = computed(() => disabled ?? false)
 
 function onClick() {
   if (!mappedDisabled.value) {
-    isActive.value ? close() : open()
+    if (!isActive.value) {
+      open()
+    } else {
+      close()
+    }
   }
 }
 </script>

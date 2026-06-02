@@ -20,13 +20,11 @@ import {
 } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
-import { defu } from 'defu'
 
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
 import { MagicMenuInstanceId } from '../symbols'
-import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicMenuOptions } from '../types'
 
