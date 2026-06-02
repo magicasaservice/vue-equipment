@@ -57,7 +57,7 @@ function createWrapperWithBackdropSlot() {
 describe('MagicModal - Rendering', () => {
   it('does not render when inactive', () => {
     render(createWrapper())
-    expect(document.querySelector('.magic-modal')).toBeNull()
+    expect(document.querySelector('.magic-modal-content')).toBeNull()
   })
 
   it('renders with correct class structure when opened', async () => {
@@ -66,10 +66,10 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.querySelector('.magic-modal')
+    const modal = document.querySelector('.magic-modal-content')
     expect(modal).not.toBeNull()
     expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
-    expect(modal!.querySelector('.magic-modal__content')).not.toBeNull()
+    expect(modal!.querySelector('.magic-modal-content__inner')).not.toBeNull()
   })
 
   it('sets data-id attribute', async () => {
@@ -78,7 +78,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.querySelector('.magic-modal')
+    const modal = document.querySelector('.magic-modal-content')
     expect(modal!.getAttribute('data-id')).toBe(ModalId.TestModal)
   })
 
@@ -88,7 +88,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.querySelector('.magic-modal')
+    const modal = document.querySelector('.magic-modal-content')
     expect(modal!.getAttribute('aria-modal')).toBe('true')
   })
 
@@ -98,7 +98,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const content = document.querySelector('.magic-modal__content')
+    const content = document.querySelector('.magic-modal-content__inner')
     expect(content!.tagName.toLowerCase()).toBe('dialog')
   })
 
@@ -108,7 +108,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const content = document.querySelector('.magic-modal__content')
+    const content = document.querySelector('.magic-modal-content__inner')
     expect(content!.tagName.toLowerCase()).toBe('div')
   })
 
@@ -118,7 +118,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.body.querySelector(':scope > .magic-modal')
+    const modal = document.body.querySelector(':scope > .magic-modal-content')
     expect(modal).not.toBeNull()
   })
 
@@ -168,7 +168,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.querySelector('.magic-modal') as HTMLElement
+    const modal = document.querySelector('.magic-modal-content') as HTMLElement
     const style = window.getComputedStyle(modal)
     expect(style.position).toBe('fixed')
   })
@@ -179,7 +179,7 @@ describe('MagicModal - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    const modal = document.querySelector('.magic-modal') as HTMLElement
+    const modal = document.querySelector('.magic-modal-content') as HTMLElement
     const style = window.getComputedStyle(modal)
     expect(style.display).toBe('flex')
     expect(style.justifyContent).toBe('center')

@@ -24,7 +24,10 @@ import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
 
 const instanceId = inject(MagicModalInstanceId, undefined)
-const active = inject(MagicModalActiveKey, { wrapperActive: false, innerActive: false })
+const active = inject(MagicModalActiveKey, {
+  wrapperActive: false,
+  innerActive: false,
+})
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicModal',
@@ -55,10 +58,10 @@ function guardedClose() {
   bottom: var(--magic-modal-backdrop-bottom, 0);
   width: var(--magic-modal-backdrop-width, 100%);
   height: var(--magic-modal-backdrop-height, 100%);
-  pointer-events: auto;
   background-color: var(--magic-modal-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-modal-backdrop-filter, unset);
-  z-index: var(--magic-modal-backdrop-z-index, 998);
+  z-index: var(--magic-modal-backdrop-z-index, 999);
+  pointer-events: auto;
 }
 
 .magic-modal-backdrop-enter-active {

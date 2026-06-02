@@ -229,7 +229,7 @@ describe('MagicDrawer - Events', () => {
         await nextTick()
 
         const dragEl = document.querySelector(
-          '.magic-drawer__drag'
+          '.magic-drawer-content__drag'
         ) as HTMLElement
         expect(dragEl).not.toBeNull()
 
@@ -278,7 +278,7 @@ describe('MagicDrawer - Events', () => {
         await nextTick()
 
         const dragEl = document.querySelector(
-          '.magic-drawer__drag'
+          '.magic-drawer-content__drag'
         ) as HTMLElement
         expect(dragEl).not.toBeNull()
 
@@ -328,7 +328,7 @@ describe('MagicDrawer - Events', () => {
         await nextTick()
 
         const dragEl = document.querySelector(
-          '.magic-drawer__drag'
+          '.magic-drawer-content__drag'
         ) as HTMLElement
         expect(dragEl).not.toBeNull()
 

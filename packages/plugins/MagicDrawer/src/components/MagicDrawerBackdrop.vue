@@ -25,7 +25,10 @@ import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
 
 const instanceId = inject(MagicDrawerInstanceId, undefined)
-const active = inject(MagicDrawerActiveKey, { wrapperActive: false, innerActive: false })
+const active = inject(MagicDrawerActiveKey, {
+  wrapperActive: false,
+  innerActive: false,
+})
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicDrawer',
@@ -58,10 +61,10 @@ function guardedClose() {
   bottom: var(--magic-drawer-backdrop-bottom, 0);
   width: var(--magic-drawer-backdrop-width, 100%);
   height: var(--magic-drawer-backdrop-height, 100%);
-  pointer-events: auto;
   background-color: var(--magic-drawer-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-drawer-backdrop-filter, unset);
-  z-index: var(--magic-drawer-backdrop-z-index, 998);
+  z-index: var(--magic-drawer-backdrop-z-index, 999);
+  pointer-events: auto;
 }
 
 .magic-drawer-backdrop[data-disabled='true'] {

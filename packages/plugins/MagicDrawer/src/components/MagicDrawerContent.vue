@@ -1,7 +1,7 @@
 <template>
   <div
     ref="drawer"
-    class="magic-drawer"
+    class="magic-drawer-content"
     :data-id="mappedId"
     :data-dragging="dragging"
     :data-dragged="hasDragged"
@@ -11,7 +11,7 @@
     v-bind="$attrs"
     aria-modal="true"
   >
-    <div ref="wrapper" class="magic-drawer__wrapper">
+    <div ref="wrapper" class="magic-drawer-content__wrapper">
       <transition
         :name="contentTransition"
         @before-enter="onBeforeEnter"
@@ -21,18 +21,18 @@
         @leave="onLeave"
         @after-leave="onAfterLeave"
       >
-        <div v-show="active.innerActive" class="magic-drawer__content">
+        <div v-show="active.innerActive" class="magic-drawer-content__inner">
           <component
             :is="state.options.tag"
             ref="el"
-            class="magic-drawer__drag"
+            class="magic-drawer-content__drag"
             :style="style"
             @pointerdown="guardedPointerdown"
             @touchstart="guardedTouchstart"
             @click="guardedClick"
           >
             <slot />
-            <div v-if="hasDragged" class="magic-drawer__overlay" />
+            <div v-if="hasDragged" class="magic-drawer-content__overlay" />
           </component>
         </div>
       </transition>
@@ -284,7 +284,7 @@ onUnmounted(() => {
   --magic-drawer-drag-overshoot: 4rem;
 }
 
-.magic-drawer {
+.magic-drawer-content {
   --magic-drawer-padding: 0px;
   --magic-drawer-drag-overshoot-x: 0px;
   --magic-drawer-drag-overshoot-y: 0px;
@@ -303,18 +303,18 @@ onUnmounted(() => {
   border: none;
 }
 
-.magic-drawer[data-position='bottom'] {
+.magic-drawer-content[data-position='bottom'] {
   --magic-drawer-drag-overshoot-y: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 0 var(--magic-drawer-drag-overshoot-y) 0;
 
-  & > .magic-drawer__wrapper {
+  & > .magic-drawer-content__wrapper {
     height: calc(
       var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot, 0px)
     );
   }
 }
 
-.magic-drawer[data-position='top'] {
+.magic-drawer-content[data-position='top'] {
   --magic-drawer-enter-animation: slide-ttb-in 300ms ease;
   --magic-drawer-leave-animation: slide-ttb-out 300ms ease;
   --magic-drawer-align-items: flex-start;
@@ -323,14 +323,14 @@ onUnmounted(() => {
   );
   --magic-drawer-padding: var(--magic-drawer-drag-overshoot-y) 0 0 0;
 
-  & > .magic-drawer__wrapper {
+  & > .magic-drawer-content__wrapper {
     height: calc(
       var(--magic-drawer-height, 0px) + var(--magic-drawer-drag-overshoot, 0px)
     );
   }
 }
 
-.magic-drawer[data-position='right'] {
+.magic-drawer-content[data-position='right'] {
   --magic-drawer-enter-animation: slide-rtl-in 300ms ease;
   --magic-drawer-leave-animation: slide-rtl-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -338,14 +338,14 @@ onUnmounted(() => {
   --magic-drawer-drag-overshoot-x: var(--magic-drawer-drag-overshoot);
   --magic-drawer-padding: 0 var(--magic-drawer-drag-overshoot-x) 0 0;
 
-  & > .magic-drawer__wrapper {
+  & > .magic-drawer-content__wrapper {
     width: calc(
       var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot, 0px)
     );
   }
 }
 
-.magic-drawer[data-position='left'] {
+.magic-drawer-content[data-position='left'] {
   --magic-drawer-enter-animation: slide-ltr-in 300ms ease;
   --magic-drawer-leave-animation: slide-ltr-out 300ms ease;
   --magic-drawer-align-items: center;
@@ -355,14 +355,14 @@ onUnmounted(() => {
   );
   --magic-drawer-padding: 0 0 0 var(--magic-drawer-drag-overshoot-x);
 
-  & > .magic-drawer__wrapper {
+  & > .magic-drawer-content__wrapper {
     width: calc(
       var(--magic-drawer-width, 0px) + var(--magic-drawer-drag-overshoot, 0px)
     );
   }
 }
 
-.magic-drawer__wrapper {
+.magic-drawer-content__wrapper {
   height: var(--magic-drawer-height);
   max-height: calc(
     var(--magic-drawer-max-height) + var(--magic-drawer-drag-overshoot-y)
@@ -380,14 +380,14 @@ onUnmounted(() => {
   min-height: 0;
 }
 
-.magic-drawer__content {
+.magic-drawer-content__inner {
   width: var(--magic-drawer-content-width, 100%);
   max-height: var(--magic-drawer-content-max-height, 100%);
   height: var(--magic-drawer-content-height, 100%);
   position: relative;
 }
 
-.magic-drawer__drag {
+.magic-drawer-content__drag {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   touch-action: none;
@@ -403,7 +403,7 @@ onUnmounted(() => {
   cursor: var(--magic-drawer-cursor, grab);
 }
 
-dialog.magic-drawer__drag {
+dialog.magic-drawer-content__drag {
   margin: 0;
   padding: 0;
   border: 0;
@@ -411,30 +411,30 @@ dialog.magic-drawer__drag {
   outline: 0;
 }
 
-dialog.magic-drawer__drag::backdrop {
+dialog.magic-drawer-content__drag::backdrop {
   background-color: transparent;
 }
 
-.magic-drawer[data-dragging='true'] .magic-drawer__drag {
+.magic-drawer-content[data-dragging='true'] .magic-drawer-content__drag {
   cursor: var(--magic-drawer-cursor-dragging, grabbing);
   user-select: none;
 }
 
-.magic-drawer[data-wheeling='true'] .magic-drawer__drag {
+.magic-drawer-content[data-wheeling='true'] .magic-drawer-content__drag {
   cursor: auto;
 }
 
-.magic-drawer[data-disabled='true'] .magic-drawer__drag {
+.magic-drawer-content[data-disabled='true'] .magic-drawer-content__drag {
   cursor: auto;
 }
 
-.magic-drawer__drag > * {
+.magic-drawer-content__drag > * {
   padding: var(--magic-drawer-padding);
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
 
-.magic-drawer__overlay {
+.magic-drawer-content__overlay {
   position: absolute;
   inset: 0;
   z-index: 9999;

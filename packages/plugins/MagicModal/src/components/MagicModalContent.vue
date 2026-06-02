@@ -1,6 +1,6 @@
 <template>
   <div
-    class="magic-modal"
+    class="magic-modal-content"
     :data-id="mappedId"
     v-bind="$attrs"
     aria-modal="true"
@@ -17,7 +17,7 @@
       <component
         :is="state.options.tag"
         v-show="active.innerActive"
-        class="magic-modal__content"
+        class="magic-modal-content__inner"
         @click.self="guardedClose"
       >
         <slot />
@@ -27,11 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  inject,
-  toValue,
-  onUnmounted,
-} from 'vue'
+import { inject, toValue, onUnmounted } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -50,7 +46,10 @@ defineOptions({
 })
 
 const instanceId = inject(MagicModalInstanceId, undefined)
-const active = inject(MagicModalActiveKey, { wrapperActive: false, innerActive: false })
+const active = inject(MagicModalActiveKey, {
+  wrapperActive: false,
+  innerActive: false,
+})
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicModal',
@@ -130,7 +129,7 @@ onUnmounted(() => {
   }
 }
 
-.magic-modal {
+.magic-modal-content {
   position: var(--magic-modal-position, fixed);
   inset: var(--magic-modal-inset, 0);
   width: var(--magic-modal-width, 100%);
@@ -146,7 +145,7 @@ onUnmounted(() => {
   pointer-events: none;
 }
 
-.magic-modal__content {
+.magic-modal-content__inner {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   max-height: var(--magic-modal-content-max-height, 100%);
@@ -159,7 +158,7 @@ onUnmounted(() => {
 }
 
 /* Reset default dialog styles */
-dialog.magic-modal__content {
+dialog.magic-modal-content__inner {
   margin: 0;
   padding: 0;
   border: 0;
@@ -167,7 +166,7 @@ dialog.magic-modal__content {
   outline: 0;
 }
 
-dialog.magic-modal__content::backdrop {
+dialog.magic-modal-content__inner::backdrop {
   background-color: transparent;
 }
 

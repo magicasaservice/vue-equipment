@@ -95,7 +95,7 @@ describe('MagicModal - Edge Cases', () => {
         .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
 
-      expect(document.querySelector('.magic-modal')).not.toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
@@ -199,7 +199,7 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      expect(document.querySelector('.magic-modal')).not.toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
 
       // Toggle button is behind modal, use DOM click
       const toggleBtn = document.querySelector(
@@ -211,7 +211,7 @@ describe('MagicModal - Edge Cases', () => {
       await new Promise((r) => setTimeout(r, 300))
 
       // Modal DOM should be removed after unmount
-      expect(document.querySelector('.magic-modal')).toBeNull()
+      expect(document.querySelector('.magic-modal-content')).toBeNull()
     })
 
     it('unmounting cleans up scroll lock', async () => {

@@ -49,9 +49,7 @@ describe('MagicModal - Options', () => {
       const screen = render(createWrapper(ModalId.OptBackdropTrue))
       await openModal(screen)
 
-      expect(
-        document.querySelector('.magic-modal-backdrop')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
     })
 
     it('backdrop: false hides backdrop', async () => {
@@ -69,17 +67,15 @@ describe('MagicModal - Options', () => {
       const screen = render(createWrapper(ModalId.OptTagDialog))
       await openModal(screen)
 
-      const content = document.querySelector('.magic-modal__content')
+      const content = document.querySelector('.magic-modal-content__inner')
       expect(content!.tagName.toLowerCase()).toBe('dialog')
     })
 
     it('tag: div uses div element', async () => {
-      const screen = render(
-        createWrapper(ModalId.OptTagDiv, { tag: 'div' })
-      )
+      const screen = render(createWrapper(ModalId.OptTagDiv, { tag: 'div' }))
       await openModal(screen)
 
-      const content = document.querySelector('.magic-modal__content')
+      const content = document.querySelector('.magic-modal-content__inner')
       expect(content!.tagName.toLowerCase()).toBe('div')
     })
   })
@@ -89,7 +85,7 @@ describe('MagicModal - Options', () => {
       const screen = render(createWrapper(ModalId.OptTeleportBody))
       await openModal(screen)
 
-      const modal = document.body.querySelector(':scope > .magic-modal')
+      const modal = document.body.querySelector(':scope > .magic-modal-content')
       expect(modal).not.toBeNull()
     })
 
@@ -107,7 +103,7 @@ describe('MagicModal - Options', () => {
         )
         await openModal(screen)
 
-        const modal = target.querySelector('.magic-modal')
+        const modal = target.querySelector('.magic-modal-content')
         expect(modal).not.toBeNull()
       } finally {
         document.body.removeChild(target)
@@ -124,12 +120,12 @@ describe('MagicModal - Options', () => {
 
       // Should NOT be a direct child of body
       const bodyModal = document.body.querySelector(
-        ':scope > .magic-modal'
+        ':scope > .magic-modal-content'
       )
       expect(bodyModal).toBeNull()
 
       // But should exist somewhere in the DOM
-      expect(document.querySelector('.magic-modal')).not.toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
     })
   })
 
@@ -201,7 +197,7 @@ describe('MagicModal - Options', () => {
       await openModal(screen)
 
       // Modal should still render correctly with custom transition names
-      expect(document.querySelector('.magic-modal')).not.toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
     })
   })
 
