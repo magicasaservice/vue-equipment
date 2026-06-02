@@ -43,7 +43,7 @@ const { open } = useMagicDrawer('your-drawer-id')
 ```
 
 > [!TIP]
-> `MagicDrawerTeleport` is optional. Omitting it keeps the drawer in the DOM at all times — content visibility is controlled via `v-show` instead of mounting and unmounting.
+> `MagicDrawerTeleport` is optional. Omit it to keep the drawer mounted at all times, with visibility controlled via `v-show`.
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 

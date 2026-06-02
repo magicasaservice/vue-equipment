@@ -16,13 +16,13 @@ import {
   type MagicEmitterEvents,
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useDrawerState } from './useDrawerState'
-import type { DrawerDefaultOptions } from '../../types'
+import type { RequiredMagicDrawerOptions } from '../../types'
 
 interface UseDrawerProgressArgs {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
   drawerRef: Ref<HTMLDivElement | null>
-  position: MaybeRef<DrawerDefaultOptions['position']>
+  position: MaybeRef<RequiredMagicDrawerOptions['position']>
   overshoot: MaybeRef<number>
 }
 
@@ -110,8 +110,12 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         break
     }
 
-    if (Object.is(rawX, -0)) {rawX = 0}
-    if (Object.is(rawY, -0)) {rawY = 0}
+    if (Object.is(rawX, -0)) {
+      rawX = 0
+    }
+    if (Object.is(rawY, -0)) {
+      rawY = 0
+    }
 
     // Clamp the values between 0 and 1
     const x = clampValue(rawX, 0, 1)

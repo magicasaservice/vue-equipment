@@ -116,10 +116,10 @@ const wasActive = shallowRef(false)
 const { onBeforeEnter, onEnter, onAfterEnter, onBeforeLeave, onLeave, onAfterLeave } =
   useDrawerCallback({
     id: instanceId ?? '',
-    mappedOptions: state.options,
+    options: state.options,
     trapFocus,
     releaseFocus,
-    afterLeave: () => { active.wrapperActive = false },
+    active,
     wasActive,
   })
 

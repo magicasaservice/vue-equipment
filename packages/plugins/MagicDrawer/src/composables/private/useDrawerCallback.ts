@@ -2,24 +2,25 @@ import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicDrawerOptions } from '../../types'
+import type { DrawerActive } from '../../symbols'
 import { useDrawerDOM } from './useDrawerDOM'
 
 type UseDrawerCallbackArgs = {
   id: MaybeRef<string>
-  mappedOptions: MagicDrawerOptions
+  options: MagicDrawerOptions
   trapFocus: () => void
   releaseFocus: () => void
-  afterLeave: () => void
+  active: DrawerActive
   wasActive: Ref<boolean>
 }
 
 export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   const {
     id,
-    mappedOptions,
+    options,
     trapFocus,
     releaseFocus,
-    afterLeave,
+    active,
     wasActive,
   } = args
 
@@ -30,14 +31,14 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   function onBeforeEnter() {
     emitter.emit('beforeEnter', toValue(id))
 
-    if (mappedOptions.scrollLock) {
+    if (options.scrollLock) {
       lockScroll(
-        typeof mappedOptions.scrollLock === 'object' &&
-          mappedOptions.scrollLock.padding
+        typeof options.scrollLock === 'object' &&
+          options.scrollLock.padding
       )
     }
 
-    if (mappedOptions.preventZoom) {
+    if (options.preventZoom) {
       setMetaViewport()
     }
   }
@@ -49,7 +50,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   async function onAfterEnter() {
     emitter.emit('afterEnter', toValue(id))
 
-    if (mappedOptions.focusTrap) {
+    if (options.focusTrap) {
       await nextTick()
       trapFocus()
     }
@@ -68,22 +69,22 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   function onAfterLeave() {
     emitter.emit('afterLeave', toValue(id))
 
-    if (mappedOptions.scrollLock) {
+    if (options.scrollLock) {
       unlockScroll(
-        typeof mappedOptions.scrollLock === 'object' &&
-          mappedOptions.scrollLock.padding
+        typeof options.scrollLock === 'object' &&
+          options.scrollLock.padding
       )
     }
 
-    if (mappedOptions.focusTrap) {
+    if (options.focusTrap) {
       releaseFocus()
     }
 
-    if (mappedOptions.preventZoom) {
+    if (options.preventZoom) {
       resetMetaViewport()
     }
 
-    afterLeave()
+    active.wrapperActive = false
   }
 
   return {

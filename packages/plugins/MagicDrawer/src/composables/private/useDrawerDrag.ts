@@ -37,18 +37,18 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
+import type { DrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
   wrapperRef: Ref<HTMLDivElement | null>
-  position: MaybeRef<DrawerDefaultOptions['position']>
-  snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
-  threshold: MaybeRef<DrawerDefaultOptions['threshold']>
-  initial: MaybeRef<DrawerDefaultOptions['initial']>
-  animation: MaybeRef<DrawerDefaultOptions['animation']>
-  preventDragClose: MaybeRef<DrawerDefaultOptions['preventDragClose']>
+  position: MaybeRef<RequiredMagicDrawerOptions['position']>
+  snapPoints: MaybeRef<RequiredMagicDrawerOptions['snapPoints']>
+  threshold: MaybeRef<RequiredMagicDrawerOptions['threshold']>
+  initial: MaybeRef<RequiredMagicDrawerOptions['initial']>
+  animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
+  preventDragClose: MaybeRef<RequiredMagicDrawerOptions['preventDragClose']>
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
 }
@@ -280,7 +280,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     switch (position) {
       case 'bottom': {
         const newDraggedB = clamp(y - originY.value, 0, os * -1, false)
-        if (newDraggedB === draggedY.value) {break}
+        if (newDraggedB === draggedY.value) {
+          break
+        }
 
         relDirectionY.value = newDraggedB < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedB
@@ -289,7 +291,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'top': {
         const newDraggedT = clamp(y - originY.value, 0, os, true)
-        if (newDraggedT === draggedY.value) {break}
+        if (newDraggedT === draggedY.value) {
+          break
+        }
 
         relDirectionY.value = newDraggedT < draggedY.value ? 'below' : 'above'
         draggedY.value = newDraggedT
@@ -298,7 +302,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'right': {
         const newDraggedR = clamp(x - originX.value, 0, os * -1, false)
-        if (newDraggedR === draggedX.value) {break}
+        if (newDraggedR === draggedX.value) {
+          break
+        }
 
         relDirectionX.value = newDraggedR < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedR
@@ -307,7 +313,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       case 'left': {
         const newDraggedL = clamp(x - originX.value, 0, os, true)
-        if (newDraggedL === draggedX.value) {break}
+        if (newDraggedL === draggedX.value) {
+          break
+        }
 
         relDirectionX.value = newDraggedL < draggedX.value ? 'below' : 'above'
         draggedX.value = newDraggedL
