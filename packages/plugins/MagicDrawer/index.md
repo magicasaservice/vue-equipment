@@ -187,7 +187,7 @@ bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-ge
 
 ### MagicDrawerProvider
 
-The root component. Wraps all other drawer components and makes the drawer id and configuration available to its children. Also responsible for managing the open/close state machine.
+The MagicDrawerProvider wraps the drawer and configures all child components according to the provided [options](#options).
 
 #### Props
 
@@ -664,7 +664,7 @@ Renders a full-viewport overlay behind the drawer panel. Closes the drawer when 
 
 ### MagicDrawerContent
 
-Renders the drawer panel with all drag, snap and scroll logic. Must be nested inside `MagicDrawerProvider`. Inherits additional attributes and passes them to the root `.magic-drawer` element.
+Handles the drawer’s internal logic. Must be nested inside `MagicDrawerProvider`.
 
 #### CSS Variables
 
@@ -787,7 +787,7 @@ Renders the drawer panel with all drag, snap and scroll logic. Must be nested in
 
 ### MagicDrawerTrigger
 
-A toggleable trigger that opens or closes the drawer on click. Must be nested inside `MagicDrawerProvider`, or an `id` prop must be provided to reference a drawer outside the component tree.
+Opens or closes the drawer on click. Must either be nested inside `MagicDrawerProvider`, or receive an `id` prop that references a drawer outside the component tree.
 
 #### Props
 
@@ -872,7 +872,7 @@ A toggleable trigger that opens or closes the drawer on click. Must be nested in
 
 ### MagicDrawer
 
-A self-contained component that composes all primitives internally. Equivalent to the composed pattern — use this for simple cases where you do not need to customise the structure.
+A self-contained component that composes all primitives internally. Use this for simple cases where you don’t need to customise the markup.
 
 #### Props
 
