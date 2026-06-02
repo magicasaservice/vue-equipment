@@ -172,7 +172,14 @@ export async function readMetadata() {
 
 async function run() {
   const indexes = await readMetadata()
-  await writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
+  console.log('creating index.json')
+  try {
+    await writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
+    console.log('index.json created')
+  } catch (e) {
+    console.error('failed to write index.json:', e)
+    throw e
+  }
 }
 
 run()
