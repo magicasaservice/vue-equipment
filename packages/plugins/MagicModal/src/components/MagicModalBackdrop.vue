@@ -60,7 +60,7 @@ function guardedClose() {
   height: var(--magic-modal-backdrop-height, 100%);
   background-color: var(--magic-modal-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-modal-backdrop-filter, unset);
-  z-index: var(--magic-modal-backdrop-z-index, 999);
+  z-index: var(--magic-modal-backdrop-z-index, var(--magic-modal-z-index, 999));
   pointer-events: auto;
 }
 

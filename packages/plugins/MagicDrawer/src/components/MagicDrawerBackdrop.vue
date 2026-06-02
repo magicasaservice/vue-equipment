@@ -63,7 +63,10 @@ function guardedClose() {
   height: var(--magic-drawer-backdrop-height, 100%);
   background-color: var(--magic-drawer-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-drawer-backdrop-filter, unset);
-  z-index: var(--magic-drawer-backdrop-z-index, 999);
+  z-index: var(
+    --magic-drawer-backdrop-z-index,
+    var(--magic-drawer-z-index, 999)
+  );
   pointer-events: auto;
 }
 
