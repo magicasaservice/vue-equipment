@@ -9,7 +9,7 @@
     "docs#dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["metadata#update", "^build:types", "^build"]
+      "dependsOn": ["//#tokens", "metadata#update", "^build:types", "^build"]
     },
     "nuxt#dev": {
       "cache": false,
@@ -20,15 +20,16 @@
       "cache": true,
       "outputs": []
     },
+    "lint": {
+      "cache": true,
+      "outputs": []
+    },
     "build": {
       "outputs": ["./dist/**"],
       "dependsOn": ["test"]
     },
     "build:types": {
       "outputs": ["$TURBO_ROOT$/types/**"]
-    },
-    "//#tokens": {
-      "cache": false
     },
     "docs#build": {
       "cache": false,
@@ -50,11 +51,10 @@
       "outputs": ["$TURBO_ROOT$/dist/nuxt/**"],
       "dependsOn": ["test", "composables#build", "plugins#build"]
     },
-    "lint": {
-      "cache": true,
-      "outputs": []
-    },
     "metadata#update": {
+      "cache": false
+    },
+    "//#tokens": {
       "cache": false
     },
     "//#t:release": {

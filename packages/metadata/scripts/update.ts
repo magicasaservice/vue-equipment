@@ -38,6 +38,8 @@ export async function readMetadata() {
     functions: [],
   }
 
+  const isGitRepo = await git.checkIsRepo().catch(() => false)
+
   for (const info of packages) {
     if (info.utils) {
       continue
@@ -62,11 +64,13 @@ export async function readMetadata() {
 
         let lastUpdated = 0
 
-        try {
-          lastUpdated =
-            +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000
-        } catch (e) {
-          console.warn('git:', e)
+        if (isGitRepo) {
+          try {
+            lastUpdated =
+              +(await git.raw(['log', '-1', '--format=%at', tsPath])) * 1000
+          } catch (e) {
+            console.warn('git:', e)
+          }
         }
 
         const fn: VueEquipmentFunction = {

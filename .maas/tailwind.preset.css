@@ -1,4 +1,4 @@
-@theme {
+@theme inline {
   --color-*: initial;
   --radius-surface-lg-inset: var(--app-dimension-surface-radius-lg-inset);
   --radius-surface-lg: var(--app-dimension-surface-radius-lg);
@@ -1309,6 +1309,40 @@
   letter-spacing: var(--app-letter-spacing-surface-caption);
   &.-strong {
     font-weight: var(--app-font-weight-surface-caption-strong);
+  }
+}
+
+@utility type-component-5xs {
+  font-family: var(--app-font-family-text);
+  font-size: var(--app-font-size-text-5xs);
+  font-weight: var(--app-font-weight-text);
+  line-height: var(--app-line-height);
+  text-transform: var(--app-text-case);
+  &.-alt {
+    font-weight: var(--app-font-weight-text-alt);
+  }
+  &.-strong {
+    font-weight: var(--app-font-weight-text-strong);
+  }
+  &.-number {
+    font-family: var(--app-font-family-number);
+  }
+}
+
+@utility type-component-4xs {
+  font-family: var(--app-font-family-text);
+  font-size: var(--app-font-size-text-4xs);
+  font-weight: var(--app-font-weight-text);
+  line-height: var(--app-line-height);
+  text-transform: var(--app-text-case);
+  &.-alt {
+    font-weight: var(--app-font-weight-text-alt);
+  }
+  &.-strong {
+    font-weight: var(--app-font-weight-text-strong);
+  }
+  &.-number {
+    font-family: var(--app-font-family-number);
   }
 }
 
