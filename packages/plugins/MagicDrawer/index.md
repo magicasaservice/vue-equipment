@@ -8,6 +8,10 @@ MagicDrawer is a flexible, touch enabled, unstyled drawer component. Useful for 
 
 ## Anatomy
 
+MagicDrawer can be used as a single self-contained component or composed from its individual parts for full control.
+
+### Simple
+
 ```vue
 <template>
   <magic-drawer id="your-drawer-id">
@@ -19,6 +23,27 @@ MagicDrawer is a flexible, touch enabled, unstyled drawer component. Useful for 
 const { open } = useMagicDrawer('your-drawer-id')
 </script>
 ```
+
+### Composed
+
+```vue
+<template>
+  <magic-drawer-provider id="your-drawer-id" :options="{}">
+    <magic-drawer-trigger as-child>
+      <button>Open</button>
+    </magic-drawer-trigger>
+    <magic-drawer-teleport>
+      <magic-drawer-backdrop />
+      <magic-drawer-content>
+        <!-- your content -->
+      </magic-drawer-content>
+    </magic-drawer-teleport>
+  </magic-drawer-provider>
+</template>
+```
+
+> [!TIP]
+> `MagicDrawerTeleport` is optional. Omitting it keeps the drawer in the DOM at all times — content visibility is controlled via `v-show` instead of mounting and unmounting.
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
@@ -50,18 +75,18 @@ export default defineNuxtConfig({
 
 ### Direct Import
 
-If you prefer a more granular approach, the drawer can also be directly imported into any Vue component.
+If you prefer a more granular approach, components can be directly imported.
 
 ```vue
 <script setup>
-import { MagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
+import {
+  MagicDrawerProvider,
+  MagicDrawerTeleport,
+  MagicDrawerBackdrop,
+  MagicDrawerContent,
+  MagicDrawerTrigger,
+} from '@maas/vue-equipment/plugins/MagicDrawer'
 </script>
-
-<template>
-  <magic-drawer id="your-drawer-id">
-    <!-- your content -->
-  </magic-drawer>
-</template>
 ```
 
 ### Composable
@@ -84,7 +109,7 @@ onMounted(() => {
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
+If you haven't installed the required peer dependencies automatically, you'll need to install the following packages manually.
 
 <ProseTable
   :columns="[
@@ -160,9 +185,11 @@ bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-ge
 
 ## API Reference
 
-### Props
+### MagicDrawerProvider
 
-The drawer comes with a simple set of props. Only the id is required.
+The root component. Wraps all other drawer components and makes the drawer id and configuration available to its children. Also responsible for managing the open/close state machine.
+
+#### Props
 
 <ProseTable
   :columns="[
@@ -203,7 +230,7 @@ The drawer comes with a simple set of props. Only the id is required.
   ]"
 />
 
-### Options
+#### Options
 
 To customize the drawer override the necessary options. Any custom options will be merged with the default options.
 
@@ -218,7 +245,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'position',
-          description: 'Set the drawer\’s position relative to the viewport.'
+          description: 'Set the drawer\'s position relative to the viewport.'
         },
         {
           label: 'string',
@@ -233,7 +260,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'backdrop',
-          description: 'Show or hide a backdrop element. Only visible when the drawer is open.'
+          description: 'Show or hide a backdrop element in the simple `MagicDrawer` component. Has no effect when composing manually.'
         },
         {
           label: 'boolean'
@@ -247,7 +274,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'tag',
-          description: 'Specify the drawer\’s HTML element.'
+          description: 'Specify the drawer\'s HTML element.'
         },
         {
           label: 'string',
@@ -319,7 +346,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'teleport.target',
-          description: 'Specify the teleport target or disable teleporting the drawer completely.'
+          description: 'Default teleport target used by `MagicDrawerTeleport` unless overridden on the component itself.'
         },
         {
           label: 'string'
@@ -333,7 +360,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'teleport.disabled',
-          description: 'Specify the teleport target or disable teleporting the drawer completely.'
+          description: 'Disable teleporting entirely when using the default target.'
         },
         {
           label: 'boolean'
@@ -347,7 +374,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'transition.content',
-          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer itself.'
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer panel.'
         },
         {
           label: 'string'
@@ -361,7 +388,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'transition.backdrop',
-          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer\’s backdrop.'
+          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the backdrop.'
         },
         {
           label: 'string'
@@ -417,7 +444,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'animation.snap.duration',
-          description: 'Configure the drawer\’s snap animation duration.'
+          description: 'Configure the drawer\'s snap animation duration.'
         },
         {
           label: 'number'
@@ -431,7 +458,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'animation.snap.easing',
-          description: 'Configure the drawer\’s snap animation easing.'
+          description: 'Configure the drawer\'s snap animation easing.'
         },
         {
           label: 'function'
@@ -466,7 +493,7 @@ To customize the drawer override the necessary options. Any custom options will 
           label: 'boolean'
         },
         {
-          label: '—',
+          label: '—'
         }
       ]
     },
@@ -481,21 +508,7 @@ To customize the drawer override the necessary options. Any custom options will 
           description: 'number + \'px\' | number'
         },
         {
-          label: '—',
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'keyListener',
-          description: 'Set to false to disable key listeners completely.'
-        },
-        {
-          label: 'boolean | object'
-        },
-        {
-          label: 'object'
+          label: '—'
         }
       ]
     },
@@ -503,10 +516,10 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'keyListener.close',
-          description: 'Set keyboard keys to close the drawer.'
+          description: 'Set keyboard keys to close the drawer. Set to false to disable the key listener entirely.'
         },
         {
-          label: 'string[]'
+          label: 'string[] | false'
         },
         {
           label: '[\'Escape\']'
@@ -559,7 +572,7 @@ To customize the drawer override the necessary options. Any custom options will 
       items: [
         {
           label: 'disabled',
-          description: 'Disable the drawer completely.'
+          description: 'Disable all drawer interactions.'
         },
         {
           label: 'boolean'
@@ -572,172 +585,409 @@ To customize the drawer override the necessary options. Any custom options will 
   ]"
 />
 
-### CSS Variables
+### MagicDrawerTeleport
 
-In order to provide its basic functionality the drawer comes with some CSS. To ensure that the drawer is customizable, relevant values are available as CSS variables.
+Teleports all child components to a target in the DOM. Uses `v-if` to mount and unmount its contents when the drawer opens and closes — keeping the DOM clean when the drawer is inactive. Omit this component if you want the drawer to remain mounted at all times.
+
+#### Props
 
 <ProseTable
   :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
   ]"
   :rows="[
     {
       items: [
         {
-          label: '--magic-drawer-position'
+          label: 'to',
+          description: 'Override the teleport target set in the provider options.'
         },
         {
-          label: 'fixed'
+          label: 'string | RendererElement'
         },
+        {
+          label: 'false'
+        }
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-inset'
+          label: 'disabled',
+          description: 'Disable teleporting, rendering children in place instead.'
         },
         {
-          label: '0'
+          label: 'boolean'
         },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+### MagicDrawerBackdrop
+
+Renders a full-viewport overlay behind the drawer panel. Closes the drawer when clicked. Must be nested inside `MagicDrawerProvider`.
+
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-color' },
+        { label: 'rgba(0, 0, 0, 0.5)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-filter' },
+        { label: 'unset' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-z-index' },
+        { label: '998' }
+      ]
+    }
+  ]"
+/>
+
+### MagicDrawerContent
+
+Renders the drawer panel with all drag, snap and scroll logic. Must be nested inside `MagicDrawerProvider`. Inherits additional attributes and passes them to the root `.magic-drawer` element.
+
+#### CSS Variables
+
+<ProseTable
+  :columns="[
+    { label: 'Variable' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: '--magic-drawer-position' },
+        { label: 'fixed' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-inset' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-display' },
+        { label: 'flex' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-z-index' },
+        { label: '999' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-height' },
+        { label: '75svh' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-max-height' },
+        { label: 'none' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-max-width' },
+        { label: 'none' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-content-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-content-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-content-max-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-justify-content' },
+        { label: 'center' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-align-items' },
+        { label: 'flex-end' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-enter-animation' },
+        { label: 'slide-btt-in 300ms ease' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-leave-animation' },
+        { label: 'slide-btt-out 300ms ease' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-drag-overshoot' },
+        { label: '4rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-cursor' },
+        { label: 'grab' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-cursor-dragging' },
+        { label: 'grabbing' }
+      ]
+    }
+  ]"
+/>
+
+### MagicDrawerTrigger
+
+A toggleable trigger that opens or closes the drawer on click. Must be nested inside `MagicDrawerProvider`, or an `id` prop must be provided to reference a drawer outside the component tree.
+
+#### Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'The drawer id. Only required when the trigger is used outside a `MagicDrawerProvider`.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'false'
+        }
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-display'
+          label: 'disabled',
+          description: 'Disable the trigger. Defaults to the disabled state set on `MagicDrawerProvider` if not provided.'
         },
         {
-          label: 'flex'
+          label: 'boolean'
         },
+        {
+          label: 'false'
+        }
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-height'
+          label: 'asChild',
+          description: 'Prevent the component from rendering its own element and pass all functionality to the child element instead.'
         },
         {
-          label: '75svh'
+          label: 'boolean'
         },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'active' },
+        { label: 'boolean' },
+        { label: 'Whether the drawer is currently open.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the trigger is currently disabled.' }
+      ]
+    }
+  ]"
+/>
+
+### MagicDrawer
+
+A self-contained component that composes all primitives internally. Equivalent to the composed pattern — use this for simple cases where you do not need to customise the structure.
+
+#### Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Required' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'id',
+          description: 'Providing an id is required. Can either be a string or a ref.'
+        },
+        {
+          label: 'MaybeRef\<string\>',
+          escape: true
+        },
+        {
+          label: 'true'
+        }
       ]
     },
     {
       items: [
         {
-          label: '--magic-drawer-width'
+          label: 'options',
+          description: 'Refer to the [options table](#options) for details.'
         },
         {
-          label: '100%'
+          label: 'MagicDrawerOptions'
         },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
+#### Slots
+
+<ProseTable
+  :columns="[
+    { label: 'Slot' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'default' },
+        { label: 'Content rendered inside the drawer panel.' }
       ]
     },
     {
       items: [
-        {
-          label: '--magic-drawer-max-height'
-        },
-        {
-          label: 'none'
-        },
+        { label: 'backdrop' },
+        { label: 'Content rendered inside the backdrop element. Also causes the backdrop to render when `options.backdrop` is false.' }
+      ]
+    }
+  ]"
+/>
+
+## Errors
+
+<ProseTable
+  :columns="[
+    { label: 'Source' },
+    { label: 'Error Code' },
+    { label: 'Message' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'MagicDrawerTeleport' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicDrawerTeleport must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
-        {
-          label: '--magic-drawer-max-width'
-        },
-        {
-          label: 'none'
-        },
+        { label: 'MagicDrawerBackdrop' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicDrawerBackdrop must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
-        {
-          label: '--magic-drawer-content-width'
-        },
-        {
-          label: '100%'
-        },
+        { label: 'MagicDrawerContent' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicDrawerContent must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
-        {
-          label: '--magic-drawer-content-max-height'
-        },
-        {
-          label: '100%'
-        },
+        { label: 'MagicDrawerTrigger' },
+        { label: 'missing_instance_id' },
+        { label: 'MagicDrawerTrigger must be nested inside MagicDrawerProvider or an id must be provided' }
       ]
     },
     {
       items: [
-        {
-          label: '--magic-drawer-content-height'
-        },
-        {
-          label: '100%'
-        },
+        { label: 'MagicDrawerContent' },
+        { label: 'overshoot_unit' },
+        { label: '--magic-drawer-drag-overshoot needs to be specified in px or rem' }
       ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-drawer-justify-content'
-        },
-        {
-          label: 'center'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-drawer-align-items'
-        },
-        {
-          label: 'flex-end'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-drawer-enter-animation'
-        },
-        {
-          label: 'slide-btt-in 300ms ease'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-drawer-enter-animation'
-        },
-        {
-          label: 'slide-btt-out 300ms ease'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-drawer-drag-overshoot'
-        },
-        {
-          label: '4rem'
-        },
-      ]
-    },
+    }
   ]"
 />
 
 ## Caveats
 
-The drawer handles situations where dragging and scrolling might interfer with each other on touch devices. In order for the drawer to differentiate when the user scrolls and when the user drags, any scrollable containers within the drawer need to have their overflow value explicitely set to 'auto' or 'scroll'.
+The drawer handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the drawer to differentiate when the user scrolls and when the user drags, any scrollable containers within the drawer need to have their overflow value explicitly set to `auto` or `scroll`.
 
 ## Examples
 
@@ -756,3 +1006,7 @@ The drawer handles situations where dragging and scrolling might interfer with e
 ### Mousewheel
 
 <ComponentPreview src="./demo/MousewheelDemo.vue" />
+
+### Composed
+
+<ComponentPreview src="./demo/ComposedDemo.vue" />

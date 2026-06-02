@@ -1,6 +1,6 @@
-import type { DrawerDefaultOptions } from '../types'
+import type { RequiredMagicDrawerOptions } from '../types'
 
-const defaultOptions: DrawerDefaultOptions = {
+const defaultOptions: RequiredMagicDrawerOptions = {
   position: 'bottom',
   backdrop: true,
   tag: 'dialog',

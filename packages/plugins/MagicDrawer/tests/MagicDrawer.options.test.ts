@@ -66,14 +66,14 @@ describe('MagicDrawer - Options', () => {
       const screen = render(createWrapper(DrawerId.BackdropTrue, { backdrop: true }))
       await openDrawer(screen)
 
-      expect(document.querySelector('.magic-drawer__backdrop')).not.toBeNull()
+      expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
     })
 
     it('backdrop: false removes backdrop element', async () => {
       const screen = render(createWrapper(DrawerId.BackdropFalse, { backdrop: false }))
       await openDrawer(screen)
 
-      expect(document.querySelector('.magic-drawer__backdrop')).toBeNull()
+      expect(document.querySelector('.magic-drawer-backdrop')).toBeNull()
     })
   })
 

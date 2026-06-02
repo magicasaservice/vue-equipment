@@ -9,7 +9,7 @@ type UseDrawerCallbackArgs = {
   mappedOptions: MagicDrawerOptions
   trapFocus: () => void
   releaseFocus: () => void
-  wrapperActive: Ref<boolean>
+  afterLeave: () => void
   wasActive: Ref<boolean>
 }
 
@@ -17,10 +17,9 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
   const {
     id,
     mappedOptions,
-
     trapFocus,
     releaseFocus,
-    wrapperActive,
+    afterLeave,
     wasActive,
   } = args
 
@@ -84,7 +83,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
       resetMetaViewport()
     }
 
-    wrapperActive.value = false
+    afterLeave()
   }
 
   return {

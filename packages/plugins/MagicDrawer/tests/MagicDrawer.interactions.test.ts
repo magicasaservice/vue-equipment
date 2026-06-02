@@ -94,7 +94,7 @@ describe('MagicDrawer - Interactions', () => {
         .toHaveTextContent('true')
 
       const backdrop = document.querySelector(
-        '.magic-drawer__backdrop'
+        '.magic-drawer-backdrop'
       ) as HTMLElement
       expect(backdrop).not.toBeNull()
       backdrop.click()
@@ -125,7 +125,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const backdrop = document.querySelector(
-        '.magic-drawer__backdrop'
+        '.magic-drawer-backdrop'
       ) as HTMLElement
       expect(backdrop).not.toBeNull()
 

@@ -68,7 +68,7 @@ describe('MagicDrawer - Rendering', () => {
 
     const drawer = document.querySelector('.magic-drawer')
     expect(drawer).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer__backdrop')).not.toBeNull()
+    expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
     expect(drawer!.querySelector('.magic-drawer__wrapper')).not.toBeNull()
     expect(drawer!.querySelector('.magic-drawer__content')).not.toBeNull()
     expect(drawer!.querySelector('.magic-drawer__drag')).not.toBeNull()
@@ -140,7 +140,7 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    expect(document.querySelector('.magic-drawer__backdrop')).not.toBeNull()
+    expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
   })
 
   it('does not render backdrop when backdrop option is false', async () => {
@@ -149,7 +149,7 @@ describe('MagicDrawer - Rendering', () => {
     await nextTick()
     await nextTick()
 
-    expect(document.querySelector('.magic-drawer__backdrop')).toBeNull()
+    expect(document.querySelector('.magic-drawer-backdrop')).toBeNull()
   })
 
   it('renders default slot content', async () => {
