@@ -425,7 +425,7 @@ Teleports all child components to a target in the DOM. Uses `v-if` to mount and 
 
 ### MagicModalBackdrop
 
-Renders a full-viewport overlay behind the modal panel. Closes the modal when clicked. Must be nested inside `MagicModalProvider`.
+Renders a full-viewport overlay behind the modal panel. Closes the modal when clicked.
 
 #### CSS Variables
 
@@ -500,7 +500,7 @@ Renders a full-viewport overlay behind the modal panel. Closes the modal when cl
 
 ### MagicModalContent
 
-Handles the modal’s internal logic. Must be nested inside `MagicModalProvider`.
+Renders the modal panel with focus trap and scroll lock support.
 
 #### CSS Variables
 
@@ -599,7 +599,7 @@ Handles the modal’s internal logic. Must be nested inside `MagicModalProvider`
 
 ### MagicModalTrigger
 
-Opens or closes the modal on click. Must either be nested inside `MagicModalProvider`, or receive an `id` prop that references a modal outside the component tree.
+Opens or closes the modal on click.
 
 #### Props
 

@@ -429,7 +429,7 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
 
 ### MagicToastView
 
-MagicToastView is used internally. Some CSS is configurable.
+Renders a single toast inside the toaster. Used internally.
 
 <ProseTable
   :columns="[

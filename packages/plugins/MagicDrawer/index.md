@@ -631,7 +631,7 @@ Teleports all child components to a target in the DOM. Uses `v-if` to mount and 
 
 ### MagicDrawerBackdrop
 
-Renders a full-viewport overlay behind the drawer panel. Closes the drawer when clicked. Must be nested inside `MagicDrawerProvider`.
+Renders a full-viewport overlay behind the drawer panel. Closes the drawer when clicked.
 
 #### CSS Variables
 
@@ -706,7 +706,7 @@ Renders a full-viewport overlay behind the drawer panel. Closes the drawer when 
 
 ### MagicDrawerContent
 
-Handles the drawer’s internal logic. Must be nested inside `MagicDrawerProvider`.
+Renders the drawer panel with drag, snap, and scroll behavior.
 
 #### CSS Variables
 
@@ -829,7 +829,7 @@ Handles the drawer’s internal logic. Must be nested inside `MagicDrawerProvide
 
 ### MagicDrawerTrigger
 
-Opens or closes the drawer on click. Must either be nested inside `MagicDrawerProvider`, or receive an `id` prop that references a drawer outside the component tree.
+Opens or closes the drawer on click.
 
 #### Props
 

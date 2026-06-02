@@ -284,6 +284,8 @@ To customize the accordion, override the necessary options. Any custom options w
 
 ### MagicAccordionView
 
+Wraps a single accordion entry and manages its open/closed state.
+
 #### Props
 
 <ProseTable 
@@ -339,7 +341,28 @@ To customize the accordion, override the necessary options. Any custom options w
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the accordion view is currently open.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicAccordionContent
+
+The expandable content area of an accordion view.
 
 #### Props
 
@@ -430,7 +453,28 @@ To customize the accordion, override the necessary options. Any custom options w
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the accordion view is currently open.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicAccordionTrigger
+
+Opens or closes the parent accordion view on click.
 
 #### Props
 
@@ -503,6 +547,25 @@ To customize the accordion, override the necessary options. Any custom options w
         {
           label: 'not-allowed'
         },
+      ]
+    }
+  ]"
+/>
+
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the accordion view is currently open.' }
       ]
     }
   ]"
