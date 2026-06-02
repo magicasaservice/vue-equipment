@@ -155,7 +155,7 @@ bun install @nuxt/kit @vueuse/core defu
 
 ### Options
 
-To customize the component override the necessary options. Any custom options will be merged with the default options.
+To customize the component, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[

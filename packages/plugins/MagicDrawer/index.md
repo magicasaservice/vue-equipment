@@ -232,7 +232,7 @@ The MagicDrawerProvider wraps the drawer and configures all child components acc
 
 #### Options
 
-To customize the drawer override the necessary options. Any custom options will be merged with the default options.
+To customize the drawer, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[

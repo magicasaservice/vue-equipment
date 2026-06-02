@@ -225,7 +225,7 @@ The MagicModalProvider wraps the modal and configures all child components accor
 
 #### Options
 
-To customize the modal override the necessary options. Any custom options will be merged with the default options.
+To customize the modal, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[

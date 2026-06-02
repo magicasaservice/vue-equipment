@@ -189,7 +189,7 @@ The MagicPlayerProvider wraps the menu and configures all child components accor
 
 #### Options
 
-To customize the player override the necessary options. Any custom options will be merged with the default options.
+To customize the player, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable 
   :columns="[

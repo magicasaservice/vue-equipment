@@ -183,7 +183,7 @@ The component comes with a simple set of props. Only the id is required.
 
 ### Options
 
-To customize the component override the necessary options. Any custom options will be merged with the default options.
+To customize the component, override the necessary options. Any custom options will be merged with the default options.
 
 <ProseTable
   :columns="[
