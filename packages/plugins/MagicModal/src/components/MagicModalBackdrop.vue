@@ -48,8 +48,13 @@ function guardedClose() {
 
 <style>
 .magic-modal-backdrop {
-  position: fixed;
-  inset: 0;
+  position: var(--magic-modal-backdrop-position, fixed);
+  top: var(--magic-modal-backdrop-top, 0);
+  left: var(--magic-modal-backdrop-left, 0);
+  right: var(--magic-modal-backdrop-right, 0);
+  bottom: var(--magic-modal-backdrop-bottom, 0);
+  width: var(--magic-modal-backdrop-width, 100%);
+  height: var(--magic-modal-backdrop-height, 100%);
   pointer-events: auto;
   background-color: var(--magic-modal-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-modal-backdrop-filter, unset);

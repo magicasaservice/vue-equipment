@@ -51,13 +51,13 @@ function guardedClose() {
 
 <style>
 .magic-drawer-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
+  position: var(--magic-drawer-backdrop-position, fixed);
+  top: var(--magic-drawer-backdrop-top, 0);
+  left: var(--magic-drawer-backdrop-left, 0);
+  right: var(--magic-drawer-backdrop-right, 0);
+  bottom: var(--magic-drawer-backdrop-bottom, 0);
+  width: var(--magic-drawer-backdrop-width, 100%);
+  height: var(--magic-drawer-backdrop-height, 100%);
   pointer-events: auto;
   background-color: var(--magic-drawer-backdrop-color, rgba(0, 0, 0, 0.5));
   backdrop-filter: var(--magic-drawer-backdrop-filter, unset);

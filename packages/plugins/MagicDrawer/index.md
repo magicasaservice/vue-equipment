@@ -643,6 +643,48 @@ Renders a full-viewport overlay behind the drawer panel. Closes the drawer when 
   :rows="[
     {
       items: [
+        { label: '--magic-drawer-backdrop-position' },
+        { label: 'fixed' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-top' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-left' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-right' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-bottom' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-drawer-backdrop-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
         { label: '--magic-drawer-backdrop-color' },
         { label: 'rgba(0, 0, 0, 0.5)' }
       ]

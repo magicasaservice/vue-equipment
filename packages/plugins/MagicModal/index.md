@@ -437,6 +437,48 @@ Renders a full-viewport overlay behind the modal panel. Closes the modal when cl
   :rows="[
     {
       items: [
+        { label: '--magic-modal-backdrop-position' },
+        { label: 'fixed' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-top' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-left' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-right' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-bottom' },
+        { label: '0' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-width' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-modal-backdrop-height' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
         { label: '--magic-modal-backdrop-color' },
         { label: 'rgba(0, 0, 0, 0.5)' }
       ]
