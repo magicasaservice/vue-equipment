@@ -30,7 +30,9 @@ yarn-error.log*
 cache
 
 # turbo
-.turbo
+.turbo/*
+**/.turbo
+!.turbo/config.json
 
 # dist
 dist
@@ -49,3 +51,4 @@ packages/metadata/index.json
 .claude
 .agents
 skills-lock.json
+
