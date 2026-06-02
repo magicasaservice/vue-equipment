@@ -29,10 +29,10 @@ yarn-error.log*
 .cache
 cache
 
-# turbo
+#turbo
 .turbo/*
-**/.turbo
 !.turbo/config.json
+**/.turbo
 
 # dist
 dist
