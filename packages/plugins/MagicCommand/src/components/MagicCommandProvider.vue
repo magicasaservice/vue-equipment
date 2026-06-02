@@ -30,18 +30,8 @@ interface MagicCommandProviderProps {
 
 const { id, options = {} } = defineProps<MagicCommandProviderProps>()
 
-// Prevent keys arrays from being merged with default
-const customDefu = createDefu((obj, key, value) => {
-  if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {
-    obj[key] = value
-    return true
-  }
-})
-
-const mappedOptions = customDefu(options, defaultOptions)
-
 const { initializeState } = useCommandState(id)
-const state = initializeState(mappedOptions)
+const state = initializeState(options)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
@@ -79,8 +69,8 @@ const { logWarning } = useMagicError({
   source: 'MagicCommandProvider',
 })
 
-if (mappedOptions.keyListener?.open) {
-  for (const key of mappedOptions.keyListener.open) {
+if (state.options.keyListener?.open) {
+  for (const key of state.options.keyListener.open) {
     const mappedKey = keys[key]
 
     if (!mappedKey) {
@@ -96,8 +86,8 @@ if (mappedOptions.keyListener?.open) {
   }
 }
 
-if (mappedOptions.keyListener?.close) {
-  for (const key of mappedOptions.keyListener.close) {
+if (state.options.keyListener?.close) {
+  for (const key of state.options.keyListener.close) {
     const mappedKey = keys[key]
 
     if (!mappedKey) {
@@ -114,7 +104,7 @@ if (mappedOptions.keyListener?.close) {
 }
 
 provide(MagicCommandInstanceId, id)
-provide(MagicCommandProviderOptions, mappedOptions)
+provide(MagicCommandProviderOptions, state.options)
 </script>
 
 <style>

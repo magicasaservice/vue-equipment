@@ -17,7 +17,7 @@ export interface MagicCommandOptions {
   loop?: boolean
 }
 
-export type CommandDefaultOptions = RequireAllNested<MagicCommandOptions>
+export type RequiredMagicCommandOptions = RequireAllNested<MagicCommandOptions>
 
 export type Action = 'open' | 'close'
 

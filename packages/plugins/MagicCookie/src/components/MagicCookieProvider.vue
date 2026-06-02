@@ -19,10 +19,9 @@ type MagicCookieProviderProps = {
 }
 
 const { id, options } = defineProps<MagicCookieProviderProps>()
-const mappedOptions = defu(options, defaultOptions)
 
 const { initializeState } = useCookieState(id)
-initializeState(mappedOptions)
+initializeState(options)
 
 provide(MagicCookieInstanceId, id)
 </script>

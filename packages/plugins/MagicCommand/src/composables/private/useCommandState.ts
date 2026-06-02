@@ -1,5 +1,5 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
-import { defu } from 'defu'
+import { createDefu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { CommandState, MagicCommandOptions } from '../../types/index'
@@ -12,6 +12,14 @@ const getCommandStateStore = createStateStore<CommandState[]>(
 export function useCommandState(instanceId: MaybeRef<string>) {
   const commandStateStore = getCommandStateStore()
   let scopeCounted = false
+
+  // Prevent keys arrays from being merged with default
+  const customDefu = createDefu((obj, key, value) => {
+    if (key === 'open' || key === 'close' || key === 'next' || key === 'prev') {
+      obj[key] = value
+      return true
+    }
+  })
 
   // Private functions
   function createState(id: string) {
@@ -64,7 +72,7 @@ export function useCommandState(instanceId: MaybeRef<string>) {
     }
 
     if (options) {
-      const mappedOptions = defu(options, defaultOptions)
+      const mappedOptions = customDefu(options, defaultOptions)
       state.options = mappedOptions
     }
 

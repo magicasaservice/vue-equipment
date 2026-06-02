@@ -1,7 +1,7 @@
-import type { MagicAccordionOptions } from '../types'
-import { easeOutQuad, type RequireAll } from '@maas/vue-equipment/utils'
+import type { RequiredMagicAccordionOptions } from '../types'
+import { easeOutQuad } from '@maas/vue-equipment/utils'
 
-const defaultOptions: RequireAll<MagicAccordionOptions> = {
+const defaultOptions: RequiredMagicAccordionOptions = {
   mode: 'single',
   transition: 'magic-accordion',
   disabled: false,

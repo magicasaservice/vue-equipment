@@ -1,6 +1,6 @@
-import type { ToastDefaultOptions } from '../types/index'
+import type { RequiredMagicToastOptions } from '../types/index'
 
-const defaultOptions: ToastDefaultOptions = {
+const defaultOptions: RequiredMagicToastOptions = {
   debug: false,
   position: 'bottom',
   duration: 0,

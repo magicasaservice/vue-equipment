@@ -1,6 +1,6 @@
-import type { CommandDefaultOptions } from '../types'
+import type { RequiredMagicCommandOptions } from '../types'
 
-const defaultOptions: CommandDefaultOptions = {
+const defaultOptions: RequiredMagicCommandOptions = {
   debug: false,
   transition: {
     content: 'magic-command-content',

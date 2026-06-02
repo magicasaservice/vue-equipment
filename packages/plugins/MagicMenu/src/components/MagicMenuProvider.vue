@@ -39,10 +39,8 @@ interface MagicMenuProviderProps {
 const { id, options } = defineProps<MagicMenuProviderProps>()
 const elRef = useTemplateRef('el')
 
-const mappedOptions = defu(options, defaultOptions)
-
 const { initializeState } = useMenuState(id)
-const state = initializeState(mappedOptions)
+const state = initializeState(options)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
