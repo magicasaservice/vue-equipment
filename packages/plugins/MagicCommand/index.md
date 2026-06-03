@@ -72,7 +72,7 @@ Both `MagicCommandModal` and `MagicCommandDrawer` render a default layout out of
 </template>
 ```
 
-See [MagicModal](/plugins/MagicModal) and [MagicDrawer](/plugins/MagicDrawer) for details.
+See [MagicModal](/plugins/MagicModal/) and [MagicDrawer](/plugins/MagicDrawer/) for details.
 
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
