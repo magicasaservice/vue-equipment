@@ -28,7 +28,7 @@ const { open } = useMagicModal('your-modal-id')
 
 ```vue
 <template>
-  <magic-modal-provider id="your-modal-id" :options="{}">
+  <magic-modal-provider id="your-modal-id">
     <magic-modal-trigger as-child>
       <button>Open</button>
     </magic-modal-trigger>
@@ -381,7 +381,6 @@ To customize the modal, override the necessary options. Any custom options will 
 ### MagicModalTeleport
 
 Teleports all child components to a target in the DOM. Uses `v-if` to mount and unmount its contents when the modal opens and closes — keeping the DOM clean when the modal is inactive. Omit this component if you want the modal to remain mounted at all times.
-
 
 #### Props
 

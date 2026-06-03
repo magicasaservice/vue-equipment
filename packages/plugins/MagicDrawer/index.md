@@ -28,7 +28,7 @@ const { open } = useMagicDrawer('your-drawer-id')
 
 ```vue
 <template>
-  <magic-drawer-provider id="your-drawer-id" :options="{}">
+  <magic-drawer-provider id="your-drawer-id">
     <magic-drawer-trigger as-child>
       <button>Open</button>
     </magic-drawer-trigger>
