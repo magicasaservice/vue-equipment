@@ -74,6 +74,7 @@ export default defineConfig({
       include: [
         { src: 'config' },
         { src: 'application' },
+        { src: 'theme/dark' },
         { src: 'theme/vueEquipmentDark' },
       ],
       source: components.map((component) => ({
