@@ -1,5 +1,5 @@
 <template>
-  <transition :name="state.options.transition.backdrop">
+  <transition :name="transitionName">
     <div
       v-show="active.innerActive"
       class="magic-modal-backdrop"
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -22,6 +22,12 @@ import { MagicModalInstanceId, MagicModalActiveKey } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
+
+interface MagicModalBackdropProps {
+  transition?: string
+}
+
+const { transition } = defineProps<MagicModalBackdropProps>()
 
 const instanceId = inject(MagicModalInstanceId, undefined)
 const active = inject(MagicModalActiveKey, {
@@ -41,6 +47,10 @@ magicError.assert(instanceId, {
 
 const { initializeState } = useModalState(instanceId ?? '')
 const state = initializeState()
+
+const transitionName = computed(
+  () => transition ?? state.options.transition.backdrop
+)
 
 const { close } = useMagicModal(instanceId ?? '')
 

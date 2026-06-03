@@ -1,5 +1,5 @@
 <template>
-  <transition :name="state.options.transition.backdrop">
+  <transition :name="transitionName">
     <div
       v-show="active.innerActive"
       class="magic-drawer-backdrop"
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -23,6 +23,12 @@ import { MagicDrawerInstanceId, MagicDrawerActiveKey } from '../symbols'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'
+
+interface MagicDrawerBackdropProps {
+  transition?: string
+}
+
+const { transition } = defineProps<MagicDrawerBackdropProps>()
 
 const instanceId = inject(MagicDrawerInstanceId, undefined)
 const active = inject(MagicDrawerActiveKey, {
@@ -42,6 +48,10 @@ magicError.assert(instanceId, {
 
 const { initializeState } = useDrawerState(instanceId ?? '')
 const state = initializeState()
+
+const transitionName = computed(
+  () => transition ?? state.options.transition.backdrop
+)
 
 const { close } = useMagicDrawer(instanceId ?? '')
 
