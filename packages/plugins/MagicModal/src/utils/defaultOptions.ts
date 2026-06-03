@@ -1,7 +1,6 @@
 import type { RequiredMagicModalOptions } from '../types'
 
 const defaultOptions: RequiredMagicModalOptions = {
-  backdrop: true,
   tag: 'dialog',
   focusTrap: {
     initialFocus: false,

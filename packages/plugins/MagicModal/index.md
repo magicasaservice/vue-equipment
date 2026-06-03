@@ -237,20 +237,6 @@ To customize the modal, override the necessary options. Any custom options will 
     {
       items: [
         {
-          label: 'backdrop',
-          description: 'Show or hide a backdrop element in the simple `MagicModal` component. Has no effect when composing manually.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
           label: 'tag',
           description: 'Specify the modal\'s HTML element.'
         },
@@ -743,7 +729,7 @@ A self-contained component that composes all primitives internally. Use this for
     {
       items: [
         { label: 'backdrop' },
-        { label: 'Content rendered inside the backdrop element. Also causes the backdrop to render when `options.backdrop` is false.' }
+        { label: 'Content rendered inside the backdrop element.' }
       ]
     }
   ]"

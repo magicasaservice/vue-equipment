@@ -2,7 +2,6 @@ import type { RequiredMagicDrawerOptions } from '../types'
 
 const defaultOptions: RequiredMagicDrawerOptions = {
   position: 'bottom',
-  backdrop: true,
   tag: 'dialog',
   focusTrap: {
     initialFocus: false,

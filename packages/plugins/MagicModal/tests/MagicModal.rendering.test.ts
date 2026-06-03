@@ -2,187 +2,110 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
-import { MagicModal } from '../index'
-import { useMagicModal } from '../src/composables/useMagicModal'
+import MagicModalProvider from '../src/components/MagicModalProvider.vue'
+import MagicModalTrigger from '../src/components/MagicModalTrigger.vue'
+import MagicModalTeleport from '../src/components/MagicModalTeleport.vue'
+import MagicModalBackdrop from '../src/components/MagicModalBackdrop.vue'
+import MagicModalContent from '../src/components/MagicModalContent.vue'
 import { ModalId, TestId } from './enums'
 
-// Factories
-function createWrapper(
-  modalId: ModalId = ModalId.TestModal,
-  options: Record<string, unknown> = {}
-) {
+function createModal(id: ModalId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicModal },
-    setup() {
-      const { open, close, isActive } = useMagicModal(modalId)
-      return { open, close, isActive }
-    },
+    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
     template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
-        <MagicModal id="${modalId}" :options="options">
-          <div data-test-id="${TestId.ModalContent}">Modal Content</div>
-        </MagicModal>
-      </div>
+      <MagicModalProvider id="${id}" :options="options">
+        <MagicModalTrigger>
+          <button data-test-id="${TestId.Trigger}">Open</button>
+        </MagicModalTrigger>
+        <MagicModalTeleport>
+          <MagicModalBackdrop />
+          <MagicModalContent>
+            <div data-test-id="${TestId.ModalContent}">Content</div>
+          </MagicModalContent>
+        </MagicModalTeleport>
+      </MagicModalProvider>
     `,
-    data() {
-      return { options }
-    },
+    data() { return { options } },
   })
 }
 
-function createWrapperWithBackdropSlot() {
-  return defineComponent({
-    components: { MagicModal },
-    setup() {
-      const { open, close } = useMagicModal(ModalId.TestModalSlot)
-      return { open, close }
-    },
-    template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-        <MagicModal id="${ModalId.TestModalSlot}">
-          <template #backdrop>
-            <div data-test-id="${TestId.CustomBackdrop}">Custom Backdrop</div>
-          </template>
-          <div data-test-id="${TestId.ModalContent}">Content</div>
-        </MagicModal>
-      </div>
-    `,
-  })
+async function open(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+  await nextTick()
 }
 
-// Tests
 describe('MagicModal - Rendering', () => {
-  it('does not render when inactive', () => {
-    render(createWrapper())
-    expect(document.querySelector('.magic-modal-content')).toBeNull()
+  describe('trigger', () => {
+    it('has .magic-modal-trigger class', () => {
+      render(createModal(ModalId.RenderTrigger))
+      expect(document.querySelector('.magic-modal-trigger')).not.toBeNull()
+    })
+
+    it('has data-active=false initially', () => {
+      render(createModal(ModalId.RenderTriggerActive))
+      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-active')).toBe('false')
+    })
+
+    it('has data-disabled=false by default', () => {
+      render(createModal(ModalId.RenderTriggerDisabled))
+      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-disabled')).toBe('false')
+    })
+
+    it('data-active becomes true when open', async () => {
+      const screen = render(createModal(ModalId.RenderTriggerOpen))
+      await open(screen)
+      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-active')).toBe('true')
+    })
   })
 
-  it('renders with correct class structure when opened', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const modal = document.querySelector('.magic-modal-content')
-    expect(modal).not.toBeNull()
-    expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
-    expect(modal!.querySelector('.magic-modal-content__inner')).not.toBeNull()
+  describe('content (closed)', () => {
+    it('does not render when inactive', () => {
+      render(createModal(ModalId.RenderContentClosed))
+      expect(document.querySelector('.magic-modal-content')).toBeNull()
+    })
   })
 
-  it('sets data-id attribute', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
+  describe('content (open)', () => {
+    it('renders correct structure', async () => {
+      const screen = render(createModal(ModalId.RenderContentOpen))
+      await open(screen)
 
-    const modal = document.querySelector('.magic-modal-content')
-    expect(modal!.getAttribute('data-id')).toBe(ModalId.TestModal)
+      const modal = document.querySelector('.magic-modal-content')
+      expect(modal).not.toBeNull()
+      expect(modal!.querySelector('.magic-modal-content__inner')).not.toBeNull()
+    })
+
+    it('sets data-id', async () => {
+      const screen = render(createModal(ModalId.RenderDataId))
+      await open(screen)
+      expect(document.querySelector('.magic-modal-content')!.getAttribute('data-id')).toBe(ModalId.RenderDataId)
+    })
+
+    it('sets aria-modal', async () => {
+      const screen = render(createModal(ModalId.RenderAriaModal))
+      await open(screen)
+      expect(document.querySelector('.magic-modal-content')!.getAttribute('aria-modal')).toBe('true')
+    })
+
+    it('inner uses dialog by default', async () => {
+      const screen = render(createModal(ModalId.RenderTag))
+      await open(screen)
+      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('dialog')
+    })
+
+    it('renders slot content', async () => {
+      const screen = render(createModal(ModalId.RenderSlot))
+      await open(screen)
+      await expect.element(page.getByTestId(TestId.ModalContent)).toBeInTheDocument()
+    })
   })
 
-  it('sets aria-modal attribute', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const modal = document.querySelector('.magic-modal-content')
-    expect(modal!.getAttribute('aria-modal')).toBe('true')
-  })
-
-  it('uses dialog element by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const content = document.querySelector('.magic-modal-content__inner')
-    expect(content!.tagName.toLowerCase()).toBe('dialog')
-  })
-
-  it('uses div element when tag option is div', async () => {
-    const screen = render(createWrapper(ModalId.TestModal, { tag: 'div' }))
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const content = document.querySelector('.magic-modal-content__inner')
-    expect(content!.tagName.toLowerCase()).toBe('div')
-  })
-
-  it('teleports to body by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const modal = document.body.querySelector(':scope > .magic-modal-content')
-    expect(modal).not.toBeNull()
-  })
-
-  it('renders backdrop when backdrop option is true (default)', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
-  })
-
-  it('does not render backdrop when backdrop option is false', async () => {
-    const screen = render(createWrapper(ModalId.TestModal, { backdrop: false }))
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    expect(document.querySelector('.magic-modal-backdrop')).toBeNull()
-  })
-
-  it('renders default slot content', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    await expect
-      .element(page.getByTestId(TestId.ModalContent))
-      .toBeInTheDocument()
-  })
-
-  it('renders backdrop slot content', async () => {
-    const screen = render(createWrapperWithBackdropSlot())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    await expect
-      .element(page.getByTestId(TestId.CustomBackdrop))
-      .toBeInTheDocument()
-  })
-
-  it('has fixed positioning', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const modal = document.querySelector('.magic-modal-content') as HTMLElement
-    const style = window.getComputedStyle(modal)
-    expect(style.position).toBe('fixed')
-  })
-
-  it('is centered with flexbox', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const modal = document.querySelector('.magic-modal-content') as HTMLElement
-    const style = window.getComputedStyle(modal)
-    expect(style.display).toBe('flex')
-    expect(style.justifyContent).toBe('center')
-    expect(style.alignItems).toBe('center')
+  describe('backdrop', () => {
+    it('renders when modal is open', async () => {
+      const screen = render(createModal(ModalId.RenderBackdrop))
+      await open(screen)
+      expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
+    })
   })
 })

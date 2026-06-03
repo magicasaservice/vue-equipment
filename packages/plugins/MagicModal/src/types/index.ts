@@ -1,7 +1,6 @@
 import { type Options as FocusTrapOptions } from 'focus-trap'
 
 export interface MagicModalOptions {
-  backdrop?: boolean
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }

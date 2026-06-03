@@ -1,7 +1,7 @@
 <template>
   <magic-modal-provider :id="id" :options="options">
     <magic-modal-teleport>
-      <magic-modal-backdrop v-if="showBackdrop">
+      <magic-modal-backdrop>
         <slot name="backdrop" />
       </magic-modal-backdrop>
       <magic-modal-content v-bind="$attrs">
@@ -12,8 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots, type MaybeRef } from 'vue'
-import { useModalState } from '../composables/private/useModalState'
+import { type MaybeRef } from 'vue'
 import MagicModalProvider from './MagicModalProvider.vue'
 import MagicModalTeleport from './MagicModalTeleport.vue'
 import MagicModalBackdrop from './MagicModalBackdrop.vue'
@@ -31,11 +30,4 @@ interface MagicModalProps {
 }
 
 const { options, id } = defineProps<MagicModalProps>()
-
-const slots = useSlots()
-
-const { initializeState } = useModalState(id)
-const state = initializeState(options)
-
-const showBackdrop = computed(() => state.options?.backdrop || !!slots.backdrop)
 </script>

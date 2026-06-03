@@ -4,7 +4,6 @@ export type DrawerSnapPoint = number | `${number}px`
 
 export interface MagicDrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
-  backdrop?: boolean
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }

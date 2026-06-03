@@ -2,107 +2,82 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
-import { MagicModal } from '../index'
+import MagicModalProvider from '../src/components/MagicModalProvider.vue'
+import MagicModalTeleport from '../src/components/MagicModalTeleport.vue'
+import MagicModalBackdrop from '../src/components/MagicModalBackdrop.vue'
+import MagicModalContent from '../src/components/MagicModalContent.vue'
 import { useMagicModal } from '../src/composables/useMagicModal'
 import { ModalId, TestId } from './enums'
 
-// Factory
-function createWrapper(modalId: ModalId) {
+function createModal(id: ModalId) {
   return defineComponent({
-    components: { MagicModal },
+    components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
     setup() {
-      const { open, close, isActive } = useMagicModal(modalId)
+      const { open, close, isActive } = useMagicModal(id)
       return { open, close, isActive }
     },
     template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+      <MagicModalProvider id="${id}">
         <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-        <MagicModal id="${modalId}">
-          <div data-test-id="${TestId.ModalContent}">Content</div>
-        </MagicModal>
-      </div>
+        <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <MagicModalTeleport>
+          <MagicModalBackdrop />
+          <MagicModalContent><div data-test-id="${TestId.ModalContent}">Content</div></MagicModalContent>
+        </MagicModalTeleport>
+      </MagicModalProvider>
     `,
   })
 }
 
-// Tests
 describe('MagicModal - API', () => {
-  describe('open and close', () => {
-    it('open() activates the modal', async () => {
-      const screen = render(createWrapper(ModalId.ApiOpen))
-      await screen.getByTestId(TestId.OpenBtn).click()
-      await nextTick()
-      await nextTick()
-
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+  describe('open / close / isActive', () => {
+    it('isActive is false initially', () => {
+      render(createModal(ModalId.ApiInitial))
+      expect(document.querySelector(`[data-test-id="${TestId.IsActive}"]`)!.textContent).toBe('false')
     })
 
-    it('close() deactivates the modal', async () => {
-      const screen = render(createWrapper(ModalId.ApiClose))
-      await screen.getByTestId(TestId.OpenBtn).click()
+    it('open() sets isActive to true', async () => {
+      const screen = render(createModal(ModalId.ApiOpen))
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
-      await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
-
-      // Close btn is behind modal, use DOM click
-      const closeBtn = document.querySelector(
-        `[data-test-id="${TestId.CloseBtn}"]`
-      ) as HTMLElement
-      closeBtn.click()
-      await nextTick()
-      await new Promise((r) => setTimeout(r, 300))
-
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
-    })
-  })
-
-  describe('isActive', () => {
-    it('isActive is false initially', async () => {
-      render(createWrapper(ModalId.ApiInitial))
-
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
 
-    it('isActive reflects open/close state', async () => {
-      const screen = render(createWrapper(ModalId.ApiReflect))
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
-
-      await screen.getByTestId(TestId.OpenBtn).click()
-      await nextTick()
+    it('close() sets isActive to false', async () => {
+      const screen = render(createModal(ModalId.ApiClose))
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+
+      // DOM click bypasses backdrop pointer-events
+      ;(document.querySelector(`[data-test-id="${TestId.CloseBtn}"]`) as HTMLElement).click()
+      await nextTick()
+
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+    })
+
+    it('isActive reflects state', async () => {
+      const screen = render(createModal(ModalId.ApiReflect))
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
   })
 
   describe('multiple instances', () => {
     it('independent modals have independent state', async () => {
       const wrapper = defineComponent({
-        components: { MagicModal },
+        components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
         setup() {
           const m1 = useMagicModal(ModalId.Multi1)
           const m2 = useMagicModal(ModalId.Multi2)
-          return {
-            open1: m1.open,
-            open2: m2.open,
-            isActive1: m1.isActive,
-            isActive2: m2.isActive,
-          }
+          return { open1: m1.open, open2: m2.open, isActive1: m1.isActive, isActive2: m2.isActive }
         },
         template: `
           <div>
@@ -110,8 +85,12 @@ describe('MagicModal - API', () => {
             <button data-test-id="${TestId.Open2}" @click="open2">Open 2</button>
             <span data-test-id="${TestId.Active1}">{{ isActive1 }}</span>
             <span data-test-id="${TestId.Active2}">{{ isActive2 }}</span>
-            <MagicModal id="${ModalId.Multi1}"><div>Modal 1</div></MagicModal>
-            <MagicModal id="${ModalId.Multi2}"><div>Modal 2</div></MagicModal>
+            <MagicModalProvider id="${ModalId.Multi1}">
+              <MagicModalTeleport><MagicModalBackdrop /><MagicModalContent><div>1</div></MagicModalContent></MagicModalTeleport>
+            </MagicModalProvider>
+            <MagicModalProvider id="${ModalId.Multi2}">
+              <MagicModalTeleport><MagicModalBackdrop /><MagicModalContent><div>2</div></MagicModalContent></MagicModalTeleport>
+            </MagicModalProvider>
           </div>
         `,
       })
@@ -119,14 +98,9 @@ describe('MagicModal - API', () => {
       const screen = render(wrapper)
       await screen.getByTestId(TestId.Open1).click()
       await nextTick()
-      await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.Active1))
-        .toHaveTextContent('true')
-      await expect
-        .element(page.getByTestId(TestId.Active2))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.Active1)).toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.Active2)).toHaveTextContent('false')
     })
   })
 })

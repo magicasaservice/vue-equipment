@@ -2,314 +2,257 @@ import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
-import { MagicDrawer } from '../index'
+import MagicDrawerProvider from '../src/components/MagicDrawerProvider.vue'
+import MagicDrawerTrigger from '../src/components/MagicDrawerTrigger.vue'
+import MagicDrawerTeleport from '../src/components/MagicDrawerTeleport.vue'
+import MagicDrawerBackdrop from '../src/components/MagicDrawerBackdrop.vue'
+import MagicDrawerContent from '../src/components/MagicDrawerContent.vue'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
-// Factories
-function createWrapper(
-  drawerId: DrawerId,
-  options: Record<string, unknown> = {}
-) {
+function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawer },
+    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
     setup() {
-      const { open, close, isActive, snapTo } = useMagicDrawer(drawerId)
-      return { open, close, isActive, snapTo }
+      const { open, close, isActive } = useMagicDrawer(id)
+      return { open, close, isActive }
     },
     template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+      <MagicDrawerProvider id="${id}" :options="options">
         <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-        <MagicDrawer id="${drawerId}" :options="options">
-          <div data-test-id="${TestId.DrawerContent}" style="height: 200px; width: 100%;">Content</div>
-        </MagicDrawer>
-      </div>
+        <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
+        <MagicDrawerTeleport>
+          <MagicDrawerBackdrop />
+          <MagicDrawerContent>
+            <div data-test-id="${TestId.DrawerContent}" style="height: 200px; width: 100%;">Content</div>
+          </MagicDrawerContent>
+        </MagicDrawerTeleport>
+      </MagicDrawerProvider>
     `,
-    data() {
-      return { options }
-    },
+    data() { return { options } },
   })
 }
 
-function createRapidWrapper(drawerId: DrawerId) {
+function createRapidDrawer(id: DrawerId) {
   return defineComponent({
-    components: { MagicDrawer },
+    components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
     setup() {
-      const { open, close, isActive } = useMagicDrawer(drawerId)
-
-      function rapidToggle() {
-        open()
-        close()
-        open()
-        close()
-        open() // final state: open
-      }
-
-      function doubleOpen() {
-        open()
-        open()
-      }
-
-      function openThenDoubleClose() {
-        close()
-        close()
-      }
-
-      return { open, close, isActive, rapidToggle, doubleOpen, openThenDoubleClose }
+      const { open, close, isActive } = useMagicDrawer(id)
+      function rapidToggle() { open(); close(); open(); close(); open() }
+      function doubleOpen() { open(); open() }
+      function doubleClose() { close(); close() }
+      return { open, close, isActive, rapidToggle, doubleOpen, doubleClose }
     },
     template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+      <MagicDrawerProvider id="${id}">
+        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+        <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
         <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
         <button data-test-id="${TestId.RapidBtn}" @click="rapidToggle">Rapid</button>
         <button data-test-id="${TestId.DoubleOpenBtn}" @click="doubleOpen">DblOpen</button>
-        <button data-test-id="${TestId.DoubleCloseBtn}" @click="openThenDoubleClose">DblClose</button>
-        <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-        <MagicDrawer id="${drawerId}">
-          <div>Content</div>
-        </MagicDrawer>
-      </div>
+        <button data-test-id="${TestId.DoubleCloseBtn}" @click="doubleClose">DblClose</button>
+        <MagicDrawerTeleport>
+          <MagicDrawerBackdrop />
+          <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+        </MagicDrawerTeleport>
+      </MagicDrawerProvider>
     `,
   })
 }
 
-// Tests
 describe('MagicDrawer - Edge Cases', () => {
   describe('default configuration', () => {
     it('works with zero options (all defaults)', async () => {
-      const screen = render(createWrapper(DrawerId.Default))
-      await screen.getByTestId(TestId.OpenBtn).click()
+      const screen = render(createDrawer(DrawerId.Default))
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
     })
   })
 
   describe('warning messages', () => {
     it('snapTo on closed drawer is a safe no-op', async () => {
       const wrapper = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
           const { open, isActive, snapTo } = useMagicDrawer(DrawerId.WarnSnap)
-          return {
-            open,
-            isActive,
-            trySnap: () => snapTo(0.5),
-          }
+          return { open, isActive, trySnap: () => snapTo(0.5) }
         },
         template: `
-          <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-            <button data-test-id="${TestId.SnapBtn}" @click="trySnap">Snap</button>
+          <MagicDrawerProvider id="${DrawerId.WarnSnap}" :options="{ snapPoints: [0.5, 1] }">
             <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-            <MagicDrawer id="${DrawerId.WarnSnap}" :options="{ snapPoints: [0.5, 1] }">
-              <div>Content</div>
-            </MagicDrawer>
-          </div>
+            <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+            <button data-test-id="${TestId.SnapBtn}" @click="trySnap">Snap</button>
+            <MagicDrawerTeleport>
+              <MagicDrawerBackdrop />
+              <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+            </MagicDrawerTeleport>
+          </MagicDrawerProvider>
         `,
       })
 
       const screen = render(wrapper)
       await nextTick()
 
-      // snapTo on closed drawer — MagicDrawerContent not mounted, listener not registered
-      // emitter fires the event but no handler reacts; should not throw
-      await expect(
-        screen.getByTestId(TestId.SnapBtn).click()
-      ).resolves.not.toThrow()
-
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect(screen.getByTestId(TestId.SnapBtn).click()).resolves.not.toThrow()
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
     })
 
     it('invalid overshoot CSS value triggers warning', async () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      // Set on body so the teleported content element inherits it
+      document.body.style.setProperty('--magic-drawer-drag-overshoot', 'invalid')
 
       const wrapper = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
           const { open, isActive } = useMagicDrawer(DrawerId.OvershootWarn)
           return { open, isActive }
         },
         template: `
-          <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
+          <MagicDrawerProvider id="${DrawerId.OvershootWarn}">
             <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-            <MagicDrawer id="${DrawerId.OvershootWarn}" style="--magic-drawer-drag-overshoot: invalid">
-              <div>Content</div>
-            </MagicDrawer>
-          </div>
+            <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+            <MagicDrawerTeleport>
+              <MagicDrawerBackdrop />
+              <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+            </MagicDrawerTeleport>
+          </MagicDrawerProvider>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      const warningCalls = warnSpy.mock.calls.filter((call: unknown[]) =>
-        call.some(
-          (arg: unknown) =>
-            typeof arg === 'string' &&
-            arg.includes('--magic-drawer-drag-overshoot')
-        )
+      const warningCalls = warnSpy.mock.calls.filter((call) =>
+        call.some((arg) => typeof arg === 'string' && arg.includes('--magic-drawer-drag-overshoot'))
       )
       expect(warningCalls.length).toBeGreaterThan(0)
-
+      document.body.style.removeProperty('--magic-drawer-drag-overshoot')
       warnSpy.mockRestore()
     })
   })
 
   describe('rapid state changes', () => {
     it('rapid open/close does not break state', async () => {
-      const screen = render(createRapidWrapper(DrawerId.RapidDrawer))
-
+      const screen = render(createRapidDrawer(DrawerId.RapidDrawer))
       await screen.getByTestId(TestId.RapidBtn).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
 
     it('double open does not break state', async () => {
-      const screen = render(createRapidWrapper(DrawerId.DoubleOpen))
-
+      const screen = render(createRapidDrawer(DrawerId.DoubleOpen))
       await screen.getByTestId(TestId.DoubleOpenBtn).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
     })
 
     it('double close does not break state', async () => {
-      const screen = render(createRapidWrapper(DrawerId.DoubleClose))
-
-      await screen.getByTestId(TestId.OpenBtn).click()
+      const screen = render(createRapidDrawer(DrawerId.DoubleClose))
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      const dblCloseBtn = document.querySelector(
-        `[data-test-id="${TestId.DoubleCloseBtn}"]`
-      ) as HTMLElement
-      dblCloseBtn.click()
+      ;(document.querySelector(`[data-test-id="${TestId.DoubleCloseBtn}"]`) as HTMLElement).click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 400))
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
 
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
   })
 
   describe('cleanup on unmount', () => {
     it('unmounting closes the drawer', async () => {
       const container = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
-          const { open, close, isActive } = useMagicDrawer(DrawerId.UnmountDrawer)
-          return { open, close, isActive }
+          const { open, isActive } = useMagicDrawer(DrawerId.UnmountDrawer)
+          return { open, isActive }
         },
-        data() {
-          return { showDrawer: true }
-        },
+        data() { return { show: true } },
         template: `
           <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-            <button data-test-id="${TestId.ToggleBtn}" @click="showDrawer = !showDrawer">Toggle</button>
+            <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+            <button data-test-id="${TestId.ToggleBtn}" @click="show = !show">Toggle</button>
             <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-            <MagicDrawer v-if="showDrawer" id="${DrawerId.UnmountDrawer}">
-              <div>Content</div>
-            </MagicDrawer>
+            <MagicDrawerProvider v-if="show" id="${DrawerId.UnmountDrawer}">
+              <MagicDrawerTeleport>
+                <MagicDrawerBackdrop />
+                <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+              </MagicDrawerTeleport>
+            </MagicDrawerProvider>
           </div>
         `,
       })
 
       const screen = render(container)
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
 
-      const toggleBtn = document.querySelector(
-        `[data-test-id="${TestId.ToggleBtn}"]`
-      ) as HTMLElement
-      toggleBtn.click()
+      ;(document.querySelector(`[data-test-id="${TestId.ToggleBtn}"]`) as HTMLElement).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('false')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
     })
 
     it('unmounting cleans up scroll lock', async () => {
       const container = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
-          const { open, isActive } = useMagicDrawer(DrawerId.CleanupScroll)
-          return { open, isActive }
+          const { open } = useMagicDrawer(DrawerId.CleanupScroll)
+          return { open }
         },
-        data() {
-          return { showDrawer: true }
-        },
+        data() { return { show: true } },
         template: `
           <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-            <button data-test-id="${TestId.ToggleBtn}" @click="showDrawer = !showDrawer">Toggle</button>
-            <MagicDrawer
-              v-if="showDrawer"
-              id="${DrawerId.CleanupScroll}"
-              :options="{ scrollLock: true }"
-            >
-              <div>Content</div>
-            </MagicDrawer>
+            <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+            <button data-test-id="${TestId.ToggleBtn}" @click="show = !show">Toggle</button>
+            <MagicDrawerProvider v-if="show" id="${DrawerId.CleanupScroll}" :options="{ scrollLock: true }">
+              <MagicDrawerTeleport>
+                <MagicDrawerBackdrop />
+                <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+              </MagicDrawerTeleport>
+            </MagicDrawerProvider>
           </div>
         `,
       })
 
       const screen = render(container)
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 500))
 
-      const toggleBtn = document.querySelector(
-        `[data-test-id="${TestId.ToggleBtn}"]`
-      ) as HTMLElement
-      toggleBtn.click()
+      ;(document.querySelector(`[data-test-id="${TestId.ToggleBtn}"]`) as HTMLElement).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
@@ -321,75 +264,73 @@ describe('MagicDrawer - Edge Cases', () => {
   describe('overshoot CSS variable parsing', () => {
     it('handles px overshoot value correctly', async () => {
       const wrapper = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
           const { open, isActive } = useMagicDrawer(DrawerId.OvershootPx)
           return { open, isActive }
         },
         template: `
-          <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-            <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-            <MagicDrawer id="${DrawerId.OvershootPx}" style="--magic-drawer-drag-overshoot: 32px">
-              <div>Content</div>
-            </MagicDrawer>
+          <div style="--magic-drawer-drag-overshoot: 32px">
+            <MagicDrawerProvider id="${DrawerId.OvershootPx}">
+              <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+              <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+              <MagicDrawerTeleport>
+                <MagicDrawerBackdrop />
+                <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+              </MagicDrawerTeleport>
+            </MagicDrawerProvider>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
 
     it('handles rem overshoot value correctly', async () => {
       const wrapper = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
           const { open, isActive } = useMagicDrawer(DrawerId.OvershootRem)
           return { open, isActive }
         },
         template: `
-          <div>
-            <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-            <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
-            <MagicDrawer id="${DrawerId.OvershootRem}" style="--magic-drawer-drag-overshoot: 2rem">
-              <div>Content</div>
-            </MagicDrawer>
+          <div style="--magic-drawer-drag-overshoot: 2rem">
+            <MagicDrawerProvider id="${DrawerId.OvershootRem}">
+              <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+              <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+              <MagicDrawerTeleport>
+                <MagicDrawerBackdrop />
+                <MagicDrawerContent><div>Content</div></MagicDrawerContent>
+              </MagicDrawerTeleport>
+            </MagicDrawerProvider>
           </div>
         `,
       })
 
       const screen = render(wrapper)
-      await screen.getByTestId(TestId.OpenBtn).click()
+      await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.IsActive))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
     })
   })
 
-  describe('concurrent drawer instances', () => {
+  describe('concurrent instances', () => {
     it('opening multiple drawers simultaneously works', async () => {
       const wrapper = defineComponent({
-        components: { MagicDrawer },
+        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
         setup() {
           const d1 = useMagicDrawer(DrawerId.Concurrent1)
           const d2 = useMagicDrawer(DrawerId.Concurrent2)
           const d3 = useMagicDrawer(DrawerId.Concurrent3)
           return {
-            openAll: () => {
-              d1.open()
-              d2.open()
-              d3.open()
-            },
+            openAll: () => { d1.open(); d2.open(); d3.open() },
             isActive1: d1.isActive,
             isActive2: d2.isActive,
             isActive3: d3.isActive,
@@ -401,9 +342,15 @@ describe('MagicDrawer - Edge Cases', () => {
             <span data-test-id="${TestId.Active1}">{{ isActive1 }}</span>
             <span data-test-id="${TestId.Active2}">{{ isActive2 }}</span>
             <span data-test-id="${TestId.Active3}">{{ isActive3 }}</span>
-            <MagicDrawer id="${DrawerId.Concurrent1}"><div>1</div></MagicDrawer>
-            <MagicDrawer id="${DrawerId.Concurrent2}"><div>2</div></MagicDrawer>
-            <MagicDrawer id="${DrawerId.Concurrent3}"><div>3</div></MagicDrawer>
+            <MagicDrawerProvider id="${DrawerId.Concurrent1}">
+              <MagicDrawerTeleport><MagicDrawerBackdrop /><MagicDrawerContent><div>1</div></MagicDrawerContent></MagicDrawerTeleport>
+            </MagicDrawerProvider>
+            <MagicDrawerProvider id="${DrawerId.Concurrent2}">
+              <MagicDrawerTeleport><MagicDrawerBackdrop /><MagicDrawerContent><div>2</div></MagicDrawerContent></MagicDrawerTeleport>
+            </MagicDrawerProvider>
+            <MagicDrawerProvider id="${DrawerId.Concurrent3}">
+              <MagicDrawerTeleport><MagicDrawerBackdrop /><MagicDrawerContent><div>3</div></MagicDrawerContent></MagicDrawerTeleport>
+            </MagicDrawerProvider>
           </div>
         `,
       })
@@ -413,15 +360,9 @@ describe('MagicDrawer - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.Active1))
-        .toHaveTextContent('true')
-      await expect
-        .element(page.getByTestId(TestId.Active2))
-        .toHaveTextContent('true')
-      await expect
-        .element(page.getByTestId(TestId.Active3))
-        .toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.Active1)).toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.Active2)).toHaveTextContent('true')
+      await expect.element(page.getByTestId(TestId.Active3)).toHaveTextContent('true')
     })
   })
 })

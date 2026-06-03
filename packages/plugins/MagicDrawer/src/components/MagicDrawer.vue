@@ -1,7 +1,7 @@
 <template>
   <magic-drawer-provider :id="id" :options="options">
     <magic-drawer-teleport>
-      <magic-drawer-backdrop v-if="showBackdrop">
+      <magic-drawer-backdrop>
         <slot name="backdrop" />
       </magic-drawer-backdrop>
       <magic-drawer-content v-bind="$attrs">
@@ -12,8 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots, type MaybeRef } from 'vue'
-import { useDrawerState } from '../composables/private/useDrawerState'
+import { type MaybeRef } from 'vue'
 import MagicDrawerProvider from './MagicDrawerProvider.vue'
 import MagicDrawerTeleport from './MagicDrawerTeleport.vue'
 import MagicDrawerBackdrop from './MagicDrawerBackdrop.vue'
@@ -31,11 +30,4 @@ interface MagicDrawerProps {
 }
 
 const { options, id } = defineProps<MagicDrawerProps>()
-
-const slots = useSlots()
-
-const { initializeState } = useDrawerState(id)
-const state = initializeState(options)
-
-const showBackdrop = computed(() => state.options?.backdrop || !!slots.backdrop)
 </script>

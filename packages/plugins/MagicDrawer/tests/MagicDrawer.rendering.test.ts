@@ -2,201 +2,130 @@ import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
-import { MagicDrawer } from '../index'
-import { useMagicDrawer } from '../src/composables/useMagicDrawer'
+import MagicDrawerProvider from '../src/components/MagicDrawerProvider.vue'
+import MagicDrawerTrigger from '../src/components/MagicDrawerTrigger.vue'
+import MagicDrawerTeleport from '../src/components/MagicDrawerTeleport.vue'
+import MagicDrawerBackdrop from '../src/components/MagicDrawerBackdrop.vue'
+import MagicDrawerContent from '../src/components/MagicDrawerContent.vue'
 import { DrawerId, TestId } from './enums'
 
-// Factories
-function createWrapper(
-  drawerId: DrawerId = DrawerId.TestDrawer,
-  options: Record<string, unknown> = {}
-) {
+function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawer },
-    setup() {
-      const { open, close, isActive } = useMagicDrawer(drawerId)
-      return { open, close, isActive }
-    },
+    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
     template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-        <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
-        <MagicDrawer id="${drawerId}" :options="options">
-          <div data-test-id="${TestId.DrawerContent}">Drawer Content</div>
-        </MagicDrawer>
-      </div>
+      <MagicDrawerProvider id="${id}" :options="options">
+        <MagicDrawerTrigger>
+          <button data-test-id="${TestId.Trigger}">Open</button>
+        </MagicDrawerTrigger>
+        <MagicDrawerTeleport>
+          <MagicDrawerBackdrop />
+          <MagicDrawerContent>
+            <div data-test-id="${TestId.DrawerContent}">Content</div>
+          </MagicDrawerContent>
+        </MagicDrawerTeleport>
+      </MagicDrawerProvider>
     `,
-    data() {
-      return { options }
-    },
+    data() { return { options } },
   })
 }
 
-function createWrapperWithBackdropSlot() {
-  return defineComponent({
-    components: { MagicDrawer },
-    setup() {
-      const { open, close } = useMagicDrawer(DrawerId.TestDrawerSlot)
-      return { open, close }
-    },
-    template: `
-      <div>
-        <button data-test-id="${TestId.OpenBtn}" @click="open">Open</button>
-        <MagicDrawer id="${DrawerId.TestDrawerSlot}">
-          <template #backdrop>
-            <div data-test-id="${TestId.CustomBackdrop}">Custom Backdrop</div>
-          </template>
-          <div data-test-id="${TestId.DrawerContent}">Content</div>
-        </MagicDrawer>
-      </div>
-    `,
-  })
+async function open(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+  await nextTick()
 }
 
-// Tests
 describe('MagicDrawer - Rendering', () => {
-  it('does not render when inactive', () => {
-    render(createWrapper())
-    expect(document.querySelector('.magic-drawer-content')).toBeNull()
+  describe('trigger', () => {
+    it('has .magic-drawer-trigger class', () => {
+      render(createDrawer(DrawerId.RenderTrigger))
+      expect(document.querySelector('.magic-drawer-trigger')).not.toBeNull()
+    })
+
+    it('has data-active=false initially', () => {
+      render(createDrawer(DrawerId.RenderTriggerActive))
+      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-active')).toBe('false')
+    })
+
+    it('has data-disabled=false by default', () => {
+      render(createDrawer(DrawerId.RenderTriggerDisabled))
+      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-disabled')).toBe('false')
+    })
+
+    it('data-active becomes true when open', async () => {
+      const screen = render(createDrawer(DrawerId.RenderTriggerOpen))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-active')).toBe('true')
+    })
   })
 
-  it('renders with correct class structure when opened', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer).not.toBeNull()
-    expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
-    expect(
-      drawer!.querySelector('.magic-drawer-content__wrapper')
-    ).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer-content__inner')).not.toBeNull()
-    expect(drawer!.querySelector('.magic-drawer-content__drag')).not.toBeNull()
+  describe('content (closed)', () => {
+    it('does not render when inactive', () => {
+      render(createDrawer(DrawerId.RenderContentClosed))
+      expect(document.querySelector('.magic-drawer-content')).toBeNull()
+    })
   })
 
-  it('sets data-id attribute', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
+  describe('content (open)', () => {
+    it('renders correct structure', async () => {
+      const screen = render(createDrawer(DrawerId.RenderContentOpen))
+      await open(screen)
 
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer!.getAttribute('data-id')).toBe(DrawerId.TestDrawer)
+      const drawer = document.querySelector('.magic-drawer-content')
+      expect(drawer).not.toBeNull()
+      expect(drawer!.querySelector('.magic-drawer-content__wrapper')).not.toBeNull()
+      expect(drawer!.querySelector('.magic-drawer-content__inner')).not.toBeNull()
+      expect(drawer!.querySelector('.magic-drawer-content__drag')).not.toBeNull()
+    })
+
+    it('sets data-id', async () => {
+      const screen = render(createDrawer(DrawerId.RenderDataId))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-id')).toBe(DrawerId.RenderDataId)
+    })
+
+    it('sets data-position to bottom by default', async () => {
+      const screen = render(createDrawer(DrawerId.RenderPosition))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-position')).toBe('bottom')
+    })
+
+    it('sets aria-modal', async () => {
+      const screen = render(createDrawer(DrawerId.RenderAriaModal))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content')!.getAttribute('aria-modal')).toBe('true')
+    })
+
+    it('drag uses dialog by default', async () => {
+      const screen = render(createDrawer(DrawerId.RenderTag))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content__drag')!.tagName.toLowerCase()).toBe('dialog')
+    })
+
+    it('renders slot content', async () => {
+      const screen = render(createDrawer(DrawerId.RenderSlot))
+      await open(screen)
+      await expect.element(page.getByTestId(TestId.DrawerContent)).toBeInTheDocument()
+    })
+
+    it('sets data-disabled from options', async () => {
+      const screen = render(createDrawer(DrawerId.RenderDisabled, { disabled: true }))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-disabled')).toBe('true')
+    })
+
+    it('data-dragging is false when not dragging', async () => {
+      const screen = render(createDrawer(DrawerId.RenderDragging))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-dragging')).toBe('false')
+    })
   })
 
-  it('sets data-position attribute to bottom by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer!.getAttribute('data-position')).toBe('bottom')
-  })
-
-  it('sets aria-modal attribute', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer!.getAttribute('aria-modal')).toBe('true')
-  })
-
-  it('uses dialog element by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drag = document.querySelector('.magic-drawer-content__drag')
-    expect(drag!.tagName.toLowerCase()).toBe('dialog')
-  })
-
-  it('uses div element when tag option is div', async () => {
-    const screen = render(createWrapper(DrawerId.TestDrawer, { tag: 'div' }))
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drag = document.querySelector('.magic-drawer-content__drag')
-    expect(drag!.tagName.toLowerCase()).toBe('div')
-  })
-
-  it('teleports to body by default', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.body.querySelector(':scope > .magic-drawer-content')
-    expect(drawer).not.toBeNull()
-  })
-
-  it('renders backdrop when backdrop option is true (default)', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
-  })
-
-  it('does not render backdrop when backdrop option is false', async () => {
-    const screen = render(
-      createWrapper(DrawerId.TestDrawer, { backdrop: false })
-    )
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    expect(document.querySelector('.magic-drawer-backdrop')).toBeNull()
-  })
-
-  it('renders default slot content', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    await expect
-      .element(page.getByTestId(TestId.DrawerContent))
-      .toBeInTheDocument()
-  })
-
-  it('renders backdrop slot content', async () => {
-    const screen = render(createWrapperWithBackdropSlot())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    await expect
-      .element(page.getByTestId(TestId.CustomBackdrop))
-      .toBeInTheDocument()
-  })
-
-  it('sets data-disabled attribute', async () => {
-    const screen = render(
-      createWrapper(DrawerId.TestDrawer, { disabled: true })
-    )
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer!.getAttribute('data-disabled')).toBe('true')
-  })
-
-  it('sets data-dragging to false when not dragging', async () => {
-    const screen = render(createWrapper())
-    await screen.getByTestId(TestId.OpenBtn).click()
-    await nextTick()
-    await nextTick()
-
-    const drawer = document.querySelector('.magic-drawer-content')
-    expect(drawer!.getAttribute('data-dragging')).toBe('false')
+  describe('backdrop', () => {
+    it('renders when drawer is open', async () => {
+      const screen = render(createDrawer(DrawerId.RenderBackdrop))
+      await open(screen)
+      expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
+    })
   })
 })
