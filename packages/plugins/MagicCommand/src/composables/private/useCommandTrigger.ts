@@ -1,9 +1,10 @@
-import { nextTick, type ComputedRef, type MaybeRef, type Ref } from 'vue'
+import { nextTick } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useFocus } from '@vueuse/core'
-import type { Action, Interaction } from '../../types/index'
 import { useCommandView } from './useCommandView'
 import { useCommandState } from './useCommandState'
+import type { ComputedRef, MaybeRef, Ref } from 'vue'
+import type { Action, Interaction } from '../../types/index'
 
 type UseCommandTriggerArgs = {
   instanceId: MaybeRef<string>

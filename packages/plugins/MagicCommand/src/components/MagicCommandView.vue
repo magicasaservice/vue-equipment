@@ -6,10 +6,7 @@
 
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, provide, useId, watch } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
@@ -18,6 +15,7 @@ import {
   MagicCommandItemId,
   MagicCommandViewActive,
 } from '../symbols'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicCommandViewProps {
   id?: string

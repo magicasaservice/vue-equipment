@@ -1,6 +1,6 @@
-import { reactive, computed, type MaybeRef } from 'vue'
-
+import { reactive, computed } from 'vue'
 import { useCommandView } from './useCommandView'
+import type { MaybeRef } from 'vue'
 import type { CommandItem } from '../../types/index'
 
 type UseCommandItemArgs = {

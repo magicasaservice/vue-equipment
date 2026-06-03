@@ -1,12 +1,3 @@
-import MagicCommandDrawer from './src/components/MagicCommandDrawer.vue'
-import MagicCommandItem from './src/components/MagicCommandItem.vue'
-import MagicCommandModal from './src/components/MagicCommandModal.vue'
-import MagicCommandProvider from './src/components/MagicCommandProvider.vue'
-import MagicCommandView from './src/components/MagicCommandView.vue'
-import MagicCommandRenderer from './src/components/MagicCommandRenderer.vue'
-import MagicCommandContent from './src/components/MagicCommandContent.vue'
-import MagicCommandTrigger from './src/components/MagicCommandTrigger.vue'
-
 import {
   MagicModalProvider,
   MagicModalTeleport,
@@ -17,13 +8,19 @@ import {
   MagicDrawerTeleport,
   MagicDrawerContent,
 } from '@maas/vue-equipment/plugins/MagicDrawer'
-
+import MagicCommandDrawer from './src/components/MagicCommandDrawer.vue'
+import MagicCommandItem from './src/components/MagicCommandItem.vue'
+import MagicCommandModal from './src/components/MagicCommandModal.vue'
+import MagicCommandProvider from './src/components/MagicCommandProvider.vue'
+import MagicCommandView from './src/components/MagicCommandView.vue'
+import MagicCommandRenderer from './src/components/MagicCommandRenderer.vue'
+import MagicCommandContent from './src/components/MagicCommandContent.vue'
+import MagicCommandTrigger from './src/components/MagicCommandTrigger.vue'
 import { useMagicCommand } from './src/composables/useMagicCommand'
 import {
   MagicCommandInstanceId,
   MagicCommandProviderOptions,
 } from './src/symbols/index'
-
 import type { App, Plugin } from 'vue'
 import type {
   MagicCommandOptions,

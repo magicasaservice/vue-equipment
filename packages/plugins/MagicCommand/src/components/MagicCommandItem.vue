@@ -24,10 +24,8 @@ import {
   useId,
   onMounted,
 } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { onKeyStroke } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandState } from '../composables/private/useCommandState'
 import {
@@ -38,7 +36,7 @@ import {
   MagicCommandItemActive,
   MagicCommandItemDisabled,
 } from '../symbols'
-import { onKeyStroke } from '@vueuse/core'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicCommandItemProps {
   id?: string

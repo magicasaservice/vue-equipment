@@ -1,6 +1,7 @@
-import { reactive, computed, toValue, type MaybeRef } from 'vue'
+import { reactive, computed, toValue } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './useCommandState'
+import type { MaybeRef } from 'vue'
 import type { CommandView } from '../../types/index'
 
 type InitializeViewArgs = Pick<CommandView, 'id' | 'parent' | 'initial'>

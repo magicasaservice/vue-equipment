@@ -36,10 +36,7 @@ import {
   useTemplateRef,
 } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
 import { useCommandCallback } from '../composables/private/useCommandCallback'
@@ -51,6 +48,7 @@ import {
 } from '../symbols'
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandState } from '../composables/private/useCommandState'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

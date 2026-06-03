@@ -16,10 +16,8 @@
 <script lang="ts" setup>
 import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicKeys } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandTrigger } from '../composables/private/useCommandTrigger'
 import {
@@ -29,9 +27,8 @@ import {
   MagicCommandItemDisabled,
   MagicCommandProviderOptions,
 } from '../symbols'
-
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 import type { Interaction, Action } from '../types'
-import { useMagicKeys } from '@vueuse/core'
 
 interface MagicCommandTriggerProps {
   viewId?: string

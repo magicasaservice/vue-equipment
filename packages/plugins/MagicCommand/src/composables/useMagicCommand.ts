@@ -1,4 +1,5 @@
-import { computed, nextTick, type MaybeRef } from 'vue'
+import { computed, nextTick } from 'vue'
+import type { MaybeRef } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'

@@ -4,17 +4,12 @@
 
 <script lang="ts" setup>
 import { inject, onBeforeUnmount, useTemplateRef } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MagicCommandInstanceId } from './../symbols'
-
 import { useCommandState } from '../composables/private/useCommandState'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicCommand',
