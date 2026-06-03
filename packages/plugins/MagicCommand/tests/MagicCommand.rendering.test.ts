@@ -3,11 +3,21 @@ import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
 import MagicCommandProvider from '../src/components/MagicCommandProvider.vue'
+import MagicCommandModal from '../src/components/MagicCommandModal.vue'
+import MagicCommandDrawer from '../src/components/MagicCommandDrawer.vue'
 import MagicCommandView from '../src/components/MagicCommandView.vue'
 import MagicCommandContent from '../src/components/MagicCommandContent.vue'
 import MagicCommandItem from '../src/components/MagicCommandItem.vue'
 import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
+import MagicModalProvider from '../../MagicModal/src/components/MagicModalProvider.vue'
+import MagicModalTeleport from '../../MagicModal/src/components/MagicModalTeleport.vue'
+import MagicModalBackdrop from '../../MagicModal/src/components/MagicModalBackdrop.vue'
+import MagicModalContent from '../../MagicModal/src/components/MagicModalContent.vue'
+import MagicDrawerProvider from '../../MagicDrawer/src/components/MagicDrawerProvider.vue'
+import MagicDrawerTeleport from '../../MagicDrawer/src/components/MagicDrawerTeleport.vue'
+import MagicDrawerBackdrop from '../../MagicDrawer/src/components/MagicDrawerBackdrop.vue'
+import MagicDrawerContent from '../../MagicDrawer/src/components/MagicDrawerContent.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { CommandId, ViewId, ItemId, TestId } from './enums'
@@ -17,11 +27,21 @@ const gc = {
   global: {
     components: {
       MagicCommandProvider,
+      MagicCommandModal,
+      MagicCommandDrawer,
       MagicCommandView,
       MagicCommandContent,
       MagicCommandItem,
       MagicCommandTrigger,
       MagicCommandRenderer,
+      MagicModalProvider,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+      MagicDrawerProvider,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
     },
   },
 }
@@ -310,6 +330,172 @@ describe('MagicCommand - Rendering', () => {
       await new Promise((r) => setTimeout(r, 50))
 
       expect(document.querySelector('.magic-command-content')).not.toBeNull()
+    })
+  })
+
+  describe('modal', () => {
+    it('renders backdrop and content when command opens', async () => {
+      const wrapper = defineComponent({
+        setup() {
+          const { openCommand } = useOpenHelper(CommandId.ModalDefault)
+          return { openCommand }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ModalDefault}">
+              <MagicCommandModal :options="{ keyListener: { close: false } }">
+                <MagicCommandRenderer />
+              </MagicCommandModal>
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
+                <MagicCommandContent>
+                  <MagicCommandItem><div>Item</div></MagicCommandItem>
+                </MagicCommandContent>
+              </MagicCommandView>
+            </MagicCommandProvider>
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper, gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      expect(document.querySelector('.magic-modal-backdrop')).not.toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
+    })
+
+    it('#layout slot replaces default — no backdrop rendered', async () => {
+      const wrapper = defineComponent({
+        setup() {
+          const { openCommand } = useOpenHelper(CommandId.ModalLayout)
+          return { openCommand }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.ModalLayout}">
+              <MagicCommandModal :options="{ keyListener: { close: false } }">
+                <template #layout>
+                  <MagicModalTeleport>
+                    <MagicModalContent>
+                      <span data-test-id="${TestId.LayoutContent}">Custom</span>
+                    </MagicModalContent>
+                  </MagicModalTeleport>
+                </template>
+              </MagicCommandModal>
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
+                <MagicCommandContent>
+                  <MagicCommandItem><div>Item</div></MagicCommandItem>
+                </MagicCommandContent>
+              </MagicCommandView>
+            </MagicCommandProvider>
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper, gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      expect(document.querySelector('.magic-modal-backdrop')).toBeNull()
+      expect(document.querySelector('.magic-modal-content')).not.toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.LayoutContent}"]`)
+      ).not.toBeNull()
+    })
+  })
+
+  describe('drawer', () => {
+    it('renders backdrop and content when command opens', async () => {
+      const wrapper = defineComponent({
+        setup() {
+          const { openCommand } = useOpenHelper(CommandId.DrawerDefault)
+          return { openCommand }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.DrawerDefault}">
+              <MagicCommandDrawer :options="{ keyListener: { close: false } }">
+                <MagicCommandRenderer />
+              </MagicCommandDrawer>
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
+                <MagicCommandContent>
+                  <MagicCommandItem><div>Item</div></MagicCommandItem>
+                </MagicCommandContent>
+              </MagicCommandView>
+            </MagicCommandProvider>
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper, gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
+      expect(document.querySelector('.magic-drawer-content')).not.toBeNull()
+    })
+
+    it('#layout slot replaces default — no backdrop rendered', async () => {
+      const wrapper = defineComponent({
+        setup() {
+          const { openCommand } = useOpenHelper(CommandId.DrawerLayout)
+          return { openCommand }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+            <MagicCommandProvider id="${CommandId.DrawerLayout}">
+              <MagicCommandDrawer :options="{ keyListener: { close: false } }">
+                <template #layout>
+                  <MagicDrawerTeleport>
+                    <MagicDrawerContent>
+                      <span data-test-id="${TestId.LayoutContent}">Custom</span>
+                    </MagicDrawerContent>
+                  </MagicDrawerTeleport>
+                </template>
+              </MagicCommandDrawer>
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
+                <MagicCommandContent>
+                  <MagicCommandItem><div>Item</div></MagicCommandItem>
+                </MagicCommandContent>
+              </MagicCommandView>
+            </MagicCommandProvider>
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper, gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      expect(document.querySelector('.magic-drawer-backdrop')).toBeNull()
+      expect(document.querySelector('.magic-drawer-content')).not.toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.LayoutContent}"]`)
+      ).not.toBeNull()
     })
   })
 })

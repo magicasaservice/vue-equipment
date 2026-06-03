@@ -31,6 +31,16 @@ export enum CommandId {
   Disabled = 'edge-disabled',
   Nested = 'edge-nested',
   EdgeSlot = 'edge-slot',
+  ModalDefault = 'md-modal-default',
+  ModalSync = 'md-modal-sync',
+  ModalSyncClose = 'md-modal-sync-close',
+  ModalAfterLeave = 'md-modal-after-leave',
+  ModalLayout = 'md-modal-layout',
+  DrawerDefault = 'md-drawer-default',
+  DrawerSync = 'md-drawer-sync',
+  DrawerSyncClose = 'md-drawer-sync-close',
+  DrawerAfterLeave = 'md-drawer-after-leave',
+  DrawerLayout = 'md-drawer-layout',
 }
 
 export enum ViewId {
@@ -77,4 +87,5 @@ export enum TestId {
   Open1 = 'open-1',
   SlotActive = 'slot-active',
   SlotDisabled = 'slot-disabled',
+  LayoutContent = 'layout-content',
 }
