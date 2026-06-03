@@ -42,6 +42,10 @@ export default defineNuxtConfig({
 })
 ```
 
+## TypeScript
+
+Vue Equipment ships with TypeScript declarations.
+
 ## Peer Dependencies
 
 Vue Equipment relies on various peer dependencies. Depending on your package manager as well as your project settings, you may need to add them manually. Please refer to the respective plugin’s documentation to see which dependencies are required.
@@ -76,13 +80,6 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
     items: [
       {
         label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-      }
-    ]
-  },
-  {
-    items: [
-      {
-        label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
       }
     ]
   },
@@ -145,13 +142,6 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
   {
     items: [
       {
-        label: '[nuxt](https://www.npmjs.com/package/nuxt)'
-      }
-    ]
-  },
-  {
-    items: [
-      {
         label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)'
       }
     ]
@@ -167,6 +157,32 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
     items: [
       {
         label: '[wheel-gestures](https://www.npmjs.com/package/wheel-gestures)'
+      }
+    ]
+  },
+]"
+/>
+
+### Nuxt
+
+The following peer dependencies are only required when using the Nuxt module.
+
+<ProseTable
+:columns="[
+  { label: 'Package'},
+]"
+:rows="[
+  {
+    items: [
+      {
+        label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+      }
+    ]
+  },
+  {
+    items: [
+      {
+        label: '[nuxt](https://www.npmjs.com/package/nuxt)'
       }
     ]
   },
@@ -200,7 +216,7 @@ yarn add @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primiti
 ```
 
 ```sh [bun]
-bun install @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
+bun add @floating-ui/vue @maas/vue-autosize @maas/magic-timer @maas/vue-primitive @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap hls.js luxon mitt motion nuxt universal-cookie vue wheel-gestures
 ```
 
 :::
