@@ -10,6 +10,8 @@ export interface MagicAccordionOptions {
   }
 }
 
+export type RequiredMagicAccordionOptions = Required<MagicAccordionOptions>
+
 export interface AccordionView {
   id: string
   active: boolean

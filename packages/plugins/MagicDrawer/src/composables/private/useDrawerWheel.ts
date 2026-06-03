@@ -11,12 +11,12 @@ import WheelGestures, { type WheelEventState } from 'wheel-gestures'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDrawerState } from './useDrawerState'
 
-import type { DrawerDefaultOptions } from '../../types'
+import type { RequiredMagicDrawerOptions } from '../../types'
 
 type UseDrawerWheelArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
-  position: MaybeRef<DrawerDefaultOptions['position']>
+  position: MaybeRef<RequiredMagicDrawerOptions['position']>
   disabled: ComputedRef<boolean>
 }
 

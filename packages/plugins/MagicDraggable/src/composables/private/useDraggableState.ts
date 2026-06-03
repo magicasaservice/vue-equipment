@@ -1,6 +1,8 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
-import type { DraggableState } from '../../types/index'
+import type { DraggableState, MagicDraggableOptions } from '../../types/index'
+import { createDefu } from 'defu'
+import { defaultOptions } from '../../utils/defaultOptions'
 
 const getDraggableStateStore = createStateStore<DraggableState[]>(
   'MagicDraggable',
@@ -10,6 +12,13 @@ const getDraggableStateStore = createStateStore<DraggableState[]>(
 export function useDraggableState(id: MaybeRef<string>) {
   const draggableStateStore = getDraggableStateStore()
   let scopeCounted = false
+
+  const customDefu = createDefu((obj, key, value) => {
+    if (key === 'snapPoints') {
+      obj[key] = value
+      return true
+    }
+  })
 
   //Private functions
   function createState(id: string) {
@@ -30,6 +39,7 @@ export function useDraggableState(id: MaybeRef<string>) {
       elRect: undefined,
       wrapperRect: undefined,
       activeSnapPoint: undefined,
+      options: defaultOptions,
     }
 
     return reactive(state)
@@ -50,7 +60,7 @@ export function useDraggableState(id: MaybeRef<string>) {
   }
 
   // Public functions
-  function initializeState() {
+  function initializeState(options?: MagicDraggableOptions) {
     const currentId = toValue(id)
     let state = draggableStateStore.value.find(
       (entry) => entry.id === currentId
@@ -58,6 +68,11 @@ export function useDraggableState(id: MaybeRef<string>) {
 
     if (!state) {
       state = addState(currentId)
+    }
+
+    if (options) {
+      const mappedOptions = customDefu(options, defaultOptions)
+      state.options = mappedOptions
     }
 
     if (!scopeCounted) {

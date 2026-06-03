@@ -26,6 +26,8 @@ export interface MagicCookieOptions {
   }
 }
 
+export type RequiredMagicCookieOptions = Required<MagicCookieOptions>
+
 export interface CookieEvents {
   beforeEnter: string
   enter: string

@@ -320,6 +320,8 @@ To customize the command palette, override the necessary options. Any custom opt
 
 ### MagicCommandView
 
+Groups command items into a single panel and tracks which item is currently selected.
+
 #### Props
 
 <ProseTable 
@@ -361,7 +363,28 @@ To customize the command palette, override the necessary options. Any custom opt
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the command palette view is currently open.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicCommandDrawer
+
+Wraps the command palette in a `MagicDrawer`.
 
 #### Props
 
@@ -391,6 +414,8 @@ To customize the command palette, override the necessary options. Any custom opt
 
 ### MagicCommandModal
 
+Wraps the command palette in a `MagicModal`.
+
 #### Props
 
 <ProseTable 
@@ -418,6 +443,8 @@ To customize the command palette, override the necessary options. Any custom opt
 />
 
 ### MagicCommandRenderer
+
+Renders command items dynamically from registered commands.
 
 #### CSS Variables
 
@@ -451,6 +478,8 @@ To customize the command palette, override the necessary options. Any custom opt
 />
 
 ### MagicCommandItem
+
+A single interactive command entry.
 
 #### Props
 
@@ -513,7 +542,35 @@ To customize the command palette, override the necessary options. Any custom opt
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'item-active' },
+        { label: 'boolean' },
+        { label: 'Whether the item is currently selected.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'item-disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the item is currently disabled.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicCommandTrigger
+
+Opens or closes the command palette on click.
 
 #### Props
 
@@ -634,6 +691,32 @@ To customize the command palette, override the necessary options. Any custom opt
         {
           label: 'pointer'
         },
+      ]
+    }
+  ]"
+/>
+
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the command palette is currently open.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'trigger-disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"

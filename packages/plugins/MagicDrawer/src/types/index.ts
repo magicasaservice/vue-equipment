@@ -1,5 +1,4 @@
 import { type Options as FocusTrapOptions } from 'focus-trap'
-import type { RequireAll } from '@maas/vue-equipment/utils'
 
 export type DrawerSnapPoint = number | `${number}px`
 
@@ -43,11 +42,11 @@ export interface MagicDrawerOptions {
   disabled?: boolean
 }
 
-export type DrawerDefaultOptions = RequireAll<MagicDrawerOptions> & {
-  scrollLock: RequireAll<MagicDrawerOptions['scrollLock']>
-  threshold: RequireAll<MagicDrawerOptions['threshold']>
-  animation: RequireAll<MagicDrawerOptions['animation']>
-  keyListener: RequireAll<MagicDrawerOptions['keyListener']>
+export type RequiredMagicDrawerOptions = Required<MagicDrawerOptions> & {
+  scrollLock: Required<MagicDrawerOptions['scrollLock']>
+  threshold: Required<MagicDrawerOptions['threshold']>
+  animation: Required<MagicDrawerOptions['animation']>
+  keyListener: Required<MagicDrawerOptions['keyListener']>
 }
 
 export interface DrawerState {
@@ -75,6 +74,7 @@ export interface DrawerState {
   absDirectionX: 'with' | 'against' | undefined
   elRect: DOMRect | undefined
   wrapperRect: DOMRect | undefined
+  options: RequiredMagicDrawerOptions
 }
 
 export type DrawerEvents = {

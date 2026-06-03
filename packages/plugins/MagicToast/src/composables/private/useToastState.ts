@@ -3,11 +3,7 @@ import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
 
-import type {
-  ToastState,
-  MagicToastOptions,
-  ToastDefaultOptions,
-} from '../../types/index'
+import type { ToastState, MagicToastOptions } from '../../types/index'
 
 const getToastStateStore = createStateStore<ToastState[]>(
   'MagicToast',
@@ -61,7 +57,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
     }
 
     if (options) {
-      const mappedOptions = defu(options, defaultOptions) as ToastDefaultOptions
+      const mappedOptions = defu(options, defaultOptions)
       state.options = mappedOptions
 
       // Set initial state for expanded

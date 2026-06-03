@@ -9,7 +9,7 @@
   >
     <div ref="wrapper" class="magic-draggable__wrapper">
       <component
-        :is="mappedOptions.tag"
+        :is="state.options.tag"
         ref="el"
         class="magic-draggable__drag"
         :style="style"
@@ -25,7 +25,6 @@
 
 <script lang="ts" setup>
 import { useTemplateRef, computed, toValue, toRefs, type MaybeRef } from 'vue'
-import { createDefu } from 'defu'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -53,28 +52,21 @@ const magicError: UseMagicErrorReturn = useMagicError({
 })
 
 // Prevent deep merge of options.snapPoints
-const customDefu = createDefu((obj, key, value) => {
-  if (key === 'snapPoints') {
-    obj[key] = value
-    return true
-  }
-})
 
-const mappedOptions = customDefu(options, defaultOptions)
 const mappedId = toValue(id)
-
-if (!mappedOptions.snapPoints.length) {
-  magicError.throwError({
-    message: 'MagicDraggable must have at least one snap point set',
-    errorCode: 'missing_snap_point',
-  })
-}
 
 const elRef = useTemplateRef<HTMLElement>('el')
 const wrapperRef = useTemplateRef('wrapper')
 
 const { initializeState } = useDraggableState(id)
-const state = initializeState()
+const state = initializeState(options)
+
+if (!state.options.snapPoints.length) {
+  magicError.throwError({
+    message: 'MagicDraggable must have at least one snap point set',
+    errorCode: 'missing_snap_point',
+  })
+}
 
 const { dragging, activeSnapPoint } = toRefs(state)
 
@@ -87,7 +79,7 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial, threshold, scrollLock } = mappedOptions
+const { snapPoints, animation, initial, threshold, scrollLock } = state.options
 
 const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
   id,

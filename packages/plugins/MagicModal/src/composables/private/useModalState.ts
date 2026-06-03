@@ -1,6 +1,8 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { createDefu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
-import type { ModalState } from '../../types/index'
+import { defaultOptions } from '../../utils/defaultOptions'
+import type { ModalState, MagicModalOptions } from '../../types/index'
 
 const getModalStateStore = createStateStore<ModalState[]>(
   'MagicModal',
@@ -11,12 +13,20 @@ export function useModalState(id: MaybeRef<string>) {
   const modalStateStore = getModalStateStore()
   let scopeCounted = false
 
+  const customDefu = createDefu((obj, key, value) => {
+    if (key === 'close') {
+      obj[key] = value
+      return true
+    }
+  })
+
   // Private functions
   function createState(id: string) {
     const state: ModalState = {
       id,
       refCount: 0,
       active: false,
+      options: { ...defaultOptions },
     }
 
     return reactive(state)
@@ -37,7 +47,7 @@ export function useModalState(id: MaybeRef<string>) {
   }
 
   // Public functions
-  function initializeState() {
+  function initializeState(options?: MagicModalOptions) {
     const currentId = toValue(id)
     let state = modalStateStore.value.find((entry) => entry.id === currentId)
 
@@ -48,6 +58,11 @@ export function useModalState(id: MaybeRef<string>) {
     if (!scopeCounted) {
       state.refCount++
       scopeCounted = true
+    }
+
+    if (options) {
+      const mappedOptions = customDefu(options, defaultOptions)
+      state.options = mappedOptions
     }
 
     return state

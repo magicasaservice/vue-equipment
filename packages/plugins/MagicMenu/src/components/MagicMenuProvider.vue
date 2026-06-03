@@ -20,13 +20,11 @@ import {
 } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
-import { defu } from 'defu'
 
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
 import { MagicMenuInstanceId } from '../symbols'
-import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicMenuOptions } from '../types'
 
@@ -39,10 +37,8 @@ interface MagicMenuProviderProps {
 const { id, options } = defineProps<MagicMenuProviderProps>()
 const elRef = useTemplateRef('el')
 
-const mappedOptions = defu(options, defaultOptions)
-
 const { initializeState } = useMenuState(id)
-const state = initializeState(mappedOptions)
+const state = initializeState(options)
 
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode

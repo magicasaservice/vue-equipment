@@ -76,6 +76,7 @@ export interface PlayerState {
   playlistCount: number
   loop: boolean
   skipping: boolean
+  options: RequiredMagicPlayerOptions
 }
 
 export interface PlayerEvents {

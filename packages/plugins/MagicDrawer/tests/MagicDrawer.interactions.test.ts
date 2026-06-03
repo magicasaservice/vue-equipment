@@ -94,7 +94,7 @@ describe('MagicDrawer - Interactions', () => {
         .toHaveTextContent('true')
 
       const backdrop = document.querySelector(
-        '.magic-drawer__backdrop'
+        '.magic-drawer-backdrop'
       ) as HTMLElement
       expect(backdrop).not.toBeNull()
       backdrop.click()
@@ -125,7 +125,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const backdrop = document.querySelector(
-        '.magic-drawer__backdrop'
+        '.magic-drawer-backdrop'
       ) as HTMLElement
       expect(backdrop).not.toBeNull()
 
@@ -179,7 +179,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const drag = document.querySelector(
-        '.magic-drawer__drag'
+        '.magic-drawer-content__drag'
       ) as HTMLElement
       expect(drag).not.toBeNull()
 
@@ -203,7 +203,7 @@ describe('MagicDrawer - Interactions', () => {
 
       await nextTick()
 
-      const drawer = document.querySelector('.magic-drawer')
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer!.getAttribute('data-dragging')).toBe('true')
 
       drag.dispatchEvent(
@@ -221,11 +221,11 @@ describe('MagicDrawer - Interactions', () => {
       const screen = render(createWrapper())
       await openDrawer(screen)
 
-      const drawer = document.querySelector('.magic-drawer')
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer!.getAttribute('data-dragged')).toBe('false')
 
       const drag = document.querySelector(
-        '.magic-drawer__drag'
+        '.magic-drawer-content__drag'
       ) as HTMLElement
 
       drag.dispatchEvent(
@@ -277,7 +277,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const drag = document.querySelector(
-        '.magic-drawer__drag'
+        '.magic-drawer-content__drag'
       ) as HTMLElement
 
       if (drag) {
@@ -301,7 +301,7 @@ describe('MagicDrawer - Interactions', () => {
 
         await nextTick()
 
-        const drawer = document.querySelector('.magic-drawer')
+        const drawer = document.querySelector('.magic-drawer-content')
         expect(drawer!.getAttribute('data-dragging')).toBe('false')
       }
     })
@@ -315,7 +315,7 @@ describe('MagicDrawer - Interactions', () => {
       await openDrawer(screen)
 
       const drag = document.querySelector(
-        '.magic-drawer__drag'
+        '.magic-drawer-content__drag'
       ) as HTMLElement
 
       drag.dispatchEvent(

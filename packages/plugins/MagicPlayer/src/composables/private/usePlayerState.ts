@@ -1,6 +1,8 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
-import type { PlayerState } from '../../types/index'
+import { defaultOptions } from '../../utils/defaultOptions'
+import type { MagicPlayerOptions, PlayerState } from '../../types/index'
 
 const getPlayerStateStore = createStateStore<PlayerState[]>(
   'MagicPlayer',
@@ -50,6 +52,7 @@ export function usePlayerState(id: MaybeRef<string>) {
       playlistCount: 0,
       loop: false,
       skipping: false,
+      options: defaultOptions,
     }
 
     return reactive(state)
@@ -70,12 +73,17 @@ export function usePlayerState(id: MaybeRef<string>) {
   }
 
   // Public functions
-  function initializeState() {
+  function initializeState(options?: MagicPlayerOptions) {
     const currentId = toValue(id)
     let state = playerStateStore.value.find((entry) => entry.id === currentId)
 
     if (!state) {
       state = addState(currentId)
+    }
+
+    if (options) {
+      const mappedOptions = defu(options, defaultOptions)
+      state.options = mappedOptions
     }
 
     if (!scopeCounted) {

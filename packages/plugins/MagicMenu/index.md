@@ -284,6 +284,8 @@ To customize the menu, override the necessary options. Any custom options will b
 
 ### MagicMenuView
 
+Groups menu items into a single navigation level and tracks its active state.
+
 #### Props
 
 <ProseTable 
@@ -326,7 +328,28 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the menu view is currently open.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicMenuContent
+
+The floating content panel for a menu view.
 
 #### Props
 
@@ -413,6 +436,8 @@ To customize the menu, override the necessary options. Any custom options will b
 
 ### MagicMenuItem
 
+A single interactive item inside a menu.
+
 #### Props
 
 <ProseTable 
@@ -453,7 +478,35 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'item-active' },
+        { label: 'boolean' },
+        { label: 'Whether the item is currently selected.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'item-disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the item is currently disabled.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicMenuChannel
+
+A conditional container that renders when its associated channel is active.
 
 #### Props
 
@@ -497,6 +550,8 @@ To customize the menu, override the necessary options. Any custom options will b
 />
 
 ### MagicMenuRemote
+
+Activates a specific menu channel on click.
 
 #### Props
 
@@ -595,7 +650,35 @@ To customize the menu, override the necessary options. Any custom options will b
   ]"
 />
 
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'channel-active' },
+        { label: 'boolean' },
+        { label: 'Whether the associated channel is currently active.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'remote-disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the remote is currently disabled.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicMenuTrigger
+
+Opens or closes the menu on click.
 
 #### Props
 
@@ -675,6 +758,32 @@ To customize the menu, override the necessary options. Any custom options will b
         {
           label: 'false'
         }
+      ]
+    }
+  ]"
+/>
+
+#### Slot Props
+
+<ProseTable
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'view-active' },
+        { label: 'boolean' },
+        { label: 'Whether the menu is currently open.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'trigger-disabled' },
+        { label: 'boolean' },
+        { label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"

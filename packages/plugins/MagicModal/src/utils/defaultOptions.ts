@@ -1,7 +1,6 @@
-import type { MagicModalOptions } from '../types'
-import type { RequireAll } from '@maas/vue-equipment/utils'
+import type { RequiredMagicModalOptions } from '../types'
 
-const defaultOptions: RequireAll<MagicModalOptions> = {
+const defaultOptions: RequiredMagicModalOptions = {
   backdrop: true,
   tag: 'dialog',
   focusTrap: {

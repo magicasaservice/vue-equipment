@@ -24,7 +24,7 @@ const scrollLock =
     : shallowRef(false)
 
 const { add, remove } = useScrollLockPadding({
-  exclude: /magic-drawer(__backdrop)?/,
+  exclude: /magic-drawer/,
 })
 
 export function useDrawerDOM(args?: UseDrawerDOMArgs) {

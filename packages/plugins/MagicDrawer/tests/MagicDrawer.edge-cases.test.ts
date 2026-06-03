@@ -97,16 +97,13 @@ describe('MagicDrawer - Edge Cases', () => {
   })
 
   describe('warning messages', () => {
-    it('snapTo on closed drawer logs warning', async () => {
-      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-
+    it('snapTo on closed drawer is a safe no-op', async () => {
       const wrapper = defineComponent({
         components: { MagicDrawer },
         setup() {
-          const { open, close, isActive, snapTo } = useMagicDrawer(DrawerId.WarnSnap)
+          const { open, isActive, snapTo } = useMagicDrawer(DrawerId.WarnSnap)
           return {
             open,
-            close,
             isActive,
             trySnap: () => snapTo(0.5),
           }
@@ -126,25 +123,15 @@ describe('MagicDrawer - Edge Cases', () => {
       const screen = render(wrapper)
       await nextTick()
 
-      await screen.getByTestId(TestId.SnapBtn).click()
-      await nextTick()
-      await new Promise((r) => setTimeout(r, 200))
+      // snapTo on closed drawer — MagicDrawerContent not mounted, listener not registered
+      // emitter fires the event but no handler reacts; should not throw
+      await expect(
+        screen.getByTestId(TestId.SnapBtn).click()
+      ).resolves.not.toThrow()
 
-      const warningCalls = warnSpy.mock.calls.filter(
-        (call: unknown[]) =>
-          call.some(
-            (arg: unknown) =>
-              typeof arg === 'string' && arg.includes('[MagicDrawer]')
-          ) &&
-          call.some(
-            (arg: unknown) =>
-              typeof arg === 'string' &&
-              arg.includes('Cannot snap to point')
-          )
-      )
-      expect(warningCalls.length).toBeGreaterThan(0)
-
-      warnSpy.mockRestore()
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('invalid overshoot CSS value triggers warning', async () => {

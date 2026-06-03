@@ -37,18 +37,18 @@ import { useDraggableScrollLock } from './useDraggableScrollLock'
 import type {
   Coordinates,
   DraggableSnapPoint,
-  DraggableDefaultOptions,
+  RequiredMagicDraggableOptions,
 } from '../../types'
 
 type UseDraggableDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
   wrapperRef: Ref<HTMLDivElement | null>
-  threshold: MaybeRef<DraggableDefaultOptions['threshold']>
-  snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
-  animation: MaybeRef<DraggableDefaultOptions['animation']>
-  initial: MaybeRef<DraggableDefaultOptions['initial']>
-  scrollLock: MaybeRef<DraggableDefaultOptions['scrollLock']>
+  threshold: MaybeRef<RequiredMagicDraggableOptions['threshold']>
+  snapPoints: MaybeRef<RequiredMagicDraggableOptions['snapPoints']>
+  animation: MaybeRef<RequiredMagicDraggableOptions['animation']>
+  initial: MaybeRef<RequiredMagicDraggableOptions['initial']>
+  scrollLock: MaybeRef<RequiredMagicDraggableOptions['scrollLock']>
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {

@@ -3,7 +3,7 @@
     ref="player"
     class="magic-player-provider"
     :data-id="id"
-    :data-mode="mappedOptions.mode"
+    :data-mode="state.options.mode"
     :data-fullscreen="fullscreen"
     :data-touched="touched"
     :data-playing="playing"
@@ -30,7 +30,6 @@ import {
   watch,
   type MaybeRef,
 } from 'vue'
-import defu from 'defu'
 
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerPlaylistApi } from '../composables/private/usePlayerPlaylistApi'
@@ -41,7 +40,6 @@ import {
   MagicPlayerRef,
   MagicPlayerCurrentSrcKey,
 } from '../symbols'
-import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MagicPlayerOptions } from '../types'
 import { usePlayerEmitter } from '../composables/private/usePlayerEmitter'
@@ -53,10 +51,9 @@ interface MagicPlayerProps {
 }
 
 const { id, options } = defineProps<MagicPlayerProps>()
-const mappedOptions = defu(options, defaultOptions)
 
 const { initializeState } = usePlayerState(id)
-const state = initializeState()
+const state = initializeState(options)
 const {
   playing,
   paused,
@@ -72,7 +69,7 @@ const {
 const rawSrc = options?.src ?? ''
 const srcs = Array.isArray(rawSrc) ? rawSrc : [rawSrc]
 state.playlistCount = srcs.length
-state.loop = mappedOptions.loop
+state.loop = state.options.loop
 
 const currentSrc = computed(() => srcs[state.playlistIndex] ?? '')
 
@@ -99,7 +96,7 @@ onMounted(() => {
 })
 
 provide(MagicPlayerInstanceId, id)
-provide(MagicPlayerOptionsKey, mappedOptions)
+provide(MagicPlayerOptionsKey, state.options)
 provide(MagicPlayerRef, playerRef)
 provide(MagicPlayerCurrentSrcKey, currentSrc)
 </script>

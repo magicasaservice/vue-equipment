@@ -1,5 +1,4 @@
 import type { MaybeRef, Slots } from 'vue'
-import type { RequireAll } from '@maas/vue-equipment/utils'
 import type { UseToastTimeout } from '../composables/private/useToastTimeout'
 
 type Position =
@@ -43,9 +42,9 @@ export interface ToastState {
   id: string
   refCount: number
   views: ToastView[]
-  options: ToastDefaultOptions
   expanded: boolean
   animating: boolean
+  options: RequiredMagicToastOptions
 }
 
 export interface ActiveToast {
@@ -96,8 +95,8 @@ export interface MagicToastOptions {
   }
 }
 
-export type ToastDefaultOptions = RequireAll<MagicToastOptions> & {
-  threshold: RequireAll<MagicToastOptions['threshold']>
-  animation: RequireAll<MagicToastOptions['animation']>
-  initial: RequireAll<MagicToastOptions['initial']>
+export type RequiredMagicToastOptions = Required<MagicToastOptions> & {
+  threshold: Required<MagicToastOptions['threshold']>
+  animation: Required<MagicToastOptions['animation']>
+  initial: Required<MagicToastOptions['initial']>
 }

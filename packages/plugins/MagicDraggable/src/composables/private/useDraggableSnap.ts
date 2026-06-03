@@ -18,13 +18,13 @@ import { useDraggableState } from './useDraggableState'
 import type {
   DraggableSnapPoint,
   Coordinates,
-  DraggableDefaultOptions,
+  RequiredMagicDraggableOptions,
 } from '../../types'
 
 type UseDraggableSnapArgs = {
   id: MaybeRef<string>
-  animation: MaybeRef<DraggableDefaultOptions['animation']>
-  snapPoints: MaybeRef<DraggableDefaultOptions['snapPoints']>
+  animation: MaybeRef<RequiredMagicDraggableOptions['animation']>
+  snapPoints: MaybeRef<RequiredMagicDraggableOptions['snapPoints']>
 }
 
 type InterpolateDraggedArgs = {

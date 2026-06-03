@@ -10,17 +10,17 @@ import { computedWithControl } from '@vueuse/core'
 import { mapValue, interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
-import type { DrawerSnapPoint, DrawerDefaultOptions } from '../../types'
+import type { DrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
 
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
   draggedX: Ref<number>
-  position: MaybeRef<DrawerDefaultOptions['position']>
-  animation: MaybeRef<DrawerDefaultOptions['animation']>
-  snapPoints: MaybeRef<DrawerDefaultOptions['snapPoints']>
-  preventDragClose: MaybeRef<DrawerDefaultOptions['preventDragClose']>
+  position: MaybeRef<RequiredMagicDrawerOptions['position']>
+  animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
+  snapPoints: MaybeRef<RequiredMagicDrawerOptions['snapPoints']>
+  preventDragClose: MaybeRef<RequiredMagicDrawerOptions['preventDragClose']>
   overshoot: MaybeRef<number>
 }
 

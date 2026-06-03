@@ -1,8 +1,8 @@
-import type { DraggableDefaultOptions } from '../types'
+import type { RequiredMagicDraggableOptions } from '../types'
 
 import { easeOutBack } from '@maas/vue-equipment/utils'
 
-const defaultOptions: DraggableDefaultOptions = {
+const defaultOptions: RequiredMagicDraggableOptions = {
   tag: 'div',
   scrollLock: { padding: true },
   snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],

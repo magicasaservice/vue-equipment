@@ -55,7 +55,7 @@ describe('MagicDrawer - Options', () => {
         const screen = render(createWrapper(id, { position: key }))
         await openDrawer(screen)
 
-        const drawer = document.querySelector('.magic-drawer')
+        const drawer = document.querySelector('.magic-drawer-content')
         expect(drawer!.getAttribute('data-position')).toBe(key)
       })
     }
@@ -63,26 +63,32 @@ describe('MagicDrawer - Options', () => {
 
   describe('backdrop', () => {
     it('backdrop: true renders backdrop element', async () => {
-      const screen = render(createWrapper(DrawerId.BackdropTrue, { backdrop: true }))
+      const screen = render(
+        createWrapper(DrawerId.BackdropTrue, { backdrop: true })
+      )
       await openDrawer(screen)
 
-      expect(document.querySelector('.magic-drawer__backdrop')).not.toBeNull()
+      expect(document.querySelector('.magic-drawer-backdrop')).not.toBeNull()
     })
 
     it('backdrop: false removes backdrop element', async () => {
-      const screen = render(createWrapper(DrawerId.BackdropFalse, { backdrop: false }))
+      const screen = render(
+        createWrapper(DrawerId.BackdropFalse, { backdrop: false })
+      )
       await openDrawer(screen)
 
-      expect(document.querySelector('.magic-drawer__backdrop')).toBeNull()
+      expect(document.querySelector('.magic-drawer-backdrop')).toBeNull()
     })
   })
 
   describe('tag', () => {
     it('tag: dialog uses dialog element', async () => {
-      const screen = render(createWrapper(DrawerId.TagDialog, { tag: 'dialog' }))
+      const screen = render(
+        createWrapper(DrawerId.TagDialog, { tag: 'dialog' })
+      )
       await openDrawer(screen)
 
-      const drag = document.querySelector('.magic-drawer__drag')
+      const drag = document.querySelector('.magic-drawer-content__drag')
       expect(drag!.tagName.toLowerCase()).toBe('dialog')
     })
 
@@ -90,7 +96,7 @@ describe('MagicDrawer - Options', () => {
       const screen = render(createWrapper(DrawerId.TagDiv, { tag: 'div' }))
       await openDrawer(screen)
 
-      const drag = document.querySelector('.magic-drawer__drag')
+      const drag = document.querySelector('.magic-drawer-content__drag')
       expect(drag!.tagName.toLowerCase()).toBe('div')
     })
   })
@@ -104,8 +110,10 @@ describe('MagicDrawer - Options', () => {
       )
       await openDrawer(screen)
 
-      const directChild = document.body.querySelector(':scope > .magic-drawer')
-      const drawer = document.querySelector('.magic-drawer')
+      const directChild = document.body.querySelector(
+        ':scope > .magic-drawer-content'
+      )
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer).not.toBeNull()
       expect(directChild).toBeNull()
     })
@@ -122,7 +130,7 @@ describe('MagicDrawer - Options', () => {
       )
       await openDrawer(screen)
 
-      const drawerInTarget = target.querySelector('.magic-drawer')
+      const drawerInTarget = target.querySelector('.magic-drawer-content')
       expect(drawerInTarget).not.toBeNull()
 
       document.body.removeChild(target)
@@ -131,18 +139,22 @@ describe('MagicDrawer - Options', () => {
 
   describe('disabled', () => {
     it('disabled: true sets data-disabled to true', async () => {
-      const screen = render(createWrapper(DrawerId.DisabledTrue, { disabled: true }))
+      const screen = render(
+        createWrapper(DrawerId.DisabledTrue, { disabled: true })
+      )
       await openDrawer(screen)
 
-      const drawer = document.querySelector('.magic-drawer')
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer!.getAttribute('data-disabled')).toBe('true')
     })
 
     it('disabled: false sets data-disabled to false', async () => {
-      const screen = render(createWrapper(DrawerId.DisabledFalse, { disabled: false }))
+      const screen = render(
+        createWrapper(DrawerId.DisabledFalse, { disabled: false })
+      )
       await openDrawer(screen)
 
-      const drawer = document.querySelector('.magic-drawer')
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer!.getAttribute('data-disabled')).toBe('false')
     })
   })
@@ -236,9 +248,11 @@ describe('MagicDrawer - Options', () => {
     })
 
     it('initial.open: false does not open on mount', () => {
-      render(createWrapper(DrawerId.InitialClosed, { initial: { open: false } }))
+      render(
+        createWrapper(DrawerId.InitialClosed, { initial: { open: false } })
+      )
 
-      expect(document.querySelector('.magic-drawer')).toBeNull()
+      expect(document.querySelector('.magic-drawer-content')).toBeNull()
     })
 
     it('initial.transition: false suppresses mount animation', async () => {
@@ -264,7 +278,7 @@ describe('MagicDrawer - Options', () => {
       )
       await openDrawer(screen)
 
-      const drawer = document.querySelector('.magic-drawer')
+      const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer!.getAttribute('data-wheeling')).toBe('false')
     })
   })
