@@ -1,12 +1,14 @@
 <template>
-  <magic-drawer
-    :id="instanceId"
-    class="magic-command-drawer"
-    :options="options"
-    v-bind="$attrs"
-  >
-    <slot />
-  </magic-drawer>
+  <magic-drawer-provider :id="instanceId" :options="options">
+    <slot name="layout">
+      <magic-drawer-teleport>
+        <magic-drawer-backdrop />
+        <magic-drawer-content v-bind="$attrs">
+          <slot />
+        </magic-drawer-content>
+      </magic-drawer-teleport>
+    </slot>
+  </magic-drawer-provider>
 </template>
 
 <script lang="ts" setup>

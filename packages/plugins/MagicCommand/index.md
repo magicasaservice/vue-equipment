@@ -54,6 +54,26 @@ const { open, close } = useMagicCommand('your-command-id')
 </script>
 ```
 
+### Custom Layout
+
+Both `MagicCommandModal` and `MagicCommandDrawer` render a default layout out of the box. Use the `#layout` slot to replace the entire inner structure when you need full control. For example to remove the backdrop or customise the teleport target.
+
+```vue
+<template>
+  <magic-command-modal>
+    <template #layout>
+      <magic-modal-teleport>
+        <magic-modal-content>
+          <magic-command-renderer />
+        </magic-modal-content>
+      </magic-modal-teleport>
+    </template>
+  </magic-command-modal>
+</template>
+```
+
+See [MagicModal](/plugins/MagicModal) and [MagicDrawer](/plugins/MagicDrawer) for details.
+
 <!--@include: @/apps/docs/src/content/snippets/installation.md-->
 
 ### Vue
@@ -384,7 +404,7 @@ Groups command items into a single panel and tracks which item is currently sele
 
 ### MagicCommandDrawer
 
-Wraps the command palette in a `MagicDrawer`.
+Wraps the command palette in a `MagicDrawerProvider` and renders teleport, backdrop and content by default. Override the full inner structure using the `#layout` slot.
 
 #### Props
 
@@ -414,7 +434,7 @@ Wraps the command palette in a `MagicDrawer`.
 
 ### MagicCommandModal
 
-Wraps the command palette in a `MagicModal`.
+Wraps the command palette in a `MagicModalProvider` and renders teleport, backdrop and content by default. Override the full inner structure using the `#layout` slot.
 
 #### Props
 

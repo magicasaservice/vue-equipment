@@ -7,6 +7,17 @@ import MagicCommandRenderer from './src/components/MagicCommandRenderer.vue'
 import MagicCommandContent from './src/components/MagicCommandContent.vue'
 import MagicCommandTrigger from './src/components/MagicCommandTrigger.vue'
 
+import {
+  MagicModalProvider,
+  MagicModalTeleport,
+  MagicModalContent,
+} from '@maas/vue-equipment/plugins/MagicModal'
+import {
+  MagicDrawerProvider,
+  MagicDrawerTeleport,
+  MagicDrawerContent,
+} from '@maas/vue-equipment/plugins/MagicDrawer'
+
 import { useMagicCommand } from './src/composables/useMagicCommand'
 import {
   MagicCommandInstanceId,
@@ -30,6 +41,12 @@ const MagicCommandPlugin: Plugin = {
     app.component('MagicCommandItem', MagicCommandItem)
     app.component('MagicCommandDrawer', MagicCommandDrawer)
     app.component('MagicCommandModal', MagicCommandModal)
+    app.component('MagicModalProvider', MagicModalProvider)
+    app.component('MagicModalTeleport', MagicModalTeleport)
+    app.component('MagicModalContent', MagicModalContent)
+    app.component('MagicDrawerProvider', MagicDrawerProvider)
+    app.component('MagicDrawerTeleport', MagicDrawerTeleport)
+    app.component('MagicDrawerContent', MagicDrawerContent)
   },
 }
 
@@ -38,6 +55,12 @@ export {
   useMagicCommand,
   MagicCommandInstanceId,
   MagicCommandProviderOptions,
+  MagicModalProvider,
+  MagicModalTeleport,
+  MagicModalContent,
+  MagicDrawerProvider,
+  MagicDrawerTeleport,
+  MagicDrawerContent,
 }
 
 export type {

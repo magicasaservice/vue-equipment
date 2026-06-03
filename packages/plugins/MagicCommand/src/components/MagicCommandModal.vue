@@ -1,12 +1,14 @@
 <template>
-  <magic-modal
-    :id="instanceId"
-    class="magic-command-modal"
-    :options="options"
-    v-bind="$attrs"
-  >
-    <slot />
-  </magic-modal>
+  <magic-modal-provider :id="instanceId" :options="options">
+    <slot name="layout">
+      <magic-modal-teleport>
+        <magic-modal-backdrop />
+        <magic-modal-content v-bind="$attrs">
+          <slot />
+        </magic-modal-content>
+      </magic-modal-teleport>
+    </slot>
+  </magic-modal-provider>
 </template>
 
 <script lang="ts" setup>
