@@ -362,6 +362,7 @@ Groups command items into a single panel and tracks which item is currently sele
     },
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
@@ -540,6 +541,7 @@ A single interactive command entry.
     }
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
@@ -693,6 +695,7 @@ Opens or closes the command palette on click.
     }
   ]"
 />
+
 #### Slot Props
 
 <ProseTable

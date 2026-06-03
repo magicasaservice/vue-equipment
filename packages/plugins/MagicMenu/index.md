@@ -327,6 +327,7 @@ Groups menu items into a single navigation level and tracks its active state.
     },
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
@@ -476,6 +477,7 @@ A single interactive item inside a menu.
     }
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
@@ -647,6 +649,7 @@ Activates a specific menu channel on click.
     }
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
@@ -759,6 +762,7 @@ Opens or closes the menu on click.
     }
   ]"
 />
+
 #### Slot Props
 
 <ProseTable
