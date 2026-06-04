@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, type MaybeRef } from 'vue'
+import { provide, watch, type MaybeRef } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { MagicAccordionInstanceId } from '../symbols'
@@ -25,6 +25,14 @@ const { id, asChild, options } = defineProps<MagicAccordionProviderProps>()
 
 const { initializeState } = useAccordionState(id)
 initializeState(options)
+
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
 
 provide(MagicAccordionInstanceId, id)
 </script>

@@ -33,6 +33,7 @@ export enum CookieId {
   OptionalDefault = 'opt-optional-default',
   RequiredDefault = 'opt-required-default',
   OptionalUnset = 'opt-optional-unset',
+  ReactivityAnim = 'opt-reactivity-anim',
   ViewHidden = 'render-view-hidden',
   ViewVisible = 'render-view-visible',
   ScopedSlot = 'render-scoped-slot',

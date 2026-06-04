@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicDrawerProvider from '../src/components/MagicDrawerProvider.vue'
 import MagicDrawerTrigger from '../src/components/MagicDrawerTrigger.vue'
 import MagicDrawerTeleport from '../src/components/MagicDrawerTeleport.vue'
@@ -175,6 +175,45 @@ describe('MagicDrawer - Options', () => {
       await nextTick()
 
       await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it('changing disabled from false to true sets data-disabled on drawer content', async () => {
+      const options = ref({ disabled: false })
+
+      const wrapper = defineComponent({
+        components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+        setup() {
+          const { isActive } = useMagicDrawer(DrawerId.ReactivityDisabled)
+          return { isActive, options }
+        },
+        template: `
+          <MagicDrawerProvider id="${DrawerId.ReactivityDisabled}" :options="options">
+            <MagicDrawerTrigger>
+              <button data-test-id="${TestId.Trigger}">Open</button>
+            </MagicDrawerTrigger>
+            <MagicDrawerTeleport>
+              <MagicDrawerBackdrop />
+              <MagicDrawerContent>
+                <div style="height: 200px; width: 100%;"><button>Focusable</button></div>
+              </MagicDrawerContent>
+            </MagicDrawerTeleport>
+          </MagicDrawerProvider>
+        `,
+      })
+
+      const screen = render(wrapper)
+      await open(screen)
+
+      const content = document.querySelector('.magic-drawer-content') as HTMLElement
+      expect(content.getAttribute('data-disabled')).toBe('false')
+
+      options.value = { disabled: true }
+      await nextTick()
+      await nextTick()
+
+      expect(content.getAttribute('data-disabled')).toBe('true')
     })
   })
 

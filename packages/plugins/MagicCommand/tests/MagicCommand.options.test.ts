@@ -1,13 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { computed, defineComponent, nextTick, ref } from 'vue'
 import MagicCommandProvider from '../src/components/MagicCommandProvider.vue'
 import MagicCommandView from '../src/components/MagicCommandView.vue'
 import MagicCommandContent from '../src/components/MagicCommandContent.vue'
 import MagicCommandItem from '../src/components/MagicCommandItem.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
+import { useCommandState } from '../src/composables/private/useCommandState'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
 import { CommandId, ViewId, ItemId, TestId } from './enums'
 
@@ -127,6 +128,56 @@ describe('MagicCommand - Options', () => {
       await expect
         .element(page.getByTestId(TestId.View))
         .toHaveTextContent(ViewId.TheInitial)
+    })
+  })
+
+  describe('options reactivity', () => {
+    it('changing loop from false to true updates state.options.loop', async () => {
+      const options = ref({ loop: false })
+
+      const wrapper = defineComponent({
+        components: {
+          MagicCommandProvider,
+          MagicCommandView,
+          MagicCommandContent,
+          MagicCommandItem,
+          MagicCommandRenderer,
+        },
+        setup() {
+          const { initializeState } = useCommandState(CommandId.ReactivityLoop)
+          const state = initializeState()
+          const loop = computed(() => state.options.loop)
+          return { options, loop }
+        },
+        template: `
+          <div>
+            <span data-test-id="${TestId.Loop}">{{ loop }}</span>
+            <MagicCommandProvider id="${CommandId.ReactivityLoop}" :options="options">
+              <MagicCommandRenderer />
+              <MagicCommandView id="${ViewId.V0}" :initial="true">
+                <MagicCommandContent>
+                  <MagicCommandItem><div>Item</div></MagicCommandItem>
+                </MagicCommandContent>
+              </MagicCommandView>
+            </MagicCommandProvider>
+          </div>
+        `,
+      })
+
+      render(wrapper, gc)
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Loop))
+        .toHaveTextContent('false')
+
+      options.value = { loop: true }
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Loop))
+        .toHaveTextContent('true')
     })
   })
 

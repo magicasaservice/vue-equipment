@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, computed, toValue, toRefs, type MaybeRef } from 'vue'
+import { useTemplateRef, computed, toValue, toRefs, watch, type MaybeRef } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -60,6 +60,14 @@ const wrapperRef = useTemplateRef('wrapper')
 
 const { initializeState } = useDraggableState(id)
 const state = initializeState(options)
+
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
 
 if (!state.options.snapPoints.length) {
   magicError.throwError({

@@ -28,6 +28,14 @@ const { options = {}, id } = defineProps<MagicDrawerProviderProps>()
 const { initializeState } = useDrawerState(id)
 const state = initializeState(options)
 
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
+
 function open() { state.active = true }
 function close() { state.active = false }
 

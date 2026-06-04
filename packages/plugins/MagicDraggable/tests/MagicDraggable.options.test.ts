@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicDraggable from '../src/components/MagicDraggable.vue'
 import { useMagicDraggable } from '../src/composables/useMagicDraggable'
 import { createDraggable } from './test-utils'
@@ -81,6 +81,36 @@ describe('MagicDraggable - Options', () => {
 
       const el = document.querySelector(`[data-id="${DraggableId.CustomSnaps}"]`)
       expect(el!.getAttribute('data-active-snap-point')).toBe('center')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it('changing disabled from false to true sets data-disabled on .magic-draggable', async () => {
+      const options = ref({ disabled: false })
+
+      render(
+        defineComponent({
+          components: { MagicDraggable },
+          setup() {
+            return { options }
+          },
+          template: `
+            <MagicDraggable id="${DraggableId.ReactivityDisabled}" :options="options">
+              <div style="width:50px;height:50px;">Content</div>
+            </MagicDraggable>
+          `,
+        })
+      )
+      await nextTick()
+
+      const el = document.querySelector(`[data-id="${DraggableId.ReactivityDisabled}"]`) as HTMLElement
+      expect(el.getAttribute('data-disabled')).toBe('false')
+
+      options.value = { disabled: true }
+      await nextTick()
+      await nextTick()
+
+      expect(el.getAttribute('data-disabled')).toBe('true')
     })
   })
 

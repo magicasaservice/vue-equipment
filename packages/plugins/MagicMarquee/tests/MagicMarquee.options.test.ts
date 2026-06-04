@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicMarquee from '../src/components/MagicMarquee.vue'
 import { useMagicMarquee } from '../src/composables/useMagicMarquee'
 import { MarqueeId, TestId } from './enums'
@@ -46,6 +46,43 @@ describe('MagicMarquee - Options', () => {
 
     it('accepts reverse direction', async () => {
       render(createMarquee(MarqueeId.OptDirReverse, { direction: 'reverse' }))
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Direction))
+        .toHaveTextContent('reverse')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it("changing direction from 'normal' to 'reverse' updates state.options.direction", async () => {
+      const options = ref({ direction: 'normal' })
+
+      render(
+        defineComponent({
+          components: { MagicMarquee },
+          setup() {
+            const api = useMagicMarquee(MarqueeId.ReactivityDir)
+            return { ...api, options }
+          },
+          template: `
+            <div>
+              <span data-test-id="${TestId.Direction}">{{ state.options.direction }}</span>
+              <MagicMarquee id="${MarqueeId.ReactivityDir}" :options="options">
+                <span>Item</span>
+              </MagicMarquee>
+            </div>
+          `,
+        })
+      )
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Direction))
+        .toHaveTextContent('normal')
+
+      options.value = { direction: 'reverse' }
+      await nextTick()
       await nextTick()
 
       await expect

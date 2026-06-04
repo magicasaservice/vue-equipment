@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, type MaybeRef } from 'vue'
+import { provide, watch, type MaybeRef } from 'vue'
 import { useCookieState } from '../composables/private/useCookieState'
 import { MagicCookieInstanceId } from '../symbols'
 
@@ -20,6 +20,14 @@ const { id, options } = defineProps<MagicCookieProviderProps>()
 
 const { initializeState } = useCookieState(id)
 initializeState(options)
+
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
 
 provide(MagicCookieInstanceId, id)
 </script>

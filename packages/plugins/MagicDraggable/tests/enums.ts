@@ -19,6 +19,7 @@ export enum DraggableId {
   CustomSnaps = 'opt-custom-snaps',
   OptTagDiv = 'opt-tag-div',
   OptTagDialog = 'opt-tag-dialog',
+  ReactivityDisabled = 'opt-reactivity-disabled',
   SnapPayload = 'ev-snap-payload',
   BeforeSnap = 'ev-before-snap',
   AfterSnap = 'ev-after-snap',

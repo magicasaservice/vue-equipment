@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicCookieProvider from '../src/components/MagicCookieProvider.vue'
 import MagicCookieView from '../src/components/MagicCookieView.vue'
 import MagicCookieItem from '../src/components/MagicCookieItem.vue'
@@ -154,6 +154,38 @@ describe('MagicCookie - Options', () => {
 
       const view = document.querySelector('.magic-cookie-view') as HTMLElement
       expect(view.style.getPropertyValue('--mc-duration')).toBe('300ms')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it('changing animation.duration updates --mc-duration CSS variable', async () => {
+      const options = ref({ animation: { duration: 300 } })
+
+      render(
+        defineComponent({
+          components: { MagicCookieProvider, MagicCookieView },
+          setup() {
+            useMagicCookie(CookieId.ReactivityAnim)
+            return { options }
+          },
+          template: `
+            <MagicCookieProvider id="${CookieId.ReactivityAnim}" :options="options">
+              <MagicCookieView><div>Content</div></MagicCookieView>
+            </MagicCookieProvider>
+          `,
+        }),
+        { global: { stubs: { AutoSize } } }
+      )
+      await nextTick()
+
+      const view = document.querySelector('.magic-cookie-view') as HTMLElement
+      expect(view.style.getPropertyValue('--mc-duration')).toBe('300ms')
+
+      options.value = { animation: { duration: 800 } }
+      await nextTick()
+      await nextTick()
+
+      expect(view.style.getPropertyValue('--mc-duration')).toBe('800ms')
     })
   })
 

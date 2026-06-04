@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicAccordionProvider from '../src/components/MagicAccordionProvider.vue'
 import MagicAccordionView from '../src/components/MagicAccordionView.vue'
 import MagicAccordionTrigger from '../src/components/MagicAccordionTrigger.vue'
@@ -304,6 +304,47 @@ describe('MagicAccordion - Options', () => {
       await expect
         .element(page.getByTestId(TestId.Active))
         .toHaveTextContent('true')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it('changing disabled from false to true sets data-disabled on triggers', async () => {
+      const options = ref({ disabled: false })
+
+      const wrapper = defineComponent({
+        components: {
+          MagicAccordionProvider,
+          MagicAccordionView,
+          MagicAccordionTrigger,
+          MagicAccordionContent,
+          AutoSize,
+        },
+        setup() {
+          return { options }
+        },
+        template: `
+          <MagicAccordionProvider id="${AccordionId.ReactivityDisabled}" :options="options">
+            <MagicAccordionView id="${ViewId.V1}">
+              <template #default>
+                <MagicAccordionTrigger><span>Trigger</span></MagicAccordionTrigger>
+                <MagicAccordionContent><div>Content</div></MagicAccordionContent>
+              </template>
+            </MagicAccordionView>
+          </MagicAccordionProvider>
+        `,
+      })
+
+      render(wrapper, { global: { stubs: { AutoSize } } })
+      await nextTick()
+
+      const trigger = document.querySelector('.magic-accordion-trigger') as HTMLElement
+      expect(trigger.getAttribute('data-disabled')).toBe('false')
+
+      options.value = { disabled: true }
+      await nextTick()
+      await nextTick()
+
+      expect(trigger.getAttribute('data-disabled')).toBe('true')
     })
   })
 

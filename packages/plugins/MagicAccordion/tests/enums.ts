@@ -56,6 +56,7 @@ export enum AccordionId {
   Multi2 = 'edge-multi-2',
   SingleView = 'edge-single-view',
   TriggerDisabled = 'edge-trigger-disabled',
+  ReactivityDisabled = 'opt-reactivity-disabled',
 }
 
 export enum ViewId {

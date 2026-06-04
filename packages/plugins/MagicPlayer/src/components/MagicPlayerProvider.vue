@@ -54,6 +54,15 @@ const { id, options } = defineProps<MagicPlayerProps>()
 
 const { initializeState } = usePlayerState(id)
 const state = initializeState(options)
+
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
+
 const {
   playing,
   paused,

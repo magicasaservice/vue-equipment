@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicPlayerProvider from '../src/components/MagicPlayerProvider.vue'
 import MagicPlayerVideo from '../src/components/MagicPlayerVideo.vue'
 import MagicPlayerAudio from '../src/components/MagicPlayerAudio.vue'
@@ -103,6 +103,46 @@ describe('MagicPlayer - Options', () => {
 
       const provider = document.querySelector('.magic-player-provider')
       expect(provider!.getAttribute('data-mode')).toBe('audio')
+    })
+  })
+
+  describe('options reactivity', () => {
+    it("changing mode from 'video' to 'audio' updates data-mode on .magic-player-provider", async () => {
+      const options = ref({
+        src: VIDEO_SRC,
+        mode: 'video' as 'video' | 'audio',
+        preload: 'none' as const,
+        playback: false as const,
+      })
+
+      render(
+        defineComponent({
+          components: {
+            MagicPlayerProvider,
+            MagicPlayerVideo,
+          },
+          setup() {
+            useMagicPlayer(PlayerId.ReactivityMode)
+            return { options }
+          },
+          template: `
+            <MagicPlayerProvider id="${PlayerId.ReactivityMode}" :options="options">
+              <MagicPlayerVideo />
+            </MagicPlayerProvider>
+          `,
+        }),
+        gc
+      )
+      await nextTick()
+
+      const provider = document.querySelector('.magic-player-provider') as HTMLElement
+      expect(provider.getAttribute('data-mode')).toBe('video')
+
+      options.value = { ...options.value, mode: 'audio' }
+      await nextTick()
+      await nextTick()
+
+      expect(provider.getAttribute('data-mode')).toBe('audio')
     })
   })
 

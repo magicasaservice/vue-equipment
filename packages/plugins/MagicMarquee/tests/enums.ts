@@ -17,6 +17,7 @@ export enum MarqueeId {
   OptDirReverse = 'opt-dir-reverse',
   OptSpeedDefault = 'opt-speed-default',
   OptSpeedCustom = 'opt-speed-custom',
+  ReactivityDir = 'opt-reactivity-dir',
   RenderSlot = 'render-slot',
   RenderDup = 'render-dup',
   RenderAria = 'render-aria',

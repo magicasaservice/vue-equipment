@@ -37,6 +37,7 @@ export enum ModalId {
   OptScrollFalse = 'opt-scroll-false',
   OptTransition = 'opt-transition',
   OptFocusFalse = 'opt-focus-false',
+  ReactivityTag = 'opt-reactivity-tag',
   // events
   EventOpen = 'event-open',
   EventClose = 'event-close',

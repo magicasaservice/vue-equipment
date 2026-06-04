@@ -30,6 +30,14 @@ const { id, options = {} } = defineProps<MagicCommandProviderProps>()
 const { initializeState } = useCommandState(id)
 const state = initializeState(options)
 
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
+
 // If the mode changes, save the current pointer position
 // If the pointer moves, switch to mouse mode
 const lastX = shallowRef(0)

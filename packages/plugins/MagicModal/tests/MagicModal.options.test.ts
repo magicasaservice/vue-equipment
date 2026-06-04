@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicModalProvider from '../src/components/MagicModalProvider.vue'
 import MagicModalTrigger from '../src/components/MagicModalTrigger.vue'
 import MagicModalTeleport from '../src/components/MagicModalTeleport.vue'
@@ -83,6 +83,44 @@ describe('MagicModal - Options', () => {
       await open(screen)
       expect(document.body.querySelector(':scope > .magic-modal-content')).toBeNull()
       expect(document.querySelector('.magic-modal-content')).not.toBeNull()
+    })
+  })
+
+  describe('options reactivity', () => {
+    it("changing tag from 'dialog' to 'div' updates .magic-modal-content__inner tag", async () => {
+      const options = ref({ tag: 'dialog' as 'dialog' | 'div' })
+
+      const wrapper = defineComponent({
+        components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        setup() {
+          const { isActive } = useMagicModal(ModalId.ReactivityTag)
+          return { isActive, options }
+        },
+        template: `
+          <MagicModalProvider id="${ModalId.ReactivityTag}" :options="options">
+            <MagicModalTrigger>
+              <button data-test-id="${TestId.Trigger}">Open</button>
+            </MagicModalTrigger>
+            <MagicModalTeleport>
+              <MagicModalBackdrop />
+              <MagicModalContent>
+                <div style="width: 300px; height: 200px;"><button>Focusable</button></div>
+              </MagicModalContent>
+            </MagicModalTeleport>
+          </MagicModalProvider>
+        `,
+      })
+
+      const screen = render(wrapper)
+      await open(screen)
+
+      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('dialog')
+
+      options.value = { tag: 'div' }
+      await nextTick()
+      await nextTick()
+
+      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('div')
     })
   })
 

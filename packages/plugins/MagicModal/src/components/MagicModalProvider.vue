@@ -27,6 +27,14 @@ const { options = {}, id } = defineProps<MagicModalProviderProps>()
 const { initializeState } = useModalState(id)
 const state = initializeState(options)
 
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
+
 function close() {
   state.active = false
 }

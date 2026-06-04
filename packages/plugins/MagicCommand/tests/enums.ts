@@ -25,6 +25,7 @@ export enum CommandId {
   NoKey = 'opt-no-key',
   InitialView = 'opt-initial-view',
   NoLoop = 'opt-no-loop',
+  ReactivityLoop = 'opt-reactivity-loop',
   Multi1 = 'edge-multi-1',
   Multi2 = 'edge-multi-2',
   Cycle = 'edge-cycle',
@@ -88,4 +89,5 @@ export enum TestId {
   SlotActive = 'slot-active',
   SlotDisabled = 'slot-disabled',
   LayoutContent = 'layout-content',
+  Loop = 'loop',
 }

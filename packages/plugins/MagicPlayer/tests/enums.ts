@@ -46,6 +46,7 @@ export enum PlayerId {
   IntMediaStart = 'int-media-start',
   OptModeDefault = 'opt-mode-default',
   OptAudioMode = 'opt-audio-mode',
+  ReactivityMode = 'opt-reactivity-mode',
   OptPosterVisible = 'opt-poster-visible',
   OptPosterHide = 'opt-poster-hide',
   OptPosterLoadedOnly = 'opt-poster-loaded-only',

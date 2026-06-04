@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { defineComponent, nextTick } from 'vue'
+import { page } from 'vitest/browser'
+import { computed, defineComponent, nextTick, ref } from 'vue'
 import MagicMenuProvider from '../src/components/MagicMenuProvider.vue'
 import MagicMenuTrigger from '../src/components/MagicMenuTrigger.vue'
 import MagicMenuView from '../src/components/MagicMenuView.vue'
@@ -10,6 +11,7 @@ import MagicMenuFloat from '../src/components/MagicMenuFloat.vue'
 import MagicMenuChannel from '../src/components/MagicMenuChannel.vue'
 import MagicMenuRemote from '../src/components/MagicMenuRemote.vue'
 import { useMagicMenu } from '../src/composables/useMagicMenu'
+import { useMenuState } from '../src/composables/private/useMenuState'
 import { MenuId, ViewId, ItemId, TestId } from './enums'
 
 // Global config
@@ -175,6 +177,59 @@ describe('MagicMenu - Options', () => {
       await nextTick()
 
       expect(document.querySelector('.magic-menu-content')).not.toBeNull()
+    })
+  })
+
+  describe('options reactivity', () => {
+    it("changing mode from 'dropdown' to 'menubar' updates state.options.mode", async () => {
+      const options = ref({ mode: 'dropdown' })
+
+      render(
+        defineComponent({
+          components: {
+            MagicMenuProvider,
+            MagicMenuTrigger,
+            MagicMenuView,
+            MagicMenuContent,
+            MagicMenuItem,
+          },
+          setup() {
+            const { initializeState } = useMenuState(MenuId.ReactivityMode)
+            const state = initializeState()
+            const mode = computed(() => state.options.mode)
+            return { options, mode }
+          },
+          template: `
+            <div>
+              <span data-test-id="${TestId.Mode}">{{ mode }}</span>
+              <MagicMenuProvider id="${MenuId.ReactivityMode}" :options="options">
+                <MagicMenuView id="${ViewId.V0}">
+                  <MagicMenuTrigger>
+                    <button>Open</button>
+                  </MagicMenuTrigger>
+                  <MagicMenuContent :teleport="{ disabled: true }">
+                    <MagicMenuItem id="${ItemId.Item1}"><div>Item</div></MagicMenuItem>
+                  </MagicMenuContent>
+                </MagicMenuView>
+              </MagicMenuProvider>
+            </div>
+          `,
+        }),
+        gc
+      )
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Mode))
+        .toHaveTextContent('dropdown')
+
+      options.value = { mode: 'menubar' }
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Mode))
+        .toHaveTextContent('menubar')
     })
   })
 

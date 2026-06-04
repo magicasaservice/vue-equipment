@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, onMounted, type MaybeRef } from 'vue'
+import { useTemplateRef, onMounted, watch, type MaybeRef } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 import { useMarqueeState } from '../composables/private/useMarqueeState'
 
@@ -32,6 +32,14 @@ const { id, options } = defineProps<MagicMarqueeProps>()
 
 const { initializeState } = useMarqueeState(id)
 initializeState(options)
+
+watch(
+  () => options,
+  (value) => {
+    initializeState(value)
+  },
+  { deep: true }
+)
 
 const parentRef = useTemplateRef('parent')
 const childRef = useTemplateRef('child')
