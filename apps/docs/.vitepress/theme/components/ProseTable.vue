@@ -1,8 +1,8 @@
 <template>
   <div
-    class="prose-table outline-(--app-color-surface-border) my-5 w-full border-collapse overflow-auto rounded-lg outline-2"
+    class="prose-table my-5 w-full border-collapse overflow-auto rounded-lg outline-2 outline-(--app-color-surface-border)"
   >
-    <table class="!table w-full !overflow-hidden">
+    <table class="table! w-full overflow-hidden!">
       <thead>
         <tr>
           <th
@@ -17,7 +17,7 @@
           <td
             v-for="(cell, j) in row.items"
             :key="j"
-            class="truncate text-[var(--vp-code-color)]"
+            class="truncate text-(--vp-code-color)"
           >
             <magic-menu-provider
               v-if="cell.description"
