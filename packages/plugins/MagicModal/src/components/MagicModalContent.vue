@@ -18,7 +18,9 @@
         :is="state.options.tag"
         v-show="active.innerActive"
         class="magic-modal-content__inner"
-        @click.self="guardedClose"
+        @pointerdown="onPointerdown"
+        @touchstart="onTouchstart"
+        @click.self="guardedClick"
       >
         <slot />
       </component>
@@ -88,8 +90,20 @@ const {
   active,
 })
 
-function guardedClose() {
-  close()
+let target: HTMLElement | undefined = undefined
+
+function onPointerdown(e: PointerEvent) {
+  target = e.target as HTMLElement
+}
+
+function onTouchstart(e: TouchEvent) {
+  target = e.target as HTMLElement
+}
+
+function guardedClick(e: MouseEvent) {
+  if (e.currentTarget === target) {
+    close()
+  }
 }
 
 onUnmounted(() => {
@@ -103,6 +117,8 @@ onUnmounted(() => {
   if (state.options.focusTrap) {
     releaseFocus()
   }
+
+  target = undefined
 })
 </script>
 
