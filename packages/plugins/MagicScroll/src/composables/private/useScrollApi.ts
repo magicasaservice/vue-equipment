@@ -1,4 +1,5 @@
 import {
+  computed,
   shallowRef,
   inject,
   toValue,
@@ -39,9 +40,9 @@ export function useScrollApi(args: UseScrollApiArgs) {
   const childBoundingRect = useElementBounding(child)
   const parentBoundingRect = useElementBounding(parent)
 
-  const mappedParentBoundingRect = toValue(parent)
-    ? parentBoundingRect
-    : windowBoundingRect
+  const mappedParentBoundingRect = computed(() =>
+    toValue(parent) ? parentBoundingRect : windowBoundingRect
+  )
 
   function splitLocation(location: string) {
     return {
@@ -55,8 +56,8 @@ export function useScrollApi(args: UseScrollApiArgs) {
 
     const scrollY = toValue(scrollReturn?.y) || 0
 
-    const parentTop = mappedParentBoundingRect.top.value
-    const parentHeight = mappedParentBoundingRect.height.value
+    const parentTop = mappedParentBoundingRect.value.top.value
+    const parentHeight = mappedParentBoundingRect.value.height.value
     const childTop = childBoundingRect.top.value
     const childHeight = childBoundingRect.height.value
 
@@ -76,7 +77,7 @@ export function useScrollApi(args: UseScrollApiArgs) {
         break
     }
 
-    if (!mappedParentBoundingRect.height.value) {
+    if (!parentHeight) {
       return y
     }
 
