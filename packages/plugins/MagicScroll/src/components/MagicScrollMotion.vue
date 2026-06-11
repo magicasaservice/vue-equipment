@@ -44,7 +44,7 @@ const injectedProgress = inject(
 )
 
 const mappedProgress = computed(() => {
-  return progress || injectedProgress.value || 0
+  return progress ?? injectedProgress.value ?? 0
 })
 
 const defaultSequenceOptions: SequenceOptions = {
