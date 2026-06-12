@@ -176,6 +176,23 @@ For example `from="top-bottom" to="bottom-top"` would calculate the progress fro
   ]"
 />
 
+#### Data Attributes
+
+<ProseTable
+  :columns="[
+    { label: 'Attribute' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'data-progress' },
+        { label: 'Reflects the current scroll progress, calculated from the passed intersections.' }
+      ]
+    }
+  ]"
+/>
+
 ### MagicScrollMotion
 
 MagicScrollMotion is a wrapper around [motion.dev](https://motion.dev/) for scroll based animations.
@@ -231,6 +248,23 @@ MagicScrollMotion is a wrapper around [motion.dev](https://motion.dev/) for scro
         }
       ]
     },
+  ]"
+/>
+
+#### Data Attributes
+
+<ProseTable
+  :columns="[
+    { label: 'Attribute' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'data-progress' },
+        { label: 'Reflects the current progress, either the injected scroll progress or the overriding `progress` prop.' }
+      ]
+    }
   ]"
 />
 

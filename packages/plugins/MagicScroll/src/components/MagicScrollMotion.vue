@@ -1,5 +1,5 @@
 <template>
-  <div ref="el" class="magic-scroll-motion">
+  <div ref="el" class="magic-scroll-motion" :data-progress="mappedProgress">
     <slot />
   </div>
 </template>
