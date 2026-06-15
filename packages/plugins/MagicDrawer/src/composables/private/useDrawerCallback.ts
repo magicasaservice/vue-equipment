@@ -2,7 +2,7 @@ import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicDrawerOptions } from '../../types'
-import type { DrawerActive } from '../../symbols'
+import type { DrawerActive } from '../../types'
 import { useDrawerDOM } from './useDrawerDOM'
 
 type UseDrawerCallbackArgs = {
@@ -15,14 +15,7 @@ type UseDrawerCallbackArgs = {
 }
 
 export function useDrawerCallback(args: UseDrawerCallbackArgs) {
-  const {
-    id,
-    options,
-    trapFocus,
-    releaseFocus,
-    active,
-    wasActive,
-  } = args
+  const { id, options, trapFocus, releaseFocus, active, wasActive } = args
 
   const { lockScroll, unlockScroll } = useDrawerDOM()
   const { setMetaViewport, resetMetaViewport } = useMetaViewport()
@@ -33,8 +26,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
     if (options.scrollLock) {
       lockScroll(
-        typeof options.scrollLock === 'object' &&
-          options.scrollLock.padding
+        typeof options.scrollLock === 'object' && options.scrollLock.padding
       )
     }
 
@@ -71,8 +63,7 @@ export function useDrawerCallback(args: UseDrawerCallbackArgs) {
 
     if (options.scrollLock) {
       unlockScroll(
-        typeof options.scrollLock === 'object' &&
-          options.scrollLock.padding
+        typeof options.scrollLock === 'object' && options.scrollLock.padding
       )
     }
 

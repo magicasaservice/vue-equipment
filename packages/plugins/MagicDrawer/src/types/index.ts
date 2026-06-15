@@ -117,3 +117,8 @@ export type DrawerEvents = {
     y: number
   }
 }
+
+export interface DrawerActive {
+  innerActive: boolean
+  wrapperActive: boolean
+}
