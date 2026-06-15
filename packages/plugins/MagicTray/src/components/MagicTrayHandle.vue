@@ -39,23 +39,23 @@ const orientation = computed(() =>
 
 .magic-tray-handle--top,
 .magic-tray-handle--bottom {
-  height: var(--magic-tray-handle-size, 1.5rem);
+  height: var(--magic-tray-handle-size, 4rem);
   cursor: var(--magic-tray-handle-cursor, ns-resize);
-  transform: translateY(calc(var(--magic-tray-handle-size, 1.5rem) / -2));
+  transform: translateY(calc(var(--magic-tray-handle-size, 4rem) / -2));
 }
 
 .magic-tray-handle--bottom {
-  transform: translateY(calc(var(--magic-tray-handle-size, 1.5rem) / 2));
+  transform: translateY(calc(var(--magic-tray-handle-size, 4rem) / 2));
 }
 
 .magic-tray-handle--left,
 .magic-tray-handle--right {
-  width: var(--magic-tray-handle-size, 1.5rem);
+  width: var(--magic-tray-handle-size, 4rem);
   cursor: var(--magic-tray-handle-cursor, ew-resize);
-  transform: translateX(calc(var(--magic-tray-handle-size, 1.5rem) / -2));
+  transform: translateX(calc(var(--magic-tray-handle-size, 4rem) / -2));
 }
 
 .magic-tray-handle--right {
-  transform: translateX(calc(var(--magic-tray-handle-size, 1.5rem) / 2));
+  transform: translateX(calc(var(--magic-tray-handle-size, 4rem) / 2));
 }
 </style>

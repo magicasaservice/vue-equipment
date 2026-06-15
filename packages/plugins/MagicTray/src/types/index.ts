@@ -6,6 +6,9 @@ export type TraySnapPoints = Partial<Record<TraySide, TraySnapPoint[]>>
 
 export type TraySideRecord<T> = Record<TraySide, T>
 
+// Which axes MagicTrayTransform is allowed to translate along.
+export type TrayTransformAxis = 'both' | 'x' | 'y'
+
 export interface MagicTrayOptions {
   tag?: 'div' | 'dialog' | 'main' | 'section' | 'article' | 'aside' | 'nav'
   // Snap points are defined per side.

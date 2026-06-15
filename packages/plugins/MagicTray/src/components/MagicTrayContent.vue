@@ -95,7 +95,6 @@ const {
 
 useTrayProgress({ id: mappedId, state })
 
-// Decide which sides render a built-in handle
 const visibleHandles = computed<TraySide[]>(() => {
   const { handles } = state.options
   if (handles === false) {
@@ -135,7 +134,6 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 .magic-tray-content__wrapper {
   position: relative;
   pointer-events: auto;
-  /* Wraps the slotted content by default, size it via CSS if needed */
   width: var(--magic-tray-width, max-content);
   height: var(--magic-tray-height, max-content);
   max-width: var(--magic-tray-max-width, none);
@@ -156,9 +154,6 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
   z-index: var(--magic-tray-bg-z-index, -1);
 }
 
-/* Reserve empty overshoot room on draggable edges by padding the content
-   inwards. At rest the clip hides this padding, leaving the content flush;
-   it becomes the space the edge can elastically overdrag into. */
 .magic-tray-content__inner[data-drag-top='true'] {
   padding-top: var(--magic-tray-drag-overshoot);
 }

@@ -511,7 +511,7 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
     {
       items: [
         { label: '--magic-tray-handle-size' },
-        { label: '1.5rem' }
+        { label: '2.5rem' }
       ]
     },
     {
@@ -729,3 +729,9 @@ The tray handles situations where dragging and scrolling might interfere with ea
 ### Combined Sides
 
 <ComponentPreview src="./demo/CombinedDemo.vue" />
+
+### Transform
+
+Nest `MagicTrayTransform` inside the content to translate a layer alongside the clip. As an edge is dragged inward, the wrapped content is pushed away from that edge, while anything in the `background` slot stays anchored.
+
+<ComponentPreview src="./demo/TransformDemo.vue" />
