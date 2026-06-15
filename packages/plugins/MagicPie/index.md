@@ -191,14 +191,14 @@ The pie comes with a simple set of props. Only the id is required.
       items: [ 
         { label: 'MagicPie' }, 
         { label: 'missing_points' }, 
-        { label: 'At least two points are required to generate a path' } 
+        { plaintext: true, label: 'At least two points are required to generate a path' } 
       ] 
     },
     { 
       items: [ 
         { label: 'MagicPie' }, 
         { label: 'invalid_percentage' }, 
-        { label: 'percentage needs to be between 0 and 100' } 
+        { plaintext: true, label: 'percentage needs to be between 0 and 100' } 
       ] 
     }
   ]"

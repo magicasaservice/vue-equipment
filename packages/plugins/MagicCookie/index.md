@@ -316,14 +316,14 @@ The item registers and set the cookie with the given props.
       items: [ 
         { label: 'MagicCookieItem' }, 
         { label: 'missing_instance_id' }, 
-        { label: 'MagicCookieItem must be nested inside MagicCookieProvider' } 
+        { plaintext: true, label: 'MagicCookieItem must be nested inside MagicCookieProvider' } 
       ] 
     },
     { 
       items: [ 
         { label: 'MagicCookieView' }, 
         { label: 'missing_instance_id' }, 
-        { label: 'MagicCookieView must be used within a MagicCookieProvider' } 
+        { plaintext: true, label: 'MagicCookieView must be used within a MagicCookieProvider' } 
       ] 
     }
   ]"

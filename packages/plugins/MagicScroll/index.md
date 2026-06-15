@@ -187,7 +187,7 @@ For example `from="top-bottom" to="bottom-top"` would calculate the progress fro
     {
       items: [
         { label: 'data-progress' },
-        { label: 'Reflects the current scroll progress, calculated from the passed intersections.' }
+        { plaintext: true, label: 'Reflects the current scroll progress, calculated from the passed intersections.' }
       ]
     }
   ]"
@@ -262,7 +262,7 @@ MagicScrollMotion is a wrapper around [motion.dev](https://motion.dev/) for scro
     {
       items: [
         { label: 'data-progress' },
-        { label: 'Reflects the current progress, either the injected scroll progress or the overriding `progress` prop.' }
+        { plaintext: true, label: 'Reflects the current progress, either the injected scroll progress or the overriding `progress` prop.' }
       ]
     }
   ]"
@@ -324,14 +324,14 @@ MagicScrollCollision emits an event once the element’s top or bottom edge coll
       items: [ 
         { label: 'MagicScrollScene' }, 
         { label: 'missing_scroll_target' }, 
-        { label: 'MagicScrollScene must be used within a MagicScrollProvider' } 
+        { plaintext: true, label: 'MagicScrollScene must be used within a MagicScrollProvider' } 
       ] 
     },
     { 
       items: [ 
         { label: 'MagicScrollCollision' }, 
         { label: 'missing_scroll_target' }, 
-        { label: 'MagicScrollCollision must be used within a MagicScrollProvider' } 
+        { plaintext: true, label: 'MagicScrollCollision must be used within a MagicScrollProvider' } 
       ] 
     }
   ]"

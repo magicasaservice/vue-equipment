@@ -354,7 +354,7 @@ Wraps a single accordion entry and manages its open/closed state.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the accordion view is currently open.' }
+        { plaintext: true, label: 'Whether the accordion view is currently open.' }
       ]
     }
   ]"
@@ -466,7 +466,7 @@ The expandable content area of an accordion view.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the accordion view is currently open.' }
+        { plaintext: true, label: 'Whether the accordion view is currently open.' }
       ]
     }
   ]"
@@ -565,7 +565,7 @@ Opens or closes the parent accordion view on click.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the accordion view is currently open.' }
+        { plaintext: true, label: 'Whether the accordion view is currently open.' }
       ]
     }
   ]"
@@ -584,35 +584,35 @@ Opens or closes the parent accordion view on click.
       items: [
         { label: 'MagicAccordionContent' },
         { label: 'missing_instance_id' },
-        { label: 'MagicAccordionContent must be nested inside MagicAccordionProvider' }
+        { plaintext: true, label: 'MagicAccordionContent must be nested inside MagicAccordionProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicAccordionContent' },
         { label: 'missing_view_id' },
-        { label: 'MagicAccordionContent must be nested inside MagicAccordionView' }
+        { plaintext: true, label: 'MagicAccordionContent must be nested inside MagicAccordionView' }
       ]
     },
     {
       items: [
         { label: 'MagicAccordionTrigger' },
         { label: 'missing_instance_id' },
-        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider' }
+        { plaintext: true, label: 'MagicAccordionTrigger must be nested inside MagicAccordionProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicAccordionTrigger' },
         { label: 'missing_view_id' },
-        { label: 'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided' }
+        { plaintext: true, label: 'MagicAccordionTrigger must be nested inside MagicAccordionView or a viewId must be provided' }
       ]
     },
     {
       items: [
         { label: 'MagicAccordionView' },
         { label: 'missing_instance_id' },
-        { label: 'MagicAccordionView must be nested inside MagicAccordionProvider' }
+        { plaintext: true, label: 'MagicAccordionView must be nested inside MagicAccordionProvider' }
       ]
     }
   ]"

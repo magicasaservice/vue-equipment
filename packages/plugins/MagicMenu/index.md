@@ -341,7 +341,7 @@ Groups menu items into a single navigation level and tracks its active state.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the menu view is currently open.' }
+        { plaintext: true, label: 'Whether the menu view is currently open.' }
       ]
     }
   ]"
@@ -491,14 +491,14 @@ A single interactive item inside a menu.
       items: [
         { label: 'item-active' },
         { label: 'boolean' },
-        { label: 'Whether the item is currently selected.' }
+        { plaintext: true, label: 'Whether the item is currently selected.' }
       ]
     },
     {
       items: [
         { label: 'item-disabled' },
         { label: 'boolean' },
-        { label: 'Whether the item is currently disabled.' }
+        { plaintext: true, label: 'Whether the item is currently disabled.' }
       ]
     }
   ]"
@@ -663,14 +663,14 @@ Activates a specific menu channel on click.
       items: [
         { label: 'channel-active' },
         { label: 'boolean' },
-        { label: 'Whether the associated channel is currently active.' }
+        { plaintext: true, label: 'Whether the associated channel is currently active.' }
       ]
     },
     {
       items: [
         { label: 'remote-disabled' },
         { label: 'boolean' },
-        { label: 'Whether the remote is currently disabled.' }
+        { plaintext: true, label: 'Whether the remote is currently disabled.' }
       ]
     }
   ]"
@@ -776,14 +776,14 @@ Opens or closes the menu on click.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the menu is currently open.' }
+        { plaintext: true, label: 'Whether the menu is currently open.' }
       ]
     },
     {
       items: [
         { label: 'trigger-disabled' },
         { label: 'boolean' },
-        { label: 'Whether the trigger is currently disabled.' }
+        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"
@@ -802,91 +802,91 @@ Opens or closes the menu on click.
       items: [
         { label: 'useMenuItem' },
         { label: 'view_id_not_found' },
-        { label: 'View {viewId} not found' }
+        { plaintext: true, label: 'View {viewId} not found' }
       ]
     },
     {
       items: [
         { label: 'useMenuKeyListener' },
         { label: 'menu_not_active' },
-        { label: 'MagicMenu {state.id} is not active' }
+        { plaintext: true, label: 'MagicMenu {state.id} is not active' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuItem' },
         { label: 'missing_instance_id' },
-        { label: 'MagicMenuItem must be nested inside MagicMenuProvider' }
+        { plaintext: true, label: 'MagicMenuItem must be nested inside MagicMenuProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuItem' },
         { label: 'missing_view_id' },
-        { label: 'MagicMenuItem must be nested inside MagicMenuView' }
+        { plaintext: true, label: 'MagicMenuItem must be nested inside MagicMenuView' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuItem' },
         { label: 'missing_content_id' },
-        { label: 'MagicMenuItem must be nested inside MagicMenuContent' }
+        { plaintext: true, label: 'MagicMenuItem must be nested inside MagicMenuContent' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuTrigger' },
         { label: 'missing_instance_id' },
-        { label: 'MagicMenuTrigger must be nested inside MagicMenuProvider' }
+        { plaintext: true, label: 'MagicMenuTrigger must be nested inside MagicMenuProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuTrigger' },
         { label: 'missing_view_id' },
-        { label: 'MagicMenuTrigger must be nested inside MagicMenuView' }
+        { plaintext: true, label: 'MagicMenuTrigger must be nested inside MagicMenuView' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuContent' },
         { label: 'missing_instance_id' },
-        { label: 'MagicMenuContent must be nested inside MagicMenuProvider' }
+        { plaintext: true, label: 'MagicMenuContent must be nested inside MagicMenuProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuContent' },
         { label: 'missing_view_id' },
-        { label: 'MagicMenuContent must be nested inside MagicMenuView' }
+        { plaintext: true, label: 'MagicMenuContent must be nested inside MagicMenuView' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuRemote' },
         { label: 'missing_instance_id' },
-        { label: 'MagicMenuRemote must be nested inside MagicMenuProvider' }
+        { plaintext: true, label: 'MagicMenuRemote must be nested inside MagicMenuProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuRemote' },
         { label: 'missing_view_id' },
-        { label: 'MagicMenuRemote must be nested inside MagicMenuView' }
+        { plaintext: true, label: 'MagicMenuRemote must be nested inside MagicMenuView' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuRemote' },
         { label: 'id_required' },
-        { label: 'id is required to select an item' }
+        { plaintext: true, label: 'id is required to select an item' }
       ]
     },
     {
       items: [
         { label: 'MagicMenuView' },
         { label: 'missing_instance_id' },
-        { label: 'MagicMenuView must be nested inside MagicMenuProvider' }
+        { plaintext: true, label: 'MagicMenuView must be nested inside MagicMenuProvider' }
       ]
     }
   ]"

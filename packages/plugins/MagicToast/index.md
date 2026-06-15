@@ -471,7 +471,7 @@ Renders a single toast inside the toaster. Used internally.
       items: [
         { label: 'MagicToastView' }, 
         { label: 'missing_instance_id' }, 
-        { label: 'MagicToastView must be used within a MagicToastProvider' }
+        { plaintext: true, label: 'MagicToastView must be used within a MagicToastProvider' }
       ] 
     }
   ]"

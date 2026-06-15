@@ -654,14 +654,14 @@ Opens or closes the modal on click.
       items: [
         { label: 'active' },
         { label: 'boolean' },
-        { label: 'Whether the modal is currently open.' }
+        { plaintext: true, label: 'Whether the modal is currently open.' }
       ]
     },
     {
       items: [
         { label: 'disabled' },
         { label: 'boolean' },
-        { label: 'Whether the trigger is currently disabled.' }
+        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"
@@ -723,13 +723,13 @@ A self-contained component that composes all primitives internally. Use this for
     {
       items: [
         { label: 'default' },
-        { label: 'Content rendered inside the modal panel.' }
+        { plaintext: true, label: 'Content rendered inside the modal panel.' }
       ]
     },
     {
       items: [
         { label: 'backdrop' },
-        { label: 'Content rendered inside the backdrop element.' }
+        { plaintext: true, label: 'Content rendered inside the backdrop element.' }
       ]
     }
   ]"
@@ -748,28 +748,28 @@ A self-contained component that composes all primitives internally. Use this for
       items: [
         { label: 'MagicModalTeleport' },
         { label: 'missing_instance_id' },
-        { label: 'MagicModalTeleport must be nested inside MagicModalProvider' }
+        { plaintext: true, label: 'MagicModalTeleport must be nested inside MagicModalProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicModalBackdrop' },
         { label: 'missing_instance_id' },
-        { label: 'MagicModalBackdrop must be nested inside MagicModalProvider' }
+        { plaintext: true, label: 'MagicModalBackdrop must be nested inside MagicModalProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicModalContent' },
         { label: 'missing_instance_id' },
-        { label: 'MagicModalContent must be nested inside MagicModalProvider' }
+        { plaintext: true, label: 'MagicModalContent must be nested inside MagicModalProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicModalTrigger' },
         { label: 'missing_instance_id' },
-        { label: 'MagicModalTrigger must be nested inside MagicModalProvider or an id must be provided' }
+        { plaintext: true, label: 'MagicModalTrigger must be nested inside MagicModalProvider or an id must be provided' }
       ]
     }
   ]"

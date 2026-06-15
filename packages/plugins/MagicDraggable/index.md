@@ -465,7 +465,7 @@ In order to provide its basic functionality the component comes with some CSS. T
       items: [
         { label: 'MagicDraggable' },
         { label: 'missing_snap_point' },
-        { label: 'MagicDraggable must have at least one snap point set' }
+        { plaintext: true, label: 'MagicDraggable must have at least one snap point set' }
       ]
     }
   ]"

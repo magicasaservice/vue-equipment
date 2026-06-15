@@ -885,14 +885,14 @@ Opens or closes the drawer on click.
       items: [
         { label: 'active' },
         { label: 'boolean' },
-        { label: 'Whether the drawer is currently open.' }
+        { plaintext: true, label: 'Whether the drawer is currently open.' }
       ]
     },
     {
       items: [
         { label: 'disabled' },
         { label: 'boolean' },
-        { label: 'Whether the trigger is currently disabled.' }
+        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"
@@ -954,13 +954,13 @@ A self-contained component that composes all primitives internally. Use this for
     {
       items: [
         { label: 'default' },
-        { label: 'Content rendered inside the drawer panel.' }
+        { plaintext: true, label: 'Content rendered inside the drawer panel.' }
       ]
     },
     {
       items: [
         { label: 'backdrop' },
-        { label: 'Content rendered inside the backdrop element.' }
+        { plaintext: true, label: 'Content rendered inside the backdrop element.' }
       ]
     }
   ]"
@@ -979,35 +979,35 @@ A self-contained component that composes all primitives internally. Use this for
       items: [
         { label: 'MagicDrawerTeleport' },
         { label: 'missing_instance_id' },
-        { label: 'MagicDrawerTeleport must be nested inside MagicDrawerProvider' }
+        { plaintext: true, label: 'MagicDrawerTeleport must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicDrawerBackdrop' },
         { label: 'missing_instance_id' },
-        { label: 'MagicDrawerBackdrop must be nested inside MagicDrawerProvider' }
+        { plaintext: true, label: 'MagicDrawerBackdrop must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicDrawerContent' },
         { label: 'missing_instance_id' },
-        { label: 'MagicDrawerContent must be nested inside MagicDrawerProvider' }
+        { plaintext: true, label: 'MagicDrawerContent must be nested inside MagicDrawerProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicDrawerTrigger' },
         { label: 'missing_instance_id' },
-        { label: 'MagicDrawerTrigger must be nested inside MagicDrawerProvider or an id must be provided' }
+        { plaintext: true, label: 'MagicDrawerTrigger must be nested inside MagicDrawerProvider or an id must be provided' }
       ]
     },
     {
       items: [
         { label: 'MagicDrawerContent' },
         { label: 'overshoot_unit' },
-        { label: '--magic-drawer-drag-overshoot needs to be specified in px or rem' }
+        { plaintext: true, label: '--magic-drawer-drag-overshoot needs to be specified in px or rem' }
       ]
     }
   ]"

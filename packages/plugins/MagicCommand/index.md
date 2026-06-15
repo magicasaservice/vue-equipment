@@ -396,7 +396,7 @@ Groups command items into a single panel and tracks which item is currently sele
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the command palette view is currently open.' }
+        { plaintext: true, label: 'Whether the command palette view is currently open.' }
       ]
     }
   ]"
@@ -575,14 +575,14 @@ A single interactive command entry.
       items: [
         { label: 'item-active' },
         { label: 'boolean' },
-        { label: 'Whether the item is currently selected.' }
+        { plaintext: true, label: 'Whether the item is currently selected.' }
       ]
     },
     {
       items: [
         { label: 'item-disabled' },
         { label: 'boolean' },
-        { label: 'Whether the item is currently disabled.' }
+        { plaintext: true, label: 'Whether the item is currently disabled.' }
       ]
     }
   ]"
@@ -729,14 +729,14 @@ Opens or closes the command palette on click.
       items: [
         { label: 'view-active' },
         { label: 'boolean' },
-        { label: 'Whether the command palette is currently open.' }
+        { plaintext: true, label: 'Whether the command palette is currently open.' }
       ]
     },
     {
       items: [
         { label: 'trigger-disabled' },
         { label: 'boolean' },
-        { label: 'Whether the trigger is currently disabled.' }
+        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
       ]
     }
   ]"
@@ -755,70 +755,70 @@ Opens or closes the command palette on click.
       items: [
         { label: 'MagicCommandDrawer' },
         { label: 'missing_instance_id' },
-        { label: 'MagicCommandDrawer must be nested inside MagicCommandProvider' }
+        { plaintext: true, label: 'MagicCommandDrawer must be nested inside MagicCommandProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicCommandTrigger' },
         { label: 'missing_instance_id' },
-        { label: 'MagicCommandTrigger must be nested inside MagicCommandProvider' }
+        { plaintext: true, label: 'MagicCommandTrigger must be nested inside MagicCommandProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicCommandTrigger' },
         { label: 'missing_view_id' },
-        { label: 'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided' }
+        { plaintext: true, label: 'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided' }
       ]
     },
     {
       items: [
         { label: 'MagicCommandView' },
         { label: 'missing_instance_id' },
-        { label: 'MagicCommandView must be nested inside MagicCommandProvider' }
+        { plaintext: true, label: 'MagicCommandView must be nested inside MagicCommandProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicCommandContent' },
         { label: 'missing_instance_id' },
-        { label: 'MagicCommandContent must be nested inside MagicCommandProvider' }
+        { plaintext: true, label: 'MagicCommandContent must be nested inside MagicCommandProvider' }
       ]
     },
     {
       items: [
         { label: 'MagicCommandContent' },
         { label: 'missing_view_id' },
-        { label: 'MagicCommandContent must be nested inside MagicCommandView' }
+        { plaintext: true, label: 'MagicCommandContent must be nested inside MagicCommandView' }
       ]
     },
     {
       items: [
         { label: 'useMagicCommand' },
         { label: 'view_id_required' },
-        { label: 'viewId is required to select an item' }
+        { plaintext: true, label: 'viewId is required to select an item' }
       ]
     },
     {
       items: [
         { label: 'useMagicCommand' },
         { label: 'id_required' },
-        { label: 'id is required to select an item' }
+        { plaintext: true, label: 'id is required to select an item' }
       ]
     },
     {
       items: [
         { label: 'useMenuItem' },
         { label: 'view_id_not_found' },
-        { label: 'View {viewId} not found' }
+        { plaintext: true, label: 'View {viewId} not found' }
       ]
     },
     {
       items: [
         { label: 'useMenuKeyListener' },
         { label: 'menu_not_active' },
-        { label: 'MagicMenu {state.id} is not active' }
+        { plaintext: true, label: 'MagicMenu {state.id} is not active' }
       ]
     }
   ]"
