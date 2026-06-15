@@ -117,7 +117,7 @@ export async function readMetadata() {
         let description =
           (md
             .replace(/\r\n/g, '\n')
-            .match(/# \w+[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || [])[1] || ''
+            .match(/# \w+.*[\s\n]+(.+?)(?:, |\. |\n|\.\n)/m) || [])[1] || ''
 
         description = description.trim()
 
@@ -125,6 +125,10 @@ export async function readMetadata() {
 
         if (description.includes('DEPRECATED') || frontmatter.deprecated) {
           fn.deprecated = true
+        }
+
+        if (frontmatter.soon) {
+          fn.soon = true
         }
 
         if (alias?.length) {

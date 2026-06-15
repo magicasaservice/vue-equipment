@@ -31,14 +31,25 @@
           </magic-menu-trigger>
           <magic-menu-content>
             <div class="p-1">
-              <m-menu-box size="xs" class="max-w-[9rem]">
+              <m-menu-box size="xs" class="max-w-44">
                 <VPLink
                   v-for="item in entry.items"
                   :key="item.text"
                   :href="item.link"
                 >
                   <m-menu-item to="/" size="xs">
-                    <m-menu-item-child>{{ item.text }}</m-menu-item-child>
+                    <m-menu-item-child>
+                      <span v-html="item.text" />
+                      <m-badge
+                        size="xs"
+                        mode="tone"
+                        variant="accent"
+                        v-if="item.soon"
+                        class="ml-auto"
+                      >
+                        Soon
+                      </m-badge>
+                    </m-menu-item-child>
                   </m-menu-item>
                 </VPLink>
               </m-menu-box>

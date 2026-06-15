@@ -15,19 +15,27 @@ function getComposables() {
   }
 }
 
-function getPlugins() {
+// The VitePress sidebar (VPSidebarItem) can only render its item text via
+// `v-html`, so the badge there has to be inline markup. The custom nav menus
+// render real <m-badge> components instead, driven by the `soon` flag below.
+function getPlugins({ htmlBadge = false } = {}) {
   return {
     text: 'Plugins',
     collapsed: false,
     items: plugins.map((i) => ({
-      text: i.name,
+      text:
+        htmlBadge && i.soon
+          ? `${i.name} <span class="m-badge -accent -tone -xs ml-1">Soon</span>`
+          : i.name,
       link: i.external || `/${i.package}/${i.name}/`,
+      soon: i.soon,
     })),
   }
 }
 
 const mappedComposables = getComposables()
 const mappedPlugins = getPlugins()
+const mappedPluginsSidebar = getPlugins({ htmlBadge: true })
 
 export default defineConfig({
   title: 'Vue Equipment',
@@ -119,7 +127,7 @@ export default defineConfig({
           },
         ],
       },
-      mappedPlugins,
+      mappedPluginsSidebar,
       mappedComposables,
       {
         collapsed: false,

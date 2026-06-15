@@ -1,4 +1,8 @@
-# MagicTray
+---
+soon: true
+---
+
+# MagicTray <m-badge variant="accent" mode="tone" size="xs" class="-translate-y-1.5 ml-1">Soon</m-badge>
 
 MagicTray is a flexible, touch enabled, unstyled component that clips its content with a draggable, snapping clip path. Useful for things like peeking panels, reveal effects, resizable previews and the like.
 
@@ -8,17 +12,17 @@ MagicTray is a flexible, touch enabled, unstyled component that clips its conten
 
 ## Concept
 
-Instead of translating an element like [MagicDrawer](../MagicDrawer/), MagicTray keeps its content in place and clips it with `clip-path: inset(...)`. Every side that has snap points becomes draggable. A side’s snap value is the **inset amount** measured from that edge:
+Instead of moving an element like [MagicDrawer](../MagicDrawer/) does, MagicTray keeps its content in place and clips it with `clip-path: inset(...)`. Every side that has snap points becomes draggable. A side's snap value is the **inset amount** measured from that edge:
 
-- `0` — the side is fully open (no clip)
-- `1` or `100%` — the side is fully clipped inward
-- `'120px'` — the side is clipped inward by `120px`
+- `0`: the side is fully open (no clip)
+- `1` or `100%`: the side is fully clipped inward
+- `'120px'`: the side is clipped inward by `120px`
 
-Snap points are configured per side and can be combined freely. While dragging, a side snaps to the closest snap point in the drag direction once the configured velocity or distance threshold is crossed. If neither threshold is reached, the side animates back to where it started. Dragging a side past its outermost snap points is met with elastic, rubber-band resistance and springs back on release.
+Snap points are configured per side and can be combined freely. While dragging, a side snaps to the closest snap point in the drag direction once the configured velocity or distance threshold is crossed. If neither threshold is reached, the side animates back to where it started. Drag a side past its outermost snap points and it meets elastic, rubber-band resistance, then springs back on release.
 
-To allow this elastic overdrag in both directions without clipping any content at rest, each draggable edge reserves a band of empty padding — sized by the `--magic-tray-drag-overshoot` [CSS variable](#magictraycontent) — that pushes the content inwards. At rest the clip hides this padding so the content sits flush; it simply becomes the room the edge can bounce into. Note that this padding adds to the tray's rendered size on draggable edges.
+To allow this elastic overdrag in both directions without clipping any content at rest, each draggable edge reserves a band of empty padding, sized by the `--magic-tray-drag-overshoot` [CSS variable](#magictraycontent), that pushes the content inward. At rest the clip hides this padding, so the content sits flush; the padding is simply the room the edge can bounce into. Note that it adds to the tray's rendered size on draggable edges.
 
-The tray is always rendered inline and mounted at all times — it has no open or closed state of its own. If you need overlay behavior, such as teleporting to the body, a backdrop or mount and unmount transitions, compose it with [MagicDrawer](../MagicDrawer/).
+The tray is always rendered inline and stays mounted. It has no open or closed state of its own. If you need overlay behavior, such as teleporting to the body, a backdrop or mount and unmount transitions, compose it with [MagicDrawer](../MagicDrawer/).
 
 ## Anatomy
 

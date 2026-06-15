@@ -50,7 +50,7 @@ Vue Equipment ships with TypeScript declarations.
 
 Vue Equipment relies on various peer dependencies. Depending on your package manager as well as your project settings, you may need to add them manually. Please refer to the respective plugin’s documentation to see which dependencies are required.
 
-<ProseTable
+<prose-table
 :columns="[
   { label: 'Package'},
 ]"
@@ -167,7 +167,7 @@ Vue Equipment relies on various peer dependencies. Depending on your package man
 
 The following peer dependencies are only required when using the Nuxt module.
 
-<ProseTable
+<prose-table
 :columns="[
   { label: 'Package'},
 ]"
