@@ -7,6 +7,7 @@ import type { MenuEvents } from '../../../MagicMenu/src/types/index'
 import type { PlayerEvents } from '../../../MagicPlayer/src/types'
 import type { ScrollEvents } from '../../../MagicScroll/src/types/index'
 import type { ToastEvents } from '../../../MagicToast/src/types/index'
+import type { TrayEvents } from '../../../MagicTray/src/types/index'
 
 type MergeTypes<T, U> = {
   [K in keyof T]: K extends keyof U ? T[K] | U[K] : T[K]
@@ -27,5 +28,6 @@ export type MagicEmitterEvents = Merge<
     PlayerEvents,
     ScrollEvents,
     ToastEvents,
+    TrayEvents,
   ]
 >
