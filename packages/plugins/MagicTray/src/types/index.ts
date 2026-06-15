@@ -28,8 +28,12 @@ export interface MagicTrayOptions {
   }
   initial?: {
     snapPoints?: Partial<Record<TraySide, TraySnapPoint>>
+    // Transition from the open extreme to the initial snap point on mount
+    transition?: boolean
   }
   disabled?: boolean
+  // Offset the content by the overshoot padding so it bleeds outside a clipping parent
+  inset?: boolean
 }
 
 export type RequiredMagicTrayOptions = Required<MagicTrayOptions> & {
@@ -58,8 +62,10 @@ export interface TrayState {
   // Per side inset progress (0 = open, 1 = fully clipped)
   progress: TraySideRecord<number>
   // Per side reserved overshoot padding in pixels (measured from the element).
-  // This is the empty room each draggable edge can bounce into.
+  // This is the empty room each draggable edge can bounce into when opening.
   padding: TraySideRecord<number>
+  // Inward rubber-band distance in pixels past the closed extreme (measured)
+  overshootInner: number
   elRect: DOMRect | undefined
   options: RequiredMagicTrayOptions
 }

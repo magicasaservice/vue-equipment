@@ -17,6 +17,7 @@ import {
   type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
+  convertToPixels,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
   isAndroid,
@@ -58,6 +59,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const {
     dimension,
     maxInset,
+    mapSnapPoint,
     mappedSnapPoints,
     snapPointsMap,
     findClosestSnapPoint,
@@ -65,9 +67,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     snapTo,
   } = useTraySnap({ id, state })
 
-  // The range a side can be dragged within, bounded by its outermost snap
-  // points (not the full element), so overshoot kicks in at the snap edges.
-  // Capped by the opposite side so the two edges can never cross.
+  // Drag range bounded by the outermost snap points, capped by the opposite side
   function dragBounds(side: TraySide) {
     const points = mappedSnapPoints(side)
     const geometricMax = maxInset(side)
@@ -115,9 +115,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   })
 
-  // Computed clip-path, combining all four sides.
-  // Negative insets (from rubber-band overdrag) are clamped to 0 so the clip
-  // stays valid — the overshoot is only reflected by the handle position.
+  // Clip-path from all four sides, negative insets clamped to keep it valid
   const clipPath = computed(() => {
     const top = Math.max(0, state.dragged.top)
     const right = Math.max(0, state.dragged.right)
@@ -148,8 +146,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       return
     }
 
-    // The element can be measured before the browser has laid it out,
-    // which yields a zero rect. Retry across a few frames until it settles.
+    // Retry across a few frames until the rect settles to a non-zero size
     let rect = el.getBoundingClientRect()
     let tries = 0
     while (rect.width === 0 && rect.height === 0 && tries < 5) {
@@ -160,9 +157,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     state.elRect = markRaw(rect)
 
-    // Measure the reserved overshoot padding (driven by the
-    // --magic-tray-drag-overshoot CSS variable) straight off the element,
-    // so the snap math always agrees with what is actually rendered.
+    // Measure the reserved outer overshoot padding straight off the element
     const style = getComputedStyle(el)
     state.padding = {
       top: parseFloat(style.paddingTop) || 0,
@@ -170,6 +165,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       bottom: parseFloat(style.paddingBottom) || 0,
       left: parseFloat(style.paddingLeft) || 0,
     }
+
+    // Resolve the inner overshoot from its CSS variable into pixels
+    const innerVar = style.getPropertyValue('--magic-tray-drag-overshoot-inner')
+    const innerPixels = convertToPixels(innerVar)
+    if (innerPixels === undefined) {
+      logWarning(
+        `--magic-tray-drag-overshoot-inner (${innerVar}) needs to be specified in px or rem`
+      )
+    }
+    state.overshootInner = innerPixels ?? 0
 
     await nextTick()
   }
@@ -191,11 +196,15 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         break
     }
 
-    // Allow dragging past the outermost snap points with rubber-band
-    // resistance, into the reserved padding (open side) or the content
-    // (closed side), so the edge feels elastic in both directions.
+    // Rubber-band resistance past the outermost snap points
     const { min, max } = dragBounds(side)
-    newInset = clampWithOvershoot(newInset, min, max, state.padding[side])
+    newInset = clampWithOvershoot(
+      newInset,
+      min,
+      max,
+      state.padding[side],
+      state.overshootInner
+    )
 
     if (newInset === state.dragged[side]) {
       return
@@ -379,9 +388,14 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       'pointercancel',
       onPointerup
     )
-    cancelPointermove = useEventListener(document, 'pointermove', onPointermove, {
-      passive: false,
-    })
+    cancelPointermove = useEventListener(
+      document,
+      'pointermove',
+      onPointermove,
+      {
+        passive: false,
+      }
+    )
 
     cancelTouchend =
       isIOS() || isAndroid()
@@ -434,7 +448,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       return
     }
 
-    // Ensure we have an up to date rect before mapping the snap point
+    // Ensure an up to date rect before mapping the snap point
     await getSizes()
 
     snapTo({
@@ -445,21 +459,49 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   }
 
-  // Apply the configured initial snap points, otherwise open each side
+  // Apply the configured initial snap points, otherwise open each side.
+  // With `transition`, seed the open extreme and interpolate in.
   async function applyInitial() {
     await getSizes()
+    const { transition } = state.options.initial
     for (const side of draggableSides.value) {
       const initial =
         state.options.initial.snapPoints?.[side] ?? openSnapPoint(side)
-      if (initial !== undefined) {
+      if (initial === undefined) {
+        continue
+      }
+      if (transition) {
+        const start = mapSnapPoint(side, 0)
+        if (start !== undefined) {
+          state.dragged[side] = start
+        }
+        await snapTo({ side, snapPoint: initial, interpolate: true })
+      } else {
         await snapTo({ side, snapPoint: initial, interpolate: false })
       }
     }
   }
 
+  // Warn when a draggable side can neither fully open nor has an initial point
+  function validateSnapPoints() {
+    for (const side of draggableSides.value) {
+      const points = state.options.snapPoints[side] ?? []
+      const canOpen = points.some((point) => parseFloat(String(point)) === 0)
+      const hasInitial = state.options.initial.snapPoints?.[side] !== undefined
+
+      if (!canOpen && !hasInitial) {
+        logWarning(
+          `Side “${side}” has no \`0\` snap point and no \`initial.snapPoints.${side}\`, ` +
+            `so it rests at its smallest snap point instead of fully open. ` +
+            `Add \`0\` to its snap points or set an initial snap point to make this explicit.`
+        )
+      }
+    }
+  }
+
   async function initialize() {
-    // Attach the listener synchronously so a programmatic snap right after
-    // mount is never missed while the rect is still being measured.
+    validateSnapPoints()
+    // Attach synchronously so an early programmatic snap is never missed
     emitter.on('snapTo', snapToCallback)
     await getSizes()
   }
@@ -474,6 +516,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   onMounted(async () => {
     await initialize()
   })
+
+  // Re-validate when the snap point configuration changes at runtime
+  watch(
+    () => [state.options.snapPoints, state.options.initial.snapPoints],
+    () => validateSnapPoints(),
+    { deep: true }
+  )
 
   watch(
     () => unrefElement(elRef),

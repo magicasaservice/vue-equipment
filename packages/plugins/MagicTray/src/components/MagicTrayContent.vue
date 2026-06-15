@@ -6,6 +6,7 @@
     :data-dragging-side="state.draggingSide"
     :data-dragged="hasDragged"
     :data-disabled="disabled"
+    :data-inset="inset"
     v-bind="$attrs"
   >
     <div class="magic-tray-content__wrapper">
@@ -80,6 +81,7 @@ const state = initializeState()
 const elRef = useTemplateRef<HTMLElement>('el')
 
 const disabled = computed(() => state.options.disabled)
+const inset = computed(() => state.options.inset)
 
 const {
   draggableSides,
@@ -123,12 +125,26 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 :root {
   --magic-tray-radius: 0px;
   --magic-tray-drag-overshoot: 3rem;
+  --magic-tray-drag-overshoot-outer: var(--magic-tray-drag-overshoot);
+  --magic-tray-drag-overshoot-inner: var(--magic-tray-drag-overshoot);
 }
 
 .magic-tray-content {
   position: var(--magic-tray-position, relative);
   display: var(--magic-tray-display, inline-block);
   color: inherit;
+}
+
+/* Offset by the outer overshoot so the reserved padding bleeds outside a
+   clipping parent instead of into the visible content */
+.magic-tray-content[data-inset='true'] {
+  position: absolute;
+  inset: calc(-1 * var(--magic-tray-drag-overshoot-outer));
+}
+
+.magic-tray-content[data-inset='true'] .magic-tray-content__wrapper {
+  width: var(--magic-tray-width, 100%);
+  height: var(--magic-tray-height, 100%);
 }
 
 .magic-tray-content__wrapper {
@@ -155,19 +171,19 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 }
 
 .magic-tray-content__inner[data-drag-top='true'] {
-  padding-top: var(--magic-tray-drag-overshoot);
+  padding-top: var(--magic-tray-drag-overshoot-outer);
 }
 
 .magic-tray-content__inner[data-drag-right='true'] {
-  padding-right: var(--magic-tray-drag-overshoot);
+  padding-right: var(--magic-tray-drag-overshoot-outer);
 }
 
 .magic-tray-content__inner[data-drag-bottom='true'] {
-  padding-bottom: var(--magic-tray-drag-overshoot);
+  padding-bottom: var(--magic-tray-drag-overshoot-outer);
 }
 
 .magic-tray-content__inner[data-drag-left='true'] {
-  padding-left: var(--magic-tray-drag-overshoot);
+  padding-left: var(--magic-tray-drag-overshoot-outer);
 }
 
 dialog.magic-tray-content__inner {

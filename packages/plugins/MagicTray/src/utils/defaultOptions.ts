@@ -18,6 +18,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
   },
   initial: {},
   disabled: false,
+  inset: false,
 }
 
 export { defaultOptions }

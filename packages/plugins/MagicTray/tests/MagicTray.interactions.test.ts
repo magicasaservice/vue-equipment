@@ -89,7 +89,7 @@ describe('MagicTray - Interactions', () => {
         {
           snapPoints: { bottom: [0, 0.5, 1] },
         },
-        '--magic-tray-drag-overshoot: 48px'
+        '--magic-tray-drag-overshoot-outer: 48px'
       )
     )
     await nextTick()

@@ -17,9 +17,7 @@ export function useTrayProgress(args: UseTrayProgressArgs) {
   const emitter = useMagicEmitter()
   const { padding, contentExtent } = useTraySnap({ id, state })
 
-  // Recompute progress whenever any inset changes.
-  // Progress is relative to the content (0 = open / flush, 1 = fully clipped),
-  // excluding the reserved overshoot padding.
+  // Recompute progress (0 = open, 1 = fully clipped) whenever an inset changes
   watch(
     () => ({ ...state.dragged }),
     (dragged) => {

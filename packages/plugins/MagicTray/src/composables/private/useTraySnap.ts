@@ -38,8 +38,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
   const snapPoints = computed(() => state.options.snapPoints)
   const animation = computed(() => state.options.animation)
 
-  // The full extent a side can be inset by, based on the element rect.
-  // Padding by the opposite side is handled separately during dragging.
+  // The full extent a side can be inset by, based on the element rect
   function dimension(side: TraySide) {
     const rect = state.elRect
     if (!rect) {
@@ -58,8 +57,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     return state.padding[side]
   }
 
-  // The extent of the actual content along a side's axis, i.e. the element
-  // minus the reserved overshoot padding on both ends of that axis.
+  // Content extent along a side's axis, minus the overshoot padding on both ends
   function contentExtent(side: TraySide) {
     return Math.max(
       0,
@@ -67,10 +65,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     )
   }
 
-  // Map a single snap point (percentage or pixel) to a pixel inset.
-  // Snap points are measured against the content, then offset by the reserved
-  // padding so that snap point 0 sits flush with the content edge — leaving the
-  // padding as empty room to overdrag into.
+  // Map a snap point (percentage or pixel) to a pixel inset, offset by the padding
   function mapSnapPoint(side: TraySide, snapPoint: TraySnapPoint) {
     const extent = contentExtent(side)
     if (!extent) {
@@ -89,8 +84,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     }
   }
 
-  // Exactly the configured snap points for a side, mapped to pixels and sorted.
-  // Nothing is added implicitly — a side only ever snaps to what was configured.
+  // Configured snap points mapped to pixels, deduplicated and sorted
   function mappedSnapPoints(side: TraySide) {
     const configured = snapPoints.value[side] ?? []
 
@@ -101,7 +95,6 @@ export function useTraySnap(args: UseTraySnapArgs) {
           value === 0 || (!!value && !Number.isNaN(value))
       )
 
-    // Deduplicate and sort
     return [...new Set(mapped)].sort((a, b) => a - b)
   }
 

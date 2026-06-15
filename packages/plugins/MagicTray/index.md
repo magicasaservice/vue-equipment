@@ -20,7 +20,7 @@ Instead of moving an element like [MagicDrawer](../MagicDrawer/) does, MagicTray
 
 Snap points are configured per side and can be combined freely. While dragging, a side snaps to the closest snap point in the drag direction once the configured velocity or distance threshold is crossed. If neither threshold is reached, the side animates back to where it started. Drag a side past its outermost snap points and it meets elastic, rubber-band resistance, then springs back on release.
 
-To allow this elastic overdrag in both directions without clipping any content at rest, each draggable edge reserves a band of empty padding, sized by the `--magic-tray-drag-overshoot` [CSS variable](#magictraycontent), that pushes the content inward. At rest the clip hides this padding, so the content sits flush; the padding is simply the room the edge can bounce into. Note that it adds to the tray's rendered size on draggable edges.
+The two directions are tuned separately. Dragging a side _open_ past its outermost snap point bounces by `--magic-tray-drag-overshoot-outer`: to keep content visible across that overdrag without clipping anything at rest, each draggable edge reserves a band of empty padding of the same size that pushes the content inward. At rest the clip hides this padding, so the content sits flush; the padding is simply the room the edge can bounce into. Note that it adds to the tray's rendered size on draggable edges. Dragging a side _closed_ past its outermost snap point bounces by `--magic-tray-drag-overshoot-inner`, which clips further into existing content and so needs no reserved padding — set it larger than the outer bounce for more give on the way in. Both are [CSS variables](#magictraycontent).
 
 The tray is always rendered inline and stays mounted. It has no open or closed state of its own. If you need overlay behavior, such as teleporting to the body, a backdrop or mount and unmount transitions, compose it with [MagicDrawer](../MagicDrawer/).
 
@@ -365,8 +365,36 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'initial.transition',
+          description: 'Transition the tray into its initial snap points on mount, easing in from the open extreme instead of jumping. Uses `animation.snap`.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'disabled',
           description: 'Disable all tray interactions.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'inset',
+          description: 'Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek. Use it when the tray covers a same-sized, `overflow-hidden` container and you want pixel snap points to read exactly. The fallback width and height become `100%`.'
         },
         {
           label: 'boolean'
@@ -430,6 +458,18 @@ Renders the clipped content along with drag and snap behavior. Combines all four
       items: [
         { label: '--magic-tray-drag-overshoot' },
         { label: '3rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-drag-overshoot-outer' },
+        { label: 'var(--magic-tray-drag-overshoot)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-drag-overshoot-inner' },
+        { label: 'var(--magic-tray-drag-overshoot)' }
       ]
     },
     {
@@ -735,3 +775,11 @@ The tray handles situations where dragging and scrolling might interfere with ea
 Nest `MagicTrayTransform` inside the content to translate a layer alongside the clip. As an edge is dragged inward, the wrapped content is pushed away from that edge, while anything in the `background` slot stays anchored.
 
 <ComponentPreview src="./demo/TransformDemo.vue" />
+
+### Reveal
+
+A composed tray layered over its own container. The top and bottom edges snap to 8px, the left and right edges to 64px or 128px, each exposing the labels behind as an edge is dragged in. On mount the tray eases into its initial snap points from fully open via `initial.transition`. The clip-path radius is driven by `useMagicTray`'s reactive state, easing from `0` to `0.5rem` across the first 8px of clip.
+
+The `inset` option offsets the content by `--magic-tray-drag-overshoot-outer`, so the reserved overshoot padding extends past the `overflow-hidden` container instead of eating into the visible peek — keeping pixel snap points exact while the elastic overdrag still bleeds out of frame.
+
+<ComponentPreview src="./demo/RevealDemo.vue" />

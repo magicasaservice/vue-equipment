@@ -23,8 +23,7 @@ export function useTrayState(id: MaybeRef<string>) {
   const trayStateStore = getTrayStateStore()
   let scopeCounted = false
 
-  // Replace arrays / records instead of merging them deeply,
-  // so that consumers can override the per side configuration
+  // Replace arrays / records instead of merging, so per side config can be overridden
   const customDefu = createDefu((obj, key, value) => {
     if (key === 'snapPoints' || key === 'handles') {
       obj[key] = value
@@ -49,6 +48,7 @@ export function useTrayState(id: MaybeRef<string>) {
       activeSnapPoint: {},
       progress: emptySides(),
       padding: emptySides(),
+      overshootInner: 0,
       elRect: undefined,
     }
 

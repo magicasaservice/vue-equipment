@@ -1,33 +1,21 @@
+import { rubberband } from '@maas/vue-equipment/utils'
 import type { TraySide } from '../../types'
-import { clampValue } from '@maas/vue-equipment/utils'
 
 export function useTrayUtils() {
-  // Rubber-band resistance: maps an unbounded overdrag distance onto a
-  // diminishing offset that asymptotically approaches `max`. This is what
-  // makes dragging past a bound feel elastic instead of hitting a wall.
-  function rubberband(distance: number, max: number) {
-    if (max <= 0 || distance <= 0) {
-      return 0
-    }
-    return (1 - 1 / (distance / max + 1)) * max
-  }
-
-  // Clamp a value to [min, max], but allow it to travel past either bound
-  // with rubber-band resistance, up to `overshoot` pixels.
+  // Clamp to [min, max], allowing rubber-band travel up to `outer` pixels past
+  // the open extreme and `inner` pixels past the closed extreme
   function clampWithOvershoot(
     value: number,
     min: number,
     max: number,
-    overshoot: number
+    outer: number,
+    inner: number
   ) {
-    if (overshoot <= 0) {
-      return clampValue(value, min, max)
-    }
     if (value < min) {
-      return min - rubberband(min - value, overshoot)
+      return outer > 0 ? min - rubberband(min - value, outer) : min
     }
     if (value > max) {
-      return max + rubberband(value - max, overshoot)
+      return inner > 0 ? max + rubberband(value - max, inner) : max
     }
     return value
   }
@@ -52,7 +40,6 @@ export function useTrayUtils() {
   }
 
   return {
-    rubberband,
     clampWithOvershoot,
     isVertical,
     oppositeSide,
