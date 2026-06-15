@@ -53,6 +53,7 @@ import {
   toRefs,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
+import { convertToPixels } from '@maas/vue-equipment/utils'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -193,30 +194,6 @@ watch(
   }
 )
 
-function convertToPixels(value: string) {
-  const regex = /^(\d*\.?\d+)\s*(rem|px)$/
-  const match = value.match(regex)
-
-  if (!match) {
-    logWarning(
-      `--magic-drawer-drag-overshoot (${value}) needs to be specified in px or rem`
-    )
-    return 0
-  }
-
-  const numericValue = parseFloat(match[1] ?? '')
-  const unit = match[2]
-  const bodyFontSize = window.getComputedStyle(document.body).fontSize
-  const rootFontSize = parseFloat(bodyFontSize) || 16
-
-  switch (unit) {
-    case 'rem':
-      return numericValue * rootFontSize
-    case 'px':
-      return numericValue
-  }
-}
-
 function saveOvershoot() {
   const element = unrefElement(drawerRef)
   if (!element) {
@@ -226,7 +203,15 @@ function saveOvershoot() {
   const overshootVar = getComputedStyle(element, null).getPropertyValue(
     '--magic-drawer-drag-overshoot'
   )
-  overshoot.value = convertToPixels(overshootVar) || 0
+  const pixels = convertToPixels(overshootVar)
+
+  if (pixels === undefined) {
+    logWarning(
+      `--magic-drawer-drag-overshoot (${overshootVar}) needs to be specified in px or rem`
+    )
+  }
+
+  overshoot.value = pixels ?? 0
 }
 
 function guardedPointerdown(event: PointerEvent) {
