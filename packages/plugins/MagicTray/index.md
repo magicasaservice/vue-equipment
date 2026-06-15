@@ -120,7 +120,7 @@ onMounted(() => {
 
 If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Package'},
   ]"
@@ -179,7 +179,7 @@ The MagicTrayProvider wraps the tray and configures all child components accordi
 
 #### Props
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Prop' },
     { label: 'Type' },
@@ -222,7 +222,7 @@ The MagicTrayProvider wraps the tray and configures all child components accordi
 
 To customize the tray, override the necessary options. Any custom options will be merged with the default options.
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Option' },
     { label: 'Type' },
@@ -381,7 +381,7 @@ Renders the clipped content along with drag and snap behavior. Combines all four
 
 #### Slots
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Slot' },
     { label: 'Description' }
@@ -410,7 +410,7 @@ Renders the clipped content along with drag and snap behavior. Combines all four
 
 #### CSS Variables
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Variable' },
     { label: 'Default' }
@@ -479,7 +479,7 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
 
 #### Slot Props
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Prop' },
     { label: 'Type' },
@@ -498,7 +498,7 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
 
 #### CSS Variables
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Variable' },
     { label: 'Default' }
@@ -531,7 +531,7 @@ A self-contained component that composes the provider and content internally. Us
 
 #### Props
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Prop' },
     { label: 'Type' },
@@ -572,7 +572,7 @@ A self-contained component that composes the provider and content internally. Us
 
 #### Slots
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Slot' },
     { label: 'Description' }
@@ -603,7 +603,7 @@ A self-contained component that composes the provider and content internally. Us
 
 The composable returns the tray’s reactive state and a set of functions to control it programmatically.
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Property' },
     { label: 'Type' },
@@ -638,7 +638,7 @@ The composable returns the tray’s reactive state and a set of functions to con
 
 The tray emits the following events through [MagicEmitter](../MagicEmitter/). Listen to them with `useMagicEmitter`.
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Event' },
     { label: 'Payload' },
@@ -699,7 +699,7 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
 
 ## Errors
 
-<ProseTable
+<prose-table
   :columns="[
     { label: 'Source' },
     { label: 'Error Code' },

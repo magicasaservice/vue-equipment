@@ -20,6 +20,7 @@ import { MagicPiePlugin } from '@maas/vue-equipment/plugins/MagicPie'
 import { MagicPlayerPlugin } from '@maas/vue-equipment/plugins/MagicPlayer'
 import { MagicScrollPlugin } from '@maas/vue-equipment/plugins/MagicScroll'
 import { MagicToastPlugin } from '@maas/vue-equipment/plugins/MagicToast'
+import { MagicTrayPlugin } from '@maas/vue-equipment/plugins/MagicTray'
 
 import * as Mirror from '@maas/mirror/vue'
 
@@ -81,6 +82,7 @@ export default {
       MagicPlayerPlugin,
       MagicScrollPlugin,
       MagicToastPlugin,
+      MagicTrayPlugin,
     ]
 
     plugins.forEach((plugin) => {

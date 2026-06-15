@@ -1,7 +1,7 @@
 <template>
   <div class="component-preview max-w-full">
     <div class="vp-code-group">
-      <div class="tabs">
+      <div class="tabs select-none">
         <input
           :id="previewTab"
           v-model="activeTab"
