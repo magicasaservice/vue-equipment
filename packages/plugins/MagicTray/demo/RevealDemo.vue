@@ -8,7 +8,7 @@
       <magic-tray-content
         :style="{
           '--magic-tray-radius': radius,
-          '--magic-tray-drag-overshoot-outer': '4rem',
+          '--magic-tray-drag-overshoot-outer': '3.5rem',
         }"
       >
         <template #background>
@@ -46,7 +46,6 @@ const options: MagicTrayOptions = {
     snapPoints: { top: '8px', right: '64px', bottom: '8px', left: '64px' },
     transition: true,
   },
-  animation: { snap: { duration: 500 } },
   threshold: { distance: 32 },
   inset: true,
 }

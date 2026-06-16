@@ -10,20 +10,6 @@ MagicTray is a flexible, touch enabled, unstyled component that clips its conten
 
 <!--@include: @/apps/docs/src/content/snippets/overview.md-->
 
-## Concept
-
-Instead of moving an element like [MagicDrawer](../MagicDrawer/) does, MagicTray keeps its content in place and clips it with `clip-path: inset(...)`. Every side that has snap points becomes draggable. A side's snap value is the **inset amount** measured from that edge:
-
-- `0`: the side is fully open (no clip)
-- `1` or `100%`: the side is fully clipped inward
-- `'120px'`: the side is clipped inward by `120px`
-
-Snap points are configured per side and can be combined freely. While dragging, a side snaps to the closest snap point in the drag direction once the configured velocity or distance threshold is crossed. If neither threshold is reached, the side animates back to where it started. Drag a side past its outermost snap points and it meets elastic, rubber-band resistance, then springs back on release.
-
-The two directions are tuned separately. Dragging a side _open_ past its outermost snap point bounces by `--magic-tray-drag-overshoot-outer`: to keep content visible across that overdrag without clipping anything at rest, each draggable edge reserves a band of empty padding of the same size that pushes the content inward. At rest the clip hides this padding, so the content sits flush; the padding is simply the room the edge can bounce into. Note that it adds to the tray's rendered size on draggable edges. Dragging a side _closed_ past its outermost snap point bounces by `--magic-tray-drag-overshoot-inner`, which clips further into existing content and so needs no reserved padding — set it larger than the outer bounce for more give on the way in. Both are [CSS variables](#magictraycontent).
-
-The tray is always rendered inline and stays mounted. It has no open or closed state of its own. If you need overlay behavior, such as teleporting to the body, a backdrop or mount and unmount transitions, compose it with [MagicDrawer](../MagicDrawer/).
-
 ## Anatomy
 
 MagicTray can be used as a single self-contained component or composed from its individual parts for full control.
@@ -569,6 +555,65 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
   ]"
 />
 
+### MagicTrayTransform
+
+Translates a nested layer alongside the clip. As an edge is dragged inward, the wrapped content is pushed away from that edge by the same distance, while a `background` layer stays anchored.
+
+#### Props
+
+<prose-table
+  :columns="[
+    { label: 'Prop' },
+    { label: 'Type' },
+    { label: 'Default' }
+  ]"
+  :rows="[
+    {
+      items: [
+        {
+          label: 'axis',
+          description: 'Restrict the translation to a single axis.'
+        },
+        {
+          label: 'TrayTransformAxis',
+          description: '\'x\' | \'y\' | \'both\''
+        },
+        {
+          label: '\'both\''
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'factor',
+          description: 'Scale the translation relative to the clipped distance.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '1'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'disabled',
+          description: 'Disable the translation, leaving the layer anchored.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    }
+  ]"
+/>
+
 ### MagicTray
 
 A self-contained component that composes the provider and content internally. Use this for simple, inline cases where you don’t need custom markup.
@@ -756,6 +801,13 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
         { label: 'missing_instance_id' },
         { plaintext: true, label: 'MagicTrayContent must be nested inside MagicTrayProvider' }
       ]
+    },
+    {
+      items: [
+        { label: 'MagicTrayTransform' },
+        { label: 'missing_instance_id' },
+        { plaintext: true, label: 'MagicTrayTransform must be nested inside MagicTrayProvider' }
+      ]
     }
   ]"
 />
@@ -772,14 +824,12 @@ The tray handles situations where dragging and scrolling might interfere with ea
 
 ### Transform
 
-Nest `MagicTrayTransform` inside the content to translate a layer alongside the clip. As an edge is dragged inward, the wrapped content is pushed away from that edge, while anything in the `background` slot stays anchored.
+Translate a layer alongside the clip with `MagicTrayTransform`, pushing content away from each edge as it is dragged in.
 
 <ComponentPreview src="./demo/TransformDemo.vue" />
 
 ### Reveal
 
-A composed tray layered over its own container. The top and bottom edges snap to 8px, the left and right edges to 64px or 128px, each exposing the labels behind as an edge is dragged in. On mount the tray eases into its initial snap points from fully open via `initial.transition`. The clip-path radius is driven by `useMagicTray`'s reactive state, easing from `0` to `0.5rem` across the first 8px of clip.
-
-The `inset` option offsets the content by `--magic-tray-drag-overshoot-outer`, so the reserved overshoot padding extends past the `overflow-hidden` container instead of eating into the visible peek — keeping pixel snap points exact while the elastic overdrag still bleeds out of frame.
+A composed tray layered over its own container, easing into its initial snap points on mount via `initial.transition`.
 
 <ComponentPreview src="./demo/RevealDemo.vue" />
