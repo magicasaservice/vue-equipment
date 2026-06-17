@@ -83,8 +83,8 @@ export function useToastDrag(args: UseToastDragArgs) {
   function interpolateDragged(args: InterpolateDraggedArgs) {
     const {
       to,
-      duration = toValue(animation)?.snap?.duration || 300,
-      easing,
+      duration = toValue(animation).snap.duration,
+      easing = toValue(animation).snap.easing,
     } = args
 
     switch (position) {

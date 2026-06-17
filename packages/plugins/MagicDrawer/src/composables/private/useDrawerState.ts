@@ -1,8 +1,8 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
+import { createDefu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
 import type { DrawerState, MagicDrawerOptions } from '../../types/index'
-import { createDefu } from 'defu'
 
 const getDrawerStateStore = createStateStore<DrawerState[]>(
   'MagicDrawer',

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick, ref } from 'vue'
@@ -222,6 +222,51 @@ describe('MagicDrawer - Options', () => {
       const screen = render(createDrawer(DrawerId.NoWheel, { enableMousewheel: false }))
       await open(screen)
       expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-wheeling')).toBe('false')
+    })
+  })
+
+  describe('animation', () => {
+    it('uses the configured snap easing function when interpolating', async () => {
+      const easing = vi.fn((t: number) => t)
+
+      const wrapper = defineComponent({
+        components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+        setup() {
+          const { open, snapTo, isActive } = useMagicDrawer(DrawerId.CustomEasing)
+          return { open, isActive, snap: () => snapTo(0.5) }
+        },
+        data() {
+          return {
+            options: {
+              snapPoints: [0.5, 1],
+              animation: { snap: { duration: 120, easing } },
+            },
+          }
+        },
+        template: `
+          <MagicDrawerProvider id="${DrawerId.CustomEasing}" :options="options">
+            <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
+            <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+            <button data-test-id="${TestId.SnapBtn}" @click="snap">Snap</button>
+            <MagicDrawerTeleport>
+              <MagicDrawerBackdrop />
+              <MagicDrawerContent>
+                <div style="height: 200px; width: 100%;">Content</div>
+              </MagicDrawerContent>
+            </MagicDrawerTeleport>
+          </MagicDrawerProvider>
+        `,
+      })
+
+      const screen = render(wrapper)
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      ;(document.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement).click()
+
+      await vi.waitFor(() => expect(easing).toHaveBeenCalled(), { timeout: 2000 })
     })
   })
 })

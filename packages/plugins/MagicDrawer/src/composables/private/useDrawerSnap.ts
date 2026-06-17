@@ -337,8 +337,8 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   function interpolateDragged(args: InterpolateDraggedArgs) {
     const {
       to,
-      duration = toValue(animation)?.snap?.duration || 300,
-      easing,
+      duration = toValue(animation).snap.duration,
+      easing = toValue(animation).snap.easing,
     } = args
     // Find original snap point from map
     const snapPoint = snapPointsMap.value[to]

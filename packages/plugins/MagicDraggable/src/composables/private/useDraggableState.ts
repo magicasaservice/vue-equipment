@@ -1,8 +1,8 @@
 import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
-import type { DraggableState, MagicDraggableOptions } from '../../types/index'
 import { createDefu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
+import type { DraggableState, MagicDraggableOptions } from '../../types/index'
 
 const getDraggableStateStore = createStateStore<DraggableState[]>(
   'MagicDraggable',

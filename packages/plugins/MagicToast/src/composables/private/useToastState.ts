@@ -2,7 +2,6 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
-
 import type { ToastState, MagicToastOptions } from '../../types/index'
 
 const getToastStateStore = createStateStore<ToastState[]>(

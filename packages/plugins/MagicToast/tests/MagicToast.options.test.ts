@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
@@ -10,6 +10,18 @@ const SimpleToast = defineComponent({
   props: { message: { type: String, default: 'Toast' } },
   template: '<div class="toast-content">{{ message }}</div>',
 })
+
+function pointerEvent(type: string, opts: Partial<PointerEventInit> = {}) {
+  return new PointerEvent(type, {
+    bubbles: true,
+    isPrimary: true,
+    pointerId: 1,
+    pointerType: 'touch',
+    screenX: 0,
+    screenY: 0,
+    ...opts,
+  })
+}
 
 function createWrapper(
   toastId: string,
@@ -172,6 +184,46 @@ describe('MagicToast - Options', () => {
       await expect
         .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
+    })
+  })
+
+  describe('animation', () => {
+    it('uses the configured snap easing function when a dragged toast settles back', async () => {
+      const easing = vi.fn((t: number) => t)
+
+      const screen = render(
+        createWrapper(ToastId.OptCustomEasing, {
+          position: 'bottom',
+          // High threshold so the small drag snaps back instead of dismissing
+          threshold: { distance: 100, lock: 4, momentum: 100 },
+          animation: { snap: { duration: 50, easing } },
+        })
+      )
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      const inner = document.querySelector(
+        '.magic-toast-view__inner'
+      ) as HTMLElement
+      expect(inner).not.toBeNull()
+
+      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      await nextTick()
+      // Keep velocity below the dismiss momentum threshold
+      await new Promise((r) => setTimeout(r, 200))
+
+      // Small drag under the distance threshold so it settles back
+      document.dispatchEvent(pointerEvent('pointermove', { screenY: 120 }))
+      await nextTick()
+
+      // Release triggers the snap-back interpolation
+      document.dispatchEvent(pointerEvent('pointerup', { screenY: 120 }))
+
+      await vi.waitFor(() => expect(easing).toHaveBeenCalled(), {
+        timeout: 2000,
+      })
     })
   })
 

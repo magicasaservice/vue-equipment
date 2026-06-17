@@ -1,4 +1,5 @@
 import type { MaybeRef, Slots } from 'vue'
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
 import type { UseToastTimeout } from '../composables/private/useToastTimeout'
 
 type Position =
@@ -95,8 +96,4 @@ export interface MagicToastOptions {
   }
 }
 
-export type RequiredMagicToastOptions = Required<MagicToastOptions> & {
-  threshold: Required<MagicToastOptions['threshold']>
-  animation: Required<MagicToastOptions['animation']>
-  initial: Required<MagicToastOptions['initial']>
-}
+export type RequiredMagicToastOptions = RequireAllNested<MagicToastOptions>

@@ -1,3 +1,5 @@
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
+
 type Position =
   | 'top-left'
   | 'top'
@@ -48,7 +50,7 @@ export interface MagicDraggableOptions {
 
 export type RequiredMagicDraggableOptions = Required<MagicDraggableOptions> & {
   threshold: Required<MagicDraggableOptions['threshold']>
-  animation: Required<MagicDraggableOptions['animation']>
+  animation: RequireAllNested<NonNullable<MagicDraggableOptions['animation']>>
 }
 
 export interface DraggableState {

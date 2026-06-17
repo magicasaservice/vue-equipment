@@ -211,8 +211,8 @@ export function useDraggableSnap(args: UseDraggableSnapArgs) {
     const {
       x,
       y,
-      duration = toValue(animation)?.snap?.duration || 300,
-      easing = toValue(animation).snap?.easing,
+      duration = toValue(animation).snap.duration,
+      easing = toValue(animation).snap.easing,
     } = args
     const snapPoint = snapPointsMap.value[`x${x}y${y}`]
 

@@ -56,6 +56,7 @@ export enum DrawerId {
   InitialNoAnim = 'initial-no-anim',
   NoWheel = 'no-wheel',
   ReactivityDisabled = 'opt-reactivity-disabled',
+  CustomEasing = 'opt-custom-easing',
   // events
   EventOpen = 'event-open',
   EventClose = 'event-close',

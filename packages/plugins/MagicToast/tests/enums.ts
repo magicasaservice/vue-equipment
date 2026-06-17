@@ -46,6 +46,7 @@ export enum ToastId {
   OptDurationZero = 'opt-duration-zero',
   OptDurationAuto = 'opt-duration-auto',
   OptTeleport = 'opt-teleport',
+  OptCustomEasing = 'opt-custom-easing',
   RenderDataId = 'render-data-id',
   RenderPosition = 'render-position',
   RenderDefaultPos = 'render-default-pos',

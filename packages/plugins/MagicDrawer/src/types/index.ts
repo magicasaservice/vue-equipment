@@ -1,4 +1,5 @@
 import { type Options as FocusTrapOptions } from 'focus-trap'
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 export type DrawerSnapPoint = number | `${number}px`
 
@@ -44,7 +45,8 @@ export interface MagicDrawerOptions {
 export type RequiredMagicDrawerOptions = Required<MagicDrawerOptions> & {
   scrollLock: Required<MagicDrawerOptions['scrollLock']>
   threshold: Required<MagicDrawerOptions['threshold']>
-  animation: Required<MagicDrawerOptions['animation']>
+  // Deep-required so `snap.duration` is guaranteed (default-backed)
+  animation: RequireAllNested<NonNullable<MagicDrawerOptions['animation']>>
   keyListener: Required<MagicDrawerOptions['keyListener']>
 }
 
