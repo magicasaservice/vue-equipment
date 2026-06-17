@@ -44,10 +44,10 @@
                         size="xs"
                         mode="tone"
                         variant="accent"
-                        v-if="item.soon"
+                        v-if="item.soon || item.new"
                         class="ml-auto"
                       >
-                        Soon
+                        {{ item.soon ? 'Soon' : 'New' }}
                       </m-badge>
                     </m-menu-item-child>
                   </m-menu-item>

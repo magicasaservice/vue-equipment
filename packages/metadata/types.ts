@@ -27,6 +27,7 @@ export interface VueEquipmentFunction {
   docs?: string
   deprecated?: boolean
   soon?: boolean
+  new?: boolean
   internal?: boolean
   component?: boolean
   directive?: boolean

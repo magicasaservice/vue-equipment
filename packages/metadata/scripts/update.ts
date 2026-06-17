@@ -131,6 +131,10 @@ export async function readMetadata() {
           fn.soon = true
         }
 
+        if (frontmatter.new) {
+          fn.new = true
+        }
+
         if (alias?.length) {
           fn.alias = alias
         }

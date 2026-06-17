@@ -22,14 +22,18 @@ function getPlugins({ htmlBadge = false } = {}) {
   return {
     text: 'Plugins',
     collapsed: false,
-    items: plugins.map((i) => ({
-      text:
-        htmlBadge && i.soon
-          ? `${i.name} <span class="m-badge -accent -tone -xs ml-1">Soon</span>`
-          : i.name,
-      link: i.external || `/${i.package}/${i.name}/`,
-      soon: i.soon,
-    })),
+    items: plugins.map((i) => {
+      const badge = i.soon ? 'Soon' : i.new ? 'New' : null
+      return {
+        text:
+          htmlBadge && badge
+            ? `${i.name} <span class="m-badge -accent -tone -xs ml-1">${badge}</span>`
+            : i.name,
+        link: i.external || `/${i.package}/${i.name}/`,
+        soon: i.soon,
+        new: i.new,
+      }
+    }),
   }
 }
 

@@ -29,7 +29,11 @@
     "vitest": "^4.1.2",
     "vitest-browser-vue": "^2.1.0"
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
+    "./package.json": "./package.json",
     "./nuxt": {
       "types": "./dist/nuxt/types.d.mts",
       "import": "./dist/nuxt/module.mjs"
@@ -42,11 +46,7 @@
       "types": "./dist/plugins/*/index.d.ts",
       "import": "./dist/plugins/*/index.mjs"
     },
-    "./plugins/*/*": {
-      "types": "./dist/plugins/*/*",
-      "import": "./dist/plugins/*/*"
-    },
-    "./plugins/MagicPlayer/src/css/*.css": "./dist/plugins/MagicPlayer/src/css/*.css",
+    "./plugins/MagicPlayer/css/*.css": "./dist/plugins/MagicPlayer/src/css/*.css",
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
