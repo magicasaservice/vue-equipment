@@ -157,9 +157,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     state.elRect = markRaw(rect)
 
-    // Measure the reserved outer overshoot padding straight off the element
+    // Measure the reserved outer overshoot straight off the element padding
     const style = getComputedStyle(el)
-    state.padding = {
+    state.overshoot.outer = {
       top: parseFloat(style.paddingTop) || 0,
       right: parseFloat(style.paddingRight) || 0,
       bottom: parseFloat(style.paddingBottom) || 0,
@@ -174,7 +174,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         `--magic-tray-drag-overshoot-inner (${innerVar}) needs to be specified in px or rem`
       )
     }
-    state.overshootInner = innerPixels ?? 0
+    state.overshoot.inner = innerPixels ?? 0
 
     await nextTick()
   }
@@ -202,8 +202,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       newInset,
       min,
       max,
-      state.padding[side],
-      state.overshootInner
+      state.overshoot.outer[side],
+      state.overshoot.inner
     )
 
     if (newInset === state.dragged[side]) {

@@ -16,14 +16,17 @@ function createTray(
     setup() {
       const api = useMagicTray(id)
       const progressBottom = computed(() => api.progress.value.bottom)
+      const progressRight = computed(() => api.progress.value.right)
       const draggedBottom = computed(() => api.state.dragged.bottom)
       const dragging = computed(() => api.state.dragging)
-      return { progressBottom, draggedBottom, dragging }
+      return { progressBottom, progressRight, draggedBottom, dragging }
     },
     template: `
       <MagicTrayProvider id="${id}" :options="options">
         <span data-test-id="${TestId.ProgressBottom}">{{ progressBottom }}</span>
+        <span data-test-id="${TestId.ProgressRight}">{{ progressRight }}</span>
         <span data-test-id="${TestId.DraggedBottom}">{{ draggedBottom }}</span>
+        <span data-test-id="${TestId.Content}">{{ dragging }}</span>
         <MagicTrayContent style="${contentStyle}">
           <div style="width: 200px; height: 200px;">Content</div>
         </MagicTrayContent>
@@ -43,6 +46,17 @@ function pointer(type: string, screenY: number) {
     isPrimary: true,
     screenX: 100,
     screenY,
+  })
+}
+
+function pointerX(type: string, screenX: number) {
+  return new PointerEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    pointerId: 1,
+    isPrimary: true,
+    screenX,
+    screenY: 100,
   })
 }
 
@@ -125,5 +139,65 @@ describe('MagicTray - Interactions', () => {
 
     // It should spring back to the open position
     await expect.poll(read, { timeout: 2000 }).toBe(48)
+  })
+
+  it('dragging a horizontal-axis side (right) snaps it inward', async () => {
+    const { container } = mountWithApp(
+      createTray(TrayId.OptSideRight, {
+        snapPoints: { right: [0, 0.5, 1] },
+      })
+    )
+    await nextTick()
+    await new Promise((r) => setTimeout(r, 100))
+
+    const handle = container.querySelector(
+      '.magic-tray-handle--right'
+    ) as HTMLElement
+    expect(handle).not.toBeNull()
+
+    // Drag the right edge leftwards (decreasing screenX increases the inset)
+    handle.dispatchEvent(pointerX('pointerdown', 200))
+    await nextTick()
+    document.dispatchEvent(pointerX('pointermove', 60))
+    await nextTick()
+    document.dispatchEvent(pointerX('pointerup', 60))
+
+    await expect
+      .poll(
+        () =>
+          Number(
+            container.querySelector(`[data-test-id="${TestId.ProgressRight}"]`)!
+              .textContent
+          ),
+        { timeout: 2000 }
+      )
+      .toBeGreaterThan(0)
+  })
+
+  it('pointercancel settles the drag like pointerup', async () => {
+    const { container } = mountWithApp(
+      createTray(TrayId.RenderHandles, {
+        snapPoints: { bottom: [0, 0.5, 1] },
+      })
+    )
+    await nextTick()
+    await new Promise((r) => setTimeout(r, 100))
+
+    const handle = container.querySelector(
+      '.magic-tray-handle--bottom'
+    ) as HTMLElement
+
+    const dragging = () =>
+      container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent
+
+    handle.dispatchEvent(pointer('pointerdown', 200))
+    await nextTick()
+    document.dispatchEvent(pointer('pointermove', 120))
+    await nextTick()
+    expect(dragging()).toBe('true')
+
+    document.dispatchEvent(pointer('pointercancel', 120))
+    await nextTick()
+    expect(dragging()).toBe('false')
   })
 })

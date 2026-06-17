@@ -45,7 +45,7 @@ const { initializeState } = useTrayState(mappedId)
 const state = initializeState()
 
 function clipDistance(side: TraySide) {
-  return Math.max(0, state.dragged[side] - state.padding[side])
+  return Math.max(0, state.dragged[side] - state.overshoot.outer[side])
 }
 
 const transform = computed(() => {

@@ -52,12 +52,12 @@ export function useTraySnap(args: UseTraySnapArgs) {
     return Math.max(0, dimension(side) - state.dragged[oppositeSide(side)])
   }
 
-  // Reserved overshoot padding for a side (0 if the side is not draggable)
+  // Reserved outer overshoot for a side (0 if the side is not draggable)
   function padding(side: TraySide) {
-    return state.padding[side]
+    return state.overshoot.outer[side]
   }
 
-  // Content extent along a side's axis, minus the overshoot padding on both ends
+  // Content extent along a side's axis, minus the outer overshoot on both ends
   function contentExtent(side: TraySide) {
     return Math.max(
       0,
@@ -157,8 +157,8 @@ export function useTraySnap(args: UseTraySnapArgs) {
     const {
       side,
       to,
-      duration = toValue(animation)?.snap?.duration ?? 300,
-      easing,
+      duration = toValue(animation).snap.duration,
+      easing = toValue(animation).snap.easing,
     } = args
 
     const snapPoint = snapPointsMap(side)[to]

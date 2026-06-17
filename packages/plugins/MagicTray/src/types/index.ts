@@ -1,3 +1,5 @@
+import type { RequireAllNested } from '@maas/vue-equipment/utils'
+
 export type TraySide = 'top' | 'right' | 'bottom' | 'left'
 
 export type TraySnapPoint = number | `${number}px`
@@ -11,8 +13,6 @@ export type TrayTransformAxis = 'both' | 'x' | 'y'
 
 export interface MagicTrayOptions {
   tag?: 'div' | 'dialog' | 'main' | 'section' | 'article' | 'aside' | 'nav'
-  // Snap points are defined per side.
-  // A side that has at least one snap point is draggable.
   snapPoints?: TraySnapPoints
   handles?: boolean | Partial<Record<TraySide, boolean>>
   threshold?: {
@@ -28,17 +28,15 @@ export interface MagicTrayOptions {
   }
   initial?: {
     snapPoints?: Partial<Record<TraySide, TraySnapPoint>>
-    // Transition from the open extreme to the initial snap point on mount
     transition?: boolean
   }
   disabled?: boolean
-  // Offset the content by the overshoot padding so it bleeds outside a clipping parent
   inset?: boolean
 }
 
 export type RequiredMagicTrayOptions = Required<MagicTrayOptions> & {
   threshold: Required<MagicTrayOptions['threshold']>
-  animation: Required<MagicTrayOptions['animation']>
+  animation: RequireAllNested<NonNullable<MagicTrayOptions['animation']>>
 }
 
 export interface TrayState {
@@ -49,23 +47,16 @@ export interface TrayState {
   draggingSide: TraySide | undefined
   interpolateTo: number | undefined
   origin: number
-  // Per side current inset in pixels
   dragged: TraySideRecord<number>
-  // Per side last snapped inset in pixels
   snapped: TraySideRecord<number>
-  // Per side inset at the start of the current drag
   lastDragged: TraySideRecord<number>
-  // Direction of the current drag, used to find the closest snap point
   relDirection: TraySideRecord<'below' | 'above' | 'absolute'>
-  // Per side active snap point (input value), used for resize and resnapping
   activeSnapPoint: Partial<Record<TraySide, TraySnapPoint>>
-  // Per side inset progress (0 = open, 1 = fully clipped)
   progress: TraySideRecord<number>
-  // Per side reserved overshoot padding in pixels (measured from the element).
-  // This is the empty room each draggable edge can bounce into when opening.
-  padding: TraySideRecord<number>
-  // Inward rubber-band distance in pixels past the closed extreme (measured)
-  overshootInner: number
+  overshoot: {
+    outer: TraySideRecord<number>
+    inner: number
+  }
   elRect: DOMRect | undefined
   options: RequiredMagicTrayOptions
 }

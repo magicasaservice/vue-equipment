@@ -47,8 +47,10 @@ export function useTrayState(id: MaybeRef<string>) {
       relDirection: emptyDirections(),
       activeSnapPoint: {},
       progress: emptySides(),
-      padding: emptySides(),
-      overshootInner: 0,
+      overshoot: {
+        outer: emptySides(),
+        inner: 0,
+      },
       elRect: undefined,
     }
 

@@ -1,3 +1,4 @@
+import { easeOutQuad } from '@maas/vue-equipment/utils'
 import type { RequiredMagicTrayOptions } from '../types'
 
 const defaultOptions: RequiredMagicTrayOptions = {
@@ -14,6 +15,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
   animation: {
     snap: {
       duration: 300,
+      easing: easeOutQuad,
     },
   },
   initial: {},

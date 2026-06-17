@@ -55,7 +55,7 @@ const { state } = useMagicTray(id, options)
 // Roundedness tracks the first 8px of clip, maxing out at 0.5rem
 const radius = computed(() => {
   const clip = (side: TraySide) =>
-    Math.max(0, state.dragged[side] - state.padding[side])
+    Math.max(0, state.dragged[side] - state.overshoot.outer[side])
   const peek = Math.max(...sides.map(clip))
   return `${Math.min(1, peek / 8) * 0.5}rem`
 })

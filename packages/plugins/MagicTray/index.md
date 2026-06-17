@@ -2,7 +2,7 @@
 soon: true
 ---
 
-# MagicTray <m-badge variant="accent" mode="tone" size="xs" class="-translate-y-1.5 ml-1">Soon</m-badge>
+# MagicTray
 
 MagicTray is a flexible, touch enabled, unstyled component that clips its content with a draggable, snapping clip path. Useful for things like peeking panels, reveal effects, resizable previews and the like.
 
