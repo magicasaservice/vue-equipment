@@ -20,10 +20,12 @@
         :data-drag-left="draggableSides.includes('left')"
         :style="{ clipPath }"
       >
-        <div class="magic-tray-content__bg">
+        <div class="magic-tray-content__bg" v-if="slots.background">
           <slot name="background" />
         </div>
-        <slot />
+        <div class="magic-tray-content__slot" v-if="slots.default">
+          <slot />
+        </div>
       </component>
       <div class="magic-tray-content__handles">
         <magic-tray-handle
@@ -34,8 +36,14 @@
           @pointerdown="guardedPointerdown(side, $event)"
           @touchstart="guardedTouchstart(side, $event)"
         >
-          <template v-if="$slots.handle" #default="slotProps">
-            <slot name="handle" v-bind="slotProps" />
+          <template
+            v-if="slots[`handle-${side}`] || slots.handle"
+            #default="slotProps"
+          >
+            <slot
+              :name="slots[`handle-${side}`] ? `handle-${side}` : 'handle'"
+              v-bind="slotProps"
+            />
           </template>
         </magic-tray-handle>
       </div>
@@ -44,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, computed, inject } from 'vue'
+import { useTemplateRef, useSlots, computed, inject } from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -82,6 +90,8 @@ const elRef = useTemplateRef<HTMLElement>('el')
 
 const disabled = computed(() => state.options.disabled)
 const inset = computed(() => state.options.inset)
+
+const slots = useSlots()
 
 const {
   draggableSides,
@@ -135,8 +145,6 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
   color: inherit;
 }
 
-/* Offset by the outer overshoot so the reserved padding bleeds outside a
-   clipping parent instead of into the visible content */
 .magic-tray-content[data-inset='true'] {
   position: absolute;
   inset: calc(-1 * var(--magic-tray-drag-overshoot-outer));
@@ -149,7 +157,7 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 
 .magic-tray-content__wrapper {
   position: relative;
-  pointer-events: auto;
+  pointer-events: none;
   width: var(--magic-tray-width, max-content);
   height: var(--magic-tray-height, max-content);
   max-width: var(--magic-tray-max-width, none);
@@ -168,6 +176,13 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
   position: absolute;
   inset: 0;
   z-index: var(--magic-tray-bg-z-index, -1);
+  pointer-events: none;
+}
+
+.magic-tray-content__slot {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
 }
 
 .magic-tray-content__inner[data-drag-top='true'] {
