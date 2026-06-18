@@ -31,6 +31,8 @@ export enum TrayId {
   OptInitialTransition = 'opt-initial-transition',
   OptCustomEasing = 'opt-custom-easing',
   OptThresholdHigh = 'opt-threshold-high',
+  OptThresholdDirUp = 'opt-threshold-dir-up',
+  OptThresholdDirDown = 'opt-threshold-dir-down',
   // edge cases
   EdgeDefault = 'edge-default',
   EdgeWarnNoZero = 'edge-warn-no-zero',

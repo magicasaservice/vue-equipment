@@ -14,8 +14,7 @@ export function useMagicTray(id: MaybeRef<string>, options?: MagicTrayOptions) {
   function snapTo(side: TraySide, snapPoint: TraySnapPoint, duration?: number) {
     emitter.emit('snapTo', {
       id: toValue(id),
-      side,
-      snapPoint,
+      snapPoint: { side, point: snapPoint },
       duration,
     })
   }

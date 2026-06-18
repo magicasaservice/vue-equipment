@@ -33,7 +33,7 @@ import { useTraySnap } from './useTraySnap'
 import { useTrayUtils } from './useTrayUtils'
 import { useTrayState } from './useTrayState'
 
-import type { TraySide, TraySnapPoint } from '../../types'
+import type { TraySide } from '../../types'
 
 type UseTrayDragArgs = {
   id: MaybeRef<string>
@@ -216,13 +216,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   function checkPosition(side: TraySide) {
-    const distance = Math.abs(state.dragged[side] - state.lastDragged[side])
-    if (distance > toValue(threshold).distance) {
-      // Snap to the closest point to where the edge currently sits
+    const delta = state.dragged[side] - state.lastDragged[side]
+    if (Math.abs(delta) > toValue(threshold).distance) {
+      // Snap to the next point in the direction the edge was dragged
       state.interpolateTo = findClosestSnapPoint({
         side,
         value: state.dragged[side],
-        direction: 'absolute',
+        direction: delta < 0 ? 'below' : 'above',
       })
     }
   }
@@ -284,7 +284,10 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     checkMomentum(side)
     checkPosition(side)
 
-    emitter.emit('drag', { id: toValue(id), side, value: state.dragged[side] })
+    emitter.emit('drag', {
+      id: toValue(id),
+      drag: { side, value: state.dragged[side] },
+    })
   }
 
   function onPointerup(e: PointerEvent) {
@@ -293,8 +296,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       settle(side)
       emitter.emit('afterDrag', {
         id: toValue(id),
-        side,
-        value: state.dragged[side],
+        drag: { side, value: state.dragged[side] },
       })
     }
 
@@ -326,7 +328,10 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     checkMomentum(side)
     checkPosition(side)
 
-    emitter.emit('drag', { id: toValue(id), side, value: state.dragged[side] })
+    emitter.emit('drag', {
+      id: toValue(id),
+      drag: { side, value: state.dragged[side] },
+    })
   }
 
   function onTouchend() {
@@ -335,8 +340,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       settle(side)
       emitter.emit('afterDrag', {
         id: toValue(id),
-        side,
-        value: state.dragged[side],
+        drag: { side, value: state.dragged[side] },
       })
     }
 
@@ -366,8 +370,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     emitter.emit('beforeDrag', {
       id: toValue(id),
-      side,
-      value: state.dragged[side],
+      drag: { side, value: state.dragged[side] },
     })
   }
 
@@ -440,11 +443,19 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   // Programmatic snapTo via emitter
   async function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
-    if (!('side' in payload) || payload.id !== toValue(id)) {
+    const { snapPoint } = payload
+    if (
+      payload.id !== toValue(id) ||
+      typeof snapPoint !== 'object' ||
+      Array.isArray(snapPoint)
+    ) {
       return
     }
-    if (!draggableSides.value.includes(payload.side)) {
-      logWarning(`Cannot snap side "${payload.side}" without snap points`)
+
+    const { side, point } = snapPoint
+
+    if (!draggableSides.value.includes(side)) {
+      logWarning(`Cannot snap side "${side}" without snap points`)
       return
     }
 
@@ -452,8 +463,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     await getSizes()
 
     snapTo({
-      side: payload.side,
-      snapPoint: payload.snapPoint as TraySnapPoint,
+      side,
+      snapPoint: point,
       interpolate: true,
       duration: payload.duration,
     })

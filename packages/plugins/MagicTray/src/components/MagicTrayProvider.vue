@@ -1,5 +1,7 @@
 <template>
-  <slot />
+  <div class="magic-tray-provider">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -29,3 +31,9 @@ watch(
 
 provide(MagicTrayInstanceId, id)
 </script>
+
+<style>
+.magic-tray-provider {
+  display: contents;
+}
+</style>

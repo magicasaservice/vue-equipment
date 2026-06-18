@@ -73,6 +73,7 @@ function createTray(id: TrayId, options: Record<string, unknown> = {}) {
     template: `
       <MagicTrayProvider id="${id}" :options="options">
         <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <span data-test-id="${TestId.Content}">{{ JSON.stringify(lastPayload) }}</span>
         <button data-test-id="${TestId.SnapBtn}" @click="snapTo('bottom', 0.5)">Snap</button>
         <MagicTrayContent>
           <div style="width: 200px; height: 200px;">Content</div>
@@ -115,7 +116,7 @@ describe('MagicTray - Events', () => {
     expect(events).toContain('afterSnap')
   })
 
-  it('snap event payload carries the side', async () => {
+  it('snap event payload nests the side inside the snapPoint', async () => {
     const { container } = mountWithApp(
       createTray(TrayId.EventSnap, { snapPoints: { bottom: [0, 0.5, 1] } })
     )
@@ -134,6 +135,13 @@ describe('MagicTray - Events', () => {
         { timeout: 2000 }
       )
       .toContain('beforeSnap')
+
+    const payload = JSON.parse(
+      container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+    )
+    expect(payload.id).toBe(TrayId.EventSnap)
+    expect(payload.side).toBeUndefined()
+    expect(payload.snapPoint).toEqual({ side: 'bottom', point: 0.5 })
   })
 
   describe('drag lifecycle', () => {
@@ -195,7 +203,7 @@ describe('MagicTray - Events', () => {
         .toContain('progress')
     })
 
-    it('drag payload carries the id and side', async () => {
+    it('drag payload nests the side inside the drag value', async () => {
       const { container } = mountWithApp(
         createDragTray(TrayId.RenderHandles, {
           snapPoints: { bottom: [0, 0.5, 1] },
@@ -218,7 +226,9 @@ describe('MagicTray - Events', () => {
           .textContent!
       )
       expect(payload.id).toBe(TrayId.RenderHandles)
-      expect(payload.side).toBe('bottom')
+      expect(payload.side).toBeUndefined()
+      expect(payload.drag.side).toBe('bottom')
+      expect(typeof payload.drag.value).toBe('number')
 
       document.dispatchEvent(pointer('pointerup', 120))
     })

@@ -18,14 +18,22 @@ function createTray(
       const progressBottom = computed(() => api.progress.value.bottom)
       const progressRight = computed(() => api.progress.value.right)
       const draggedBottom = computed(() => api.state.dragged.bottom)
+      const activeBottom = computed(() => api.activeSnapPoint.value.bottom)
       const dragging = computed(() => api.state.dragging)
-      return { progressBottom, progressRight, draggedBottom, dragging }
+      return {
+        progressBottom,
+        progressRight,
+        draggedBottom,
+        activeBottom,
+        dragging,
+      }
     },
     template: `
       <MagicTrayProvider id="${id}" :options="options">
         <span data-test-id="${TestId.ProgressBottom}">{{ progressBottom }}</span>
         <span data-test-id="${TestId.ProgressRight}">{{ progressRight }}</span>
         <span data-test-id="${TestId.DraggedBottom}">{{ draggedBottom }}</span>
+        <span data-test-id="${TestId.Active1}">{{ activeBottom }}</span>
         <span data-test-id="${TestId.Content}">{{ dragging }}</span>
         <MagicTrayContent style="${contentStyle}">
           <div style="width: 200px; height: 200px;">Content</div>
@@ -199,5 +207,71 @@ describe('MagicTray - Interactions', () => {
     document.dispatchEvent(pointer('pointercancel', 120))
     await nextTick()
     expect(dragging()).toBe('false')
+  })
+
+  describe('threshold distance advances symmetrically', () => {
+    // Start fully open at the middle snap point, then drag a small amount —
+    // past threshold.distance (8px) but well short of the midpoint between
+    // snap points (~50px) — so the move only commits if the distance
+    // threshold drives a directional snap rather than an absolute closest one.
+    const options = {
+      snapPoints: { bottom: [0, 0.5, 1] },
+      initial: { snapPoints: { bottom: 0.5 } },
+      threshold: { distance: 8, momentum: 99999 },
+    }
+    const style = '--magic-tray-drag-overshoot-outer: 48px'
+
+    async function mountMidTray(id: TrayId) {
+      const { container } = mountWithApp(createTray(id, options, style))
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      // Rests at the middle snap point before dragging
+      await expect
+        .poll(
+          () =>
+            Number(
+              container.querySelector(`[data-test-id="${TestId.ProgressBottom}"]`)!
+                .textContent
+            ),
+          { timeout: 2000 }
+        )
+        .toBeCloseTo(0.5, 1)
+
+      return container
+    }
+
+    const active = (container: HTMLElement) =>
+      container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
+
+    it('dragging up past the threshold advances to the next point above', async () => {
+      const container = await mountMidTray(TrayId.OptThresholdDirUp)
+      const handle = container.querySelector(
+        '.magic-tray-handle--bottom'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 170))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 170))
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('1')
+    })
+
+    it('dragging down past the threshold advances to the next point below', async () => {
+      const container = await mountMidTray(TrayId.OptThresholdDirDown)
+      const handle = container.querySelector(
+        '.magic-tray-handle--bottom'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 230))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 230))
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('0')
+    })
   })
 })

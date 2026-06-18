@@ -4,6 +4,21 @@ export type TraySide = 'top' | 'right' | 'bottom' | 'left'
 
 export type TraySnapPoint = number | `${number}px`
 
+export interface TraySnapPointPayload {
+  side: TraySide
+  point: TraySnapPoint
+}
+
+export interface TrayDragPayload {
+  side: TraySide
+  value: number
+}
+
+export interface TrayProgressPayload {
+  side: TraySide
+  value: number
+}
+
 export type TraySnapPoints = Partial<Record<TraySide, TraySnapPoint[]>>
 
 export type TraySideRecord<T> = Record<TraySide, T>
@@ -63,38 +78,31 @@ export interface TrayState {
 export type TrayEvents = {
   beforeSnap: {
     id: string
-    side: TraySide
-    snapPoint: TraySnapPoint
+    snapPoint: TraySnapPointPayload
   }
   snapTo: {
     id: string
-    side: TraySide
-    snapPoint: TraySnapPoint
+    snapPoint: TraySnapPointPayload
     duration?: number
   }
   afterSnap: {
     id: string
-    side: TraySide
-    snapPoint: TraySnapPoint
+    snapPoint: TraySnapPointPayload
   }
   beforeDrag: {
     id: string
-    side: TraySide
-    value: number
+    drag: TrayDragPayload
   }
   drag: {
     id: string
-    side: TraySide
-    value: number
+    drag: TrayDragPayload
   }
   afterDrag: {
     id: string
-    side: TraySide
-    value: number
+    drag: TrayDragPayload
   }
   progress: {
     id: string
-    side: TraySide
-    value: number
+    progress: TrayProgressPayload
   }
 }

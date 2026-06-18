@@ -1,7 +1,3 @@
----
-new: true
----
-
 # MagicTray
 
 MagicTray is a flexible, touch enabled, unstyled component that clips its content with a draggable, snapping clip path. Useful for things like peeking panels, reveal effects, resizable previews and the like.
@@ -281,7 +277,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'threshold.distance',
-          description: 'Configure the dragged distance before the side snaps to the closest snap point.'
+          description: 'Configure the dragged distance before the side snaps to the next snap point in the drag direction.'
         },
         {
           label: 'number'
@@ -737,49 +733,49 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
     {
       items: [
         { label: 'beforeDrag' },
-        { label: '{ id, side, value }' },
+        { label: '{ id, drag: { side, value } }' },
         { plaintext: true, label: 'Fired when a side starts being dragged.' }
       ]
     },
     {
       items: [
         { label: 'drag' },
-        { label: '{ id, side, value }' },
+        { label: '{ id, drag: { side, value } }' },
         { plaintext: true, label: 'Fired continuously while a side is dragged. `value` is the current inset in pixels.' }
       ]
     },
     {
       items: [
         { label: 'afterDrag' },
-        { label: '{ id, side, value }' },
+        { label: '{ id, drag: { side, value } }' },
         { plaintext: true, label: 'Fired when a side stops being dragged.' }
       ]
     },
     {
       items: [
         { label: 'beforeSnap' },
-        { label: '{ id, side, snapPoint }' },
+        { label: '{ id, snapPoint: { side, point } }' },
         { plaintext: true, label: 'Fired before a side animates to a snap point.' }
       ]
     },
     {
       items: [
         { label: 'snapTo' },
-        { label: '{ id, side, snapPoint, duration? }' },
+        { label: '{ id, snapPoint: { side, point }, duration? }' },
         { plaintext: true, label: 'Fired when a side is asked to snap programmatically.' }
       ]
     },
     {
       items: [
         { label: 'afterSnap' },
-        { label: '{ id, side, snapPoint }' },
+        { label: '{ id, snapPoint: { side, point } }' },
         { plaintext: true, label: 'Fired after a side has settled on a snap point.' }
       ]
     },
     {
       items: [
         { label: 'progress' },
-        { label: '{ id, side, value }' },
+        { label: '{ id, progress: { side, value } }' },
         { plaintext: true, label: 'Fired whenever a side’s inset progress changes. `value` is between 0 and 1.' }
       ]
     }

@@ -176,7 +176,10 @@ export function useTraySnap(args: UseTraySnapArgs) {
       return
     }
 
-    emitter.emit('beforeSnap', { id: toValue(id), side, snapPoint })
+    emitter.emit('beforeSnap', {
+      id: toValue(id),
+      snapPoint: { side, point: snapPoint },
+    })
 
     interpolate({
       from: state.dragged[side],
@@ -186,7 +189,10 @@ export function useTraySnap(args: UseTraySnapArgs) {
       callback: (value: number) => {
         state.dragged[side] = value
         if (state.dragged[side] === to) {
-          emitter.emit('afterSnap', { id: toValue(id), side, snapPoint })
+          emitter.emit('afterSnap', {
+            id: toValue(id),
+            snapPoint: { side, point: snapPoint },
+          })
         }
       },
     })

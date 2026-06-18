@@ -8,8 +8,11 @@ import { useMagicTray } from './src/composables/useMagicTray'
 import type { App, Plugin } from 'vue'
 import type {
   MagicTrayOptions,
+  TrayDragPayload,
+  TrayProgressPayload,
   TraySide,
   TraySnapPoint,
+  TraySnapPointPayload,
   TrayTransformAxis,
 } from './src/types/index'
 
@@ -32,4 +35,12 @@ export {
   MagicTrayTransform,
   useMagicTray,
 }
-export type { MagicTrayOptions, TraySide, TraySnapPoint, TrayTransformAxis }
+export type {
+  MagicTrayOptions,
+  TrayDragPayload,
+  TrayProgressPayload,
+  TraySide,
+  TraySnapPoint,
+  TraySnapPointPayload,
+  TrayTransformAxis,
+}

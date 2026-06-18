@@ -7,6 +7,10 @@
     :data-dragged="hasDragged"
     :data-disabled="disabled"
     :data-inset="inset"
+    :data-drag-top="draggableSides.includes('top')"
+    :data-drag-right="draggableSides.includes('right')"
+    :data-drag-bottom="draggableSides.includes('bottom')"
+    :data-drag-left="draggableSides.includes('left')"
     v-bind="$attrs"
   >
     <div class="magic-tray-content__wrapper">
@@ -140,6 +144,7 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 }
 
 .magic-tray-content {
+  pointer-events: none;
   position: var(--magic-tray-position, relative);
   display: var(--magic-tray-display, inline-block);
   color: inherit;
@@ -147,7 +152,23 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 
 .magic-tray-content[data-inset='true'] {
   position: absolute;
-  inset: calc(-1 * var(--magic-tray-drag-overshoot-outer));
+  inset: 0;
+}
+
+.magic-tray-content[data-inset='true'][data-drag-top='true'] {
+  top: calc(-1 * var(--magic-tray-drag-overshoot-outer));
+}
+
+.magic-tray-content[data-inset='true'][data-drag-right='true'] {
+  right: calc(-1 * var(--magic-tray-drag-overshoot-outer));
+}
+
+.magic-tray-content[data-inset='true'][data-drag-bottom='true'] {
+  bottom: calc(-1 * var(--magic-tray-drag-overshoot-outer));
+}
+
+.magic-tray-content[data-inset='true'][data-drag-left='true'] {
+  left: calc(-1 * var(--magic-tray-drag-overshoot-outer));
 }
 
 .magic-tray-content[data-inset='true'] .magic-tray-content__wrapper {
@@ -157,7 +178,6 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
 
 .magic-tray-content__wrapper {
   position: relative;
-  pointer-events: none;
   width: var(--magic-tray-width, max-content);
   height: var(--magic-tray-height, max-content);
   max-width: var(--magic-tray-max-width, none);
@@ -176,13 +196,18 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
   position: absolute;
   inset: 0;
   z-index: var(--magic-tray-bg-z-index, -1);
-  pointer-events: none;
 }
 
 .magic-tray-content__slot {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  position: relative;
   pointer-events: auto;
+}
+
+.magic-tray-content[data-inset='true'] .magic-tray-content__slot {
+  padding: var(--magic-tray-drag-overshoot-outer);
 }
 
 .magic-tray-content__inner[data-drag-top='true'] {
