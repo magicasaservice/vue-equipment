@@ -102,6 +102,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   const threshold = computed(() => state.options.threshold)
   const disabled = computed(() => state.options.disabled)
+  const snapMode = computed(() => state.options.snap.mode)
+
+  function snapReference(side: TraySide) {
+    return snapMode.value === 'step'
+      ? state.lastDragged[side]
+      : state.dragged[side]
+  }
 
   const hasDragged = computed(() => {
     const side = state.draggingSide
@@ -221,7 +228,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       // Snap to the next point in the direction the edge was dragged
       state.interpolateTo = findClosestSnapPoint({
         side,
-        value: state.dragged[side],
+        value: snapReference(side),
         direction: delta < 0 ? 'below' : 'above',
       })
     }
@@ -235,7 +242,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     if (velocity > toValue(threshold).momentum) {
       state.interpolateTo = findClosestSnapPoint({
         side,
-        value: state.dragged[side],
+        value: snapReference(side),
         direction: state.relDirection[side],
       })
     }

@@ -274,4 +274,63 @@ describe('MagicTray - Interactions', () => {
       await expect.poll(() => active(container), { timeout: 2000 }).toBe('0')
     })
   })
+
+  describe('snap mode steps through points in order', () => {
+    // Rest fully open at the first snap point (0), then drag the bottom edge
+    // far up — past the midpoint between 0.5 and 1 — so the live position is
+    // closest to 1. In 'step' mode the edge should advance only to the
+    // adjacent point (0.5); in 'closest' mode it jumps straight to 1.
+    const base = {
+      snapPoints: { bottom: [0, 0.5, 1] },
+      threshold: { distance: 8, momentum: 99999 },
+    }
+    const style = '--magic-tray-drag-overshoot-outer: 48px'
+
+    async function mountOpenTray(id: TrayId, options: Record<string, unknown>) {
+      const { container } = mountWithApp(createTray(id, options, style))
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('0')
+
+      return container
+    }
+
+    async function dragFarUp(container: HTMLElement) {
+      const handle = container.querySelector(
+        '.magic-tray-handle--bottom'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 20))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 20))
+    }
+
+    const active = (container: HTMLElement) =>
+      container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
+
+    it("'step' advances only to the adjacent point, skipping none", async () => {
+      const container = await mountOpenTray(TrayId.OptSnapModeStep, {
+        ...base,
+        snap: { mode: 'step' },
+      })
+
+      await dragFarUp(container)
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('0.5')
+    })
+
+    it("'closest' jumps to the nearest point in the drag direction", async () => {
+      const container = await mountOpenTray(TrayId.OptSnapModeClosest, {
+        ...base,
+        snap: { mode: 'closest' },
+      })
+
+      await dragFarUp(container)
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('1')
+    })
+  })
 })

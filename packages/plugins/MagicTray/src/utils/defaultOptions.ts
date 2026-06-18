@@ -6,6 +6,9 @@ const defaultOptions: RequiredMagicTrayOptions = {
   snapPoints: {
     bottom: [0, 0.5, 1],
   },
+  snap: {
+    mode: 'closest',
+  },
   handles: true,
   threshold: {
     lock: 0,

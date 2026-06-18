@@ -144,6 +144,7 @@ const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
     wrapperRef,
     position: state.options.position,
     snapPoints: state.options.snapPoints,
+    snap: state.options.snap,
     threshold: state.options.threshold,
     overshoot,
     animation: state.options.animation,

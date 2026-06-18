@@ -19,6 +19,8 @@ export interface TrayProgressPayload {
   value: number
 }
 
+export type TraySnapMode = 'closest' | 'step'
+
 export type TraySnapPoints = Partial<Record<TraySide, TraySnapPoint[]>>
 
 export type TraySideRecord<T> = Record<TraySide, T>
@@ -28,6 +30,9 @@ export type TrayTransformAxis = 'both' | 'x' | 'y'
 export interface MagicTrayOptions {
   tag?: 'div' | 'dialog' | 'main' | 'section' | 'article' | 'aside' | 'nav'
   snapPoints?: TraySnapPoints
+  snap?: {
+    mode?: TraySnapMode
+  }
   handles?: boolean | Partial<Record<TraySide, boolean>>
   threshold?: {
     lock?: number
@@ -49,6 +54,7 @@ export interface MagicTrayOptions {
 }
 
 export type RequiredMagicTrayOptions = Required<MagicTrayOptions> & {
+  snap: Required<MagicTrayOptions['snap']>
   threshold: Required<MagicTrayOptions['threshold']>
   animation: RequireAllNested<NonNullable<MagicTrayOptions['animation']>>
 }

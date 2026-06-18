@@ -33,6 +33,8 @@ export enum TrayId {
   OptThresholdHigh = 'opt-threshold-high',
   OptThresholdDirUp = 'opt-threshold-dir-up',
   OptThresholdDirDown = 'opt-threshold-dir-down',
+  OptSnapModeStep = 'opt-snap-mode-step',
+  OptSnapModeClosest = 'opt-snap-mode-closest',
   // edge cases
   EdgeDefault = 'edge-default',
   EdgeWarnNoZero = 'edge-warn-no-zero',

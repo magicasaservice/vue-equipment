@@ -3,12 +3,17 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 export type DrawerSnapPoint = number | `${number}px`
 
+export type DrawerSnapMode = 'closest' | 'step'
+
 export interface MagicDrawerOptions {
   position?: 'top' | 'right' | 'bottom' | 'left'
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }
   snapPoints?: DrawerSnapPoint[]
+  snap?: {
+    mode?: DrawerSnapMode
+  }
   teleport?: {
     target?: string
     disabled?: boolean
@@ -43,6 +48,7 @@ export interface MagicDrawerOptions {
 }
 
 export type RequiredMagicDrawerOptions = Required<MagicDrawerOptions> & {
+  snap: Required<MagicDrawerOptions['snap']>
   scrollLock: Required<MagicDrawerOptions['scrollLock']>
   threshold: Required<MagicDrawerOptions['threshold']>
   animation: RequireAllNested<NonNullable<MagicDrawerOptions['animation']>>

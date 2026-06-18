@@ -45,6 +45,7 @@ type UseDrawerDragArgs = {
   wrapperRef: Ref<HTMLDivElement | null>
   position: MaybeRef<RequiredMagicDrawerOptions['position']>
   snapPoints: MaybeRef<RequiredMagicDrawerOptions['snapPoints']>
+  snap: MaybeRef<RequiredMagicDrawerOptions['snap']>
   threshold: MaybeRef<RequiredMagicDrawerOptions['threshold']>
   initial: MaybeRef<RequiredMagicDrawerOptions['initial']>
   animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
@@ -60,6 +61,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     wrapperRef,
     position,
     snapPoints,
+    snap,
     overshoot,
     threshold,
     initial,
@@ -128,6 +130,15 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
   )
 
+  const snapMode = computed(() => toValue(snap).mode)
+
+  const draggedRefX = computed(() =>
+    snapMode.value === 'step' ? lastDraggedX.value : draggedX.value
+  )
+  const draggedRefY = computed(() =>
+    snapMode.value === 'step' ? lastDraggedY.value : draggedY.value
+  )
+
   // Snap logic
   const {
     snappedY,
@@ -185,7 +196,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         if (distanceY > toValue(threshold).distance) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
-            draggedY,
+            draggedY: draggedRefY.value,
             direction: relDirectionY.value,
           })
 
@@ -205,7 +216,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'left': {
         if (distanceX > toValue(threshold).distance) {
           const snapPointX = findClosestSnapPoint({
-            draggedX,
+            draggedX: draggedRefX.value,
             draggedY: 0,
             direction: relDirectionX.value,
           })
@@ -238,7 +249,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         if (velocityY > toValue(threshold).momentum) {
           const snapPointY = findClosestSnapPoint({
             draggedX: 0,
-            draggedY,
+            draggedY: draggedRefY.value,
             direction: relDirectionY.value,
           })
           // Close if last snap point is reached
@@ -256,7 +267,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       case 'left': {
         if (velocityX > toValue(threshold).momentum) {
           const snapPointX = findClosestSnapPoint({
-            draggedX,
+            draggedX: draggedRefX.value,
             draggedY,
             direction: relDirectionX.value,
           })

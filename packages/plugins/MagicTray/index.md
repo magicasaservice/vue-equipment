@@ -248,6 +248,20 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'snap.mode',
+          description: 'Configure how the tray settles after a drag. \'closest\' snaps to the nearest point in the drag direction, \'step\' always advances one point at a time.'
+        },
+        {
+          label: '\'closest\' | \'step\''
+        },
+        {
+          label: '\'closest\''
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'handles',
           description: 'Render the built-in, invisible drag handles. Set to false to disable all handles, or pass a per side object to enable handles selectively. Provide visuals through the handle slot.'
         },
@@ -829,3 +843,9 @@ Translate a layer alongside the clip with `MagicTrayTransform`, pushing content 
 A composed tray layered over its own container, easing into its initial snap points on mount via `initial.transition`.
 
 <ComponentPreview src="./demo/RevealDemo.vue" />
+
+### Step Snapping
+
+With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point on each drag instead of jumping to the closest one, moving through the configured points one at a time.
+
+<ComponentPreview src="./demo/StepSnapDemo.vue" />

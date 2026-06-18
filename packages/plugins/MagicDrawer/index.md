@@ -331,6 +331,20 @@ To customize the drawer, override the necessary options. Any custom options will
     {
       items: [
         {
+          label: 'snap.mode',
+          description: 'Configure how the drawer settles after a drag. \'closest\' snaps to the nearest point in the drag direction, \'step\' always advances one point at a time.'
+        },
+        {
+          label: '\'closest\' | \'step\''
+        },
+        {
+          label: '\'closest\''
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'teleport.target',
           description: 'Default teleport target used by `MagicDrawerTeleport` unless overridden on the component itself.'
         },
@@ -1034,6 +1048,12 @@ The drawer handles situations where dragging and scrolling might interfere with 
 ### Mousewheel
 
 <ComponentPreview src="./demo/MousewheelDemo.vue" />
+
+### Step Snapping
+
+With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point on each drag instead of jumping to the closest one, moving through the configured points one at a time.
+
+<ComponentPreview src="./demo/SnapModeDemo.vue" />
 
 ### Composed
 

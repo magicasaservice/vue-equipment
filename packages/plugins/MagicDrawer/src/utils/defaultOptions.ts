@@ -11,6 +11,9 @@ const defaultOptions: RequiredMagicDrawerOptions = {
   },
   scrollLock: { padding: true },
   snapPoints: [1],
+  snap: {
+    mode: 'closest',
+  },
   teleport: {
     target: 'body',
     disabled: false,
