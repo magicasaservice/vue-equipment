@@ -1,5 +1,5 @@
 ---
-soon: true
+new: true
 ---
 
 # MagicTray
