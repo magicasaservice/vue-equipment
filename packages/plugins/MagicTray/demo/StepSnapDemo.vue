@@ -14,7 +14,7 @@
     <div
       class="flex aspect-16/9 w-120 max-w-full items-center justify-center select-none"
     >
-      <span>Drag the bottom edge one step at a time</span>
+      <span>Drag the bottom edge</span>
     </div>
   </magic-tray>
 </template>

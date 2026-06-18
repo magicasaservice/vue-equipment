@@ -41,7 +41,7 @@ export default defineNuxtConfig({
   },
 
   css: [
-    './assets/tailwind.css',
+    path.resolve(__dirname, './assets/tailwind.css'),
     'fonts/index/stylesheet.css',
     'fonts/interface/stylesheet.css',
     'fonts/mirage/stylesheet.css',
