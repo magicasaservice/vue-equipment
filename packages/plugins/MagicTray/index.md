@@ -546,14 +546,146 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
   :rows="[
     {
       items: [
-        { label: '--magic-tray-handle-size' },
-        { label: '2.5rem' }
+        { label: '--magic-tray-handle-width-x' },
+        { label: '100%' }
       ]
     },
     {
       items: [
-        { label: '--magic-tray-handle-cursor' },
-        { label: 'ns-resize / ew-resize' }
+        { label: '--magic-tray-handle-width-y' },
+        { label: '4rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-width-top' },
+        { label: 'var(--magic-tray-handle-width-x)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-width-bottom' },
+        { label: 'var(--magic-tray-handle-width-x)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-width-left' },
+        { label: 'var(--magic-tray-handle-width-y)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-width-right' },
+        { label: 'var(--magic-tray-handle-width-y)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-x' },
+        { label: '4rem' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-y' },
+        { label: '100%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-top' },
+        { label: 'var(--magic-tray-handle-height-x)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-bottom' },
+        { label: 'var(--magic-tray-handle-height-x)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-left' },
+        { label: 'var(--magic-tray-handle-height-y)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-height-right' },
+        { label: 'var(--magic-tray-handle-height-y)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-x-top' },
+        { label: '0%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-x-right' },
+        { label: '50%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-x-bottom' },
+        { label: '0%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-x-left' },
+        { label: '-50%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-y-top' },
+        { label: '-50%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-y-right' },
+        { label: '0%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-y-bottom' },
+        { label: '50%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-offset-y-left' },
+        { label: '0%' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-cursor-top' },
+        { label: 'ns-resize' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-cursor-right' },
+        { label: 'ew-resize' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-cursor-bottom' },
+        { label: 'ns-resize' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-handle-cursor-left' },
+        { label: 'ew-resize' }
       ]
     },
     {

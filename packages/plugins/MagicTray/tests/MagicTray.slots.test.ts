@@ -66,9 +66,9 @@ describe('MagicTray - Handle slots', () => {
     await nextTick()
 
     const root = `[data-id="${TrayId.SlotHandlePerSide}"]`
-    const top = document.querySelector(`${root} .magic-tray-handle--top .handle-top`)
+    const top = document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-top`)
     const bottom = document.querySelector(
-      `${root} .magic-tray-handle--bottom .handle-bottom`
+      `${root} .magic-tray-handle[data-side="bottom"] .handle-bottom`
     )
     expect(top).not.toBeNull()
     expect(top!.getAttribute('data-handle-side')).toBe('top')
@@ -95,14 +95,14 @@ describe('MagicTray - Handle slots', () => {
     const root = `[data-id="${TrayId.SlotHandleFallback}"]`
     // top uses its dedicated slot
     expect(
-      document.querySelector(`${root} .magic-tray-handle--top .handle-top`)
+      document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-top`)
     ).not.toBeNull()
     expect(
-      document.querySelector(`${root} .magic-tray-handle--top .handle-generic`)
+      document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-generic`)
     ).toBeNull()
     // bottom has no dedicated slot, falls back to generic
     const bottomGeneric = document.querySelector(
-      `${root} .magic-tray-handle--bottom .handle-generic`
+      `${root} .magic-tray-handle[data-side="bottom"] .handle-generic`
     )
     expect(bottomGeneric).not.toBeNull()
     expect(bottomGeneric!.getAttribute('data-handle-side')).toBe('bottom')

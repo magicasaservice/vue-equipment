@@ -80,7 +80,7 @@ describe('MagicTray - Interactions', () => {
     await new Promise((r) => setTimeout(r, 100))
 
     const handle = container.querySelector(
-      '.magic-tray-handle--bottom'
+      '.magic-tray-handle[data-side="bottom"]'
     ) as HTMLElement
     expect(handle).not.toBeNull()
 
@@ -118,7 +118,7 @@ describe('MagicTray - Interactions', () => {
     await new Promise((r) => setTimeout(r, 100))
 
     const handle = container.querySelector(
-      '.magic-tray-handle--bottom'
+      '.magic-tray-handle[data-side="bottom"]'
     ) as HTMLElement
     expect(handle).not.toBeNull()
 
@@ -159,7 +159,7 @@ describe('MagicTray - Interactions', () => {
     await new Promise((r) => setTimeout(r, 100))
 
     const handle = container.querySelector(
-      '.magic-tray-handle--right'
+      '.magic-tray-handle[data-side="right"]'
     ) as HTMLElement
     expect(handle).not.toBeNull()
 
@@ -192,7 +192,7 @@ describe('MagicTray - Interactions', () => {
     await new Promise((r) => setTimeout(r, 100))
 
     const handle = container.querySelector(
-      '.magic-tray-handle--bottom'
+      '.magic-tray-handle[data-side="bottom"]'
     ) as HTMLElement
 
     const dragging = () =>
@@ -247,7 +247,7 @@ describe('MagicTray - Interactions', () => {
     it('dragging up past the threshold advances to the next point above', async () => {
       const container = await mountMidTray(TrayId.OptThresholdDirUp)
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))
@@ -262,7 +262,7 @@ describe('MagicTray - Interactions', () => {
     it('dragging down past the threshold advances to the next point below', async () => {
       const container = await mountMidTray(TrayId.OptThresholdDirDown)
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))
@@ -298,7 +298,7 @@ describe('MagicTray - Interactions', () => {
 
     async function dragFarUp(container: HTMLElement) {
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))

@@ -101,7 +101,7 @@ describe('MagicTray - Options', () => {
         expect(inner!.getAttribute(`data-drag-${side}`)).toBe('true')
 
         const handle = document.querySelector(
-          `[data-id="${id}"] .magic-tray-handle--${side}`
+          `[data-id="${id}"] .magic-tray-handle[data-side="${side}"]`
         )
         expect(handle).not.toBeNull()
       })
@@ -182,7 +182,7 @@ describe('MagicTray - Options', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
       expect(handle).not.toBeNull()
 
@@ -345,7 +345,7 @@ describe('MagicTray - Options', () => {
         )
 
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))

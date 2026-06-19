@@ -155,7 +155,7 @@ describe('MagicTray - Events', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))
@@ -184,7 +184,7 @@ describe('MagicTray - Events', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))
@@ -213,7 +213,7 @@ describe('MagicTray - Events', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       const handle = container.querySelector(
-        '.magic-tray-handle--bottom'
+        '.magic-tray-handle[data-side="bottom"]'
       ) as HTMLElement
 
       handle.dispatchEvent(pointer('pointerdown', 200))
