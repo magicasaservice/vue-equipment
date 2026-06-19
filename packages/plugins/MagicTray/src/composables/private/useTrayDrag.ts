@@ -124,16 +124,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   // Clip-path from all four sides, negative insets clamped to keep it valid
   const clipPath = computed(() => {
-    const top = Math.max(0, state.dragged.top)
-    const right = Math.max(0, state.dragged.right)
-    const bottom = Math.max(0, state.dragged.bottom)
-    const left = Math.max(0, state.dragged.left)
+    const top = Math.max(0, state.dragged.top + state.magnetic.top)
+    const right = Math.max(0, state.dragged.right + state.magnetic.right)
+    const bottom = Math.max(0, state.dragged.bottom + state.magnetic.bottom)
+    const left = Math.max(0, state.dragged.left + state.magnetic.left)
     return `inset(${top}px ${right}px ${bottom}px ${left}px round var(--magic-tray-radius, 0px))`
   })
 
   // Position a handle at the inner edge of the clip for its side
   function handleStyle(side: TraySide) {
-    const offset = `${state.dragged[side]}px`
+    const offset = `${state.dragged[side] + state.magnetic[side]}px`
     switch (side) {
       case 'top':
         return { top: offset, left: '0px', right: '0px' }
@@ -293,7 +293,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     emitter.emit('drag', {
       id: toValue(id),
-      drag: { side, value: state.dragged[side] },
+      side,
+      value: state.dragged[side],
     })
   }
 
@@ -303,7 +304,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       settle(side)
       emitter.emit('afterDrag', {
         id: toValue(id),
-        drag: { side, value: state.dragged[side] },
+        side,
+        value: state.dragged[side],
       })
     }
 
@@ -337,7 +339,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     emitter.emit('drag', {
       id: toValue(id),
-      drag: { side, value: state.dragged[side] },
+      side,
+      value: state.dragged[side],
     })
   }
 
@@ -347,7 +350,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       settle(side)
       emitter.emit('afterDrag', {
         id: toValue(id),
-        drag: { side, value: state.dragged[side] },
+        side,
+        value: state.dragged[side],
       })
     }
 
@@ -359,6 +363,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.dragging = true
     state.draggingSide = side
     state.interpolateTo = undefined
+    // Fold the magnetic preview into the committed inset so the grab is seamless
+    state.dragged[side] += state.magnetic[side]
+    state.magnetic[side] = 0
     state.lastDragged[side] = state.dragged[side]
     pointerdownTarget = target
 
@@ -377,7 +384,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     emitter.emit('beforeDrag', {
       id: toValue(id),
-      drag: { side, value: state.dragged[side] },
+      side,
+      value: state.dragged[side],
     })
   }
 

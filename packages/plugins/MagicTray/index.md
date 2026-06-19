@@ -276,6 +276,62 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'magnetism.sides',
+          description: 'Enable the magnetic pull per side by mapping its snap points to a direction. The direction decides which approach arms the pull — \'inner\' pulls the edge inward as the cursor nears from inside the tray, \'outer\' pulls it back out as the cursor nears from outside, and \'both\' arms from either side. Set to false to disable magnetism. A snap point referenced here must also exist in snapPoints for that side.'
+        },
+        {
+          label: 'false | Partial<Record<TraySide, Partial<Record<TraySnapPoint, \'inner\' | \'outer\' | \'both\'>>>>'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'magnetism.radius',
+          description: 'Configure the radius in pixels around the handle center within which the magnetic pull is active.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '80'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'magnetism.pull',
+          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached when the cursor is at the handle. The easing shapes how the pull grows across the radius.'
+        },
+        {
+          label: 'number'
+        },
+        {
+          label: '24'
+        }
+      ]
+    },
+    {
+      items: [
+        {
+          label: 'magnetism.easing',
+          description: 'Configure the easing that shapes the pull across the radius. An ease-in-out curve keeps the effect soft as the cursor enters the radius and as it arrives at the handle, gaining through the middle. Use an ease-in curve for a firmer pull right at the handle.'
+        },
+        {
+          label: 'EasingKey'
+        },
+        {
+          label: '\'easeInOutQuad\''
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'threshold.lock',
           description: 'Configure the dragged distance before the tray prevents other touch interactions.'
         },
@@ -879,21 +935,21 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
     {
       items: [
         { label: 'beforeDrag' },
-        { label: '{ id, drag: { side, value } }' },
+        { label: '{ id, side, value }' },
         { plaintext: true, label: 'Fired when a side starts being dragged.' }
       ]
     },
     {
       items: [
         { label: 'drag' },
-        { label: '{ id, drag: { side, value } }' },
+        { label: '{ id, side, value }' },
         { plaintext: true, label: 'Fired continuously while a side is dragged. `value` is the current inset in pixels.' }
       ]
     },
     {
       items: [
         { label: 'afterDrag' },
-        { label: '{ id, drag: { side, value } }' },
+        { label: '{ id, side, value }' },
         { plaintext: true, label: 'Fired when a side stops being dragged.' }
       ]
     },
@@ -921,8 +977,15 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
     {
       items: [
         { label: 'progress' },
-        { label: '{ id, progress: { side, value } }' },
+        { label: '{ id, side, value }' },
         { plaintext: true, label: 'Fired whenever a side’s inset progress changes. `value` is between 0 and 1.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'magnet' },
+        { label: '{ id, side, value }' },
+        { plaintext: true, label: 'Fired whenever a magnetic pull changes, e.g. to drive a parallax in the handle slot. `value` is the pull as a fraction of `magnetism.pull`, signed by direction: positive when pulled inward, negative when pulled outward, 0 at rest.' }
       ]
     }
   ]"
@@ -981,3 +1044,9 @@ A composed tray layered over its own container, easing into its initial snap poi
 With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point on each drag instead of jumping to the closest one, moving through the configured points one at a time.
 
 <ComponentPreview src="./demo/StepSnapDemo.vue" />
+
+### Magnetic
+
+With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `'inner'` pulls in from inside, `'outer'` out from outside, `'both'` from either side.
+
+<ComponentPreview src="./demo/MagneticDemo.vue" />

@@ -63,6 +63,7 @@ import {
 } from '@maas/vue-equipment/plugins/MagicError'
 import { useTrayState } from '../composables/private/useTrayState'
 import { useTrayDrag } from '../composables/private/useTrayDrag'
+import { useTrayMagnetism } from '../composables/private/useTrayMagnetism'
 import { useTrayProgress } from '../composables/private/useTrayProgress'
 import MagicTrayHandle from './MagicTrayHandle.vue'
 import { MagicTrayInstanceId } from '../symbols'
@@ -109,6 +110,7 @@ const {
   elRef,
 })
 
+useTrayMagnetism({ id: mappedId, elRef, state })
 useTrayProgress({ id: mappedId, state })
 
 const visibleHandles = computed<TraySide[]>(() => {

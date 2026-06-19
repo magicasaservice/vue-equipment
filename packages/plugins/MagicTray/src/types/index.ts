@@ -1,4 +1,5 @@
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
+import type { EasingKey } from '@maas/vue-equipment/composables/useEasings'
 
 export type TraySide = 'top' | 'right' | 'bottom' | 'left'
 
@@ -9,12 +10,8 @@ export interface TraySnapPointPayload {
   point: TraySnapPoint
 }
 
-export interface TrayDragPayload {
-  side: TraySide
-  value: number
-}
-
-export interface TrayProgressPayload {
+// Shared payload for the per-side value events (drag, progress, magnet)
+export interface TraySidePayload {
   side: TraySide
   value: number
 }
@@ -22,6 +19,25 @@ export interface TrayProgressPayload {
 export type TraySnapMode = 'closest' | 'step'
 
 export type TraySnapPoints = Partial<Record<TraySide, TraySnapPoint[]>>
+
+// Which approach arms a snap point
+export type TrayMagneticDirection = 'inner' | 'outer' | 'both'
+
+// A per side mapping of individual snap points and their direction
+export type TrayMagneticSide = Partial<
+  Record<TraySnapPoint, TrayMagneticDirection>
+>
+
+export type TrayMagneticSides =
+  | false
+  | Partial<Record<TraySide, TrayMagneticSide>>
+
+export interface TrayMagnetism {
+  sides?: TrayMagneticSides
+  radius?: number
+  pull?: number
+  easing?: EasingKey
+}
 
 export type TraySideRecord<T> = Record<TraySide, T>
 
@@ -34,6 +50,7 @@ export interface MagicTrayOptions {
     mode?: TraySnapMode
   }
   handles?: boolean | Partial<Record<TraySide, boolean>>
+  magnetism?: TrayMagnetism
   threshold?: {
     lock?: number
     distance?: number
@@ -55,6 +72,7 @@ export interface MagicTrayOptions {
 
 export type RequiredMagicTrayOptions = Required<MagicTrayOptions> & {
   snap: Required<MagicTrayOptions['snap']>
+  magnetism: Required<TrayMagnetism>
   threshold: Required<MagicTrayOptions['threshold']>
   animation: RequireAllNested<NonNullable<MagicTrayOptions['animation']>>
 }
@@ -68,6 +86,7 @@ export interface TrayState {
   interpolateTo: number | undefined
   origin: number
   dragged: TraySideRecord<number>
+  magnetic: TraySideRecord<number>
   snapped: TraySideRecord<number>
   lastDragged: TraySideRecord<number>
   relDirection: TraySideRecord<'below' | 'above' | 'absolute'>
@@ -95,20 +114,9 @@ export type TrayEvents = {
     id: string
     snapPoint: TraySnapPointPayload
   }
-  beforeDrag: {
-    id: string
-    drag: TrayDragPayload
-  }
-  drag: {
-    id: string
-    drag: TrayDragPayload
-  }
-  afterDrag: {
-    id: string
-    drag: TrayDragPayload
-  }
-  progress: {
-    id: string
-    progress: TrayProgressPayload
-  }
+  beforeDrag: { id: string } & TraySidePayload
+  drag: { id: string } & TraySidePayload
+  afterDrag: { id: string } & TraySidePayload
+  progress: { id: string } & TraySidePayload
+  magnet: { id: string } & TraySidePayload
 }

@@ -15,6 +15,7 @@ export enum TrayId {
   Overshoot = 'overshoot',
   // events
   EventSnap = 'event-snap',
+  EventMagnetism = 'event-magnetism',
   // options
   OptTagDiv = 'opt-tag-div',
   OptTagDialog = 'opt-tag-dialog',
@@ -35,6 +36,23 @@ export enum TrayId {
   OptThresholdDirDown = 'opt-threshold-dir-down',
   OptSnapModeStep = 'opt-snap-mode-step',
   OptSnapModeClosest = 'opt-snap-mode-closest',
+  // magnetism
+  MagneticLeft = 'magnetic-left',
+  MagneticInner = 'magnetic-inner',
+  MagneticOutside = 'magnetic-outside',
+  MagneticOuter = 'magnetic-outer',
+  MagneticOuterInside = 'magnetic-outer-inside',
+  MagneticBoth = 'magnetic-both',
+  MagneticEased = 'magnetic-eased',
+  MagneticLinear = 'magnetic-linear',
+  MagneticDiagonal = 'magnetic-diagonal',
+  MagneticAbove = 'magnetic-above',
+  MagneticBeyondCap = 'magnetic-beyond-cap',
+  MagneticPastEdge = 'magnetic-past-edge',
+  MagneticCrossAxis = 'magnetic-cross-axis',
+  MagneticStaleLatch = 'magnetic-stale-latch',
+  MagneticDisabled = 'magnetic-disabled',
+  MagneticInvalid = 'magnetic-invalid',
   // edge cases
   EdgeDefault = 'edge-default',
   EdgeWarnNoZero = 'edge-warn-no-zero',

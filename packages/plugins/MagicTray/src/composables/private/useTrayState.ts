@@ -2,7 +2,12 @@ import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { createDefu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { TrayState, MagicTrayOptions, TraySide } from '../../types/index'
+import type {
+  TrayState,
+  MagicTrayOptions,
+  RequiredMagicTrayOptions,
+  TraySide,
+} from '../../types/index'
 
 const getTrayStateStore = createStateStore<TrayState[]>('MagicTray', () => [])
 
@@ -25,7 +30,7 @@ export function useTrayState(id: MaybeRef<string>) {
 
   // Replace arrays / records instead of merging, so per side config can be overridden
   const customDefu = createDefu((obj, key, value) => {
-    if (key === 'snapPoints' || key === 'handles') {
+    if (key === 'snapPoints' || key === 'handles' || key === 'sides') {
       obj[key] = value
       return true
     }
@@ -42,6 +47,7 @@ export function useTrayState(id: MaybeRef<string>) {
       interpolateTo: undefined,
       origin: 0,
       dragged: emptySides(),
+      magnetic: emptySides(),
       snapped: emptySides(),
       lastDragged: emptySides(),
       relDirection: emptyDirections(),
@@ -84,7 +90,10 @@ export function useTrayState(id: MaybeRef<string>) {
     }
 
     if (options) {
-      const mappedOptions = customDefu(options, defaultOptions)
+      const mappedOptions = customDefu(
+        options,
+        defaultOptions
+      ) as RequiredMagicTrayOptions
       state.options = mappedOptions
     }
 

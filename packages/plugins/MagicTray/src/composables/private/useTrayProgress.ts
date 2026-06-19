@@ -30,7 +30,8 @@ export function useTrayProgress(args: UseTrayProgressArgs) {
           state.progress[side] = value
           emitter.emit('progress', {
             id: toValue(id),
-            progress: { side, value },
+            side,
+            value,
           })
         }
       }
