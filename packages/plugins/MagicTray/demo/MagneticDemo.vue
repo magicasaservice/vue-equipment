@@ -9,10 +9,14 @@
         :style="{
           '--magic-tray-radius': '0.5rem',
           '--magic-tray-drag-overshoot-outer': '3.5rem',
+          '--magic-tray-handle-width-y': '10rem',
         }"
       >
         <template #background>
           <div class="bg-surface-base h-full w-full" />
+        </template>
+        <template #handle>
+          <div class="bg-accent-translucent h-full w-full" />
         </template>
         <div
           class="text-surface flex h-full w-full items-center justify-center p-8 text-center"
@@ -32,17 +36,13 @@ const id = 'magic-tray-magnetic-demo'
 
 const options: MagicTrayOptions = {
   snapPoints: {
-    right: [0, '196px'],
-    left: [0, '196px'],
+    right: [0, 0.5, 1],
   },
   snap: { mode: 'step' },
   magnetism: {
     sides: {
-      left: { 0: 'inner', '196px': 'outer' },
-      right: { 0: 'inner', '196px': 'outer' },
+      right: { 0: 'inner', 0.5: 'both', 1: 'outer' },
     },
-    radius: 196,
-    pull: 24,
   },
   threshold: { distance: 32 },
   inset: true,

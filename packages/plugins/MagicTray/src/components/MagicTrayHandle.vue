@@ -34,6 +34,7 @@ const orientation = computed(() =>
   pointer-events: auto;
   touch-action: none;
   user-select: none;
+  cursor: var(--magic-tray-handle-cursor, grab);
 }
 
 .magic-tray-handle[data-side='top'],
@@ -57,10 +58,12 @@ const orientation = computed(() =>
     --magic-tray-handle-height-top,
     var(--magic-tray-handle-height-x, 4rem)
   );
-  cursor: var(--magic-tray-handle-cursor-top, row-resize);
   transform: translate(
     var(--magic-tray-handle-offset-x-top, 0%),
-    var(--magic-tray-handle-offset-y-top, -50%)
+    calc(
+      var(--magic-tray-handle-offset-y-top, -50%) +
+        var(--magic-tray-handle-magnetic, 0px)
+    )
   );
 }
 
@@ -73,10 +76,12 @@ const orientation = computed(() =>
     --magic-tray-handle-height-bottom,
     var(--magic-tray-handle-height-x, 4rem)
   );
-  cursor: var(--magic-tray-handle-cursor-bottom, row-resize);
   transform: translate(
     var(--magic-tray-handle-offset-x-bottom, 0%),
-    var(--magic-tray-handle-offset-y-bottom, 50%)
+    calc(
+      var(--magic-tray-handle-offset-y-bottom, 50%) -
+        var(--magic-tray-handle-magnetic, 0px)
+    )
   );
 }
 
@@ -89,9 +94,11 @@ const orientation = computed(() =>
     --magic-tray-handle-height-left,
     var(--magic-tray-handle-height-y, 100%)
   );
-  cursor: var(--magic-tray-handle-cursor-left, col-resize);
   transform: translate(
-    var(--magic-tray-handle-offset-x-left, -50%),
+    calc(
+      var(--magic-tray-handle-offset-x-left, -50%) +
+        var(--magic-tray-handle-magnetic, 0px)
+    ),
     var(--magic-tray-handle-offset-y-left, 0%)
   );
 }
@@ -105,9 +112,11 @@ const orientation = computed(() =>
     --magic-tray-handle-height-right,
     var(--magic-tray-handle-height-y, 100%)
   );
-  cursor: var(--magic-tray-handle-cursor-right, col-resize);
   transform: translate(
-    var(--magic-tray-handle-offset-x-right, 50%),
+    calc(
+      var(--magic-tray-handle-offset-x-right, 50%) -
+        var(--magic-tray-handle-magnetic, 0px)
+    ),
     var(--magic-tray-handle-offset-y-right, 0%)
   );
 }

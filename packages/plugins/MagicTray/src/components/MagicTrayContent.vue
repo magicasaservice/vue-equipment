@@ -1,7 +1,7 @@
 <template>
   <div
     class="magic-tray-content"
-    :data-id="mappedId"
+    :data-id="instanceId"
     :data-dragging="state.dragging"
     :data-dragging-side="state.draggingSide"
     :data-dragged="hasDragged"
@@ -35,6 +35,7 @@
         <magic-tray-handle
           v-for="side in visibleHandles"
           :key="side"
+          :ref="`${side}Handle`"
           :side="side"
           :style="handleStyle(side)"
           @pointerdown="guardedPointerdown(side, $event)"
@@ -56,7 +57,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, useSlots, computed, inject } from 'vue'
+import {
+  useTemplateRef,
+  useSlots,
+  computed,
+  inject,
+  type ComponentPublicInstance,
+} from 'vue'
 import {
   useMagicError,
   type UseMagicErrorReturn,
@@ -86,12 +93,22 @@ magicError.assert(instanceId, {
   errorCode: 'missing_instance_id',
 })
 
-const mappedId = instanceId ?? ''
-
-const { initializeState } = useTrayState(mappedId)
+const { initializeState } = useTrayState(instanceId)
 const state = initializeState()
 
 const elRef = useTemplateRef<HTMLElement>('el')
+const topHandleRef = useTemplateRef<ComponentPublicInstance[]>('topHandle')
+const rightHandleRef = useTemplateRef<ComponentPublicInstance[]>('rightHandle')
+const bottomHandleRef =
+  useTemplateRef<ComponentPublicInstance[]>('bottomHandle')
+const leftHandleRef = useTemplateRef<ComponentPublicInstance[]>('leftHandle')
+
+const handleRefs = {
+  top: topHandleRef,
+  right: rightHandleRef,
+  bottom: bottomHandleRef,
+  left: leftHandleRef,
+}
 
 const disabled = computed(() => state.options.disabled)
 const inset = computed(() => state.options.inset)
@@ -106,12 +123,12 @@ const {
   onHandlePointerdown,
   onHandleTouchstart,
 } = useTrayDrag({
-  id: mappedId,
+  id: instanceId,
   elRef,
 })
 
-useTrayMagnetism({ id: mappedId, elRef, state })
-useTrayProgress({ id: mappedId, state })
+useTrayMagnetism({ id: instanceId, elRef, handleRefs, state })
+useTrayProgress({ id: instanceId, state })
 
 const visibleHandles = computed<TraySide[]>(() => {
   const { handles } = state.options
@@ -191,7 +208,6 @@ function guardedTouchstart(side: TraySide, event: TouchEvent) {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  will-change: clip-path;
 }
 
 .magic-tray-content__bg {
@@ -245,5 +261,9 @@ dialog.magic-tray-content__inner {
 
 .magic-tray-content[data-disabled='true'] .magic-tray-content__handles {
   display: none;
+}
+
+.magic-tray-content[data-dragging='true'] .magic-tray-handle {
+  cursor: var(--magic-tray-handle-cursor-dragging, grabbing);
 }
 </style>

@@ -131,18 +131,41 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     return `inset(${top}px ${right}px ${bottom}px ${left}px round var(--magic-tray-radius, 0px))`
   })
 
-  // Position a handle at the inner edge of the clip for its side
+  // Position a handle at the inner edge of the clip. The resting inset rides on
+  // the box offset, the magnetic preview on a transform variable, so the per-frame
+  // pull moves it on the compositor without a relayout (which flickers in Chrome).
   function handleStyle(side: TraySide) {
-    const offset = `${state.dragged[side] + state.magnetic[side]}px`
+    const rest = `${state.dragged[side]}px`
+    const magnetic = `${state.magnetic[side]}px`
     switch (side) {
       case 'top':
-        return { top: offset, left: '0px', right: '0px' }
+        return {
+          top: rest,
+          left: '0px',
+          right: '0px',
+          '--magic-tray-handle-magnetic': magnetic,
+        }
       case 'bottom':
-        return { bottom: offset, left: '0px', right: '0px' }
+        return {
+          bottom: rest,
+          left: '0px',
+          right: '0px',
+          '--magic-tray-handle-magnetic': magnetic,
+        }
       case 'left':
-        return { left: offset, top: '0px', bottom: '0px' }
+        return {
+          left: rest,
+          top: '0px',
+          bottom: '0px',
+          '--magic-tray-handle-magnetic': magnetic,
+        }
       case 'right':
-        return { right: offset, top: '0px', bottom: '0px' }
+        return {
+          right: rest,
+          top: '0px',
+          bottom: '0px',
+          '--magic-tray-handle-magnetic': magnetic,
+        }
     }
   }
 

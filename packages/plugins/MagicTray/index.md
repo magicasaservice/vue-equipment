@@ -277,7 +277,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.sides',
-          description: 'Enable the magnetic pull per side by mapping its snap points to a direction. The direction decides which approach arms the pull — \'inner\' pulls the edge inward as the cursor nears from inside the tray, \'outer\' pulls it back out as the cursor nears from outside, and \'both\' arms from either side. Set to false to disable magnetism. A snap point referenced here must also exist in snapPoints for that side.'
+          description: 'Enable the magnetic pull per side by mapping its snap points to a direction: \'inner\' pulls in as the cursor nears from inside, \'outer\' out from outside, \'both\' from either side. Set to false to disable. Each snap point used must also exist in snapPoints.'
         },
         {
           label: 'false | Partial<Record<TraySide, Partial<Record<TraySnapPoint, \'inner\' | \'outer\' | \'both\'>>>>'
@@ -291,13 +291,13 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.radius',
-          description: 'Configure the radius in pixels around the handle center within which the magnetic pull is active.'
+          description: 'Configure the width in pixels of the band the cursor scrubs the pull across, measured in from the handle’s edge. Defaults to a quarter of the handle’s thickness.'
         },
         {
           label: 'number'
         },
         {
-          label: '80'
+          label: '0'
         }
       ]
     },
@@ -305,13 +305,13 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.pull',
-          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached when the cursor is at the handle. The easing shapes how the pull grows across the radius.'
+          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached at the far end of the band. Defaults to a quarter of the handle’s thickness.'
         },
         {
           label: 'number'
         },
         {
-          label: '24'
+          label: '0'
         }
       ]
     },
@@ -319,7 +319,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.easing',
-          description: 'Configure the easing that shapes the pull across the radius. An ease-in-out curve keeps the effect soft as the cursor enters the radius and as it arrives at the handle, gaining through the middle. Use an ease-in curve for a firmer pull right at the handle.'
+          description: 'Configure the easing the pull follows across the band.'
         },
         {
           label: 'EasingKey'
@@ -722,26 +722,14 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
     },
     {
       items: [
-        { label: '--magic-tray-handle-cursor-top' },
-        { label: 'ns-resize' }
+        { label: '--magic-tray-handle-cursor' },
+        { label: 'grab' }
       ]
     },
     {
       items: [
-        { label: '--magic-tray-handle-cursor-right' },
-        { label: 'ew-resize' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-tray-handle-cursor-bottom' },
-        { label: 'ns-resize' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-tray-handle-cursor-left' },
-        { label: 'ew-resize' }
+        { label: '--magic-tray-handle-cursor-dragging' },
+        { label: 'grabbing' }
       ]
     },
     {

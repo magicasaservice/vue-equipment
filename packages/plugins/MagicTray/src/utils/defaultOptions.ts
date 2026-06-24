@@ -12,8 +12,8 @@ const defaultOptions: RequiredMagicTrayOptions = {
   handles: true,
   magnetism: {
     sides: false,
-    radius: 80,
-    pull: 24,
+    radius: 0,
+    pull: 0,
     easing: 'easeInOutQuad',
   },
   threshold: {
