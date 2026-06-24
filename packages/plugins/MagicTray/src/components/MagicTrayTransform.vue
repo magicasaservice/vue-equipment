@@ -61,9 +61,3 @@ const transform = computed(() => {
   return `translate3d(${x}px, ${y}px, 0)`
 })
 </script>
-
-<style>
-.magic-tray-transform {
-  will-change: transform;
-}
-</style>
