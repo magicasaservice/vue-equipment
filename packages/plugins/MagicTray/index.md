@@ -508,6 +508,54 @@ Renders the clipped content along with drag and snap behavior. Combines all four
     },
     {
       items: [
+        { label: '--magic-tray-radius-top-left' },
+        { label: 'var(--magic-tray-radius)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-radius-top-right' },
+        { label: 'var(--magic-tray-radius)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-radius-bottom-right' },
+        { label: 'var(--magic-tray-radius)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-radius-bottom-left' },
+        { label: 'var(--magic-tray-radius)' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-clip-top' },
+        { label: '–' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-clip-right' },
+        { label: '–' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-clip-bottom' },
+        { label: '–' }
+      ]
+    },
+    {
+      items: [
+        { label: '--magic-tray-clip-left' },
+        { label: '–' }
+      ]
+    },
+    {
+      items: [
         { label: '--magic-tray-drag-overshoot' },
         { label: '3rem' }
       ]

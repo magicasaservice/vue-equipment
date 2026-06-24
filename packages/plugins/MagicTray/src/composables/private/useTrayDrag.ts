@@ -122,13 +122,26 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   })
 
-  // Clip-path from all four sides, negative insets clamped to keep it valid
+  // Clip-path from all four sides, negative insets clamped to keep it valid.
+  // Each side and corner reads from an overridable variable: sides fall back to
+  // the computed inset, corners to the shared --magic-tray-radius.
   const clipPath = computed(() => {
     const top = Math.max(0, state.dragged.top + state.magnetic.top)
     const right = Math.max(0, state.dragged.right + state.magnetic.right)
     const bottom = Math.max(0, state.dragged.bottom + state.magnetic.bottom)
     const left = Math.max(0, state.dragged.left + state.magnetic.left)
-    return `inset(${top}px ${right}px ${bottom}px ${left}px round var(--magic-tray-radius, 0px))`
+    return (
+      `inset(` +
+      `var(--magic-tray-clip-top, ${top}px) ` +
+      `var(--magic-tray-clip-right, ${right}px) ` +
+      `var(--magic-tray-clip-bottom, ${bottom}px) ` +
+      `var(--magic-tray-clip-left, ${left}px) ` +
+      `round ` +
+      `var(--magic-tray-radius-top-left, var(--magic-tray-radius, 0px)) ` +
+      `var(--magic-tray-radius-top-right, var(--magic-tray-radius, 0px)) ` +
+      `var(--magic-tray-radius-bottom-right, var(--magic-tray-radius, 0px)) ` +
+      `var(--magic-tray-radius-bottom-left, var(--magic-tray-radius, 0px)))`
+    )
   })
 
   // Position a handle at the inner edge of the clip. The resting inset rides on
