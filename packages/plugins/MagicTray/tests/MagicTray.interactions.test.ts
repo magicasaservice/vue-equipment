@@ -6,7 +6,7 @@ import { useMagicTray } from '../src/composables/useMagicTray'
 import { mountWithApp } from '../../tests/utils'
 import { TrayId, TestId } from './enums'
 
-import type { MagicTrayOptions } from '../src/types/index'
+import type { MagicTrayOptions, TraySide } from '../src/types/index'
 
 function createTray(
   id: TrayId,
@@ -75,20 +75,24 @@ const MAGNETIC = {
   Snapped: 'snapped-left-value',
 }
 
-function createMagneticTray(id: TrayId, options: MagicTrayOptions) {
+function createMagneticTray(
+  id: TrayId,
+  options: MagicTrayOptions,
+  side: TraySide = 'left'
+) {
   return defineComponent({
     components: { MagicTrayProvider, MagicTrayContent },
     setup() {
       const api = useMagicTray(id)
-      const magneticLeft = computed(() => api.state.magnetic.left)
-      const snappedLeft = computed(() => api.state.snapped.left)
-      return { magneticLeft, snappedLeft }
+      const magneticValue = computed(() => api.state.magnetic[side])
+      const snappedValue = computed(() => api.state.snapped[side])
+      return { magneticValue, snappedValue }
     },
     template: `
       <MagicTrayProvider id="${id}" :options="options">
         <div style="position: absolute; width: 0; height: 0; overflow: hidden;">
-          <span data-test-id="${MAGNETIC.Magnetic}">{{ magneticLeft }}</span>
-          <span data-test-id="${MAGNETIC.Snapped}">{{ snappedLeft }}</span>
+          <span data-test-id="${MAGNETIC.Magnetic}">{{ magneticValue }}</span>
+          <span data-test-id="${MAGNETIC.Snapped}">{{ snappedValue }}</span>
         </div>
         <MagicTrayContent>
           <div style="width: 240px; height: 240px;">Content</div>
@@ -460,7 +464,7 @@ describe('MagicTray - Magnetism', () => {
     // Stage at the approached edge so the side arms, then scrub inward
     await stage(stageInner)
 
-    // At the handle's approached edge the scrub has barely started — almost no pull
+    // At the approached edge the scrub is below the half-pixel floor, so 0
     movePointer(innerX(0.02), midY)
     await nextFrame()
     await nextTick()
@@ -478,7 +482,7 @@ describe('MagicTray - Magnetism', () => {
     await nextTick()
     const atEdge = readNumber(container, MAGNETIC.Magnetic)
 
-    expect(atAnchor).toBeLessThan(0.5)
+    expect(atAnchor).toBe(0)
     expect(midBand).toBeGreaterThan(atAnchor)
     expect(atEdge).toBeGreaterThan(midBand)
     expect(atEdge).toBeCloseTo(pull, 0)
@@ -529,6 +533,59 @@ describe('MagicTray - Magnetism', () => {
 
     expect(eased).toBeGreaterThan(0)
     expect(eased).toBeLessThan(linear)
+  })
+
+  it('pulls to the configured max instead of the handle default', async () => {
+    const { container } = mountWithApp(
+      createMagneticTray(TrayId.MagneticPull, {
+        snapPoints: { left: [0, '64px'] },
+        magnetism: { sides: { left: { 0: 'inner' } }, pull: 40 },
+      })
+    )
+    await settle()
+
+    const { edgeX, pull, midY, stageInner, stage } = magneticGeometry(container)
+
+    // The handle-derived default would be `pull`; the override lifts the max to 40
+    expect(pull).toBeLessThan(40)
+
+    // Stage, then scrub to the resting edge where the pull tops out
+    await stage(stageInner)
+    movePointer(edgeX, midY)
+    await nextFrame()
+    await nextTick()
+
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeCloseTo(40, 0)
+  })
+
+  it('reaches max sooner with a narrower configured radius', async () => {
+    // At a fixed depth past the handle edge a narrow band has already topped out
+    // where a wide one is still ramping, so the configured radius sets the slope
+    async function pullAtDepth(id: TrayId, radius: number) {
+      const { container } = mountWithApp(
+        createMagneticTray(id, {
+          snapPoints: { left: [0, '64px'] },
+          magnetism: { sides: { left: { 0: 'inner' } }, radius },
+        })
+      )
+      await settle()
+
+      const { edgeX, anchorHalf, midY, stageInner, stage } =
+        magneticGeometry(container)
+
+      // 15px in: past the narrow band (radius 10), still inside the wide one (20)
+      await stage(stageInner)
+      movePointer(edgeX + anchorHalf - 15, midY)
+      await nextFrame()
+      await nextTick()
+
+      return readNumber(container, MAGNETIC.Magnetic)
+    }
+
+    const narrow = await pullAtDepth(TrayId.MagneticRadiusNarrow, 10)
+    const wide = await pullAtDepth(TrayId.MagneticRadiusWide, 20)
+
+    expect(narrow).toBeGreaterThan(wide)
   })
 
   it('holds the pull at max off the handle and runs it back down on return', async () => {
@@ -730,16 +787,72 @@ describe('MagicTray - Magnetism', () => {
     expect(maxed).toBeGreaterThan(0)
 
     // Cross past the outer edge -> the approach flips and the target collapses
-    // to rest. Rather than snapping to 0 the edge eases back, so a few frames
-    // later it is still partway home, neither held at max nor reset
+    // to rest, but the edge eases back rather than snapping
     movePointer(edgeX - 2 * anchorHalf, midY)
-    for (let i = 0; i < 6; i++) {
-      await nextFrame()
-    }
+    await nextFrame()
+    await nextFrame()
     await nextTick()
-    const easing = readNumber(container, MAGNETIC.Magnetic)
-    expect(easing).toBeGreaterThan(0)
-    expect(easing).toBeLessThan(maxed)
+    // A couple of frames in the pull is still mostly held while it eases. A snap
+    // to 0 (the bug) would already read near 0 here, independent of frame timing.
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeGreaterThan(maxed * 0.5)
+
+    // Past the settle duration it has eased all the way back to rest
+    await new Promise((r) => setTimeout(r, 400))
+    await nextTick()
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeCloseTo(0, 1)
+  })
+
+  it('pulls a top edge inward on the vertical axis', async () => {
+    const { container } = mountWithApp(
+      createMagneticTray(
+        TrayId.MagneticTop,
+        {
+          snapPoints: { top: [0, '64px'] },
+          magnetism: { sides: { top: { 0: 'inner' } } },
+        },
+        'top'
+      )
+    )
+    await settle()
+
+    // Geometry mirrors magneticGeometry but on the vertical axis: perp runs along
+    // y, the span along x, and the handle thickness is its height
+    const inner = container.querySelector(
+      '.magic-tray-content__inner'
+    ) as HTMLElement
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="top"]'
+    ) as HTMLElement
+    const rect = inner.getBoundingClientRect()
+    const hrect = handle.getBoundingClientRect()
+    const snapped = readNumber(container, MAGNETIC.Snapped)
+    const edgeY = rect.top + snapped
+    const anchorHalf = hrect.height / 2
+    const radius = anchorHalf / 2
+    const pull = anchorHalf / 2
+    const midX = rect.left + rect.width / 2
+    const innerY = (f: number) => edgeY + anchorHalf - f * radius
+
+    // Stage below the handle's inner edge so the side arms, then scrub up
+    movePointer(midX, edgeY + anchorHalf + radius)
+    await nextFrame()
+    await nextTick()
+
+    // Halfway across the band the edge is pulled partway in
+    movePointer(midX, innerY(0.5))
+    await nextFrame()
+    await nextTick()
+    const midBand = readNumber(container, MAGNETIC.Magnetic)
+
+    // Scrubbed to the resting edge the pull tops out at its max
+    movePointer(midX, edgeY)
+    await nextFrame()
+    await nextTick()
+    const atEdge = readNumber(container, MAGNETIC.Magnetic)
+
+    expect(midBand).toBeGreaterThan(0)
+    expect(atEdge).toBeGreaterThan(midBand)
+    expect(atEdge).toBeCloseTo(pull, 0)
   })
 
   it('does not pull when the side rests at a non-magnetic snap point', async () => {
@@ -773,9 +886,9 @@ describe('MagicTray - Magnetism', () => {
     ).toThrow(/snapPoints\.left/)
   })
 
-  it('leaves edges untouched when magnetism is disabled', async () => {
+  it('leaves edges untouched when magnetism is not configured', async () => {
     const { container } = mountWithApp(
-      createMagneticTray(TrayId.MagneticDisabled, {
+      createMagneticTray(TrayId.MagneticUnconfigured, {
         snapPoints: { left: [0, '64px'] },
       })
     )
@@ -784,6 +897,29 @@ describe('MagicTray - Magnetism', () => {
     const { innerX, midY } = magneticGeometry(container)
 
     movePointer(innerX(0.5), midY)
+    await nextFrame()
+    await nextTick()
+
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBe(0)
+  })
+
+  it('leaves edges untouched while disabled even with magnetism configured', async () => {
+    const { container } = mountWithApp(
+      createMagneticTray(TrayId.MagneticDisabled, {
+        snapPoints: { left: [0, '64px'] },
+        magnetism: { sides: { left: { 0: 'inner' } } },
+        disabled: true,
+      })
+    )
+    await settle()
+
+    const inner = container.querySelector(
+      '.magic-tray-content__inner'
+    ) as HTMLElement
+    const rect = inner.getBoundingClientRect()
+
+    // Magnetism never attaches while disabled, so scrubbing to the edge does nothing
+    movePointer(rect.left, rect.top + rect.height / 2)
     await nextFrame()
     await nextTick()
 
