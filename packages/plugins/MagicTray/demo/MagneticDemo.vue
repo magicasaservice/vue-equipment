@@ -15,9 +15,6 @@
         <template #background>
           <div class="bg-surface-base h-full w-full" />
         </template>
-        <template #handle>
-          <div class="bg-accent-translucent h-full w-full" />
-        </template>
         <div
           class="text-surface flex h-full w-full items-center justify-center p-8 text-center"
         >
