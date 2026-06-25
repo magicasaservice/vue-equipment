@@ -234,7 +234,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'snapPoints',
-          description: 'Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1 or an integer with px appended, like \'120px\'.'
+          description: 'Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1 or a pixel value, like \'120px\'.'
         },
         {
           label: 'TraySnapPoints',
@@ -263,7 +263,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'handles',
-          description: 'Render the built-in, invisible drag handles. Set to false to disable all handles, or pass a per side object to enable handles selectively. Provide visuals through the handle slot.'
+          description: 'Render the built-in, invisible drag handles. Set to false to disable all handles, or pass a per side object to enable handles selectively.'
         },
         {
           label: 'boolean | Partial<Record<TraySide, boolean>>'
@@ -291,7 +291,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.radius',
-          description: 'Configure the band the cursor scrubs the pull across, in pixels measured from the resting (clipped) edge. Pass `{ start, stop }` where `start` is where the pull engages and `stop` where it tops out and latches; `stop` defaults to `pull`, so the previewed edge meets the cursor there, and `start` defaults to one handle thickness beyond `stop`. A single number is shorthand for a band that ramps straight to the edge. Left at `0`, the band derives from the handle’s thickness and position instead.'
+          description: 'Configure the band the cursor scrubs the pull across, in pixels measured from the clipped edge. Pass `{ start, stop }` where `start` is where the pull engages and `stop` where it tops out and latches. A single number is shorthand for a band that ramps straight to the edge.'
         },
         {
           label: 'number | { start?: number; stop?: number }'
@@ -305,7 +305,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.pull',
-          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached where the band tops out (`radius.stop`). Defaults to a quarter of the handle’s thickness.'
+          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor. Defaults to a quarter of the handle’s thickness.'
         },
         {
           label: 'number'
@@ -404,7 +404,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'initial.snapPoints',
-          description: 'Optionally provide an initial snap point per side for the tray to snap to. Ignored for sides without snap points.'
+          description: 'Optionally provide an initial snap point per side for the tray to snap to.'
         },
         {
           label: 'Partial<Record<TraySide, TraySnapPoint>>'
@@ -418,7 +418,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'initial.transition',
-          description: 'Transition the tray into its initial snap points on mount, easing in from the open extreme instead of jumping. Uses `animation.snap`.'
+          description: 'Transition the tray into its initial snap points on mount, easing in from the open extreme instead of jumping.
         },
         {
           label: 'boolean'
@@ -446,7 +446,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'inset',
-          description: 'Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek. Use it when the tray covers a same-sized, `overflow-hidden` container and you want pixel snap points to read exactly. The fallback width and height become `100%`.'
+          description: 'Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek.
         },
         {
           label: 'boolean'
