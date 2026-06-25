@@ -78,7 +78,8 @@ const MAGNETIC = {
 function createMagneticTray(
   id: TrayId,
   options: MagicTrayOptions,
-  side: TraySide = 'left'
+  side: TraySide = 'left',
+  contentStyle = ''
 ) {
   return defineComponent({
     components: { MagicTrayProvider, MagicTrayContent },
@@ -94,7 +95,7 @@ function createMagneticTray(
           <span data-test-id="${MAGNETIC.Magnetic}">{{ magneticValue }}</span>
           <span data-test-id="${MAGNETIC.Snapped}">{{ snappedValue }}</span>
         </div>
-        <MagicTrayContent>
+        <MagicTrayContent style="${contentStyle}">
           <div style="width: 240px; height: 240px;">Content</div>
         </MagicTrayContent>
       </MagicTrayProvider>
@@ -851,6 +852,74 @@ describe('MagicTray - Magnetism', () => {
     const atEdge = readNumber(container, MAGNETIC.Magnetic)
 
     expect(midBand).toBeGreaterThan(0)
+    expect(atEdge).toBeGreaterThan(midBand)
+    expect(atEdge).toBeCloseTo(pull, 0)
+  })
+
+  it('tracks the band to a handle shifted by a custom CSS offset', async () => {
+    const { container } = mountWithApp(
+      createMagneticTray(
+        TrayId.MagneticOffset,
+        {
+          snapPoints: { left: [0, '64px'] },
+          magnetism: { sides: { left: { 0: 'inner' } } },
+        },
+        'left',
+        '--magic-tray-handle-offset-x-left: 0%'
+      )
+    )
+    await settle()
+
+    const inner = container.querySelector(
+      '.magic-tray-content__inner'
+    ) as HTMLElement
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="left"]'
+    ) as HTMLElement
+    const rect = inner.getBoundingClientRect()
+    const hrect = handle.getBoundingClientRect()
+    const snapped = readNumber(container, MAGNETIC.Snapped)
+    const edgeX = rect.left + snapped
+    const anchorHalf = hrect.width / 2
+    const radius = anchorHalf / 2
+    const pull = anchorHalf / 2
+    const midY = rect.top + rect.height / 2
+
+    // The 0% offset drops the default -50% centering, so the handle no longer
+    // straddles the edge: its outer edge sits on the resting edge, its inner edge
+    // a full thickness inside. The band has to follow the handle there, a half a
+    // thickness deeper than the centered default would place it.
+    expect(Math.abs(hrect.left - edgeX)).toBeLessThan(1)
+
+    // Band measured at the handle's real inner edge, scrubbed toward the rest edge
+    const innerEdge = hrect.right
+    const innerX = (f: number) => innerEdge - f * radius
+
+    // Stage just past the handle's inner edge so the side arms, then scrub inward
+    movePointer(innerEdge + radius, midY)
+    await nextFrame()
+    await nextTick()
+
+    // At the inner edge the scrub is below the half-pixel floor, so 0
+    movePointer(innerX(0.02), midY)
+    await nextFrame()
+    await nextTick()
+    const atAnchor = readNumber(container, MAGNETIC.Magnetic)
+
+    // Halfway across the band the edge is pulled partway in
+    movePointer(innerX(0.5), midY)
+    await nextFrame()
+    await nextTick()
+    const midBand = readNumber(container, MAGNETIC.Magnetic)
+
+    // Scrubbed to the resting edge the pull tops out at its max
+    movePointer(edgeX, midY)
+    await nextFrame()
+    await nextTick()
+    const atEdge = readNumber(container, MAGNETIC.Magnetic)
+
+    expect(atAnchor).toBe(0)
+    expect(midBand).toBeGreaterThan(atAnchor)
     expect(atEdge).toBeGreaterThan(midBand)
     expect(atEdge).toBeCloseTo(pull, 0)
   })

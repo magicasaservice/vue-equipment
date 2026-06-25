@@ -52,6 +52,7 @@ export enum TrayId {
   MagneticDeep = 'magnetic-deep',
   MagneticGate = 'magnetic-gate',
   MagneticNoJump = 'magnetic-no-jump',
+  MagneticOffset = 'magnetic-offset',
   MagneticDisabled = 'magnetic-disabled',
   MagneticUnconfigured = 'magnetic-unconfigured',
   MagneticInvalid = 'magnetic-invalid',

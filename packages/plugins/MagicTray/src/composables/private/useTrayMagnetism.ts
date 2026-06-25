@@ -203,17 +203,11 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     return match ? match.direction : null
   }
 
-  // Half the handle’s perpendicular size (height for top/bottom, width for
-  // left/right). The default for both the radius and the max pull, 0 if no handle.
-  function handleHalfThickness(side: TraySide): number {
-    // v-for stores each ref as a one-element array; unwrap it to the handle
+  // The handle’s bounding rect, or null if no handle is mounted for the side.
+  // v-for stores each ref as a one-element array; unwrap it to the handle.
+  function handleRect(side: TraySide): DOMRect | null {
     const handle = unrefElement(handleRefs[side].value?.[0])
-    if (!handle) {
-      return 0
-    }
-    const rect = handle.getBoundingClientRect()
-    const size = side === 'top' || side === 'bottom' ? rect.height : rect.width
-    return size / 2
+    return handle ? handle.getBoundingClientRect() : null
   }
 
   function cancelSettle(side: TraySide) {
@@ -312,11 +306,16 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
       const allowInner = direction === 'inner' || direction === 'both'
       const allowOuter = direction === 'outer' || direction === 'both'
 
-      // The handle straddles the resting edge, spanning ±anchorHalf. The zone is a
-      // band of width `radius` at the handle’s approach-side edge, scrubbed inward.
-      // Radius and pull default to a quarter of the handle thickness; either can be
+      // Measure the handle so the band tracks where it actually sits. Its thickness
+      // sets the anchor; radius and pull default to a quarter of it, either can be
       // set explicitly.
-      const anchorHalf = handleHalfThickness(side)
+      const hRect = handleRect(side)
+      const thickness = hRect
+        ? side === 'top' || side === 'bottom'
+          ? hRect.height
+          : hRect.width
+        : 0
+      const anchorHalf = thickness / 2
       const radius = configuredRadius > 0 ? configuredRadius : anchorHalf / 2
       const pull = configuredPull > 0 ? configuredPull : anchorHalf / 2
       pullPx[side] = pull
@@ -327,38 +326,68 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
         continue
       }
 
-      // Perpendicular distance to the resting edge (positive on the inner side)
-      // and how far the cursor runs past the edge’s span on the parallel axis.
+      // Perpendicular distance to the resting edge (positive on the inner side) and
+      // how far the cursor runs past the edge’s span on the parallel axis. `center`
+      // is the handle’s rest offset from the edge, its live magnetic preview removed
+      // so the anchor doesn’t chase its own pull; a CSS offset shifts it off zero.
       let perp = 0
       let overflow = 0
+      let center = 0
       switch (side) {
-        case 'top':
-          perp = y - (rect.top + state.snapped.top)
+        case 'top': {
+          const edge = rect.top + state.snapped.top
+          perp = y - edge
           overflow = axisOverflow(x, rect.left, rect.right)
+          if (hRect) {
+            center = hRect.top + hRect.height / 2 - edge - state.magnetic.top
+          }
           break
-        case 'bottom':
-          perp = rect.bottom - state.snapped.bottom - y
+        }
+        case 'bottom': {
+          const edge = rect.bottom - state.snapped.bottom
+          perp = edge - y
           overflow = axisOverflow(x, rect.left, rect.right)
+          if (hRect) {
+            center =
+              edge - (hRect.top + hRect.height / 2) - state.magnetic.bottom
+          }
           break
-        case 'left':
-          perp = x - (rect.left + state.snapped.left)
+        }
+        case 'left': {
+          const edge = rect.left + state.snapped.left
+          perp = x - edge
           overflow = axisOverflow(y, rect.top, rect.bottom)
+          if (hRect) {
+            center = hRect.left + hRect.width / 2 - edge - state.magnetic.left
+          }
           break
-        case 'right':
-          perp = rect.right - state.snapped.right - x
+        }
+        case 'right': {
+          const edge = rect.right - state.snapped.right
+          perp = edge - x
           overflow = axisOverflow(y, rect.top, rect.bottom)
+          if (hRect) {
+            center =
+              edge - (hRect.left + hRect.width / 2) - state.magnetic.right
+          }
           break
+        }
       }
+
+      // The handle’s near edges relative to the resting edge: the band is armed and
+      // scrubbed from these, so an off-center handle pulls from where it really is.
+      const innerEdge = center + anchorHalf
+      const outerEdge = center - anchorHalf
 
       // Arm only while the cursor is over the handle’s span, on an allowed approach
       // (inner edge from inside, outer from outside). The span gate keeps the pull
       // from triggering anywhere along the edge’s line, only over the handle.
       if (overflow === 0) {
         switch (true) {
-          case allowInner && perp >= anchorHalf:
+          case allowInner && perp >= innerEdge:
             armedDir[side] = 'inner'
             break
-          case allowOuter && perp <= -anchorHalf:
+          case allowOuter && perp <= outerEdge:
             armedDir[side] = 'outer'
             break
         }
@@ -370,17 +399,17 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
         continue
       }
 
-      // Scrub: t runs 0→1 as the cursor crosses the band from the handle’s edge
-      // (anchorHalf) toward the resting edge, easing the pull up to its max.
+      // Scrub: t runs 0→1 as the cursor crosses the band from the handle’s near edge
+      // toward the resting edge, easing the pull up to its max.
       let t = 0
       let sign = 0
       switch (dir) {
         case 'inner':
-          t = clampValue((anchorHalf - perp) / radius, 0, 1)
+          t = clampValue((innerEdge - perp) / radius, 0, 1)
           sign = 1
           break
         case 'outer':
-          t = clampValue((anchorHalf + perp) / radius, 0, 1)
+          t = clampValue((perp - outerEdge) / radius, 0, 1)
           sign = -1
           break
       }
