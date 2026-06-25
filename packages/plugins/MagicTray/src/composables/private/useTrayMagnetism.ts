@@ -494,6 +494,21 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     { deep: true }
   )
 
+  // A snap moves the rest position without a pointer move, so the loop never runs
+  // to clear a live preview. Release the pull and ease the offset home in step.
+  watch(
+    () => ({ ...state.snapped }),
+    (next, prev) => {
+      for (const side of SIDES) {
+        if (next[side] !== prev[side]) {
+          armedDir[side] = null
+          latched[side] = false
+          settleSide(side)
+        }
+      }
+    }
+  )
+
   // Shallow watch is enough since options are replaced wholesale, no deep traversal
   watch(
     () => [enabled.value, magnetism.value.sides, state.options.snapPoints],
