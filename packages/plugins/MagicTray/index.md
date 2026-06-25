@@ -1085,8 +1085,6 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 
 With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `'inner'` pulls in from inside, `'outer'` out from outside, `'both'` from either side.
 
-The band is configured with `magnetism.radius`, a `{ start, stop }` pair of distances from the resting edge: the pull engages at `start`, eases up, and tops out and latches at `stop` (where the previewed edge meets the cursor). Set `stop` to `pull` to have them meet exactly at the maximum.
-
 ::: tip
 If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radius` and `magnetism.pull` manually. Left at their defaults they derive from the handle’s position.
 :::
