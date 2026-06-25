@@ -71,9 +71,11 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   function dragBounds(side: TraySide) {
     const points = mappedSnapPoints(side)
     const geometricMax = maxInset(side)
+
     if (!points.length) {
       return { min: 0, max: geometricMax }
     }
+
     return {
       min: Math.max(0, points[0]!),
       max: Math.min(points[points.length - 1]!, geometricMax),
@@ -83,6 +85,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // The original snap point input that opens a side, for snapTo
   function openSnapPoint(side: TraySide) {
     const points = mappedSnapPoints(side)
+
     return points.length ? snapPointsMap(side)[points[0]!] : undefined
   }
 
@@ -112,9 +115,11 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   const hasDragged = computed(() => {
     const side = state.draggingSide
+
     if (!side) {
       return false
     }
+
     return !isWithinRange({
       input: state.dragged[side],
       base: state.lastDragged[side],
@@ -130,6 +135,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     const right = Math.max(0, state.dragged.right + state.magnetic.right)
     const bottom = Math.max(0, state.dragged.bottom + state.magnetic.bottom)
     const left = Math.max(0, state.dragged.left + state.magnetic.left)
+
     return (
       `inset(` +
       `var(--magic-tray-clip-top, ${top}px) ` +
@@ -150,6 +156,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   function handleStyle(side: TraySide) {
     const rest = `${state.dragged[side]}px`
     const magnetic = `${state.magnetic[side]}px`
+
     switch (side) {
       case 'top':
         return {
@@ -158,6 +165,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
           right: '0px',
           '--magic-tray-handle-magnetic': magnetic,
         }
+
       case 'bottom':
         return {
           bottom: rest,
@@ -165,6 +173,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
           right: '0px',
           '--magic-tray-handle-magnetic': magnetic,
         }
+
       case 'left':
         return {
           left: rest,
@@ -172,6 +181,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
           bottom: '0px',
           '--magic-tray-handle-magnetic': magnetic,
         }
+
       case 'right':
         return {
           right: rest,
@@ -184,6 +194,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   async function getSizes() {
     const el = unrefElement(elRef)
+
     if (!el) {
       state.elRect = undefined
       return
@@ -224,6 +235,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function setDragged(side: TraySide, coord: number) {
     let newInset = 0
+
     switch (side) {
       case 'top':
         newInset = coord - state.origin
@@ -260,6 +272,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function checkPosition(side: TraySide) {
     const delta = state.dragged[side] - state.lastDragged[side]
+
     if (Math.abs(delta) > toValue(threshold).distance) {
       // Snap to the next point in the direction the edge was dragged
       state.interpolateTo = findClosestSnapPoint({
@@ -314,7 +327,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     if (e.isTrusted && !e.isPrimary) {
       return
     }
+
     const side = state.draggingSide
+
     if (!side) {
       return
     }
@@ -336,6 +351,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function onPointerup(e: PointerEvent) {
     const side = state.draggingSide
+
     if (side) {
       settle(side)
       emitter.emit('afterDrag', {
@@ -353,10 +369,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function onTouchmove(e: TouchEvent) {
     const side = state.draggingSide
+
     if (!side) {
       return
     }
+
     const firstTouch = e.touches[0]
+
     if (!firstTouch) {
       return
     }
@@ -382,6 +401,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function onTouchend() {
     const side = state.draggingSide
+
     if (side) {
       settle(side)
       emitter.emit('afterDrag', {
@@ -399,6 +419,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.dragging = true
     state.draggingSide = side
     state.interpolateTo = undefined
+
     // Fold the magnetic preview into the committed inset so the grab is seamless
     state.dragged[side] += state.magnetic[side]
     state.magnetic[side] = 0
@@ -467,7 +488,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     if (!isAndroid() || state.dragging || toValue(disabled)) {
       return
     }
+
     const firstTouch = e.touches[0]
+
     if (!firstTouch) {
       return
     }
@@ -495,6 +518,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // Programmatic snapTo via emitter
   async function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
     const { snapPoint } = payload
+
     if (
       payload.id !== toValue(id) ||
       typeof snapPoint !== 'object' ||
@@ -525,13 +549,17 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // With `transition`, seed the open extreme and interpolate in.
   async function applyInitial() {
     await getSizes()
+
     const { transition } = state.options.initial
+
     for (const side of draggableSides.value) {
       const initial =
         state.options.initial.snapPoints?.[side] ?? openSnapPoint(side)
+
       if (initial === undefined) {
         continue
       }
+
       if (transition) {
         const start = mapSnapPoint(side, 0)
         if (start !== undefined) {

@@ -9,7 +9,7 @@
         :style="{
           '--magic-tray-radius': '0.5rem',
           '--magic-tray-drag-overshoot-outer': '3.5rem',
-          '--magic-tray-handle-width-y': '10rem',
+          '--magic-tray-handle-width-y': '256px',
         }"
       >
         <template #background>

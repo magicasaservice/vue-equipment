@@ -26,8 +26,10 @@ export function useTrayProgress(args: UseTrayProgressArgs) {
         const value = extent
           ? clampValue((dragged[side] - padding(side)) / extent, 0, 1)
           : 0
+
         if (value !== state.progress[side]) {
           state.progress[side] = value
+
           emitter.emit('progress', {
             id: toValue(id),
             side,

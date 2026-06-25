@@ -77,9 +77,11 @@ export function useTraySnap(args: UseTraySnapArgs) {
       return padding(side) + clampValue(snapPoint, 0, 1) * extent
     } else {
       const parsed = parseFloat(snapPoint)
+
       if (Number.isNaN(parsed)) {
         return undefined
       }
+
       return padding(side) + clampValue(parsed, 0, extent)
     }
   }
@@ -123,6 +125,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     }
 
     let filtered = numbers
+
     switch (direction) {
       case 'above':
         filtered = numbers.filter((num) => num > value)
@@ -162,6 +165,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     } = args
 
     const snapPoint = snapPointsMap(side)[to]
+
     if (!snapPoint && snapPoint !== 0) {
       // Still animate, but without snap events for unmapped values
       interpolate({
@@ -203,6 +207,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     await nextTick()
 
     const mapped = mapSnapPoint(side, snapPoint)
+
     if (mapped === undefined) {
       return
     }

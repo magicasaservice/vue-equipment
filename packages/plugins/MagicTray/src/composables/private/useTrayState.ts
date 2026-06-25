@@ -66,6 +66,7 @@ export function useTrayState(id: MaybeRef<string>) {
   function addState(id: string) {
     const state = createState(id)
     trayStateStore.value = [...trayStateStore.value, state]
+
     return state
   }
 

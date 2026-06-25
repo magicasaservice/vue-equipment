@@ -291,10 +291,10 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.radius',
-          description: 'Configure the width in pixels of the band the cursor scrubs the pull across, measured in from the handle’s edge. Defaults to a quarter of the handle’s thickness.'
+          description: 'Configure the band the cursor scrubs the pull across, in pixels measured from the resting (clipped) edge. Pass `{ start, stop }` where `start` is where the pull engages and `stop` where it tops out and latches; `stop` defaults to `pull`, so the previewed edge meets the cursor there, and `start` defaults to one handle thickness beyond `stop`. A single number is shorthand for a band that ramps straight to the edge. Left at `0`, the band derives from the handle’s thickness and position instead.'
         },
         {
-          label: 'number'
+          label: 'number | { start?: number; stop?: number }'
         },
         {
           label: '0'
@@ -305,7 +305,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.pull',
-          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached at the far end of the band. Defaults to a quarter of the handle’s thickness.'
+          description: 'Configure the maximum distance in pixels the edge is pulled toward the cursor, reached where the band tops out (`radius.stop`). Defaults to a quarter of the handle’s thickness.'
         },
         {
           label: 'number'
@@ -1084,5 +1084,11 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 ### Magnetic
 
 With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `'inner'` pulls in from inside, `'outer'` out from outside, `'both'` from either side.
+
+The band is configured with `magnetism.radius`, a `{ start, stop }` pair of distances from the resting edge: the pull engages at `start`, eases up, and tops out and latches at `stop` (where the previewed edge meets the cursor). Set `stop` to `pull` to have them meet exactly at the maximum.
+
+::: tip
+If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radius` and `magnetism.pull` manually. Left at their defaults they derive from the handle’s position.
+:::
 
 <ComponentPreview src="./demo/MagneticDemo.vue" />

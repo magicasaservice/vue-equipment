@@ -32,9 +32,15 @@ export type TrayMagneticSides =
   | false
   | Partial<Record<TraySide, TrayMagneticSide>>
 
+// The scrub band, as perpendicular distances from the resting edge on the
+// approach side: `start` is where the pull engages, `stop` where it tops out and
+// latches (defaults to `pull`, so the previewed edge meets the cursor there). A
+// bare number is the deprecated form, ramping straight to the edge.
+export type TrayMagneticRadius = number | { start?: number; stop?: number }
+
 export interface TrayMagnetism {
   sides?: TrayMagneticSides
-  radius?: number
+  radius?: TrayMagneticRadius
   pull?: number
   easing?: EasingKey
 }

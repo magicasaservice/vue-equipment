@@ -14,9 +14,11 @@ export function useTrayUtils() {
     if (value < min) {
       return outer > 0 ? min - rubberband(min - value, outer) : min
     }
+
     if (value > max) {
       return inner > 0 ? max + rubberband(value - max, inner) : max
     }
+
     return value
   }
 

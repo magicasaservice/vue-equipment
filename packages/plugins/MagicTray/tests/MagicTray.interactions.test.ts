@@ -400,10 +400,10 @@ describe('MagicTray - Interactions', () => {
 })
 
 describe('MagicTray - Magnetism', () => {
-  // The handle straddles the resting edge; half its perpendicular size is the
-  // scrub anchor. The band starts at the handle's approached edge and is a
-  // quarter of the handle thickness wide (radius), with the max pull the same.
-  // Measuring the rendered handle keeps the geometry deterministic despite the
+  // The default, handle-derived geometry (no configured radius): the handle
+  // straddles the resting edge, half its perpendicular size is the scrub anchor,
+  // and the band is a quarter-thickness wide (radius) from the handle's edge, max
+  // pull the same. Measuring the rendered handle keeps it deterministic despite the
   // browser's non-deterministic layout.
   function magneticGeometry(container: HTMLElement) {
     const inner = container.querySelector(
@@ -560,9 +560,11 @@ describe('MagicTray - Magnetism', () => {
   })
 
   it('reaches max sooner with a narrower configured radius', async () => {
-    // At a fixed depth past the handle edge a narrow band has already topped out
-    // where a wide one is still ramping, so the configured radius sets the slope
-    async function pullAtDepth(id: TrayId, radius: number) {
+    // A configured radius anchors the band at the resting edge and spans `radius`
+    // inward, so the handle no longer places it. A fixed distance in from each
+    // band's start the narrow band has topped out where the wide one is still
+    // ramping, so the configured radius sets the slope.
+    async function pullInset(id: TrayId, radius: number) {
       const { container } = mountWithApp(
         createMagneticTray(id, {
           snapPoints: { left: [0, '64px'] },
@@ -571,20 +573,20 @@ describe('MagicTray - Magnetism', () => {
       )
       await settle()
 
-      const { edgeX, anchorHalf, midY, stageInner, stage } =
-        magneticGeometry(container)
+      const { edgeX, midY, stage } = magneticGeometry(container)
 
-      // 15px in: past the narrow band (radius 10), still inside the wide one (20)
-      await stage(stageInner)
-      movePointer(edgeX + anchorHalf - 15, midY)
+      // Stage just past the band's start (radius from the edge), then scrub 12px
+      // in: past the narrow band (radius 10), still inside the wide one (20)
+      await stage(edgeX + radius + 10)
+      movePointer(edgeX + radius - 12, midY)
       await nextFrame()
       await nextTick()
 
       return readNumber(container, MAGNETIC.Magnetic)
     }
 
-    const narrow = await pullAtDepth(TrayId.MagneticRadiusNarrow, 10)
-    const wide = await pullAtDepth(TrayId.MagneticRadiusWide, 20)
+    const narrow = await pullInset(TrayId.MagneticRadiusNarrow, 10)
+    const wide = await pullInset(TrayId.MagneticRadiusWide, 20)
 
     expect(narrow).toBeGreaterThan(wide)
   })
@@ -764,6 +766,48 @@ describe('MagicTray - Magnetism', () => {
     await nextFrame()
     await nextTick()
     expect(readNumber(container, MAGNETIC.Magnetic)).toBeLessThan(0)
+  })
+
+  it('ramps from a configured start and latches the pull at stop', async () => {
+    // A { start, stop } radius hangs the band off the resting edge: the pull
+    // engages at `start`, eases up across the band, and tops out + latches at
+    // `stop` (where the edge meets the cursor). Inside `stop` it holds at max.
+    const { container } = mountWithApp(
+      createMagneticTray(TrayId.MagneticBand, {
+        snapPoints: { left: [0, '64px'] },
+        magnetism: {
+          sides: { left: { 0: 'inner' } },
+          radius: { start: 60, stop: 20 },
+          pull: 40,
+        },
+      })
+    )
+    await settle()
+
+    const { edgeX, midY, stage } = magneticGeometry(container)
+
+    // Stage past the engage distance so the side arms
+    await stage(edgeX + 70)
+
+    // Still outside `start` -> no pull
+    movePointer(edgeX + 64, midY)
+    await nextFrame()
+    await nextTick()
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBe(0)
+
+    // Mid-band -> the pull is ramping, below its max
+    movePointer(edgeX + 40, midY)
+    await nextFrame()
+    await nextTick()
+    const mid = readNumber(container, MAGNETIC.Magnetic)
+    expect(mid).toBeGreaterThan(0)
+    expect(mid).toBeLessThan(40)
+
+    // Inside `stop` -> latched at the configured max
+    movePointer(edgeX + 10, midY)
+    await nextFrame()
+    await nextTick()
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeCloseTo(40, 0)
   })
 
   it('eases the pull back to rest when a both point flips approach mid-cross', async () => {

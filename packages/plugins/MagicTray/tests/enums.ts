@@ -41,6 +41,7 @@ export enum TrayId {
   MagneticInner = 'magnetic-inner',
   MagneticOuter = 'magnetic-outer',
   MagneticBoth = 'magnetic-both',
+  MagneticBand = 'magnetic-band',
   MagneticTop = 'magnetic-top',
   MagneticSettle = 'magnetic-settle',
   MagneticEased = 'magnetic-eased',

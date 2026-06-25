@@ -20,6 +20,7 @@ import type {
   TraySide,
   TraySnapPoint,
   TrayMagneticSide,
+  TrayMagneticRadius,
   TrayMagneticDirection,
 } from '../../types'
 
@@ -27,11 +28,21 @@ type UseTrayMagnetismArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
   // v-for stores each handle ref as a one-element array
-  handleRefs: Record<TraySide, Readonly<ShallowRef<ComponentPublicInstance[] | null>>>
+  handleRefs: Record<
+    TraySide,
+    Readonly<ShallowRef<ComponentPublicInstance[] | null>>
+  >
   state: TrayState
 }
 
 type MagneticPoint = { inset: number; direction: TrayMagneticDirection }
+
+// The scrub band normalized from `magnetism.radius`; ends undefined when unset
+type RadiusBand = {
+  start: number | undefined
+  stop: number | undefined
+  configured: boolean
+}
 
 const SIDES: TraySide[] = ['top', 'right', 'bottom', 'left']
 const EPSILON = 0.5
@@ -57,12 +68,6 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   const easing = computed(() => easings[magnetism.value.easing])
   const disabled = computed(() => state.options.disabled)
   const animation = computed(() => state.options.animation)
-
-  // A side’s snap-point-to-direction record, or undefined if it’s not magnetic
-  function sideConfig(side: TraySide): TrayMagneticSide | undefined {
-    const { sides } = magnetism.value
-    return sides ? sides[side] : undefined
-  }
 
   // Enabled, draggable sides that configure at least one magnetic snap point
   const magneticSides = computed<TraySide[]>(() => {
@@ -121,9 +126,8 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     left: 0,
   }
 
-  // The approach a side is armed from, or null while idle. A side only pulls once
-  // the cursor has staged just past the handle on the approach side, then scrubs
-  // in from there. The arm signs the pull; `latched` (below) tracks reaching max.
+  // The approach a side is armed from (signs the pull), or null while idle. A side
+  // only pulls once the cursor has staged past the handle on the approach side.
   const armedDir: Record<TraySide, 'inner' | 'outer' | null> = {
     top: null,
     right: null,
@@ -167,6 +171,12 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   let cancelPointermove: (() => void) | undefined = undefined
 
   // Private functions
+  // A side’s snap-point-to-direction record, or undefined if it’s not magnetic
+  function sideConfig(side: TraySide): TrayMagneticSide | undefined {
+    const { sides } = magnetism.value
+    return sides ? sides[side] : undefined
+  }
+
   // A record key is a stringified snap point; coerce it back to its input type
   function coercePoint(key: string): TraySnapPoint {
     return key.endsWith('px') ? (key as `${number}px`) : Number(key)
@@ -176,10 +186,13 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   function validateSnapPoints() {
     for (const side of SIDES) {
       const config = sideConfig(side)
+
       if (!config) {
         continue
       }
+
       const configured = state.options.snapPoints[side] ?? []
+
       for (const key of Object.keys(config)) {
         if (!configured.includes(coercePoint(key))) {
           throwError({
@@ -200,6 +213,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     const match = magneticPoints.value[side].find(
       (point) => Math.abs(point.inset - rest) < EPSILON
     )
+
     return match ? match.direction : null
   }
 
@@ -207,6 +221,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   // v-for stores each ref as a one-element array; unwrap it to the handle.
   function handleRect(side: TraySide): DOMRect | null {
     const handle = unrefElement(handleRefs[side].value?.[0])
+
     return handle ? handle.getBoundingClientRect() : null
   }
 
@@ -225,18 +240,27 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     }
   }
 
-  // Ease the edge back to rest instead of dropping it, reusing the snap animation,
-  // so a collapsing pull (e.g. a `both` point flipping mid-cross) glides home. Runs
-  // on its own rAF, so it finishes after the cursor stops; a live pull cancels it.
+  // Drop a side’s arming and latch, and clear its pull instantly
+  function disarm(side: TraySide) {
+    armedDir[side] = null
+    latched[side] = false
+    resetSide(side)
+  }
+
+  // Ease a collapsing pull home with the snap animation instead of dropping it.
+  // Runs on its own rAF, so it finishes after the cursor stops; a live pull cancels it.
   function settleSide(side: TraySide) {
     if (settling[side]) {
       return
     }
+
     if (Math.abs(state.magnetic[side]) <= EPSILON) {
       resetSide(side)
       return
     }
+
     const { duration, easing: snapEasing } = animation.value.snap
+
     settling[side] = true
     settleId[side] = interpolate({
       from: state.magnetic[side],
@@ -256,9 +280,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   function resetAll() {
     for (const side of SIDES) {
-      armedDir[side] = null
-      latched[side] = false
-      resetSide(side)
+      disarm(side)
     }
   }
 
@@ -274,7 +296,218 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     }
   }
 
-  // Pull the resting edge toward the cursor as it scrubs across the handle
+  // Normalize the configured radius into a { start, stop } band (px from the resting
+  // edge). A bare number is the deprecated form (stop 0); both ends stay undefined
+  // when nothing is set, so the band derives from the handle.
+  function normalizeRadius(radius: TrayMagneticRadius): RadiusBand {
+    if (typeof radius === 'number') {
+      return radius > 0
+        ? { start: radius, stop: 0, configured: true }
+        : { start: undefined, stop: undefined, configured: false }
+    }
+
+    const { start, stop } = radius
+
+    return { start, stop, configured: start !== undefined || stop !== undefined }
+  }
+
+  // Resolve the cursor against a side’s resting edge: `perp` (signed distance,
+  // positive inner), `overflow` (how far past the edge’s parallel span), and `center`
+  // (the handle’s rest offset, its live pull removed so the anchor doesn’t chase it).
+  function measureAxis(
+    side: TraySide,
+    x: number,
+    y: number,
+    rect: DOMRect,
+    hRect: DOMRect | null
+  ): { perp: number; overflow: number; center: number } {
+    let perp = 0
+    let overflow = 0
+    let center = 0
+
+    switch (side) {
+      case 'top': {
+        const edge = rect.top + state.snapped.top
+        perp = y - edge
+        overflow = axisOverflow(x, rect.left, rect.right)
+        if (hRect) {
+          center = hRect.top + hRect.height / 2 - edge - state.magnetic.top
+        }
+        break
+      }
+
+      case 'bottom': {
+        const edge = rect.bottom - state.snapped.bottom
+        perp = edge - y
+        overflow = axisOverflow(x, rect.left, rect.right)
+        if (hRect) {
+          center = edge - (hRect.top + hRect.height / 2) - state.magnetic.bottom
+        }
+        break
+      }
+
+      case 'left': {
+        const edge = rect.left + state.snapped.left
+        perp = x - edge
+        overflow = axisOverflow(y, rect.top, rect.bottom)
+        if (hRect) {
+          center = hRect.left + hRect.width / 2 - edge - state.magnetic.left
+        }
+        break
+      }
+
+      case 'right': {
+        const edge = rect.right - state.snapped.right
+        perp = edge - x
+        overflow = axisOverflow(y, rect.top, rect.bottom)
+        if (hRect) {
+          center = edge - (hRect.left + hRect.width / 2) - state.magnetic.right
+        }
+        break
+      }
+    }
+
+    return { perp, overflow, center }
+  }
+
+  // The scrub band as distances from the resting edge. A configured radius hangs it
+  // off the clipped edge (handle size/offset can’t move it): `start` engages (t = 0),
+  // `stop` tops out and latches (t = 1, defaults to `pull` so the edge meets the
+  // cursor). Otherwise it derives from the handle’s near edge.
+  function resolveBand(
+    band: RadiusBand,
+    geo: { pull: number; thickness: number; center: number }
+  ): { innerEdge: number; outerEdge: number; span: number } {
+    const { pull, thickness, center } = geo
+
+    if (band.configured) {
+      const stop = band.stop ?? pull
+      const start = band.start ?? stop + (thickness || pull)
+
+      return { innerEdge: start, outerEdge: -start, span: start - stop }
+    }
+
+    const anchorHalf = thickness / 2
+
+    return {
+      innerEdge: center + anchorHalf,
+      outerEdge: center - anchorHalf,
+      span: anchorHalf / 2,
+    }
+  }
+
+  // Process one side for the frame: measure geometry, arm and scrub, then write the
+  // pull (or ease a collapse home).
+  function updateSide(
+    side: TraySide,
+    x: number,
+    y: number,
+    rect: DOMRect,
+    band: RadiusBand
+  ) {
+    // Only pull while resting at a magnetic snap point; its config sets the approach.
+    const direction = restDirection(side)
+
+    if (!direction) {
+      disarm(side)
+      return
+    }
+
+    const allowInner = direction === 'inner' || direction === 'both'
+    const allowOuter = direction === 'outer' || direction === 'both'
+
+    // Measure the handle; pull defaults to a quarter of its thickness.
+    const hRect = handleRect(side)
+    const thickness = hRect
+      ? side === 'top' || side === 'bottom'
+        ? hRect.height
+        : hRect.width
+      : 0
+    const pull = magnetism.value.pull > 0 ? magnetism.value.pull : thickness / 4
+    pullPx[side] = pull
+
+    if (pull <= 0) {
+      disarm(side)
+      return
+    }
+
+    const { perp, overflow, center } = measureAxis(side, x, y, rect, hRect)
+    const { innerEdge, outerEdge, span } = resolveBand(band, {
+      pull,
+      thickness,
+      center,
+    })
+
+    if (span <= 0) {
+      disarm(side)
+      return
+    }
+
+    // Arm only while over the handle’s span, on an allowed approach. The span gate
+    // keeps the pull from firing anywhere along the edge’s line.
+    if (overflow === 0) {
+      switch (true) {
+        case allowInner && perp >= innerEdge:
+          armedDir[side] = 'inner'
+          break
+        case allowOuter && perp <= outerEdge:
+          armedDir[side] = 'outer'
+          break
+      }
+    }
+
+    const dir = armedDir[side]
+
+    if (!dir) {
+      resetSide(side)
+      return
+    }
+
+    // Scrub: t runs 0→1 from `start` toward `stop`, easing the pull to its max where
+    // it latches.
+    let t = 0
+    let sign = 0
+    switch (dir) {
+      case 'inner':
+        t = clampValue((innerEdge - perp) / span, 0, 1)
+        sign = 1
+        break
+      case 'outer':
+        t = clampValue((perp - outerEdge) / span, 0, 1)
+        sign = -1
+        break
+    }
+
+    // Reaching `stop` latches the max; the latch only updates over the span. Off the
+    // span a latched hold survives, a partial scrub drops and cancels.
+    switch (true) {
+      case overflow === 0:
+        latched[side] = t >= 1
+        break
+      case !latched[side]:
+        armedDir[side] = null
+        resetSide(side)
+        return
+    }
+
+    const magnitude = overflow === 0 ? easing.value(t) : 1
+    const offset = sign * pull * magnitude
+
+    // Clamp to the side’s travel, then write a live pull or ease a collapse home.
+    const target = clampValue(
+      offset,
+      -state.dragged[side],
+      maxInset(side) - state.dragged[side]
+    )
+    if (Math.abs(target) > EPSILON) {
+      cancelSettle(side)
+      state.magnetic[side] = target
+    } else {
+      settleSide(side)
+    }
+  }
+
+  // Pull each resting edge toward the cursor as it scrubs across its handle
   function update(x: number, y: number) {
     if (state.dragging || disabled.value) {
       resetAll()
@@ -282,172 +515,17 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     }
 
     const el = unrefElement(elRef)
+
     if (!el) {
       resetAll()
       return
     }
 
-    // A configured radius or pull overrides the handle; 0 (the default) derives
-    // both from the handle’s half-thickness below.
-    const { pull: configuredPull, radius: configuredRadius } = magnetism.value
-
+    const band = normalizeRadius(magnetism.value.radius)
     const rect = el.getBoundingClientRect()
 
     for (const side of magneticSides.value) {
-      // Only pull while resting at a magnetic snap point; its config sets which
-      // approach (inner, outer, or both) the side reacts to.
-      const direction = restDirection(side)
-      if (!direction) {
-        armedDir[side] = null
-        latched[side] = false
-        resetSide(side)
-        continue
-      }
-      const allowInner = direction === 'inner' || direction === 'both'
-      const allowOuter = direction === 'outer' || direction === 'both'
-
-      // Measure the handle so the band tracks where it actually sits. Its thickness
-      // sets the anchor; radius and pull default to a quarter of it, either can be
-      // set explicitly.
-      const hRect = handleRect(side)
-      const thickness = hRect
-        ? side === 'top' || side === 'bottom'
-          ? hRect.height
-          : hRect.width
-        : 0
-      const anchorHalf = thickness / 2
-      const radius = configuredRadius > 0 ? configuredRadius : anchorHalf / 2
-      const pull = configuredPull > 0 ? configuredPull : anchorHalf / 2
-      pullPx[side] = pull
-      if (radius <= 0) {
-        armedDir[side] = null
-        latched[side] = false
-        resetSide(side)
-        continue
-      }
-
-      // Perpendicular distance to the resting edge (positive on the inner side) and
-      // how far the cursor runs past the edge’s span on the parallel axis. `center`
-      // is the handle’s rest offset from the edge, its live magnetic preview removed
-      // so the anchor doesn’t chase its own pull; a CSS offset shifts it off zero.
-      let perp = 0
-      let overflow = 0
-      let center = 0
-      switch (side) {
-        case 'top': {
-          const edge = rect.top + state.snapped.top
-          perp = y - edge
-          overflow = axisOverflow(x, rect.left, rect.right)
-          if (hRect) {
-            center = hRect.top + hRect.height / 2 - edge - state.magnetic.top
-          }
-          break
-        }
-        case 'bottom': {
-          const edge = rect.bottom - state.snapped.bottom
-          perp = edge - y
-          overflow = axisOverflow(x, rect.left, rect.right)
-          if (hRect) {
-            center =
-              edge - (hRect.top + hRect.height / 2) - state.magnetic.bottom
-          }
-          break
-        }
-        case 'left': {
-          const edge = rect.left + state.snapped.left
-          perp = x - edge
-          overflow = axisOverflow(y, rect.top, rect.bottom)
-          if (hRect) {
-            center = hRect.left + hRect.width / 2 - edge - state.magnetic.left
-          }
-          break
-        }
-        case 'right': {
-          const edge = rect.right - state.snapped.right
-          perp = edge - x
-          overflow = axisOverflow(y, rect.top, rect.bottom)
-          if (hRect) {
-            center =
-              edge - (hRect.left + hRect.width / 2) - state.magnetic.right
-          }
-          break
-        }
-      }
-
-      // The handle’s near edges relative to the resting edge: the band is armed and
-      // scrubbed from these, so an off-center handle pulls from where it really is.
-      const innerEdge = center + anchorHalf
-      const outerEdge = center - anchorHalf
-
-      // Arm only while the cursor is over the handle’s span, on an allowed approach
-      // (inner edge from inside, outer from outside). The span gate keeps the pull
-      // from triggering anywhere along the edge’s line, only over the handle.
-      if (overflow === 0) {
-        switch (true) {
-          case allowInner && perp >= innerEdge:
-            armedDir[side] = 'inner'
-            break
-          case allowOuter && perp <= outerEdge:
-            armedDir[side] = 'outer'
-            break
-        }
-      }
-
-      const dir = armedDir[side]
-      if (!dir) {
-        resetSide(side)
-        continue
-      }
-
-      // Scrub: t runs 0→1 as the cursor crosses the band from the handle’s near edge
-      // toward the resting edge, easing the pull up to its max.
-      let t = 0
-      let sign = 0
-      switch (dir) {
-        case 'inner':
-          t = clampValue((innerEdge - perp) / radius, 0, 1)
-          sign = 1
-          break
-        case 'outer':
-          t = clampValue((perp - outerEdge) / radius, 0, 1)
-          sign = -1
-          break
-      }
-
-      // Reaching the far end latches the pull at max. The latch only updates over
-      // the span: a latched hold survives the cursor leaving the handle, a partial
-      // scrub drops and cancels. Scrubbing back toward the edge runs it down.
-      switch (true) {
-        case overflow === 0:
-          latched[side] = t >= 1
-          break
-        case !latched[side]:
-          armedDir[side] = null
-          resetSide(side)
-          continue
-      }
-
-      const magnitude = overflow === 0 ? easing.value(t) : 1
-      const offset = sign * pull * magnitude
-
-      // Keep the previewed edge within the side’s travel: it can pull out to the
-      // open position (dragged + offset >= 0) and in to its max inset at most.
-      const target = clampValue(
-        offset,
-        -state.dragged[side],
-        maxInset(side) - state.dragged[side]
-      )
-
-      // A live pull tracks the cursor; a target collapsed to rest eases home with
-      // the snap animation instead of snapping.
-      switch (true) {
-        case Math.abs(target) > EPSILON:
-          cancelSettle(side)
-          state.magnetic[side] = target
-          break
-        default:
-          settleSide(side)
-      }
+      updateSide(side, x, y, rect, band)
     }
   }
 
