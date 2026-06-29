@@ -6,14 +6,14 @@ import { useMagicTray } from '../src/composables/useMagicTray'
 import { mountWithApp } from '../../tests/utils'
 import { TrayId, TestId } from './enums'
 
-function pointer(type: string, screenY: number) {
+function pointer(type: string, clientY: number) {
   return new PointerEvent(type, {
     bubbles: true,
     cancelable: true,
     pointerId: 1,
     isPrimary: true,
-    screenX: 100,
-    screenY,
+    clientX: 100,
+    clientY,
   })
 }
 

@@ -17,8 +17,8 @@ function pointerEvent(type: string, opts: Partial<PointerEventInit> = {}) {
     isPrimary: true,
     pointerId: 1,
     pointerType: 'touch',
-    screenX: 0,
-    screenY: 0,
+    clientX: 0,
+    clientY: 0,
     ...opts,
   })
 }
@@ -209,17 +209,17 @@ describe('MagicToast - Options', () => {
       ) as HTMLElement
       expect(inner).not.toBeNull()
 
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
       // Keep velocity below the dismiss momentum threshold
       await new Promise((r) => setTimeout(r, 200))
 
       // Small drag under the distance threshold so it settles back
-      document.dispatchEvent(pointerEvent('pointermove', { screenY: 120 }))
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 120 }))
       await nextTick()
 
       // Release triggers the snap-back interpolation
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 120 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 120 }))
 
       await vi.waitFor(() => expect(easing).toHaveBeenCalled(), {
         timeout: 2000,

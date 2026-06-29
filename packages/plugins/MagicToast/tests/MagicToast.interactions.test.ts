@@ -47,8 +47,8 @@ function pointerEvent(
     isPrimary: true,
     pointerId: 1,
     pointerType: 'touch',
-    screenX: 0,
-    screenY: 0,
+    clientX: 0,
+    clientY: 0,
     ...opts,
   })
 }
@@ -76,14 +76,14 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
       const view = document.querySelector('.magic-toast-view')
       expect(view!.getAttribute('data-dragging')).toBe('true')
 
       // Cleanup: pointerup
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 100 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
     })
 
     it('pointerup resets data-dragging to false', async () => {
@@ -93,10 +93,10 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 100 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
       await nextTick()
 
       const view = document.querySelector('.magic-toast-view')
@@ -114,12 +114,12 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 200 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 200 }))
       await nextTick()
 
       // Move down (positive Y)
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 220 })
+        pointerEvent('pointermove', { clientY: 220 })
       )
       await nextTick()
 
@@ -135,7 +135,7 @@ describe('MagicToast - Interactions', () => {
         expect(parseInt(yMatch[2])).toBeGreaterThanOrEqual(0)
       }
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 220 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 220 }))
     })
 
     it('bottom position: drag up is constrained to 0', async () => {
@@ -147,12 +147,12 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 200 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 200 }))
       await nextTick()
 
       // Try to move up (negative Y) — should be clamped to 0
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 150 })
+        pointerEvent('pointermove', { clientY: 150 })
       )
       await nextTick()
 
@@ -162,7 +162,7 @@ describe('MagicToast - Interactions', () => {
       // Transform should be translate(0px, 0px) — can't drag up in bottom position
       expect(dragContainer.style.transform).toBe('translate(0px, 0px)')
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 150 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 150 }))
     })
 
     it('top position: drag up moves toast', async () => {
@@ -174,12 +174,12 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 200 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 200 }))
       await nextTick()
 
       // Move up (negative Y)
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 180 })
+        pointerEvent('pointermove', { clientY: 180 })
       )
       await nextTick()
 
@@ -189,7 +189,7 @@ describe('MagicToast - Interactions', () => {
       const transform = dragContainer.style.transform
       expect(transform).toContain('translate(')
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 180 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 180 }))
     })
   })
 
@@ -210,17 +210,17 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
       // Drag far past threshold (20px)
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 200 })
+        pointerEvent('pointermove', { clientY: 200 })
       )
       await nextTick()
 
       // Release — should dismiss
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 200 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 200 }))
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
@@ -242,18 +242,18 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
       // keep velocity (distance/elapsed) below 0.5 px/ms dismiss threshold
       await new Promise((r) => setTimeout(r, 200))
 
       // Small drag (under threshold of 100)
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 120 })
+        pointerEvent('pointermove', { clientY: 120 })
       )
       await nextTick()
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 120 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 120 }))
       await nextTick()
       await new Promise((r) => setTimeout(r, 200))
 
@@ -335,13 +335,13 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
       expect(handler).toHaveBeenCalled()
       expect(handler.mock.calls[0]![0]).toHaveProperty('id')
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 100 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
     })
 
     it('emits drag on pointermove', async () => {
@@ -373,11 +373,11 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
       document.dispatchEvent(
-        pointerEvent('pointermove', { screenY: 120 })
+        pointerEvent('pointermove', { clientY: 120 })
       )
       await nextTick()
 
@@ -385,7 +385,7 @@ describe('MagicToast - Interactions', () => {
       expect(handler.mock.calls[0]![0]).toHaveProperty('x')
       expect(handler.mock.calls[0]![0]).toHaveProperty('y')
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 120 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 120 }))
     })
 
     it('emits afterDrag on pointerup', async () => {
@@ -417,10 +417,10 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 100 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
       await nextTick()
 
       expect(handler).toHaveBeenCalled()
@@ -454,7 +454,7 @@ describe('MagicToast - Interactions', () => {
       const inner = document.querySelector(
         '.magic-toast-view__inner'
       ) as HTMLElement
-      inner.dispatchEvent(pointerEvent('pointerdown', { screenY: 100 }))
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
       // Wait past original timeout
@@ -466,7 +466,7 @@ describe('MagicToast - Interactions', () => {
         .toHaveTextContent('1')
 
       // Cleanup
-      document.dispatchEvent(pointerEvent('pointerup', { screenY: 100 }))
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
     })
   })
 })

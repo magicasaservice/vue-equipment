@@ -48,25 +48,25 @@ function createTray(
   })
 }
 
-function pointer(type: string, screenY: number) {
+function pointer(type: string, clientY: number) {
   return new PointerEvent(type, {
     bubbles: true,
     cancelable: true,
     pointerId: 1,
     isPrimary: true,
-    screenX: 100,
-    screenY,
+    clientX: 100,
+    clientY,
   })
 }
 
-function pointerX(type: string, screenX: number) {
+function pointerX(type: string, clientX: number) {
   return new PointerEvent(type, {
     bubbles: true,
     cancelable: true,
     pointerId: 1,
     isPrimary: true,
-    screenX,
-    screenY: 100,
+    clientX,
+    clientY: 100,
   })
 }
 
@@ -148,7 +148,7 @@ describe('MagicTray - Interactions', () => {
     ) as HTMLElement
     expect(handle).not.toBeNull()
 
-    // Drag the bottom edge upwards (decreasing screenY increases the inset)
+    // Drag the bottom edge upwards (decreasing clientY increases the inset)
     handle.dispatchEvent(pointer('pointerdown', 200))
     await nextTick()
     document.dispatchEvent(pointer('pointermove', 60))
@@ -227,7 +227,7 @@ describe('MagicTray - Interactions', () => {
     ) as HTMLElement
     expect(handle).not.toBeNull()
 
-    // Drag the right edge leftwards (decreasing screenX increases the inset)
+    // Drag the right edge leftwards (decreasing clientX increases the inset)
     handle.dispatchEvent(pointerX('pointerdown', 200))
     await nextTick()
     document.dispatchEvent(pointerX('pointermove', 60))

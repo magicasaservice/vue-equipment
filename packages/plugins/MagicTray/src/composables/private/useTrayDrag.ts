@@ -337,7 +337,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     e.stopImmediatePropagation()
     e.stopPropagation()
 
-    const coord = isVertical(side) ? e.screenY : e.screenX
+    const coord = isVertical(side) ? e.clientY : e.clientX
     setDragged(side, coord)
     checkMomentum(side)
     checkPosition(side)
@@ -387,7 +387,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       e.preventDefault()
     }
 
-    const coord = isVertical(side) ? firstTouch.screenY : firstTouch.screenX
+    const coord = isVertical(side) ? firstTouch.clientY : firstTouch.clientX
     setDragged(side, coord)
     checkMomentum(side)
     checkPosition(side)
@@ -451,7 +451,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       return
     }
 
-    const coord = isVertical(side) ? e.screenY : e.screenX
+    const coord = isVertical(side) ? e.clientY : e.clientX
     const target = e.target as HTMLElement
     beginDrag(side, coord, target)
     guardedSetPointerCapture({ event: e, element: target })
@@ -498,7 +498,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     e.stopImmediatePropagation()
     e.stopPropagation()
 
-    const coord = isVertical(side) ? firstTouch.screenY : firstTouch.screenX
+    const coord = isVertical(side) ? firstTouch.clientY : firstTouch.clientX
     beginDrag(side, coord, e.target as HTMLElement)
 
     cancelTouchmove?.()

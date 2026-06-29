@@ -418,7 +418,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'initial.transition',
-          description: 'Transition the tray into its initial snap points on mount, easing in from the open extreme instead of jumping.
+          description: 'Transition the tray into its initial snap points on mount, easing in from the open extreme instead of jumping.'
         },
         {
           label: 'boolean'
@@ -446,7 +446,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'inset',
-          description: 'Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek.
+          description: 'Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek.'
         },
         {
           label: 'boolean'

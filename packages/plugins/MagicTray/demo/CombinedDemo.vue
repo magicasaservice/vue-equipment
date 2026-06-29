@@ -8,7 +8,9 @@
         bottom: [0, 0.2, 0.4],
         left: [0, 0.2, 0.4],
       },
-      threshold: { distance: 32 },
+      threshold: {
+        distance: 32,
+      },
     }"
     style="--magic-tray-radius: 0.75rem"
   >

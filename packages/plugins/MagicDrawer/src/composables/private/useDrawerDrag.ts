@@ -476,7 +476,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     shouldClose.value = false
 
     // Save pointermove direction
-    checkDirection({ x: e.screenX, y: e.screenY })
+    checkDirection({ x: e.clientX, y: e.clientY })
 
     // Possibly lock scroll
     if (!scrollLock) {
@@ -494,7 +494,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Save dragged value
-    setDragged({ x: e.screenX, y: e.screenY })
+    setDragged({ x: e.clientX, y: e.clientY })
 
     //Check if we should close or snap based on momentum
     checkMomentum()
@@ -587,13 +587,13 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Save pointermove direction
-    checkDirection({ x: firstTouch.screenX, y: firstTouch.screenY })
+    checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
 
     // Reset shouldClose before checking
     shouldClose.value = false
 
     // Save pointermove direction
-    checkDirection({ x: firstTouch.screenX, y: firstTouch.screenY })
+    checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
 
     // Possibly lock scroll
     if (!scrollLock) {
@@ -616,7 +616,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Save dragged value
-    setDragged({ x: firstTouch.screenX, y: firstTouch.screenY })
+    setDragged({ x: firstTouch.clientX, y: firstTouch.clientY })
 
     //Check if we should close or snap based on momentum
     checkMomentum()
@@ -766,8 +766,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         : undefined
 
     // Origin is the distance between pointer event and last dragged position
-    originX.value = e.screenX - draggedX.value
-    originY.value = e.screenY - draggedY.value
+    originX.value = e.clientX - draggedX.value
+    originY.value = e.clientY - draggedY.value
 
     // Save start time
     dragStart.value = new Date()
@@ -829,8 +829,8 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
 
     // Origin is the distance between pointer event and last dragged position
-    originX.value = firstTouch.screenX - draggedX.value
-    originY.value = firstTouch.screenY - draggedY.value
+    originX.value = firstTouch.clientX - draggedX.value
+    originY.value = firstTouch.clientY - draggedY.value
 
     // Save start time
     dragStart.value = new Date()

@@ -308,7 +308,7 @@ export function useToastDrag(args: UseToastDragArgs) {
     shouldClose.value = false
 
     // Save dragged value
-    setDragged({ x: e.screenX, y: e.screenY })
+    setDragged({ x: e.clientX, y: e.clientY })
 
     //Check if we should close or snap based on momentum
     checkMomentum()
@@ -387,8 +387,8 @@ export function useToastDrag(args: UseToastDragArgs) {
         : undefined
 
       // Origin is the distance between pointer event and last dragged position
-      originX.value = e.screenX - draggedX.value
-      originY.value = e.screenY - draggedY.value
+      originX.value = e.clientX - draggedX.value
+      originY.value = e.clientY - draggedY.value
 
       // Save start time
       dragStart.value = new Date()

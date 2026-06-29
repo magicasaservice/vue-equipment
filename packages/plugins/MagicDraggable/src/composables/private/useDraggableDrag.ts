@@ -406,7 +406,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     }
 
     // Save dragged value
-    setDragged({ x: e.screenX, y: e.screenY })
+    setDragged({ x: e.pageX, y: e.pageY })
 
     // Check thresholds
     if (!distanceThresholdReached.value) {
@@ -484,8 +484,8 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     lastDraggedY.value = draggedY.value
 
     // Origin is the distance between pointer event and last dragged position
-    originX.value = e.screenX - draggedX.value
-    originY.value = e.screenY - draggedY.value
+    originX.value = e.pageX - draggedX.value
+    originY.value = e.pageY - draggedY.value
 
     // Add listeners
     cancelPointerup = useEventListener(document, 'pointerup', onPointerup)
