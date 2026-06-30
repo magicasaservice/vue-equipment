@@ -332,6 +332,20 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'magnetism.virtual',
+          description: 'Run all magnetism calculations without applying them to the clip path or handle transforms. All geometry, scrubbing, and latching still run and the `magnet` event still fires — nothing is written to `state.magnetic`. Useful for driving custom effects purely through events.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'threshold.lock',
           description: 'Configure the dragged distance before the tray prevents other touch interactions.'
         },
@@ -1023,6 +1037,13 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
         { label: '{ id, side, value }' },
         { plaintext: true, label: 'Fired whenever a magnetic pull changes, e.g. to drive a parallax in the handle slot. `value` is the pull as a fraction of `magnetism.pull`, signed by direction: positive when pulled inward, negative when pulled outward, 0 at rest.' }
       ]
+    },
+    {
+      items: [
+        { label: 'willSnapTo' },
+        { label: '{ id, side, snapPoint }' },
+        { plaintext: true, label: 'Fired during a drag when the committed snap target changes — i.e. the snap point the edge will animate to on release. Only fires when the target actually changes, not on every move.' }
+      ]
     }
   ]"
 />
@@ -1081,12 +1102,24 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 
 <ComponentPreview src="./demo/StepSnapDemo.vue" />
 
+### Will Snap To
+
+The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target actually changes, not on every move, making it efficient for driving UI reactions like previewing the next state or triggering haptics at the moment the user has committed to a position.
+
+<ComponentPreview src="./demo/WillSnapToDemo.vue" />
+
 ### Magnetic
 
-With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `'inner'` pulls in from inside, `'outer'` out from outside, `'both'` from either side.
+With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `’inner’` pulls in from inside, `’outer’` out from outside, `’both’` from either side.
 
 ::: tip
 If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radius` and `magnetism.pull` manually. Left at their defaults they derive from the handle’s position.
 :::
 
 <ComponentPreview src="./demo/MagneticDemo.vue" />
+
+### Virtual Magnetism
+
+With `magnetism.virtual` set to `true`, all magnetism calculations run as normal — geometry, scrubbing, latching, and settle animations — but nothing is written to `state.magnetic`. The clip path and handle transforms stay frozen while the `magnet` event still fires with the full computed pull value. Use this to drive custom effects, parallax, or UI reactions purely through events.
+
+<ComponentPreview src="./demo/VirtualMagneticDemo.vue" />

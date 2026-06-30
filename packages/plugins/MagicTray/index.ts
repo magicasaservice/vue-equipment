@@ -42,5 +42,6 @@ export type {
   TraySnapMode,
   TraySnapPoint,
   TraySnapPointPayload,
+  TrayWillSnapToPayload,
   TrayTransformAxis,
 }

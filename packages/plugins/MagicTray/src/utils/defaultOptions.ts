@@ -15,6 +15,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
     radius: 0,
     pull: 0,
     easing: 'easeInOutQuad',
+    virtual: false,
   },
   threshold: {
     lock: 0,

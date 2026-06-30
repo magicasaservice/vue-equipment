@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between rounded-[0.25rem] select-none"
+    class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem] select-none"
   >
     <span class="w-16 text-center">L</span>
     <span class="w-16 text-center">R</span>
@@ -18,7 +18,7 @@
         <div
           class="text-surface flex h-full w-full items-center justify-center p-8 text-center"
         >
-          Move toward the left or right edge
+          Move toward the right edge
         </div>
       </magic-tray-content>
     </magic-tray-provider>
@@ -41,7 +41,7 @@ const options: MagicTrayOptions = {
       right: { 0: 'inner', 0.5: 'both', 1: 'outer' },
     },
   },
-  threshold: { distance: 32 },
+  threshold: { distance: 24 },
   inset: true,
 }
 

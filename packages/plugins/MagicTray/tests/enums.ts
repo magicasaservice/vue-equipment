@@ -57,6 +57,10 @@ export enum TrayId {
   MagneticDisabled = 'magnetic-disabled',
   MagneticUnconfigured = 'magnetic-unconfigured',
   MagneticInvalid = 'magnetic-invalid',
+  // new features
+  EventWillSnapTo = 'event-will-snap-to',
+  MagneticVirtual = 'magnetic-virtual',
+  OptThresholdRevert = 'opt-threshold-revert',
   // edge cases
   EdgeDefault = 'edge-default',
   EdgeWarnNoZero = 'edge-warn-no-zero',

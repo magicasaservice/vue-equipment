@@ -1,5 +1,6 @@
 import {
   computed,
+  reactive,
   watch,
   toValue,
   onScopeDispose,
@@ -68,6 +69,17 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   const easing = computed(() => easings[magnetism.value.easing])
   const disabled = computed(() => state.options.disabled)
   const animation = computed(() => state.options.animation)
+  const isVirtual = computed(() => magnetism.value.virtual)
+
+  // Tracks the computed pull offset per side. Always written on every frame;
+  // in virtual mode state.magnetic is left at zero so clipPath and handle
+  // transforms are untouched, but the values here still drive magnet events.
+  const magneticOffset = reactive<Record<TraySide, number>>({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  })
 
   // Enabled, draggable sides that configure at least one magnetic snap point
   const magneticSides = computed<TraySide[]>(() => {
@@ -235,7 +247,8 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   function resetSide(side: TraySide) {
     cancelSettle(side)
-    if (state.magnetic[side] !== 0) {
+    magneticOffset[side] = 0
+    if (!isVirtual.value && state.magnetic[side] !== 0) {
       state.magnetic[side] = 0
     }
   }
@@ -254,7 +267,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
       return
     }
 
-    if (Math.abs(state.magnetic[side]) <= EPSILON) {
+    if (Math.abs(magneticOffset[side]) <= EPSILON) {
       resetSide(side)
       return
     }
@@ -263,13 +276,16 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
     settling[side] = true
     settleId[side] = interpolate({
-      from: state.magnetic[side],
+      from: magneticOffset[side],
       to: 0,
       duration,
       easing: snapEasing,
       interpolationIdCallback: (newId) => (settleId[side] = newId),
       callback: (value) => {
-        state.magnetic[side] = value
+        magneticOffset[side] = value
+        if (!isVirtual.value) {
+          state.magnetic[side] = value
+        }
         if (value === 0) {
           settling[side] = false
           settleId[side] = undefined
@@ -501,7 +517,10 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     )
     if (Math.abs(target) > EPSILON) {
       cancelSettle(side)
-      state.magnetic[side] = target
+      magneticOffset[side] = target
+      if (!isVirtual.value) {
+        state.magnetic[side] = target
+      }
     } else {
       settleSide(side)
     }
@@ -553,8 +572,9 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Mirror the magnetic offset as a signed 0..1 progress (fraction of pull,
   // positive inward) so handle-slot content can react. Emitted per side on change.
+  // Watches magneticOffset so events fire in both normal and virtual mode.
   watch(
-    () => ({ ...state.magnetic }),
+    () => ({ ...magneticOffset }),
     (magnetic) => {
       for (const side of SIDES) {
         const max = pullPx[side]

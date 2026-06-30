@@ -328,6 +328,44 @@ describe('MagicTray - Options', () => {
   })
 
   describe('threshold', () => {
+    it('reverts to origin snap point when drag returns within threshold before release', async () => {
+      const { container } = mountWithApp(
+        createTray(TrayId.OptThresholdRevert, {
+          snapPoints: { bottom: [0, 0.5, 1] },
+          threshold: { distance: 20 },
+          initial: { snapPoints: { bottom: 0.5 } },
+        })
+      )
+
+      const read = () =>
+        Number(
+          container.querySelector(`[data-test-id="${TestId.ProgressBottom}"]`)!
+            .textContent
+        )
+
+      // Wait for the tray to settle at the initial 0.5 snap point
+      await expect.poll(read, { timeout: 2000 }).toBeGreaterThan(0.4)
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Drag 60px upward — crosses the 20px distance threshold, setting interpolateTo
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 140))
+      await nextTick()
+
+      // Drag back to 8px from drag-start — below the 20px threshold, clearing interpolateTo
+      document.dispatchEvent(pointer('pointermove', 192))
+      await nextTick()
+
+      // Release — settle returns to snapped (0.5), not to wherever interpolateTo pointed
+      document.dispatchEvent(pointer('pointerup', 192))
+
+      await expect.poll(read, { timeout: 2000 }).toBeGreaterThan(0.4)
+    })
+
     it('springs back to the open position when neither distance nor momentum is met', async () => {
       const { container } = mountWithApp(
         createTray(TrayId.OptThresholdHigh, {

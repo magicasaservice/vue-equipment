@@ -89,6 +89,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     return points.length ? snapPointsMap(side)[points[0]!] : undefined
   }
 
+  // The last emitted pending snap target — only emit willSnapTo on change
+  let lastPendingTarget: number | undefined = undefined
+
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelPointercancel: (() => void) | undefined = undefined
@@ -265,8 +268,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       return
     }
 
-    state.relDirection[side] =
-      newInset < state.dragged[side] ? 'below' : 'above'
+    const prev = state.dragged[side]
+    state.relDirection[side] = newInset < prev ? 'below' : 'above'
     state.dragged[side] = newInset
   }
 
@@ -280,7 +283,26 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         value: snapReference(side),
         direction: delta < 0 ? 'below' : 'above',
       })
+    } else {
+      // Dragged back within the threshold — clear any committed target so the
+      // tray reverts to its origin snap point on release
+      state.interpolateTo = undefined
     }
+  }
+
+  function emitWillSnapTo(side: TraySide) {
+    const target = state.interpolateTo ?? state.snapped[side]
+    if (target === lastPendingTarget) return
+    lastPendingTarget = target
+
+    const snapPoint = snapPointsMap(side)[target]
+    if (!snapPoint && snapPoint !== 0) return
+
+    emitter.emit('willSnapTo', {
+      id: toValue(id),
+      side,
+      snapPoint,
+    })
   }
 
   function checkMomentum(side: TraySide) {
@@ -341,6 +363,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     setDragged(side, coord)
     checkMomentum(side)
     checkPosition(side)
+    emitWillSnapTo(side)
 
     emitter.emit('drag', {
       id: toValue(id),
@@ -391,6 +414,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     setDragged(side, coord)
     checkMomentum(side)
     checkPosition(side)
+    emitWillSnapTo(side)
 
     emitter.emit('drag', {
       id: toValue(id),
@@ -424,6 +448,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.dragged[side] += state.magnetic[side]
     state.magnetic[side] = 0
     state.lastDragged[side] = state.dragged[side]
+    lastPendingTarget = undefined
     pointerdownTarget = target
 
     switch (side) {

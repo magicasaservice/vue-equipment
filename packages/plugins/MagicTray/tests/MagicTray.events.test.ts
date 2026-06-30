@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { defineComponent, nextTick, reactive, ref, computed } from 'vue'
+import { defineComponent, nextTick, reactive, ref, computed, onBeforeUnmount } from 'vue'
 import MagicTrayProvider from '../src/components/MagicTrayProvider.vue'
 import MagicTrayContent from '../src/components/MagicTrayContent.vue'
 import { useMagicTray } from '../src/composables/useMagicTray'
@@ -119,14 +119,16 @@ function createMagneticTray(id: TrayId, options: MagicTrayOptions) {
       })
 
       const snappedLeft = computed(() => api.state.snapped.left)
+      const magneticLeft = computed(() => api.state.magnetic.left)
 
-      return { events, lastPayload, snappedLeft }
+      return { events, lastPayload, snappedLeft, magneticLeft }
     },
     template: `
       <MagicTrayProvider id="${id}" :options="options">
         <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
         <span data-test-id="${TestId.Content}">{{ JSON.stringify(lastPayload) }}</span>
         <span data-test-id="${TestId.SnapAll}">{{ snappedLeft }}</span>
+        <span data-test-id="${TestId.Active1}">{{ magneticLeft }}</span>
         <MagicTrayContent>
           <div style="width: 240px; height: 240px;">Content</div>
         </MagicTrayContent>
@@ -235,6 +237,119 @@ describe('MagicTray - Events', () => {
     expect(payload.id).toBe(TrayId.EventMagnetism)
     expect(payload.side).toBe('left')
     expect(payload.value).toBeGreaterThan(0)
+  })
+
+  describe('willSnapTo', () => {
+    it('fires when drag crosses the distance threshold', async () => {
+      const component = defineComponent({
+        components: { MagicTrayProvider, MagicTrayContent },
+        setup() {
+          useMagicTray(TrayId.EventWillSnapTo)
+          const emitter = useMagicEmitter()
+          const lastPayload = ref<unknown>(null)
+
+          const handler = (data: unknown) => {
+            lastPayload.value = data
+          }
+          emitter.on('willSnapTo', handler)
+          onBeforeUnmount(() => emitter.off('willSnapTo', handler))
+
+          return { lastPayload }
+        },
+        template: `
+          <MagicTrayProvider id="${TrayId.EventWillSnapTo}" :options="options">
+            <span data-test-id="${TestId.Content}">{{ JSON.stringify(lastPayload) }}</span>
+            <MagicTrayContent>
+              <div style="width: 200px; height: 200px;">Content</div>
+            </MagicTrayContent>
+          </MagicTrayProvider>
+        `,
+        data() {
+          return {
+            options: {
+              snapPoints: { bottom: [0, 0.5, 1] },
+              threshold: { distance: 20 },
+            },
+          }
+        },
+      })
+
+      const { container } = mountWithApp(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Pointerdown then drag 60px upward — well past the 20px threshold
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 140))
+      await nextTick()
+
+      const payload = JSON.parse(
+        container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+      )
+      expect(payload.id).toBe(TrayId.EventWillSnapTo)
+      expect(payload.side).toBe('bottom')
+      expect(payload.snapPoint).toBeDefined()
+
+      document.dispatchEvent(pointer('pointerup', 140))
+    })
+
+  })
+
+  describe('virtual magnetism', () => {
+    it('emits magnet events but does not physically pull the edge', async () => {
+      const { container } = mountWithApp(
+        createMagneticTray(TrayId.MagneticVirtual, {
+          snapPoints: { left: [0, '64px'] },
+          magnetism: {
+            sides: { left: { 0: 'inner' } },
+            radius: 80,
+            pull: 24,
+            virtual: true,
+          },
+        })
+      )
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const inner = container.querySelector(
+        '.magic-tray-content__inner'
+      ) as HTMLElement
+      const rect = inner.getBoundingClientRect()
+      const snapped = Number(
+        container.querySelector(`[data-test-id="${TestId.SnapAll}"]`)!.textContent
+      )
+      const edgeX = rect.left + snapped
+      const midY = rect.top + rect.height / 2
+
+      // Arm from deep inside, then approach the edge to engage the pull
+      movePointer(edgeX + 120, midY)
+      await nextFrame()
+      await nextTick()
+      movePointer(edgeX + 6, midY)
+      await nextFrame()
+      await nextTick()
+
+      expect(
+        container.querySelector(`[data-test-id="${TestId.Events}"]`)!.textContent
+      ).toContain('magnet')
+
+      const payload = JSON.parse(
+        container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+      )
+      expect(payload.id).toBe(TrayId.MagneticVirtual)
+      expect(payload.value).toBeGreaterThan(0)
+
+      // Virtual mode: state.magnetic stays 0 — the edge is not physically pulled
+      const magneticLeft = Number(
+        container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
+      )
+      expect(magneticLeft).toBe(0)
+    })
   })
 
   describe('drag lifecycle', () => {

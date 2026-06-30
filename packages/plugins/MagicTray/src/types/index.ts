@@ -43,6 +43,7 @@ export interface TrayMagnetism {
   radius?: TrayMagneticRadius
   pull?: number
   easing?: EasingKey
+  virtual?: boolean
 }
 
 export type TraySideRecord<T> = Record<TraySide, T>
@@ -106,6 +107,12 @@ export interface TrayState {
   options: RequiredMagicTrayOptions
 }
 
+export interface TrayWillSnapToPayload {
+  id: string
+  side: TraySide
+  snapPoint: TraySnapPoint
+}
+
 export type TrayEvents = {
   beforeSnap: {
     id: string
@@ -125,4 +132,5 @@ export type TrayEvents = {
   afterDrag: { id: string } & TraySidePayload
   progress: { id: string } & TraySidePayload
   magnet: { id: string } & TraySidePayload
+  willSnapTo: TrayWillSnapToPayload
 }

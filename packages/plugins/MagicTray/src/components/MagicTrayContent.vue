@@ -24,10 +24,10 @@
         :data-drag-left="draggableSides.includes('left')"
         :style="{ clipPath }"
       >
-        <div class="magic-tray-content__bg" v-if="slots.background">
+        <div v-if="slots.background" class="magic-tray-content__bg">
           <slot name="background" />
         </div>
-        <div class="magic-tray-content__slot" v-if="slots.default">
+        <div v-if="slots.default" class="magic-tray-content__slot">
           <slot />
         </div>
       </component>
