@@ -214,6 +214,16 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
     {
       items: [
         {
+          label: 'draggable',
+          description: 'Allow toasts to be dragged and dismissed by dragging. Set to false to disable dragging entirely.'
+        },
+        { label: 'boolean' },
+        { label: 'true' }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'scrollLock',
           description: 'Lock body scroll when dragging a toast.'
         },
@@ -494,6 +504,10 @@ Renders a single toast inside the toaster. Used internally.
 ### Hover
 
 <component-preview src="./demo/HoverDemo.vue" />
+
+### No Drag
+
+<component-preview src="./demo/NoDragDemo.vue" />
 
 ### Clear All
 

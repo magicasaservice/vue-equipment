@@ -26,7 +26,8 @@ export function useToastDrag(args: UseToastDragArgs) {
   const state = initializeState()
 
   const { options } = toRefs(state)
-  const { threshold, animation, position, scrollLock } = options.value
+  const { threshold, animation, position, scrollLock, draggable } =
+    options.value
 
   const { deleteView } = useToastView(instanceId)
 
@@ -332,6 +333,10 @@ export function useToastDrag(args: UseToastDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
+    if (!toValue(draggable)) {
+      return
+    }
+
     // Lock scroll as soon as the user starts dragging
     const scrollLockValue = toValue(scrollLock)
     if (scrollLockValue) {

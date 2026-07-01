@@ -227,6 +227,32 @@ describe('MagicToast - Options', () => {
     })
   })
 
+  describe('draggable', () => {
+    it('defaults to draggable: true', async () => {
+      const screen = render(createWrapper(ToastId.OptDraggableDefault))
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      const view = document.querySelector('.magic-toast-view')
+      expect(view!.getAttribute('data-draggable')).toBe('true')
+    })
+
+    it('draggable: false sets data-draggable to false', async () => {
+      const screen = render(
+        createWrapper(ToastId.OptDraggableDisabled, { draggable: false })
+      )
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      const view = document.querySelector('.magic-toast-view')
+      expect(view!.getAttribute('data-draggable')).toBe('false')
+    })
+  })
+
   describe('teleport', () => {
     it('custom teleport target works', async () => {
       const target = document.createElement('div')

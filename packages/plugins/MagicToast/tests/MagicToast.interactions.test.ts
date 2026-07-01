@@ -264,6 +264,54 @@ describe('MagicToast - Interactions', () => {
     })
   })
 
+  describe('draggable: false', () => {
+    it('pointerdown does not start dragging', async () => {
+      const screen = render(
+        createWrapper(ToastId.IntDraggableNoStart, { draggable: false })
+      )
+      await addAndGetDragEl(screen)
+
+      const inner = document.querySelector(
+        '.magic-toast-view__inner'
+      ) as HTMLElement
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
+      await nextTick()
+
+      const view = document.querySelector('.magic-toast-view')
+      expect(view!.getAttribute('data-dragging')).toBe('false')
+
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
+    })
+
+    it('dragging past the dismiss threshold does not remove the toast', async () => {
+      const screen = render(
+        createWrapper(ToastId.IntDraggableNoDismiss, {
+          draggable: false,
+          position: 'bottom',
+          threshold: { distance: 20, lock: 4, momentum: 100 },
+        })
+      )
+      await addAndGetDragEl(screen)
+
+      const inner = document.querySelector(
+        '.magic-toast-view__inner'
+      ) as HTMLElement
+      inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
+      await nextTick()
+
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 200 }))
+      await nextTick()
+
+      document.dispatchEvent(pointerEvent('pointerup', { clientY: 200 }))
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('1')
+    })
+  })
+
   describe('click to expand', () => {
     it('clicking toast expands stack when layout.expand is click', async () => {
       const screen = render(

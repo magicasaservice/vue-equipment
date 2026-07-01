@@ -70,6 +70,7 @@ export interface MagicToastOptions {
   debug?: boolean
   position?: Position
   duration?: number
+  draggable?: boolean
   scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string

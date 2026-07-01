@@ -5,6 +5,7 @@ const defaultOptions: RequiredMagicToastOptions = {
   debug: false,
   position: 'bottom',
   duration: 0,
+  draggable: true,
   scrollLock: {
     padding: true,
   },

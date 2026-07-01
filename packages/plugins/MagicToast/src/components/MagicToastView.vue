@@ -4,6 +4,7 @@
     :data-id="id"
     :data-expanded="state.expanded"
     :data-dragging="view?.dragging"
+    :data-draggable="state.options.draggable"
     :data-position="state.options.position"
     :data-debug="state.options.debug"
     :style="{
@@ -136,6 +137,14 @@ const { style, onPointerdown, onClick } = useToastDrag({
 
 .magic-toast-view[data-dragging='true'] {
   cursor: var(--magic-toast-view-cursor-dragging, grabbing);
+}
+
+.magic-toast-view[data-draggable='false'] {
+  cursor: default;
+
+  & .magic-toast-view__drag {
+    touch-action: auto;
+  }
 }
 
 .magic-toast-view[data-position='left'] {
