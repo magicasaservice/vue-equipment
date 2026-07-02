@@ -300,6 +300,233 @@ describe('MagicTray - Events', () => {
 
   })
 
+  describe('staticClick', () => {
+    it('fires when a handle is pressed and released without dragging', async () => {
+      const component = defineComponent({
+        components: { MagicTrayProvider, MagicTrayContent },
+        setup() {
+          useMagicTray(TrayId.EventStaticClick)
+          const emitter = useMagicEmitter()
+          const events = reactive<string[]>([])
+          const lastPayload = ref<unknown>(null)
+
+          const handler = (data: unknown) => {
+            events.push('staticClick')
+            lastPayload.value = data
+          }
+          emitter.on('staticClick', handler)
+          emitter.on('afterDrag', () => events.push('afterDrag'))
+          onBeforeUnmount(() => emitter.off('staticClick', handler))
+
+          return { events, lastPayload }
+        },
+        template: `
+          <MagicTrayProvider id="${TrayId.EventStaticClick}" :options="options">
+            <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+            <span data-test-id="${TestId.Content}">{{ JSON.stringify(lastPayload) }}</span>
+            <MagicTrayContent>
+              <div style="width: 200px; height: 200px;">Content</div>
+            </MagicTrayContent>
+          </MagicTrayProvider>
+        `,
+        data() {
+          return {
+            options: { snapPoints: { bottom: [0, 0.5, 1] } },
+          }
+        },
+      })
+
+      const { container } = mountWithApp(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Pointerdown then pointerup at the exact same position — no drag
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 200))
+      await nextTick()
+
+      const events = container.querySelector(
+        `[data-test-id="${TestId.Events}"]`
+      )!.textContent!
+      expect(events).toContain('staticClick')
+      expect(events).toContain('afterDrag')
+
+      const payload = JSON.parse(
+        container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+      )
+      expect(payload.id).toBe(TrayId.EventStaticClick)
+      expect(payload.side).toBe('bottom')
+      expect(typeof payload.value).toBe('number')
+    })
+
+    it('does not fire once the pointer crosses the lock threshold — drag wins', async () => {
+      const component = defineComponent({
+        components: { MagicTrayProvider, MagicTrayContent },
+        setup() {
+          useMagicTray(TrayId.EventStaticClickDrag)
+          const emitter = useMagicEmitter()
+          const events = reactive<string[]>([])
+
+          emitter.on('staticClick', () => events.push('staticClick'))
+          emitter.on('afterDrag', () => events.push('afterDrag'))
+
+          return { events }
+        },
+        template: `
+          <MagicTrayProvider id="${TrayId.EventStaticClickDrag}" :options="options">
+            <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+            <MagicTrayContent>
+              <div style="width: 200px; height: 200px;">Content</div>
+            </MagicTrayContent>
+          </MagicTrayProvider>
+        `,
+        data() {
+          return {
+            options: {
+              snapPoints: { bottom: [0, 0.5, 1] },
+              threshold: { lock: 5 },
+            },
+          }
+        },
+      })
+
+      const { container } = mountWithApp(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Pointerdown then move well past the 5px lock threshold before release
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 160))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 160))
+      await nextTick()
+
+      const events = container.querySelector(
+        `[data-test-id="${TestId.Events}"]`
+      )!.textContent!
+      expect(events).not.toContain('staticClick')
+      expect(events).toContain('afterDrag')
+    })
+
+    it('does not fire once an instant-mode drag commits to a different point', async () => {
+      const component = defineComponent({
+        components: { MagicTrayProvider, MagicTrayContent },
+        setup() {
+          useMagicTray(TrayId.EventStaticClickInstantCommit)
+          const emitter = useMagicEmitter()
+          const events = reactive<string[]>([])
+
+          emitter.on('staticClick', () => events.push('staticClick'))
+          emitter.on('afterDrag', () => events.push('afterDrag'))
+
+          return { events }
+        },
+        template: `
+          <MagicTrayProvider id="${TrayId.EventStaticClickInstantCommit}" :options="options">
+            <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+            <MagicTrayContent>
+              <div style="width: 200px; height: 200px;">Content</div>
+            </MagicTrayContent>
+          </MagicTrayProvider>
+        `,
+        data() {
+          return {
+            options: {
+              snapPoints: { bottom: [0, 0.5, 1] },
+              snap: { instant: true },
+            },
+          }
+        },
+      })
+
+      const { container } = mountWithApp(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Drag far enough to commit to a different point mid-drag
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 20))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 20))
+      await nextTick()
+
+      const events = container.querySelector(
+        `[data-test-id="${TestId.Events}"]`
+      )!.textContent!
+      expect(events).not.toContain('staticClick')
+      expect(events).toContain('afterDrag')
+    })
+
+    it('still fires when an instant-mode drag stays within the starting point', async () => {
+      const component = defineComponent({
+        components: { MagicTrayProvider, MagicTrayContent },
+        setup() {
+          useMagicTray(TrayId.EventStaticClickInstantStay)
+          const emitter = useMagicEmitter()
+          const events = reactive<string[]>([])
+
+          emitter.on('staticClick', () => events.push('staticClick'))
+          emitter.on('afterDrag', () => events.push('afterDrag'))
+
+          return { events }
+        },
+        template: `
+          <MagicTrayProvider id="${TrayId.EventStaticClickInstantStay}" :options="options">
+            <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+            <MagicTrayContent>
+              <div style="width: 200px; height: 200px;">Content</div>
+            </MagicTrayContent>
+          </MagicTrayProvider>
+        `,
+        data() {
+          return {
+            options: {
+              snapPoints: { bottom: [0, 0.5, 1] },
+              snap: { instant: true },
+            },
+          }
+        },
+      })
+
+      const { container } = mountWithApp(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      // Tiny move — stays closest to the starting point, nothing commits
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 195))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 195))
+      await nextTick()
+
+      const events = container.querySelector(
+        `[data-test-id="${TestId.Events}"]`
+      )!.textContent!
+      expect(events).toContain('staticClick')
+      expect(events).toContain('afterDrag')
+    })
+  })
+
   describe('virtual magnetism', () => {
     it('emits magnet events but does not physically pull the edge', async () => {
       const { container } = mountWithApp(

@@ -113,13 +113,16 @@ const willSnapTo = reactive<Record<string, TraySnapPoint | null>>({
 })
 
 function dotClass(side: string, point: number) {
-  if (willSnapTo[side] === point) return 'bg-warning-solid'
+  if (willSnapTo[side] === point) {
+    return 'bg-warning-solid'
+  }
   if (
     (activeSnapPoint.value as Record<string, TraySnapPoint | undefined>)[
       side
     ] === point
-  )
+  ) {
     return 'bg-success-solid'
+  }
   return 'bg-surface-base'
 }
 
@@ -132,10 +135,14 @@ function directionArrow(side: string, snapPoint: TraySnapPoint) {
 const log = ref<TrayWillSnapToPayload[]>([])
 
 function onWillSnapTo(payload: TrayWillSnapToPayload) {
-  if (payload.id !== id) return
+  if (payload.id !== id) {
+    return
+  }
   willSnapTo[payload.side] = payload.snapPoint
   log.value.unshift(payload)
-  if (log.value.length > 5) log.value.length = 5
+  if (log.value.length > 5) {
+    log.value.length = 5
+  }
 }
 
 function isTraySnapPointPayload(v: unknown): v is TraySnapPointPayload {
@@ -143,7 +150,9 @@ function isTraySnapPointPayload(v: unknown): v is TraySnapPointPayload {
 }
 
 function onAfterSnap(payload: { id: string; snapPoint: unknown }) {
-  if (payload.id !== id) return
+  if (payload.id !== id) {
+    return
+  }
   if (isTraySnapPointPayload(payload.snapPoint)) {
     willSnapTo[payload.snapPoint.side] = null
   }

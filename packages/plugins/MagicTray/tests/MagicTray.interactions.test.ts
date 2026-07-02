@@ -397,6 +397,90 @@ describe('MagicTray - Interactions', () => {
       await expect.poll(() => active(container), { timeout: 2000 }).toBe('1')
     })
   })
+
+  describe('instant snap', () => {
+    // Rest fully open at the first snap point (0), then drag the bottom edge
+    // far up in one move, without releasing, to see whether the point commits
+    // mid-drag (instant) or only once the pointer is released (free).
+    const base = {
+      snapPoints: { bottom: [0, 0.5, 1] },
+      threshold: { distance: 8, momentum: 99999 },
+    }
+    const style = '--magic-tray-drag-overshoot-outer: 48px'
+
+    async function mountOpenTray(id: TrayId, options: Record<string, unknown>) {
+      const { container } = mountWithApp(createTray(id, options, style))
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 100))
+
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('0')
+
+      return container
+    }
+
+    const active = (container: HTMLElement) =>
+      container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
+
+    it('commits to the nearest point mid-drag, before release', async () => {
+      const container = await mountOpenTray(TrayId.OptSnapInstant, {
+        ...base,
+        snap: { instant: true },
+      })
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 20))
+      await nextTick()
+
+      // Committed already — no pointerup dispatched yet
+      expect(active(container)).toBe('1')
+
+      document.dispatchEvent(pointer('pointerup', 20))
+    })
+
+    it('leaves free (non-instant) sides following the pointer until release', async () => {
+      const container = await mountOpenTray(TrayId.OptSnapFree, base)
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 20))
+      await nextTick()
+
+      // Still following the pointer — nothing committed until release
+      expect(active(container)).toBe('0')
+
+      document.dispatchEvent(pointer('pointerup', 20))
+      await expect.poll(() => active(container), { timeout: 2000 }).toBe('1')
+    })
+
+    it('the per-side object form scopes instant to that side', async () => {
+      const container = await mountOpenTray(TrayId.OptSnapInstantObject, {
+        ...base,
+        snap: { instant: { bottom: true } },
+      })
+
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      ) as HTMLElement
+
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 20))
+      await nextTick()
+
+      expect(active(container)).toBe('1')
+
+      document.dispatchEvent(pointer('pointerup', 20))
+    })
+  })
 })
 
 describe('MagicTray - Magnetism', () => {

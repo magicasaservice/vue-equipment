@@ -14,6 +14,7 @@ import type {
   TraySnapPoint,
   TraySnapPointPayload,
   TrayTransformAxis,
+  TrayWillSnapToPayload,
 } from './src/types/index'
 
 const MagicTrayPlugin: Plugin = {

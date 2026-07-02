@@ -109,11 +109,18 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const threshold = computed(() => state.options.threshold)
   const disabled = computed(() => state.options.disabled)
   const snapMode = computed(() => state.options.snap.mode)
+  const instant = computed(() => state.options.snap.instant)
 
   function snapReference(side: TraySide) {
     return snapMode.value === 'step'
       ? state.lastDragged[side]
       : state.dragged[side]
+  }
+
+  function isInstant(side: TraySide) {
+    return typeof instant.value === 'boolean'
+      ? instant.value
+      : (instant.value?.[side] ?? false)
   }
 
   const hasDragged = computed(() => {
@@ -236,7 +243,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     await nextTick()
   }
 
-  function setDragged(side: TraySide, coord: number) {
+  // The raw pointer-relative inset for a side, rubber-banded past its outermost
+  // snap points. Shared by free dragging and the instant snap read-out below.
+  function computeInset(side: TraySide, coord: number) {
     let newInset = 0
 
     switch (side) {
@@ -254,15 +263,18 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         break
     }
 
-    // Rubber-band resistance past the outermost snap points
     const { min, max } = dragBounds(side)
-    newInset = clampWithOvershoot(
+    return clampWithOvershoot(
       newInset,
       min,
       max,
       state.overshoot.outer[side],
       state.overshoot.inner
     )
+  }
+
+  function setDragged(side: TraySide, coord: number) {
+    const newInset = computeInset(side, coord)
 
     if (newInset === state.dragged[side]) {
       return
@@ -271,6 +283,36 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     const prev = state.dragged[side]
     state.relDirection[side] = newInset < prev ? 'below' : 'above'
     state.dragged[side] = newInset
+  }
+
+  // Commit straight to whichever configured point the pointer is nearest,
+  // instead of following it freely — a hard cut, no interpolation. Leaves
+  // `lastDragged` untouched so `hasDragged` still reflects the gesture's start,
+  // which is what tells a real instant-snap drag apart from a static click.
+  function setInstant(side: TraySide, coord: number) {
+    const inset = computeInset(side, coord)
+    const target = findClosestSnapPoint({ side, value: inset })
+
+    if (target === undefined || target === state.snapped[side]) {
+      return
+    }
+
+    const snapPoint = snapPointsMap(side)[target]
+
+    state.dragged[side] = target
+    state.snapped[side] = target
+    state.activeSnapPoint[side] = snapPoint
+
+    if (snapPoint || snapPoint === 0) {
+      emitter.emit('beforeSnap', {
+        id: toValue(id),
+        snapPoint: { side, point: snapPoint },
+      })
+      emitter.emit('afterSnap', {
+        id: toValue(id),
+        snapPoint: { side, point: snapPoint },
+      })
+    }
   }
 
   function checkPosition(side: TraySide) {
@@ -292,11 +334,15 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   function emitWillSnapTo(side: TraySide) {
     const target = state.interpolateTo ?? state.snapped[side]
-    if (target === lastPendingTarget) return
+    if (target === lastPendingTarget) {
+      return
+    }
     lastPendingTarget = target
 
     const snapPoint = snapPointsMap(side)[target]
-    if (!snapPoint && snapPoint !== 0) return
+    if (!snapPoint && snapPoint !== 0) {
+      return
+    }
 
     emitter.emit('willSnapTo', {
       id: toValue(id),
@@ -360,10 +406,15 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     e.stopPropagation()
 
     const coord = isVertical(side) ? e.clientY : e.clientX
-    setDragged(side, coord)
-    checkMomentum(side)
-    checkPosition(side)
-    emitWillSnapTo(side)
+
+    if (isInstant(side)) {
+      setInstant(side, coord)
+    } else {
+      setDragged(side, coord)
+      checkMomentum(side)
+      checkPosition(side)
+      emitWillSnapTo(side)
+    }
 
     emitter.emit('drag', {
       id: toValue(id),
@@ -376,12 +427,27 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     const side = state.draggingSide
 
     if (side) {
-      settle(side)
+      // Read before resetDragState() clears draggingSide, or hasDragged would always be false
+      const isStaticClick = !hasDragged.value
+
+      // Instant sides are already resting on their committed point
+      if (!isInstant(side)) {
+        settle(side)
+      }
+
       emitter.emit('afterDrag', {
         id: toValue(id),
         side,
         value: state.dragged[side],
       })
+
+      if (isStaticClick) {
+        emitter.emit('staticClick', {
+          id: toValue(id),
+          side,
+          value: state.dragged[side],
+        })
+      }
     }
 
     resetDragState()
@@ -411,10 +477,15 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     }
 
     const coord = isVertical(side) ? firstTouch.clientY : firstTouch.clientX
-    setDragged(side, coord)
-    checkMomentum(side)
-    checkPosition(side)
-    emitWillSnapTo(side)
+
+    if (isInstant(side)) {
+      setInstant(side, coord)
+    } else {
+      setDragged(side, coord)
+      checkMomentum(side)
+      checkPosition(side)
+      emitWillSnapTo(side)
+    }
 
     emitter.emit('drag', {
       id: toValue(id),
@@ -427,12 +498,27 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     const side = state.draggingSide
 
     if (side) {
-      settle(side)
+      // Read before resetDragState() clears draggingSide, or hasDragged would always be false
+      const isStaticClick = !hasDragged.value
+
+      // Instant sides are already resting on their committed point
+      if (!isInstant(side)) {
+        settle(side)
+      }
+
       emitter.emit('afterDrag', {
         id: toValue(id),
         side,
         value: state.dragged[side],
       })
+
+      if (isStaticClick) {
+        emitter.emit('staticClick', {
+          id: toValue(id),
+          side,
+          value: state.dragged[side],
+        })
+      }
     }
 
     resetDragState()

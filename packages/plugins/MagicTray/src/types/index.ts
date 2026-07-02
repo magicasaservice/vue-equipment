@@ -55,6 +55,8 @@ export interface MagicTrayOptions {
   snapPoints?: TraySnapPoints
   snap?: {
     mode?: TraySnapMode
+    // Commit straight to the nearest snap point while dragging, no free follow
+    instant?: boolean | Partial<Record<TraySide, boolean>>
   }
   handles?: boolean | Partial<Record<TraySide, boolean>>
   magnetism?: TrayMagnetism
@@ -130,6 +132,7 @@ export type TrayEvents = {
   beforeDrag: { id: string } & TraySidePayload
   drag: { id: string } & TraySidePayload
   afterDrag: { id: string } & TraySidePayload
+  staticClick: { id: string } & TraySidePayload
   progress: { id: string } & TraySidePayload
   magnet: { id: string } & TraySidePayload
   willSnapTo: TrayWillSnapToPayload

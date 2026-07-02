@@ -262,6 +262,20 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'snap.instant',
+          description: 'Always rest exactly on the snap point geometrically closest to the pointer while dragging, instead of following it freely and settling on release. A hard cut, no animation, and ignores threshold and snap.mode. Set per side with an object, or true for all draggable sides.'
+        },
+        {
+          label: 'boolean | Partial<Record<TraySide, boolean>>'
+        },
+        {
+          label: 'false'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'handles',
           description: 'Render the built-in, invisible drag handles. Set to false to disable all handles, or pass a per side object to enable handles selectively.'
         },
@@ -1005,6 +1019,13 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
     },
     {
       items: [
+        { label: 'staticClick' },
+        { label: '{ id, side, value }' },
+        { plaintext: true, label: 'Fired instead of a drag when a handle is pressed and released without crossing `threshold.lock` — e.g. to snap a side programmatically on tap.' }
+      ]
+    },
+    {
+      items: [
         { label: 'beforeSnap' },
         { label: '{ id, snapPoint: { side, point } }' },
         { plaintext: true, label: 'Fired before a side animates to a snap point.' }
@@ -1102,11 +1123,23 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 
 <ComponentPreview src="./demo/StepSnapDemo.vue" />
 
+### Instant Snap
+
+With `snap.instant` set to `true`, the edge no longer follows the pointer freely — it always rests exactly on whichever snap point is geometrically closest to the pointer, updating the moment that changes, with no animation and no waiting for release. It ignores `threshold` and `snap.mode`, both of which are about how the tray settles after a free drag ends — a concept that doesn't apply once dragging is the snapping.
+
+<ComponentPreview src="./demo/InstantSnapDemo.vue" />
+
 ### Will Snap To
 
 The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target actually changes, not on every move, making it efficient for driving UI reactions like previewing the next state or triggering haptics at the moment the user has committed to a position.
 
 <ComponentPreview src="./demo/WillSnapToDemo.vue" />
+
+### Static Click
+
+The `staticClick` event fires on a handle when it is pressed and released without crossing `threshold.lock` — a tap rather than a drag. Use it to trigger a programmatic `snapTo`, e.g. toggling a side open and closed, without any of the handle's own drag logic getting in the way.
+
+<ComponentPreview src="./demo/StaticClickDemo.vue" />
 
 ### Magnetic
 
