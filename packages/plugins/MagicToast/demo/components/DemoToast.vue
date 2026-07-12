@@ -1,15 +1,17 @@
 <template>
   <div
-    class="bg-component-primary-translucent text-component-primary-onTranslucent type-label-text-lg pointer-events-auto flex w-[320px] items-center justify-between rounded-[1.375rem] p-2 pl-4 backdrop-blur-xl"
+    class="bg-primary-solid text-primary-on-solid type-label-text-lg pointer-events-auto flex w-[320px] items-center justify-between rounded-full py-2 pr-2 pl-6"
   >
     <slot>
       <span v-if="message">{{ message }}</span>
     </slot>
     <m-button
       size="md"
+      variant="secondary"
       mode="translucent"
       icon
       square
+      round
       @click.stop="emit('remove')"
     >
       <i-maas-close-500 class="h-4 w-4" />

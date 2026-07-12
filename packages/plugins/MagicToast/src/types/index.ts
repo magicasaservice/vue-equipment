@@ -12,11 +12,14 @@ type Position =
   | 'bottom'
   | 'bottom-right'
 
+export type DragDirection = 'left' | 'right' | 'up' | 'down'
+
 export interface ToastView {
   id: string
   component: object
   props?: MaybeRef<Record<string, unknown>>
   slots?: Slots
+  draggable?: boolean
   dimensions?: {
     height: number
     padding: {
@@ -43,6 +46,7 @@ export interface ToastState {
   id: string
   refCount: number
   views: ToastView[]
+  hiddenViews: ToastView[]
   expanded: boolean
   animating: boolean
   options: RequiredMagicToastOptions
@@ -71,6 +75,12 @@ export interface MagicToastOptions {
   position?: Position
   duration?: number
   draggable?: boolean
+  drag?: {
+    // A single direction pins the drag-out side. A same-axis pair
+    // (['left', 'right'] or ['up', 'down']) allows dragging either way;
+    // mixing axes (e.g. ['left', 'up']) is not supported.
+    direction?: 'auto' | DragDirection | DragDirection[]
+  }
   scrollLock?: boolean | { padding: boolean }
   teleport?: {
     target?: string

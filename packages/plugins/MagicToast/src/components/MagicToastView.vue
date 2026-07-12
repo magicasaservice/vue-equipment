@@ -4,7 +4,7 @@
     :data-id="id"
     :data-expanded="state.expanded"
     :data-dragging="view?.dragging"
-    :data-draggable="state.options.draggable"
+    :data-draggable="draggable"
     :data-position="state.options.position"
     :data-debug="state.options.debug"
     :style="{
@@ -75,7 +75,7 @@ const offset = computed(() => {
   return `${mapped}px`
 })
 
-const { style, onPointerdown, onClick } = useToastDrag({
+const { style, onPointerdown, onClick, draggable } = useToastDrag({
   view: view.value,
   instanceId,
 })

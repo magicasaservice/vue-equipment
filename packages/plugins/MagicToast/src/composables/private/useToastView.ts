@@ -2,7 +2,10 @@ import { reactive, markRaw, type MaybeRef } from 'vue'
 import { useToastState } from './useToastState'
 import { type ToastView } from '../../types'
 
-export type AddViewArgs = Pick<ToastView, 'component' | 'props' | 'slots'> & {
+export type AddViewArgs = Pick<
+  ToastView,
+  'component' | 'props' | 'slots' | 'draggable'
+> & {
   id?: string
 }
 
@@ -19,12 +22,13 @@ export function useToastView(instanceId: MaybeRef<string>) {
   }
 
   function createView(args: CreateViewArgs) {
-    const { id = uuid(), props, slots, component } = args
+    const { id = uuid(), props, slots, component, draggable } = args
 
     const view: ToastView = {
       component: markRaw(component),
       props,
       slots,
+      draggable,
       id,
       dragStart: undefined,
       dragging: false,
@@ -61,8 +65,13 @@ export function useToastView(instanceId: MaybeRef<string>) {
 
   function deleteView(id: string) {
     state.views = state.views?.filter((view) => view.id !== id)
+    state.hiddenViews = state.hiddenViews?.filter((view) => view.id !== id)
   }
 
+  // Only searches state.views — used by the enter/leave transition
+  // callbacks in useToastCallback, which must not match toasts parked in
+  // hiddenViews (a hide() triggers a leave transition for those toasts,
+  // and onAfterLeave would otherwise delete them right after hiding).
   function getView(id: string) {
     return state.views?.find((view) => view.id === id)
   }

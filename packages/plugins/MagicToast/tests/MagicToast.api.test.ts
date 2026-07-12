@@ -248,6 +248,219 @@ describe('MagicToast - API', () => {
     })
   })
 
+  describe('hide and show', () => {
+    function createHideShowWrapper(toastId: ToastId) {
+      return defineComponent({
+        components: { MagicToastProvider },
+        setup() {
+          const api = useMagicToast(toastId)
+          function addToast() {
+            api.add({ component: SimpleToast })
+          }
+          function hide() {
+            api.hide()
+          }
+          function show() {
+            api.show()
+          }
+          return { ...api, addToast, hide, show }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <button data-test-id="${TestId.HideBtn}" @click="hide">Hide</button>
+            <button data-test-id="${TestId.ShowBtn}" @click="show">Show</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${toastId}" />
+          </div>
+        `,
+      })
+    }
+
+    it('hide() removes toasts from view and show() restores them', async () => {
+      const screen = render(createHideShowWrapper(ToastId.ApiHideShow))
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('3')
+      expect(document.querySelectorAll('.magic-toast-view').length).toBe(3)
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+      expect(document.querySelectorAll('.magic-toast-view').length).toBe(0)
+
+      await screen.getByTestId(TestId.ShowBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('3')
+      expect(document.querySelectorAll('.magic-toast-view').length).toBe(3)
+    })
+
+    it('adding a toast while hidden reveals the whole stack immediately', async () => {
+      const screen = render(createHideShowWrapper(ToastId.ApiHideThenAdd))
+
+      // Add and hide 2 toasts
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+
+      // Wait past the leave transition so any stray after-leave cleanup
+      // has a chance to run before we check the hidden toasts survived
+      await new Promise((r) => setTimeout(r, 300))
+
+      // Adding while hidden reveals the original 2 plus the new one, all at once
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('3')
+      expect(document.querySelectorAll('.magic-toast-view').length).toBe(3)
+    })
+
+    it('hide() on an empty toaster is a no-op', async () => {
+      const screen = render(createHideShowWrapper(ToastId.ApiHideEmpty))
+      await nextTick()
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+    })
+
+    it('show() with nothing hidden is a no-op', async () => {
+      const screen = render(createHideShowWrapper(ToastId.ApiShowEmpty))
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.ShowBtn).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('1')
+    })
+
+    it('clear() also discards toasts stashed via hide()', async () => {
+      const wrapper = defineComponent({
+        components: { MagicToastProvider },
+        setup() {
+          const api = useMagicToast(ToastId.ApiHideClear)
+          function addToast() {
+            api.add({ component: SimpleToast })
+          }
+          return { ...api, addToast }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <button data-test-id="${TestId.HideBtn}" @click="hide()">Hide</button>
+            <button data-test-id="${TestId.ClearBtn}" @click="clear()">Clear</button>
+            <button data-test-id="${TestId.ShowBtn}" @click="show()">Show</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.ApiHideClear}" />
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper)
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await screen.getByTestId(TestId.ClearBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await screen.getByTestId(TestId.ShowBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+    })
+
+    it('hide(transition) and show(transition) accept a custom transition name', async () => {
+      const wrapper = defineComponent({
+        components: { MagicToastProvider },
+        setup() {
+          const api = useMagicToast(ToastId.ApiHideTransition)
+          function addToast() {
+            api.add({ component: SimpleToast })
+          }
+          function hide() {
+            api.hide('my-hide-transition')
+          }
+          function show() {
+            api.show('my-show-transition')
+          }
+          return { ...api, addToast, hide, show }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <button data-test-id="${TestId.HideBtn}" @click="hide">Hide</button>
+            <button data-test-id="${TestId.ShowBtn}" @click="show">Show</button>
+            <span data-test-id="${TestId.Count}">{{ count }}</span>
+            <MagicToastProvider id="${ToastId.ApiHideTransition}" />
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper)
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+
+      await screen.getByTestId(TestId.ShowBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('1')
+    })
+  })
+
   describe('expand and collapse', () => {
     it('expand() sets expanded state', async () => {
       const screen = render(createWrapper(ToastId.ApiExpand))
@@ -316,6 +529,49 @@ describe('MagicToast - API', () => {
       await expect
         .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('0')
+    })
+
+    it('hiddenCount tracks toasts stashed via hide()', async () => {
+      const wrapper = defineComponent({
+        components: { MagicToastProvider },
+        setup() {
+          const api = useMagicToast(ToastId.ApiHiddenCount)
+          function addToast() {
+            api.add({ component: SimpleToast })
+          }
+          return { ...api, addToast }
+        },
+        template: `
+          <div>
+            <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
+            <button data-test-id="${TestId.HideBtn}" @click="hide()">Hide</button>
+            <span data-test-id="${TestId.Count}">{{ hiddenCount }}</span>
+            <MagicToastProvider id="${ToastId.ApiHiddenCount}" />
+          </div>
+        `,
+      })
+
+      const screen = render(wrapper)
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('0')
+
+      await screen.getByTestId(TestId.HideBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('2')
     })
   })
 })

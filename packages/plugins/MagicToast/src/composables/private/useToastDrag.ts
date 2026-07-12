@@ -26,8 +26,42 @@ export function useToastDrag(args: UseToastDragArgs) {
   const state = initializeState()
 
   const { options } = toRefs(state)
-  const { threshold, animation, position, scrollLock, draggable } =
-    options.value
+  const {
+    threshold,
+    animation,
+    position: anchorPosition,
+    scrollLock,
+    draggable: defaultDraggable,
+    drag,
+  } = options.value
+
+  // A toast added with `draggable: false/true` overrides the provider's
+  // default for that toast only.
+  const isDraggable = computed(() => view.draggable ?? defaultDraggable)
+
+  // The drag axis/direction normally follows the toast's anchor position
+  // (e.g. a 'left' toast drags out left). `drag.direction` lets consumers
+  // pin the drag-out side(s) regardless of where the toast is anchored,
+  // either as a single direction or a same-axis pair (e.g. ['up', 'down'])
+  // to allow dragging either way along that axis.
+  const directions = drag.direction === 'auto' ? [] : ([] as string[]).concat(drag.direction)
+
+  const allowLeft = directions.includes('left')
+  const allowRight = directions.includes('right')
+  const allowUp = directions.includes('up')
+  const allowDown = directions.includes('down')
+
+  const isHorizontalOverride = allowLeft || allowRight
+  const isVerticalOverride = allowUp || allowDown
+
+  // Representative value used purely for axis selection in the switches
+  // below — 'top'/'bottom' and 'left'/'right' behave identically there,
+  // only setDragged cares about which specific side(s) are allowed.
+  const position = isHorizontalOverride
+    ? 'left'
+    : isVerticalOverride
+      ? 'top'
+      : anchorPosition
 
   const { deleteView } = useToastView(instanceId)
 
@@ -66,9 +100,20 @@ export function useToastDrag(args: UseToastDragArgs) {
     return hasDraggedX || hasDraggedY
   })
 
-  const style = computed(
-    () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
-  )
+  const style = computed(() => {
+    const transform = `translate(${draggedX.value}px, ${draggedY.value}px)`
+
+    // Fade the toast out over a distance well past the dismiss threshold,
+    // so it reads as gradual rather than abrupt. Uses whichever axis is
+    // actually being dragged (X for left/right, Y for top/bottom).
+    const isHorizontal = position === 'left' || position === 'right'
+    const dragged = isHorizontal ? draggedX.value : draggedY.value
+    const distance = Math.abs(dragged)
+    const fadeDistance = toValue(threshold).distance * 4
+    const opacity = 1 - Math.min(distance / fadeDistance, 1)
+
+    return `transform: ${transform}; opacity: ${opacity}`
+  })
 
   // Private functions
   const emitter = useMagicEmitter()
@@ -186,38 +231,44 @@ export function useToastDrag(args: UseToastDragArgs) {
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
-    switch (position) {
+    if (isHorizontalOverride) {
+      const raw = x - originX.value
+      draggedX.value =
+        allowLeft && allowRight
+          ? raw
+          : allowLeft
+            ? Math.min(raw, 0)
+            : Math.max(raw, 0)
+      return
+    }
+
+    if (isVerticalOverride) {
+      const raw = y - originY.value
+      draggedY.value =
+        allowUp && allowDown
+          ? raw
+          : allowUp
+            ? Math.min(raw, 0)
+            : Math.max(raw, 0)
+      return
+    }
+
+    switch (anchorPosition) {
       case 'top':
-        const newDraggedTC = Math.min(y - originY.value, 0)
-        draggedY.value = newDraggedTC
-        break
       case 'top-left':
-        const newDraggedTL = Math.min(y - originY.value, 0)
-        draggedY.value = newDraggedTL
-        break
       case 'top-right':
-        const newDraggedTR = Math.min(y - originY.value, 0)
-        draggedY.value = newDraggedTR
+        draggedY.value = Math.min(y - originY.value, 0)
         break
       case 'bottom':
-        const newDraggedBC = Math.max(y - originY.value, 0)
-        draggedY.value = newDraggedBC
-        break
       case 'bottom-left':
-        const newDraggedBL = Math.max(y - originY.value, 0)
-        draggedY.value = newDraggedBL
-        break
       case 'bottom-right':
-        const newDraggedBR = Math.max(y - originY.value, 0)
-        draggedY.value = newDraggedBR
+        draggedY.value = Math.max(y - originY.value, 0)
         break
       case 'left':
-        const newDraggedCL = Math.min(x - originX.value, 0)
-        draggedX.value = newDraggedCL
+        draggedX.value = Math.min(x - originX.value, 0)
         break
       case 'right':
-        const newDraggedCR = Math.max(x - originX.value, 0)
-        draggedX.value = newDraggedCR
+        draggedX.value = Math.max(x - originX.value, 0)
         break
     }
   }
@@ -333,7 +384,7 @@ export function useToastDrag(args: UseToastDragArgs) {
 
   // Public functions
   function onPointerdown(e: PointerEvent) {
-    if (!toValue(draggable)) {
+    if (!isDraggable.value) {
       return
     }
 
@@ -409,7 +460,7 @@ export function useToastDrag(args: UseToastDragArgs) {
       return
     }
 
-    if (position === 'left' || position === 'right') {
+    if (anchorPosition === 'left' || anchorPosition === 'right') {
       return
     }
 
@@ -426,5 +477,6 @@ export function useToastDrag(args: UseToastDragArgs) {
     onPointerdown,
     onClick,
     style,
+    draggable: isDraggable,
   }
 }

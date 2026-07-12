@@ -20,6 +20,7 @@ export function useToastState(instanceId: MaybeRef<string>) {
       refCount: 0,
       options: { ...defaultOptions },
       views: [],
+      hiddenViews: [],
       expanded: false,
       animating: false,
     }

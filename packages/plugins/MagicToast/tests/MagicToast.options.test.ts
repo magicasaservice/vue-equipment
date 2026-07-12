@@ -253,6 +253,36 @@ describe('MagicToast - Options', () => {
     })
   })
 
+  describe('drag.direction', () => {
+    it('defaults to auto without throwing', async () => {
+      const screen = render(createWrapper(ToastId.OptDragDirectionDefault))
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('1')
+    })
+
+    it('accepts left/right values without error', async () => {
+      const screen = render(
+        createWrapper(ToastId.OptDragDirectionLeft, {
+          drag: { direction: 'left' },
+        })
+      )
+
+      await screen.getByTestId(TestId.AddBtn).click()
+      await nextTick()
+      await nextTick()
+
+      await expect
+        .element(page.getByTestId(TestId.Count))
+        .toHaveTextContent('1')
+    })
+  })
+
   describe('teleport', () => {
     it('custom teleport target works', async () => {
       const target = document.createElement('div')

@@ -9,6 +9,7 @@ export interface AddArgs {
   props?: ToastView['props']
   slots?: ToastView['slots']
   duration?: number
+  draggable?: boolean
   id?: string
 }
 
@@ -22,11 +23,22 @@ export function useMagicToast(id: MaybeRef<string>) {
   // Public state
   const toasts = computed(() => state.views)
   const count = computed(() => toasts.value?.length)
+  const hiddenCount = computed(() => state.hiddenViews?.length)
 
   // Public functions
   function add(args: AddArgs) {
-    const { id, component, props, slots, duration } = args
-    const view = initializeView({ id, component, props, slots })
+    // Adding a toast while the stack is hidden reveals everything again,
+    // rather than silently queuing the new toast out of view.
+    if (state.hiddenViews.length > 0) {
+      state.views = state.hiddenViews
+      state.hiddenViews = []
+      state.views.forEach((view) => {
+        view.timeout?.play()
+      })
+    }
+
+    const { id, component, props, slots, duration, draggable } = args
+    const view = initializeView({ id, component, props, slots, draggable })
 
     const mappedDuration = duration ?? state.options.duration
 
@@ -52,9 +64,62 @@ export function useMagicToast(id: MaybeRef<string>) {
     // Set transition
     state.options.transition = transition ?? ''
 
-    // Clear
+    // Clear, including any toasts currently hidden via hide()
+    state.views = []
+    state.hiddenViews = []
+    await nextTick()
+
+    // Restore transition
+    state.options.transition = lastTransition
+  }
+
+  async function hide(transition?: string) {
+    // Nothing to hide, or already hidden
+    if (state.views.length === 0) {
+      return
+    }
+
+    // Save transition
+    const lastTransition = state.options.transition
+
+    // Set transition
+    state.options.transition = transition ?? ''
+
+    // Pause timeouts while hidden
+    state.views.forEach((view) => {
+      view.timeout?.pause()
+    })
+
+    // Stash views so they can be restored via show()
+    state.hiddenViews = state.views
     state.views = []
     await nextTick()
+
+    // Restore transition
+    state.options.transition = lastTransition
+  }
+
+  async function show(transition?: string) {
+    // Nothing hidden to restore
+    if (state.hiddenViews.length === 0) {
+      return
+    }
+
+    // Save transition
+    const lastTransition = state.options.transition
+
+    // Set transition
+    state.options.transition = transition ?? ''
+
+    // Restore stashed views
+    state.views = state.hiddenViews
+    state.hiddenViews = []
+    await nextTick()
+
+    // Resume timeouts
+    state.views.forEach((view) => {
+      view.timeout?.play()
+    })
 
     // Restore transition
     state.options.transition = lastTransition
@@ -71,9 +136,12 @@ export function useMagicToast(id: MaybeRef<string>) {
   return {
     toasts,
     count,
+    hiddenCount,
     add,
     remove,
     clear,
+    hide,
+    show,
     expand,
     collapse,
   }
