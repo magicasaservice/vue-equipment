@@ -19,7 +19,7 @@ export interface ToastView {
   component: object
   props?: MaybeRef<Record<string, unknown>>
   slots?: Slots
-  draggable?: boolean
+  drag?: { disabled?: boolean }
   dimensions?: {
     height: number
     padding: {
@@ -87,11 +87,8 @@ export interface MagicToastOptions {
   debug?: boolean
   position?: Position
   duration?: number
-  draggable?: boolean
   drag?: {
-    // A single direction pins the drag-out side. A same-axis pair
-    // (['left', 'right'] or ['up', 'down']) allows dragging either way;
-    // mixing axes (e.g. ['left', 'up']) is not supported.
+    disabled?: boolean
     direction?: 'auto' | DragDirection | DragDirection[]
   }
   scrollLock?: boolean | { padding: boolean }

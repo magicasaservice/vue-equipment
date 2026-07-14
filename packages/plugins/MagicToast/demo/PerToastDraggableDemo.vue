@@ -21,7 +21,7 @@ const draggable = ref(true)
 function onClick() {
   add({
     component,
-    draggable: draggable.value,
+    drag: { disabled: !draggable.value },
     props: {
       message: draggable.value
         ? 'Drag me to dismiss'

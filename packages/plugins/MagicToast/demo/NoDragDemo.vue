@@ -26,6 +26,6 @@ function onClick() {
 }
 
 const options = {
-  draggable: false,
+  drag: { disabled: true },
 }
 </script>

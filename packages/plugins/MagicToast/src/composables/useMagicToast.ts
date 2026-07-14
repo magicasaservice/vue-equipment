@@ -9,7 +9,7 @@ export interface AddArgs {
   props?: ToastView['props']
   slots?: ToastView['slots']
   duration?: number
-  draggable?: boolean
+  drag?: ToastView['drag']
   id?: string
 }
 
@@ -37,8 +37,8 @@ export function useMagicToast(id: MaybeRef<string>) {
       })
     }
 
-    const { id, component, props, slots, duration, draggable } = args
-    const view = initializeView({ id, component, props, slots, draggable })
+    const { id, component, props, slots, duration, drag } = args
+    const view = initializeView({ id, component, props, slots, drag })
 
     const mappedDuration = duration ?? state.options.duration
 

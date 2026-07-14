@@ -31,13 +31,12 @@ export function useToastDrag(args: UseToastDragArgs) {
     animation,
     position: anchorPosition,
     scrollLock,
-    draggable: defaultDraggable,
     drag,
   } = options.value
 
-  // A toast added with `draggable: false/true` overrides the provider's
+  // A toast added with `drag: { disabled }` overrides the provider’s
   // default for that toast only.
-  const isDraggable = computed(() => view.draggable ?? defaultDraggable)
+  const isDraggable = computed(() => !(view.drag?.disabled ?? drag.disabled))
 
   // The drag axis/direction normally follows the toast's anchor position
   // (e.g. a 'left' toast drags out left). `drag.direction` lets consumers

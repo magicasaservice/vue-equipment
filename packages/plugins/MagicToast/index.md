@@ -214,11 +214,11 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
     {
       items: [
         {
-          label: 'draggable',
-          description: 'Allow toasts to be dragged and dismissed by dragging. Set to false to disable dragging entirely.'
+          label: 'drag.disabled',
+          description: 'Disable drag-to-dismiss for every toast in the stack. Override per toast with add({ drag: { disabled } }).'
         },
         { label: 'boolean' },
-        { label: 'true' }
+        { label: 'false' }
       ]
     },
     {
@@ -554,11 +554,11 @@ Adds a toast to the stack and returns its `id`.
     {
       items: [
         {
-          label: 'draggable',
-          description: 'Overrides the toaster’s draggable option for this toast only.'
+          label: 'drag',
+          description: 'Overrides the toaster’s drag options for this toast only, e.g. { disabled: true }.'
         },
-        { label: 'boolean' },
-        { label: 'false' }
+        { label: '{ disabled?: boolean }' },
+        { label: 'undefined' }
       ]
     },
     {
@@ -775,13 +775,13 @@ Set `layout.expand: 'hover'` to expand the stack while the pointer is over it, a
 
 ### No Drag
 
-Set `draggable: false` on the provider to disable drag-to-dismiss for every toast in the stack.
+Set `drag: { disabled: true }` on the provider to disable drag-to-dismiss for every toast in the stack.
 
 <component-preview src="./demo/NoDragDemo.vue" />
 
 ### Per-Toast Draggable
 
-Pass `draggable` to `add()` to override the provider’s default for a single toast, without affecting the rest of the stack.
+Pass `drag` to `add()` to override the provider’s default for a single toast, without affecting the rest of the stack.
 
 <component-preview src="./demo/PerToastDraggableDemo.vue" />
 

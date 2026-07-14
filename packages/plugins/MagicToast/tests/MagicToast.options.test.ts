@@ -227,8 +227,8 @@ describe('MagicToast - Options', () => {
     })
   })
 
-  describe('draggable', () => {
-    it('defaults to draggable: true', async () => {
+  describe('drag.disabled', () => {
+    it('defaults to draggable (drag.disabled: false)', async () => {
       const screen = render(createWrapper(ToastId.OptDraggableDefault))
 
       await screen.getByTestId(TestId.AddBtn).click()
@@ -239,9 +239,11 @@ describe('MagicToast - Options', () => {
       expect(view!.getAttribute('data-draggable')).toBe('true')
     })
 
-    it('draggable: false sets data-draggable to false', async () => {
+    it('drag.disabled: true sets data-draggable to false', async () => {
       const screen = render(
-        createWrapper(ToastId.OptDraggableDisabled, { draggable: false })
+        createWrapper(ToastId.OptDraggableDisabled, {
+          drag: { disabled: true },
+        })
       )
 
       await screen.getByTestId(TestId.AddBtn).click()

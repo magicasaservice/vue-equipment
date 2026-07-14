@@ -469,10 +469,10 @@ describe('MagicToast - Interactions', () => {
     })
   })
 
-  describe('draggable: false', () => {
+  describe('drag.disabled: true', () => {
     it('pointerdown does not start dragging', async () => {
       const screen = render(
-        createWrapper(ToastId.IntDraggableNoStart, { draggable: false })
+        createWrapper(ToastId.IntDraggableNoStart, { drag: { disabled: true } })
       )
       await addAndGetDragEl(screen)
 
@@ -491,7 +491,7 @@ describe('MagicToast - Interactions', () => {
     it('dragging past the dismiss threshold does not remove the toast', async () => {
       const screen = render(
         createWrapper(ToastId.IntDraggableNoDismiss, {
-          draggable: false,
+          drag: { disabled: true },
           position: 'bottom',
           threshold: { distance: 20, lock: 4, momentum: 100 },
         })
@@ -517,7 +517,7 @@ describe('MagicToast - Interactions', () => {
     })
   })
 
-  describe('per-toast draggable override', () => {
+  describe('per-toast drag override', () => {
     function createOverrideWrapper(
       toastId: ToastId,
       providerOptions: Record<string, unknown>,
@@ -528,7 +528,10 @@ describe('MagicToast - Interactions', () => {
         setup() {
           const api = useMagicToast(toastId)
           function addToast() {
-            api.add({ component: SimpleToast, draggable: addDraggable })
+            api.add({
+              component: SimpleToast,
+              drag: { disabled: !addDraggable },
+            })
           }
           return { ...api, addToast }
         },
@@ -545,11 +548,11 @@ describe('MagicToast - Interactions', () => {
       })
     }
 
-    it('add({ draggable: false }) disables dragging for that toast even when the provider default is draggable: true', async () => {
+    it('add({ drag: { disabled: true } }) disables dragging for that toast even when the provider allows it', async () => {
       const screen = render(
         createOverrideWrapper(
           ToastId.IntDraggableOverrideFalse,
-          { draggable: true },
+          { drag: { disabled: false } },
           false
         )
       )
@@ -569,11 +572,11 @@ describe('MagicToast - Interactions', () => {
       document.dispatchEvent(pointerEvent('pointerup', { clientY: 100 }))
     })
 
-    it('add({ draggable: true }) keeps a toast draggable even when the provider default is draggable: false', async () => {
+    it('add({ drag: { disabled: false } }) keeps a toast draggable even when the provider disables drag', async () => {
       const screen = render(
         createOverrideWrapper(
           ToastId.IntDraggableOverrideTrue,
-          { draggable: false },
+          { drag: { disabled: true } },
           true
         )
       )
