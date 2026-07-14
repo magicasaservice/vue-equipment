@@ -7,7 +7,11 @@ import MagicDrawerTrigger from './src/components/MagicDrawerTrigger.vue'
 import { useMagicDrawer } from './src/composables/useMagicDrawer'
 
 import type { App, Plugin } from 'vue'
-import type { MagicDrawerOptions } from './src/types/index'
+import type {
+  MagicDrawerOptions,
+  DrawerSnapPoint,
+  DrawerWillSnapToPayload,
+} from './src/types/index'
 
 const MagicDrawerPlugin: Plugin = {
   install: (app: App) => {
@@ -30,4 +34,8 @@ export {
   MagicDrawerTrigger,
   useMagicDrawer,
 }
-export type { MagicDrawerOptions }
+export type {
+  MagicDrawerOptions,
+  DrawerSnapPoint,
+  DrawerWillSnapToPayload,
+}

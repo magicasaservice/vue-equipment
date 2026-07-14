@@ -980,6 +980,118 @@ A self-contained component that composes all primitives internally. Use this for
   ]"
 />
 
+## Events
+
+The drawer emits the following events through [MagicEmitter](../MagicEmitter/). Listen to them with `useMagicEmitter`.
+
+<ProseTable
+  :columns="[
+    { label: 'Event' },
+    { label: 'Payload' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'beforeEnter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired before the drawer’s open transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'enter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired when the drawer’s open transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterEnter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired after the drawer’s open transition ends.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'beforeLeave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired before the drawer’s close transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'leave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired when the drawer’s close transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterLeave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired after the drawer’s close transition ends.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'beforeDrag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired when the drawer starts being dragged.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'drag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired continuously while the drawer is dragged. `x` and `y` are the current translation in pixels.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterDrag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired when the drawer stops being dragged.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'beforeSnap' },
+        { label: '{ id, snapPoint }' },
+        { plaintext: true, label: 'Fired before the drawer animates to a snap point.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'snapTo' },
+        { label: '{ id, snapPoint, duration? }' },
+        { plaintext: true, label: 'Fired when the drawer is asked to snap programmatically.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterSnap' },
+        { label: '{ id, snapPoint }' },
+        { plaintext: true, label: 'Fired after the drawer has settled on a snap point.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'willSnapTo' },
+        { label: '{ id, snapPoint }' },
+        { plaintext: true, label: 'Fired during a drag when the committed snap target changes — i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'progress' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired whenever the drawer’s drag progress changes.' }
+      ]
+    }
+  ]"
+/>
+
 ## Errors
 
 <ProseTable
@@ -1058,3 +1170,9 @@ With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point
 ### Composed
 
 <ComponentPreview src="./demo/ComposedDemo.vue" />
+
+### Will Snap To
+
+The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the drawer will animate to on release. It only fires when the target actually changes, not on every move.
+
+<ComponentPreview src="./demo/WillSnapToDemo.vue" />

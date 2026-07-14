@@ -100,6 +100,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   const { isActive, close } = useMagicDrawer(id)
 
+  // The last emitted pending snap target — only emit willSnapTo on change
+  let lastPendingTarget: number | undefined = undefined
+
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
@@ -283,6 +286,37 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         break
       }
     }
+  }
+
+  function emitWillSnapTo() {
+    // Pending target is the value the drawer will settle on, either the
+    // committed interpolation target or the current snap point
+    const target =
+      interpolateTo.value || interpolateTo.value === 0
+        ? interpolateTo.value
+        : position === 'top' || position === 'bottom'
+          ? snappedY.value
+          : snappedX.value
+
+    // Heading to close, not to a snap point
+    if (shouldClose.value) {
+      return
+    }
+
+    if (target === lastPendingTarget) {
+      return
+    }
+    lastPendingTarget = target
+
+    const snapPoint = snapPointsMap.value[target]
+    if (!snapPoint && snapPoint !== 0) {
+      return
+    }
+
+    emitter.emit('willSnapTo', {
+      id: toValue(id),
+      snapPoint,
+    })
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
@@ -502,6 +536,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Check if we should close based on distance
     checkPosition()
 
+    // Emit the committed snap target if it changed
+    emitWillSnapTo()
+
     emitter.emit('drag', {
       id: toValue(id),
       x: draggedX.value,
@@ -624,6 +661,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Check if we should close based on distance
     checkPosition()
 
+    // Emit the committed snap target if it changed
+    emitWillSnapTo()
+
     emitter.emit('drag', {
       id: toValue(id),
       x: draggedX.value,
@@ -710,6 +750,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       // Save state
       dragging.value = true
+
+      // Reset the pending snap target for the new gesture
+      lastPendingTarget = undefined
 
       // Save pointerdown target and capture pointer
       // Capture the target, not the elRef, since this would break canDrag
@@ -800,6 +843,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       // Save state
       dragging.value = true
+
+      // Reset the pending snap target for the new gesture
+      lastPendingTarget = undefined
 
       // Save pointerdown target
       // Capture the target, not the elRef, since this would break canDrag

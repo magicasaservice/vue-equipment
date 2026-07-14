@@ -83,6 +83,11 @@ export interface DrawerState {
   options: RequiredMagicDrawerOptions
 }
 
+export interface DrawerWillSnapToPayload {
+  id: string
+  snapPoint: DrawerSnapPoint
+}
+
 export type DrawerEvents = {
   beforeEnter: string
   enter: string
@@ -123,6 +128,7 @@ export type DrawerEvents = {
     x: number
     y: number
   }
+  willSnapTo: DrawerWillSnapToPayload
 }
 
 export interface DrawerActive {
