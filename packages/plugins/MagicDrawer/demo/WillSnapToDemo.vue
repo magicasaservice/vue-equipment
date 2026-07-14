@@ -56,22 +56,22 @@ import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
-  DrawerSnapPoint,
-  DrawerWillSnapToPayload,
+  MagicDrawerSnapPoint,
+  MagicDrawerWillSnapToPayload,
 } from '@maas/vue-equipment/plugins/MagicDrawer'
 
 const id = 'magic-drawer-will-snap-to-demo'
-const snapPoints: DrawerSnapPoint[] = [0.25, 0.5, 0.75, 1]
+const snapPoints: MagicDrawerSnapPoint[] = [0.25, 0.5, 0.75, 1]
 
 const drawerApi = useMagicDrawer(id)
 const emitter = useMagicEmitter()
 
 // The pending snap target during drag — null when not dragging
-const willSnapTo = ref<DrawerSnapPoint | null>(null)
+const willSnapTo = ref<MagicDrawerSnapPoint | null>(null)
 // The snap point the drawer has settled on
-const settledSnapPoint = ref<DrawerSnapPoint>(snapPoints[0]!)
+const settledSnapPoint = ref<MagicDrawerSnapPoint>(snapPoints[0]!)
 
-function dotClass(point: DrawerSnapPoint) {
+function dotClass(point: MagicDrawerSnapPoint) {
   if (willSnapTo.value === point) {
     return 'bg-warning-solid'
   }
@@ -81,9 +81,9 @@ function dotClass(point: DrawerSnapPoint) {
   return 'bg-surface-base'
 }
 
-const log = ref<DrawerWillSnapToPayload[]>([])
+const log = ref<MagicDrawerWillSnapToPayload[]>([])
 
-function onWillSnapTo(payload: DrawerWillSnapToPayload) {
+function onWillSnapTo(payload: MagicDrawerWillSnapToPayload) {
   if (payload.id !== id) {
     return
   }
@@ -94,7 +94,7 @@ function onWillSnapTo(payload: DrawerWillSnapToPayload) {
   }
 }
 
-function isDrawerSnapPoint(v: unknown): v is DrawerSnapPoint {
+function isDrawerSnapPoint(v: unknown): v is MagicDrawerSnapPoint {
   return typeof v === 'number' || typeof v === 'string'
 }
 

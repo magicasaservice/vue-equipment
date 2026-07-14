@@ -1,7 +1,7 @@
 import { type Options as FocusTrapOptions } from 'focus-trap'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
-export type DrawerSnapPoint = number | `${number}px`
+export type MagicDrawerSnapPoint = number | `${number}px`
 
 export type DrawerSnapMode = 'closest' | 'step'
 
@@ -10,7 +10,7 @@ export interface MagicDrawerOptions {
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }
-  snapPoints?: DrawerSnapPoint[]
+  snapPoints?: MagicDrawerSnapPoint[]
   snap?: {
     mode?: DrawerSnapMode
   }
@@ -36,7 +36,7 @@ export interface MagicDrawerOptions {
   initial?: {
     open?: boolean
     transition?: boolean
-    snapPoint?: DrawerSnapPoint
+    snapPoint?: MagicDrawerSnapPoint
   }
   keyListener?: {
     close?: string[] | false
@@ -83,9 +83,9 @@ export interface DrawerState {
   options: RequiredMagicDrawerOptions
 }
 
-export interface DrawerWillSnapToPayload {
+export interface MagicDrawerWillSnapToPayload {
   id: string
-  snapPoint: DrawerSnapPoint
+  snapPoint: MagicDrawerSnapPoint
 }
 
 export type DrawerEvents = {
@@ -97,16 +97,16 @@ export type DrawerEvents = {
   afterLeave: string
   beforeSnap: {
     id: string
-    snapPoint: DrawerSnapPoint
+    snapPoint: MagicDrawerSnapPoint
   }
   snapTo: {
     id: string
-    snapPoint: DrawerSnapPoint
+    snapPoint: MagicDrawerSnapPoint
     duration?: number
   }
   afterSnap: {
     id: string
-    snapPoint: DrawerSnapPoint
+    snapPoint: MagicDrawerSnapPoint
   }
   beforeDrag: {
     id: string
@@ -128,7 +128,7 @@ export type DrawerEvents = {
     x: number
     y: number
   }
-  willSnapTo: DrawerWillSnapToPayload
+  willSnapTo: MagicDrawerWillSnapToPayload
 }
 
 export interface DrawerActive {

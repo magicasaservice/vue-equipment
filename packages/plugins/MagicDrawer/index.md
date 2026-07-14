@@ -320,7 +320,7 @@ To customize the drawer, override the necessary options. Any custom options will
           description: 'Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like \'768px\'.'
         },
         {
-          label: 'DrawerSnapPoint[]',
+          label: 'MagicDrawerSnapPoint[]',
           description: 'Array<number + \'px\' | number>'
         },
         {
@@ -504,7 +504,7 @@ To customize the drawer, override the necessary options. Any custom options will
           description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.'
         },
         {
-          label: 'DrawerSnapPoint',
+          label: 'MagicDrawerSnapPoint',
           description: 'number + \'px\' | number'
         },
         {

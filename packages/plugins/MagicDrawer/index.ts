@@ -9,8 +9,8 @@ import { useMagicDrawer } from './src/composables/useMagicDrawer'
 import type { App, Plugin } from 'vue'
 import type {
   MagicDrawerOptions,
-  DrawerSnapPoint,
-  DrawerWillSnapToPayload,
+  MagicDrawerSnapPoint,
+  MagicDrawerWillSnapToPayload,
 } from './src/types/index'
 
 const MagicDrawerPlugin: Plugin = {
@@ -36,6 +36,6 @@ export {
 }
 export type {
   MagicDrawerOptions,
-  DrawerSnapPoint,
-  DrawerWillSnapToPayload,
+  MagicDrawerSnapPoint,
+  MagicDrawerWillSnapToPayload,
 }

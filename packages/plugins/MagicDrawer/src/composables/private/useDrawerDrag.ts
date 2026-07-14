@@ -37,7 +37,7 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import type { DrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
+import type { MagicDrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
@@ -447,7 +447,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         return
       } else {
         snapTo({
-          snapPoint: payload.snapPoint as DrawerSnapPoint,
+          snapPoint: payload.snapPoint as MagicDrawerSnapPoint,
           interpolate: true,
           duration: payload.duration,
         })
