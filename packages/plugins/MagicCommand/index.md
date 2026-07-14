@@ -232,7 +232,7 @@ The MagicCommandProvider wraps the command palette and configures all child comp
           description: 'Refer to the [options table](#options) for details.'
         },
         {
-          label: 'MagicMenuOptions'
+          label: 'MagicCommandOptions'
         },
         {
           label: 'false'

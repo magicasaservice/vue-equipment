@@ -153,7 +153,7 @@ bun install @nuxt/kit @vueuse/core defu
           description: 'Refer to the [options table](#options) for details.'
         },
         {
-          label: 'MagicMenuOptions'
+          label: 'MagicMarqueeOptions'
         },
         {
           label: 'false'

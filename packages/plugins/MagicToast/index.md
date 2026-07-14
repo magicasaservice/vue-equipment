@@ -162,7 +162,7 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
           description: 'Refer to the [options table](#options) for details.'
         },
         {
-          label: 'MagicMenuOptions'
+          label: 'MagicToastOptions'
         },
         {
           label: 'false'
