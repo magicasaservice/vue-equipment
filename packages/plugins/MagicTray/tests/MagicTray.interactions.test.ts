@@ -398,10 +398,10 @@ describe('MagicTray - Interactions', () => {
     })
   })
 
-  describe('instant snap', () => {
+  describe('drag mode', () => {
     // Rest fully open at the first snap point (0), then drag the bottom edge
     // far up in one move, without releasing, to see whether the point commits
-    // mid-drag (instant) or only once the pointer is released (free).
+    // mid-drag ('snap') or only once the pointer is released ('free').
     const base = {
       snapPoints: { bottom: [0, 0.5, 1] },
       threshold: { distance: 8, momentum: 99999 },
@@ -422,9 +422,9 @@ describe('MagicTray - Interactions', () => {
       container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
 
     it('commits to the nearest point mid-drag, before release', async () => {
-      const container = await mountOpenTray(TrayId.OptSnapInstant, {
+      const container = await mountOpenTray(TrayId.OptDragModeSnap, {
         ...base,
-        snap: { instant: true },
+        drag: { mode: 'snap' },
       })
 
       const handle = container.querySelector(
@@ -442,8 +442,8 @@ describe('MagicTray - Interactions', () => {
       document.dispatchEvent(pointer('pointerup', 20))
     })
 
-    it('leaves free (non-instant) sides following the pointer until release', async () => {
-      const container = await mountOpenTray(TrayId.OptSnapFree, base)
+    it('leaves free sides following the pointer until release', async () => {
+      const container = await mountOpenTray(TrayId.OptDragModeFree, base)
 
       const handle = container.querySelector(
         '.magic-tray-handle[data-side="bottom"]'
@@ -461,10 +461,10 @@ describe('MagicTray - Interactions', () => {
       await expect.poll(() => active(container), { timeout: 2000 }).toBe('1')
     })
 
-    it('the per-side object form scopes instant to that side', async () => {
-      const container = await mountOpenTray(TrayId.OptSnapInstantObject, {
+    it('the per-side object form scopes snap mode to that side', async () => {
+      const container = await mountOpenTray(TrayId.OptDragModeSnapObject, {
         ...base,
-        snap: { instant: { bottom: true } },
+        drag: { mode: { bottom: 'snap' } },
       })
 
       const handle = container.querySelector(

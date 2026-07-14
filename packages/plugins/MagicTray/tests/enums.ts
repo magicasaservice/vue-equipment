@@ -36,9 +36,9 @@ export enum TrayId {
   OptThresholdDirDown = 'opt-threshold-dir-down',
   OptSnapModeStep = 'opt-snap-mode-step',
   OptSnapModeClosest = 'opt-snap-mode-closest',
-  OptSnapInstant = 'opt-snap-instant',
-  OptSnapInstantObject = 'opt-snap-instant-object',
-  OptSnapFree = 'opt-snap-free',
+  OptDragModeSnap = 'opt-drag-mode-snap',
+  OptDragModeSnapObject = 'opt-drag-mode-snap-object',
+  OptDragModeFree = 'opt-drag-mode-free',
   // magnetism
   MagneticLeft = 'magnetic-left',
   MagneticInner = 'magnetic-inner',
@@ -62,10 +62,8 @@ export enum TrayId {
   MagneticInvalid = 'magnetic-invalid',
   // new features
   EventWillSnapTo = 'event-will-snap-to',
-  EventStaticClick = 'event-static-click',
-  EventStaticClickDrag = 'event-static-click-drag',
-  EventStaticClickInstantCommit = 'event-static-click-instant-commit',
-  EventStaticClickInstantStay = 'event-static-click-instant-stay',
+  EventHandleClickTap = 'event-handle-click-tap',
+  EventHandleClickDrag = 'event-handle-click-drag',
   MagneticVirtual = 'magnetic-virtual',
   OptThresholdRevert = 'opt-threshold-revert',
   // edge cases

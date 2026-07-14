@@ -40,6 +40,7 @@
           :style="handleStyle(side)"
           @pointerdown="guardedPointerdown(side, $event)"
           @touchstart="guardedTouchstart(side, $event)"
+          @click.capture="onHandleClick"
         >
           <template
             v-if="slots[`handle-${side}`] || slots.handle"
@@ -122,6 +123,7 @@ const {
   hasDragged,
   onHandlePointerdown,
   onHandleTouchstart,
+  onHandleClick,
 } = useTrayDrag({
   id: instanceId,
   elRef,

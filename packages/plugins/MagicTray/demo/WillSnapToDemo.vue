@@ -83,6 +83,7 @@
 import { ref, reactive, onBeforeUnmount } from 'vue'
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
   MagicTrayOptions,
   TraySnapPoint,
@@ -134,8 +135,10 @@ function directionArrow(side: string, snapPoint: TraySnapPoint) {
 
 const log = ref<TrayWillSnapToPayload[]>([])
 
-function onWillSnapTo(payload: TrayWillSnapToPayload) {
-  if (payload.id !== id) {
+// willSnapTo is shared across plugins, so the payload is a union — narrow it
+// to this plugin’s shape via the side field before use
+function onWillSnapTo(payload: MagicEmitterEvents['willSnapTo']) {
+  if (payload.id !== id || !('side' in payload)) {
     return
   }
   willSnapTo[payload.side] = payload.snapPoint

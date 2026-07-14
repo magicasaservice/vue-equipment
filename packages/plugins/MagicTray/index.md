@@ -262,14 +262,14 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
-          label: 'snap.instant',
-          description: 'Always rest exactly on the snap point geometrically closest to the pointer while dragging, instead of following it freely and settling on release. A hard cut, no animation, and ignores threshold and snap.mode. Set per side with an object, or true for all draggable sides.'
+          label: 'drag.mode',
+          description: 'How a side follows the pointer. \'free\' follows it and settles on release. \'snap\' commits straight to the closest snap point while dragging — a hard cut, no animation, and ignores snap.mode. Set per side with an object.'
         },
         {
-          label: 'boolean | Partial<Record<TraySide, boolean>>'
+          label: '\'free\' | \'snap\' | Partial<Record<TraySide, \'free\' | \'snap\'>>'
         },
         {
-          label: 'false'
+          label: '\'free\''
         }
       ]
     },
@@ -347,7 +347,7 @@ To customize the tray, override the necessary options. Any custom options will b
       items: [
         {
           label: 'magnetism.virtual',
-          description: 'Run all magnetism calculations without applying them to the clip path or handle transforms. All geometry, scrubbing, and latching still run and the `magnet` event still fires — nothing is written to `state.magnetic`. Useful for driving custom effects purely through events.'
+          description: 'Run all magnetism calculations without moving the clip path or handle. Geometry, scrubbing, and latching still run and the `magnet` event still fires. Useful for driving custom effects purely through events.'
         },
         {
           label: 'boolean'
@@ -1019,13 +1019,6 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
     },
     {
       items: [
-        { label: 'staticClick' },
-        { label: '{ id, side, value }' },
-        { plaintext: true, label: 'Fired instead of a drag when a handle is pressed and released without crossing `threshold.lock` — e.g. to snap a side programmatically on tap.' }
-      ]
-    },
-    {
-      items: [
         { label: 'beforeSnap' },
         { label: '{ id, snapPoint: { side, point } }' },
         { plaintext: true, label: 'Fired before a side animates to a snap point.' }
@@ -1123,27 +1116,27 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 
 <ComponentPreview src="./demo/StepSnapDemo.vue" />
 
-### Instant Snap
+### Drag Mode
 
-With `snap.instant` set to `true`, the edge no longer follows the pointer freely — it always rests exactly on whichever snap point is geometrically closest to the pointer, updating the moment that changes, with no animation and no waiting for release. It ignores `threshold` and `snap.mode`, both of which are about how the tray settles after a free drag ends — a concept that doesn't apply once dragging is the snapping.
+With `drag.mode` set to `'snap'`, the edge commits straight to the snap point closest to the pointer while dragging, rather than following it freely and settling on release. The cut is immediate, with no animation, and ignores `snap.mode`. Set it per side with an object; sides left at the default `'free'` still follow the pointer.
 
-<ComponentPreview src="./demo/InstantSnapDemo.vue" />
+<ComponentPreview src="./demo/DragModeDemo.vue" />
 
 ### Will Snap To
 
-The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target actually changes, not on every move, making it efficient for driving UI reactions like previewing the next state or triggering haptics at the moment the user has committed to a position.
+The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target changes, not on every move. Use it to preview the next state or trigger haptics as the user commits to a position.
 
 <ComponentPreview src="./demo/WillSnapToDemo.vue" />
 
-### Static Click
+### Handle Click
 
-The `staticClick` event fires on a handle when it is pressed and released without crossing `threshold.lock` — a tap rather than a drag. Use it to trigger a programmatic `snapTo`, e.g. toggling a side open and closed, without any of the handle's own drag logic getting in the way.
+A handle passes clicks through to its slotted content, so a clickable element inside a `handle` slot works as expected. The click a drag synthesises on release is swallowed, so only a genuine tap fires it — dragging a handle never triggers its slotted element. Use it to toggle a side with `snapTo` on tap.
 
-<ComponentPreview src="./demo/StaticClickDemo.vue" />
+<ComponentPreview src="./demo/HandleClickDemo.vue" />
 
 ### Magnetic
 
-With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `’inner’` pulls in from inside, `’outer’` out from outside, `’both’` from either side.
+With `magnetism.sides`, an edge is pulled toward the cursor as it nears the handle, gaining as it closes in. Each snap point sets its direction: `'inner'` pulls in from inside, `'outer'` out from outside, `'both'` from either side.
 
 ::: tip
 If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radius` and `magnetism.pull` manually. Left at their defaults they derive from the handle’s position.
@@ -1153,6 +1146,6 @@ If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radiu
 
 ### Virtual Magnetism
 
-With `magnetism.virtual` set to `true`, all magnetism calculations run as normal — geometry, scrubbing, latching, and settle animations — but nothing is written to `state.magnetic`. The clip path and handle transforms stay frozen while the `magnet` event still fires with the full computed pull value. Use this to drive custom effects, parallax, or UI reactions purely through events.
+With `magnetism.virtual` set to `true`, magnetism runs as normal — geometry, scrubbing, and latching — but the clip path and handle stay put. The `magnet` event still fires with the full pull value, so you can drive custom effects or parallax through events instead.
 
 <ComponentPreview src="./demo/VirtualMagneticDemo.vue" />

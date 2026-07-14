@@ -8,7 +8,9 @@ const defaultOptions: RequiredMagicTrayOptions = {
   },
   snap: {
     mode: 'closest',
-    instant: false,
+  },
+  drag: {
+    mode: 'free',
   },
   handles: true,
   magnetism: {

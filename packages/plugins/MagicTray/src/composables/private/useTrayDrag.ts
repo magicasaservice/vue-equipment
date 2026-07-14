@@ -92,6 +92,11 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // The last emitted pending snap target — only emit willSnapTo on change
   let lastPendingTarget: number | undefined = undefined
 
+  // Swallow the click a drag synthesises on release, so dragging a handle never
+  // fires a slotted element’s click. A genuine tap leaves this false and passes
+  // through untouched.
+  let suppressClick = false
+
   let cancelPointerup: (() => void) | undefined = undefined
   let cancelPointermove: (() => void) | undefined = undefined
   let cancelPointercancel: (() => void) | undefined = undefined
@@ -109,7 +114,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const threshold = computed(() => state.options.threshold)
   const disabled = computed(() => state.options.disabled)
   const snapMode = computed(() => state.options.snap.mode)
-  const instant = computed(() => state.options.snap.instant)
+  const dragMode = computed(() => state.options.drag.mode)
 
   function snapReference(side: TraySide) {
     return snapMode.value === 'step'
@@ -117,10 +122,10 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       : state.dragged[side]
   }
 
-  function isInstant(side: TraySide) {
-    return typeof instant.value === 'boolean'
-      ? instant.value
-      : (instant.value?.[side] ?? false)
+  function isSnapDrag(side: TraySide) {
+    return typeof dragMode.value === 'string'
+      ? dragMode.value === 'snap'
+      : (dragMode.value?.[side] ?? 'free') === 'snap'
   }
 
   const hasDragged = computed(() => {
@@ -244,7 +249,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   // The raw pointer-relative inset for a side, rubber-banded past its outermost
-  // snap points. Shared by free dragging and the instant snap read-out below.
+  // snap points. Shared by free dragging and the snap-drag read-out below.
   function computeInset(side: TraySide, coord: number) {
     let newInset = 0
 
@@ -287,9 +292,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   // Commit straight to whichever configured point the pointer is nearest,
   // instead of following it freely — a hard cut, no interpolation. Leaves
-  // `lastDragged` untouched so `hasDragged` still reflects the gesture's start,
-  // which is what tells a real instant-snap drag apart from a static click.
-  function setInstant(side: TraySide, coord: number) {
+  // `lastDragged` untouched so `hasDragged` still reflects the gesture’s start,
+  // which is what lets a genuine tap on the handle pass its click through.
+  function snapDragged(side: TraySide, coord: number) {
     const inset = computeInset(side, coord)
     const target = findClosestSnapPoint({ side, value: inset })
 
@@ -407,8 +412,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     const coord = isVertical(side) ? e.clientY : e.clientX
 
-    if (isInstant(side)) {
-      setInstant(side, coord)
+    if (isSnapDrag(side)) {
+      snapDragged(side, coord)
     } else {
       setDragged(side, coord)
       checkMomentum(side)
@@ -428,10 +433,10 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     if (side) {
       // Read before resetDragState() clears draggingSide, or hasDragged would always be false
-      const isStaticClick = !hasDragged.value
+      suppressClick = hasDragged.value
 
-      // Instant sides are already resting on their committed point
-      if (!isInstant(side)) {
+      // Snap-drag sides are already resting on their committed point
+      if (!isSnapDrag(side)) {
         settle(side)
       }
 
@@ -440,14 +445,6 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         side,
         value: state.dragged[side],
       })
-
-      if (isStaticClick) {
-        emitter.emit('staticClick', {
-          id: toValue(id),
-          side,
-          value: state.dragged[side],
-        })
-      }
     }
 
     resetDragState()
@@ -478,8 +475,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     const coord = isVertical(side) ? firstTouch.clientY : firstTouch.clientX
 
-    if (isInstant(side)) {
-      setInstant(side, coord)
+    if (isSnapDrag(side)) {
+      snapDragged(side, coord)
     } else {
       setDragged(side, coord)
       checkMomentum(side)
@@ -499,10 +496,10 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
     if (side) {
       // Read before resetDragState() clears draggingSide, or hasDragged would always be false
-      const isStaticClick = !hasDragged.value
+      suppressClick = hasDragged.value
 
-      // Instant sides are already resting on their committed point
-      if (!isInstant(side)) {
+      // Snap-drag sides are already resting on their committed point
+      if (!isSnapDrag(side)) {
         settle(side)
       }
 
@@ -511,14 +508,6 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         side,
         value: state.dragged[side],
       })
-
-      if (isStaticClick) {
-        emitter.emit('staticClick', {
-          id: toValue(id),
-          side,
-          value: state.dragged[side],
-        })
-      }
     }
 
     resetDragState()
@@ -535,6 +524,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.magnetic[side] = 0
     state.lastDragged[side] = state.dragged[side]
     lastPendingTarget = undefined
+    suppressClick = false
     pointerdownTarget = target
 
     switch (side) {
@@ -624,6 +614,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     cancelTouchcancel = useEventListener(document, 'touchcancel', onTouchend)
 
     onTouchmove(e)
+  }
+
+  // Runs in the capture phase, ahead of any slotted element, so a click a drag
+  // synthesises on release never reaches it. A genuine tap passes through.
+  function onHandleClick(e: MouseEvent) {
+    if (suppressClick) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+    suppressClick = false
   }
 
   // Programmatic snapTo via emitter
@@ -767,5 +767,6 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     dimension,
     onHandlePointerdown,
     onHandleTouchstart,
+    onHandleClick,
   }
 }

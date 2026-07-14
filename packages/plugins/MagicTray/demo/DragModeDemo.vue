@@ -1,9 +1,9 @@
 <template>
   <magic-tray
-    id="magic-tray-instant-snap-demo"
+    id="magic-tray-drag-mode-demo"
     :options="{
       snapPoints: { bottom: [0, 0.25, 0.5, 0.75, 1] },
-      snap: { instant: true },
+      drag: { mode: 'snap' },
     }"
     style="--magic-tray-radius: 0.5rem"
   >
