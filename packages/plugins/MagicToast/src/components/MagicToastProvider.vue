@@ -25,7 +25,7 @@
         @mouseleave="onMouseleave"
       >
         <magic-toast-view
-          v-for="(view, index) in state.views"
+          v-for="(view, index) in state.views.visible"
           :id="view.id"
           :key="view.id"
           :index="index"

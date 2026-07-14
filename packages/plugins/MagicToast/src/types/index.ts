@@ -42,11 +42,15 @@ export interface ToastView {
   timeout: UseToastTimeout | undefined
 }
 
+export interface ToastViews {
+  visible: ToastView[]
+  hidden: ToastView[]
+}
+
 export interface ToastState {
   id: string
   refCount: number
-  views: ToastView[]
-  hiddenViews: ToastView[]
+  views: ToastViews
   expanded: boolean
   animating: boolean
   options: RequiredMagicToastOptions
@@ -61,6 +65,12 @@ export interface ActiveToast {
   }
 }
 
+export interface ToastDragPayload {
+  id: string
+  x: number
+  y: number
+}
+
 export interface ToastEvents {
   beforeEnter: string
   enter: string
@@ -68,6 +78,9 @@ export interface ToastEvents {
   beforeLeave: string
   leave: string
   afterLeave: string
+  beforeDrag: ToastDragPayload
+  drag: ToastDragPayload
+  afterDrag: ToastDragPayload
 }
 
 export interface MagicToastOptions {

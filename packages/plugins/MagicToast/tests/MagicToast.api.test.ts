@@ -531,7 +531,7 @@ describe('MagicToast - API', () => {
         .toHaveTextContent('0')
     })
 
-    it('hiddenCount tracks toasts stashed via hide()', async () => {
+    it('hidden tracks toasts stashed via hide()', async () => {
       const wrapper = defineComponent({
         components: { MagicToastProvider },
         setup() {
@@ -545,7 +545,7 @@ describe('MagicToast - API', () => {
           <div>
             <button data-test-id="${TestId.AddBtn}" @click="addToast">Add</button>
             <button data-test-id="${TestId.HideBtn}" @click="hide()">Hide</button>
-            <span data-test-id="${TestId.Count}">{{ hiddenCount }}</span>
+            <span data-test-id="${TestId.Count}">{{ hidden }}</span>
             <MagicToastProvider id="${ToastId.ApiHiddenCount}" />
           </div>
         `,

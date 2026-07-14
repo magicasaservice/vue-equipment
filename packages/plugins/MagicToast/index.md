@@ -225,7 +225,7 @@ The MagicToastProvider wraps the toaster and configures it according to the prov
       items: [
         {
           label: 'drag.direction',
-          description: 'Force the toast to drag out to the left, right, up or down, regardless of its position. Pass a same-axis pair, e.g. [\'left\', \'right\'] or [\'up\', \'down\'], to allow dragging either way along that axis. The toast fades out as it approaches the dismiss threshold. Set to \'auto\' to derive the drag direction from the position instead.'
+          description: 'Force the toast to drag out to the left, right, up or down, regardless of its position. Pass a same-axis pair, e.g. [\'left\', \'right\'] or [\'up\', \'down\'], to allow dragging either way along that axis. Set to \'auto\' to derive the drag direction from the position instead.'
         },
         { 
           label: 'string | string[]',
@@ -486,8 +486,18 @@ Renders a single toast inside the toaster. Used internally.
 Interact with a toaster instance from anywhere in your app. Pass the same `id` used on the corresponding `MagicToastProvider`.
 
 ```js
-const { add, remove, clear, hide, show, expand, collapse, toasts, count } =
-  useMagicToast('your-toast-id')
+const {
+  add,
+  remove,
+  clear,
+  hide,
+  show,
+  expand,
+  collapse,
+  toasts,
+  count,
+  hidden,
+} = useMagicToast('your-toast-id')
 ```
 
 #### add
@@ -633,9 +643,86 @@ collapse()
     },
     {
       items: [
-        { label: 'hiddenCount' },
+        { label: 'hidden' },
         { label: 'ComputedRef\<number\>', escape: true },
         { label: 'Number of toasts currently stashed via hide(). Useful for disabling hide()/show() controls when there’s nothing to hide or restore.' }
+      ]
+    }
+  ]"
+/>
+
+## Events
+
+The toaster emits the following events through [MagicEmitter](../MagicEmitter/). Listen to them with `useMagicEmitter`.
+
+<ProseTable
+  :columns="[
+    { label: 'Event' },
+    { label: 'Payload' },
+    { label: 'Description' }
+  ]"
+  :rows="[
+    {
+      items: [
+        { label: 'beforeEnter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired before a toast’s enter transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'enter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired when a toast’s enter transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterEnter' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired after a toast’s enter transition ends.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'beforeLeave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired before a toast’s leave transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'leave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired when a toast’s leave transition starts.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterLeave' },
+        { label: 'id' },
+        { plaintext: true, label: 'Fired after a toast’s leave transition ends.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'beforeDrag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired when a toast starts being dragged.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'drag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired continuously while a toast is dragged. `x` and `y` are the current translation in pixels.' }
+      ]
+    },
+    {
+      items: [
+        { label: 'afterDrag' },
+        { label: '{ id, x, y }' },
+        { plaintext: true, label: 'Fired when a toast stops being dragged.' }
       ]
     }
   ]"
@@ -703,6 +790,12 @@ Pass `draggable` to `add()` to override the provider’s default for a single to
 Use `drag.direction` to pin the drag-out side (`'left' | 'right' | 'up' | 'down'`) regardless of `position`, or pass a same-axis pair like `['left', 'right']` to allow dragging either way.
 
 <component-preview src="./demo/DragDirectionDemo.vue" />
+
+### Opacity Fade
+
+The toast does not fade on its own. Listen to the `drag` event, derive an opacity from the drag distance, and reset it on `afterDrag`.
+
+<component-preview src="./demo/OpacityFadeDemo.vue" />
 
 ### Clear All
 

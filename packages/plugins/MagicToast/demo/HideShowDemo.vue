@@ -2,7 +2,7 @@
   <div class="flex gap-2">
     <m-button @click="onClick">Add Toast</m-button>
     <m-button :disabled="toastCount === 0" @click="hide">Hide</m-button>
-    <m-button :disabled="hiddenCount === 0" @click="show">Show</m-button>
+    <m-button :disabled="hidden === 0" @click="show">Show</m-button>
   </div>
   <magic-toast-provider
     id="magic-toast-hide-show-demo"
@@ -33,7 +33,7 @@ const {
   hide,
   show,
   count: toastCount,
-  hiddenCount,
+  hidden,
 } = useMagicToast('magic-toast-hide-show-demo')
 
 function onClick() {

@@ -50,7 +50,7 @@ export function useToastView(instanceId: MaybeRef<string>) {
 
   function addView(args: AddViewArgs) {
     const view = createView(args)
-    state.views = [...state.views, view]
+    state.views.visible = [...state.views.visible, view]
 
     return view
   }
@@ -64,16 +64,16 @@ export function useToastView(instanceId: MaybeRef<string>) {
   }
 
   function deleteView(id: string) {
-    state.views = state.views?.filter((view) => view.id !== id)
-    state.hiddenViews = state.hiddenViews?.filter((view) => view.id !== id)
+    state.views.visible = state.views.visible?.filter((view) => view.id !== id)
+    state.views.hidden = state.views.hidden?.filter((view) => view.id !== id)
   }
 
-  // Only searches state.views — used by the enter/leave transition
+  // Only searches visible views — used by the enter/leave transition
   // callbacks in useToastCallback, which must not match toasts parked in
-  // hiddenViews (a hide() triggers a leave transition for those toasts,
+  // views.hidden (a hide() triggers a leave transition for those toasts,
   // and onAfterLeave would otherwise delete them right after hiding).
   function getView(id: string) {
-    return state.views?.find((view) => view.id === id)
+    return state.views.visible?.find((view) => view.id === id)
   }
 
   return {

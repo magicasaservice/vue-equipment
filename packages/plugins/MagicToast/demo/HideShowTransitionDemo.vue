@@ -4,7 +4,7 @@
     <m-button :disabled="toastCount === 0" @click="hide('zoom')">
       Hide (zoom)
     </m-button>
-    <m-button :disabled="hiddenCount === 0" @click="show('zoom')">
+    <m-button :disabled="hidden === 0" @click="show('zoom')">
       Show (zoom)
     </m-button>
   </div>
@@ -40,7 +40,7 @@ const {
   hide,
   show,
   count: toastCount,
-  hiddenCount,
+  hidden,
 } = useMagicToast('magic-toast-hide-show-transition-demo')
 
 function onClick() {

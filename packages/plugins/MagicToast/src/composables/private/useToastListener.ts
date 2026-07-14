@@ -10,7 +10,7 @@ export function useToastListener(instanceId: MaybeRef<string>) {
       state.expanded = true
 
       // Pause timeouts
-      state.views.forEach((view) => {
+      state.views.visible.forEach((view) => {
         view.timeout?.pause()
       })
     }
@@ -21,7 +21,7 @@ export function useToastListener(instanceId: MaybeRef<string>) {
       state.expanded = false
 
       // Play timeouts
-      state.views.forEach((view) => {
+      state.views.visible.forEach((view) => {
         view.timeout?.play()
       })
     }

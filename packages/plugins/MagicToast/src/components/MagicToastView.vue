@@ -57,8 +57,8 @@ magicError.assert(instanceId, {
 const { initializeState } = useToastState(instanceId)
 const state = initializeState()
 
-const count = computed(() => state.views.length)
-const view = computed(() => state.views[index])
+const count = computed(() => state.views.visible.length)
+const view = computed(() => state.views.visible[index])
 const reversedIndex = computed(() => count.value - index - 1)
 
 magicError.assert(view.value, {
@@ -68,7 +68,7 @@ magicError.assert(view.value, {
 
 const height = computed(() => `${view.value?.dimensions?.height}px`)
 const offset = computed(() => {
-  const mapped = state.views
+  const mapped = state.views.visible
     .slice(index + 1)
     .reduce((acc, view) => acc + (view.dimensions?.height ?? 0), 0)
 

@@ -100,20 +100,9 @@ export function useToastDrag(args: UseToastDragArgs) {
     return hasDraggedX || hasDraggedY
   })
 
-  const style = computed(() => {
-    const transform = `translate(${draggedX.value}px, ${draggedY.value}px)`
-
-    // Fade the toast out over a distance well past the dismiss threshold,
-    // so it reads as gradual rather than abrupt. Uses whichever axis is
-    // actually being dragged (X for left/right, Y for top/bottom).
-    const isHorizontal = position === 'left' || position === 'right'
-    const dragged = isHorizontal ? draggedX.value : draggedY.value
-    const distance = Math.abs(dragged)
-    const fadeDistance = toValue(threshold).distance * 4
-    const opacity = 1 - Math.min(distance / fadeDistance, 1)
-
-    return `transform: ${transform}; opacity: ${opacity}`
-  })
+  const style = computed(
+    () => `transform: translate(${draggedX.value}px, ${draggedY.value}px)`
+  )
 
   // Private functions
   const emitter = useMagicEmitter()
@@ -233,23 +222,37 @@ export function useToastDrag(args: UseToastDragArgs) {
   function setDragged({ x, y }: { x: number; y: number }) {
     if (isHorizontalOverride) {
       const raw = x - originX.value
-      draggedX.value =
-        allowLeft && allowRight
-          ? raw
-          : allowLeft
-            ? Math.min(raw, 0)
-            : Math.max(raw, 0)
+
+      switch (true) {
+        case allowLeft && allowRight:
+          draggedX.value = raw
+          break
+        case allowLeft:
+          draggedX.value = Math.min(raw, 0)
+          break
+        default:
+          draggedX.value = Math.max(raw, 0)
+          break
+      }
+
       return
     }
 
     if (isVerticalOverride) {
       const raw = y - originY.value
-      draggedY.value =
-        allowUp && allowDown
-          ? raw
-          : allowUp
-            ? Math.min(raw, 0)
-            : Math.max(raw, 0)
+
+      switch (true) {
+        case allowUp && allowDown:
+          draggedY.value = raw
+          break
+        case allowUp:
+          draggedY.value = Math.min(raw, 0)
+          break
+        default:
+          draggedY.value = Math.max(raw, 0)
+          break
+      }
+
       return
     }
 
@@ -333,7 +336,7 @@ export function useToastDrag(args: UseToastDragArgs) {
     // Only if not expanded via hover
     // Mouseenter/leave take precedence
     if (state.options.layout?.expand !== 'hover' && state.expanded) {
-      state.views.forEach((view) => {
+      state.views.visible.forEach((view) => {
         view.timeout?.play()
       })
     }
@@ -402,7 +405,7 @@ export function useToastDrag(args: UseToastDragArgs) {
       dragging.value = true
 
       // Pause timeouts
-      state.views.forEach((view) => {
+      state.views.visible.forEach((view) => {
         view.timeout?.pause()
       })
 
