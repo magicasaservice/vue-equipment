@@ -1,4 +1,4 @@
-import { onScopeDispose, ref, shallowRef } from 'vue'
+import { onScopeDispose, shallowRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { Coordinates, MenuView } from '../../types'
 
@@ -20,7 +20,7 @@ type IsPointInRectangleArgs = {
 export function useMenuCursor(view: MenuView, debug = false) {
   // Private state
   let cancelListener = new AbortController()
-  const coords = ref<Coordinates[]>([
+  const coords = shallowRef<Coordinates[]>([
     { x: 0, y: 0 },
     { x: 0, y: 0 },
     { x: 0, y: 0 },

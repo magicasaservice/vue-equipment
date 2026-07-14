@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  shallowRef,
   inject,
   computed,
   onMounted,
@@ -35,7 +35,7 @@ interface MagicScrollMotionProps {
 const { progress, sequence, sequenceOptions } =
   defineProps<MagicScrollMotionProps>()
 
-const animation = ref<AnimationPlaybackControls | undefined>(undefined)
+const animation = shallowRef<AnimationPlaybackControls | undefined>(undefined)
 const elRef = useTemplateRef('el')
 
 const injectedProgress = inject(
