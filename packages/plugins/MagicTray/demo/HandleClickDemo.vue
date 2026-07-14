@@ -11,17 +11,13 @@
             <div class="bg-surface-base h-full w-full" />
           </template>
           <template #handle="{ side }">
-            <button
-              class="bg-surface text-surface-base rounded-[0.25rem] px-3 py-1 text-sm"
-              @click="toggle(side)"
-            >
-              {{ handleLabel(side) }}
-            </button>
+            <button class="bg-surface h-full w-full" @click="toggle(side)" />
           </template>
           <div
             class="text-surface flex h-full w-full items-center justify-center p-8 text-center"
           >
-            Tap a handle button to toggle it, drag to move freely
+            Click a handle button to toggle <br />
+            or drag to move freely
           </div>
         </magic-tray-content>
       </magic-tray-provider>
@@ -45,10 +41,6 @@ const options: MagicTrayOptions = {
 }
 
 const { snapTo, activeSnapPoint } = useMagicTray(id, options)
-
-function handleLabel(side: TraySide) {
-  return activeSnapPoint.value[side] === 0 ? 'Close' : 'Open'
-}
 
 // Toggle the side between its open and closed snap points on a genuine tap.
 // A drag suppresses the click, so the handle still moves freely.

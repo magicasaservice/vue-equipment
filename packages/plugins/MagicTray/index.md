@@ -1118,19 +1118,19 @@ With `snap.mode` set to `'step'`, the edge advances to the adjacent snap point o
 
 ### Drag Mode
 
-With `drag.mode` set to `'snap'`, the edge commits straight to the snap point closest to the pointer while dragging, rather than following it freely and settling on release. The cut is immediate, with no animation, and ignores `snap.mode`. Set it per side with an object; sides left at the default `'free'` still follow the pointer.
+With `drag.mode` set to `'snap'`, the edge commits straight to the snap point closest to the pointer while dragging. The cut is immediate, with no animation, and ignores `snap.mode`.
 
 <ComponentPreview src="./demo/DragModeDemo.vue" />
 
 ### Will Snap To
 
-The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target changes, not on every move. Use it to preview the next state or trigger haptics as the user commits to a position.
+The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target changes, not on every move.
 
 <ComponentPreview src="./demo/WillSnapToDemo.vue" />
 
 ### Handle Click
 
-A handle passes clicks through to its slotted content, so a clickable element inside a `handle` slot works as expected. The click a drag synthesises on release is swallowed, so only a genuine tap fires it — dragging a handle never triggers its slotted element. Use it to toggle a side with `snapTo` on tap.
+A handle passes clicks through to its slotted content, so a clickable element inside a `handle` slot works as expected.
 
 <ComponentPreview src="./demo/HandleClickDemo.vue" />
 
@@ -1146,6 +1146,6 @@ If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radiu
 
 ### Virtual Magnetism
 
-With `magnetism.virtual` set to `true`, magnetism runs as normal — geometry, scrubbing, and latching — but the clip path and handle stay put. The `magnet` event still fires with the full pull value, so you can drive custom effects or parallax through events instead.
+With `magnetism.virtual` set to `true`, magnetism is still calucalted, but the clip path and handle stay put. The `magnet` event still fires, so you can drive custom effects such as transforms or parallax.
 
 <ComponentPreview src="./demo/VirtualMagneticDemo.vue" />
