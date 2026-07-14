@@ -1,38 +1,38 @@
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 import type { EasingKey } from '@maas/vue-equipment/composables/useEasings'
 
-export type TraySide = 'top' | 'right' | 'bottom' | 'left'
+export type MagicTraySide = 'top' | 'right' | 'bottom' | 'left'
 
-export type TraySnapPoint = number | `${number}px`
+export type MagicTraySnapPoint = number | `${number}px`
 
-export interface TraySnapPointPayload {
-  side: TraySide
-  point: TraySnapPoint
+export interface MagicTraySnapPointPayload {
+  side: MagicTraySide
+  point: MagicTraySnapPoint
 }
 
 // Shared payload for the per-side value events (drag, progress, magnet)
-export interface TraySidePayload {
-  side: TraySide
+export interface MagicTraySidePayload {
+  side: MagicTraySide
   value: number
 }
 
-export type TraySnapMode = 'closest' | 'step'
+export type MagicTraySnapMode = 'closest' | 'step'
 
-export type TrayDragMode = 'free' | 'snap'
+export type MagicTrayDragMode = 'free' | 'snap'
 
-export type TraySnapPoints = Partial<Record<TraySide, TraySnapPoint[]>>
+export type TraySnapPoints = Partial<Record<MagicTraySide, MagicTraySnapPoint[]>>
 
 // Which approach arms a snap point
 export type TrayMagneticDirection = 'inner' | 'outer' | 'both'
 
 // A per side mapping of individual snap points and their direction
 export type TrayMagneticSide = Partial<
-  Record<TraySnapPoint, TrayMagneticDirection>
+  Record<MagicTraySnapPoint, TrayMagneticDirection>
 >
 
 export type TrayMagneticSides =
   | false
-  | Partial<Record<TraySide, TrayMagneticSide>>
+  | Partial<Record<MagicTraySide, TrayMagneticSide>>
 
 // The scrub band, as perpendicular distances from the resting edge on the
 // approach side: `start` is where the pull engages, `stop` where it tops out and
@@ -48,22 +48,22 @@ export interface TrayMagnetism {
   virtual?: boolean
 }
 
-export type TraySideRecord<T> = Record<TraySide, T>
+export type TraySideRecord<T> = Record<MagicTraySide, T>
 
-export type TrayTransformAxis = 'both' | 'x' | 'y'
+export type MagicTrayTransformAxis = 'both' | 'x' | 'y'
 
 export interface MagicTrayOptions {
   tag?: 'div' | 'dialog' | 'main' | 'section' | 'article' | 'aside' | 'nav'
   snapPoints?: TraySnapPoints
   snap?: {
-    mode?: TraySnapMode
+    mode?: MagicTraySnapMode
   }
   drag?: {
     // 'free' follows the pointer and settles on release; 'snap' commits
     // straight to the nearest snap point while dragging, no free follow
-    mode?: TrayDragMode | Partial<Record<TraySide, TrayDragMode>>
+    mode?: MagicTrayDragMode | Partial<Record<MagicTraySide, MagicTrayDragMode>>
   }
-  handles?: boolean | Partial<Record<TraySide, boolean>>
+  handles?: boolean | Partial<Record<MagicTraySide, boolean>>
   magnetism?: TrayMagnetism
   threshold?: {
     lock?: number
@@ -77,7 +77,7 @@ export interface MagicTrayOptions {
     }
   }
   initial?: {
-    snapPoints?: Partial<Record<TraySide, TraySnapPoint>>
+    snapPoints?: Partial<Record<MagicTraySide, MagicTraySnapPoint>>
     transition?: boolean
   }
   disabled?: boolean
@@ -97,7 +97,7 @@ export interface TrayState {
   refCount: number
   dragStart: Date | undefined
   dragging: boolean
-  draggingSide: TraySide | undefined
+  draggingSide: MagicTraySide | undefined
   interpolateTo: number | undefined
   origin: number
   dragged: TraySideRecord<number>
@@ -105,7 +105,7 @@ export interface TrayState {
   snapped: TraySideRecord<number>
   lastDragged: TraySideRecord<number>
   relDirection: TraySideRecord<'below' | 'above' | 'absolute'>
-  activeSnapPoint: Partial<Record<TraySide, TraySnapPoint>>
+  activeSnapPoint: Partial<Record<MagicTraySide, MagicTraySnapPoint>>
   progress: TraySideRecord<number>
   overshoot: {
     outer: TraySideRecord<number>
@@ -115,30 +115,30 @@ export interface TrayState {
   options: RequiredMagicTrayOptions
 }
 
-export interface TrayWillSnapToPayload {
+export interface MagicTrayWillSnapToPayload {
   id: string
-  side: TraySide
-  snapPoint: TraySnapPoint
+  side: MagicTraySide
+  snapPoint: MagicTraySnapPoint
 }
 
 export type TrayEvents = {
   beforeSnap: {
     id: string
-    snapPoint: TraySnapPointPayload
+    snapPoint: MagicTraySnapPointPayload
   }
   snapTo: {
     id: string
-    snapPoint: TraySnapPointPayload
+    snapPoint: MagicTraySnapPointPayload
     duration?: number
   }
   afterSnap: {
     id: string
-    snapPoint: TraySnapPointPayload
+    snapPoint: MagicTraySnapPointPayload
   }
-  beforeDrag: { id: string } & TraySidePayload
-  drag: { id: string } & TraySidePayload
-  afterDrag: { id: string } & TraySidePayload
-  progress: { id: string } & TraySidePayload
-  magnet: { id: string } & TraySidePayload
-  willSnapTo: TrayWillSnapToPayload
+  beforeDrag: { id: string } & MagicTraySidePayload
+  drag: { id: string } & MagicTraySidePayload
+  afterDrag: { id: string } & MagicTraySidePayload
+  progress: { id: string } & MagicTraySidePayload
+  magnet: { id: string } & MagicTraySidePayload
+  willSnapTo: MagicTrayWillSnapToPayload
 }

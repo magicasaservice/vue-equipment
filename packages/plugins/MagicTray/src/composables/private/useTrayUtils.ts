@@ -1,5 +1,5 @@
 import { rubberband } from '@maas/vue-equipment/utils'
-import type { TraySide } from '../../types'
+import type { MagicTraySide } from '../../types'
 
 export function useTrayUtils() {
   // Clamp to [min, max], allowing rubber-band travel up to `outer` pixels past
@@ -23,12 +23,12 @@ export function useTrayUtils() {
   }
 
   // The axis a given side is dragged along
-  function isVertical(side: TraySide) {
+  function isVertical(side: MagicTraySide) {
     return side === 'top' || side === 'bottom'
   }
 
   // The side opposite to the given side
-  function oppositeSide(side: TraySide): TraySide {
+  function oppositeSide(side: MagicTraySide): MagicTraySide {
     switch (side) {
       case 'top':
         return 'bottom'

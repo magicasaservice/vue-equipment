@@ -86,9 +86,9 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
   MagicTrayOptions,
-  TraySnapPoint,
-  TraySnapPointPayload,
-  TrayWillSnapToPayload,
+  MagicTraySnapPoint,
+  MagicTraySnapPointPayload,
+  MagicTrayWillSnapToPayload,
 } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-will-snap-to-demo'
@@ -108,7 +108,7 @@ const { activeSnapPoint } = useMagicTray(id, options)
 const emitter = useMagicEmitter()
 
 // The pending snap target per side during drag — null when not dragging
-const willSnapTo = reactive<Record<string, TraySnapPoint | null>>({
+const willSnapTo = reactive<Record<string, MagicTraySnapPoint | null>>({
   left: null,
   right: null,
 })
@@ -118,7 +118,7 @@ function dotClass(side: string, point: number) {
     return 'bg-warning-solid'
   }
   if (
-    (activeSnapPoint.value as Record<string, TraySnapPoint | undefined>)[
+    (activeSnapPoint.value as Record<string, MagicTraySnapPoint | undefined>)[
       side
     ] === point
   ) {
@@ -128,12 +128,12 @@ function dotClass(side: string, point: number) {
 }
 
 // Arrow reflects the spatial direction on screen
-function directionArrow(side: string, snapPoint: TraySnapPoint) {
+function directionArrow(side: string, snapPoint: MagicTraySnapPoint) {
   const p = Number(snapPoint)
   return side === 'right' ? (p === 0 ? '→' : '←') : p === 0 ? '←' : '→'
 }
 
-const log = ref<TrayWillSnapToPayload[]>([])
+const log = ref<MagicTrayWillSnapToPayload[]>([])
 
 // willSnapTo is shared across plugins, so the payload is a union — narrow it
 // to this plugin’s shape via the side field before use
@@ -148,7 +148,7 @@ function onWillSnapTo(payload: MagicEmitterEvents['willSnapTo']) {
   }
 }
 
-function isTraySnapPointPayload(v: unknown): v is TraySnapPointPayload {
+function isTraySnapPointPayload(v: unknown): v is MagicTraySnapPointPayload {
   return typeof v === 'object' && v !== null && 'side' in v && 'point' in v
 }
 

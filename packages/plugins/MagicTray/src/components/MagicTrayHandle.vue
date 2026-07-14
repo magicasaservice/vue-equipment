@@ -11,10 +11,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { TraySide } from '../types/index'
+import type { MagicTraySide } from '../types/index'
 
 interface MagicTrayHandleProps {
-  side: TraySide
+  side: MagicTraySide
 }
 
 const { side } = defineProps<MagicTrayHandleProps>()

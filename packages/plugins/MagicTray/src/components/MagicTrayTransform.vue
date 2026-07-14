@@ -13,10 +13,10 @@ import {
 import { useTrayState } from '../composables/private/useTrayState'
 import { MagicTrayInstanceId } from '../symbols'
 
-import type { TraySide, TrayTransformAxis } from '../types/index'
+import type { MagicTraySide, MagicTrayTransformAxis } from '../types/index'
 
 interface MagicTrayTransformProps {
-  axis?: TrayTransformAxis
+  axis?: MagicTrayTransformAxis
   factor?: number
   disabled?: boolean
 }
@@ -44,7 +44,7 @@ const mappedId = instanceId ?? ''
 const { initializeState } = useTrayState(mappedId)
 const state = initializeState()
 
-function clipDistance(side: TraySide) {
+function clipDistance(side: MagicTraySide) {
   return Math.max(0, state.dragged[side] - state.overshoot.outer[side])
 }
 

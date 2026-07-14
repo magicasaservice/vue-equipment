@@ -3,7 +3,7 @@ import { interpolate, clampValue } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useTrayUtils } from './useTrayUtils'
 
-import type { TrayState, TraySide, TraySnapPoint } from '../../types'
+import type { TrayState, MagicTraySide, MagicTraySnapPoint } from '../../types'
 
 type UseTraySnapArgs = {
   id: MaybeRef<string>
@@ -11,21 +11,21 @@ type UseTraySnapArgs = {
 }
 
 type SnapToArgs = {
-  side: TraySide
-  snapPoint: TraySnapPoint
+  side: MagicTraySide
+  snapPoint: MagicTraySnapPoint
   interpolate: boolean
   duration?: number
 }
 
 type InterpolateDraggedArgs = {
-  side: TraySide
+  side: MagicTraySide
   to: number
   duration?: number
   easing?: (t: number) => number
 }
 
 type FindClosestSnapPointArgs = {
-  side: TraySide
+  side: MagicTraySide
   value: number
   direction?: 'below' | 'above' | 'absolute'
 }
@@ -39,7 +39,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
   const animation = computed(() => state.options.animation)
 
   // The full extent a side can be inset by, based on the element rect
-  function dimension(side: TraySide) {
+  function dimension(side: MagicTraySide) {
     const rect = state.elRect
     if (!rect) {
       return 0
@@ -48,17 +48,17 @@ export function useTraySnap(args: UseTraySnapArgs) {
   }
 
   // The maximum inset a side can take without crossing the opposite side
-  function maxInset(side: TraySide) {
+  function maxInset(side: MagicTraySide) {
     return Math.max(0, dimension(side) - state.dragged[oppositeSide(side)])
   }
 
   // Reserved outer overshoot for a side (0 if the side is not draggable)
-  function padding(side: TraySide) {
+  function padding(side: MagicTraySide) {
     return state.overshoot.outer[side]
   }
 
   // Content extent along a side's axis, minus the outer overshoot on both ends
-  function contentExtent(side: TraySide) {
+  function contentExtent(side: MagicTraySide) {
     return Math.max(
       0,
       dimension(side) - padding(side) - padding(oppositeSide(side))
@@ -66,7 +66,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
   }
 
   // Map a snap point (percentage or pixel) to a pixel inset, offset by the padding
-  function mapSnapPoint(side: TraySide, snapPoint: TraySnapPoint) {
+  function mapSnapPoint(side: MagicTraySide, snapPoint: MagicTraySnapPoint) {
     const extent = contentExtent(side)
     if (!extent) {
       return undefined
@@ -87,7 +87,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
   }
 
   // Configured snap points mapped to pixels, deduplicated and sorted
-  function mappedSnapPoints(side: TraySide) {
+  function mappedSnapPoints(side: MagicTraySide) {
     const configured = snapPoints.value[side] ?? []
 
     const mapped = configured
@@ -101,9 +101,9 @@ export function useTraySnap(args: UseTraySnapArgs) {
   }
 
   // Map a pixel inset back to its original snap point input, for events
-  function snapPointsMap(side: TraySide) {
+  function snapPointsMap(side: MagicTraySide) {
     const configured = snapPoints.value[side] ?? []
-    const map: Record<number, TraySnapPoint> = {}
+    const map: Record<number, MagicTraySnapPoint> = {}
 
     for (const snapPoint of configured) {
       const mapped = mapSnapPoint(side, snapPoint)

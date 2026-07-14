@@ -29,11 +29,11 @@ import { computed } from 'vue'
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import type {
   MagicTrayOptions,
-  TraySide,
+  MagicTraySide,
 } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-reveal-demo'
-const sides: TraySide[] = ['top', 'right', 'bottom', 'left']
+const sides: MagicTraySide[] = ['top', 'right', 'bottom', 'left']
 
 const options: MagicTrayOptions = {
   snapPoints: {
@@ -54,7 +54,7 @@ const { state } = useMagicTray(id, options)
 
 // Roundedness tracks the first 8px of clip, maxing out at 0.5rem
 const radius = computed(() => {
-  const clip = (side: TraySide) =>
+  const clip = (side: MagicTraySide) =>
     Math.max(0, state.dragged[side] - state.overshoot.outer[side])
   const peek = Math.max(...sides.map(clip))
   return `${Math.min(1, peek / 8) * 0.5}rem`

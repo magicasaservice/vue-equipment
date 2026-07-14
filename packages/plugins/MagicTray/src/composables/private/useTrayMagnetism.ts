@@ -18,8 +18,8 @@ import { useTraySnap } from './useTraySnap'
 
 import type {
   TrayState,
-  TraySide,
-  TraySnapPoint,
+  MagicTraySide,
+  MagicTraySnapPoint,
   TrayMagneticSide,
   TrayMagneticRadius,
   TrayMagneticDirection,
@@ -30,7 +30,7 @@ type UseTrayMagnetismArgs = {
   elRef: Ref<HTMLElement | null>
   // v-for stores each handle ref as a one-element array
   handleRefs: Record<
-    TraySide,
+    MagicTraySide,
     Readonly<ShallowRef<ComponentPublicInstance[] | null>>
   >
   state: TrayState
@@ -45,7 +45,7 @@ type RadiusBand = {
   configured: boolean
 }
 
-const SIDES: TraySide[] = ['top', 'right', 'bottom', 'left']
+const SIDES: MagicTraySide[] = ['top', 'right', 'bottom', 'left']
 const EPSILON = 0.5
 
 export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
@@ -74,7 +74,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   // Tracks the computed pull offset per side. Always written on every frame;
   // in virtual mode state.magnetic is left at zero so clipPath and handle
   // transforms are untouched, but the values here still drive magnet events.
-  const magneticOffset = reactive<Record<TraySide, number>>({
+  const magneticOffset = reactive<Record<MagicTraySide, number>>({
     top: 0,
     right: 0,
     bottom: 0,
@@ -82,7 +82,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   })
 
   // Enabled, draggable sides that configure at least one magnetic snap point
-  const magneticSides = computed<TraySide[]>(() => {
+  const magneticSides = computed<MagicTraySide[]>(() => {
     return SIDES.filter((side) => {
       const draggable = (state.options.snapPoints[side]?.length ?? 0) > 0
       const config = sideConfig(side)
@@ -97,8 +97,8 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Resting insets at which each side is magnetic, with their direction. Cached
   // so the per-frame loop doesn’t re-resolve it on every pointer move.
-  const magneticPoints = computed<Record<TraySide, MagneticPoint[]>>(() => {
-    const result: Record<TraySide, MagneticPoint[]> = {
+  const magneticPoints = computed<Record<MagicTraySide, MagneticPoint[]>>(() => {
+    const result: Record<MagicTraySide, MagneticPoint[]> = {
       top: [],
       right: [],
       bottom: [],
@@ -123,7 +123,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   })
 
   // Last emitted progress per side, to only emit the magnetism event on change
-  const progress: Record<TraySide, number> = {
+  const progress: Record<MagicTraySide, number> = {
     top: 0,
     right: 0,
     bottom: 0,
@@ -131,7 +131,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   }
 
   // The effective max pull per side, kept to normalize the magnet progress
-  const pullPx: Record<TraySide, number> = {
+  const pullPx: Record<MagicTraySide, number> = {
     top: 0,
     right: 0,
     bottom: 0,
@@ -140,7 +140,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // The approach a side is armed from (signs the pull), or null while idle. A side
   // only pulls once the cursor has staged past the handle on the approach side.
-  const armedDir: Record<TraySide, 'inner' | 'outer' | null> = {
+  const armedDir: Record<MagicTraySide, 'inner' | 'outer' | null> = {
     top: null,
     right: null,
     bottom: null,
@@ -149,7 +149,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Whether a side’s pull has reached max and is holding. Only a latched pull
   // survives the cursor leaving the handle’s span; an unlatched one drops.
-  const latched: Record<TraySide, boolean> = {
+  const latched: Record<MagicTraySide, boolean> = {
     top: false,
     right: false,
     bottom: false,
@@ -157,13 +157,13 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   }
 
   // The in-flight settle tween per side, easing a collapsing pull back to rest
-  const settleId: Record<TraySide, number | undefined> = {
+  const settleId: Record<MagicTraySide, number | undefined> = {
     top: undefined,
     right: undefined,
     bottom: undefined,
     left: undefined,
   }
-  const settling: Record<TraySide, boolean> = {
+  const settling: Record<MagicTraySide, boolean> = {
     top: false,
     right: false,
     bottom: false,
@@ -184,13 +184,13 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Private functions
   // A side’s snap-point-to-direction record, or undefined if it’s not magnetic
-  function sideConfig(side: TraySide): TrayMagneticSide | undefined {
+  function sideConfig(side: MagicTraySide): TrayMagneticSide | undefined {
     const { sides } = magnetism.value
     return sides ? sides[side] : undefined
   }
 
   // A record key is a stringified snap point; coerce it back to its input type
-  function coercePoint(key: string): TraySnapPoint {
+  function coercePoint(key: string): MagicTraySnapPoint {
     return key.endsWith('px') ? (key as `${number}px`) : Number(key)
   }
 
@@ -220,7 +220,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // The active direction(s) for a side at its current rest, or null if it is
   // not resting at a magnetic snap point
-  function restDirection(side: TraySide): TrayMagneticDirection | null {
+  function restDirection(side: MagicTraySide): TrayMagneticDirection | null {
     const rest = state.snapped[side]
     const match = magneticPoints.value[side].find(
       (point) => Math.abs(point.inset - rest) < EPSILON
@@ -231,13 +231,13 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // The handle’s bounding rect, or null if no handle is mounted for the side.
   // v-for stores each ref as a one-element array; unwrap it to the handle.
-  function handleRect(side: TraySide): DOMRect | null {
+  function handleRect(side: MagicTraySide): DOMRect | null {
     const handle = unrefElement(handleRefs[side].value?.[0])
 
     return handle ? handle.getBoundingClientRect() : null
   }
 
-  function cancelSettle(side: TraySide) {
+  function cancelSettle(side: MagicTraySide) {
     if (settleId[side] !== undefined) {
       cancelAnimationFrame(settleId[side])
       settleId[side] = undefined
@@ -245,7 +245,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     settling[side] = false
   }
 
-  function resetSide(side: TraySide) {
+  function resetSide(side: MagicTraySide) {
     cancelSettle(side)
     magneticOffset[side] = 0
     if (!isVirtual.value && state.magnetic[side] !== 0) {
@@ -254,7 +254,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   }
 
   // Drop a side’s arming and latch, and clear its pull instantly
-  function disarm(side: TraySide) {
+  function disarm(side: MagicTraySide) {
     armedDir[side] = null
     latched[side] = false
     resetSide(side)
@@ -262,7 +262,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Ease a collapsing pull home with the snap animation instead of dropping it.
   // Runs on its own rAF, so it finishes after the cursor stops; a live pull cancels it.
-  function settleSide(side: TraySide) {
+  function settleSide(side: MagicTraySide) {
     if (settling[side]) {
       return
     }
@@ -331,7 +331,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   // positive inner), `overflow` (how far past the edge’s parallel span), and `center`
   // (the handle’s rest offset, its live pull removed so the anchor doesn’t chase it).
   function measureAxis(
-    side: TraySide,
+    side: MagicTraySide,
     x: number,
     y: number,
     rect: DOMRect,
@@ -415,7 +415,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   // Process one side for the frame: measure geometry, arm and scrub, then write the
   // pull (or ease a collapse home).
   function updateSide(
-    side: TraySide,
+    side: MagicTraySide,
     x: number,
     y: number,
     rect: DOMRect,

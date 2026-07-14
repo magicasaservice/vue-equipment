@@ -6,7 +6,7 @@ import { useMagicTray } from '../src/composables/useMagicTray'
 import { mountWithApp } from '../../tests/utils'
 import { TrayId, TestId } from './enums'
 
-import type { MagicTrayOptions, TraySide } from '../src/types/index'
+import type { MagicTrayOptions, MagicTraySide } from '../src/types/index'
 
 function createTray(
   id: TrayId,
@@ -78,7 +78,7 @@ const MAGNETIC = {
 function createMagneticTray(
   id: TrayId,
   options: MagicTrayOptions,
-  side: TraySide = 'left',
+  side: MagicTraySide = 'left',
   contentStyle = ''
 ) {
   return defineComponent({

@@ -6,16 +6,16 @@ import type {
   TrayState,
   MagicTrayOptions,
   RequiredMagicTrayOptions,
-  TraySide,
+  MagicTraySide,
 } from '../../types/index'
 
 const getTrayStateStore = createStateStore<TrayState[]>('MagicTray', () => [])
 
-function emptySides(): Record<TraySide, number> {
+function emptySides(): Record<MagicTraySide, number> {
   return { top: 0, right: 0, bottom: 0, left: 0 }
 }
 
-function emptyDirections(): Record<TraySide, 'below' | 'above' | 'absolute'> {
+function emptyDirections(): Record<MagicTraySide, 'below' | 'above' | 'absolute'> {
   return {
     top: 'absolute',
     right: 'absolute',

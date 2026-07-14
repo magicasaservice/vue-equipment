@@ -76,7 +76,7 @@ import { useTrayProgress } from '../composables/private/useTrayProgress'
 import MagicTrayHandle from './MagicTrayHandle.vue'
 import { MagicTrayInstanceId } from '../symbols'
 
-import type { TraySide } from '../types/index'
+import type { MagicTraySide } from '../types/index'
 
 defineOptions({
   inheritAttrs: false,
@@ -132,7 +132,7 @@ const {
 useTrayMagnetism({ id: instanceId, elRef, handleRefs, state })
 useTrayProgress({ id: instanceId, state })
 
-const visibleHandles = computed<TraySide[]>(() => {
+const visibleHandles = computed<MagicTraySide[]>(() => {
   const { handles } = state.options
   if (handles === false) {
     return []
@@ -143,13 +143,13 @@ const visibleHandles = computed<TraySide[]>(() => {
   return draggableSides.value.filter((side) => handles[side] === true)
 })
 
-function guardedPointerdown(side: TraySide, event: PointerEvent) {
+function guardedPointerdown(side: MagicTraySide, event: PointerEvent) {
   if (!disabled.value) {
     onHandlePointerdown(side, event)
   }
 }
 
-function guardedTouchstart(side: TraySide, event: TouchEvent) {
+function guardedTouchstart(side: MagicTraySide, event: TouchEvent) {
   if (!disabled.value) {
     onHandleTouchstart(side, event)
   }

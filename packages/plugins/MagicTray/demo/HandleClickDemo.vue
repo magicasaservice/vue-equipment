@@ -29,7 +29,7 @@
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import type {
   MagicTrayOptions,
-  TraySide,
+  MagicTraySide,
 } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-handle-click-demo'
@@ -44,7 +44,7 @@ const { snapTo, activeSnapPoint } = useMagicTray(id, options)
 
 // Toggle the side between its open and closed snap points on a genuine tap.
 // A drag suppresses the click, so the handle still moves freely.
-function toggle(side: TraySide) {
+function toggle(side: MagicTraySide) {
   const current = activeSnapPoint.value[side]
   snapTo(side, current === 0 ? 0.25 : 0)
 }

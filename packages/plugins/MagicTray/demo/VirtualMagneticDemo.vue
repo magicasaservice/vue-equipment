@@ -94,11 +94,11 @@ import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
   MagicTrayOptions,
-  TraySide,
+  MagicTraySide,
 } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-virtual-magnetic-demo'
-const sides: TraySide[] = ['left', 'right']
+const sides: MagicTraySide[] = ['left', 'right']
 
 const options: MagicTrayOptions = {
   snapPoints: {
@@ -121,18 +121,18 @@ const options: MagicTrayOptions = {
 const { state } = useMagicTray(id, options)
 const emitter = useMagicEmitter()
 
-const magnetValues = reactive<Record<TraySide, number>>({
+const magnetValues = reactive<Record<MagicTraySide, number>>({
   top: 0,
   right: 0,
   bottom: 0,
   left: 0,
 })
 
-function handleV(side: TraySide) {
+function handleV(side: MagicTraySide) {
   return state.draggingSide === side ? 1 : magnetValues[side]
 }
 
-function onMagnet(payload: { id: string; side: TraySide; value: number }) {
+function onMagnet(payload: { id: string; side: MagicTraySide; value: number }) {
   if (payload.id === id) {
     magnetValues[payload.side] = payload.value
   }

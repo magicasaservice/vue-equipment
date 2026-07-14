@@ -238,7 +238,7 @@ To customize the tray, override the necessary options. Any custom options will b
         },
         {
           label: 'TraySnapPoints',
-          description: 'Partial<Record<TraySide, Array<number + \'px\' | number>>>'
+          description: 'Partial<Record<MagicTraySide, Array<number + \'px\' | number>>>'
         },
         {
           label: '{ bottom: [0, 0.5, 1] }'
@@ -266,7 +266,7 @@ To customize the tray, override the necessary options. Any custom options will b
           description: 'How a side follows the pointer. \'free\' follows it and settles on release. \'snap\' commits straight to the closest snap point while dragging — a hard cut, no animation, and ignores snap.mode. Set per side with an object.'
         },
         {
-          label: '\'free\' | \'snap\' | Partial<Record<TraySide, \'free\' | \'snap\'>>'
+          label: '\'free\' | \'snap\' | Partial<Record<MagicTraySide, \'free\' | \'snap\'>>'
         },
         {
           label: '\'free\''
@@ -280,7 +280,7 @@ To customize the tray, override the necessary options. Any custom options will b
           description: 'Render the built-in, invisible drag handles. Set to false to disable all handles, or pass a per side object to enable handles selectively.'
         },
         {
-          label: 'boolean | Partial<Record<TraySide, boolean>>'
+          label: 'boolean | Partial<Record<MagicTraySide, boolean>>'
         },
         {
           label: 'true'
@@ -294,7 +294,7 @@ To customize the tray, override the necessary options. Any custom options will b
           description: 'Enable the magnetic pull per side by mapping its snap points to a direction: \'inner\' pulls in as the cursor nears from inside, \'outer\' out from outside, \'both\' from either side. Set to false to disable. Each snap point used must also exist in snapPoints.'
         },
         {
-          label: 'false | Partial<Record<TraySide, Partial<Record<TraySnapPoint, \'inner\' | \'outer\' | \'both\'>>>>'
+          label: 'false | Partial<Record<MagicTraySide, Partial<Record<MagicTraySnapPoint, \'inner\' | \'outer\' | \'both\'>>>>'
         },
         {
           label: 'false'
@@ -435,7 +435,7 @@ To customize the tray, override the necessary options. Any custom options will b
           description: 'Optionally provide an initial snap point per side for the tray to snap to.'
         },
         {
-          label: 'Partial<Record<TraySide, TraySnapPoint>>'
+          label: 'Partial<Record<MagicTraySide, MagicTraySnapPoint>>'
         },
         {
           label: '—'
@@ -661,7 +661,7 @@ Renders an invisible, draggable hit area along an edge. Has no appearance of its
     {
       items: [
         { label: 'side' },
-        { label: 'TraySide', description: '\'top\' | \'right\' | \'bottom\' | \'left\'' },
+        { label: 'MagicTraySide', description: '\'top\' | \'right\' | \'bottom\' | \'left\'' },
         { plaintext: true, label: 'The side this handle controls.' }
       ]
     }
@@ -837,7 +837,7 @@ Translates a nested layer alongside the clip. As an edge is dragged inward, the 
           description: 'Restrict the translation to a single axis.'
         },
         {
-          label: 'TrayTransformAxis',
+          label: 'MagicTrayTransformAxis',
           description: '\'x\' | \'y\' | \'both\''
         },
         {
@@ -964,14 +964,14 @@ The composable returns the tray’s reactive state and a set of functions to con
     {
       items: [
         { label: 'progress' },
-        { label: 'Ref\<Record\<TraySide, number\>\>', escape: true },
+        { label: 'Ref\<Record\<MagicTraySide, number\>\>', escape: true },
         { plaintext: true, label: 'Per side inset progress, 0 (open) to 1 (fully clipped).' }
       ]
     },
     {
       items: [
         { label: 'activeSnapPoint' },
-        { label: 'Ref\<Partial\<Record\<TraySide, TraySnapPoint\>\>\>', escape: true },
+        { label: 'Ref\<Partial\<Record\<MagicTraySide, MagicTraySnapPoint\>\>\>', escape: true },
         { plaintext: true, label: 'The snap point each side is currently snapped to.' }
       ]
     },

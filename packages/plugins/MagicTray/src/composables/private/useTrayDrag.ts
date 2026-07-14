@@ -33,14 +33,14 @@ import { useTraySnap } from './useTraySnap'
 import { useTrayUtils } from './useTrayUtils'
 import { useTrayState } from './useTrayState'
 
-import type { TraySide } from '../../types'
+import type { MagicTraySide } from '../../types'
 
 type UseTrayDragArgs = {
   id: MaybeRef<string>
   elRef: Ref<HTMLElement | null>
 }
 
-const SIDES: TraySide[] = ['top', 'right', 'bottom', 'left']
+const SIDES: MagicTraySide[] = ['top', 'right', 'bottom', 'left']
 
 export function useTrayDrag(args: UseTrayDragArgs) {
   const { id, elRef } = args
@@ -68,7 +68,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   } = useTraySnap({ id, state })
 
   // Drag range bounded by the outermost snap points, capped by the opposite side
-  function dragBounds(side: TraySide) {
+  function dragBounds(side: MagicTraySide) {
     const points = mappedSnapPoints(side)
     const geometricMax = maxInset(side)
 
@@ -83,7 +83,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   // The original snap point input that opens a side, for snapTo
-  function openSnapPoint(side: TraySide) {
+  function openSnapPoint(side: MagicTraySide) {
     const points = mappedSnapPoints(side)
 
     return points.length ? snapPointsMap(side)[points[0]!] : undefined
@@ -116,13 +116,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const snapMode = computed(() => state.options.snap.mode)
   const dragMode = computed(() => state.options.drag.mode)
 
-  function snapReference(side: TraySide) {
+  function snapReference(side: MagicTraySide) {
     return snapMode.value === 'step'
       ? state.lastDragged[side]
       : state.dragged[side]
   }
 
-  function isSnapDrag(side: TraySide) {
+  function isSnapDrag(side: MagicTraySide) {
     return typeof dragMode.value === 'string'
       ? dragMode.value === 'snap'
       : (dragMode.value?.[side] ?? 'free') === 'snap'
@@ -168,7 +168,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // Position a handle at the inner edge of the clip. The resting inset rides on
   // the box offset, the magnetic preview on a transform variable, so the per-frame
   // pull moves it on the compositor without a relayout (which flickers in Chrome).
-  function handleStyle(side: TraySide) {
+  function handleStyle(side: MagicTraySide) {
     const rest = `${state.dragged[side]}px`
     const magnetic = `${state.magnetic[side]}px`
 
@@ -250,7 +250,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   // The raw pointer-relative inset for a side, rubber-banded past its outermost
   // snap points. Shared by free dragging and the snap-drag read-out below.
-  function computeInset(side: TraySide, coord: number) {
+  function computeInset(side: MagicTraySide, coord: number) {
     let newInset = 0
 
     switch (side) {
@@ -278,7 +278,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     )
   }
 
-  function setDragged(side: TraySide, coord: number) {
+  function setDragged(side: MagicTraySide, coord: number) {
     const newInset = computeInset(side, coord)
 
     if (newInset === state.dragged[side]) {
@@ -294,7 +294,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // instead of following it freely — a hard cut, no interpolation. Leaves
   // `lastDragged` untouched so `hasDragged` still reflects the gesture’s start,
   // which is what lets a genuine tap on the handle pass its click through.
-  function snapDragged(side: TraySide, coord: number) {
+  function snapDragged(side: MagicTraySide, coord: number) {
     const inset = computeInset(side, coord)
     const target = findClosestSnapPoint({ side, value: inset })
 
@@ -320,7 +320,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     }
   }
 
-  function checkPosition(side: TraySide) {
+  function checkPosition(side: MagicTraySide) {
     const delta = state.dragged[side] - state.lastDragged[side]
 
     if (Math.abs(delta) > toValue(threshold).distance) {
@@ -337,7 +337,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     }
   }
 
-  function emitWillSnapTo(side: TraySide) {
+  function emitWillSnapTo(side: MagicTraySide) {
     const target = state.interpolateTo ?? state.snapped[side]
     if (target === lastPendingTarget) {
       return
@@ -356,7 +356,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   }
 
-  function checkMomentum(side: TraySide) {
+  function checkMomentum(side: MagicTraySide) {
     const elapsed = Date.now() - state.dragStart!.getTime()
     const distance = Math.abs(state.dragged[side] - state.lastDragged[side])
     const velocity = elapsed && distance ? distance / elapsed : 0
@@ -385,7 +385,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.interpolateTo = undefined
   }
 
-  function settle(side: TraySide) {
+  function settle(side: MagicTraySide) {
     if (state.interpolateTo || state.interpolateTo === 0) {
       interpolateDragged({ side, to: state.interpolateTo })
       state.snapped[side] = state.interpolateTo
@@ -514,7 +514,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     resetListeners()
   }
 
-  function beginDrag(side: TraySide, coord: number, target: HTMLElement) {
+  function beginDrag(side: MagicTraySide, coord: number, target: HTMLElement) {
     state.dragging = true
     state.draggingSide = side
     state.interpolateTo = undefined
@@ -547,7 +547,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   }
 
-  function onHandlePointerdown(side: TraySide, e: PointerEvent) {
+  function onHandlePointerdown(side: MagicTraySide, e: PointerEvent) {
     if (state.dragging || toValue(disabled)) {
       return
     }
@@ -585,7 +585,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     onPointermove(e)
   }
 
-  function onHandleTouchstart(side: TraySide, e: TouchEvent) {
+  function onHandleTouchstart(side: MagicTraySide, e: TouchEvent) {
     if (!isAndroid() || state.dragging || toValue(disabled)) {
       return
     }
