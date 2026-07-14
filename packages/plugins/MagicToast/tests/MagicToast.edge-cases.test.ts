@@ -243,11 +243,11 @@ describe('MagicToast - Edge Cases', () => {
           const api = useMagicToast(ToastId.EdgeDurationOverride)
 
           function addShort() {
-            api.add({ component: SimpleToast, duration: 200 })
+            api.add({ component: SimpleToast, options: { duration: 200 } })
           }
 
           function addLong() {
-            api.add({ component: SimpleToast, duration: 5000 })
+            api.add({ component: SimpleToast, options: { duration: 5000 } })
           }
 
           return { ...api, addShort, addLong }

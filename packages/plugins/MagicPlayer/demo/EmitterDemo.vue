@@ -55,7 +55,7 @@ function callback(
   payload: MagicEmitterEvents[keyof MagicEmitterEvents]
 ) {
   if (isVisible.value && payload === 'magic-player-emitter-demo') {
-    add({ component, duration: 5000, props: { event: id } })
+    add({ component, options: { duration: 5000 }, props: { event: id } })
   }
 }
 

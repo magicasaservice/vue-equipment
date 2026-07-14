@@ -19,7 +19,7 @@ export interface ToastView {
   component: object
   props?: MaybeRef<Record<string, unknown>>
   slots?: Slots
-  drag?: { disabled?: boolean }
+  options?: MagicToastAddOptions
   dimensions?: {
     height: number
     padding: {
@@ -65,7 +65,7 @@ export interface ActiveToast {
   }
 }
 
-export interface ToastDragPayload {
+export interface MagicToastDragPayload {
   id: string
   x: number
   y: number
@@ -78,9 +78,9 @@ export interface ToastEvents {
   beforeLeave: string
   leave: string
   afterLeave: string
-  beforeDrag: ToastDragPayload
-  drag: ToastDragPayload
-  afterDrag: ToastDragPayload
+  beforeDrag: MagicToastDragPayload
+  drag: MagicToastDragPayload
+  afterDrag: MagicToastDragPayload
 }
 
 export interface MagicToastOptions {
@@ -116,5 +116,10 @@ export interface MagicToastOptions {
     momentum?: number
   }
 }
+
+export type MagicToastAddOptions = Pick<
+  MagicToastOptions,
+  'duration' | 'drag' | 'threshold' | 'animation'
+>
 
 export type RequiredMagicToastOptions = RequireAllNested<MagicToastOptions>

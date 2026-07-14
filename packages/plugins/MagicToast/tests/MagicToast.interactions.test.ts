@@ -530,7 +530,7 @@ describe('MagicToast - Interactions', () => {
           function addToast() {
             api.add({
               component: SimpleToast,
-              drag: { disabled: !addDraggable },
+              options: { drag: { disabled: !addDraggable } },
             })
           }
           return { ...api, addToast }
@@ -767,7 +767,7 @@ describe('MagicToast - Interactions', () => {
         setup() {
           const api = useMagicToast(ToastId.IntTimeoutPause)
           function addToast() {
-            api.add({ component: SimpleToast, duration: 300 })
+            api.add({ component: SimpleToast, options: { duration: 300 } })
           }
           return { ...api, addToast }
         },

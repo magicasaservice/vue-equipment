@@ -544,20 +544,10 @@ Adds a toast to the stack and returns its `id`.
     {
       items: [
         {
-          label: 'duration',
-          description: 'Overrides the toaster’s duration option for this toast. Set to 0 to disable auto-dismiss.'
+          label: 'options',
+          description: 'Overrides provider options for this toast only — the per-toast subset: duration, drag, threshold and animation. e.g. { duration: 5000, drag: { disabled: true } }.'
         },
-        { label: 'number' },
-        { label: 'false' }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'drag',
-          description: 'Overrides the toaster’s drag options for this toast only, e.g. { disabled: true }.'
-        },
-        { label: '{ disabled?: boolean }' },
+        { label: 'MagicToastAddOptions' },
         { label: 'undefined' }
       ]
     },
@@ -779,11 +769,11 @@ Set `drag: { disabled: true }` on the provider to disable drag-to-dismiss for ev
 
 <component-preview src="./demo/NoDragDemo.vue" />
 
-### Per-Toast Draggable
+### Per-Toast Options
 
-Pass `drag` to `add()` to override the provider’s default for a single toast, without affecting the rest of the stack.
+Pass `options` to `add()` to override provider defaults for a single toast, without affecting the rest of the stack. It accepts the per-toast subset of the toaster options — `duration`, `drag`, `threshold` and `animation`.
 
-<component-preview src="./demo/PerToastDraggableDemo.vue" />
+<component-preview src="./demo/PerToastOptionsDemo.vue" />
 
 ### Drag Direction
 

@@ -2,14 +2,13 @@ import { computed, toValue, nextTick, type MaybeRef } from 'vue'
 import { useToastTimeout } from './private/useToastTimeout'
 import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
-import type { ToastView } from '../types'
+import type { ToastView, MagicToastAddOptions } from '../types'
 
 export interface AddArgs {
   component: ToastView['component']
   props?: ToastView['props']
   slots?: ToastView['slots']
-  duration?: number
-  drag?: ToastView['drag']
+  options?: MagicToastAddOptions
   id?: string
 }
 
@@ -37,10 +36,10 @@ export function useMagicToast(id: MaybeRef<string>) {
       })
     }
 
-    const { id, component, props, slots, duration, drag } = args
-    const view = initializeView({ id, component, props, slots, drag })
+    const { id, component, props, slots, options } = args
+    const view = initializeView({ id, component, props, slots, options })
 
-    const mappedDuration = duration ?? state.options.duration
+    const mappedDuration = options?.duration ?? state.options.duration
 
     // Remove after timeout
     if (mappedDuration > 0) {

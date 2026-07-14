@@ -1,4 +1,5 @@
 import { computed, onScopeDispose, toRefs, toValue, type MaybeRef } from 'vue'
+import { defu } from 'defu'
 import { useEventListener } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -25,18 +26,17 @@ export function useToastDrag(args: UseToastDragArgs) {
   const { initializeState } = useToastState(instanceId)
   const state = initializeState()
 
-  const { options } = toRefs(state)
+  // Per-toast overrides passed to add({ options }) take precedence over the
+  // provider options; anything absent falls back to the provider default.
   const {
     threshold,
     animation,
     position: anchorPosition,
     scrollLock,
     drag,
-  } = options.value
+  } = defu(view.options ?? {}, state.options)
 
-  // A toast added with `drag: { disabled }` overrides the provider’s
-  // default for that toast only.
-  const isDraggable = computed(() => !(view.drag?.disabled ?? drag.disabled))
+  const isDraggable = computed(() => !drag.disabled)
 
   // The drag axis/direction normally follows the toast's anchor position
   // (e.g. a 'left' toast drags out left). `drag.direction` lets consumers

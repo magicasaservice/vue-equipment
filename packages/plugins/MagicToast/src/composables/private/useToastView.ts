@@ -4,7 +4,7 @@ import { type ToastView } from '../../types'
 
 export type AddViewArgs = Pick<
   ToastView,
-  'component' | 'props' | 'slots' | 'drag'
+  'component' | 'props' | 'slots' | 'options'
 > & {
   id?: string
 }
@@ -22,13 +22,13 @@ export function useToastView(instanceId: MaybeRef<string>) {
   }
 
   function createView(args: CreateViewArgs) {
-    const { id = uuid(), props, slots, component, drag } = args
+    const { id = uuid(), props, slots, component, options } = args
 
     const view: ToastView = {
       component: markRaw(component),
       props,
       slots,
-      drag,
+      options,
       id,
       dragStart: undefined,
       dragging: false,
