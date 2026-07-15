@@ -34,6 +34,14 @@ export default defineNuxtModule<ModuleOptions>({
     const packages = ['plugins', 'composables', 'utils']
     nuxt.options.alias = nuxt.options.alias ?? {}
 
+    // Alias each plugin’s public `css` subpath to its `src/css` source
+    for (const plugin of plugins) {
+      const alias = `@maas/vue-equipment/plugins/${plugin.name}/css`
+      nuxt.options.alias[alias] =
+        nuxt.options.alias[alias] ??
+        resolver.resolve(`../plugins/${plugin.name}/src/css`)
+    }
+
     for (const pkg of packages) {
       nuxt.options.alias[`@maas/vue-equipment/${pkg}`] =
         nuxt.options.alias[`@maas/vue-equipment/${pkg}`] ??
