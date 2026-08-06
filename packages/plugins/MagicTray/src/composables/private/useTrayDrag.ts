@@ -58,6 +58,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
 
   const {
     dimension,
+    contentExtent,
     maxInset,
     mapSnapPoint,
     mappedSnapPoints,
@@ -656,14 +657,27 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     })
   }
 
+  // Sides whose initial snap point could not be applied yet because the
+  // element had no measurable extent — a transition or suspense boundary can
+  // keep it detached at mount. The resize observer retries them as soon as
+  // the element reports a real size.
+  const pendingInitialSides = new Set<MagicTraySide>()
+
   // Apply the configured initial snap points, otherwise open each side.
   // With `transition`, seed the open extreme and interpolate in.
-  async function applyInitial() {
+  async function applyInitial(sides?: Array<MagicTraySide>) {
     await getSizes()
 
     const { transition } = state.options.initial
 
-    for (const side of draggableSides.value) {
+    for (const side of sides ?? draggableSides.value) {
+      pendingInitialSides.delete(side)
+
+      if (!contentExtent(side)) {
+        pendingInitialSides.add(side)
+        continue
+      }
+
       const initial =
         state.options.initial.snapPoints?.[side] ?? openSnapPoint(side)
 
@@ -746,6 +760,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   resizeObserverEl = useResizeObserver(elRef, () => {
     useThrottleFn(async () => {
       await getSizes()
+      if (pendingInitialSides.size) {
+        await applyInitial([...pendingInitialSides])
+      }
       for (const side of draggableSides.value) {
         const active = state.activeSnapPoint[side]
         if (active !== undefined) {
