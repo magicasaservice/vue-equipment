@@ -1,5 +1,6 @@
 import type { AccordionEvents } from '../../../MagicAccordion/src/types/index'
 import type { CookieEvents } from '../../../MagicCookie/src/types/index'
+import type { DotMatrixEvents } from '../../../MagicDotMatrix/src/types/index'
 import type { DraggableEvents } from '../../../MagicDraggable/src/types/index'
 import type { DrawerEvents } from '../../../MagicDrawer/src/types/index'
 import type { ModalEvents } from '../../../MagicModal/src/types/index'
@@ -21,6 +22,7 @@ export type MagicEmitterEvents = Merge<
   [
     AccordionEvents,
     CookieEvents,
+    DotMatrixEvents,
     DraggableEvents,
     DrawerEvents,
     ModalEvents,

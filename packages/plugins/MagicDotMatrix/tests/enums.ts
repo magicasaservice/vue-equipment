@@ -1,0 +1,17 @@
+export enum MatrixId {
+  RenderDefault = 'render-default',
+  RenderActive = 'render-active',
+  OptDefaults = 'opt-defaults',
+  OptCssVars = 'opt-css-vars',
+  OptAutoplay = 'opt-autoplay',
+  ApiShape = 'api-shape',
+  ApiPause = 'api-pause',
+  ApiPlay = 'api-play',
+  ApiAdvance = 'api-advance',
+  ApiRestart = 'api-restart',
+  ApiFrameChange = 'api-frame-change',
+  ApiSeqReset = 'api-seq-reset',
+  ApiLoopOnce = 'api-loop-once',
+  ApiFinish = 'api-finish',
+  StateShared = 'state-shared',
+}

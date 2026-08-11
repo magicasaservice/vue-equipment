@@ -10,6 +10,7 @@ import ComponentPreview from './components/ComponentPreview.vue'
 import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins/MagicAccordion'
 import { MagicCommandPlugin } from '@maas/vue-equipment/plugins/MagicCommand'
 import { MagicCookiePlugin } from '@maas/vue-equipment/plugins/MagicCookie'
+import { MagicDotMatrixPlugin } from '@maas/vue-equipment/plugins/MagicDotMatrix'
 import { MagicDraggablePlugin } from '@maas/vue-equipment/plugins/MagicDraggable'
 import { MagicDrawerPlugin } from '@maas/vue-equipment/plugins/MagicDrawer'
 import { MagicMarqueePlugin } from '@maas/vue-equipment/plugins/MagicMarquee'
@@ -72,6 +73,7 @@ export default {
       MagicAccordionPlugin,
       MagicCommandPlugin,
       MagicCookiePlugin,
+      MagicDotMatrixPlugin,
       MagicDraggablePlugin,
       MagicDrawerPlugin,
       MagicMarqueePlugin,
