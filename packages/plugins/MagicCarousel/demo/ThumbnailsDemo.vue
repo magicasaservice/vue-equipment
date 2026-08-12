@@ -27,12 +27,12 @@
         >
           <button
             type="button"
-            class="demo-thumb bg-surface-base text-surface rounded-surface-sm flex h-full w-full items-center justify-center text-sm"
+            class="demo-thumb h-full w-full rounded-md"
             :data-selected="activeIndex === index - 1 || null"
             :aria-label="`Slide ${index}`"
             @click="snapTo(index - 1)"
           >
-            {{ index }}
+            <carousel-demo-card :index="index" size="sm" />
           </button>
         </magic-carousel-slide>
       </magic-carousel-view>
@@ -75,6 +75,9 @@ watch(activeIndex, (value) => snapThumbsTo(value))
 
 .demo-thumb[data-selected='true'] {
   opacity: 1;
+}
+
+.demo-thumb[data-selected='true'] > * {
   box-shadow: inset 0 0 0 1.5px currentColor;
 }
 </style>
