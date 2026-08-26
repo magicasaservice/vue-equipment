@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { offset } from '@floating-ui/dom'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'

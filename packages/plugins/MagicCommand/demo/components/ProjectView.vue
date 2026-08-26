@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton, MInput, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MButton, MInput, MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { projects } from '../data/search.json'
 
 const search = ref('')

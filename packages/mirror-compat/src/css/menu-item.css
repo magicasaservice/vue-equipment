@@ -1,0 +1,351 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-menu-item {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: var(--menu-item-dimension-height-md);
+  gap: var(--menu-item-dimension-gap-md);
+  border-radius: var(--menu-item-dimension-radius-md);
+  padding: 0 var(--menu-item-dimension-padding-container);
+  background: var(--menu-item-color-ghost-bg);
+  color: var(--menu-item-color-ghost-fg-label);
+  font-family: var(--menu-item-font-family);
+  font-weight: var(--menu-item-font-weight);
+  line-height: var(--menu-item-line-height);
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  transition: all 100ms linear;
+}
+
+.m-menu-item.-slot-start > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.m-menu-item.-slot-start > div:nth-child(2) {
+  flex: 1;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--menu-item-font-size-label-md);
+  overflow: hidden;
+}
+
+.m-menu-item:not(.-slot-start) > div:first-child {
+  flex: 1;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--menu-item-font-size-label-md);
+  padding-left: calc(
+    var(--menu-item-dimension-gap-md) +
+      var(--menu-item-dimension-padding-label-md)
+  );
+  overflow: hidden;
+}
+
+.m-menu-item.-slot-end > div:last-child {
+  display: flex;
+  align-items: center;
+  font-family: var(--menu-item-font-family-cmd);
+  font-weight: var(--menu-item-font-weight-cmd);
+  font-size: var(--menu-item-font-size-cmd-md);
+  line-height: var(--menu-item-line-height-cmd);
+  font-feature-settings: lining-nums tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.m-menu-item.-xs {
+  height: var(--menu-item-dimension-height-xs);
+  border-radius: var(--menu-item-dimension-radius-xs);
+  gap: var(--menu-item-dimension-gap-xs);
+}
+
+.m-menu-item.-xs:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-item-dimension-gap-xs) +
+      var(--menu-item-dimension-padding-label-xs)
+  );
+  font-size: var(--menu-item-font-size-label-xs);
+}
+
+.m-menu-item.-xs.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-item-font-size-label-xs);
+}
+
+.m-menu-item.-xs.-slot-end > div:last-child {
+  font-size: var(--menu-item-font-size-cmd-xs);
+}
+
+.m-menu-item.-sm {
+  height: var(--menu-item-dimension-height-sm);
+  border-radius: var(--menu-item-dimension-radius-sm);
+  gap: var(--menu-item-dimension-gap-sm);
+}
+
+.m-menu-item.-sm:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-item-dimension-gap-sm) +
+      var(--menu-item-dimension-padding-label-sm)
+  );
+  font-size: var(--menu-item-font-size-label-sm);
+}
+
+.m-menu-item.-sm.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-item-font-size-label-sm);
+}
+
+.m-menu-item.-sm.-slot-end > div:last-child {
+  font-size: var(--menu-item-font-size-cmd-sm);
+}
+
+.m-menu-item.-lg {
+  height: var(--menu-item-dimension-height-lg);
+  border-radius: var(--menu-item-dimension-radius-lg);
+  gap: var(--menu-item-dimension-gap-lg);
+}
+
+.m-menu-item.-lg:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-item-dimension-gap-lg) +
+      var(--menu-item-dimension-padding-label-lg)
+  );
+  font-size: var(--menu-item-font-size-label-lg);
+}
+
+.m-menu-item.-lg.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-item-font-size-label-lg);
+}
+
+.m-menu-item.-lg.-slot-end > div:last-child {
+  font-size: var(--menu-item-font-size-cmd-lg);
+}
+
+.m-menu-item-child {
+  display: inline-flex;
+  align-items: center;
+  line-height: var(--menu-item-line-height);
+  /* transition: all 100ms linear; */
+}
+
+.m-menu-item-child > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--menu-item-dimension-gap-md);
+}
+
+:is(.m-menu-item-child > div) > span {
+  display: contents;
+}
+
+:is(.m-menu-item-child.-label, .m-menu-item-child.-truncate)
+  > div
+  > span:first-child {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-menu-item-child.-spread {
+  width: 100%;
+}
+
+.m-menu-item-child.-spread > div {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.m-menu-item-child.-xs > div {
+  gap: var(--menu-item-dimension-gap-xs);
+}
+
+.m-menu-item-child.-xs.-start:not(.-label) {
+  padding-left: var(--menu-item-dimension-gap-xs);
+}
+
+.m-menu-item-child.-xs.-end:not(.-label) {
+  padding-right: var(--menu-item-dimension-gap-xs);
+}
+
+.m-menu-item-child.-xs.-label {
+  padding-right: var(--menu-item-dimension-padding-label-xs);
+}
+
+.m-menu-item-child.-xs > div > svg {
+  width: var(--menu-item-dimension-symbol-xs);
+  height: var(--menu-item-dimension-symbol-xs);
+}
+
+.m-menu-item-child.-sm > div {
+  gap: var(--menu-item-dimension-gap-sm);
+}
+
+.m-menu-item-child.-sm.-start:not(.-label) {
+  padding-left: var(--menu-item-dimension-gap-sm);
+}
+
+.m-menu-item-child.-sm.-end:not(.-label) {
+  padding-right: var(--menu-item-dimension-gap-sm);
+}
+
+.m-menu-item-child.-sm.-label {
+  padding-right: var(--menu-item-dimension-padding-label-sm);
+}
+
+.m-menu-item-child.-sm > div > svg {
+  width: var(--menu-item-dimension-symbol-sm);
+  height: var(--menu-item-dimension-symbol-sm);
+}
+
+.m-menu-item-child.-md > div {
+  gap: var(--menu-item-dimension-gap-md);
+}
+
+.m-menu-item-child.-md.-start:not(.-label) {
+  padding-left: var(--menu-item-dimension-gap-md);
+}
+
+.m-menu-item-child.-md.-end:not(.-label) {
+  padding-right: var(--menu-item-dimension-gap-md);
+}
+
+.m-menu-item-child.-md.-label {
+  padding-right: var(--menu-item-dimension-padding-label-md);
+}
+
+.m-menu-item-child.-md > div > svg {
+  width: var(--menu-item-dimension-symbol-md);
+  height: var(--menu-item-dimension-symbol-md);
+}
+
+.m-menu-item-child.-lg > div {
+  gap: var(--menu-item-dimension-gap-lg);
+}
+
+.m-menu-item-child.-lg.-start:not(.-label) {
+  padding-left: var(--menu-item-dimension-gap-lg);
+}
+
+.m-menu-item-child.-lg.-end:not(.-label) {
+  padding-right: var(--menu-item-dimension-gap-lg);
+}
+
+.m-menu-item-child.-lg.-label {
+  padding-right: var(--menu-item-dimension-padding-label-lg);
+}
+
+.m-menu-item-child.-lg > div > svg {
+  width: var(--menu-item-dimension-symbol-lg);
+  height: var(--menu-item-dimension-symbol-lg);
+}
+
+.m-menu-item:not(.-disabled) .m-menu-item-child.-end {
+  color: var(--menu-item-color-ghost-fg-cmd);
+  transition: all 100ms linear;
+}
+
+@media (hover: hover) {
+  .m-menu-item:not(.-disabled):hover {
+    background: var(--menu-item-color-ghost-bg-hover);
+  }
+
+  .m-menu-item:not(.-disabled):hover .m-menu-item-child.-end {
+    color: var(--menu-item-color-ghost-fg-cmd-hover);
+  }
+}
+
+.m-menu-item:not(.-disabled):active {
+  background: var(--menu-item-color-ghost-bg-active);
+}
+
+.m-menu-item.-selected:not(.-disabled) {
+  background: var(--menu-item-color-ghost-bg-hover);
+}
+
+.m-menu-item.-selected:not(.-disabled) .m-menu-item-child.-end {
+  color: var(--menu-item-color-ghost-fg-cmd-hover);
+}
+
+.m-menu-item.-subtle:not(.-disabled) {
+  background: var(--menu-item-color-subtle-bg);
+  color: var(--menu-item-color-subtle-fg-label);
+}
+
+.m-menu-item.-subtle:not(.-disabled) .m-menu-item-child.-end {
+  color: var(--menu-item-color-subtle-fg-cmd);
+}
+
+@media (hover: hover) {
+  .m-menu-item.-subtle:not(.-disabled):hover {
+    background: var(--menu-item-color-subtle-bg-hover);
+    color: var(--menu-item-color-subtle-fg-label-hover);
+  }
+
+  .m-menu-item.-subtle:not(.-disabled):hover .m-menu-item-child.-end {
+    color: var(--menu-item-color-subtle-fg-cmd-hover);
+  }
+}
+
+.m-menu-item.-subtle:not(.-disabled):active {
+  background: var(--menu-item-color-subtle-bg-active);
+}
+
+.m-menu-item.-subtle.-selected:not(.-disabled) {
+  background: var(--menu-item-color-subtle-bg-hover);
+  color: var(--menu-item-color-subtle-fg-label-hover);
+}
+
+.m-menu-item.-subtle.-selected:not(.-disabled) .m-menu-item-child.-end {
+  color: var(--menu-item-color-subtle-fg-cmd-hover);
+}
+
+.m-menu-item.-disabled {
+  cursor: not-allowed;
+  color: var(--menu-item-color-disabled-ghost-fg-label);
+}
+
+.m-menu-item.-disabled .m-menu-item-child.-end {
+  color: var(--menu-item-color-disabled-ghost-fg-cmd);
+  transition: all 100ms linear;
+}
+
+.m-menu-item.-disabled.-selected {
+  background: var(--menu-item-color-disabled-ghost-bg-hover);
+}
+
+.m-menu-item.-disabled.-selected .m-menu-item-child.-end {
+  color: var(--menu-item-color-disabled-ghost-fg-cmd-hover);
+}
+
+.m-menu-item.-disabled.-subtle {
+  background: var(--menu-item-color-disabled-subtle-bg);
+  color: var(--menu-item-color-disabled-subtle-fg-label);
+}
+
+.m-menu-item.-disabled.-subtle .m-menu-item-child.-end {
+  color: var(--menu-item-color-disabled-subtle-fg-cmd);
+}
+
+.m-menu-item.-disabled.-subtle.-selected {
+  background: var(--menu-item-color-disabled-subtle-bg-hover);
+  color: var(--menu-item-color-disabled-subtle-fg-label-hover);
+}
+
+.m-menu-item.-disabled.-subtle.-selected .m-menu-item-child.-end {
+  color: var(--menu-item-color-disabled-subtle-fg-cmd-hover);
+}

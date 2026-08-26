@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { nextTick } from 'vue'
 import { useData } from 'vitepress'
-import { MToggle } from '@maas/mirror/vue'
+import { MToggle } from 'mirror-compat'
 
 const { isDark } = useData()
 

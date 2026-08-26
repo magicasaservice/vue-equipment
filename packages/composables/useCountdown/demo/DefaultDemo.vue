@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 import {
   useCountdown,
   type DateTimeArray,

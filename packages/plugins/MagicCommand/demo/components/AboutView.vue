@@ -26,6 +26,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MButton, MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { about } from '../data/about.json'
 </script>

@@ -1,0 +1,422 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-select {
+  position: relative;
+  width: 100%;
+  height: var(--select-dimension-height-md);
+  gap: var(--select-dimension-gap-md);
+  padding: 0 var(--select-dimension-padding-md);
+  border-radius: var(--select-dimension-radius-md);
+  font-family: var(--select-font-family);
+  outline-color: var(--select-color-border);
+  outline-width: var(--select-dimension-border-md);
+  outline-offset: calc(-1 * var(--select-dimension-border-md));
+  outline-style: solid !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 100ms linear;
+  cursor: pointer;
+}
+.m-select * {
+  transition: all 100ms linear;
+}
+.m-select > select {
+  border-radius: var(--select-dimension-radius-md);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: transparent;
+  outline-style: solid;
+  outline-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.m-select > div {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0 var(--select-dimension-padding-label-md);
+  pointer-events: none;
+}
+.m-select > span {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: var(--select-font-weight-label);
+  font-size: var(--select-font-size-label-md);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.m-select:not(.-simple) > div > span {
+  position: relative;
+  height: 0;
+  opacity: 0;
+}
+.m-select > div > span {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: var(--select-font-weight-input);
+  font-size: 0px;
+  line-height: normal;
+  letter-spacing: var(--select-letter-spacing);
+  text-transform: var(--select-text-case);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.m-select > div > label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: var(--select-font-weight-input);
+  font-size: var(--select-font-size-input-md);
+  line-height: normal;
+}
+.m-select:focus-within,
+.m-select.-focused {
+  outline-color: var(--select-color-focus-border);
+}
+:is(.m-select:focus-within, .m-select.-focused) > div {
+  gap: calc(var(--select-dimension-gap-label-md));
+}
+:is(.m-select:focus-within, .m-select.-focused) > select {
+  outline-color: var(--select-color-focus-outline);
+  outline-width: var(--select-dimension-outline-focus);
+}
+.m-select.-filled > div {
+  gap: calc(var(--select-dimension-gap-label-md));
+}
+.m-select.-filled:not(.-simple) > div {
+  height: auto;
+}
+.m-select.-filled:not(.-simple) > div > label,
+.m-select:not(.-simple):focus-within > div > label {
+  font-weight: var(--select-font-weight-label);
+  font-size: var(--select-font-size-label-md);
+  height: auto;
+}
+.m-select.-filled:not(.-simple) > div > span,
+.m-select:not(.-simple):focus-within > div > span {
+  height: var(--select-font-size-input-md);
+  font-size: var(--select-font-size-input-md);
+  opacity: 1;
+}
+:is(.m-select:has(svg), .m-select.-icon-end, .m-select.-icon-start) svg {
+  width: var(--select-dimension-symbol-md);
+}
+.m-select.-slot-end:not(.m-select.-icon-end):not(.m-select.-icon-start) {
+  padding-right: var(--select-dimension-padding-slot-md);
+}
+.m-select.-slot-start:not(.m-select.-icon-end):not(.m-select.-icon-start) {
+  padding-left: var(--select-dimension-padding-slot-md);
+}
+:is(.m-select:not(.-disabled), .m-select:not(.-error)) > span {
+  color: var(--select-color-fg-label);
+}
+:is(.m-select:not(.-disabled), .m-select:not(.-error)) > div > span {
+  color: var(--select-color-fg);
+  background: transparent;
+}
+:is(.m-select:not(.-disabled), .m-select:not(.-error)) > div > label {
+  color: var(--select-color-fg-label);
+}
+.-filled:is(.m-select:not(.-disabled), .m-select:not(.-error)) > span {
+  color: var(--select-color-fg);
+}
+.m-select.-xs {
+  padding: 0 var(--select-dimension-padding-xs);
+  height: var(--select-dimension-height-xs);
+  border-radius: var(--select-dimension-radius-xs);
+  outline-width: var(--select-dimension-border-xs);
+  outline-offset: calc(-1 * var(--select-dimension-border-xs));
+}
+.m-select.-xs > div {
+  padding: 0 var(--select-dimension-padding-label-xs);
+}
+.m-select.-xs > select {
+  border-radius: var(--select-dimension-radius-xs);
+}
+.m-select.-xs > div > label {
+  font-size: var(--select-font-size-input-xs);
+  line-height: normal;
+}
+.m-select.-xs > div > span {
+  font-size: var(--select-font-size-input-xs);
+}
+.m-select.-xs > div:focus-within {
+  gap: calc(var(--select-dimension-gap-label-xs));
+}
+.m-select.-xs.-filled > div {
+  gap: calc(var(--select-dimension-gap-label-xs));
+}
+.m-select.-xs.-filled:not(.-simple) > div > label,
+.m-select.-xs:not(.-simple):focus-within > div > label {
+  font-size: var(--select-font-size-label-xs);
+}
+.m-select.-xs.-filled:not(.-simple) > div > span,
+.m-select.-xs:not(.-simple):focus-within > div > span {
+  height: var(--select-font-size-input-xs);
+  font-size: var(--select-font-size-input-xs);
+}
+:is(.m-select.-xs:has(svg), .m-select.-xs.-icon-end, .m-select.-xs.-icon-start)
+  svg {
+  width: var(--select-dimension-symbol-xs);
+}
+.m-select.-xs.-slot-end:not(.m-select.-xs.-icon-end):not(
+    .m-select.-xs.-icon-start
+  ) {
+  padding-right: var(--select-dimension-padding-slot-xs);
+}
+.m-select.-xs.-slot-start:not(.m-select.-xs.-icon-end):not(
+    .m-select.-xs.-icon-start
+  ) {
+  padding-left: var(--select-dimension-padding-slot-xs);
+}
+.m-select.-sm {
+  padding: 0 var(--select-dimension-padding-sm);
+  height: var(--select-dimension-height-sm);
+  border-radius: var(--select-dimension-radius-sm);
+  outline-width: var(--select-dimension-border-sm);
+  outline-offset: calc(-1 * var(--select-dimension-border-sm));
+}
+.m-select.-sm > div {
+  padding: 0 var(--select-dimension-padding-label-sm);
+}
+.m-select.-sm > select {
+  border-radius: var(--select-dimension-radius-sm);
+}
+.m-select.-sm > div > label {
+  font-size: var(--select-font-size-input-sm);
+  line-height: normal;
+}
+.m-select.-sm > div > span {
+  font-size: var(--select-font-size-input-sm);
+}
+.m-select.-sm > div:focus-within {
+  gap: calc(var(--select-dimension-gap-label-sm));
+}
+.m-select.-sm.-filled > div {
+  gap: calc(var(--select-dimension-gap-label-sm));
+}
+.m-select.-sm.-filled:not(.-simple) > div > label,
+.m-select.-sm:not(.-simple):focus-within > div > label {
+  font-size: var(--select-font-size-label-sm);
+}
+.m-select.-sm.-filled:not(.-simple) > div > span,
+.m-select.-sm:not(.-simple):focus-within > div > span {
+  height: var(--select-font-size-input-sm);
+  font-size: var(--select-font-size-input-sm);
+}
+:is(.m-select.-sm:has(svg), .m-select.-sm.-icon-end, .m-select.-sm.-icon-start)
+  svg {
+  width: var(--select-dimension-symbol-sm);
+}
+.m-select.-sm.-slot-end:not(.m-select.-sm.-icon-end):not(
+    .m-select.-sm.-icon-start
+  ) {
+  padding-right: var(--select-dimension-padding-slot-sm);
+}
+.m-select.-sm.-slot-start:not(.m-select.-sm.-icon-end):not(
+    .m-select.-sm.-icon-start
+  ) {
+  padding-left: var(--select-dimension-padding-slot-sm);
+}
+.m-select.-lg {
+  padding: 0 var(--select-dimension-padding-lg);
+  height: var(--select-dimension-height-lg);
+  border-radius: var(--select-dimension-radius-lg);
+  outline-width: var(--select-dimension-border-lg);
+  outline-offset: calc(-1 * var(--select-dimension-border-lg));
+}
+.m-select.-lg > div {
+  padding: 0 var(--select-dimension-padding-label-lg);
+}
+.m-select.-lg > select {
+  border-radius: var(--select-dimension-radius-lg);
+}
+.m-select.-lg > div > label {
+  font-size: var(--select-font-size-input-lg);
+  line-height: normal;
+}
+.m-select.-lg > div > span {
+  font-size: var(--select-font-size-input-lg);
+}
+.m-select.-lg > div:focus-within {
+  gap: calc(var(--select-dimension-gap-label-lg));
+}
+.m-select.-lg.-filled > div {
+  gap: calc(var(--select-dimension-gap-label-lg));
+}
+.m-select.-lg.-filled:not(.-simple) > div > label,
+.m-select.-lg:not(.-simple):focus-within > div > label {
+  font-size: var(--select-font-size-label-lg);
+}
+.m-select.-lg.-filled:not(.-simple) > div > span,
+.m-select.-lg:not(.-simple):focus-within > div > span {
+  height: var(--select-font-size-input-lg);
+  font-size: var(--select-font-size-input-lg);
+}
+:is(.m-select.-lg:has(svg), .m-select.-lg.-icon-end, .m-select.-lg.-icon-start)
+  svg {
+  width: var(--select-dimension-symbol-lg);
+}
+.m-select.-lg.-slot-end:not(.m-select.-lg.-icon-end):not(
+    .m-select.-lg.-icon-start
+  ) {
+  padding-right: var(--select-dimension-padding-slot-lg);
+}
+.m-select.-lg.-slot-start:not(.m-select.-lg.-icon-end):not(
+    .m-select.-lg.-icon-start
+  ) {
+  padding-left: var(--select-dimension-padding-slot-lg);
+}
+.m-select.-simple > div {
+  height: 100%;
+  transition: color 100ms linear;
+}
+.m-select.-simple > div > span {
+  display: none;
+  position: absolute;
+  height: 100%;
+  right: var(--select-dimension-padding-label-md);
+  left: var(--select-dimension-padding-label-md);
+  top: 0;
+  bottom: 0;
+  opacity: 1;
+  font-weight: var(--select-font-weight-input);
+  font-size: var(--select-font-size-input-md);
+  line-height: normal;
+}
+.m-select.-simple > div > label {
+  transition: color 100ms linear;
+  font-weight: var(--select-font-weight-input);
+  font-size: var(--select-font-size-input-md);
+  line-height: normal;
+}
+.m-select.-simple:focus-within > div > label,
+.m-select.-simple.-filled > div > label {
+  display: none;
+}
+.m-select.-simple:focus-within > div > span,
+.m-select.-simple.-filled > div > span {
+  display: flex;
+}
+.m-select.-simple.-xs > div > span {
+  font-size: var(--select-font-size-input-xs);
+}
+.m-select.-simple.-xs > div > label {
+  font-size: var(--select-font-size-label-simple-xs);
+}
+.m-select.-simple.-sm > div > span {
+  font-size: var(--select-font-size-input-sm);
+}
+.m-select.-simple.-sm > div > label {
+  font-size: var(--select-font-size-label-simple-sm);
+}
+.m-select.-simple.-lg > div > span {
+  font-size: var(--select-font-size-input-lg);
+}
+.m-select.-simple.-lg > div > label {
+  font-size: var(--select-font-size-label-simple-lg);
+}
+.m-select.-blur {
+  backdrop-filter: blur(var(--select-dimension-blur));
+}
+.m-select.-error:not(:focus-within),
+.m-select.-error:not(.m-select.-focused) {
+  background: var(--select-color-danger-bg);
+  outline-color: var(--select-color-danger-border);
+}
+:is(
+    .m-select.-error:not(:focus-within),
+    .m-select.-error:not(.m-select.-focused)
+  )
+  > span {
+  pointer-events: none;
+}
+:is(
+    .m-select.-error:not(:focus-within),
+    .m-select.-error:not(.m-select.-focused)
+  )
+  > span {
+  color: var(--select-color-danger-fg-label);
+}
+:is(
+    .m-select.-error:not(:focus-within),
+    .m-select.-error:not(.m-select.-focused)
+  )
+  > div
+  > span {
+  color: var(--select-color-danger-fg);
+  background: transparent;
+}
+:is(
+    .m-select.-error:not(:focus-within),
+    .m-select.-error:not(.m-select.-focused)
+  )
+  > div
+  > label {
+  color: var(--select-color-danger-fg-label);
+}
+.-filled:is(
+    .m-select.-error:not(:focus-within),
+    .m-select.-error:not(.m-select.-focused)
+  )
+  > span {
+  color: var(--select-color-danger-fg);
+}
+.m-select:has(*:disabled),
+.m-select.-disabled {
+  background: var(--select-color-disabled-bg);
+  outline-color: var(--select-color-disabled-border);
+  cursor: not-allowed;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) > div {
+  pointer-events: none;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) > span {
+  pointer-events: none;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) div > span > input {
+  pointer-events: none;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) div > label {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) > span {
+  color: var(--select-color-disabled-fg-label);
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) > div > span {
+  color: var(--select-color-disabled-fg);
+  background: transparent;
+}
+:is(.m-select:has(*:disabled), .m-select.-disabled) > div > label {
+  color: var(--select-color-disabled-fg-label);
+}
+.-filled:is(.m-select:has(*:disabled), .m-select.-disabled) > span {
+  color: var(--select-color-disabled-fg);
+}

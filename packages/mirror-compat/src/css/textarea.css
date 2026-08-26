@@ -1,0 +1,848 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-textarea {
+  width: 100%;
+  position: relative;
+  border-radius: var(--textarea-dimension-radius-md);
+  font-family: var(--textarea-font-family);
+  outline-color: var(--textarea-color-border);
+  outline-width: var(--textarea-dimension-border-md);
+  outline-offset: calc(-1 * var(--textarea-dimension-border-md));
+  outline-style: solid;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 100ms linear;
+  cursor: text;
+}
+.m-textarea * {
+  transition: all 100ms linear;
+}
+.m-textarea .m-textarea__outer {
+  width: 100%;
+  min-height: calc(var(--textarea-dimension-min-height-md));
+  max-height: calc(var(--textarea-dimension-max-height-md));
+  padding: var(--textarea-dimension-padding-y-md)
+    var(--textarea-dimension-padding-x-md);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.m-textarea::-webkit-scrollbar {
+  display: none;
+}
+.m-textarea .m-textarea__target {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+.m-textarea .m-textarea__mirror {
+  pointer-events: none;
+  font-family: inherit;
+  display: flex;
+  grid-area: 1 / 1;
+  width: 100%;
+  font-weight: var(--textarea-font-weight-input);
+  font-size: var(--textarea-font-size-input-md);
+  line-height: var(--textarea-line-height-input);
+  letter-spacing: var(--textarea-letter-spacing);
+  text-transform: var(--textarea-text-case);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  white-space: pre-line;
+  opacity: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.m-textarea .m-textarea__inner {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0 var(--textarea-dimension-padding-label-md);
+  pointer-events: none;
+}
+.m-textarea .m-textarea__inner > span {
+  position: relative;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  overflow-x: clip;
+  pointer-events: none;
+}
+.m-textarea:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  content: '';
+  border-radius: var(--textarea-dimension-radius-md);
+  outline-style: solid;
+  outline-color: transparent;
+}
+.m-textarea:has(.m-textarea__inner:focus-within),
+.m-textarea.-focused {
+  outline-color: var(--textarea-color-focus-border);
+}
+:is(
+  .m-textarea:has(.m-textarea__inner:focus-within),
+  .m-textarea.-focused
+):before {
+  outline-color: var(--textarea-color-focus-outline);
+  outline-width: var(--textarea-dimension-outline-focus);
+}
+:is(
+    .m-textarea:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-focused:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-md)
+    var(--textarea-dimension-padding-x-md);
+}
+:is(
+    .m-textarea:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-focused:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-md);
+}
+:is(
+    .m-textarea:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-md)
+    var(--textarea-dimension-padding-x-md);
+}
+:is(
+    .m-textarea:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-md)
+    var(--textarea-dimension-padding-x-md);
+}
+:is(
+    .m-textarea:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-md);
+}
+:is(
+    .m-textarea:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-md);
+}
+.m-textarea:not(.-simple):has(textarea:not(:-moz-placeholder))
+  > .m-textarea__inner {
+  height: auto;
+}
+.m-textarea:not(.-simple):has(textarea:not(:placeholder-shown))
+  > .m-textarea__inner,
+.m-textarea.-filled:not(.-simple) > .m-textarea__inner {
+  height: auto;
+}
+.m-textarea:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder))
+  + label {
+  font-size: var(--textarea-font-size-label-md);
+  font-weight: var(--textarea-font-weight-label);
+  height: auto;
+  cursor: auto;
+}
+.m-textarea.-filled:not(.-simple) .m-textarea__inner > label,
+.m-textarea:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown))
+  + label,
+.m-textarea:not(.-simple) .m-textarea__inner:focus-within > label {
+  font-size: var(--textarea-font-size-label-md);
+  font-weight: var(--textarea-font-weight-label);
+  height: auto;
+  cursor: auto;
+}
+.m-textarea:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder)) {
+  min-height: 1lh;
+  line-height: var(--textarea-line-height-input);
+}
+.m-textarea:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown)),
+.m-textarea.-filled:not(.-simple) .m-textarea__inner > span,
+.m-textarea:not(.-simple) .m-textarea__inner:focus-within > span {
+  min-height: 1lh;
+  line-height: var(--textarea-line-height-input);
+}
+.m-textarea .m-textarea__inner > span > textarea {
+  grid-area: 1 / 1;
+  width: 100%;
+  font-family: inherit;
+  line-height: var(--textarea-line-height-input);
+  font-size: var(--textarea-font-size-input-md);
+  font-weight: var(--textarea-font-weight-input);
+  letter-spacing: var(--textarea-letter-spacing);
+  text-transform: var(--textarea-text-case);
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  resize: none;
+  pointer-events: auto;
+  overflow: hidden;
+  z-index: 20;
+}
+:is(.m-textarea .m-textarea__inner > span > textarea)::-moz-placeholder {
+  color: transparent;
+}
+:is(.m-textarea .m-textarea__inner > span > textarea)::placeholder {
+  color: transparent;
+}
+:is(.m-textarea .m-textarea__inner > span > textarea):autofill {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: var(--textarea-color-fg);
+  caret-color: var(--textarea-color-fg);
+}
+:is(.m-textarea .m-textarea__inner > span > textarea):not(:-moz-placeholder) {
+  outline: none;
+}
+:is(.m-textarea .m-textarea__inner > span > textarea):not(:placeholder-shown),
+:is(.m-textarea .m-textarea__inner > span > textarea):focus {
+  outline: none;
+}
+[type='number']:is(.m-textarea .m-textarea__inner > span > textarea) {
+  -moz-appearance: textfield;
+}
+[type='number']:is(
+    .m-textarea .m-textarea__inner > span > textarea
+  )::-webkit-inner-spin-button,
+[type='number']:is(
+    .m-textarea .m-textarea__inner > span > textarea
+  )::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.m-textarea .m-textarea__inner > label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: var(--textarea-font-weight-input);
+  font-size: var(--textarea-font-size-input-md);
+  line-height: normal;
+  cursor: text;
+}
+.m-textarea > span {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: var(--textarea-font-weight-label);
+  font-size: var(--textarea-font-size-label-md);
+  line-height: var(--textarea-line-height-label);
+  flex-shrink: 0;
+  cursor: default;
+}
+:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error))
+  .m-textarea__inner
+  > span
+  > textarea {
+  color: var(--textarea-color-fg);
+}
+:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error))
+  .m-textarea__inner
+  > label {
+  color: var(--textarea-color-fg-label);
+}
+:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error)) > span {
+  color: var(--textarea-color-fg-label);
+}
+:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error)):has(
+    textarea:not(:-moz-placeholder)
+  )
+  > span {
+  color: var(--textarea-color-fg);
+}
+:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error)):has(
+    textarea:not(:placeholder-shown)
+  )
+  > span,
+.-filled:is(.m-textarea:not(.-disabled), .m-textarea:not(.-error)) > span {
+  color: var(--textarea-color-fg);
+}
+.m-textarea.-xs {
+  border-radius: var(--textarea-dimension-radius-xs);
+  outline-width: var(--textarea-dimension-border-xs);
+  outline-offset: calc(-1 * var(--textarea-dimension-border-xs));
+}
+.m-textarea.-xs:before {
+  border-radius: var(--textarea-dimension-radius-xs);
+}
+.m-textarea.-xs .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-x-xs)
+    var(--textarea-dimension-padding-x-xs);
+  min-height: calc(var(--textarea-dimension-min-height-xs));
+  max-height: calc(var(--textarea-dimension-max-height-xs));
+}
+.m-textarea.-xs .m-textarea__mirror {
+  font-size: var(--textarea-font-size-input-xs);
+}
+.m-textarea.-xs .m-textarea__target {
+  border-radius: var(--textarea-dimension-radius-xs);
+}
+.m-textarea.-xs .m-textarea__inner {
+  padding: 0 var(--textarea-dimension-padding-label-xs);
+}
+.m-textarea.-xs .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-xs);
+  line-height: normal;
+}
+.m-textarea.-xs .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-xs.-focused:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-xs)
+    var(--textarea-dimension-padding-x-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-xs.-focused:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-xs.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-xs)
+    var(--textarea-dimension-padding-x-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-xs.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-xs)
+    var(--textarea-dimension-padding-x-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-xs.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-xs);
+}
+:is(
+    .m-textarea.-xs:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-xs.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-xs);
+}
+.m-textarea.-xs:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder))
+  + label {
+  font-size: var(--textarea-font-size-label-xs);
+}
+.m-textarea.-xs.-filled:not(.-simple) .m-textarea__inner > label,
+.m-textarea.-xs:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown))
+  + label,
+.m-textarea.-xs:not(.-simple) .m-textarea__inner:focus-within > label {
+  font-size: var(--textarea-font-size-label-xs);
+}
+.m-textarea.-xs:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder)) {
+  min-height: var(--textarea-font-size-input-xs);
+}
+.m-textarea.-xs:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown)),
+.m-textarea.-xs.-filled:not(.-simple) .m-textarea__inner > span,
+.m-textarea.-xs:not(.-simple) .m-textarea__inner:focus-within > span {
+  min-height: var(--textarea-font-size-input-xs);
+}
+.m-textarea.-sm {
+  border-radius: var(--textarea-dimension-radius-sm);
+  outline-width: var(--textarea-dimension-border-sm);
+  outline-offset: calc(-1 * var(--textarea-dimension-border-sm));
+}
+.m-textarea.-sm:before {
+  border-radius: var(--textarea-dimension-radius-sm);
+}
+.m-textarea.-sm .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-x-sm)
+    var(--textarea-dimension-padding-x-sm);
+  min-height: calc(var(--textarea-dimension-min-height-sm));
+  max-height: calc(var(--textarea-dimension-max-height-sm));
+}
+.m-textarea.-sm .m-textarea__mirror {
+  font-size: var(--textarea-font-size-input-sm);
+}
+.m-textarea.-sm .m-textarea__target {
+  border-radius: var(--textarea-dimension-radius-sm);
+}
+.m-textarea.-sm .m-textarea__inner {
+  padding: 0 var(--textarea-dimension-padding-label-sm);
+}
+.m-textarea.-sm .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-sm);
+  line-height: normal;
+}
+.m-textarea.-sm .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-sm.-focused:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-sm)
+    var(--textarea-dimension-padding-x-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-sm.-focused:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-sm.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-sm)
+    var(--textarea-dimension-padding-x-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-sm.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-sm)
+    var(--textarea-dimension-padding-x-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-sm.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-sm);
+}
+:is(
+    .m-textarea.-sm:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-sm.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-sm);
+}
+.m-textarea.-sm:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder))
+  + label {
+  font-size: var(--textarea-font-size-label-sm);
+}
+.m-textarea.-sm.-filled:not(.-simple) .m-textarea__inner > label,
+.m-textarea.-sm:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown))
+  + label,
+.m-textarea.-sm:not(.-simple) .m-textarea__inner:focus-within > label {
+  font-size: var(--textarea-font-size-label-sm);
+}
+.m-textarea.-sm:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder)) {
+  min-height: var(--textarea-font-size-input-sm);
+}
+.m-textarea.-sm:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown)),
+.m-textarea.-sm.-filled:not(.-simple) .m-textarea__inner > span,
+.m-textarea.-sm:not(.-simple) .m-textarea__inner:focus-within > span {
+  min-height: var(--textarea-font-size-input-sm);
+}
+.m-textarea.-lg {
+  border-radius: var(--textarea-dimension-radius-lg);
+  outline-width: var(--textarea-dimension-border-lg);
+  outline-offset: calc(-1 * var(--textarea-dimension-border-lg));
+}
+.m-textarea.-lg:before {
+  border-radius: var(--textarea-dimension-radius-lg);
+}
+.m-textarea.-lg .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-x-lg)
+    var(--textarea-dimension-padding-x-lg);
+  min-height: calc(var(--textarea-dimension-min-height-lg));
+  max-height: calc(var(--textarea-dimension-max-height-lg));
+}
+.m-textarea.-lg .m-textarea__mirror {
+  font-size: var(--textarea-font-size-input-lg);
+}
+.m-textarea.-lg .m-textarea__target {
+  border-radius: var(--textarea-dimension-radius-lg);
+}
+.m-textarea.-lg .m-textarea__inner {
+  padding: 0 var(--textarea-dimension-padding-label-lg);
+}
+.m-textarea.-lg .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-lg);
+  line-height: normal;
+}
+.m-textarea.-lg .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-lg.-focused:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-lg)
+    var(--textarea-dimension-padding-x-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(.m-textarea__inner:focus-within),
+    .m-textarea.-lg.-focused:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-lg.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-lg)
+    var(--textarea-dimension-padding-x-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-lg.-filled:not(.-simple)
+  )
+  .m-textarea__outer {
+  padding: var(--textarea-dimension-padding-y-filled-lg)
+    var(--textarea-dimension-padding-x-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-lg.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-lg);
+}
+:is(
+    .m-textarea.-lg:not(.-simple):has(textarea:not(:placeholder-shown)),
+    .m-textarea.-lg.-filled:not(.-simple)
+  )
+  .m-textarea__inner {
+  gap: var(--textarea-dimension-gap-label-lg);
+}
+.m-textarea.-lg:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder))
+  + label {
+  font-size: var(--textarea-font-size-label-lg);
+}
+.m-textarea.-lg.-filled:not(.-simple) .m-textarea__inner > label,
+.m-textarea.-lg:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown))
+  + label,
+.m-textarea.-lg:not(.-simple) .m-textarea__inner:focus-within > label {
+  font-size: var(--textarea-font-size-label-lg);
+}
+.m-textarea.-lg:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder)) {
+  min-height: var(--textarea-font-size-input-lg);
+}
+.m-textarea.-lg:not(.-simple)
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown)),
+.m-textarea.-lg.-filled:not(.-simple) .m-textarea__inner > span,
+.m-textarea.-lg:not(.-simple) .m-textarea__inner:focus-within > span {
+  min-height: var(--textarea-font-size-input-lg);
+}
+:is(
+    .m-textarea.-simple:has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-simple .-filled
+  )
+  .m-textarea__mirror {
+  min-height: 1lh;
+}
+:is(
+    .m-textarea.-simple:has(textarea:not(:placeholder-shown)),
+    .m-textarea.-simple .-filled
+  )
+  .m-textarea__mirror {
+  min-height: 1lh;
+}
+:is(
+    .m-textarea.-simple:has(.m-textarea__inner:focus-within),
+    .m-textarea.-simple.-focused
+  )
+  .m-textarea__mirror {
+  min-height: 1lh;
+}
+.m-textarea.-simple .m-textarea__inner {
+  transition: color 100ms linear;
+  height: 100%;
+}
+.m-textarea.-simple .m-textarea__inner > span > textarea {
+  transition: color 100ms linear;
+}
+:is(.m-textarea.-simple .m-textarea__inner > span > textarea):not(
+    :-moz-placeholder
+  )
+  + label {
+  display: none;
+}
+:is(.m-textarea.-simple .m-textarea__inner > span > textarea):not(
+    :placeholder-shown
+  )
+  + label,
+:is(.m-textarea.-simple .m-textarea__inner > span > textarea):focus + label {
+  display: none;
+}
+.m-textarea.-simple .m-textarea__inner > label {
+  transform: none;
+  font-weight: var(--textarea-font-weight-input);
+  font-size: var(--textarea-font-size-input-md);
+  line-height: normal;
+}
+.m-textarea.-simple
+  .m-textarea__inner
+  > span:has(textarea:not(:-moz-placeholder))
+  + label {
+  display: none;
+}
+.m-textarea.-simple .m-textarea__inner:focus-within > label,
+.m-textarea.-simple.-filled .m-textarea__inner > label,
+.m-textarea.-simple
+  .m-textarea__inner
+  > span:has(textarea:not(:placeholder-shown))
+  + label {
+  display: none;
+}
+:is(
+    .m-textarea.-simple.-xs:has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-simple.-xs .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-xs) -
+      var(--textarea-dimension-padding-y-xs) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-xs:has(textarea:not(:placeholder-shown)),
+    .m-textarea.-simple.-xs .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-xs) -
+      var(--textarea-dimension-padding-y-xs) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-xs:has(.m-textarea__inner:focus-within),
+    .m-textarea.-simple.-xs.-focused
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-xs) -
+      var(--textarea-dimension-padding-y-xs) * 2
+  );
+}
+.m-textarea.-simple.-xs .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-xs);
+}
+.m-textarea.-simple.-xs .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-xs);
+}
+:is(
+    .m-textarea.-simple.-sm:has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-simple.-sm .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-sm) -
+      var(--textarea-dimension-padding-y-sm) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-sm:has(textarea:not(:placeholder-shown)),
+    .m-textarea.-simple.-sm .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-sm) -
+      var(--textarea-dimension-padding-y-sm) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-sm:has(.m-textarea__inner:focus-within),
+    .m-textarea.-simple.-sm.-focused
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-sm) -
+      var(--textarea-dimension-padding-y-sm) * 2
+  );
+}
+.m-textarea.-simple.-sm .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-sm);
+}
+.m-textarea.-simple.-sm .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-sm);
+}
+:is(
+    .m-textarea.-simple.-lg:has(textarea:not(:-moz-placeholder)),
+    .m-textarea.-simple.-lg .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-lg) -
+      var(--textarea-dimension-padding-y-lg) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-lg:has(textarea:not(:placeholder-shown)),
+    .m-textarea.-simple.-lg .-filled
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-lg) -
+      var(--textarea-dimension-padding-y-lg) * 2
+  );
+}
+:is(
+    .m-textarea.-simple.-lg:has(.m-textarea__inner:focus-within),
+    .m-textarea.-simple.-lg.-focused
+  )
+  .m-textarea__placeholder {
+  min-height: calc(
+    var(--textarea-dimension-min-height-lg) -
+      var(--textarea-dimension-padding-y-lg) * 2
+  );
+}
+.m-textarea.-simple.-lg .m-textarea__inner > span > textarea {
+  font-size: var(--textarea-font-size-input-lg);
+}
+.m-textarea.-simple.-lg .m-textarea__inner > label {
+  font-size: var(--textarea-font-size-input-lg);
+}
+.m-textarea.-blur {
+  backdrop-filter: blur(var(--textarea-dimension-blur));
+}
+.m-textarea.-error {
+  background: var(--textarea-color-danger-bg);
+  outline-color: var(--textarea-color-danger-border);
+}
+.m-textarea.-error:has(.m-textarea__inner:focus-within),
+.m-textarea.-error.-focused {
+  background: inherit;
+  outline-color: var(--textarea-color-focus-border);
+}
+.m-textarea.-error .m-textarea__inner > span > textarea {
+  color: var(--textarea-color-danger-fg);
+}
+.m-textarea.-error .m-textarea__inner > label {
+  color: var(--textarea-color-danger-fg-label);
+}
+.m-textarea.-error > span {
+  color: var(--textarea-color-danger-fg-label);
+}
+.m-textarea.-error:has(textarea:not(:-moz-placeholder)) > span {
+  color: var(--textarea-color-danger-fg);
+}
+.m-textarea.-error:has(textarea:not(:placeholder-shown)) > span,
+.m-textarea.-error.-filled > span {
+  color: var(--textarea-color-danger-fg);
+}
+.m-textarea:has(*:disabled),
+.m-textarea.-disabled {
+  background: var(--textarea-color-disabled-bg);
+  outline-color: var(--textarea-color-disabled-border);
+  cursor: not-allowed;
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled) .m-textarea__inner {
+  pointer-events: none;
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled) > span {
+  pointer-events: none;
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled)
+  .m-textarea__inner
+  > span
+  > textarea {
+  pointer-events: none;
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled)
+  .m-textarea__inner
+  > label {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled)
+  .m-textarea__inner
+  > span
+  > textarea {
+  color: var(--textarea-color-disabled-fg);
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled)
+  .m-textarea__inner
+  > label {
+  color: var(--textarea-color-disabled-fg-label);
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled) > span {
+  color: var(--textarea-color-disabled-fg-label);
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled):has(
+    textarea:not(:-moz-placeholder)
+  )
+  > span {
+  color: var(--textarea-color-disabled-fg);
+}
+:is(.m-textarea:has(*:disabled), .m-textarea.-disabled):has(
+    textarea:not(:placeholder-shown)
+  )
+  > span,
+.-filled:is(.m-textarea:has(*:disabled), .m-textarea.-disabled) > span {
+  color: var(--textarea-color-disabled-fg);
+}

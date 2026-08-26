@@ -1,0 +1,304 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+/*
+ * `Checkbox.Root` renders a `<button role="checkbox">` where v1 rendered an
+ * `<input type="checkbox">`. `:checked` and `:indeterminate` are widened to
+ * `[data-checked]` and `[data-indeterminate]` throughout; this block is the
+ * part of the input's UA styling a button does not get for free.
+ */
+.m-checkbox__control {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m-checkbox {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--checkbox-dimension-gap-md);
+  cursor: pointer;
+}
+.m-checkbox.-reverse {
+  flex-direction: row-reverse;
+}
+.m-checkbox:has(input:disabled),
+.m-checkbox.-disabled,
+.m-checkbox.-disabled.-subtle {
+  cursor: not-allowed;
+}
+:is(
+    .m-checkbox:has(input:disabled),
+    .m-checkbox.-disabled,
+    .m-checkbox.-disabled.-subtle
+  )
+  * {
+  pointer-events: none;
+}
+.-solid:is(
+    .m-checkbox:has(input:disabled),
+    .m-checkbox.-disabled,
+    .m-checkbox.-disabled.-subtle
+  )
+  > span {
+  color: var(--checkbox-color-label-disabled-solid-fg);
+}
+.-subtle:is(
+    .m-checkbox:has(input:disabled),
+    .m-checkbox.-disabled,
+    .m-checkbox.-disabled.-subtle
+  )
+  > span {
+  color: var(--checkbox-color-label-disabled-subtle-fg);
+}
+.m-checkbox > span {
+  display: block;
+  font-family: var(--checkbox-font-family-label);
+  font-weight: var(--checkbox-font-weight-label);
+  line-height: var(--checkbox-line-height-label-md);
+  font-size: var(--checkbox-font-size-label-md);
+  transform: translateY(var(--checkbox-dimension-label-padding-md));
+  transition: all 100ms linear;
+}
+.m-checkbox.-solid > span {
+  color: var(--checkbox-color-label-solid-fg);
+}
+.m-checkbox.-subtle > span {
+  color: var(--checkbox-color-label-subtle-fg);
+}
+.m-checkbox > :is([type='checkbox'], .m-checkbox__control) {
+  position: relative;
+  width: var(--checkbox-dimension-input-width-md);
+  height: var(--checkbox-dimension-input-height-md);
+  border-radius: var(--checkbox-dimension-input-radius-md);
+  border-width: var(--checkbox-dimension-input-border-md);
+  border-color: var(--checkbox-color-input-unchecked-border);
+  border-style: solid;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  flex-shrink: 0;
+  margin: 0;
+  transition: all 100ms linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline-color: transparent;
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):active {
+  border-color: var(--checkbox-color-input-unchecked-border-active);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):after {
+  content: '';
+  width: var(--checkbox-dimension-input-symbol-size-md);
+  height: var(--checkbox-dimension-input-symbol-size-md);
+  max-height: 100%;
+  max-width: 100%;
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+  :checked,
+  [data-checked]
+),
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+  :indeterminate,
+  [data-indeterminate]
+) {
+  background: var(--checkbox-color-input-checked-bg);
+  border-color: var(--checkbox-color-input-checked-border);
+}
+:is(
+  :is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+    :checked,
+    [data-checked]
+  ),
+  :is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+    :indeterminate,
+    [data-indeterminate]
+  )
+):after {
+  background: var(--checkbox-color-input-checked-fg);
+  -webkit-mask-image: var(--checkbox-asset-symbol-md);
+  mask-image: var(--checkbox-asset-symbol-md);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+    :indeterminate,
+    [data-indeterminate]
+  ):after {
+  -webkit-mask-image: var(--checkbox-asset-symbol-indeterminate-md);
+  mask-image: var(--checkbox-asset-symbol-indeterminate-md);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+    :checked,
+    [data-checked]
+  ):active,
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):is(
+    :indeterminate,
+    [data-indeterminate]
+  ):active {
+  background: var(--checkbox-color-input-checked-bg-active);
+  border-color: var(--checkbox-color-input-checked-border-active);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):focus-visible {
+  outline: none;
+  border-color: var(--checkbox-color-input-unchecked-border-focus);
+  outline-color: var(--checkbox-color-input-unchecked-outline-focus);
+  outline-width: var(--checkbox-dimension-input-outline-focus);
+  outline-style: solid;
+  outline-offset: 0;
+}
+:is(
+    .m-checkbox > :is([type='checkbox'], .m-checkbox__control)
+  ):focus-visible:is(:checked, [data-checked]) {
+  border-color: var(--checkbox-color-input-checked-border-focus);
+  outline-color: var(--checkbox-color-input-checked-outline-focus);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):disabled {
+  cursor: not-allowed;
+  border-color: var(--checkbox-color-input-unchecked-disabled-border);
+  background: var(--checkbox-color-input-unchecked-disabled-bg);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):disabled:after {
+  background: var(--checkbox-color-input-unchecked-disabled-fg);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):disabled:is(
+    :checked,
+    [data-checked]
+  ) {
+  border-color: var(--checkbox-color-input-checked-disabled-border);
+  background: var(--checkbox-color-input-checked-disabled-bg);
+}
+:is(.m-checkbox > :is([type='checkbox'], .m-checkbox__control)):disabled:is(
+    :checked,
+    [data-checked]
+  ):after {
+  background: var(--checkbox-color-input-checked-disabled-fg);
+}
+.m-checkbox.-error:not(.-disabled)
+  > :is([type='checkbox'], .m-checkbox__control) {
+  border-color: var(--checkbox-color-input-unchecked-danger-border);
+  background: var(--checkbox-color-input-unchecked-danger-bg);
+}
+:is(
+  .m-checkbox.-error:not(.-disabled)
+    > :is([type='checkbox'], .m-checkbox__control)
+):active {
+  background: var(--checkbox-color-input-unchecked-danger-bg-active);
+  border-color: var(--checkbox-color-input-unchecked-danger-border-active);
+}
+:is(
+  .m-checkbox.-error:not(.-disabled)
+    > :is([type='checkbox'], .m-checkbox__control)
+):is(:checked, [data-checked]),
+:is(
+  .m-checkbox.-error:not(.-disabled)
+    > :is([type='checkbox'], .m-checkbox__control)
+):is(:indeterminate, [data-indeterminate]) {
+  background: var(--checkbox-color-input-checked-danger-bg);
+  border-color: var(--checkbox-color-input-checked-danger-border);
+}
+:is(
+  :is(
+    .m-checkbox.-error:not(.-disabled)
+      > :is([type='checkbox'], .m-checkbox__control)
+  ):is(:checked, [data-checked]),
+  :is(
+    .m-checkbox.-error:not(.-disabled)
+      > :is([type='checkbox'], .m-checkbox__control)
+  ):is(:indeterminate, [data-indeterminate])
+):after {
+  background: var(--checkbox-color-input-checked-danger-fg);
+}
+:is(
+    .m-checkbox.-error:not(.-disabled)
+      > :is([type='checkbox'], .m-checkbox__control)
+  ):is(:checked, [data-checked]):active,
+:is(
+    .m-checkbox.-error:not(.-disabled)
+      > :is([type='checkbox'], .m-checkbox__control)
+  ):is(:indeterminate, [data-indeterminate]):active {
+  background: var(--checkbox-color-input-checked-danger-bg-active);
+  border-color: var(--checkbox-color-input-checked-danger-border-active);
+}
+:is(
+  .m-checkbox.-error:not(.-disabled)
+    > :is([type='checkbox'], .m-checkbox__control)
+):focus-visible {
+  outline: none;
+  border-color: var(--checkbox-color-input-unchecked-danger-border-focus);
+}
+:is(
+    .m-checkbox.-error:not(.-disabled)
+      > :is([type='checkbox'], .m-checkbox__control)
+  ):focus-visible:is(:checked, [data-checked]) {
+  border-color: var(--checkbox-color-input-checked-danger-border-focus);
+}
+.m-checkbox.-error:not(.-disabled) > span {
+  color: var(--checkbox-color-label-danger-fg);
+}
+.m-checkbox.-sm {
+  gap: var(--checkbox-dimension-gap-sm);
+}
+.m-checkbox.-sm > :is([type='checkbox'], .m-checkbox__control) {
+  width: var(--checkbox-dimension-input-width-sm);
+  height: var(--checkbox-dimension-input-height-sm);
+  border-radius: var(--checkbox-dimension-input-radius-sm);
+  border-width: var(--checkbox-dimension-input-border-sm);
+}
+:is(.m-checkbox.-sm > :is([type='checkbox'], .m-checkbox__control)):after {
+  width: var(--checkbox-dimension-input-symbol-size-sm);
+  height: var(--checkbox-dimension-input-symbol-size-sm);
+  -webkit-mask-image: var(--checkbox-asset-symbol-sm);
+  mask-image: var(--checkbox-asset-symbol-sm);
+}
+.m-checkbox.-sm > span {
+  font-size: var(--checkbox-font-size-label-sm);
+  line-height: var(--checkbox-line-height-label-sm);
+  transform: translateY(var(--checkbox-dimension-label-padding-sm));
+}
+:is(
+  .m-checkbox.-sm.-indeterminate > :is([type='checkbox'], .m-checkbox__control)
+):after {
+  -webkit-mask-image: var(--checkbox-asset-symbol-indeterminate-sm);
+  mask-image: var(--checkbox-asset-symbol-indeterminate-sm);
+}
+.m-checkbox.-lg {
+  gap: var(--checkbox-dimension-gap-lg);
+}
+.m-checkbox.-lg > :is([type='checkbox'], .m-checkbox__control) {
+  width: var(--checkbox-dimension-input-width-lg);
+  height: var(--checkbox-dimension-input-height-lg);
+  border-radius: var(--checkbox-dimension-input-radius-lg);
+  border-width: var(--checkbox-dimension-input-border-lg);
+}
+:is(.m-checkbox.-lg > :is([type='checkbox'], .m-checkbox__control)):after {
+  width: var(--checkbox-dimension-input-symbol-size-lg);
+  height: var(--checkbox-dimension-input-symbol-size-lg);
+  -webkit-mask-image: var(--checkbox-asset-symbol-lg);
+  mask-image: var(--checkbox-asset-symbol-lg);
+}
+.m-checkbox.-lg > span {
+  font-size: var(--checkbox-font-size-label-lg);
+  line-height: var(--checkbox-line-height-label-lg);
+  transform: translateY(var(--checkbox-dimension-label-padding-lg));
+}
+:is(
+  .m-checkbox.-lg.-indeterminate > :is([type='checkbox'], .m-checkbox__control)
+):after {
+  -webkit-mask-image: var(--checkbox-asset-symbol-indeterminate-lg);
+  mask-image: var(--checkbox-asset-symbol-indeterminate-lg);
+}

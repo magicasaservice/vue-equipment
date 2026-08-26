@@ -12,7 +12,10 @@ export default defineNuxtConfig({
   },
 
   mirror: {
-    components: true,
+    // v2 registers every export and takes a prefix instead of a component
+    // list. `Mirror` keeps `MButton` and friends free for the compatibility
+    // wrappers, which is what the demos render.
+    prefix: 'Mirror',
   },
 
   devtools: { enabled: false },
@@ -45,10 +48,11 @@ export default defineNuxtConfig({
     'fonts/index/stylesheet.css',
     'fonts/interface/stylesheet.css',
     'fonts/mirage/stylesheet.css',
-    '@maas/mirror/tokens/components/index.css',
-    '@maas/mirror/tokens/theme/dark/components/index.css',
     '@maas/mirror/tokens/application.css',
     '@maas/mirror/tokens/theme/dark/application.css',
+    // Mirror emits no `component/*` tree any more, so the compatibility layer
+    // carries the component CSS the demos style themselves with.
+    'mirror-compat/css/index.css',
   ],
 
   // Use public folder from docs

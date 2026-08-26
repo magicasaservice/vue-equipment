@@ -1,0 +1,497 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-menu-card {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--menu-card-dimension-gap-container-md);
+  border-radius: var(--menu-card-dimension-radius-md);
+  padding: var(--menu-card-dimension-padding-container-y-md)
+    var(--menu-card-dimension-padding-container-x);
+  background: var(--menu-card-color-ghost-bg);
+  font-family: var(--menu-card-font-family);
+  font-weight: var(--menu-card-font-weight);
+  line-height: var(--menu-card-line-height);
+  transition: all 100ms linear;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.m-menu-card.-slot-start > div:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.m-menu-card.-slot-start > div:nth-child(2) {
+  flex: 1;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--menu-card-font-size-label-md);
+  overflow: hidden;
+}
+
+.m-menu-card:not(.-slot-start) > div:first-child {
+  flex: 1;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--menu-card-font-size-label-md);
+  padding-left: calc(
+    var(--menu-card-dimension-gap-container-md) +
+      var(--menu-card-dimension-padding-label-md)
+  );
+  overflow: hidden;
+}
+
+.m-menu-card.-slot-end > div:last-child {
+  display: flex;
+  align-items: center;
+  font-family: var(--menu-card-font-family-cmd);
+  font-weight: var(--menu-card-font-weight-cmd);
+  font-size: var(--menu-card-font-size-cmd-md);
+  line-height: var(--menu-card-line-height-cmd);
+  font-feature-settings: lining-nums tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+@media (hover: hover) {
+  .m-menu-card:not(.-disabled):hover {
+    background: var(--menu-card-color-ghost-bg-hover);
+  }
+}
+
+.m-menu-card:not(.-disabled):active,
+.m-menu-card.-selected {
+  background: var(--menu-card-color-ghost-bg-active);
+}
+
+.m-menu-card.-xs {
+  min-height: var(--menu-card-dimension-height-xs);
+  border-radius: var(--menu-card-dimension-radius-xs);
+  gap: var(--menu-card-dimension-gap-container-xs);
+  padding: var(--menu-card-dimension-padding-container-y-xs)
+    var(--menu-card-dimension-padding-container-x);
+}
+
+.m-menu-card.-xs:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-card-dimension-gap-container-xs) +
+      var(--menu-card-dimension-padding-label-xs)
+  );
+  font-size: var(--menu-card-font-size-label-xs);
+}
+
+.m-menu-card.-xs.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-card-font-size-label-xs);
+}
+
+.m-menu-card.-xs.-slot-end > div:last-child {
+  font-size: var(--menu-card-font-size-cmd-xs);
+}
+
+.m-menu-card.-sm {
+  min-height: var(--menu-card-dimension-height-sm);
+  border-radius: var(--menu-card-dimension-radius-sm);
+  gap: var(--menu-card-dimension-gap-container-sm);
+  padding: var(--menu-card-dimension-padding-container-y-sm)
+    var(--menu-card-dimension-padding-container-x);
+}
+
+.m-menu-card.-sm:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-card-dimension-gap-container-sm) +
+      var(--menu-card-dimension-padding-label-sm)
+  );
+  font-size: var(--menu-card-font-size-label-sm);
+}
+
+.m-menu-card.-sm.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-card-font-size-label-sm);
+}
+
+.m-menu-card.-sm.-slot-end > div:last-child {
+  font-size: var(--menu-card-font-size-cmd-sm);
+}
+
+.m-menu-card.-lg {
+  min-height: var(--menu-card-dimension-height-lg);
+  border-radius: var(--menu-card-dimension-radius-lg);
+  gap: var(--menu-card-dimension-gap-container-lg);
+  padding: var(--menu-card-dimension-padding-container-y-lg)
+    var(--menu-card-dimension-padding-container-x);
+}
+
+.m-menu-card.-lg:not(.-slot-start) > div:first-child {
+  padding-left: calc(
+    var(--menu-card-dimension-gap-container-lg) +
+      var(--menu-card-dimension-padding-label-lg)
+  );
+  font-size: var(--menu-card-font-size-label-lg);
+}
+
+.m-menu-card.-lg.-slot-start > div:nth-child(2) {
+  font-size: var(--menu-card-font-size-label-lg);
+}
+
+.m-menu-card.-lg.-slot-end > div:last-child {
+  font-size: var(--menu-card-font-size-cmd-lg);
+}
+
+.m-menu-card-child {
+  min-height: var(--menu-card-dimension-height-md);
+  display: inline-flex;
+  align-items: center;
+  transition: all 100ms linear;
+  line-height: var(--menu-card-line-height);
+}
+
+.m-menu-card-child > div {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--menu-card-dimension-gap-container-md);
+  transition: all 100ms linear;
+}
+
+:is(.m-menu-card-child > div) > span {
+  transition: all 100ms linear;
+}
+
+.m-menu-card-child.-label {
+  gap: var(--menu-card-dimension-gap-container-md);
+}
+
+.m-menu-card-child.-label > div > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-menu-card-child.-spread {
+  width: 100%;
+}
+
+.m-menu-card-child.-spread > div {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.m-menu-card-child.-xs {
+  min-height: var(--menu-card-dimension-height-xs);
+}
+
+.m-menu-card-child.-xs.-label {
+  gap: var(--menu-card-dimension-gap-container-xs);
+}
+
+.m-menu-card-child.-xs > div {
+  gap: var(--menu-card-dimension-gap-container-xs);
+}
+
+.m-menu-card-child.-xs.-start:not(.-label) {
+  padding-left: var(--menu-card-dimension-gap-container-xs);
+}
+
+.m-menu-card-child.-xs.-end:not(.-label) {
+  padding-right: var(--menu-card-dimension-gap-container-xs);
+}
+
+.m-menu-card-child.-xs.-label {
+  padding-right: var(--menu-card-dimension-padding-label-xs);
+}
+
+.m-menu-card-child.-xs > div > svg {
+  width: var(--menu-card-dimension-symbol-xs);
+  height: var(--menu-card-dimension-symbol-xs);
+}
+
+.m-menu-card-child.-sm {
+  min-height: var(--menu-card-dimension-height-sm);
+}
+
+.m-menu-card-child.-sm.-label {
+  gap: var(--menu-card-dimension-gap-container-sm);
+}
+
+.m-menu-card-child.-sm > div {
+  gap: var(--menu-card-dimension-gap-container-sm);
+}
+
+.m-menu-card-child.-sm.-start:not(.-label) {
+  padding-left: var(--menu-card-dimension-gap-container-sm);
+}
+
+.m-menu-card-child.-sm.-end:not(.-label) {
+  padding-right: var(--menu-card-dimension-gap-container-sm);
+}
+
+.m-menu-card-child.-sm.-label {
+  padding-right: var(--menu-card-dimension-padding-label-sm);
+}
+
+.m-menu-card-child.-sm > div > svg {
+  width: var(--menu-card-dimension-symbol-sm);
+  height: var(--menu-card-dimension-symbol-sm);
+}
+
+.m-menu-card-child.-md {
+  min-height: var(--menu-card-dimension-height-md);
+}
+
+.m-menu-card-child.-md.-label {
+  gap: var(--menu-card-dimension-gap-container-md);
+}
+
+.m-menu-card-child.-md > div {
+  gap: var(--menu-card-dimension-gap-container-md);
+}
+
+.m-menu-card-child.-md.-start:not(.-label) {
+  padding-left: var(--menu-card-dimension-gap-container-md);
+}
+
+.m-menu-card-child.-md.-end:not(.-label) {
+  padding-right: var(--menu-card-dimension-gap-container-md);
+}
+
+.m-menu-card-child.-md.-label {
+  padding-right: var(--menu-card-dimension-padding-label-md);
+}
+
+.m-menu-card-child.-md > div > svg {
+  width: var(--menu-card-dimension-symbol-md);
+  height: var(--menu-card-dimension-symbol-md);
+}
+
+.m-menu-card-child.-lg {
+  min-height: var(--menu-card-dimension-height-lg);
+}
+
+.m-menu-card-child.-lg.-label {
+  gap: var(--menu-card-dimension-gap-container-lg);
+}
+
+.m-menu-card-child.-lg > div {
+  gap: var(--menu-card-dimension-gap-container-lg);
+}
+
+.m-menu-card-child.-lg.-start:not(.-label) {
+  padding-left: var(--menu-card-dimension-gap-container-lg);
+}
+
+.m-menu-card-child.-lg.-end:not(.-label) {
+  padding-right: var(--menu-card-dimension-gap-container-lg);
+}
+
+.m-menu-card-child.-lg.-label {
+  padding-right: var(--menu-card-dimension-padding-label-lg);
+}
+
+.m-menu-card-child.-lg > div > svg {
+  width: var(--menu-card-dimension-symbol-lg);
+  height: var(--menu-card-dimension-symbol-lg);
+}
+
+:is(:is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child)
+  > div {
+  display: inline;
+  overflow: hidden;
+}
+
+:is(
+    :is(
+        :is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child
+      )
+      > div
+  )
+  > span {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:is(
+  :is(
+      :is(
+          :is(.m-menu-card:not(.-slot-start) > div:first-child)
+            .m-menu-card-child
+        )
+        > div
+    )
+    > span
+):last-child {
+  padding-top: var(--menu-card-dimension-gap-label-md);
+}
+
+.-xs:is(
+    :is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child
+  )
+  > div
+  > span:last-child {
+  padding-top: var(--menu-card-dimension-gap-label-xs);
+}
+
+.-sm:is(
+    :is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child
+  )
+  > div
+  > span:last-child {
+  padding-top: var(--menu-card-dimension-gap-label-sm);
+}
+
+.-md:is(
+    :is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child
+  )
+  > div
+  > span:last-child {
+  padding-top: var(--menu-card-dimension-gap-label-md);
+}
+
+.-lg:is(
+    :is(.m-menu-card:not(.-slot-start) > div:first-child) .m-menu-card-child
+  )
+  > div
+  > span:last-child {
+  padding-top: var(--menu-card-dimension-gap-label-lg);
+}
+
+:is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child) > div {
+  flex-wrap: wrap;
+  gap: var(--menu-card-dimension-gap-label-md);
+  overflow: hidden;
+}
+
+:is(
+    :is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child)
+      > div
+  )
+  > span {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.-xs:is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child)
+  > div {
+  gap: var(--menu-card-dimension-gap-label-xs);
+}
+
+.-sm:is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child)
+  > div {
+  gap: var(--menu-card-dimension-gap-label-sm);
+}
+
+.-md:is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child)
+  > div {
+  gap: var(--menu-card-dimension-gap-label-md);
+}
+
+.-lg:is(:is(.m-menu-card.-slot-start > div:nth-child(2)) .m-menu-card-child)
+  > div {
+  gap: var(--menu-card-dimension-gap-label-lg);
+}
+
+:is(.m-menu-card:not(.-disabled) .m-menu-card-child) > div {
+  color: var(--menu-card-color-ghost-fg-label);
+}
+
+:is(:is(.m-menu-card:not(.-disabled) .m-menu-card-child) > div)
+  > span:last-child:not(:first-child) {
+  color: var(--menu-card-color-ghost-fg-label-muted);
+}
+
+:is(.m-menu-card:not(.-disabled) .m-menu-card-child.-end) > div {
+  color: var(--menu-card-color-ghost-fg-cmd);
+}
+
+:is(:is(.m-menu-card:not(.-disabled) .m-menu-card-child.-end) > div)
+  > span:first-child {
+  color: var(--menu-card-color-ghost-fg-cmd);
+}
+
+@media (hover: hover) {
+  :is(.m-menu-card:not(.-disabled):hover .m-menu-card-child.-end) > div {
+    color: var(--menu-card-color-ghost-fg-cmd-hover);
+  }
+  :is(:is(.m-menu-card:not(.-disabled):hover .m-menu-card-child.-end) > div)
+    > span:first-child {
+    color: var(--menu-card-color-ghost-fg-cmd-hover);
+  }
+}
+
+:is(.m-menu-card:not(.-disabled):active .m-menu-card-child.-end) > div {
+  color: var(--menu-card-color-ghost-fg-cmd-active);
+}
+
+:is(:is(.m-menu-card:not(.-disabled):active .m-menu-card-child.-end) > div)
+  > span:first-child {
+  color: var(--menu-card-color-ghost-fg-cmd-active);
+}
+
+:is(.m-menu-card.-selected:not(.-disabled) .m-menu-card-child.-end) > div {
+  color: var(--menu-card-color-ghost-fg-cmd-hover);
+}
+
+:is(:is(.m-menu-card.-selected:not(.-disabled) .m-menu-card-child.-end) > div)
+  > span:first-child {
+  color: var(--menu-card-color-ghost-fg-cmd-hover);
+}
+
+.m-menu-card.-disabled {
+  background: var(--menu-card-color-disabled-ghost-bg);
+}
+
+.m-menu-card.-disabled.-selected {
+  background: var(--menu-card-color-disabled-ghost-bg-hover);
+}
+
+:is(.m-menu-card.-disabled .m-menu-card-child) > div {
+  color: var(--menu-card-color-disabled-ghost-fg-label);
+}
+
+:is(:is(.m-menu-card.-disabled .m-menu-card-child) > div)
+  > span:last-child:not(:first-child) {
+  color: var(--menu-card-color-disabled-ghost-fg-label-muted);
+}
+
+:is(.m-menu-card.-disabled .m-menu-card-child.-end) > div {
+  color: var(--menu-card-color-disabled-ghost-fg-cmd);
+}
+
+:is(:is(.m-menu-card.-disabled .m-menu-card-child.-end) > div)
+  > span:first-child {
+  color: var(--menu-card-color-disabled-ghost-fg-cmd);
+}
+
+@media (hover: hover) {
+  :is(.m-menu-card.-disabled:hover .m-menu-card-child.-end) > div {
+    color: var(--menu-card-color-disabled-ghost-fg-cmd-hover);
+  }
+  :is(:is(.m-menu-card.-disabled:hover .m-menu-card-child.-end) > div)
+    > span:first-child {
+    color: var(--menu-card-color-disabled-ghost-fg-cmd-hover);
+  }
+}
+
+:is(.m-menu-card.-disabled.-selected .m-menu-card-child.-end) > div {
+  color: var(--menu-card-color-disabled-ghost-fg-cmd-hover);
+}
+
+:is(:is(.m-menu-card.-disabled.-selected .m-menu-card-child.-end) > div)
+  > span:first-child {
+  color: var(--menu-card-color-disabled-ghost-fg-cmd-hover);
+}

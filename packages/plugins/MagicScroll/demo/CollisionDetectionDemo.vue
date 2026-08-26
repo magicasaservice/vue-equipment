@@ -33,7 +33,7 @@
 import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

@@ -19,6 +19,7 @@
     "@maas/mirror": "catalog:",
     "@types/luxon": "^3.7.5",
     "jsdom": "^26.1.0",
+    "mirror-compat": "workspace:*",
     "tsup": "catalog:",
     "vitest": "^4.1.11"
   },

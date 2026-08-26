@@ -1,0 +1,29 @@
+{
+  "name": "mirror-compat",
+  "version": "1.0.0-beta.81",
+  "description": "Mirror v1 to v2 wrappers, scaffolded once by `mirror init --compat`, so the demos keep their `<m-*>` tags",
+  "contributors": [
+    {
+      "name": "Robin Scholz",
+      "url": "https://github.com/robinscholz"
+    },
+    {
+      "name": "Christoph Jeworutzki",
+      "url": "https://github.com/ChristophJeworutzki"
+    }
+  ],
+  "dependencies": {
+    "@vueuse/core": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@maas/mirror": "catalog:"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./css/*": "./src/css/*"
+  },
+  "license": "MIT",
+  "private": true,
+  "type": "module"
+}

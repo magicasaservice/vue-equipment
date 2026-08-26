@@ -1,0 +1,229 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-slider {
+  width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.m-slider:focus-visible {
+  outline: none;
+}
+
+.m-slider.-disabled {
+  cursor: not-allowed;
+}
+
+.m-slider.-disabled .m-slider__container {
+  pointer-events: none;
+}
+
+.m-slider.-disabled .m-slider-track__container {
+  background: var(--slider-color-disabled-track-bg-inactive);
+  border-color: var(--slider-color-disabled-track-border);
+}
+
+.m-slider.-disabled .m-slider-handle__fill {
+  background: var(--slider-color-disabled-handle-bg);
+  border-color: var(--slider-color-disabled-handle-border);
+}
+
+.m-slider.-disabled .m-slider-range__fill {
+  background: var(--slider-color-disabled-track-bg-active);
+}
+
+:is(.m-slider.-disabled .m-slider-steps) span {
+  background: var(--slider-color-disabled-step-inactive);
+}
+
+.-active:is(.m-slider.-disabled .m-slider-steps) span {
+  background: var(--slider-color-disabled-step-active);
+}
+
+.m-slider__container {
+  position: relative;
+  height: var(--slider-dimension-container-height);
+  padding: 0 var(--slider-dimension-container-padding);
+  width: 100%;
+  cursor: grab;
+}
+
+.m-slider__container.-dragging {
+  cursor: grabbing;
+}
+
+.m-slider__target {
+  position: absolute;
+  height: var(--slider-dimension-target);
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.m-slider-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.m-slider-track__container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--slider-dimension-track-height);
+  background: var(--slider-color-track-bg-inactive);
+  border-radius: var(--slider-dimension-track-radius);
+  border-width: var(--slider-dimension-track-border);
+  border-color: var(--slider-color-track-border);
+  border-style: solid;
+  box-sizing: border-box;
+  transition: all 100ms linear;
+}
+
+.m-slider-handle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.m-slider-handle__fill {
+  width: var(--slider-dimension-handle-width);
+  height: var(--slider-dimension-handle-height);
+  background: var(--slider-color-handle-bg);
+  border-radius: var(--slider-dimension-handle-radius);
+  border-width: var(--slider-dimension-handle-border);
+  border-color: var(--slider-color-handle-border);
+  border-style: solid;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  transition: all 100ms linear;
+}
+
+.m-slider__container.-dragging .m-slider-handle__fill {
+  width: var(--slider-dimension-handle-pressed-width);
+  height: var(--slider-dimension-handle-pressed-height);
+}
+
+.m-slider:not(.-disabled):focus-visible .m-slider-handle__fill {
+  border-color: var(--slider-color-handle-border-focus);
+  outline-color: var(--slider-color-handle-outline-focus);
+  outline-width: var(--slider-dimension-handle-outline-focus);
+  outline-style: solid;
+  outline-offset: 0;
+}
+
+.m-slider-range {
+  position: absolute;
+  width: calc(100% + var(--slider-dimension-track-border) * 2);
+  height: var(--slider-dimension-track-height);
+  top: calc(var(--slider-dimension-track-border) * -1);
+  left: calc(var(--slider-dimension-track-border) * -1);
+  box-sizing: border-box;
+}
+
+.m-slider-range__fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--slider-color-track-bg-active);
+  border-radius: var(--slider-dimension-track-radius);
+  transition: all 100ms linear;
+}
+
+.m-slider-steps {
+  position: absolute;
+  width: calc(100% + var(--slider-dimension-track-border) * 2);
+  height: var(--slider-dimension-track-height);
+  top: calc(var(--slider-dimension-track-border) * -1);
+  left: calc(var(--slider-dimension-track-border) * -1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m-slider-steps span {
+  width: var(--slider-dimension-step-width);
+  height: var(--slider-dimension-step-height);
+  border-radius: var(--slider-dimension-step-radius);
+  background: var(--slider-color-step-inactive);
+  transition: all 100ms linear;
+}
+
+:is(.m-slider-steps span):first-child,
+:is(.m-slider-steps span):last-child {
+  visibility: hidden;
+}
+
+.m-slider-steps.-active {
+  top: 0;
+}
+
+.m-slider-steps.-active span {
+  background: var(--slider-color-step-active);
+}
+
+/*
+ * Mirror's slider parts ship geometry of their own. The custom properties
+ * below are the supported way to overrule it; the handle rule is not, so it
+ * carries the specificity to win outright. Together they restore v1's
+ * measurements exactly: the fill's centre sits at the dragged percentage of
+ * the track, and the track fills its container.
+ */
+.m-slider {
+  --mirror-slider-cursor: grab;
+  --mirror-slider-dragging-cursor: grabbing;
+  --mirror-slider-track-size: 100%;
+}
+
+.m-slider .m-slider-handle.m-slider-handle {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(var(--msl-thumb-position, 0) * 100%);
+  inline-size: 0;
+  block-size: auto;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+/*
+ * v1 put `tabindex` and `role="slider"` on the root, so the focus ring keyed
+ * off the root. v2 puts them on the thumb, which is where they belong.
+ */
+.m-slider:not(.-disabled)
+  .m-slider-handle:focus-visible
+  .m-slider-handle__fill {
+  border-color: var(--slider-color-handle-border-focus);
+  outline-color: var(--slider-color-handle-outline-focus);
+  outline-width: var(--slider-dimension-handle-outline-focus);
+  outline-style: solid;
+  outline-offset: 0;
+}

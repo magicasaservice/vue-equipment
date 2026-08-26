@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue'
-import { MButton, MCheckbox } from '@maas/mirror/vue'
+import { MButton, MCheckbox } from 'mirror-compat'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import MagicCookieDemoItem from './MagicCookieDemoItem.vue'

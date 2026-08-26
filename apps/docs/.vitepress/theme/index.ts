@@ -16,6 +16,7 @@ import { MagicScrollPlugin } from '@maas/vue-equipment/plugins/MagicScroll'
 import { MagicToastPlugin } from '@maas/vue-equipment/plugins/MagicToast'
 import { MagicTrayPlugin } from '@maas/vue-equipment/plugins/MagicTray'
 import * as Mirror from '@maas/mirror/vue'
+import * as MirrorCompat from 'mirror-compat'
 import Layout from './Layout.vue'
 import ProseTable from './components/ProseTable.vue'
 import ComponentPreview from './components/ComponentPreview.vue'
@@ -28,30 +29,14 @@ import './styles/tailwind.css'
 
 import 'fonts/mirage/stylesheet.css'
 import 'fonts/index/stylesheet.css'
-import '@maas/mirror/css/index.css'
 
 import '../../../../.maas/tokens/css/application.css'
 import '../../../../.maas/tokens/css/theme/dark/application.css'
-import '../../../../.maas/tokens/css/component/avatar.css'
-import '../../../../.maas/tokens/css/component/badge.css'
-import '../../../../.maas/tokens/css/component/button.css'
-import '../../../../.maas/tokens/css/component/checkbox.css'
-import '../../../../.maas/tokens/css/component/input.css'
-import '../../../../.maas/tokens/css/component/menu-item.css'
-import '../../../../.maas/tokens/css/component/menu-card.css'
-import '../../../../.maas/tokens/css/component/menu-box.css'
-import '../../../../.maas/tokens/css/component/select.css'
-import '../../../../.maas/tokens/css/component/toggle.css'
-import '../../../../.maas/tokens/css/theme/dark/component/avatar.css'
-import '../../../../.maas/tokens/css/theme/dark/component/badge.css'
-import '../../../../.maas/tokens/css/theme/dark/component/button.css'
-import '../../../../.maas/tokens/css/theme/dark/component/checkbox.css'
-import '../../../../.maas/tokens/css/theme/dark/component/input.css'
-import '../../../../.maas/tokens/css/theme/dark/component/menu-item.css'
-import '../../../../.maas/tokens/css/theme/dark/component/menu-card.css'
-import '../../../../.maas/tokens/css/theme/dark/component/menu-box.css'
-import '../../../../.maas/tokens/css/theme/dark/component/select.css'
-import '../../../../.maas/tokens/css/theme/dark/component/toggle.css'
+
+// The compatibility layer owns the component CSS now. Mirror no longer has
+// components of its own to tokenise, so it emits no `component/*` tree.
+import 'mirror-compat/css/index.css'
+
 import './styles/tailwind.css'
 
 export default {
@@ -84,11 +69,26 @@ export default {
       app.use(plugin)
     })
 
-    for (const [name, comp] of Object.entries(
-      Mirror as Record<string, Component>
-    )) {
-      if (!name.includes('Props')) {
-        app.component(name, comp)
+    // Mirror's own exports register under their v2 names. The compatibility
+    // wrappers register after them under the `M*` names v2 dropped, which is
+    // what the `<m-*>` tags in the prose and the layout resolve against.
+    const registries = [Mirror, MirrorCompat] as Record<string, unknown>[]
+
+    for (const registry of registries) {
+      for (const [name, exported] of Object.entries(registry)) {
+        // A namespace object of parts is not a component, and neither is a
+        // composable or an error class. Registering one only fails at render.
+        const isComponent =
+          typeof exported === 'function' ||
+          (typeof exported === 'object' &&
+            exported !== null &&
+            ('render' in exported ||
+              'setup' in exported ||
+              '__file' in exported))
+
+        if (!name.includes('Props') && isComponent) {
+          app.component(name, exported as Component)
+        }
       }
     }
   },

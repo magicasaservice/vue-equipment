@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton, MBadge } from '@maas/mirror/vue'
+import { MButton, MBadge } from 'mirror-compat'
 import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 import { useRafFn } from '@vueuse/core'
 

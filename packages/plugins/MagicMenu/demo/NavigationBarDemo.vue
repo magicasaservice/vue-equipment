@@ -85,7 +85,7 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
-import { MBadge, MButton, MMenuBox } from '@maas/mirror/vue'
+import { MBadge, MButton, MMenuBox } from 'mirror-compat'
 import MenuDemoCard from './components/MenuDemoCard.vue'
 
 import type { ComponentPublicInstance } from 'vue'

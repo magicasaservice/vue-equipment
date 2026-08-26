@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MMenuItem, MMenuItemChild } from 'mirror-compat'
 import ProjectView from './ProjectView.vue'
 import AboutView from './AboutView.vue'
 import FilterList from './FilterList.vue'

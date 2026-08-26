@@ -1,0 +1,575 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+.m-input {
+  position: relative;
+  width: 100%;
+  height: var(--input-dimension-height-md);
+  gap: var(--input-dimension-gap-md);
+  padding: 0 var(--input-dimension-padding-md);
+  border-radius: var(--input-dimension-radius-md);
+  font-family: var(--input-font-family);
+  outline-color: var(--input-color-border);
+  outline-width: var(--input-dimension-border-md);
+  outline-offset: calc(-1 * var(--input-dimension-border-md));
+  outline-style: solid;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 100ms linear;
+  cursor: text;
+}
+.m-input * {
+  transition: all 100ms linear;
+}
+.m-input > div:not(.m-input__target) {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-height: 100%;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0 var(--input-dimension-padding-label-md);
+  height: 100%;
+}
+.m-input .m-input__target {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--input-dimension-radius-md);
+  outline-style: solid;
+  outline-color: transparent;
+}
+.m-input:not(.-simple) > div > span {
+  position: relative;
+  height: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.m-input:has(div:focus-within),
+.m-input.-focused {
+  outline-color: var(--input-color-focus-border);
+}
+:is(.m-input:has(div:focus-within), .m-input.-focused)
+  > div:not(.m-input__target) {
+  gap: var(--input-dimension-gap-label-md);
+}
+:is(.m-input:has(div:focus-within), .m-input.-focused) .m-input__target {
+  outline-color: var(--input-color-focus-outline);
+  outline-width: var(--input-dimension-outline-focus);
+}
+.m-input:has(input:not(:-moz-placeholder)) > div {
+  gap: var(--input-dimension-gap-label-md);
+}
+.m-input:has(input:not(:placeholder-shown)) > div,
+.m-input .-filled > div:not(.m-input__target) {
+  gap: var(--input-dimension-gap-label-md);
+}
+.m-input:not(.-simple) > div > span:has(input:not(:-moz-placeholder)) + label {
+  font-size: var(--input-font-size-label-md);
+  font-weight: var(--input-font-weight-label);
+  height: auto;
+  cursor: auto;
+}
+.m-input.-filled:not(.-simple) > div > label,
+.m-input:not(.-simple) > div > span:has(input:not(:placeholder-shown)) + label,
+.m-input:not(.-simple) > div:focus-within > label {
+  font-size: var(--input-font-size-label-md);
+  font-weight: var(--input-font-weight-label);
+  height: auto;
+  cursor: auto;
+}
+.m-input:not(.-simple) > div > span:has(input:not(:-moz-placeholder)) {
+  height: var(--input-font-size-input-md);
+}
+.m-input:not(.-simple) > div > span:has(input:not(:placeholder-shown)),
+.m-input.-filled:not(.-simple) > div > span,
+.m-input:not(.-simple) > div:focus-within > span {
+  height: var(--input-font-size-input-md);
+}
+.m-input > div > span > input {
+  width: 100%;
+  height: 0;
+  display: block;
+  font-weight: var(--input-font-weight-input);
+  font-size: var(--input-font-size-input-md);
+  line-height: normal;
+  letter-spacing: var(--input-letter-spacing);
+  text-transform: var(--input-text-case);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+:is(.m-input > div > span > input)::-moz-placeholder {
+  color: transparent;
+}
+:is(.m-input > div > span > input)::placeholder {
+  color: transparent;
+}
+:is(.m-input > div > span > input):autofill {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: var(--input-color-fg);
+  caret-color: var(--input-color-fg);
+}
+:is(.m-input > div > span > input):not(:-moz-placeholder) {
+  outline: none;
+  height: 1lh;
+}
+:is(.m-input > div > span > input):not(:placeholder-shown),
+:is(.m-input > div > span > input):focus {
+  outline: none;
+  height: 1lh;
+}
+[type='number']:is(.m-input > div > span > input) {
+  -moz-appearance: textfield;
+}
+[type='number']:is(.m-input > div > span > input)::-webkit-inner-spin-button,
+[type='number']:is(.m-input > div > span > input)::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.m-input > div > label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  line-height: normal;
+  font-weight: var(--input-font-weight-input);
+  font-size: var(--input-font-size-input-md);
+  cursor: text;
+}
+.m-input > span {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: default;
+}
+:is(.m-input:has(svg), .m-input.-icon-end, .m-input.-icon-start) svg {
+  width: var(--input-dimension-symbol-md);
+}
+.m-input.-slot-end:not(.m-input.-icon-end):not(.m-input.-icon-start) {
+  padding-right: calc(
+    var(--input-dimension-padding-slot-md) + var(--input-dimension-border-md)
+  );
+}
+.m-input.-slot-start:not(.m-input.-icon-end):not(.m-input.-icon-start) {
+  padding-left: calc(
+    var(--input-dimension-padding-slot-md) + var(--input-dimension-border-md)
+  );
+}
+:is(.m-input:not(.-disabled), .m-input:not(.-error)) > span {
+  color: var(--input-color-fg-label);
+}
+:is(.m-input:not(.-disabled), .m-input:not(.-error)) > div > span {
+  color: var(--input-color-fg);
+  background: transparent;
+}
+:is(.m-input:not(.-disabled), .m-input:not(.-error)) > div > label {
+  color: var(--input-color-fg-label);
+}
+:is(.m-input:not(.-disabled), .m-input:not(.-error)):has(
+    input:not(:-moz-placeholder)
+  )
+  > span {
+  color: var(--input-color-fg);
+}
+:is(.m-input:not(.-disabled), .m-input:not(.-error)):has(
+    input:not(:placeholder-shown)
+  )
+  > span,
+.-filled:is(.m-input:not(.-disabled), .m-input:not(.-error)) > span {
+  color: var(--input-color-fg);
+}
+.m-input.-xs {
+  padding: 0 var(--input-dimension-padding-xs);
+  height: var(--input-dimension-height-xs);
+  border-radius: var(--input-dimension-radius-xs);
+  outline-width: var(--input-dimension-border-xs);
+  outline-offset: calc(-1 * var(--input-dimension-border-xs));
+}
+.m-input.-xs > div:not(.m-input__target) {
+  padding: 0 var(--input-dimension-padding-label-xs);
+}
+.m-input.-xs > .m-input__target {
+  border-radius: var(--input-dimension-radius-xs);
+}
+.m-input.-xs > div > label {
+  font-size: var(--input-font-size-input-xs);
+  line-height: normal;
+}
+.m-input.-xs > div > span > input {
+  font-size: var(--input-font-size-input-xs);
+}
+:is(.m-input.-xs:has(div:focus-within), .m-input.-xs.-focused)
+  > div:not(.m-input__target) {
+  gap: var(--input-dimension-gap-label-xs);
+}
+.m-input.-xs:has(input:not(:-moz-placeholder)) > div {
+  gap: var(--input-dimension-gap-label-xs);
+}
+.m-input.-xs:has(input:not(:placeholder-shown)) > div,
+.m-input.-xs .-filled > div {
+  gap: var(--input-dimension-gap-label-xs);
+}
+.m-input.-xs:not(.-simple)
+  > div
+  > span:has(input:not(:-moz-placeholder))
+  + label {
+  font-size: var(--input-font-size-label-xs);
+}
+.m-input.-xs.-filled:not(.-simple) > div > label,
+.m-input.-xs:not(.-simple)
+  > div
+  > span:has(input:not(:placeholder-shown))
+  + label,
+.m-input.-xs:not(.-simple) > div:focus-within > label {
+  font-size: var(--input-font-size-label-xs);
+}
+.m-input.-xs:not(.-simple) > div > span:has(input:not(:-moz-placeholder)) {
+  height: var(--input-font-size-input-xs);
+}
+.m-input.-xs:not(.-simple) > div > span:has(input:not(:placeholder-shown)),
+.m-input.-xs.-filled:not(.-simple) > div > span,
+.m-input.-xs:not(.-simple) > div:focus-within > span {
+  height: var(--input-font-size-input-xs);
+}
+:is(.m-input.-xs:has(svg), .m-input.-xs.-icon-end, .m-input.-xs.-icon-start)
+  svg {
+  width: var(--input-dimension-symbol-xs);
+}
+.m-input.-xs.-slot-end:not(.m-input.-xs.-icon-end):not(
+    .m-input.-xs.-icon-start
+  ) {
+  padding-right: calc(
+    var(--input-dimension-padding-slot-xs) + var(--input-dimension-border-xs)
+  );
+}
+.m-input.-xs.-slot-start:not(.m-input.-xs.-icon-end):not(
+    .m-input.-xs.-icon-start
+  ) {
+  padding-left: calc(
+    var(--input-dimension-padding-slot-xs) + var(--input-dimension-border-xs)
+  );
+}
+.m-input.-sm {
+  padding: 0 var(--input-dimension-padding-sm);
+  height: var(--input-dimension-height-sm);
+  border-radius: var(--input-dimension-radius-sm);
+  outline-width: var(--input-dimension-border-sm);
+  outline-offset: calc(-1 * var(--input-dimension-border-sm));
+}
+.m-input.-sm > div:not(.m-input__target) {
+  padding: 0 var(--input-dimension-padding-label-sm);
+}
+.m-input.-sm > .m-input__target {
+  border-radius: var(--input-dimension-radius-sm);
+}
+.m-input.-sm > div > label {
+  font-size: var(--input-font-size-input-sm);
+  line-height: normal;
+}
+.m-input.-sm > div > span > input {
+  font-size: var(--input-font-size-input-sm);
+}
+:is(.m-input.-sm:has(div:focus-within), .m-input.-sm.-focused)
+  > div:not(.m-input__target) {
+  gap: var(--input-dimension-gap-label-sm);
+}
+.m-input.-sm:has(input:not(:-moz-placeholder)) > div {
+  gap: var(--input-dimension-gap-label-sm);
+}
+.m-input.-sm:has(input:not(:placeholder-shown)) > div,
+.m-input.-sm .-filled > div {
+  gap: var(--input-dimension-gap-label-sm);
+}
+.m-input.-sm:not(.-simple)
+  > div
+  > span:has(input:not(:-moz-placeholder))
+  + label {
+  font-size: var(--input-font-size-label-sm);
+}
+.m-input.-sm.-filled:not(.-simple) > div > label,
+.m-input.-sm:not(.-simple)
+  > div
+  > span:has(input:not(:placeholder-shown))
+  + label,
+.m-input.-sm:not(.-simple) > div:focus-within > label {
+  font-size: var(--input-font-size-label-sm);
+}
+.m-input.-sm:not(.-simple) > div > span:has(input:not(:-moz-placeholder)) {
+  height: var(--input-font-size-input-sm);
+}
+.m-input.-sm:not(.-simple) > div > span:has(input:not(:placeholder-shown)),
+.m-input.-sm.-filled:not(.-simple) > div > span,
+.m-input.-sm:not(.-simple) > div:focus-within > span {
+  height: var(--input-font-size-input-sm);
+}
+:is(.m-input.-sm:has(svg), .m-input.-sm.-icon-end, .m-input.-sm.-icon-start)
+  svg {
+  width: var(--input-dimension-symbol-sm);
+}
+.m-input.-sm.-slot-end:not(.m-input.-sm.-icon-end):not(
+    .m-input.-sm.-icon-start
+  ) {
+  padding-right: calc(
+    var(--input-dimension-padding-slot-sm) + var(--input-dimension-border-sm)
+  );
+}
+.m-input.-sm.-slot-start:not(.m-input.-sm.-icon-end):not(
+    .m-input.-sm.-icon-start
+  ) {
+  padding-left: calc(
+    var(--input-dimension-padding-slot-sm) + var(--input-dimension-border-sm)
+  );
+}
+.m-input.-lg {
+  padding: 0 var(--input-dimension-padding-lg);
+  height: var(--input-dimension-height-lg);
+  border-radius: var(--input-dimension-radius-lg);
+  outline-width: var(--input-dimension-border-lg);
+  outline-offset: calc(-1 * var(--input-dimension-border-lg));
+}
+.m-input.-lg > div:not(.m-input__target) {
+  padding: 0 var(--input-dimension-padding-label-lg);
+}
+.m-input.-lg > .m-input__target {
+  border-radius: var(--input-dimension-radius-lg);
+}
+.m-input.-lg > div > label {
+  font-size: var(--input-font-size-input-lg);
+  line-height: normal;
+}
+.m-input.-lg > div > span > input {
+  font-size: var(--input-font-size-input-lg);
+}
+:is(.m-input.-lg:has(div:focus-within), .m-input.-lg.-focused)
+  > div:not(.m-input__target) {
+  gap: var(--input-dimension-gap-label-lg);
+}
+.m-input.-lg:has(input:not(:-moz-placeholder)) > div {
+  gap: var(--input-dimension-gap-label-lg);
+}
+.m-input.-lg:has(input:not(:placeholder-shown)) > div,
+.m-input.-lg .-filled > div {
+  gap: var(--input-dimension-gap-label-lg);
+}
+.m-input.-lg:not(.-simple)
+  > div
+  > span:has(input:not(:-moz-placeholder))
+  + label {
+  font-size: var(--input-font-size-label-lg);
+}
+.m-input.-lg.-filled:not(.-simple) > div > label,
+.m-input.-lg:not(.-simple)
+  > div
+  > span:has(input:not(:placeholder-shown))
+  + label,
+.m-input.-lg:not(.-simple) > div:focus-within > label {
+  font-size: var(--input-font-size-label-lg);
+}
+.m-input.-lg:not(.-simple) > div > span:has(input:not(:-moz-placeholder)) {
+  height: var(--input-font-size-input-lg);
+}
+.m-input.-lg:not(.-simple) > div > span:has(input:not(:placeholder-shown)),
+.m-input.-lg.-filled:not(.-simple) > div > span,
+.m-input.-lg:not(.-simple) > div:focus-within > span {
+  height: var(--input-font-size-input-lg);
+}
+:is(.m-input.-lg:has(svg), .m-input.-lg.-icon-end, .m-input.-lg.-icon-start)
+  svg {
+  width: var(--input-dimension-symbol-lg);
+}
+.m-input.-lg.-slot-end:not(.m-input.-lg.-icon-end):not(
+    .m-input.-lg.-icon-start
+  ) {
+  padding-right: calc(
+    var(--input-dimension-padding-slot-lg) + var(--input-dimension-border-lg)
+  );
+}
+.m-input.-lg.-slot-start:not(.m-input.-lg.-icon-end):not(
+    .m-input.-lg.-icon-start
+  ) {
+  padding-left: calc(
+    var(--input-dimension-padding-slot-lg) + var(--input-dimension-border-lg)
+  );
+}
+.m-input.-simple > div:not(.m-input__target) {
+  transition: color 100ms linear;
+  height: 100%;
+}
+.m-input.-simple > div > span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.m-input.-simple > div > span > input {
+  transition: color 100ms linear;
+  position: absolute;
+  right: var(--input-dimension-padding-label-md);
+  left: var(--input-dimension-padding-label-md);
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  font-weight: var(--input-font-weight-input);
+  font-size: var(--input-font-size-input-md);
+  line-height: normal;
+}
+:is(.m-input.-simple > div > span > input):not(:-moz-placeholder) + label {
+  display: none;
+}
+:is(.m-input.-simple > div > span > input):not(:placeholder-shown) + label,
+:is(.m-input.-simple > div > span > input):focus + label {
+  display: none;
+}
+.m-input.-simple > div > label {
+  transform: none;
+  font-weight: var(--input-font-weight-input);
+  font-size: var(--input-font-size-input-md);
+  line-height: normal;
+}
+.m-input.-simple > div > span:has(input:not(:-moz-placeholder)) + label {
+  display: none;
+}
+.m-input.-simple > div:focus-within > label,
+.m-input.-simple.-filled > div > label,
+.m-input.-simple > div > span:has(input:not(:placeholder-shown)) + label {
+  display: none;
+}
+.m-input.-simple.-xs > div > span > input {
+  font-size: var(--input-font-size-input-xs);
+}
+.m-input.-simple.-xs > div > label {
+  font-size: var(--input-font-size-input-xs);
+}
+.m-input.-simple.-sm > div > span > input {
+  font-size: var(--input-font-size-input-sm);
+}
+.m-input.-simple.-sm > div > label {
+  font-size: var(--input-font-size-input-sm);
+}
+.m-input.-simple.-lg > div > span > input {
+  font-size: var(--input-font-size-input-lg);
+}
+.m-input.-simple.-lg > div > label {
+  font-size: var(--input-font-size-input-lg);
+}
+.m-input.-blur {
+  backdrop-filter: blur(var(--input-dimension-blur));
+}
+.m-input.-error:not(:has(div:focus-within)),
+.m-input.-error:not(.m-input.-focused) {
+  background: var(--input-color-danger-bg);
+  outline-color: var(--input-color-danger-border);
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  )
+  > span {
+  pointer-events: none;
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  )
+  > span {
+  color: var(--input-color-danger-fg-label);
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  )
+  > div
+  > span {
+  color: var(--input-color-danger-fg);
+  background: transparent;
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  )
+  > div
+  > label {
+  color: var(--input-color-danger-fg-label);
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  ):has(input:not(:-moz-placeholder))
+  > span {
+  color: var(--input-color-danger-fg);
+}
+:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  ):has(input:not(:placeholder-shown))
+  > span,
+.-filled:is(
+    .m-input.-error:not(:has(div:focus-within)),
+    .m-input.-error:not(.m-input.-focused)
+  )
+  > span {
+  color: var(--input-color-danger-fg);
+}
+.m-input:has(*:disabled),
+.m-input.-disabled {
+  background: var(--input-color-disabled-bg);
+  outline-color: var(--input-color-disabled-border);
+  cursor: not-allowed;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) > div {
+  pointer-events: none;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) > span {
+  pointer-events: none;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) div > span > input {
+  pointer-events: none;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) div > label {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) > span {
+  color: var(--input-color-disabled-fg-label);
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) > div > span {
+  color: var(--input-color-disabled-fg);
+  background: transparent;
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled) > div > label {
+  color: var(--input-color-disabled-fg-label);
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled):has(
+    input:not(:-moz-placeholder)
+  )
+  > span {
+  color: var(--input-color-disabled-fg);
+}
+:is(.m-input:has(*:disabled), .m-input.-disabled):has(
+    input:not(:placeholder-shown)
+  )
+  > span,
+.-filled:is(.m-input:has(*:disabled), .m-input.-disabled) > span {
+  color: var(--input-color-disabled-fg);
+}

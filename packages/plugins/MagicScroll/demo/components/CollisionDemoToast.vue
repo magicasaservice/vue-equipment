@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

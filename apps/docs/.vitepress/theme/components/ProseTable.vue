@@ -60,7 +60,7 @@
 
 <script lang="ts" setup>
 import { useId, computed } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import MarkdownIt from 'markdown-it'
 
 const md = new MarkdownIt({

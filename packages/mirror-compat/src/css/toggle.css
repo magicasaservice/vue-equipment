@@ -1,0 +1,354 @@
+/*
+ * Compatibility layer, v1 to v2.
+ *
+ * Ported from Mirror v1's component CSS. Every selector the v1 markup relied on
+ * is still here; where a Mirror v2 headless part replaced a native element the
+ * selector was widened with `:is()` rather than rewritten, so the v1 class map
+ * and the v2 wrapper both match and the specificity is unchanged.
+ */
+
+/*
+ * `Switch.Root` renders a `<button role="switch">` where v1 rendered an
+ * `<input type="checkbox" role="switch">`, and `Switch.Thumb` has to live
+ * inside it. See the end of this file for the positioning that keeps the
+ * handle measured against `.m-toggle__checkbox`, as it was in v1.
+ */
+.m-toggle__control {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m-toggle {
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--toggle-dimension-gap-md);
+}
+.m-toggle > .m-toggle__checkbox {
+  position: relative;
+  width: var(--toggle-dimension-track-width-md);
+  height: var(--toggle-dimension-track-height-md);
+  display: inline-flex;
+}
+:is(.m-toggle > .m-toggle__checkbox)
+  > :is([type='checkbox'], .m-toggle__control) {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border-style: solid;
+  border-width: var(--toggle-dimension-track-border-md);
+  border-radius: var(--toggle-dimension-track-radius-md);
+  background: var(--toggle-color-track-unchecked-bg);
+  border-color: var(--toggle-color-track-unchecked-border);
+  transition: all 100ms ease;
+  outline-color: transparent;
+}
+:is(
+  :is(.m-toggle > .m-toggle__checkbox)
+    > :is([type='checkbox'], .m-toggle__control)
+):is(:checked, [data-checked]) {
+  background: var(--toggle-color-track-checked-bg);
+  border-color: var(--toggle-color-track-checked-border);
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):active:not(:is(:checked, [data-checked])):not(:disabled) {
+  background: var(--toggle-color-track-unchecked-bg-active);
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):active:is(:checked, [data-checked]):not(:disabled) {
+  background: var(--toggle-color-track-checked-bg-active);
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):active:not(:disabled):after {
+  box-shadow: var(--toggle-box-shadow-handle-pressed);
+}
+:is(
+  :is(.m-toggle > .m-toggle__checkbox)
+    > :is([type='checkbox'], .m-toggle__control)
+):focus-visible {
+  outline: 0;
+  border-color: var(--toggle-color-track-unchecked-border-focus);
+  outline-color: var(--toggle-color-track-unchecked-outline-focus);
+  outline-width: var(--toggle-dimension-track-outline-focus);
+  outline-style: solid;
+  outline-offset: 0;
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):focus-visible:is(:checked, [data-checked]) {
+  border-color: var(--toggle-color-track-checked-border-focus);
+  outline-color: var(--toggle-color-track-checked-outline-focus);
+}
+.m-toggle .m-toggle__handle {
+  position: absolute;
+  z-index: 1;
+  border-style: solid;
+  top: var(--toggle-dimension-handle-inset-md);
+  left: var(--toggle-dimension-handle-inset-md);
+  width: var(--toggle-dimension-handle-width-md);
+  height: var(--toggle-dimension-handle-height-md);
+  padding: var(--toggle-dimension-handle-padding-md);
+  border-width: var(--toggle-dimension-handle-border-md);
+  border-radius: var(--toggle-dimension-handle-radius-md);
+  border-color: var(--toggle-color-handle-unchecked-border);
+  background: var(--toggle-color-handle-unchecked-bg);
+  color: var(--toggle-color-handle-unchecked-fg);
+  box-shadow: var(--toggle-box-shadow-handle);
+  transition: all 100ms ease;
+}
+:is(.m-toggle .m-toggle__handle) * {
+  width: 100%;
+  height: 100%;
+}
+.m-toggle:has(
+    :is([type='checkbox'], .m-toggle__control):is(:checked, [data-checked])
+  )
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-md) -
+      var(--toggle-dimension-handle-width-md) -
+      (var(--toggle-dimension-handle-inset-md) * 2)
+  );
+  transform: translateX(var(--transform-x));
+  background: var(--toggle-color-handle-checked-bg);
+  border-color: var(--toggle-color-handle-checked-border);
+  color: var(--toggle-color-handle-checked-fg);
+}
+.m-toggle:has(:is([type='checkbox'], .m-toggle__control):active:not(:disabled))
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-md) -
+      var(--toggle-dimension-handle-width-pressed-md) -
+      (var(--toggle-dimension-handle-inset-md) * 2)
+  );
+  width: var(--toggle-dimension-handle-width-pressed-md);
+}
+.m-toggle > span {
+  display: block;
+  font-family: var(--toggle-font-family-label);
+  font-weight: var(--toggle-font-weight-label);
+  line-height: var(--toggle-line-height-label-md);
+  font-size: var(--toggle-font-size-label-md);
+  transition: all 100ms linear;
+}
+.m-toggle.-reverse {
+  flex-direction: row-reverse;
+}
+:is(.m-toggle.-disabled > .m-toggle__checkbox) .m-toggle__checked {
+  color: var(--toggle-color-track-checked-disabled-fg);
+}
+:is(.m-toggle.-disabled > .m-toggle__checkbox) .m-toggle__unchecked {
+  color: var(--toggle-color-track-unchecked-disabled-fg);
+}
+.m-toggle:not(.-disabled) > span {
+  color: var(--toggle-color-label-solid-fg);
+}
+.m-toggle.-subtle:not(.-disabled) > span {
+  color: var(--toggle-color-label-subtle-fg);
+}
+.m-toggle.-sm {
+  gap: var(--toggle-dimension-gap-sm);
+}
+.m-toggle.-sm > .m-toggle__checkbox {
+  width: var(--toggle-dimension-track-width-sm);
+  height: var(--toggle-dimension-track-height-sm);
+}
+:is(.m-toggle.-sm > .m-toggle__checkbox)
+  > :is([type='checkbox'], .m-toggle__control) {
+  border-width: var(--toggle-dimension-track-border-sm);
+  border-radius: var(--toggle-dimension-track-radius-sm);
+}
+.m-toggle.-sm .m-toggle__handle {
+  top: var(--toggle-dimension-handle-inset-sm);
+  left: var(--toggle-dimension-handle-inset-sm);
+  width: var(--toggle-dimension-handle-width-sm);
+  height: var(--toggle-dimension-handle-height-sm);
+  padding: var(--toggle-dimension-handle-padding-sm);
+  border-width: var(--toggle-dimension-handle-border-sm);
+  border-radius: var(--toggle-dimension-handle-radius-sm);
+}
+.m-toggle.-sm:has(
+    :is([type='checkbox'], .m-toggle__control):is(:checked, [data-checked])
+  )
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-sm) -
+      var(--toggle-dimension-handle-width-sm) -
+      (var(--toggle-dimension-handle-inset-sm) * 2)
+  );
+}
+.m-toggle.-sm:has(
+    :is([type='checkbox'], .m-toggle__control):active:not(
+        :is(:checked, [data-checked])
+      ):not(:disabled)
+  )
+  .m-toggle__handle {
+  width: var(--toggle-dimension-handle-width-pressed-sm);
+}
+.m-toggle.-sm:has(
+    :is([type='checkbox'], .m-toggle__control):active:is(
+        :checked,
+        [data-checked]
+      ):not(:disabled)
+  )
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-sm) -
+      var(--toggle-dimension-handle-width-pressed-sm) -
+      var(--toggle-dimension-handle-inset-sm) * 2
+  );
+  width: var(--toggle-dimension-handle-width-pressed-sm);
+}
+.m-toggle.-lg {
+  gap: var(--toggle-dimension-gap-lg);
+}
+.m-toggle.-lg > .m-toggle__checkbox {
+  width: var(--toggle-dimension-track-width-lg);
+  height: var(--toggle-dimension-track-height-lg);
+}
+:is(.m-toggle.-lg > .m-toggle__checkbox)
+  > :is([type='checkbox'], .m-toggle__control) {
+  border-width: var(--toggle-dimension-track-border-lg);
+  border-radius: var(--toggle-dimension-track-radius-lg);
+}
+.m-toggle.-lg .m-toggle__handle {
+  top: var(--toggle-dimension-handle-inset-lg);
+  left: var(--toggle-dimension-handle-inset-lg);
+  width: var(--toggle-dimension-handle-width-lg);
+  height: var(--toggle-dimension-handle-height-lg);
+  padding: var(--toggle-dimension-handle-padding-lg);
+  border-width: var(--toggle-dimension-handle-border-lg);
+  border-radius: var(--toggle-dimension-handle-radius-lg);
+}
+.m-toggle.-lg:has(
+    :is([type='checkbox'], .m-toggle__control):is(:checked, [data-checked])
+  )
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-lg) -
+      var(--toggle-dimension-handle-width-lg) -
+      (var(--toggle-dimension-handle-inset-lg) * 2)
+  );
+}
+.m-toggle.-lg:has(
+    :is([type='checkbox'], .m-toggle__control):active:not(
+        :is(:checked, [data-checked])
+      ):not(:disabled)
+  )
+  .m-toggle__handle {
+  width: var(--toggle-dimension-handle-width-pressed-lg);
+}
+.m-toggle.-lg:has(
+    :is([type='checkbox'], .m-toggle__control):active:is(
+        :checked,
+        [data-checked]
+      ):not(:disabled)
+  )
+  .m-toggle__handle {
+  --transform-x: calc(
+    var(--toggle-dimension-track-width-lg) -
+      var(--toggle-dimension-handle-width-pressed-lg) -
+      var(--toggle-dimension-handle-inset-lg) * 2
+  );
+  width: var(--toggle-dimension-handle-width-pressed-lg);
+}
+.m-toggle.-solid.-disabled > span {
+  color: var(--toggle-color-label-disabled-solid-fg);
+}
+:is(
+  :is(.m-toggle > .m-toggle__checkbox)
+    > :is([type='checkbox'], .m-toggle__control)
+):disabled {
+  cursor: not-allowed;
+  background: var(--toggle-color-track-unchecked-disabled-bg);
+  border-color: var(--toggle-color-track-unchecked-disabled-border);
+  color: var(--toggle-color-track-unchecked-disabled-fg);
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):disabled:is(:checked, [data-checked]) {
+  background: var(--toggle-color-track-checked-disabled-bg);
+  border-color: var(--toggle-color-track-checked-disabled-border);
+  color: var(--toggle-color-track-checked-disabled-fg);
+}
+:is(.m-toggle > .m-toggle__checkbox):has(
+    :is([type='checkbox'], .m-toggle__control):disabled
+  )
+  .m-toggle__handle {
+  background: var(--toggle-color-handle-unchecked-disabled-bg);
+  border-color: var(--toggle-color-handle-unchecked-disabled-border);
+}
+:is(.m-toggle > .m-toggle__checkbox):has(
+    :is([type='checkbox'], .m-toggle__control):disabled:is(
+        :checked,
+        [data-checked]
+      )
+  )
+  .m-toggle__handle {
+  background: var(--toggle-color-handle-checked-disabled-bg);
+  border-color: var(--toggle-color-handle-checked-disabled-border);
+}
+.m-toggle.-subtle.-disabled > span {
+  color: var(--toggle-color-label-disabled-subtle-fg);
+}
+:is(
+  :is(.m-toggle > .m-toggle__checkbox)
+    > :is([type='checkbox'], .m-toggle__control)
+):disabled {
+  cursor: not-allowed;
+  background: var(--toggle-color-track-unchecked-disabled-bg);
+  border-color: var(--toggle-color-track-unchecked-disabled-border);
+  color: var(--toggle-color-track-unchecked-disabled-fg);
+}
+:is(
+    :is(.m-toggle > .m-toggle__checkbox)
+      > :is([type='checkbox'], .m-toggle__control)
+  ):disabled:is(:checked, [data-checked]) {
+  background: var(--toggle-color-track-checked-disabled-bg);
+  border-color: var(--toggle-color-track-checked-disabled-border);
+  color: var(--toggle-color-track-checked-disabled-fg);
+}
+:is(.m-toggle > .m-toggle__checkbox):has(
+    :is([type='checkbox'], .m-toggle__control):disabled
+  )
+  .m-toggle__handle {
+  background: var(--toggle-color-handle-unchecked-disabled-bg);
+  border-color: var(--toggle-color-handle-unchecked-disabled-border);
+}
+:is(.m-toggle > .m-toggle__checkbox):has(
+    :is([type='checkbox'], .m-toggle__control):disabled:is(
+        :checked,
+        [data-checked]
+      )
+  )
+  .m-toggle__handle {
+  background: var(--toggle-color-handle-checked-disabled-bg);
+  border-color: var(--toggle-color-handle-checked-disabled-border);
+}
+
+/*
+ * v1 nested the handle next to the track; v2 nests it inside. Taking the track
+ * out of the positioning flow puts the handle back on `.m-toggle__checkbox`,
+ * so the `inset` tokens resolve against the same box they always did.
+ */
+.m-toggle > .m-toggle__checkbox > .m-toggle__control {
+  position: static;
+}

@@ -20,6 +20,7 @@
     "autoprefixer": "^10.5.4",
     "fonts": "workspace:fonts@*",
     "fs-extra": "catalog:",
+    "mirror-compat": "workspace:*",
     "postcss": "^8.5.26",
     "prettier": "catalog:",
     "tailwindcss": "catalog:",

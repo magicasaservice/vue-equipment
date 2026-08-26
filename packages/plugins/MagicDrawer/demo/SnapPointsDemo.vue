@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 
 const snapPoints = ['320px', 0.75, 1]
