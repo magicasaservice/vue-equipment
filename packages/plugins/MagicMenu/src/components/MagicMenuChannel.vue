@@ -13,19 +13,18 @@
 
 <script lang="ts" setup>
 import { computed, inject, provide } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import {
+  MagicMenuChannelActive,
+  MagicMenuChannelId,
+  MagicMenuContentId,
   MagicMenuInstanceId,
   MagicMenuViewId,
-  MagicMenuContentId,
-  MagicMenuChannelId,
-  MagicMenuChannelActive,
 } from '../symbols'
 import { useMenuState } from '../composables/private/useMenuState'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicMenuChannelProps {
   id: string

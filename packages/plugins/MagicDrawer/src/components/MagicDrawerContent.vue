@@ -42,22 +42,19 @@
 
 <script lang="ts" setup>
 import {
-  useTemplateRef,
-  shallowRef,
-  watch,
   computed,
-  toValue,
   inject,
   onBeforeUnmount,
   onUnmounted,
+  shallowRef,
   toRefs,
+  toValue,
+  useTemplateRef,
+  watch,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import { convertToPixels } from '@maas/vue-equipment/utils'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { useDrawerDOM } from '../composables/private/useDrawerDOM'
 import { useDrawerCallback } from '../composables/private/useDrawerCallback'
@@ -65,7 +62,9 @@ import { useDrawerProgress } from '../composables/private/useDrawerProgress'
 import { useDrawerDrag } from '../composables/private/useDrawerDrag'
 import { useDrawerWheel } from '../composables/private/useDrawerWheel'
 import { useDrawerState } from '../composables/private/useDrawerState'
-import { MagicDrawerInstanceId, MagicDrawerActiveKey } from '../symbols'
+import { MagicDrawerActiveKey, MagicDrawerInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

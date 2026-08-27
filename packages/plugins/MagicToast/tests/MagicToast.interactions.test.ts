@@ -38,10 +38,7 @@ function createWrapper(
   })
 }
 
-function pointerEvent(
-  type: string,
-  opts: Partial<PointerEventInit> = {}
-) {
+function pointerEvent(type: string, opts: Partial<PointerEventInit> = {}) {
   return new PointerEvent(type, {
     bubbles: true,
     isPrimary: true,
@@ -118,9 +115,7 @@ describe('MagicToast - Interactions', () => {
       await nextTick()
 
       // Move down (positive Y)
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 220 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 220 }))
       await nextTick()
 
       // Drag container should have transform with positive Y
@@ -151,9 +146,7 @@ describe('MagicToast - Interactions', () => {
       await nextTick()
 
       // Try to move up (negative Y) — should be clamped to 0
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 150 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 150 }))
       await nextTick()
 
       const dragContainer = document.querySelector(
@@ -178,9 +171,7 @@ describe('MagicToast - Interactions', () => {
       await nextTick()
 
       // Move up (negative Y)
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 180 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 180 }))
       await nextTick()
 
       const dragContainer = document.querySelector(
@@ -419,9 +410,7 @@ describe('MagicToast - Interactions', () => {
       await nextTick()
 
       // Drag far past threshold (20px)
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 200 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 200 }))
       await nextTick()
 
       // Release — should dismiss
@@ -453,9 +442,7 @@ describe('MagicToast - Interactions', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       // Small drag (under threshold of 100)
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 120 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 120 }))
       await nextTick()
 
       document.dispatchEvent(pointerEvent('pointerup', { clientY: 120 }))
@@ -709,9 +696,7 @@ describe('MagicToast - Interactions', () => {
       inner.dispatchEvent(pointerEvent('pointerdown', { clientY: 100 }))
       await nextTick()
 
-      document.dispatchEvent(
-        pointerEvent('pointermove', { clientY: 120 })
-      )
+      document.dispatchEvent(pointerEvent('pointermove', { clientY: 120 }))
       await nextTick()
 
       expect(handler).toHaveBeenCalled()

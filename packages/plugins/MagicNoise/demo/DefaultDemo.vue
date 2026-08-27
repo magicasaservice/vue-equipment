@@ -1,3 +1,3 @@
 <template>
-  <magic-noise class="w-full aspect-[16/10]" />
+  <magic-noise class="aspect-[16/10] w-full" />
 </template>

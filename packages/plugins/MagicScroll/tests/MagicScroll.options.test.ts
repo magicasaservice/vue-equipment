@@ -69,7 +69,8 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progressBefore = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       const scroller = document.querySelector(
@@ -78,7 +79,8 @@ describe('MagicScroll - Options', () => {
       await scrollTo(scroller, 500)
 
       const progressAfter = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       // Custom target scroll should update progress
@@ -130,7 +132,8 @@ describe('MagicScroll - Options', () => {
       await scrollTo(scroller, scroller.scrollHeight)
 
       const progress = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       expect(progress).toBe(1)
@@ -154,7 +157,8 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progress = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       // Progress should be a valid number between 0 and 1
@@ -197,10 +201,12 @@ describe('MagicScroll - Options', () => {
       await scrollTo(scroller, 300)
 
       const progressA = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.ProgressA}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.ProgressA}"]`)!
+          .textContent!
       )
       const progressB = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.ProgressB}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.ProgressB}"]`)!
+          .textContent!
       )
 
       // Different intersection configs at the same scroll position
@@ -228,7 +234,8 @@ describe('MagicScroll - Options', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progress = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       // At scroll position 0, element top is at viewport top, so progress = 0
@@ -260,7 +267,8 @@ describe('MagicScroll - Options', () => {
       await scrollTo(scroller, scroller.scrollHeight)
 
       const progress = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       expect(progress).toBe(1)

@@ -20,7 +20,9 @@ export type MagicTraySnapMode = 'closest' | 'step'
 
 export type MagicTrayDragMode = 'free' | 'snap'
 
-export type TraySnapPoints = Partial<Record<MagicTraySide, MagicTraySnapPoint[]>>
+export type TraySnapPoints = Partial<
+  Record<MagicTraySide, MagicTraySnapPoint[]>
+>
 
 // Which approach arms a snap point
 export type TrayMagneticDirection = 'inner' | 'outer' | 'both'

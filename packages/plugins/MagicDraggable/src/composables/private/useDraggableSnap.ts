@@ -1,23 +1,16 @@
-import {
-  ref,
-  toRefs,
-  computed,
-  toValue,
-  nextTick,
-  type MaybeRef,
-  onScopeDispose,
-} from 'vue'
+import { computed, nextTick, onScopeDispose, ref, toRefs, toValue } from 'vue'
 import { computedWithControl } from '@vueuse/core'
+import { defu } from 'defu'
 import { interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
-import { defu } from 'defu'
-
 import { useDraggableState } from './useDraggableState'
 
+import type { MaybeRef } from 'vue'
+
 import type {
-  DraggableSnapPoint,
   Coordinates,
+  DraggableSnapPoint,
   RequiredMagicDraggableOptions,
 } from '../../types'
 

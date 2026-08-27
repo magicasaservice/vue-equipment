@@ -12,18 +12,19 @@
     }
   ],
   "dependencies": {
-    "@maas/vue-equipment/composables": "workspace:composables@*",
-    "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*"
+    "composables": "workspace:*",
+    "plugins": "workspace:*",
+    "utils": "workspace:*"
   },
   "devDependencies": {
     "@nuxt/devtools": "1.7.0",
     "@nuxt/kit": "catalog:",
-    "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/test-utils": "^3.20.1",
+    "@nuxt/module-builder": "^1.0.3",
+    "@nuxt/test-utils": "^3.23.0",
     "nuxt": "catalog:",
-    "vitest": "^4.0.6"
+    "vitest": "^4.1.11"
   },
+  "private": true,
   "scripts": {
     "build": "pnpm dlx nuxi prepare playground && nuxt-module-build build --outDir ../../dist/nuxt",
     "dev": "nuxi dev playground",

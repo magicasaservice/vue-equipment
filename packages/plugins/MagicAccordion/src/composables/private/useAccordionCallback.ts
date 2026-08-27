@@ -1,5 +1,7 @@
-import { toValue, type MaybeRef } from 'vue'
+import { toValue } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+
+import type { MaybeRef } from 'vue'
 
 type UseModalCallbackArgs = {
   viewId: string

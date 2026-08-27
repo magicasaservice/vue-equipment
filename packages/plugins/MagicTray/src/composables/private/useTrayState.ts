@@ -1,12 +1,15 @@
-import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
-import { createStateStore } from '@maas/vue-equipment/utils'
+import { onScopeDispose, reactive, toValue } from 'vue'
 import { createDefu } from 'defu'
+import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
+
+import type { MaybeRef } from 'vue'
+
 import type {
-  TrayState,
   MagicTrayOptions,
-  RequiredMagicTrayOptions,
   MagicTraySide,
+  RequiredMagicTrayOptions,
+  TrayState,
 } from '../../types/index'
 
 const getTrayStateStore = createStateStore<TrayState[]>('MagicTray', () => [])
@@ -15,7 +18,10 @@ function emptySides(): Record<MagicTraySide, number> {
   return { top: 0, right: 0, bottom: 0, left: 0 }
 }
 
-function emptyDirections(): Record<MagicTraySide, 'below' | 'above' | 'absolute'> {
+function emptyDirections(): Record<
+  MagicTraySide,
+  'below' | 'above' | 'absolute'
+> {
   return {
     top: 'absolute',
     right: 'absolute',

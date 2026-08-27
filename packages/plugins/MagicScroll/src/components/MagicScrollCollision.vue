@@ -6,24 +6,23 @@
 
 <script lang="ts" setup>
 import {
-  shallowRef,
-  inject,
   computed,
-  toValue,
-  watch,
-  useId,
+  inject,
   onMounted,
+  shallowRef,
+  toValue,
+  useId,
   useTemplateRef,
+  watch,
 } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCollisionDetection } from '../composables/private/useCollisionDetection'
 import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+
 import type { CollisionOffset } from '../types'
-import { useIntersectionObserver } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicScrollCollisionProps {
   id?: string

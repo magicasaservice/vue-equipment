@@ -1,4 +1,5 @@
 import { rubberband } from '@maas/vue-equipment/utils'
+
 import type { MagicTraySide } from '../../types'
 
 export function useTrayUtils() {

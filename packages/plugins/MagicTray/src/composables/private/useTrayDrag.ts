@@ -1,20 +1,17 @@
 import {
   computed,
-  onMounted,
-  watch,
-  toValue,
-  nextTick,
-  onScopeDispose,
   markRaw,
-  type Ref,
-  type MaybeRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
   useResizeObserver,
   useThrottleFn,
-  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
   convertToPixels,
@@ -24,14 +21,15 @@ import {
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useTraySnap } from './useTraySnap'
 import { useTrayUtils } from './useTrayUtils'
 import { useTrayState } from './useTrayState'
+
+import type { MaybeRef, Ref } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type { MagicTraySide } from '../../types'
 

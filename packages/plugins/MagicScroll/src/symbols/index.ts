@@ -1,4 +1,4 @@
-import type { InjectionKey, Ref, MaybeRef } from 'vue'
+import type { InjectionKey, MaybeRef, Ref } from 'vue'
 import type { UseScrollReturn } from '@vueuse/core'
 
 const MagicScrollTarget = Symbol() as InjectionKey<

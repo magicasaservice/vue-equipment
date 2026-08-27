@@ -1,9 +1,10 @@
 import { computed, nextTick } from 'vue'
-import type { MaybeRef } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './private/useCommandState'
 import { useCommandItem } from './private/useCommandItem'
 import { useCommandView } from './private/useCommandView'
+
+import type { MaybeRef } from 'vue'
 
 const { throwError } = useMagicError({
   prefix: 'MagicCommand',

@@ -1,6 +1,9 @@
-import { reactive, computed, toValue, type MaybeRef } from 'vue'
+import { computed, reactive, toValue } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from './useMenuState'
+
+import type { MaybeRef } from 'vue'
+
 import type { MenuView } from '../../types/index'
 
 type InitializeViewArgs = Pick<MenuView, 'id' | 'parent' | 'placement'>
@@ -86,7 +89,9 @@ export function useMenuView(instanceId: MaybeRef<string>) {
     let view = viewMap.get(id)
     if (!view) {
       view = state.views.find((v) => v.id === id)
-      if (view) {viewMap.set(id, view)}
+      if (view) {
+        viewMap.set(id, view)
+      }
     }
     return view
   }

@@ -1,4 +1,4 @@
-import { type Options as FocusTrapOptions } from 'focus-trap'
+import type { Options as FocusTrapOptions } from 'focus-trap'
 import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 export type MagicDrawerSnapPoint = number | `${number}px`

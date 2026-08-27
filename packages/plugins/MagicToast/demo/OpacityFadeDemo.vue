@@ -14,10 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, reactive, onBeforeUnmount } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount, reactive } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 const id = 'magic-toast-opacity-fade-demo'

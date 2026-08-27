@@ -1,4 +1,4 @@
-import { ref, onScopeDispose } from 'vue'
+import { onScopeDispose, ref } from 'vue'
 
 interface UseToastTimeoutOptions {
   delay: number

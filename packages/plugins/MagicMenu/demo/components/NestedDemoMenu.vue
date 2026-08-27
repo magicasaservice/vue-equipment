@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
+import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
 import NestedDemoMenu from '../components/NestedDemoMenu.vue'
 
 interface NestedDemoMenuProps {

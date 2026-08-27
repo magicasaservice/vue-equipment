@@ -48,9 +48,7 @@ describe('MagicDraggable - Rendering', () => {
       render(createDraggable(DraggableId.Dragging))
       await nextTick()
 
-      const el = document.querySelector(
-        `[data-id="${DraggableId.Dragging}"]`
-      )
+      const el = document.querySelector(`[data-id="${DraggableId.Dragging}"]`)
       expect(el!.getAttribute('data-dragging')).toBe('false')
     })
 

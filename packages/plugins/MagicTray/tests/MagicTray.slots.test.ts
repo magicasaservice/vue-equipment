@@ -5,7 +5,11 @@ import MagicTrayProvider from '../src/components/MagicTrayProvider.vue'
 import MagicTrayContent from '../src/components/MagicTrayContent.vue'
 import { TrayId } from './enums'
 
-function createTray(id: TrayId, options: Record<string, unknown>, slots: string) {
+function createTray(
+  id: TrayId,
+  options: Record<string, unknown>,
+  slots: string
+) {
   return defineComponent({
     components: {
       MagicTrayProvider,
@@ -66,7 +70,9 @@ describe('MagicTray - Handle slots', () => {
     await nextTick()
 
     const root = `[data-id="${TrayId.SlotHandlePerSide}"]`
-    const top = document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-top`)
+    const top = document.querySelector(
+      `${root} .magic-tray-handle[data-side="top"] .handle-top`
+    )
     const bottom = document.querySelector(
       `${root} .magic-tray-handle[data-side="bottom"] .handle-bottom`
     )
@@ -95,10 +101,14 @@ describe('MagicTray - Handle slots', () => {
     const root = `[data-id="${TrayId.SlotHandleFallback}"]`
     // top uses its dedicated slot
     expect(
-      document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-top`)
+      document.querySelector(
+        `${root} .magic-tray-handle[data-side="top"] .handle-top`
+      )
     ).not.toBeNull()
     expect(
-      document.querySelector(`${root} .magic-tray-handle[data-side="top"] .handle-generic`)
+      document.querySelector(
+        `${root} .magic-tray-handle[data-side="top"] .handle-generic`
+      )
     ).toBeNull()
     // bottom has no dedicated slot, falls back to generic
     const bottomGeneric = document.querySelector(

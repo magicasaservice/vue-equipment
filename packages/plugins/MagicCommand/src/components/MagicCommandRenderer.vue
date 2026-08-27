@@ -8,6 +8,7 @@ import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MagicCommandInstanceId } from './../symbols'
 import { useCommandState } from '../composables/private/useCommandState'
+
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

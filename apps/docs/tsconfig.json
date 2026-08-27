@@ -1,7 +1,16 @@
 {
   "extends": "@maas/config/tsconfig/vue-base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@maas/vue-equipment/composables": [
+        "../../packages/composables/index.ts"
+      ],
+      "@maas/vue-equipment/composables/*": ["../../packages/composables/*"],
+      "@maas/vue-equipment/plugins": ["../../packages/plugins/index.ts"],
+      "@maas/vue-equipment/plugins/*": ["../../packages/plugins/*"],
+      "@maas/vue-equipment/utils": ["../../packages/utils/index.ts"]
+    }
   },
   "include": [
     ".vitepress/**/*.ts",

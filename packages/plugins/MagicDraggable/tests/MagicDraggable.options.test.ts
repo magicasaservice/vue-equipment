@@ -13,7 +13,9 @@ describe('MagicDraggable - Options', () => {
       render(createDraggable(DraggableId.OptDisabled, { disabled: true }))
       await nextTick()
 
-      const el = document.querySelector(`[data-id="${DraggableId.OptDisabled}"]`)
+      const el = document.querySelector(
+        `[data-id="${DraggableId.OptDisabled}"]`
+      )
       expect(el!.getAttribute('data-disabled')).toBe('true')
     })
   })
@@ -79,7 +81,9 @@ describe('MagicDraggable - Options', () => {
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      const el = document.querySelector(`[data-id="${DraggableId.CustomSnaps}"]`)
+      const el = document.querySelector(
+        `[data-id="${DraggableId.CustomSnaps}"]`
+      )
       expect(el!.getAttribute('data-active-snap-point')).toBe('center')
     })
   })
@@ -103,7 +107,9 @@ describe('MagicDraggable - Options', () => {
       )
       await nextTick()
 
-      const el = document.querySelector(`[data-id="${DraggableId.ReactivityDisabled}"]`) as HTMLElement
+      const el = document.querySelector(
+        `[data-id="${DraggableId.ReactivityDisabled}"]`
+      ) as HTMLElement
       expect(el.getAttribute('data-disabled')).toBe('false')
 
       options.value = { disabled: true }

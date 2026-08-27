@@ -3,9 +3,9 @@ import { useMagicToast } from './src/composables/useMagicToast'
 
 import type { App, Plugin } from 'vue'
 import type {
-  MagicToastOptions,
   MagicToastAddOptions,
   MagicToastDragPayload,
+  MagicToastOptions,
 } from './src/types'
 
 const MagicToastPlugin: Plugin = {

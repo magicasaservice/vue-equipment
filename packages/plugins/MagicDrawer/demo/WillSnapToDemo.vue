@@ -51,10 +51,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type {
   MagicDrawerSnapPoint,
   MagicDrawerWillSnapToPayload,

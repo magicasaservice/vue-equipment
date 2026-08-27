@@ -133,7 +133,9 @@ describe('MagicMenu - Keyboard Navigation', () => {
       render(createDropdown(MenuId.KbEnter), gc)
       await nextTick()
 
-      const trigger = document.querySelector('.magic-menu-trigger') as HTMLElement
+      const trigger = document.querySelector(
+        '.magic-menu-trigger'
+      ) as HTMLElement
       trigger.focus()
       await nextTick()
       await nextTick()
@@ -160,7 +162,9 @@ describe('MagicMenu - Keyboard Navigation', () => {
 
       let defaultPrevented = false
       const handler = (e: KeyboardEvent) => {
-        if (e.key === 'Tab') {defaultPrevented = e.defaultPrevented}
+        if (e.key === 'Tab') {
+          defaultPrevented = e.defaultPrevented
+        }
       }
       window.addEventListener('keydown', handler)
 

@@ -1,4 +1,5 @@
 import { easeOutQuad } from '@maas/vue-equipment/utils'
+
 import type { RequiredMagicDrawerOptions } from '../types'
 
 const defaultOptions: RequiredMagicDrawerOptions = {

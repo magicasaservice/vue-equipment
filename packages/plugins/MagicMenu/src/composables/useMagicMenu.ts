@@ -1,6 +1,7 @@
-import { type MaybeRef } from 'vue'
 import { useMenuView } from './private/useMenuView'
 import { useMenuChannel } from './private/useMenuChannel'
+
+import type { MaybeRef } from 'vue'
 
 interface UseMagicMenuArgs {
   instanceId: MaybeRef<string>

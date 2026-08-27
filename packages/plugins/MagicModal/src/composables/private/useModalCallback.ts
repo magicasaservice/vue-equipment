@@ -1,6 +1,9 @@
-import { toValue, nextTick, type MaybeRef } from 'vue'
+import { nextTick, toValue } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useModalDOM } from './useModalDOM'
+
+import type { MaybeRef } from 'vue'
+
 import type { MagicModalOptions } from '../../types'
 import type { ModalActive } from '../../symbols'
 
@@ -23,8 +26,7 @@ export function useModalCallback(args: UseModalCallbackArgs) {
 
     if (options.scrollLock) {
       lockScroll(
-        typeof options.scrollLock === 'object' &&
-          options.scrollLock.padding
+        typeof options.scrollLock === 'object' && options.scrollLock.padding
       )
     }
   }
@@ -55,8 +57,7 @@ export function useModalCallback(args: UseModalCallbackArgs) {
 
     if (options.scrollLock) {
       unlockScroll(
-        typeof options.scrollLock === 'object' &&
-          options.scrollLock.padding
+        typeof options.scrollLock === 'object' && options.scrollLock.padding
       )
     }
 

@@ -1,5 +1,6 @@
-import { type MaybeRef } from 'vue'
 import { useToastState } from './useToastState'
+
+import type { MaybeRef } from 'vue'
 
 export function useToastListener(instanceId: MaybeRef<string>) {
   const { initializeState } = useToastState(instanceId)

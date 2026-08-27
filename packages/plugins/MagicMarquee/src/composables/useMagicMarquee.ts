@@ -1,5 +1,7 @@
-import { computed, type MaybeRef } from 'vue'
+import { computed } from 'vue'
 import { useMarqueeState } from './private/useMarqueeState'
+
+import type { MaybeRef } from 'vue'
 
 export function useMagicMarquee(id: MaybeRef<string>) {
   // Private state

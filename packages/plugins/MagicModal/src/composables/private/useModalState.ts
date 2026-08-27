@@ -1,8 +1,11 @@
-import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { onScopeDispose, reactive, toValue } from 'vue'
 import { createDefu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { ModalState, MagicModalOptions } from '../../types/index'
+
+import type { MaybeRef } from 'vue'
+
+import type { MagicModalOptions, ModalState } from '../../types/index'
 
 const getModalStateStore = createStateStore<ModalState[]>(
   'MagicModal',

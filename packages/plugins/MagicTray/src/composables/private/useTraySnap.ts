@@ -1,9 +1,11 @@
-import { computed, toValue, nextTick, type MaybeRef } from 'vue'
-import { interpolate, clampValue } from '@maas/vue-equipment/utils'
+import { computed, nextTick, toValue } from 'vue'
+import { clampValue, interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useTrayUtils } from './useTrayUtils'
 
-import type { TrayState, MagicTraySide, MagicTraySnapPoint } from '../../types'
+import type { MaybeRef } from 'vue'
+
+import type { MagicTraySide, MagicTraySnapPoint, TrayState } from '../../types'
 
 type UseTraySnapArgs = {
   id: MaybeRef<string>

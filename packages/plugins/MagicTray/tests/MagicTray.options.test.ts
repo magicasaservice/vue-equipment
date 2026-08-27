@@ -129,7 +129,6 @@ describe('MagicTray - Options', () => {
       const { container } = mountWithApp(wrapper)
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
-
       ;(
         container.querySelector(
           `[data-test-id="${TestId.SnapBtn}"]`

@@ -15,11 +15,8 @@
 
 <script lang="ts" setup>
 import { kebabCase } from 'scule'
-import {
-  composables,
-  plugins,
-  type VueEquipmentFunction,
-} from '../../../../metadata'
+import { composables, plugins } from '../../../../metadata'
+import type { VueEquipmentFunction } from '../../../../metadata'
 
 const mappedPlugins = plugins.filter(
   (plugin: VueEquipmentFunction) => plugin.name !== 'MagicEmitter'

@@ -19,23 +19,24 @@
 import {
   computed,
   inject,
-  provide,
   onBeforeUnmount,
-  useId,
   onMounted,
+  provide,
+  useId,
 } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandState } from '../composables/private/useCommandState'
 import {
-  MagicCommandInstanceId,
-  MagicCommandViewId,
   MagicCommandContentId,
-  MagicCommandItemId,
+  MagicCommandInstanceId,
   MagicCommandItemActive,
   MagicCommandItemDisabled,
+  MagicCommandItemId,
+  MagicCommandViewId,
 } from '../symbols'
+
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicCommandItemProps {

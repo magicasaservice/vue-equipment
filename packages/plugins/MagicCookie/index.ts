@@ -1,7 +1,6 @@
 import MagicCookieItem from './src/components/MagicCookieItem.vue'
 import MagicCookieView from './src/components/MagicCookieView.vue'
 import MagicCookieProvider from './src/components/MagicCookieProvider.vue'
-
 import { useMagicCookie } from './src/composables/useMagicCookie'
 
 import type { App, Plugin } from 'vue'

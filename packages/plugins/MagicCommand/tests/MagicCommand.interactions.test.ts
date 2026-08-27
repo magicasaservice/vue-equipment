@@ -401,7 +401,9 @@ describe('MagicCommand - Interactions', () => {
         .toHaveTextContent('true')
 
       // Escape closes the command; MagicCommandModal's watch then calls modalApi.close()
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+      )
 
       await expect
         .element(page.getByTestId(TestId.Active))
@@ -546,7 +548,9 @@ describe('MagicCommand - Interactions', () => {
         .toHaveTextContent('true')
 
       // Escape closes the command; MagicCommandDrawer's watch then calls drawerApi.close()
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+      )
 
       await expect
         .element(page.getByTestId(TestId.Active))

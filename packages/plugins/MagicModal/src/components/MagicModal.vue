@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-import { type MaybeRef } from 'vue'
 import MagicModalProvider from './MagicModalProvider.vue'
 import MagicModalTeleport from './MagicModalTeleport.vue'
 import MagicModalBackdrop from './MagicModalBackdrop.vue'
 import MagicModalContent from './MagicModalContent.vue'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicModalOptions } from '../types/index'
 

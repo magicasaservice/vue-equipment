@@ -27,6 +27,7 @@
 
 <script lang="ts" setup>
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
+
 import type { MagicTrayOptions } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-magnetic-demo'

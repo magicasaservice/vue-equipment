@@ -20,7 +20,6 @@ const gc = {
   },
 }
 
-
 function createPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
@@ -111,9 +110,7 @@ describe('MagicPlayer - Interactions', () => {
       render(createPlayer(PlayerId.IntOverlayRender), gc)
       await nextTick()
 
-      const overlay = document.querySelector(
-        '.magic-player-overlay'
-      )
+      const overlay = document.querySelector('.magic-player-overlay')
       expect(overlay).not.toBeNull()
     })
   })
@@ -221,7 +218,9 @@ describe('MagicPlayer - Interactions', () => {
       render(createPlayer(PlayerId.IntVideoEl), gc)
       await nextTick()
 
-      const video = document.querySelector('.magic-player-video') as HTMLVideoElement
+      const video = document.querySelector(
+        '.magic-player-video'
+      ) as HTMLVideoElement
       expect(video).not.toBeNull()
       expect(video.tagName).toBe('VIDEO')
       expect(video.hasAttribute('playsinline')).toBe(true)

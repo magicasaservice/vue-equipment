@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton, MBadge } from '@maas/mirror/vue'
-import { useMagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 import { computed } from 'vue'
+import { MBadge, MButton } from '@maas/mirror/vue'
+import { useMagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 
 const {
   percentage,

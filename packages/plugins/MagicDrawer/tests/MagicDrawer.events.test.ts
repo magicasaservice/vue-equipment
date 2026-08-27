@@ -12,26 +12,44 @@ import { DrawerId, TestId } from './enums'
 
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+    components: {
+      MagicDrawerProvider,
+      MagicDrawerTrigger,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
+    },
     setup() {
       const emitter = useMagicEmitter()
       const events = reactive<string[]>([])
       const lastPayload = ref<unknown>(null)
 
-      emitter.on('beforeEnter', (data: unknown) => { events.push('beforeEnter'); lastPayload.value = data })
+      emitter.on('beforeEnter', (data: unknown) => {
+        events.push('beforeEnter')
+        lastPayload.value = data
+      })
       emitter.on('enter', () => events.push('enter'))
       emitter.on('afterEnter', () => events.push('afterEnter'))
       emitter.on('beforeLeave', () => events.push('beforeLeave'))
       emitter.on('leave', () => events.push('leave'))
       emitter.on('afterLeave', () => events.push('afterLeave'))
-      emitter.on('beforeDrag', (data: unknown) => { events.push('beforeDrag'); lastPayload.value = data })
+      emitter.on('beforeDrag', (data: unknown) => {
+        events.push('beforeDrag')
+        lastPayload.value = data
+      })
       emitter.on('drag', () => events.push('drag'))
       emitter.on('afterDrag', () => events.push('afterDrag'))
-      emitter.on('snapTo', (data: unknown) => { events.push('snapTo'); lastPayload.value = data })
+      emitter.on('snapTo', (data: unknown) => {
+        events.push('snapTo')
+        lastPayload.value = data
+      })
       emitter.on('beforeSnap', () => events.push('beforeSnap'))
       emitter.on('afterSnap', () => events.push('afterSnap'))
 
-      function clearEvents() { events.length = 0; lastPayload.value = null }
+      function clearEvents() {
+        events.length = 0
+        lastPayload.value = null
+      }
       return { events, lastPayload, clearEvents }
     },
     template: `
@@ -50,12 +68,16 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
         </MagicDrawerTeleport>
       </MagicDrawerProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
 async function openDrawer(container: HTMLElement) {
-  const btn = container.querySelector(`[data-test-id="${TestId.Trigger}"]`) as HTMLElement
+  const btn = container.querySelector(
+    `[data-test-id="${TestId.Trigger}"]`
+  ) as HTMLElement
   btn.click()
   await nextTick()
   await nextTick()
@@ -69,21 +91,31 @@ function getTestText(id: TestId): string {
 describe('MagicDrawer - Events', () => {
   describe('transition lifecycle', () => {
     it('emits beforeEnter, enter, afterEnter on open', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventOpen))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventOpen)
+      )
       try {
         await openDrawer(container)
         const events = getTestText(TestId.Events)
         expect(events).toContain('beforeEnter')
         expect(events).toContain('enter')
         expect(events).toContain('afterEnter')
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('emits beforeLeave, leave, afterLeave on close', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventClose))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventClose)
+      )
       try {
         await openDrawer(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
         await userEvent.keyboard('{Escape}')
@@ -94,11 +126,15 @@ describe('MagicDrawer - Events', () => {
         expect(events).toContain('beforeLeave')
         expect(events).toContain('leave')
         expect(events).toContain('afterLeave')
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('enter events fire in correct order', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventOrder))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventOrder)
+      )
       try {
         await openDrawer(container)
         const events = getTestText(TestId.Events).split(',')
@@ -108,14 +144,22 @@ describe('MagicDrawer - Events', () => {
         expect(bi).toBeGreaterThanOrEqual(0)
         expect(bi).toBeLessThan(ei)
         expect(ei).toBeLessThan(ai)
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('leave events fire in correct order', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventLeaveOrder))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventLeaveOrder)
+      )
       try {
         await openDrawer(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
         await userEvent.keyboard('{Escape}')
@@ -129,73 +173,171 @@ describe('MagicDrawer - Events', () => {
         expect(bi).toBeGreaterThanOrEqual(0)
         expect(bi).toBeLessThan(li)
         expect(li).toBeLessThan(ai)
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('enter event payload includes drawer id', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventPayload))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventPayload)
+      )
       try {
         await openDrawer(container)
-        expect(JSON.parse(getTestText(TestId.LastPayload))).toBe(DrawerId.EventPayload)
-      } finally { unmount() }
+        expect(JSON.parse(getTestText(TestId.LastPayload))).toBe(
+          DrawerId.EventPayload
+        )
+      } finally {
+        unmount()
+      }
     })
   })
 
   describe('drag events', () => {
     it('emits beforeDrag on pointerdown', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventDrag))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventDrag)
+      )
       try {
         await openDrawer(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
-        const dragEl = document.querySelector('.magic-drawer-content__drag') as HTMLElement
-        dragEl.dispatchEvent(new PointerEvent('pointerdown', { clientX: 200, clientY: 300, bubbles: true, pointerId: 1, isPrimary: true }))
+        const dragEl = document.querySelector(
+          '.magic-drawer-content__drag'
+        ) as HTMLElement
+        dragEl.dispatchEvent(
+          new PointerEvent('pointerdown', {
+            clientX: 200,
+            clientY: 300,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
         await nextTick()
         await new Promise((r) => setTimeout(r, 100))
 
         expect(getTestText(TestId.Events)).toContain('beforeDrag')
 
-        document.dispatchEvent(new PointerEvent('pointerup', { clientX: 200, clientY: 300, bubbles: true, pointerId: 1, isPrimary: true }))
-      } finally { unmount() }
+        document.dispatchEvent(
+          new PointerEvent('pointerup', {
+            clientX: 200,
+            clientY: 300,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
+      } finally {
+        unmount()
+      }
     })
 
     it('drag payload includes correct id', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventDragPayload))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventDragPayload)
+      )
       try {
         await openDrawer(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
-        const dragEl = document.querySelector('.magic-drawer-content__drag') as HTMLElement
-        dragEl.dispatchEvent(new PointerEvent('pointerdown', { clientX: 150, clientY: 250, bubbles: true, pointerId: 1, isPrimary: true }))
+        const dragEl = document.querySelector(
+          '.magic-drawer-content__drag'
+        ) as HTMLElement
+        dragEl.dispatchEvent(
+          new PointerEvent('pointerdown', {
+            clientX: 150,
+            clientY: 250,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
         await nextTick()
         await new Promise((r) => setTimeout(r, 100))
 
-        expect(JSON.parse(getTestText(TestId.LastPayload)).id).toBe(DrawerId.EventDragPayload)
+        expect(JSON.parse(getTestText(TestId.LastPayload)).id).toBe(
+          DrawerId.EventDragPayload
+        )
 
-        document.dispatchEvent(new PointerEvent('pointerup', { clientX: 150, clientY: 250, bubbles: true, pointerId: 1, isPrimary: true }))
-      } finally { unmount() }
+        document.dispatchEvent(
+          new PointerEvent('pointerup', {
+            clientX: 150,
+            clientY: 250,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
+      } finally {
+        unmount()
+      }
     })
 
     it('emits afterDrag on pointerup', async () => {
-      const { container, unmount } = mountWithApp(createDrawer(DrawerId.EventAfterDrag))
+      const { container, unmount } = mountWithApp(
+        createDrawer(DrawerId.EventAfterDrag)
+      )
       try {
         await openDrawer(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
-        const dragEl = document.querySelector('.magic-drawer-content__drag') as HTMLElement
-        dragEl.dispatchEvent(new PointerEvent('pointerdown', { clientX: 200, clientY: 300, bubbles: true, pointerId: 1, isPrimary: true }))
+        const dragEl = document.querySelector(
+          '.magic-drawer-content__drag'
+        ) as HTMLElement
+        dragEl.dispatchEvent(
+          new PointerEvent('pointerdown', {
+            clientX: 200,
+            clientY: 300,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
         await new Promise((r) => setTimeout(r, 50))
 
-        document.dispatchEvent(new PointerEvent('pointermove', { clientX: 200, clientY: 310, screenX: 200, screenY: 310, bubbles: true, pointerId: 1, isPrimary: true }))
-        document.dispatchEvent(new PointerEvent('pointerup', { clientX: 200, clientY: 310, bubbles: true, pointerId: 1, isPrimary: true }))
+        document.dispatchEvent(
+          new PointerEvent('pointermove', {
+            clientX: 200,
+            clientY: 310,
+            screenX: 200,
+            screenY: 310,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
+        document.dispatchEvent(
+          new PointerEvent('pointerup', {
+            clientX: 200,
+            clientY: 310,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
         await nextTick()
         await new Promise((r) => setTimeout(r, 200))
 
         expect(getTestText(TestId.Events)).toContain('afterDrag')
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
   })
 })

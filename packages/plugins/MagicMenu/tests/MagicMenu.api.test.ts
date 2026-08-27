@@ -37,7 +37,10 @@ describe('MagicMenu - API', () => {
         defineComponent({
           components: { MagicMenuProvider },
           setup() {
-            api = useMagicMenu({ instanceId: MenuId.ApiShape, viewId: ViewId.V0 })
+            api = useMagicMenu({
+              instanceId: MenuId.ApiShape,
+              viewId: ViewId.V0,
+            })
             return {}
           },
           template: `<MagicMenuProvider id="${MenuId.ApiShape}"><div /></MagicMenuProvider>`,
@@ -55,7 +58,10 @@ describe('MagicMenu - API', () => {
         defineComponent({
           components: { MagicMenuProvider },
           setup() {
-            api = useMagicMenu({ instanceId: MenuId.ApiChannel, viewId: ViewId.V0 })
+            api = useMagicMenu({
+              instanceId: MenuId.ApiChannel,
+              viewId: ViewId.V0,
+            })
             return {}
           },
           template: `<MagicMenuProvider id="${MenuId.ApiChannel}"><div /></MagicMenuProvider>`,
@@ -79,7 +85,10 @@ describe('MagicMenu - API', () => {
           MagicMenuItem,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: MenuId.ApiSelect, viewId: ViewId.V0 })
+          const api = useMagicMenu({
+            instanceId: MenuId.ApiSelect,
+            viewId: ViewId.V0,
+          })
           return { api }
         },
         template: `
@@ -121,7 +130,10 @@ describe('MagicMenu - API', () => {
           MagicMenuItem,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: MenuId.ApiUnselect, viewId: ViewId.V0 })
+          const api = useMagicMenu({
+            instanceId: MenuId.ApiUnselect,
+            viewId: ViewId.V0,
+          })
           return { api }
         },
         template: `
@@ -171,7 +183,10 @@ describe('MagicMenu - API', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: MenuId.ApiChSelect, viewId: ViewId.V0 })
+          const api = useMagicMenu({
+            instanceId: MenuId.ApiChSelect,
+            viewId: ViewId.V0,
+          })
           return { api }
         },
         template: `
@@ -202,7 +217,9 @@ describe('MagicMenu - API', () => {
       await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
-      expect(document.querySelector(`[data-test-id="${TestId.ChannelA}"]`)).toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ChannelA}"]`)
+      ).toBeNull()
 
       const remote = document.querySelector('.magic-menu-remote') as HTMLElement
       remote.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))

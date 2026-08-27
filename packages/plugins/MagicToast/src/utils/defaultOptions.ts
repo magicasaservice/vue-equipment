@@ -1,4 +1,5 @@
 import { easeOutQuad } from '@maas/vue-equipment/utils'
+
 import type { RequiredMagicToastOptions } from '../types/index'
 
 const defaultOptions: RequiredMagicToastOptions = {

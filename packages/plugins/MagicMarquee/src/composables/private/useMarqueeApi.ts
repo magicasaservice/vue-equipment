@@ -1,13 +1,8 @@
-import {
-  shallowRef,
-  computed,
-  nextTick,
-  watch,
-  toValue,
-  type MaybeRef,
-} from 'vue'
+import { computed, nextTick, shallowRef, toValue, watch } from 'vue'
 import { useElementBounding, useElementSize, useThrottleFn } from '@vueuse/core'
 import { useMarqueeState } from './useMarqueeState'
+
+import type { MaybeRef } from 'vue'
 
 export type UseMarqueeApiParams = {
   child: MaybeRef<HTMLElement | null | undefined>

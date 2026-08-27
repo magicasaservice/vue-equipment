@@ -48,21 +48,17 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, computed, inject, toRefs } from 'vue'
+import { computed, inject, ref, toRefs, watch } from 'vue'
 import { useIdle } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
-
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconWaiting from './icons/Waiting.vue'
-
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
-
 import { MagicPlayerInstanceId, MagicPlayerOptionsKey } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicPlayerOverlayProps {
   transition?: {

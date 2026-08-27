@@ -115,7 +115,9 @@ describe('MagicMenu - Interactions', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      const item = document.querySelector(`[data-id="${ItemId.Item1}"]`) as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.Item1}"]`
+      ) as HTMLElement
       item.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
@@ -129,7 +131,9 @@ describe('MagicMenu - Interactions', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      const item = document.querySelector(`[data-id="${ItemId.Item1}"]`) as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.Item1}"]`
+      ) as HTMLElement
       item.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
@@ -149,7 +153,9 @@ describe('MagicMenu - Interactions', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      const item = document.querySelector(`[data-id="${ItemId.Item1}"]`) as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.Item1}"]`
+      ) as HTMLElement
       item.click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 300))
@@ -203,7 +209,9 @@ describe('MagicMenu - Interactions', () => {
       render(wrapper, gc)
       await nextTick()
 
-      const area = document.querySelector(`[data-test-id="${TestId.Area}"]`) as HTMLElement
+      const area = document.querySelector(
+        `[data-test-id="${TestId.Area}"]`
+      ) as HTMLElement
       area.dispatchEvent(
         new MouseEvent('contextmenu', {
           bubbles: true,

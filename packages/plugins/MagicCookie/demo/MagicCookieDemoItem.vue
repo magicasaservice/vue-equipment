@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, onBeforeUnmount, useId } from 'vue'
+import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { useCookieItem } from '../src/composables/private/useCookieItem'
 import {
   MagicCookieInstanceId,
-  MagicCookieItemId,
   MagicCookieItemActive,
+  MagicCookieItemId,
 } from '../src/symbols'
 
 interface MagicCookieItemProps {

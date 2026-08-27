@@ -27,10 +27,9 @@
 </template>
 
 <script lang="ts" setup>
-import NestedDemoMenu from './components/NestedDemoMenu.vue'
-
-import { MButton } from '@maas/mirror/vue'
 import { offset } from '@floating-ui/dom'
+import { MButton } from '@maas/mirror/vue'
+import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

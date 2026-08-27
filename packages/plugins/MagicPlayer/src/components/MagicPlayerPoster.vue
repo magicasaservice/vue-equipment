@@ -5,13 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, toRefs, computed } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, inject, toRefs } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { MagicPlayerInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',

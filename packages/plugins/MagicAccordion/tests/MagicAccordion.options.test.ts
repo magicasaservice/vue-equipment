@@ -337,7 +337,9 @@ describe('MagicAccordion - Options', () => {
       render(wrapper, { global: { stubs: { AutoSize } } })
       await nextTick()
 
-      const trigger = document.querySelector('.magic-accordion-trigger') as HTMLElement
+      const trigger = document.querySelector(
+        '.magic-accordion-trigger'
+      ) as HTMLElement
       expect(trigger.getAttribute('data-disabled')).toBe('false')
 
       options.value = { disabled: true }
