@@ -6,19 +6,19 @@
 
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuView } from '../composables/private/useMenuView'
 import {
   MagicMenuInstanceId,
-  MagicMenuViewId,
-  MagicMenuParentTree,
   MagicMenuItemId,
+  MagicMenuParentTree,
   MagicMenuViewActive,
+  MagicMenuViewId,
 } from '../symbols'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from '../composables/private/useMenuState'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+
 import type { MenuPlacement } from '../types'
 
 interface MagicMenuViewProps {

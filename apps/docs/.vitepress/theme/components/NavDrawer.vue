@@ -54,16 +54,16 @@ import { watch, ref, onBeforeUnmount } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
+  useMagicEmitter
+  
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { AutoSize } from '@maas/vue-autosize'
 import { DrawerId, MenuId, ChannelId, ViewId } from '../utils/enums'
-
 import NavDrawerHandle from './NavDrawerHandle.vue'
 import NavDrawerMenuChannelNested from './NavDrawerMenuChannelNested.vue'
 import NavDrawerMenuChannelInitial from './NavDrawerMenuChannelInitial.vue'
 import NavDrawerMenuFooter from './NavDrawerMenuFooter.vue'
+import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
 
 const { open, close } = useMagicDrawer(DrawerId.navDrawer)
 const { theme } = useData()

@@ -1,21 +1,20 @@
 import {
-  watch,
-  toValue,
   computed,
-  onMounted,
-  onBeforeUnmount,
   nextTick,
+  onBeforeUnmount,
+  onMounted,
   toRefs,
-  type Ref,
-  type MaybeRef,
+  toValue,
+  watch,
 } from 'vue'
 import { useElementBounding, useRafFn } from '@vueuse/core'
 import { clampValue, mapValue } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useDrawerState } from './useDrawerState'
+
+import type { MaybeRef, Ref } from 'vue'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type { RequiredMagicDrawerOptions } from '../../types'
 
 interface UseDrawerProgressArgs {

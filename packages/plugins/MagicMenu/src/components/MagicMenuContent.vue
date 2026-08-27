@@ -61,35 +61,31 @@
 
 <script lang="ts" setup>
 import {
-  shallowRef,
-  inject,
-  provide,
-  nextTick,
-  watch,
   computed,
+  inject,
+  nextTick,
   onBeforeUnmount,
-  type MaybeRef,
-  type ComponentPublicInstance,
-  type RendererElement,
+  provide,
+  shallowRef,
+  watch,
 } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuCallback } from '../composables/private/useMenuCallback'
 import { useMenuCursor } from '../composables/private/useMenuCursor'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
 import { ModeTransitions } from '../utils/modeTransitionDefaults'
 import { ModeDelayMouseleave } from '../utils/modeDelayDefaults'
 import {
-  MagicMenuInstanceId,
-  MagicMenuViewId,
   MagicMenuContentId,
+  MagicMenuInstanceId,
   MagicMenuParentTree,
+  MagicMenuViewId,
 } from '../symbols'
 
+import type { ComponentPublicInstance, MaybeRef, RendererElement } from 'vue'
 import type { Middleware } from '@floating-ui/vue'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

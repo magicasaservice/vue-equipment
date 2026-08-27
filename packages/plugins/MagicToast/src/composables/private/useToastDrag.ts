@@ -1,17 +1,19 @@
-import { computed, onScopeDispose, toRefs, toValue, type MaybeRef } from 'vue'
-import { defu } from 'defu'
+import { computed, onScopeDispose, toRefs, toValue } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { defu } from 'defu'
 import {
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
-  isIOS,
   interpolate,
+  isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useToastState } from './useToastState'
 import { useToastView } from './useToastView'
 import { useToastScrollLock } from './useToastScrollLock'
+
+import type { MaybeRef } from 'vue'
 
 import type { ToastView } from '../../types'
 
@@ -43,7 +45,8 @@ export function useToastDrag(args: UseToastDragArgs) {
   // pin the drag-out side(s) regardless of where the toast is anchored,
   // either as a single direction or a same-axis pair (e.g. ['up', 'down'])
   // to allow dragging either way along that axis.
-  const directions = drag.direction === 'auto' ? [] : ([] as string[]).concat(drag.direction)
+  const directions =
+    drag.direction === 'auto' ? [] : ([] as string[]).concat(drag.direction)
 
   const allowLeft = directions.includes('left')
   const allowRight = directions.includes('right')

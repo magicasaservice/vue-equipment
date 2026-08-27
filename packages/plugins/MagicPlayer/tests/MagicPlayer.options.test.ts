@@ -21,7 +21,6 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
-
 function createPlayer(
   playerId: PlayerId,
   overrides: Record<string, unknown> = {}
@@ -135,7 +134,9 @@ describe('MagicPlayer - Options', () => {
       )
       await nextTick()
 
-      const provider = document.querySelector('.magic-player-provider') as HTMLElement
+      const provider = document.querySelector(
+        '.magic-player-provider'
+      ) as HTMLElement
       expect(provider.getAttribute('data-mode')).toBe('video')
 
       options.value = { ...options.value, mode: 'audio' }
@@ -273,9 +274,7 @@ describe('MagicPlayer - Options', () => {
       render(wrapper, gc)
       await nextTick()
 
-      const controls = document.querySelector(
-        '.magic-player-video-controls'
-      )
+      const controls = document.querySelector('.magic-player-video-controls')
       expect(controls!.getAttribute('data-standalone')).toBe('false')
     })
   })
@@ -285,9 +284,7 @@ describe('MagicPlayer - Options', () => {
       render(createPlayer(PlayerId.OptHasOverlay), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-overlay')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-overlay')).not.toBeNull()
     })
   })
 
@@ -296,9 +293,7 @@ describe('MagicPlayer - Options', () => {
       render(createPlayer(PlayerId.OptPlaybackFalse, { playback: false }), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-provider')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-provider')).not.toBeNull()
     })
   })
 

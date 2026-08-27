@@ -1,4 +1,4 @@
-import { type Options as FocusTrapOptions } from 'focus-trap'
+import type { Options as FocusTrapOptions } from 'focus-trap'
 
 export interface MagicModalOptions {
   tag?: 'dialog' | 'div'

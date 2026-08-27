@@ -16,24 +16,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, useTemplateRef, toValue, watch } from 'vue'
+import { computed, inject, toValue, useTemplateRef, watch } from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuTrigger } from '../composables/private/useMenuTrigger'
 import {
   MagicMenuInstanceId,
-  MagicMenuViewId,
   MagicMenuItemId,
+  MagicMenuViewId,
 } from '../symbols'
 
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+
 import type { Interaction } from '../types'
-import { onKeyStroke } from '@vueuse/core'
 
 interface MagicMenuTriggerProps {
   instanceId?: string

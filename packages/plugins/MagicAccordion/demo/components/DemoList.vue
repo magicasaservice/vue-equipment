@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuItem, MMenuItemChild, MBadge } from '@maas/mirror/vue'
+import { MBadge, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
 
 export interface DemoListProps {
   headline: string

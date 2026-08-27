@@ -1,9 +1,11 @@
-import { reactive, type MaybeRef } from 'vue'
+import { reactive } from 'vue'
 import { usePointer, watchOnce } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
-
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
+
+import type { MaybeRef } from 'vue'
+
 import type { MenuItem } from '../../types/index'
 
 type UseMenuItemArgs = {

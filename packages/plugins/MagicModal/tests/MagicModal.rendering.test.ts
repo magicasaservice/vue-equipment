@@ -11,7 +11,13 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTrigger,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     template: `
       <MagicModalProvider id="${id}" :options="options">
         <MagicModalTrigger>
@@ -25,7 +31,9 @@ function createModal(id: ModalId, options: Record<string, unknown> = {}) {
         </MagicModalTeleport>
       </MagicModalProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
@@ -44,18 +52,30 @@ describe('MagicModal - Rendering', () => {
 
     it('has data-active=false initially', () => {
       render(createModal(ModalId.RenderTriggerActive))
-      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-active')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-modal-trigger')!
+          .getAttribute('data-active')
+      ).toBe('false')
     })
 
     it('has data-disabled=false by default', () => {
       render(createModal(ModalId.RenderTriggerDisabled))
-      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-disabled')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-modal-trigger')!
+          .getAttribute('data-disabled')
+      ).toBe('false')
     })
 
     it('data-active becomes true when open', async () => {
       const screen = render(createModal(ModalId.RenderTriggerOpen))
       await open(screen)
-      expect(document.querySelector('.magic-modal-trigger')!.getAttribute('data-active')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-modal-trigger')!
+          .getAttribute('data-active')
+      ).toBe('true')
     })
   })
 
@@ -79,25 +99,37 @@ describe('MagicModal - Rendering', () => {
     it('sets data-id', async () => {
       const screen = render(createModal(ModalId.RenderDataId))
       await open(screen)
-      expect(document.querySelector('.magic-modal-content')!.getAttribute('data-id')).toBe(ModalId.RenderDataId)
+      expect(
+        document.querySelector('.magic-modal-content')!.getAttribute('data-id')
+      ).toBe(ModalId.RenderDataId)
     })
 
     it('sets aria-modal', async () => {
       const screen = render(createModal(ModalId.RenderAriaModal))
       await open(screen)
-      expect(document.querySelector('.magic-modal-content')!.getAttribute('aria-modal')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-modal-content')!
+          .getAttribute('aria-modal')
+      ).toBe('true')
     })
 
     it('inner uses dialog by default', async () => {
       const screen = render(createModal(ModalId.RenderTag))
       await open(screen)
-      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('dialog')
+      expect(
+        document
+          .querySelector('.magic-modal-content__inner')!
+          .tagName.toLowerCase()
+      ).toBe('dialog')
     })
 
     it('renders slot content', async () => {
       const screen = render(createModal(ModalId.RenderSlot))
       await open(screen)
-      await expect.element(page.getByTestId(TestId.ModalContent)).toBeInTheDocument()
+      await expect
+        .element(page.getByTestId(TestId.ModalContent))
+        .toBeInTheDocument()
     })
   })
 

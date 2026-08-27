@@ -1,8 +1,10 @@
-import { toRefs, watch, toValue, type MaybeRef, type Ref } from 'vue'
+import { toRefs, toValue, watch } from 'vue'
 import { useFullscreen } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef, Ref } from 'vue'
 
 export type UsePlayerVideoApiArgs = {
   id: MaybeRef<string>

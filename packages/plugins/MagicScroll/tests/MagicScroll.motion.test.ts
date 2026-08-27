@@ -7,10 +7,7 @@ import MagicScrollMotion from '../src/components/MagicScrollMotion.vue'
 
 // Motion sequences use complex types from the motion library,
 // so `as any` is acceptable here for test data
-function createMotion(
-  sequence: unknown[] = [],
-  extraProps: string = ''
-) {
+function createMotion(sequence: unknown[] = [], extraProps: string = '') {
   return defineComponent({
     components: {
       MagicScrollProvider,
@@ -35,21 +32,17 @@ function createMotion(
 describe('MagicScroll - Motion', () => {
   describe('rendering', () => {
     it('renders with sequence prop', async () => {
-      const sequence = [
-        [{ opacity: [0, 1] }, { duration: 1 }],
-      ]
+      const sequence = [[{ opacity: [0, 1] }, { duration: 1 }]]
 
       render(createMotion(sequence))
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      const el = document.querySelector(
-        '.magic-scroll-motion'
-      ) as HTMLElement
+      const el = document.querySelector('.magic-scroll-motion') as HTMLElement
       expect(el).not.toBeNull()
-      expect(
-        el.querySelector('.animated-content')!.textContent
-      ).toBe('Animated')
+      expect(el.querySelector('.animated-content')!.textContent).toBe(
+        'Animated'
+      )
     })
   })
 
@@ -66,10 +59,7 @@ describe('MagicScroll - Motion', () => {
             const sequence = [
               [
                 {
-                  transform: [
-                    'translateY(0px)',
-                    'translateY(100px)',
-                  ],
+                  transform: ['translateY(0px)', 'translateY(100px)'],
                 },
                 { duration: 0.5 },
               ],
@@ -91,23 +81,17 @@ describe('MagicScroll - Motion', () => {
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      expect(
-        document.querySelector('.magic-scroll-motion')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-scroll-motion')).not.toBeNull()
     })
 
     it('accepts direct progress prop', async () => {
-      const sequence = [
-        [{ opacity: [0, 1] }, { duration: 1 }],
-      ]
+      const sequence = [[{ opacity: [0, 1] }, { duration: 1 }]]
 
       render(createMotion(sequence, ':progress="0.5"'))
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      expect(
-        document.querySelector('.magic-scroll-motion')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-scroll-motion')).not.toBeNull()
     })
   })
 
@@ -138,12 +122,8 @@ describe('MagicScroll - Motion', () => {
 
       const motions = document.querySelectorAll('.magic-scroll-motion')
       expect(motions.length).toBe(2)
-      expect(
-        document.querySelector('.motion-1')!.textContent
-      ).toBe('First')
-      expect(
-        document.querySelector('.motion-2')!.textContent
-      ).toBe('Second')
+      expect(document.querySelector('.motion-1')!.textContent).toBe('First')
+      expect(document.querySelector('.motion-2')!.textContent).toBe('Second')
     })
   })
 })

@@ -9,27 +9,26 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, computed } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, inject } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDrawerState } from '../composables/private/useDrawerState'
-import { MagicDrawerInstanceId, MagicDrawerActiveKey } from '../symbols'
+import { MagicDrawerActiveKey, MagicDrawerInstanceId } from '../symbols'
 
 import type { RendererElement } from 'vue'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicDrawerTeleportProps {
   to?: string | RendererElement
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<MagicDrawerTeleportProps>(), {
-  disabled: undefined,
-})
+const { to, disabled = undefined } = defineProps<MagicDrawerTeleportProps>()
 
 const instanceId = inject(MagicDrawerInstanceId, undefined)
-const active = inject(MagicDrawerActiveKey, { wrapperActive: false, innerActive: false })
+const active = inject(MagicDrawerActiveKey, {
+  wrapperActive: false,
+  innerActive: false,
+})
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicDrawer',
@@ -44,6 +43,8 @@ magicError.assert(instanceId, {
 const { initializeState } = useDrawerState(instanceId ?? '')
 const state = initializeState()
 
-const mappedTo = computed(() => props.to ?? state.options.teleport.target)
-const mappedDisabled = computed(() => props.disabled ?? state.options.teleport.disabled)
+const mappedTo = computed(() => to ?? state.options.teleport.target)
+const mappedDisabled = computed(
+  () => disabled ?? state.options.teleport.disabled
+)
 </script>

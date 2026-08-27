@@ -26,7 +26,6 @@
 import { defineAsyncComponent, ref } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
-
 import '@maas/vue-equipment/utils/css/keyframes/zoom-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/zoom-out.css'
 

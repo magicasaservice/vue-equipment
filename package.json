@@ -13,20 +13,20 @@
     }
   ],
   "devDependencies": {
-    "@maas/config": "^1.13.0",
+    "@maas/config": "^1.16.1",
     "@maas/mirror": "catalog:",
-    "@release-it/bumper": "^7.0.5",
+    "@release-it/bumper": "^7.0.6",
     "@types/node": "catalog:",
-    "@vitejs/plugin-vue": "^6.0.5",
-    "@vitest/browser-playwright": "^4.1.2",
-    "playwright": "^1.59.1",
-    "eslint": "^9.39.1",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vitest/browser-playwright": "^4.1.11",
+    "eslint": "^10.9.1",
+    "playwright": "^1.62.1",
     "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "^0.7.1",
-    "release-it": "^19.0.5",
-    "turbo": "^2.6.0",
+    "prettier-plugin-tailwindcss": "^0.7.4",
+    "release-it": "^19.2.4",
+    "turbo": "^2.10.12",
     "typescript": "catalog:",
-    "vitest": "^4.1.2",
+    "vitest": "^4.1.11",
     "vitest-browser-vue": "^2.1.0"
   },
   "sideEffects": [
@@ -144,7 +144,7 @@
     "update:deps:major": "pnpm dlx taze major -r -w"
   },
   "type": "module",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.34.5",
   "pnpm": {
     "overrides": {
       "typescript": "catalog:"

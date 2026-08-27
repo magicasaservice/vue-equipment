@@ -22,33 +22,26 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, inject, onBeforeUnmount, toValue, useTemplateRef } from 'vue'
 import {
-  useTemplateRef,
-  computed,
-  inject,
-  toValue,
-  type MaybeRef,
-  type ComponentPublicInstance,
-  onBeforeUnmount,
-} from 'vue'
-import {
-  useFloating,
+  arrow as floatingArrow,
   autoUpdate,
   flip,
-  shift,
   limitShift,
-  arrow as floatingArrow,
-  type Middleware,
+  shift,
+  useFloating,
 } from '@floating-ui/vue'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuState } from '../composables/private/useMenuState'
 import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
+
+import type { ComponentPublicInstance, MaybeRef } from 'vue'
+import type { Middleware } from '@floating-ui/vue'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type { MenuPlacement } from '../types'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
 
 interface MagicMenuFloatProps {
   placement?: MenuPlacement

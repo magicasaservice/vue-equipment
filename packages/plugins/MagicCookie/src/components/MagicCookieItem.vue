@@ -10,17 +10,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, onBeforeUnmount, useId } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieItem } from '../composables/private/useCookieItem'
 import {
   MagicCookieInstanceId,
-  MagicCookieItemId,
   MagicCookieItemActive,
+  MagicCookieItemId,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicCookieItemProps {
   id?: string

@@ -12,14 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, computed } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, inject } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicDrawer } from '../composables/useMagicDrawer'
 import { useDrawerState } from '../composables/private/useDrawerState'
-import { MagicDrawerInstanceId, MagicDrawerActiveKey } from '../symbols'
+import { MagicDrawerActiveKey, MagicDrawerInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

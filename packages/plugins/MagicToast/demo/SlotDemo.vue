@@ -4,9 +4,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, h, type Slots } from 'vue'
+import { defineAsyncComponent, h, ref } from 'vue'
 import { MButton } from '@maas/mirror/vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
+
+import type { Slots } from 'vue'
 
 const count = ref(0)
 

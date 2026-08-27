@@ -28,22 +28,20 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, computed } from 'vue'
+import { computed, inject } from 'vue'
 import { defu } from 'defu'
 import { AutoSize } from '@maas/vue-autosize'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionCallback } from '../composables/private/useAccordionCallback'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/auto-size-out.css'
-
 import '@maas/vue-equipment/utils/css/easings.css'
 
 interface MagicAccordionContentProps {

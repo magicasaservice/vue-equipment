@@ -6,12 +6,11 @@
 
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useTrayState } from '../composables/private/useTrayState'
 import { MagicTrayInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicTraySide, MagicTrayTransformAxis } from '../types/index'
 

@@ -25,7 +25,7 @@ interface FadeDemoToastProps {
   message?: string
   opacity?: number
 }
-withDefaults(defineProps<FadeDemoToastProps>(), { opacity: 1 })
+const { opacity = 1 } = defineProps<FadeDemoToastProps>()
 const emit = defineEmits<{
   (e: 'remove'): void
 }>()

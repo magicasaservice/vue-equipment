@@ -1,13 +1,8 @@
-import {
-  toRefs,
-  watch,
-  toValue,
-  onScopeDispose,
-  type MaybeRef,
-  type WatchStopHandle,
-} from 'vue'
+import { onScopeDispose, toRefs, toValue, watch } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef, WatchStopHandle } from 'vue'
 
 export type UsePlayerEmitterArgs = {
   id: MaybeRef<string>

@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, provide, type MaybeRef } from 'vue'
+import { provide, watch } from 'vue'
 import { useTrayState } from '../composables/private/useTrayState'
 import { MagicTrayInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicTrayOptions } from '../types/index'
 

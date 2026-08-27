@@ -6,25 +6,25 @@
 
 <script lang="ts" setup>
 import {
-  shallowRef,
-  inject,
   computed,
+  inject,
   onMounted,
-  watch,
-  useTemplateRef,
   onUnmounted,
+  shallowRef,
+  useTemplateRef,
+  watch,
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
-import {
-  animate,
-  type AnimationPlaybackControls,
-  type SequenceOptions,
-  type AnimationSequence,
-} from 'motion'
-
+import { animate } from 'motion'
 import { MagicScrollProgress } from '../symbols'
-import { type MagicScrollSequence } from '../types'
+
+import type {
+  AnimationPlaybackControls,
+  AnimationSequence,
+  SequenceOptions,
+} from 'motion'
+import type { MagicScrollSequence } from '../types'
 
 interface MagicScrollMotionProps {
   sequence: MagicScrollSequence

@@ -11,7 +11,12 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { open, close, isActive } = useMagicModal(id)
       return { open, close, isActive }
@@ -34,7 +39,10 @@ describe('MagicModal - API', () => {
   describe('open / close / isActive', () => {
     it('isActive is false initially', () => {
       render(createModal(ModalId.ApiInitial))
-      expect(document.querySelector(`[data-test-id="${TestId.IsActive}"]`)!.textContent).toBe('false')
+      expect(
+        document.querySelector(`[data-test-id="${TestId.IsActive}"]`)!
+          .textContent
+      ).toBe('false')
     })
 
     it('open() sets isActive to true', async () => {
@@ -42,7 +50,9 @@ describe('MagicModal - API', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('close() sets isActive to false', async () => {
@@ -50,34 +60,56 @@ describe('MagicModal - API', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       // DOM click bypasses backdrop pointer-events
-      ;(document.querySelector(`[data-test-id="${TestId.CloseBtn}"]`) as HTMLElement).click()
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.CloseBtn}"]`
+        ) as HTMLElement
+      ).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('isActive reflects state', async () => {
       const screen = render(createModal(ModalId.ApiReflect))
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
 
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('multiple instances', () => {
     it('independent modals have independent state', async () => {
       const wrapper = defineComponent({
-        components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        components: {
+          MagicModalProvider,
+          MagicModalTeleport,
+          MagicModalBackdrop,
+          MagicModalContent,
+        },
         setup() {
           const m1 = useMagicModal(ModalId.Multi1)
           const m2 = useMagicModal(ModalId.Multi2)
-          return { open1: m1.open, open2: m2.open, isActive1: m1.isActive, isActive2: m2.isActive }
+          return {
+            open1: m1.open,
+            open2: m2.open,
+            isActive1: m1.isActive,
+            isActive2: m2.isActive,
+          }
         },
         template: `
           <div>
@@ -99,8 +131,12 @@ describe('MagicModal - API', () => {
       await screen.getByTestId(TestId.Open1).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.Active1)).toHaveTextContent('true')
-      await expect.element(page.getByTestId(TestId.Active2)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.Active1))
+        .toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.Active2))
+        .toHaveTextContent('false')
     })
   })
 })

@@ -1,6 +1,7 @@
-import { reactive, computed, toValue } from 'vue'
+import { computed, reactive, toValue } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from './useCommandState'
+
 import type { MaybeRef } from 'vue'
 import type { CommandView } from '../../types/index'
 
@@ -96,7 +97,9 @@ export function useCommandView(id: MaybeRef<string>) {
     let view = viewMap.get(id)
     if (!view) {
       view = state.views.find((v) => v.id === id)
-      if (view) {viewMap.set(id, view)}
+      if (view) {
+        viewMap.set(id, view)
+      }
     }
     return view
   }

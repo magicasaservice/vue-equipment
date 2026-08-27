@@ -3,10 +3,7 @@ import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick } from 'vue'
 import MagicNoise from '../src/components/MagicNoise.vue'
 
-function createNoise(
-  options: Record<string, unknown> = {},
-  pause = false
-) {
+function createNoise(options: Record<string, unknown> = {}, pause = false) {
   return defineComponent({
     components: { MagicNoise },
     template: `

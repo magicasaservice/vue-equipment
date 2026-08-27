@@ -18,11 +18,11 @@
 
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePieState } from '../composables/private/usePieState'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
+
 import type { MagicPieOptions, PiePoint } from '../types'
 
 interface MagicPieProps {

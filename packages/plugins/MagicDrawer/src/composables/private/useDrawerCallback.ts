@@ -1,9 +1,12 @@
-import { toValue, nextTick, type Ref, type MaybeRef } from 'vue'
+import { nextTick, toValue } from 'vue'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useDrawerDOM } from './useDrawerDOM'
+
+import type { MaybeRef, Ref } from 'vue'
+
 import type { MagicDrawerOptions } from '../../types'
 import type { DrawerActive } from '../../types'
-import { useDrawerDOM } from './useDrawerDOM'
 
 type UseDrawerCallbackArgs = {
   id: MaybeRef<string>

@@ -24,9 +24,7 @@ describe('MagicPie - Edge Cases', () => {
 
       api!.setPercentage(0)
       await nextTick()
-      const path0 = document
-        .querySelector('.magic-pie path')!
-        .getAttribute('d')
+      const path0 = document.querySelector('.magic-pie path')!.getAttribute('d')
 
       api!.setPercentage(100)
       await nextTick()
@@ -83,9 +81,7 @@ describe('MagicPie - Edge Cases', () => {
       api!.setPercentage(100)
       await nextTick()
 
-      const path = document
-        .querySelector('.magic-pie path')!
-        .getAttribute('d')!
+      const path = document.querySelector('.magic-pie path')!.getAttribute('d')!
       expect(path.split('L').length).toBeGreaterThanOrEqual(4)
     })
   })
@@ -144,9 +140,7 @@ describe('MagicPie - Edge Cases', () => {
       await nextTick()
 
       const paths = document.querySelectorAll('.magic-pie path')
-      expect(paths[0]!.getAttribute('d')).not.toBe(
-        paths[1]!.getAttribute('d')
-      )
+      expect(paths[0]!.getAttribute('d')).not.toBe(paths[1]!.getAttribute('d'))
     })
   })
 

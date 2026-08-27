@@ -30,13 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { MBadge } from '@maas/mirror/vue'
+
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 const parentRef = ref<HTMLElement | undefined>(undefined)
 const component = defineAsyncComponent(

@@ -1,8 +1,8 @@
 import {
-  defineNuxtModule,
-  createResolver,
   addComponentsDir,
   addImports,
+  createResolver,
+  defineNuxtModule,
   extendViteConfig,
 } from '@nuxt/kit'
 

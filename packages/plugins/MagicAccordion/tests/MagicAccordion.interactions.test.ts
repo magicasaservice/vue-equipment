@@ -172,10 +172,9 @@ describe('MagicAccordion - Interactions', () => {
 
   describe('mouseenter trigger', () => {
     it('hovering trigger opens panel', async () => {
-      render(
-        createAccordion(AccordionId.Hover, { trigger: 'mouseenter' }),
-        { global: { stubs: { AutoSize } } }
-      )
+      render(createAccordion(AccordionId.Hover, { trigger: 'mouseenter' }), {
+        global: { stubs: { AutoSize } },
+      })
       await nextTick()
 
       const btn = document.querySelector(

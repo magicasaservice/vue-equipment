@@ -1,23 +1,19 @@
 import {
   computed,
-  onMounted,
-  watch,
-  toValue,
-  toRefs,
-  nextTick,
-  onScopeDispose,
   markRaw,
-  type Ref,
-  type MaybeRef,
-  type WritableComputedRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  toRefs,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
   useResizeObserver,
-  useThrottleFn,
   useScrollLock,
-  type UseResizeObserverReturn,
+  useThrottleFn,
 } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -26,10 +22,7 @@ import {
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicDrawer } from './../useMagicDrawer'
 import { useDrawerSnap } from './useDrawerSnap'
@@ -37,7 +30,14 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import type { MagicDrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
+import type { MaybeRef, Ref, WritableComputedRef } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+
+import type {
+  MagicDrawerSnapPoint,
+  RequiredMagicDrawerOptions,
+} from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>

@@ -1,16 +1,9 @@
-import {
-  onScopeDispose,
-  shallowRef,
-  toRefs,
-  toValue,
-  watch,
-  type MaybeRef,
-  type Ref,
-} from 'vue'
+import { onScopeDispose, shallowRef, toRefs, toValue, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
 
+import type { MaybeRef, Ref } from 'vue'
 import type Hls from 'hls.js'
 import type { MagicPlayerOptions } from '../../types'
 
@@ -232,8 +225,9 @@ export function usePlayerRuntime(args: UsePlayerRuntimeArgs) {
   watch(
     () => state.playlistIndex,
     (newIndex, oldIndex) => {
-      if (!initialized || newIndex === oldIndex || state.playlistCount <= 1)
-        {return}
+      if (!initialized || newIndex === oldIndex || state.playlistCount <= 1) {
+        return
+      }
 
       const wasPlaying = state.playing
 

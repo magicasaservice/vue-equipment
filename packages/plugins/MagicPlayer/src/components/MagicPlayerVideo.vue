@@ -12,38 +12,34 @@
 
 <script lang="ts" setup>
 import {
+  computed,
+  inject,
+  onBeforeUnmount,
+  onMounted,
+  shallowRef,
   toRefs,
   useTemplateRef,
   watch,
-  onMounted,
-  inject,
-  shallowRef,
-  computed,
-  onBeforeUnmount,
 } from 'vue'
 import {
+  defaultWindow,
   useElementVisibility,
   useEventListener,
-  defaultWindow,
 } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
-
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
-
 import { videoModePlaybackDefaults } from '../utils/playbackDefaults'
-
 import {
+  MagicPlayerCurrentSrcKey,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
-  MagicPlayerCurrentSrcKey,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',

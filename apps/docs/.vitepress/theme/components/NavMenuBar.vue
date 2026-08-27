@@ -41,10 +41,10 @@
                     <m-menu-item-child>
                       <span v-html="item.text" />
                       <m-badge
+                        v-if="item.soon || item.new"
                         size="xs"
                         mode="tone"
                         variant="accent"
-                        v-if="item.soon || item.new"
                         class="ml-auto"
                       >
                         {{ item.soon ? 'Soon' : 'New' }}
@@ -63,8 +63,8 @@
 
 <script lang="ts" setup>
 import { useData } from 'vitepress'
-import { MenuId } from '../utils/enums'
 import VPLink from 'vitepress/dist/client/theme-default/components/VPLink.vue'
+import { MenuId } from '../utils/enums'
 
 const { theme } = useData()
 </script>

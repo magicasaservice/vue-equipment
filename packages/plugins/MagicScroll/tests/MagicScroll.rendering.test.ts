@@ -123,9 +123,7 @@ describe('MagicScroll - Rendering', () => {
       )
       await nextTick()
 
-      expect(
-        document.querySelector('[data-id="col-1"]')
-      ).not.toBeNull()
+      expect(document.querySelector('[data-id="col-1"]')).not.toBeNull()
     })
 
     it('auto-generates data-id when no id provided', async () => {

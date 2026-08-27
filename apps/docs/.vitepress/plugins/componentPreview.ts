@@ -1,6 +1,6 @@
-import type { MarkdownEnv, MarkdownRenderer, SfcBlock } from 'vitepress'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
+import type { MarkdownEnv, MarkdownRenderer, SfcBlock } from 'vitepress'
 
 // Regular expressions to match the custom component preview tag and script tags
 const componentPreviewRegEx =

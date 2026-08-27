@@ -160,8 +160,9 @@ describe('MagicTray - Interactions', () => {
       .poll(
         () =>
           Number(
-            container.querySelector(`[data-test-id="${TestId.ProgressBottom}"]`)!
-              .textContent
+            container.querySelector(
+              `[data-test-id="${TestId.ProgressBottom}"]`
+            )!.textContent
           ),
         { timeout: 2000 }
       )
@@ -295,8 +296,9 @@ describe('MagicTray - Interactions', () => {
         .poll(
           () =>
             Number(
-              container.querySelector(`[data-test-id="${TestId.ProgressBottom}"]`)!
-                .textContent
+              container.querySelector(
+                `[data-test-id="${TestId.ProgressBottom}"]`
+              )!.textContent
             ),
           { timeout: 2000 }
         )
@@ -923,7 +925,9 @@ describe('MagicTray - Magnetism', () => {
     await nextTick()
     // A couple of frames in the pull is still mostly held while it eases. A snap
     // to 0 (the bug) would already read near 0 here, independent of frame timing.
-    expect(readNumber(container, MAGNETIC.Magnetic)).toBeGreaterThan(maxed * 0.5)
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeGreaterThan(
+      maxed * 0.5
+    )
 
     // Past the settle duration it has eased all the way back to rest
     await new Promise((r) => setTimeout(r, 400))

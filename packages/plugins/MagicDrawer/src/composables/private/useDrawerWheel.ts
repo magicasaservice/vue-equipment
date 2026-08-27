@@ -1,15 +1,11 @@
-import {
-  computed,
-  toValue,
-  toRefs,
-  type Ref,
-  type MaybeRef,
-  type ComputedRef,
-} from 'vue'
+import { computed, toRefs, toValue } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import WheelGestures, { type WheelEventState } from 'wheel-gestures'
+import WheelGestures from 'wheel-gestures'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDrawerState } from './useDrawerState'
+
+import type { ComputedRef, MaybeRef, Ref } from 'vue'
+import type { WheelEventState } from 'wheel-gestures'
 
 import type { RequiredMagicDrawerOptions } from '../../types'
 

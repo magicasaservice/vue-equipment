@@ -17,22 +17,21 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, inject, onBeforeUnmount, provide, useId, watch } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
-import { computed, inject, provide, onBeforeUnmount, watch, useId } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuItem } from '../composables/private/useMenuItem'
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import {
-  MagicMenuInstanceId,
-  MagicMenuViewId,
   MagicMenuContentId,
-  MagicMenuItemId,
+  MagicMenuInstanceId,
   MagicMenuItemActive,
+  MagicMenuItemId,
+  MagicMenuViewId,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicMenuItemProps {
   id?: string

@@ -9,10 +9,13 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, watch, type MaybeRef } from 'vue'
+import { provide, watch } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { MagicAccordionInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
+
 import type { MagicAccordionOptions } from '../types'
 
 interface MagicAccordionProviderProps {

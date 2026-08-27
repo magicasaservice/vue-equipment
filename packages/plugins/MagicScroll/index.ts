@@ -2,11 +2,10 @@ import MagicScrollProvider from './src/components/MagicScrollProvider.vue'
 import MagicScrollScene from './src/components/MagicScrollScene.vue'
 import MagicScrollMotion from './src/components/MagicScrollMotion.vue'
 import MagicScrollCollision from './src/components/MagicScrollCollision.vue'
-
 import {
-  MagicScrollTarget,
   MagicScrollProgress,
   MagicScrollReturn,
+  MagicScrollTarget,
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'

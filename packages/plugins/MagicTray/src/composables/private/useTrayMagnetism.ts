@@ -1,14 +1,4 @@
-import {
-  computed,
-  reactive,
-  watch,
-  toValue,
-  onScopeDispose,
-  type Ref,
-  type ShallowRef,
-  type MaybeRef,
-  type ComponentPublicInstance,
-} from 'vue'
+import { computed, onScopeDispose, reactive, toValue, watch } from 'vue'
 import { unrefElement, useEventListener, useRafFn } from '@vueuse/core'
 import { clampValue, interpolate } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
@@ -16,13 +6,15 @@ import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 import { useTraySnap } from './useTraySnap'
 
+import type { ComponentPublicInstance, MaybeRef, Ref, ShallowRef } from 'vue'
+
 import type {
-  TrayState,
   MagicTraySide,
   MagicTraySnapPoint,
-  TrayMagneticSide,
-  TrayMagneticRadius,
   TrayMagneticDirection,
+  TrayMagneticRadius,
+  TrayMagneticSide,
+  TrayState,
 } from '../../types'
 
 type UseTrayMagnetismArgs = {
@@ -97,30 +89,32 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
   // Resting insets at which each side is magnetic, with their direction. Cached
   // so the per-frame loop doesn’t re-resolve it on every pointer move.
-  const magneticPoints = computed<Record<MagicTraySide, MagneticPoint[]>>(() => {
-    const result: Record<MagicTraySide, MagneticPoint[]> = {
-      top: [],
-      right: [],
-      bottom: [],
-      left: [],
-    }
-    for (const side of magneticSides.value) {
-      const config = sideConfig(side)
-      if (!config || !mappedSnapPoints(side).length) {
-        continue
+  const magneticPoints = computed<Record<MagicTraySide, MagneticPoint[]>>(
+    () => {
+      const result: Record<MagicTraySide, MagneticPoint[]> = {
+        top: [],
+        right: [],
+        bottom: [],
+        left: [],
       }
-      result[side] = Object.entries(config)
-        .map(([key, direction]) => ({
-          inset: mapSnapPoint(side, coercePoint(key)),
-          direction: direction as TrayMagneticDirection,
-        }))
-        .filter(
-          (point): point is MagneticPoint =>
-            point.inset === 0 || (!!point.inset && !Number.isNaN(point.inset))
-        )
+      for (const side of magneticSides.value) {
+        const config = sideConfig(side)
+        if (!config || !mappedSnapPoints(side).length) {
+          continue
+        }
+        result[side] = Object.entries(config)
+          .map(([key, direction]) => ({
+            inset: mapSnapPoint(side, coercePoint(key)),
+            direction: direction as TrayMagneticDirection,
+          }))
+          .filter(
+            (point): point is MagneticPoint =>
+              point.inset === 0 || (!!point.inset && !Number.isNaN(point.inset))
+          )
+      }
+      return result
     }
-    return result
-  })
+  )
 
   // Last emitted progress per side, to only emit the magnetism event on change
   const progress: Record<MagicTraySide, number> = {
@@ -324,7 +318,11 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
 
     const { start, stop } = radius
 
-    return { start, stop, configured: start !== undefined || stop !== undefined }
+    return {
+      start,
+      stop,
+      configured: start !== undefined || stop !== undefined,
+    }
   }
 
   // Resolve the cursor against a side’s resting edge: `perp` (signed distance,

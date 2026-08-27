@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render } from 'vitest-browser-vue'
-
 import { defineComponent, nextTick, reactive } from 'vue'
 import MagicPlayerProvider from '../src/components/MagicPlayerProvider.vue'
 import MagicPlayerVideo from '../src/components/MagicPlayerVideo.vue'
@@ -17,7 +16,6 @@ const VIDEO_SRC =
 const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
-
 
 function createEventPlayer(playerId: PlayerId) {
   const opts = {
@@ -65,7 +63,10 @@ function createEventPlayer(playerId: PlayerId) {
 }
 
 function getEventsText(): string {
-  return document.querySelector(`[data-test-id="${TestId.Events}"]`)?.textContent || ''
+  return (
+    document.querySelector(`[data-test-id="${TestId.Events}"]`)?.textContent ||
+    ''
+  )
 }
 
 describe('MagicPlayer - Events', () => {

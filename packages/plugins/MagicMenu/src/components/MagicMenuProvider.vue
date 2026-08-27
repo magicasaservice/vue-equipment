@@ -10,21 +10,15 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  useTemplateRef,
-  shallowRef,
-  provide,
-  watch,
-  toValue,
-  type MaybeRef,
-} from 'vue'
+import { provide, shallowRef, toValue, useTemplateRef, watch } from 'vue'
 import { onClickOutside, onKeyStroke, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
-
 import { useMenuState } from '../composables/private/useMenuState'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuKeyListener } from '../composables/private/useMenuKeyListener'
 import { MagicMenuInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicMenuOptions } from '../types'
 

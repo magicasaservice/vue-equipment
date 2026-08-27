@@ -11,6 +11,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+
 import type { MagicTraySide } from '../types/index'
 
 interface MagicTrayHandleProps {

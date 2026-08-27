@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@maas/mirror": "catalog:",
-    "@maas/vue-equipment/composables": "workspace:composables@*",
-    "@maas/vue-equipment/plugins": "workspace:plugins@*",
-    "@maas/vue-equipment/utils": "workspace:utils@*",
     "@tailwindcss/vite": "catalog:",
-    "tailwindcss": "catalog:"
+    "composables": "workspace:*",
+    "plugins": "workspace:*",
+    "tailwindcss": "catalog:",
+    "utils": "workspace:*"
   }
 }

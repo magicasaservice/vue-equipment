@@ -11,7 +11,12 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { open, close, isActive } = useMagicModal(id)
       return { open, close, isActive }
@@ -27,18 +32,37 @@ function createModal(id: ModalId, options: Record<string, unknown> = {}) {
         </MagicModalTeleport>
       </MagicModalProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
 function createRapidModal(id: ModalId) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { open, close, isActive } = useMagicModal(id)
-      function rapidToggle() { open(); close(); open(); close(); open() }
-      function doubleOpen() { open(); open() }
-      function doubleClose() { close(); close() }
+      function rapidToggle() {
+        open()
+        close()
+        open()
+        close()
+        open()
+      }
+      function doubleOpen() {
+        open()
+        open()
+      }
+      function doubleClose() {
+        close()
+        close()
+      }
       return { open, close, isActive, rapidToggle, doubleOpen, doubleClose }
     },
     template: `
@@ -66,12 +90,16 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
   })
 
@@ -82,7 +110,9 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('double open does not break state', async () => {
@@ -91,12 +121,16 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('double close does not break state', async () => {
@@ -104,30 +138,47 @@ describe('MagicModal - Edge Cases', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
-
-      ;(document.querySelector(`[data-test-id="${TestId.DoubleCloseBtn}"]`) as HTMLElement).click()
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.DoubleCloseBtn}"]`
+        ) as HTMLElement
+      ).click()
       await nextTick()
       await new Promise((r) => setTimeout(r, 400))
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
-
-      ;(document.querySelector(`[data-test-id="${TestId.Trigger}"]`) as HTMLElement).click()
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.Trigger}"]`
+        ) as HTMLElement
+      ).click()
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('cleanup on unmount', () => {
     it('unmounting closes the modal', async () => {
       const container = defineComponent({
-        components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        components: {
+          MagicModalProvider,
+          MagicModalTeleport,
+          MagicModalBackdrop,
+          MagicModalContent,
+        },
         setup() {
           const { open, isActive } = useMagicModal(ModalId.Unmount)
           return { open, isActive }
         },
-        data() { return { show: true } },
+        data() {
+          return { show: true }
+        },
         template: `
           <div>
             <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
@@ -149,8 +200,11 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
 
       expect(document.querySelector('.magic-modal-content')).not.toBeNull()
-
-      ;(document.querySelector(`[data-test-id="${TestId.ToggleBtn}"]`) as HTMLElement).click()
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.ToggleBtn}"]`
+        ) as HTMLElement
+      ).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 300))
@@ -160,12 +214,19 @@ describe('MagicModal - Edge Cases', () => {
 
     it('unmounting cleans up scroll lock', async () => {
       const container = defineComponent({
-        components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        components: {
+          MagicModalProvider,
+          MagicModalTeleport,
+          MagicModalBackdrop,
+          MagicModalContent,
+        },
         setup() {
           const { open } = useMagicModal(ModalId.CleanupScroll)
           return { open }
         },
-        data() { return { show: true } },
+        data() {
+          return { show: true }
+        },
         template: `
           <div>
             <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
@@ -185,8 +246,11 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 500))
-
-      ;(document.querySelector(`[data-test-id="${TestId.ToggleBtn}"]`) as HTMLElement).click()
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.ToggleBtn}"]`
+        ) as HTMLElement
+      ).click()
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
@@ -198,13 +262,22 @@ describe('MagicModal - Edge Cases', () => {
   describe('concurrent instances', () => {
     it('opening multiple modals simultaneously works', async () => {
       const wrapper = defineComponent({
-        components: { MagicModalProvider, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        components: {
+          MagicModalProvider,
+          MagicModalTeleport,
+          MagicModalBackdrop,
+          MagicModalContent,
+        },
         setup() {
           const m1 = useMagicModal(ModalId.Concurrent1)
           const m2 = useMagicModal(ModalId.Concurrent2)
           const m3 = useMagicModal(ModalId.Concurrent3)
           return {
-            openAll: () => { m1.open(); m2.open(); m3.open() },
+            openAll: () => {
+              m1.open()
+              m2.open()
+              m3.open()
+            },
             isActive1: m1.isActive,
             isActive2: m2.isActive,
             isActive3: m3.isActive,
@@ -234,9 +307,15 @@ describe('MagicModal - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.Active1)).toHaveTextContent('true')
-      await expect.element(page.getByTestId(TestId.Active2)).toHaveTextContent('true')
-      await expect.element(page.getByTestId(TestId.Active3)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.Active1))
+        .toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.Active2))
+        .toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.Active3))
+        .toHaveTextContent('true')
     })
   })
 })

@@ -25,7 +25,6 @@ const gc = {
   },
 }
 
-
 function createVideoPlayer(
   playerId: PlayerId,
   overrides: Record<string, unknown> = {}
@@ -137,9 +136,7 @@ describe('MagicPlayer - Rendering', () => {
       render(createVideoPlayer(PlayerId.RenderSlot), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-overlay')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-overlay')).not.toBeNull()
       expect(
         document.querySelector('.magic-player-video-controls')
       ).not.toBeNull()
@@ -232,9 +229,7 @@ describe('MagicPlayer - Rendering', () => {
       render(createVideoPlayer(PlayerId.RenderVcAttrs), gc)
       await nextTick()
 
-      const controls = document.querySelector(
-        '.magic-player-video-controls'
-      )
+      const controls = document.querySelector('.magic-player-video-controls')
       expect(controls!.getAttribute('data-playing')).toBe('false')
       expect(controls!.getAttribute('data-paused')).toBe('false')
       expect(controls!.getAttribute('data-started')).toBe('false')
@@ -247,9 +242,7 @@ describe('MagicPlayer - Rendering', () => {
       render(createVideoPlayer(PlayerId.RenderVcStandalone), gc)
       await nextTick()
 
-      const controls = document.querySelector(
-        '.magic-player-video-controls'
-      )
+      const controls = document.querySelector('.magic-player-video-controls')
       expect(controls!.getAttribute('data-standalone')).toBe('true')
     })
 
@@ -258,9 +251,7 @@ describe('MagicPlayer - Rendering', () => {
       await nextTick()
 
       expect(
-        document.querySelector(
-          '.magic-player-video-controls__bar--inner'
-        )
+        document.querySelector('.magic-player-video-controls__bar--inner')
       ).not.toBeNull()
     })
 
@@ -268,9 +259,7 @@ describe('MagicPlayer - Rendering', () => {
       render(createVideoPlayer(PlayerId.RenderVcTimeline), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-timeline')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-timeline')).not.toBeNull()
     })
   })
 
@@ -279,9 +268,7 @@ describe('MagicPlayer - Rendering', () => {
       render(createAudioPlayer(PlayerId.RenderAcAttrs), gc)
       await nextTick()
 
-      const controls = document.querySelector(
-        '.magic-player-audio-controls'
-      )
+      const controls = document.querySelector('.magic-player-audio-controls')
       expect(controls!.getAttribute('data-playing')).toBe('false')
       expect(controls!.getAttribute('data-paused')).toBe('false')
       expect(controls!.getAttribute('data-started')).toBe('false')
@@ -293,18 +280,14 @@ describe('MagicPlayer - Rendering', () => {
       render(createAudioPlayer(PlayerId.RenderAcSlots), gc)
       await nextTick()
 
-      expect(
-        document.querySelector('[data-slot="play-toggle"]')
-      ).not.toBeNull()
+      expect(document.querySelector('[data-slot="play-toggle"]')).not.toBeNull()
       expect(
         document.querySelector('[data-slot="display-time-current"]')
       ).not.toBeNull()
       expect(
         document.querySelector('[data-slot="display-time-duration"]')
       ).not.toBeNull()
-      expect(
-        document.querySelector('[data-slot="timeline"]')
-      ).not.toBeNull()
+      expect(document.querySelector('[data-slot="timeline"]')).not.toBeNull()
     })
   })
 

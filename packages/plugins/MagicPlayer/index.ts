@@ -8,7 +8,6 @@ import MagicPlayerProvider from './src/components/MagicPlayerProvider.vue'
 import MagicPlayerTimeline from './src/components/MagicPlayerTimeline.vue'
 import MagicPlayerVideo from './src/components/MagicPlayerVideo.vue'
 import MagicPlayerVideoControls from './src/components/MagicPlayerVideoControls.vue'
-
 import { useMagicPlayer } from './src/composables/useMagicPlayer'
 
 import type { App, Plugin } from 'vue'

@@ -15,16 +15,15 @@
 <script lang="ts" setup>
 import { computed, inject, watch } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuView } from '../composables/private/useMenuView'
 import { useMenuChannel } from '../composables/private/useMenuChannel'
 import { MagicMenuInstanceId, MagicMenuViewId } from '../symbols'
+import { useMenuRemote } from '../composables/private/useMenuRemote'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { Interaction } from '../types'
-import { useMenuRemote } from '../composables/private/useMenuRemote'
 
 interface MagicMenuRemoteProps {
   channelId: string
