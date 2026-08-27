@@ -1,38 +1,37 @@
 import {
-  shallowRef,
   computed,
-  toValue,
-  nextTick,
-  watch,
-  onScopeDispose,
-  onMounted,
-  toRefs,
   markRaw,
-  type Ref,
-  type MaybeRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  shallowRef,
+  toRefs,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
+  useIdle,
   useResizeObserver,
   useThrottleFn,
-  useIdle,
-  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
+  cancelEdgeNavigation,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
+
+import type { MaybeRef, Ref } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type {
   Coordinates,
@@ -513,6 +512,13 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     onPointermove(e)
   }
 
+  function onTouchstart(e: TouchEvent) {
+    // The drag already runs on pointer events; canceling touchstart keeps
+    // WebKit’s edge navigation swipe from hijacking a drag that starts near
+    // the viewport edge
+    cancelEdgeNavigation({ event: e })
+  }
+
   function onClick(e: MouseEvent) {
     if (hasDragged.value) {
       e.preventDefault()
@@ -611,6 +617,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     initialize,
     destroy,
     onPointerdown,
+    onTouchstart,
     onClick,
     style,
     hasDragged,

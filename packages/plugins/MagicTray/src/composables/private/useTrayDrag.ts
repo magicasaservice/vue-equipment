@@ -1,22 +1,20 @@
 import {
   computed,
-  onMounted,
-  watch,
-  toValue,
-  nextTick,
-  onScopeDispose,
   markRaw,
-  type Ref,
-  type MaybeRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
   useResizeObserver,
   useThrottleFn,
-  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
+  cancelEdgeNavigation,
   convertToPixels,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
@@ -24,14 +22,15 @@ import {
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useTraySnap } from './useTraySnap'
 import { useTrayUtils } from './useTrayUtils'
 import { useTrayState } from './useTrayState'
+
+import type { MaybeRef, Ref } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type { MagicTraySide } from '../../types'
 
@@ -587,7 +586,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   function onHandleTouchstart(side: MagicTraySide, e: TouchEvent) {
-    if (!isAndroid() || state.dragging || toValue(disabled)) {
+    if (toValue(disabled)) {
+      return
+    }
+
+    // On iOS the drag already runs on pointer events; canceling touchstart
+    // keeps WebKit’s edge navigation swipe from hijacking a drag that starts
+    // near the viewport edge
+    cancelEdgeNavigation({ event: e })
+
+    if (!isAndroid() || state.dragging) {
       return
     }
 

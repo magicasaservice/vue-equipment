@@ -14,6 +14,7 @@
         class="magic-draggable__drag"
         :style="style"
         @pointerdown="guardedPointerdown"
+        @touchstart="guardedTouchstart"
         @click="guardedClick"
       >
         <slot />
@@ -24,14 +25,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, computed, toValue, toRefs, watch, type MaybeRef } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, toRefs, toValue, useTemplateRef, watch } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDraggableDrag } from '../composables/private/useDraggableDrag'
 import { useDraggableState } from '../composables/private/useDraggableState'
 import { defaultOptions } from '../utils/defaultOptions'
+
+import type { MaybeRef } from 'vue'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicDraggableOptions } from '../types'
 
@@ -89,21 +90,28 @@ const disabled = computed(() => {
 
 const { snapPoints, animation, initial, threshold, scrollLock } = state.options
 
-const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
-  id,
-  elRef,
-  wrapperRef,
-  threshold,
-  snapPoints,
-  animation,
-  initial,
-  scrollLock,
-})
+const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
+  useDraggableDrag({
+    id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    animation,
+    initial,
+    scrollLock,
+  })
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
   if (!disabled.value) {
     onPointerdown(event)
+  }
+}
+
+function guardedTouchstart(event: TouchEvent) {
+  if (!disabled.value) {
+    onTouchstart(event)
   }
 }
 

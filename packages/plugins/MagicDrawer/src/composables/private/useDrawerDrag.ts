@@ -1,35 +1,29 @@
 import {
   computed,
-  onMounted,
-  watch,
-  toValue,
-  toRefs,
-  nextTick,
-  onScopeDispose,
   markRaw,
-  type Ref,
-  type MaybeRef,
-  type WritableComputedRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  toRefs,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
   useResizeObserver,
-  useThrottleFn,
   useScrollLock,
-  type UseResizeObserverReturn,
+  useThrottleFn,
 } from '@vueuse/core'
 import {
+  cancelEdgeNavigation,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
   isAndroid,
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicDrawer } from './../useMagicDrawer'
 import { useDrawerSnap } from './useDrawerSnap'
@@ -37,7 +31,14 @@ import { useDrawerGuards } from './useDrawerGuards'
 import { useDrawerUtils } from './useDrawerUtils'
 import { useDrawerState } from './useDrawerState'
 
-import type { MagicDrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
+import type { MaybeRef, Ref, WritableComputedRef } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+
+import type {
+  MagicDrawerSnapPoint,
+  RequiredMagicDrawerOptions,
+} from '../../types'
 
 type UseDrawerDragArgs = {
   id: MaybeRef<string>
@@ -820,6 +821,16 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onTouchstart(e: TouchEvent) {
+    switch (position) {
+      case 'left':
+      case 'right':
+        // Horizontal drawers drag along the axis of WebKit’s back and forward
+        // navigation swipe; canceling touchstart near the viewport edge keeps
+        // the drag with the drawer
+        cancelEdgeNavigation({ event: e })
+        break
+    }
+
     // Only handle touch on Android
     if (!isAndroid()) {
       return

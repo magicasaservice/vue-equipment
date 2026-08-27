@@ -1092,6 +1092,8 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
 
 The tray handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the tray to differentiate when the user scrolls and when the user drags, any scrollable containers within the tray need to have their overflow value explicitly set to `auto` or `scroll`.
 
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so handle click listeners keep firing.
+
 ## Examples
 
 ### Combined Sides
