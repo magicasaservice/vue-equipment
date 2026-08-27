@@ -41,10 +41,10 @@
                     <m-menu-item-child>
                       <span v-html="item.text" />
                       <m-badge
+                        v-if="item.soon || item.new"
                         size="xs"
                         mode="tone"
                         variant="accent"
-                        v-if="item.soon || item.new"
                         class="ml-auto"
                       >
                         {{ item.soon ? 'Soon' : 'New' }}

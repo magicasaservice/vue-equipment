@@ -22,9 +22,7 @@ interface MagicDrawerTeleportProps {
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<MagicDrawerTeleportProps>(), {
-  disabled: undefined,
-})
+const { to, disabled = undefined } = defineProps<MagicDrawerTeleportProps>()
 
 const instanceId = inject(MagicDrawerInstanceId, undefined)
 const active = inject(MagicDrawerActiveKey, {
@@ -45,8 +43,8 @@ magicError.assert(instanceId, {
 const { initializeState } = useDrawerState(instanceId ?? '')
 const state = initializeState()
 
-const mappedTo = computed(() => props.to ?? state.options.teleport.target)
+const mappedTo = computed(() => to ?? state.options.teleport.target)
 const mappedDisabled = computed(
-  () => props.disabled ?? state.options.teleport.disabled
+  () => disabled ?? state.options.teleport.disabled
 )
 </script>

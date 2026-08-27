@@ -6,10 +6,7 @@ import {
 import { easeOutQuad } from '@maas/vue-equipment/utils'
 
 export type ScrollToTarget =
-  | string
-  | Element
-  | MaybeElement
-  | MaybeComputedElementRef
+  string | Element | MaybeElement | MaybeComputedElementRef
 
 export type ScrollToParent = ScrollToTarget | Window
 
