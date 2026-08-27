@@ -85,7 +85,6 @@ import {
 
 import type { ComponentPublicInstance, MaybeRef, RendererElement } from 'vue'
 import type { Middleware } from '@floating-ui/vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'

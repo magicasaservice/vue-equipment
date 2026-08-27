@@ -5,7 +5,6 @@ import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDrawerState } from './useDrawerState'
 
 import type { ComputedRef, MaybeRef, Ref } from 'vue'
-
 import type { WheelEventState } from 'wheel-gestures'
 
 import type { RequiredMagicDrawerOptions } from '../../types'

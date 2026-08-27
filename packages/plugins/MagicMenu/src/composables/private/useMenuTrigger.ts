@@ -7,7 +7,6 @@ import {
 } from '../../utils/modeDelayDefaults'
 
 import type { ComputedRef, MaybeRef, Ref } from 'vue'
-
 import type { VuePrimitive } from '@maas/vue-primitive'
 
 import type { Interaction } from '../../types/index'

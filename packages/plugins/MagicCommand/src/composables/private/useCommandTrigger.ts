@@ -4,7 +4,6 @@ import { useCommandView } from './useCommandView'
 import { useCommandState } from './useCommandState'
 
 import type { ComputedRef, MaybeRef, Ref } from 'vue'
-
 import type { VuePrimitive } from '@maas/vue-primitive'
 import type { Action, Interaction } from '../../types/index'
 

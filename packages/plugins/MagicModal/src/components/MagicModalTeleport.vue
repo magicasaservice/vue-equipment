@@ -15,7 +15,6 @@ import { useModalState } from '../composables/private/useModalState'
 import { MagicModalActiveKey, MagicModalInstanceId } from '../symbols'
 
 import type { RendererElement } from 'vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicModalTeleportProps {

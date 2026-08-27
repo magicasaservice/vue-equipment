@@ -38,7 +38,6 @@ import { useMenuState } from '../composables/private/useMenuState'
 import { ModeFloatingStrategy } from '../utils/modeFloatingStrategyDefaults'
 
 import type { ComponentPublicInstance, MaybeRef } from 'vue'
-
 import type { Middleware } from '@floating-ui/vue'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

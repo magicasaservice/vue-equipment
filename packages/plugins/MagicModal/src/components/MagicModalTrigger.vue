@@ -19,7 +19,6 @@ import { useMagicModal } from '../composables/useMagicModal'
 import { MagicModalInstanceId } from '../symbols'
 
 import type { MaybeRef } from 'vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicModalTriggerProps {

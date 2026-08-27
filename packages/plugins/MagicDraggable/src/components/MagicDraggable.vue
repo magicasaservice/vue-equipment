@@ -31,7 +31,6 @@ import { useDraggableState } from '../composables/private/useDraggableState'
 import { defaultOptions } from '../utils/defaultOptions'
 
 import type { MaybeRef } from 'vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicDraggableOptions } from '../types'

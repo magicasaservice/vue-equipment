@@ -68,7 +68,6 @@ import MagicTrayHandle from './MagicTrayHandle.vue'
 import { MagicTrayInstanceId } from '../symbols'
 
 import type { ComponentPublicInstance } from 'vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicTraySide } from '../types/index'

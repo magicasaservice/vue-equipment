@@ -24,7 +24,6 @@ import { useAccordionView } from '../composables/private/useAccordionView'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
 
 import type { MaybeRef } from 'vue'
-
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { Interaction } from '../types'

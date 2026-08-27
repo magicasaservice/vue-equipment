@@ -4,7 +4,6 @@ import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
 
 import type { MaybeRef, Ref } from 'vue'
-
 import type Hls from 'hls.js'
 import type { MagicPlayerOptions } from '../../types'
 
