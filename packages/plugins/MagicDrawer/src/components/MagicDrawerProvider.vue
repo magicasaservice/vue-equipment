@@ -4,17 +4,18 @@
 
 <script lang="ts" setup>
 import {
-  reactive,
-  watch,
   nextTick,
-  provide,
   onBeforeMount,
   onBeforeUnmount,
-  type MaybeRef,
+  provide,
+  reactive,
+  watch,
 } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
 import { useDrawerState } from '../composables/private/useDrawerState'
-import { MagicDrawerInstanceId, MagicDrawerActiveKey } from '../symbols'
+import { MagicDrawerActiveKey, MagicDrawerInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicDrawerOptions } from '../types/index'
 
@@ -36,8 +37,12 @@ watch(
   { deep: true }
 )
 
-function open() { state.active = true }
-function close() { state.active = false }
+function open() {
+  state.active = true
+}
+function close() {
+  state.active = false
+}
 
 const active = reactive({
   wrapperActive: false,

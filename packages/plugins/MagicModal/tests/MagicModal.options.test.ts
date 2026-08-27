@@ -12,7 +12,13 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTrigger,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { isActive } = useMagicModal(id)
       return { isActive }
@@ -31,7 +37,9 @@ function createModal(id: ModalId, options: Record<string, unknown> = {}) {
         </MagicModalTeleport>
       </MagicModalProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
@@ -47,13 +55,21 @@ describe('MagicModal - Options', () => {
     it('tag: dialog (default) uses dialog element', async () => {
       const screen = render(createModal(ModalId.OptTagDialog))
       await open(screen)
-      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('dialog')
+      expect(
+        document
+          .querySelector('.magic-modal-content__inner')!
+          .tagName.toLowerCase()
+      ).toBe('dialog')
     })
 
     it('tag: div uses div element', async () => {
       const screen = render(createModal(ModalId.OptTagDiv, { tag: 'div' }))
       await open(screen)
-      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('div')
+      expect(
+        document
+          .querySelector('.magic-modal-content__inner')!
+          .tagName.toLowerCase()
+      ).toBe('div')
     })
   })
 
@@ -61,7 +77,9 @@ describe('MagicModal - Options', () => {
     it('teleports to body by default', async () => {
       const screen = render(createModal(ModalId.OptTeleportBody))
       await open(screen)
-      expect(document.body.querySelector(':scope > .magic-modal-content')).not.toBeNull()
+      expect(
+        document.body.querySelector(':scope > .magic-modal-content')
+      ).not.toBeNull()
     })
 
     it('teleport to custom target', async () => {
@@ -70,7 +88,11 @@ describe('MagicModal - Options', () => {
       document.body.appendChild(target)
 
       try {
-        const screen = render(createModal(ModalId.OptTeleportCustom, { teleport: { target: '#modal-target' } }))
+        const screen = render(
+          createModal(ModalId.OptTeleportCustom, {
+            teleport: { target: '#modal-target' },
+          })
+        )
         await open(screen)
         expect(target.querySelector('.magic-modal-content')).not.toBeNull()
       } finally {
@@ -79,9 +101,15 @@ describe('MagicModal - Options', () => {
     })
 
     it('teleport disabled keeps modal in component tree', async () => {
-      const screen = render(createModal(ModalId.OptTeleportDisabled, { teleport: { disabled: true } }))
+      const screen = render(
+        createModal(ModalId.OptTeleportDisabled, {
+          teleport: { disabled: true },
+        })
+      )
       await open(screen)
-      expect(document.body.querySelector(':scope > .magic-modal-content')).toBeNull()
+      expect(
+        document.body.querySelector(':scope > .magic-modal-content')
+      ).toBeNull()
       expect(document.querySelector('.magic-modal-content')).not.toBeNull()
     })
   })
@@ -91,7 +119,13 @@ describe('MagicModal - Options', () => {
       const options = ref({ tag: 'dialog' as 'dialog' | 'div' })
 
       const wrapper = defineComponent({
-        components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+        components: {
+          MagicModalProvider,
+          MagicModalTrigger,
+          MagicModalTeleport,
+          MagicModalBackdrop,
+          MagicModalContent,
+        },
         setup() {
           const { isActive } = useMagicModal(ModalId.ReactivityTag)
           return { isActive, options }
@@ -114,13 +148,21 @@ describe('MagicModal - Options', () => {
       const screen = render(wrapper)
       await open(screen)
 
-      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('dialog')
+      expect(
+        document
+          .querySelector('.magic-modal-content__inner')!
+          .tagName.toLowerCase()
+      ).toBe('dialog')
 
       options.value = { tag: 'div' }
       await nextTick()
       await nextTick()
 
-      expect(document.querySelector('.magic-modal-content__inner')!.tagName.toLowerCase()).toBe('div')
+      expect(
+        document
+          .querySelector('.magic-modal-content__inner')!
+          .tagName.toLowerCase()
+      ).toBe('div')
     })
   })
 
@@ -133,39 +175,60 @@ describe('MagicModal - Options', () => {
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('keyListener.close: false disables Escape', async () => {
       const { userEvent } = await import('vitest/browser')
-      const screen = render(createModal(ModalId.OptKeyDisabled, { keyListener: { close: false } }))
+      const screen = render(
+        createModal(ModalId.OptKeyDisabled, { keyListener: { close: false } })
+      )
       await open(screen)
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('scrollLock', () => {
     it('scrollLock: true is accepted without error', async () => {
-      const screen = render(createModal(ModalId.OptScroll, { scrollLock: true }))
+      const screen = render(
+        createModal(ModalId.OptScroll, { scrollLock: true })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('scrollLock: false is accepted without error', async () => {
-      const screen = render(createModal(ModalId.OptScrollFalse, { scrollLock: false }))
+      const screen = render(
+        createModal(ModalId.OptScrollFalse, { scrollLock: false })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('transition', () => {
     it('custom transition names are accepted without error', async () => {
-      const screen = render(createModal(ModalId.OptTransition, { transition: { content: 'custom-content', backdrop: 'custom-backdrop' } }))
+      const screen = render(
+        createModal(ModalId.OptTransition, {
+          transition: {
+            content: 'custom-content',
+            backdrop: 'custom-backdrop',
+          },
+        })
+      )
       await open(screen)
       expect(document.querySelector('.magic-modal-content')).not.toBeNull()
     })
@@ -173,9 +236,13 @@ describe('MagicModal - Options', () => {
 
   describe('focusTrap', () => {
     it('focusTrap: false is accepted without error', async () => {
-      const screen = render(createModal(ModalId.OptFocusFalse, { focusTrap: false }))
+      const screen = render(
+        createModal(ModalId.OptFocusFalse, { focusTrap: false })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 })

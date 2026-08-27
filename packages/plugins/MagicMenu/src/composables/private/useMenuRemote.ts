@@ -1,5 +1,8 @@
-import { toValue, type MaybeRef, type ComputedRef } from 'vue'
+import { toValue } from 'vue'
 import { useMenuChannel } from './useMenuChannel'
+
+import type { ComputedRef, MaybeRef } from 'vue'
+
 import type { Interaction } from '../../types'
 
 interface UseMenuRemoteArgs {

@@ -1,6 +1,9 @@
-import { reactive, type MaybeRef } from 'vue'
+import { reactive } from 'vue'
 import { useAccordionState } from './useAccordionState'
-import { type AccordionView } from '../../types'
+
+import type { MaybeRef } from 'vue'
+
+import type { AccordionView } from '../../types'
 
 type CreateViewArgs = Pick<AccordionView, 'id' | 'active'>
 type AddViewArgs = Pick<AccordionView, 'id' | 'active'>

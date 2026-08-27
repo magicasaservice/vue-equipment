@@ -1,7 +1,9 @@
-import { computed, nextTick, onScopeDispose, type MaybeRef } from 'vue'
+import { computed, nextTick, onScopeDispose } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCookieState } from './private/useCookieState'
 import { useCookieItem } from './private/useCookieItem'
+
+import type { MaybeRef } from 'vue'
 
 import type { CookieConsent, MagicCookieCallbackArgs } from '../types'
 

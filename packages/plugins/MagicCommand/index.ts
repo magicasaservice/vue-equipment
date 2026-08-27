@@ -1,12 +1,12 @@
 import {
+  MagicModalContent,
   MagicModalProvider,
   MagicModalTeleport,
-  MagicModalContent,
 } from '@maas/vue-equipment/plugins/MagicModal'
 import {
+  MagicDrawerContent,
   MagicDrawerProvider,
   MagicDrawerTeleport,
-  MagicDrawerContent,
 } from '@maas/vue-equipment/plugins/MagicDrawer'
 import MagicCommandDrawer from './src/components/MagicCommandDrawer.vue'
 import MagicCommandItem from './src/components/MagicCommandItem.vue'
@@ -21,11 +21,12 @@ import {
   MagicCommandInstanceId,
   MagicCommandProviderOptions,
 } from './src/symbols/index'
+
 import type { App, Plugin } from 'vue'
 import type {
-  MagicCommandOptions,
   MagicCommandDrawerOptions,
   MagicCommandModalOptions,
+  MagicCommandOptions,
 } from './src/types/index'
 
 const MagicCommandPlugin: Plugin = {

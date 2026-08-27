@@ -1,13 +1,16 @@
-import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
-import { VuePrimitive } from '@maas/vue-primitive'
-import { useMagicKeys, useFocus } from '@vueuse/core'
-import type { Interaction } from '../../types/index'
+import { useFocus, useMagicKeys } from '@vueuse/core'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
 import {
   ModeDelayClick,
   ModeDelayMouseenter,
 } from '../../utils/modeDelayDefaults'
+
+import type { ComputedRef, MaybeRef, Ref } from 'vue'
+
+import type { VuePrimitive } from '@maas/vue-primitive'
+
+import type { Interaction } from '../../types/index'
 
 type UseMenuTriggerArgs = {
   instanceId: MaybeRef<string>

@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, watch, type MaybeRef } from 'vue'
+import { provide, watch } from 'vue'
 import { useCookieState } from '../composables/private/useCookieState'
 import { MagicCookieInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicCookieOptions } from '../types'
 

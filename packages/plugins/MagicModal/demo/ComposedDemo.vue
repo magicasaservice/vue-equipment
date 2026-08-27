@@ -1,5 +1,8 @@
 <template>
-  <magic-modal-provider id="magic-modal-composed-demo" :options="{ focusTrap: false }">
+  <magic-modal-provider
+    id="magic-modal-composed-demo"
+    :options="{ focusTrap: false }"
+  >
     <magic-modal-trigger as-child>
       <m-button>Open Modal</m-button>
     </magic-modal-trigger>
@@ -15,10 +18,10 @@
 <script lang="ts" setup>
 import { MButton } from '@maas/mirror/vue'
 import {
-  MagicModalProvider,
-  MagicModalTeleport,
   MagicModalBackdrop,
   MagicModalContent,
+  MagicModalProvider,
+  MagicModalTeleport,
   MagicModalTrigger,
 } from '@maas/vue-equipment/plugins/MagicModal'
 </script>

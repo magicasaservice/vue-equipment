@@ -14,17 +14,18 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, inject, computed, toValue, type MaybeRef } from 'vue'
-import { VuePrimitive } from '@maas/vue-primitive'
+import { computed, inject, toValue, useTemplateRef } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { VuePrimitive } from '@maas/vue-primitive'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useAccordionTrigger } from '../composables/private/useAccordionTrigger'
 import { useAccordionState } from '../composables/private/useAccordionState'
 import { useAccordionView } from '../composables/private/useAccordionView'
 import { MagicAccordionInstanceId, MagicAccordionViewId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { Interaction } from '../types'
 

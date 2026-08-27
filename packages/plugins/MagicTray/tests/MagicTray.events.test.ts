@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { defineComponent, nextTick, reactive, ref, computed, onBeforeUnmount } from 'vue'
+import {
+  defineComponent,
+  nextTick,
+  reactive,
+  ref,
+  computed,
+  onBeforeUnmount,
+} from 'vue'
 import MagicTrayProvider from '../src/components/MagicTrayProvider.vue'
 import MagicTrayContent from '../src/components/MagicTrayContent.vue'
 import { useMagicTray } from '../src/composables/useMagicTray'
@@ -147,9 +154,10 @@ describe('MagicTray - Events', () => {
     )
     await nextTick()
     await nextTick()
-
     ;(
-      container.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement
+      container.querySelector(
+        `[data-test-id="${TestId.SnapBtn}"]`
+      ) as HTMLElement
     ).click()
 
     await expect
@@ -176,9 +184,10 @@ describe('MagicTray - Events', () => {
     )
     await nextTick()
     await nextTick()
-
     ;(
-      container.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement
+      container.querySelector(
+        `[data-test-id="${TestId.SnapBtn}"]`
+      ) as HTMLElement
     ).click()
 
     await expect
@@ -191,7 +200,8 @@ describe('MagicTray - Events', () => {
       .toContain('beforeSnap')
 
     const payload = JSON.parse(
-      container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+      container.querySelector(`[data-test-id="${TestId.Content}"]`)!
+        .textContent!
     )
     expect(payload.id).toBe(TrayId.EventSnap)
     expect(payload.side).toBeUndefined()
@@ -232,7 +242,8 @@ describe('MagicTray - Events', () => {
     expect(events).toContain('magnet')
 
     const payload = JSON.parse(
-      container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+      container.querySelector(`[data-test-id="${TestId.Content}"]`)!
+        .textContent!
     )
     expect(payload.id).toBe(TrayId.EventMagnetism)
     expect(payload.side).toBe('left')
@@ -289,7 +300,8 @@ describe('MagicTray - Events', () => {
       await nextTick()
 
       const payload = JSON.parse(
-        container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+        container.querySelector(`[data-test-id="${TestId.Content}"]`)!
+          .textContent!
       )
       expect(payload.id).toBe(TrayId.EventWillSnapTo)
       expect(payload.side).toBe('bottom')
@@ -297,11 +309,13 @@ describe('MagicTray - Events', () => {
 
       document.dispatchEvent(pointer('pointerup', 140))
     })
-
   })
 
   describe('handle click', () => {
-    function createHandleClickTray(id: TrayId, options: Record<string, unknown>) {
+    function createHandleClickTray(
+      id: TrayId,
+      options: Record<string, unknown>
+    ) {
       return defineComponent({
         components: { MagicTrayProvider, MagicTrayContent },
         setup() {
@@ -412,7 +426,8 @@ describe('MagicTray - Events', () => {
       ) as HTMLElement
       const rect = inner.getBoundingClientRect()
       const snapped = Number(
-        container.querySelector(`[data-test-id="${TestId.SnapAll}"]`)!.textContent
+        container.querySelector(`[data-test-id="${TestId.SnapAll}"]`)!
+          .textContent
       )
       const edgeX = rect.left + snapped
       const midY = rect.top + rect.height / 2
@@ -426,18 +441,21 @@ describe('MagicTray - Events', () => {
       await nextTick()
 
       expect(
-        container.querySelector(`[data-test-id="${TestId.Events}"]`)!.textContent
+        container.querySelector(`[data-test-id="${TestId.Events}"]`)!
+          .textContent
       ).toContain('magnet')
 
       const payload = JSON.parse(
-        container.querySelector(`[data-test-id="${TestId.Content}"]`)!.textContent!
+        container.querySelector(`[data-test-id="${TestId.Content}"]`)!
+          .textContent!
       )
       expect(payload.id).toBe(TrayId.MagneticVirtual)
       expect(payload.value).toBeGreaterThan(0)
 
       // Virtual mode: state.magnetic stays 0 — the edge is not physically pulled
       const magneticLeft = Number(
-        container.querySelector(`[data-test-id="${TestId.Active1}"]`)!.textContent
+        container.querySelector(`[data-test-id="${TestId.Active1}"]`)!
+          .textContent
       )
       expect(magneticLeft).toBe(0)
     })

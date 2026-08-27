@@ -26,6 +26,7 @@
 import { computed, defineAsyncComponent, shallowRef } from 'vue'
 import { MButton, MInput, MSelect, MToggle } from '@maas/mirror/vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
+
 import type { MagicToastAddOptions } from '@maas/vue-equipment/plugins/MagicToast'
 
 const id = 'magic-toast-per-toast-options-demo'

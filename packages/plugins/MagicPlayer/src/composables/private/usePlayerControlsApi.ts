@@ -1,30 +1,30 @@
 import {
-  toRefs,
-  shallowRef,
   computed,
-  watch,
-  toValue,
-  onScopeDispose,
   markRaw,
-  type MaybeRef,
-  type Ref,
-  type WatchHandle,
+  onScopeDispose,
+  shallowRef,
+  toRefs,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useResizeObserver,
-  useEventListener,
   defaultWindow,
-  type UseResizeObserverReturn,
+  useEventListener,
+  useResizeObserver,
   useThrottleFn,
 } from '@vueuse/core'
 import {
-  isIOS,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
+  isIOS,
 } from '@maas/vue-equipment/utils'
 import { clampValue, mapValue } from '@maas/vue-equipment/utils'
 import { usePlayerVideoApi } from './usePlayerVideoApi'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef, Ref, WatchHandle } from 'vue'
+
+import type { UseResizeObserverReturn } from '@vueuse/core'
 
 export type UsePlayerControlsApiArgs = {
   id: MaybeRef<string>

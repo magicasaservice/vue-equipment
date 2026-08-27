@@ -24,14 +24,12 @@
 <script lang="ts" setup>
 import { inject } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieState } from '../composables/private/useCookieState'
 import { useCookieCallback } from '../composables/private/useCookieCallback'
-
 import { MagicCookieInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/auto-size-out.css'

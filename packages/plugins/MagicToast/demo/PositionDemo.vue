@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex gap-2">
+  <div class="flex w-full gap-2">
     <m-button @click="onClick">Add Toast</m-button>
     <m-select
       v-model="position"

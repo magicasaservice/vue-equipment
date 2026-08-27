@@ -9,14 +9,15 @@
 
 <script lang="ts" setup>
 import {
+  onBeforeUnmount,
   onMounted,
   onUnmounted,
-  watch,
   useTemplateRef,
-  onBeforeUnmount,
+  watch,
 } from 'vue'
-import { useResizeObserver, useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { useNoiseApi } from '../composables/private/useNoiseApi'
+
 import type { MagicNoiseOptions } from '../types'
 
 interface MagicNoiseProps {

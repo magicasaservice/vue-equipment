@@ -1,5 +1,6 @@
-import { type MaybeRef } from 'vue'
 import { useAccordionView } from './private/useAccordionView'
+
+import type { MaybeRef } from 'vue'
 
 export function useMagicAccordion(id: MaybeRef<string>) {
   // Public functions

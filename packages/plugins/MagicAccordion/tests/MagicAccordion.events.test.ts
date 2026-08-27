@@ -77,9 +77,7 @@ function createEventWrapper(accordionId: AccordionId) {
 }
 
 function getTestText(container: HTMLElement, id: TestId): string {
-  return (
-    container.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
-  )
+  return container.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
 }
 
 // Tests

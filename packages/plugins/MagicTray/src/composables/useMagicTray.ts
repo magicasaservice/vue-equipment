@@ -1,8 +1,14 @@
-import { toValue, toRefs, type MaybeRef } from 'vue'
+import { toRefs, toValue } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useTrayState } from './private/useTrayState'
 
-import type { MagicTraySide, MagicTraySnapPoint, MagicTrayOptions } from '../types/index'
+import type { MaybeRef } from 'vue'
+
+import type {
+  MagicTrayOptions,
+  MagicTraySide,
+  MagicTraySnapPoint,
+} from '../types/index'
 
 export function useMagicTray(id: MaybeRef<string>, options?: MagicTrayOptions) {
   const { initializeState } = useTrayState(toValue(id))
@@ -11,7 +17,11 @@ export function useMagicTray(id: MaybeRef<string>, options?: MagicTrayOptions) {
   const emitter = useMagicEmitter()
 
   // Public functions
-  function snapTo(side: MagicTraySide, snapPoint: MagicTraySnapPoint, duration?: number) {
+  function snapTo(
+    side: MagicTraySide,
+    snapPoint: MagicTraySnapPoint,
+    duration?: number
+  ) {
     emitter.emit('snapTo', {
       id: toValue(id),
       snapPoint: { side, point: snapPoint },

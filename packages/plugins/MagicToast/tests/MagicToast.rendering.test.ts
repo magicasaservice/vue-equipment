@@ -146,12 +146,8 @@ describe('MagicToast - Rendering', () => {
       await nextTick()
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-toast-view__inner')
-      ).not.toBeNull()
-      expect(
-        document.querySelector('.magic-toast-view__drag')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-toast-view__inner')).not.toBeNull()
+      expect(document.querySelector('.magic-toast-view__drag')).not.toBeNull()
     })
   })
 
@@ -198,9 +194,7 @@ describe('MagicToast - Rendering', () => {
         ':scope > .magic-toast-provider'
       )
       expect(bodyProvider).toBeNull()
-      expect(
-        document.querySelector('.magic-toast-provider')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-toast-provider')).not.toBeNull()
     })
   })
 })

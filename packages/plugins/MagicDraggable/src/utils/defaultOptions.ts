@@ -1,6 +1,6 @@
-import type { RequiredMagicDraggableOptions } from '../types'
-
 import { easeOutBack } from '@maas/vue-equipment/utils'
+
+import type { RequiredMagicDraggableOptions } from '../types'
 
 const defaultOptions: RequiredMagicDraggableOptions = {
   tag: 'div',

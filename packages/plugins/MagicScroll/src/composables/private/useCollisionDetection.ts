@@ -1,11 +1,13 @@
-import { shallowRef, reactive, computed, toValue, type MaybeRef } from 'vue'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
+import type { MaybeRef } from 'vue'
+
 import type {
   CollisionEdge,
-  ScrollDirection,
   CollisionOffset,
+  ScrollDirection,
 } from '../../types'
 
 type UseCollisionDetectionArgs = {

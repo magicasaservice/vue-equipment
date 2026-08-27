@@ -16,25 +16,24 @@
 
 <script lang="ts" setup>
 import {
-  toRefs,
-  shallowRef,
-  onMounted,
-  watch,
   computed,
   inject,
+  onMounted,
+  shallowRef,
+  toRefs,
   useTemplateRef,
+  watch,
 } from 'vue'
 import { useDevicePixelRatio } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import {
+  MagicPlayerCurrentSrcKey,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
-  MagicPlayerCurrentSrcKey,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicPlayerMuxPopoverProps {
   playbackId?: string

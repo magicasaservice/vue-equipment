@@ -234,7 +234,10 @@ describe('MagicMenu - Rendering', () => {
           MagicMenuItem,
         },
         setup() {
-          useMagicMenu({ instanceId: MenuId.RenderDisabledTrigger, viewId: ViewId.V0 })
+          useMagicMenu({
+            instanceId: MenuId.RenderDisabledTrigger,
+            viewId: ViewId.V0,
+          })
           return {}
         },
         template: `

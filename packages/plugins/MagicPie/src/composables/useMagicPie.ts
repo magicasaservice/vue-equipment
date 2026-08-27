@@ -1,6 +1,8 @@
-import { toValue, toRefs, type MaybeRef } from 'vue'
+import { toRefs, toValue } from 'vue'
 import { interpolate, linear } from '@maas/vue-equipment/utils'
 import { usePieState } from './private/usePieState'
+
+import type { MaybeRef } from 'vue'
 
 interface InterpolatePercentageArgs {
   value: number

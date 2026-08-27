@@ -10,11 +10,12 @@ import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandView } from '../composables/private/useCommandView'
 import {
   MagicCommandInstanceId,
-  MagicCommandViewId,
-  MagicCommandParentTree,
   MagicCommandItemId,
+  MagicCommandParentTree,
   MagicCommandViewActive,
+  MagicCommandViewId,
 } from '../symbols'
+
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicCommandViewProps {

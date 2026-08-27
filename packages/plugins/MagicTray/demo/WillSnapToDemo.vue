@@ -80,9 +80,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, reactive, ref } from 'vue'
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
   MagicTrayOptions,

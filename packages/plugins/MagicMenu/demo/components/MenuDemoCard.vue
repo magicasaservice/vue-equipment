@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuCard, MMenuCardChild, MBadge, MAvatar } from '@maas/mirror/vue'
+import { MAvatar, MBadge, MMenuCard, MMenuCardChild } from '@maas/mirror/vue'
 
 interface MenuCardInternalProps {
   data: {

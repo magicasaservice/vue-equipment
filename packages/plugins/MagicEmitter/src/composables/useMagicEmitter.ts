@@ -1,6 +1,7 @@
-import mitt, { type Emitter } from 'mitt'
-
+import mitt from 'mitt'
 import { createStateStore } from '@maas/vue-equipment/utils'
+
+import type { Emitter } from 'mitt'
 import type { MagicEmitterEvents } from '../types/index'
 
 const getEmitter = createStateStore<Emitter<MagicEmitterEvents>>(

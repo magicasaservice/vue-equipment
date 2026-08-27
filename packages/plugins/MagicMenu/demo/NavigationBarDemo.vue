@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-15 border-surface bg-surface-high relative flex items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
+    class="border-surface bg-surface-high relative flex h-15 items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
   >
     <magic-menu-provider
       v-if="menu"
@@ -56,7 +56,7 @@
                   >
                     <div
                       v-if="entry.label"
-                      class="flex items-center gap-2 pb-2 pl-7 pt-4"
+                      class="flex items-center gap-2 pt-4 pb-2 pl-7"
                     >
                       <span class="type-surface-callout-sm text-surface-muted">
                         {{ entry.label }}
@@ -83,11 +83,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, type ComponentPublicInstance } from 'vue'
+import { useTemplateRef } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
-import { MMenuBox, MBadge, MButton } from '@maas/mirror/vue'
-
+import { MBadge, MButton, MMenuBox } from '@maas/mirror/vue'
 import MenuDemoCard from './components/MenuDemoCard.vue'
+
+import type { ComponentPublicInstance } from 'vue'
 
 const viewRef = useTemplateRef<ComponentPublicInstance>('view')
 

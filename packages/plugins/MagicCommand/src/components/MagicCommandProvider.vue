@@ -9,13 +9,14 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, provide, watch } from 'vue'
+import { provide, shallowRef, watch } from 'vue'
 import { useMagicKeys, usePointer } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCommandState } from '../composables/private/useCommandState'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId, MagicCommandProviderOptions } from '../symbols'
+
 import type { MaybeRef } from 'vue'
 import type { MagicCommandOptions } from '../types'
 

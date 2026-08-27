@@ -4,37 +4,34 @@
 
 <script lang="ts" setup>
 import {
-  toRefs,
-  useTemplateRef,
+  computed,
   inject,
-  watch,
+  onBeforeUnmount,
   onMounted,
   shallowRef,
-  computed,
-  onBeforeUnmount,
+  toRefs,
+  useTemplateRef,
+  watch,
 } from 'vue'
 import {
+  defaultWindow,
   useElementVisibility,
   useEventListener,
-  defaultWindow,
 } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerMediaApi } from '../composables/private/usePlayerMediaApi'
 import { usePlayerRuntime } from '../composables/private/usePlayerRuntime'
 import { usePlayerState } from '../composables/private/usePlayerState'
-
 import { audioModePlaybackDefaults } from '../utils/playbackDefaults'
-
 import {
+  MagicPlayerCurrentSrcKey,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
-  MagicPlayerCurrentSrcKey,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',

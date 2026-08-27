@@ -57,7 +57,8 @@ describe('MagicScroll - Scene', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progressBefore = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       // Scroll the container significantly
@@ -68,7 +69,8 @@ describe('MagicScroll - Scene', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progressAfter = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       // Progress must have increased — this is the core behavior
@@ -108,7 +110,8 @@ describe('MagicScroll - Scene', () => {
       await new Promise((r) => setTimeout(r, 200))
 
       const progress = parseFloat(
-        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!.textContent!
+        document.querySelector(`[data-test-id="${TestId.Progress}"]`)!
+          .textContent!
       )
 
       expect(progress).toBe(1)

@@ -27,13 +27,12 @@
 
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { MagicToastInstanceId } from '../symbols'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastDrag } from '../composables/private/useToastDrag'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicToastViewProps {
   id: string

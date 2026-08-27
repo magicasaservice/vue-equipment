@@ -1,8 +1,14 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, toValue } from 'vue'
 import { useModalState } from './private/useModalState'
+
+import type { MaybeRef } from 'vue'
+
 import type { MagicModalOptions } from '../types/index'
 
-export function useMagicModal(id: MaybeRef<string>, options?: MagicModalOptions) {
+export function useMagicModal(
+  id: MaybeRef<string>,
+  options?: MagicModalOptions
+) {
   const { initializeState } = useModalState(toValue(id))
   const state = initializeState(options)
 

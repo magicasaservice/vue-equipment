@@ -1,17 +1,15 @@
-import type { App, Plugin } from 'vue'
-
 import MagicAccordionContent from './src/components/MagicAccordionContent.vue'
 import MagicAccordionProvider from './src/components/MagicAccordionProvider.vue'
 import MagicAccordionTrigger from './src/components/MagicAccordionTrigger.vue'
 import MagicAccordionView from './src/components/MagicAccordionView.vue'
-
 import { useMagicAccordion } from './src/composables/useMagicAccordion'
-
 import {
   MagicAccordionInstanceId,
-  MagicAccordionViewId,
   MagicAccordionViewActive,
+  MagicAccordionViewId,
 } from './src/symbols/index'
+
+import type { App, Plugin } from 'vue'
 
 import type { MagicAccordionOptions } from './src/types/index'
 

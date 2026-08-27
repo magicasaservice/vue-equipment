@@ -3,17 +3,12 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  reactive,
-  watch,
-  nextTick,
-  provide,
-  onBeforeUnmount,
-  type MaybeRef,
-} from 'vue'
+import { nextTick, onBeforeUnmount, provide, reactive, watch } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
 import { useModalState } from '../composables/private/useModalState'
-import { MagicModalInstanceId, MagicModalActiveKey } from '../symbols'
+import { MagicModalActiveKey, MagicModalInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicModalOptions } from '../types/index'
 

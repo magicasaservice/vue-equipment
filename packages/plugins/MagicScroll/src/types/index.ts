@@ -1,4 +1,4 @@
-import type { DOMKeyframesDefinition, AnimationOptions } from 'motion'
+import type { AnimationOptions, DOMKeyframesDefinition } from 'motion'
 
 export type ScrollDirection = 'up' | 'down'
 export type CollisionEdge = 'top' | 'bottom'

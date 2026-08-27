@@ -21,7 +21,6 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
-
 function createVideoPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
@@ -115,11 +114,28 @@ describe('MagicPlayer - API', () => {
       )
 
       const stateKeys = [
-        'playing', 'paused', 'started', 'loaded', 'muted',
-        'fullscreen', 'touched', 'dragging', 'waiting', 'ended',
-        'stalled', 'seeking', 'volume', 'rate', 'duration',
-        'currentTime', 'buffered', 'seekedTime', 'seekedPercentage',
-        'scrubbedPercentage', 'thumbPercentage', 'popoverOffsetX',
+        'playing',
+        'paused',
+        'started',
+        'loaded',
+        'muted',
+        'fullscreen',
+        'touched',
+        'dragging',
+        'waiting',
+        'ended',
+        'stalled',
+        'seeking',
+        'volume',
+        'rate',
+        'duration',
+        'currentTime',
+        'buffered',
+        'seekedTime',
+        'seekedPercentage',
+        'scrubbedPercentage',
+        'thumbPercentage',
+        'popoverOffsetX',
       ]
       for (const key of stateKeys) {
         expect(api![key as keyof typeof api]).toBeDefined()
@@ -157,12 +173,20 @@ describe('MagicPlayer - API', () => {
       )
 
       const methods = [
-        'play', 'pause', 'togglePlay', 'seek',
-        'mute', 'unmute', 'enterFullscreen', 'exitFullscreen',
+        'play',
+        'pause',
+        'togglePlay',
+        'seek',
+        'mute',
+        'unmute',
+        'enterFullscreen',
+        'exitFullscreen',
         'initializeFullscreen',
       ]
       for (const m of methods) {
-        expect(typeof (api!.videoApi as Record<string, unknown>)[m]).toBe('function')
+        expect(typeof (api!.videoApi as Record<string, unknown>)[m]).toBe(
+          'function'
+        )
       }
     })
 
@@ -180,7 +204,9 @@ describe('MagicPlayer - API', () => {
 
       const methods = ['play', 'pause', 'togglePlay', 'seek', 'mute', 'unmute']
       for (const m of methods) {
-        expect(typeof (api!.audioApi as Record<string, unknown>)[m]).toBe('function')
+        expect(typeof (api!.audioApi as Record<string, unknown>)[m]).toBe(
+          'function'
+        )
       }
     })
   })
@@ -308,10 +334,14 @@ describe('MagicPlayer - API', () => {
       render(createVideoPlayer(PlayerId.ApiDefaults), gc)
       await nextTick()
 
-      for (const id of [TestId.Playing, TestId.Paused, TestId.Muted, TestId.Started, TestId.Fullscreen]) {
-        await expect
-          .element(page.getByTestId(id))
-          .toHaveTextContent('false')
+      for (const id of [
+        TestId.Playing,
+        TestId.Paused,
+        TestId.Muted,
+        TestId.Started,
+        TestId.Fullscreen,
+      ]) {
+        await expect.element(page.getByTestId(id)).toHaveTextContent('false')
       }
     })
 

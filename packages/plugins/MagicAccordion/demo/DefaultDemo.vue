@@ -11,6 +11,7 @@
 
 <script lang="ts" setup>
 import DemoList from './components/DemoList.vue'
-import type { DemoListProps } from './components/DemoList.vue'
 import { footer } from './data/footer.json'
+
+import type { DemoListProps } from './components/DemoList.vue'
 </script>

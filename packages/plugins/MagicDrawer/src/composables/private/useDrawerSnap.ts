@@ -1,16 +1,14 @@
-import {
-  shallowRef,
-  computed,
-  toValue,
-  nextTick,
-  type MaybeRef,
-  type Ref,
-} from 'vue'
+import { computed, nextTick, shallowRef, toValue } from 'vue'
 import { computedWithControl } from '@vueuse/core'
-import { mapValue, interpolate } from '@maas/vue-equipment/utils'
+import { interpolate, mapValue } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
-import type { MagicDrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
+import type { MaybeRef, Ref } from 'vue'
+
+import type {
+  MagicDrawerSnapPoint,
+  RequiredMagicDrawerOptions,
+} from '../../types'
 
 type UseDrawerSnapArgs = {
   id: MaybeRef<string>
@@ -113,7 +111,9 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   // Public state
   const snappedY = shallowRef(0)
   const snappedX = shallowRef(0)
-  const activeSnapPoint = shallowRef<MagicDrawerSnapPoint | undefined>(undefined)
+  const activeSnapPoint = shallowRef<MagicDrawerSnapPoint | undefined>(
+    undefined
+  )
 
   const drawerHeight = computed(() => {
     const rect = toValue(wrapperRect)

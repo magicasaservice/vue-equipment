@@ -1,6 +1,12 @@
-import { computed, toValue, type Ref, type MaybeRef } from 'vue'
+import { computed, toValue } from 'vue'
 import { unrefElement } from '@vueuse/core'
-import type { MagicDrawerSnapPoint, RequiredMagicDrawerOptions } from '../../types'
+
+import type { MaybeRef, Ref } from 'vue'
+
+import type {
+  MagicDrawerSnapPoint,
+  RequiredMagicDrawerOptions,
+} from '../../types'
 
 interface UseDrawerGuardsArgs {
   elRef: Ref<HTMLElement | null>

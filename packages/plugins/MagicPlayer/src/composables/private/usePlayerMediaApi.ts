@@ -1,15 +1,9 @@
-import {
-  toRefs,
-  watch,
-  unref,
-  toValue,
-  type Ref,
-  type MaybeRef,
-  onScopeDispose,
-} from 'vue'
+import { onScopeDispose, toRefs, toValue, unref, watch } from 'vue'
 import { useEventListener, watchIgnorable } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef, Ref } from 'vue'
 
 export type UsePlayerMediaApiArgs = {
   id: MaybeRef<string>
@@ -96,8 +90,9 @@ export function usePlayerMediaApi(args: UsePlayerMediaApiArgs) {
   // Private functions
   function timeRangeToArray(timeRanges: TimeRanges) {
     let ranges: [number, number][] = []
-    for (let i = 0; i < timeRanges.length; ++i)
-      {ranges = [...ranges, [timeRanges.start(i), timeRanges.end(i)]]}
+    for (let i = 0; i < timeRanges.length; ++i) {
+      ranges = [...ranges, [timeRanges.start(i), timeRanges.end(i)]]
+    }
     return ranges
   }
 

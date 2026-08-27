@@ -17,9 +17,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, onMounted, watch, type MaybeRef } from 'vue'
+import { onMounted, useTemplateRef, watch } from 'vue'
 import { useMarqueeApi } from '../composables/private/useMarqueeApi'
 import { useMarqueeState } from '../composables/private/useMarqueeState'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicMarqueeOptions } from '../types'
 

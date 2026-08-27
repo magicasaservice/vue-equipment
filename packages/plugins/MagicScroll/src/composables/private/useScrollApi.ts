@@ -1,14 +1,9 @@
-import {
-  computed,
-  shallowRef,
-  inject,
-  toValue,
-  type MaybeRef,
-  type MaybeRefOrGetter,
-} from 'vue'
+import { computed, inject, shallowRef, toValue } from 'vue'
 import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { clampValue } from '@maas/vue-equipment/utils'
 import { MagicScrollReturn } from '../../symbols'
+
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 
 import type { ScrollIntersection } from '../../types'
 

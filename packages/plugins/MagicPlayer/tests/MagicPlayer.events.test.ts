@@ -18,7 +18,6 @@ const gc = {
   global: { components: { MagicPlayerTimeline, MagicPlayerDisplayTime } },
 }
 
-
 function createEventPlayer(playerId: PlayerId) {
   const opts = {
     src: VIDEO_SRC,
@@ -65,7 +64,10 @@ function createEventPlayer(playerId: PlayerId) {
 }
 
 function getEventsText(): string {
-  return document.querySelector(`[data-test-id="${TestId.Events}"]`)?.textContent || ''
+  return (
+    document.querySelector(`[data-test-id="${TestId.Events}"]`)?.textContent ||
+    ''
+  )
 }
 
 describe('MagicPlayer - Events', () => {

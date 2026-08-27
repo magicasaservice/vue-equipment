@@ -6,14 +6,12 @@
 
 <script lang="ts" setup>
 import { computed, inject, toRefs } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { formatTime } from '@maas/vue-equipment/utils'
 import { usePlayerState } from '../composables/private/usePlayerState'
-
 import { MagicPlayerInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicPlayerDisplayTimeProps {
   type?: 'current' | 'remaining' | 'duration'

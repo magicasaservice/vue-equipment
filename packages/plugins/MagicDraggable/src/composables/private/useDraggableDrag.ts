@@ -1,23 +1,20 @@
 import {
-  shallowRef,
   computed,
-  toValue,
-  nextTick,
-  watch,
-  onScopeDispose,
-  onMounted,
-  toRefs,
   markRaw,
-  type Ref,
-  type MaybeRef,
+  nextTick,
+  onMounted,
+  onScopeDispose,
+  shallowRef,
+  toRefs,
+  toValue,
+  watch,
 } from 'vue'
 import {
-  useEventListener,
   unrefElement,
+  useEventListener,
+  useIdle,
   useResizeObserver,
   useThrottleFn,
-  useIdle,
-  type UseResizeObserverReturn,
 } from '@vueuse/core'
 import {
   guardedReleasePointerCapture,
@@ -25,14 +22,15 @@ import {
   isIOS,
   isWithinRange,
 } from '@maas/vue-equipment/utils'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useDraggableSnap } from './useDraggableSnap'
 import { useDraggableState } from './useDraggableState'
 import { useDraggableScrollLock } from './useDraggableScrollLock'
+
+import type { MaybeRef, Ref } from 'vue'
+import type { UseResizeObserverReturn } from '@vueuse/core'
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type {
   Coordinates,

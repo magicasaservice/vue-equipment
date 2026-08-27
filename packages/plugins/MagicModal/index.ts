@@ -7,7 +7,10 @@ import MagicModalTrigger from './src/components/MagicModalTrigger.vue'
 import { useMagicModal } from './src/composables/useMagicModal'
 
 import type { App, Plugin } from 'vue'
-import type { MagicModalOptions, RequiredMagicModalOptions } from './src/types/index'
+import type {
+  MagicModalOptions,
+  RequiredMagicModalOptions,
+} from './src/types/index'
 
 const MagicModalPlugin: Plugin = {
   install: (app: App) => {

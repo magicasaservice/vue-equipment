@@ -1,8 +1,11 @@
 import { shallowRef } from 'vue'
-import { defu } from 'defu'
-import { useScrollLock, type MaybeElementRef } from '@vueuse/core'
+import { useScrollLock } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { defu } from 'defu'
 import { useScrollLockPadding } from '@maas/vue-equipment/composables/useScrollLockPadding'
+
+import type { MaybeElementRef } from '@vueuse/core'
+
 import type { MagicModalOptions } from '../../types/index'
 
 export type useModalDOMArgs = Pick<

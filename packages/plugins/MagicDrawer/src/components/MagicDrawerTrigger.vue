@@ -12,15 +12,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, toValue, type MaybeRef } from 'vue'
+import { computed, inject, toValue } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicDrawer } from '../composables/useMagicDrawer'
 import { useDrawerState } from '../composables/private/useDrawerState'
 import { MagicDrawerInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicDrawerTriggerProps {
   id?: MaybeRef<string>

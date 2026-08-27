@@ -1,7 +1,9 @@
-import { toValue, type MaybeRef, type Ref } from 'vue'
+import { toValue } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMenuDOM } from './useMenuDOM'
 import { ModeScrollLock } from '../../utils/modeScrollLockDefaults'
+
+import type { MaybeRef, Ref } from 'vue'
 
 import type { MenuState } from '../../types'
 

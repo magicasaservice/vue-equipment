@@ -6,26 +6,25 @@
 
 <script lang="ts" setup>
 import {
-  shallowRef,
-  provide,
   inject,
-  watch,
   nextTick,
-  readonly,
-  useTemplateRef,
   onBeforeUnmount,
+  provide,
+  readonly,
+  shallowRef,
+  useTemplateRef,
+  watch,
 } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useScrollApi } from '../composables/private/useScrollApi'
 import {
-  MagicScrollTarget,
   MagicScrollProgress,
   MagicScrollReturn,
+  MagicScrollTarget,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { ScrollIntersection } from '../types'
 
