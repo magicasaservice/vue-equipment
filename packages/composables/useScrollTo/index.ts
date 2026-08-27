@@ -1,9 +1,6 @@
-import {
-  unrefElement,
-  type MaybeComputedElementRef,
-  type MaybeElement,
-} from '@vueuse/core'
+import { unrefElement } from '@vueuse/core'
 import { easeOutQuad } from '@maas/vue-equipment/utils'
+import type { MaybeComputedElementRef, MaybeElement } from '@vueuse/core'
 
 export type ScrollToTarget =
   string | Element | MaybeElement | MaybeComputedElementRef

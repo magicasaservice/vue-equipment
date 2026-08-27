@@ -29,8 +29,8 @@
 
 <script setup lang="ts">
 import { kebabCase } from 'scule'
-import { ChannelId } from '../utils/enums'
 import VPLink from 'vitepress/dist/client/theme-default/components/VPLink.vue'
+import { ChannelId } from '../utils/enums'
 
 interface NavDrawerMenuChannelNestedProps {
   channel: {

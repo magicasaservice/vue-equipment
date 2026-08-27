@@ -1,4 +1,5 @@
-import { getCurrentInstance, ref, type Ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
+import type { Ref } from 'vue'
 
 export type CreateStore<T> = () => Ref<T>
 

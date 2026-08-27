@@ -3,15 +3,14 @@ import { readFile, stat } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { writeJSON } from 'fs-extra'
 import matter from 'gray-matter'
+import fg from 'fast-glob'
+import Git from 'simple-git'
+import { packages } from '../../../meta/packages'
 import type {
   PackageIndexes,
   VueEquipmentFunction,
   VueEquipmentPackage,
 } from '../index'
-
-import fg from 'fast-glob'
-import Git from 'simple-git'
-import { packages } from '../../../meta/packages'
 
 export const DOCS_URL = 'https://maas.egineering/vue-equipment'
 export const DIR_PACKAGE = resolve(__dirname, '..')

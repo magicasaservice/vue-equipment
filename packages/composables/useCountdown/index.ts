@@ -1,13 +1,7 @@
-import {
-  computed,
-  onMounted,
-  shallowRef,
-  unref,
-  watch,
-  type MaybeRef,
-} from 'vue'
+import { computed, onMounted, shallowRef, unref, watch } from 'vue'
 import { MagicTimer } from '@maas/magic-timer'
 import { DateTime } from 'luxon'
+import type { MaybeRef } from 'vue'
 
 export type DateTimeArray = [number, number, number, number?, number?, number?]
 

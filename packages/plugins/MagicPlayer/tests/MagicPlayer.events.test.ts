@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render } from 'vitest-browser-vue'
-
 import { defineComponent, nextTick, reactive } from 'vue'
 import MagicPlayerProvider from '../src/components/MagicPlayerProvider.vue'
 import MagicPlayerVideo from '../src/components/MagicPlayerVideo.vue'
