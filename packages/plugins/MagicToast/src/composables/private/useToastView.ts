@@ -1,6 +1,9 @@
-import { reactive, markRaw, type MaybeRef } from 'vue'
+import { markRaw, reactive } from 'vue'
 import { useToastState } from './useToastState'
-import { type ToastView } from '../../types'
+
+import type { MaybeRef } from 'vue'
+
+import type { ToastView } from '../../types'
 
 export type AddViewArgs = Pick<
   ToastView,

@@ -85,18 +85,15 @@
 
 <script lang="ts" setup>
 import {
-  toRefs,
   computed,
   inject,
-  provide,
-  useTemplateRef,
   onBeforeUnmount,
+  provide,
+  toRefs,
+  useTemplateRef,
 } from 'vue'
 import { useIdle } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import IconVolumeOn from './icons/VolumeOn.vue'
@@ -107,12 +104,14 @@ import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerVideoApi } from '../composables/private/usePlayerVideoApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import {
+  MagicPlayerBarRef,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
-  MagicPlayerTrackRef,
   MagicPlayerPopoverRef,
-  MagicPlayerBarRef,
+  MagicPlayerTrackRef,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-up-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-up-out.css'

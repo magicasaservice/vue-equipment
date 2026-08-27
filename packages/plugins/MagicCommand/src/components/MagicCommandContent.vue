@@ -27,13 +27,13 @@
 
 <script lang="ts" setup>
 import {
-  ref,
+  computed,
   inject,
-  watch,
   nextTick,
   provide,
-  computed,
+  ref,
   useTemplateRef,
+  watch,
 } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -41,13 +41,14 @@ import { useCommandItem } from '../composables/private/useCommandItem'
 import { useCommandScroll } from '../composables/private/useCommandScroll'
 import { useCommandCallback } from '../composables/private/useCommandCallback'
 import {
-  MagicCommandInstanceId,
-  MagicCommandViewId,
   MagicCommandContentId,
+  MagicCommandInstanceId,
   MagicCommandProviderOptions,
+  MagicCommandViewId,
 } from '../symbols'
 import { useCommandView } from '../composables/private/useCommandView'
 import { useCommandState } from '../composables/private/useCommandState'
+
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'

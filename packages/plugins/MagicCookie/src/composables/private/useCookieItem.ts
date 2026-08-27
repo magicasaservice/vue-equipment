@@ -1,7 +1,9 @@
-import { reactive, toValue, type MaybeRef } from 'vue'
+import { reactive, toValue } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useCookieState } from './useCookieState'
+
+import type { MaybeRef } from 'vue'
 
 import type { CookieItem } from '../../types'
 

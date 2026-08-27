@@ -12,12 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, onBeforeUnmount } from 'vue'
+import { inject, onBeforeUnmount, watch } from 'vue'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicCommand } from '../composables/useMagicCommand'
 import { MagicCommandInstanceId } from '../symbols'
+
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 import type { MagicCommandDrawerOptions } from '../types'

@@ -102,9 +102,7 @@ describe('MagicCookie - Options', () => {
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.CustomContent))
-        .toBeVisible()
+      await expect.element(page.getByTestId(TestId.CustomContent)).toBeVisible()
     })
   })
 

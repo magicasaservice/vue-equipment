@@ -12,20 +12,32 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTrigger,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const emitter = useMagicEmitter()
       const events = reactive<string[]>([])
       const lastPayload = ref<unknown>(null)
 
-      emitter.on('beforeEnter', (data: unknown) => { events.push('beforeEnter'); lastPayload.value = data })
+      emitter.on('beforeEnter', (data: unknown) => {
+        events.push('beforeEnter')
+        lastPayload.value = data
+      })
       emitter.on('enter', () => events.push('enter'))
       emitter.on('afterEnter', () => events.push('afterEnter'))
       emitter.on('beforeLeave', () => events.push('beforeLeave'))
       emitter.on('leave', () => events.push('leave'))
       emitter.on('afterLeave', () => events.push('afterLeave'))
 
-      function clearEvents() { events.length = 0; lastPayload.value = null }
+      function clearEvents() {
+        events.length = 0
+        lastPayload.value = null
+      }
       return { events, lastPayload, clearEvents }
     },
     template: `
@@ -48,7 +60,9 @@ function createModal(id: ModalId) {
 }
 
 async function openModal(container: HTMLElement) {
-  const btn = container.querySelector(`[data-test-id="${TestId.Trigger}"]`) as HTMLElement
+  const btn = container.querySelector(
+    `[data-test-id="${TestId.Trigger}"]`
+  ) as HTMLElement
   btn.click()
   await nextTick()
   await nextTick()
@@ -62,21 +76,31 @@ function getTestText(id: TestId): string {
 describe('MagicModal - Events', () => {
   describe('transition lifecycle', () => {
     it('emits beforeEnter, enter, afterEnter on open', async () => {
-      const { container, unmount } = mountWithApp(createModal(ModalId.EventOpen))
+      const { container, unmount } = mountWithApp(
+        createModal(ModalId.EventOpen)
+      )
       try {
         await openModal(container)
         const events = getTestText(TestId.Events)
         expect(events).toContain('beforeEnter')
         expect(events).toContain('enter')
         expect(events).toContain('afterEnter')
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('emits beforeLeave, leave, afterLeave on close', async () => {
-      const { container, unmount } = mountWithApp(createModal(ModalId.EventClose))
+      const { container, unmount } = mountWithApp(
+        createModal(ModalId.EventClose)
+      )
       try {
         await openModal(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
         await userEvent.keyboard('{Escape}')
@@ -87,11 +111,15 @@ describe('MagicModal - Events', () => {
         expect(events).toContain('beforeLeave')
         expect(events).toContain('leave')
         expect(events).toContain('afterLeave')
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('enter events fire in correct order', async () => {
-      const { container, unmount } = mountWithApp(createModal(ModalId.EventOrder))
+      const { container, unmount } = mountWithApp(
+        createModal(ModalId.EventOrder)
+      )
       try {
         await openModal(container)
         const events = getTestText(TestId.Events).split(',')
@@ -101,14 +129,22 @@ describe('MagicModal - Events', () => {
         expect(bi).toBeGreaterThanOrEqual(0)
         expect(bi).toBeLessThan(ei)
         expect(ei).toBeLessThan(ai)
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('leave events fire in correct order', async () => {
-      const { container, unmount } = mountWithApp(createModal(ModalId.EventLeaveOrder))
+      const { container, unmount } = mountWithApp(
+        createModal(ModalId.EventLeaveOrder)
+      )
       try {
         await openModal(container)
-        ;(container.querySelector(`[data-test-id="${TestId.ClearEvents}"]`) as HTMLElement).click()
+        ;(
+          container.querySelector(
+            `[data-test-id="${TestId.ClearEvents}"]`
+          ) as HTMLElement
+        ).click()
         await nextTick()
 
         await userEvent.keyboard('{Escape}')
@@ -122,15 +158,23 @@ describe('MagicModal - Events', () => {
         expect(bi).toBeGreaterThanOrEqual(0)
         expect(bi).toBeLessThan(li)
         expect(li).toBeLessThan(ai)
-      } finally { unmount() }
+      } finally {
+        unmount()
+      }
     })
 
     it('enter event payload includes modal id', async () => {
-      const { container, unmount } = mountWithApp(createModal(ModalId.EventPayload))
+      const { container, unmount } = mountWithApp(
+        createModal(ModalId.EventPayload)
+      )
       try {
         await openModal(container)
-        expect(JSON.parse(getTestText(TestId.LastPayload))).toBe(ModalId.EventPayload)
-      } finally { unmount() }
+        expect(JSON.parse(getTestText(TestId.LastPayload))).toBe(
+          ModalId.EventPayload
+        )
+      } finally {
+        unmount()
+      }
     })
   })
 })

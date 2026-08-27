@@ -1,7 +1,7 @@
-import type { App, Plugin } from 'vue'
-
 import MagicMarquee from './src/components/MagicMarquee.vue'
 import { useMagicMarquee } from './src/composables/useMagicMarquee'
+
+import type { App, Plugin } from 'vue'
 
 import type { MagicMarqueeOptions } from './src/types'
 

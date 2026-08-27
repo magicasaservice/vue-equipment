@@ -182,7 +182,7 @@ describe('MagicCookie - Edge Cases', () => {
   })
 
   describe('rapid state changes', () => {
-    it("rapid select/unselect settles to final state", async () => {
+    it('rapid select/unselect settles to final state', async () => {
       const wrapper = defineComponent({
         components: { MagicCookieProvider, MagicCookieItem },
         setup() {
@@ -316,9 +316,7 @@ describe('MagicCookie - Edge Cases', () => {
       await nextTick()
       await nextTick()
 
-      await expect
-        .element(page.getByTestId(TestId.View))
-        .toBeVisible()
+      await expect.element(page.getByTestId(TestId.View)).toBeVisible()
 
       await screen.getByTestId(TestId.Accept).click()
       await nextTick()

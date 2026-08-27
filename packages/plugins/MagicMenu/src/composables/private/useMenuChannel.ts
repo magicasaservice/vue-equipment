@@ -1,5 +1,8 @@
-import { reactive, type MaybeRef } from 'vue'
+import { reactive } from 'vue'
 import { useMenuView } from './useMenuView'
+
+import type { MaybeRef } from 'vue'
+
 import type { MenuChannel } from '../../types'
 
 type UseMenuChannelArgs = {

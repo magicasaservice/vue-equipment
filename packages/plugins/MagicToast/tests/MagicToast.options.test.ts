@@ -23,10 +23,7 @@ function pointerEvent(type: string, opts: Partial<PointerEventInit> = {}) {
   })
 }
 
-function createWrapper(
-  toastId: string,
-  options: Record<string, unknown> = {}
-) {
+function createWrapper(toastId: string, options: Record<string, unknown> = {}) {
   return defineComponent({
     components: { MagicToastProvider },
     setup() {
@@ -127,9 +124,7 @@ describe('MagicToast - Options', () => {
 
   describe('debug', () => {
     it('debug: true sets data-debug on toast views', async () => {
-      const screen = render(
-        createWrapper(ToastId.OptDebug, { debug: true })
-      )
+      const screen = render(createWrapper(ToastId.OptDebug, { debug: true }))
 
       await screen.getByTestId(TestId.AddBtn).click()
       await nextTick()

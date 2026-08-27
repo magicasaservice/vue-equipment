@@ -204,7 +204,9 @@ describe('MagicMarquee - API', () => {
       await nextTick()
 
       const el = document.querySelector('.magic-marquee') as HTMLElement
-      expect(el.style.getPropertyValue('--mm-animation-play-state')).toBe('paused')
+      expect(el.style.getPropertyValue('--mm-animation-play-state')).toBe(
+        'paused'
+      )
     })
 
     it('play sets --mm-animation-play-state to running', async () => {
@@ -218,7 +220,9 @@ describe('MagicMarquee - API', () => {
       await nextTick()
 
       const el = document.querySelector('.magic-marquee') as HTMLElement
-      expect(el.style.getPropertyValue('--mm-animation-play-state')).toBe('running')
+      expect(el.style.getPropertyValue('--mm-animation-play-state')).toBe(
+        'running'
+      )
     })
 
     it('reverse updates --mm-animation-direction', async () => {
@@ -231,7 +235,9 @@ describe('MagicMarquee - API', () => {
       await nextTick()
 
       const el = document.querySelector('.magic-marquee') as HTMLElement
-      expect(el.style.getPropertyValue('--mm-animation-direction')).toBe('reverse')
+      expect(el.style.getPropertyValue('--mm-animation-direction')).toBe(
+        'reverse'
+      )
     })
 
     it('speed change updates --mm-animation-duration', async () => {

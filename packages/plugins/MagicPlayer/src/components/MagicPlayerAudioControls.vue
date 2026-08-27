@@ -61,29 +61,28 @@
 
 <script lang="ts" setup>
 import {
-  toRefs,
   computed,
   inject,
-  provide,
-  useTemplateRef,
   onBeforeUnmount,
+  provide,
+  toRefs,
+  useTemplateRef,
 } from 'vue'
 import { useIdle } from '@vueuse/core'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerAudioApi } from '../composables/private/usePlayerAudioApi'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import IconPlay from './icons/Play.vue'
 import IconPause from './icons/Pause.vue'
 import {
+  MagicPlayerBarRef,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerTrackRef,
-  MagicPlayerBarRef,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicAudioPlayerControlsProps {
   instanceId?: string

@@ -37,9 +37,7 @@ function createTray(
 }
 
 function read(container: HTMLElement, id: TestId) {
-  return Number(
-    container.querySelector(`[data-test-id="${id}"]`)!.textContent
-  )
+  return Number(container.querySelector(`[data-test-id="${id}"]`)!.textContent)
 }
 
 describe('MagicTray - Public API', () => {
@@ -62,9 +60,10 @@ describe('MagicTray - Public API', () => {
     )
     await nextTick()
     await nextTick()
-
     ;(
-      container.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement
+      container.querySelector(
+        `[data-test-id="${TestId.SnapBtn}"]`
+      ) as HTMLElement
     ).click()
 
     // The snap interpolates over ~300ms, progress should settle near 0.5
@@ -79,9 +78,10 @@ describe('MagicTray - Public API', () => {
     )
     await nextTick()
     await nextTick()
-
     ;(
-      container.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement
+      container.querySelector(
+        `[data-test-id="${TestId.SnapBtn}"]`
+      ) as HTMLElement
     ).click()
 
     await expect
@@ -95,9 +95,10 @@ describe('MagicTray - Public API', () => {
     )
     await nextTick()
     await nextTick()
-
     ;(
-      container.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement
+      container.querySelector(
+        `[data-test-id="${TestId.SnapBtn}"]`
+      ) as HTMLElement
     ).click()
 
     await expect

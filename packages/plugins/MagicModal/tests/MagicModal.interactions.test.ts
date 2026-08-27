@@ -12,7 +12,13 @@ import { ModalId, TestId } from './enums'
 
 function createModal(id: ModalId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTrigger,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { isActive } = useMagicModal(id)
       return { isActive }
@@ -31,13 +37,21 @@ function createModal(id: ModalId, options: Record<string, unknown> = {}) {
         </MagicModalTeleport>
       </MagicModalProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
 function createDisabledTriggerModal(id: ModalId) {
   return defineComponent({
-    components: { MagicModalProvider, MagicModalTrigger, MagicModalTeleport, MagicModalBackdrop, MagicModalContent },
+    components: {
+      MagicModalProvider,
+      MagicModalTrigger,
+      MagicModalTeleport,
+      MagicModalBackdrop,
+      MagicModalContent,
+    },
     setup() {
       const { isActive } = useMagicModal(id)
       return { isActive }
@@ -72,20 +86,26 @@ describe('MagicModal - Interactions', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('click again closes modal', async () => {
       const screen = render(createModal(ModalId.InteractToggle))
       await open(screen)
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       // DOM click bypasses backdrop pointer-events
       ;(document.querySelector('.magic-modal-trigger') as HTMLElement).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('disabled trigger does not open modal', async () => {
@@ -95,7 +115,9 @@ describe('MagicModal - Interactions', () => {
       ;(document.querySelector('.magic-modal-trigger') as HTMLElement).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
   })
 
@@ -104,23 +126,31 @@ describe('MagicModal - Interactions', () => {
       const screen = render(createModal(ModalId.Interact))
       await open(screen)
 
-      const backdrop = document.querySelector('.magic-modal-backdrop') as HTMLElement
+      const backdrop = document.querySelector(
+        '.magic-modal-backdrop'
+      ) as HTMLElement
       expect(backdrop).not.toBeNull()
       await userEvent.click(backdrop, { position: { x: 5, y: 5 } })
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('content click does not close modal', async () => {
       const screen = render(createModal(ModalId.InteractContent))
       await open(screen)
 
-      const content = document.querySelector(`[data-test-id="${TestId.ModalContent}"]`) as HTMLElement
+      const content = document.querySelector(
+        `[data-test-id="${TestId.ModalContent}"]`
+      ) as HTMLElement
       content.click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
@@ -132,18 +162,24 @@ describe('MagicModal - Interactions', () => {
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('keyListener.close: false disables Escape', async () => {
-      const screen = render(createModal(ModalId.KeyDisabled, { keyListener: { close: false } }))
+      const screen = render(
+        createModal(ModalId.KeyDisabled, { keyListener: { close: false } })
+      )
       await open(screen)
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
       await new Promise((r) => setTimeout(r, 50))
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 })

@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, toValue, type MaybeRef } from 'vue'
+import { computed, inject, toValue } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMagicModal } from '../composables/useMagicModal'
 import { MagicModalInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicModalTriggerProps {
   id?: MaybeRef<string>

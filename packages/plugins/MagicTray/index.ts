@@ -7,11 +7,11 @@ import { useMagicTray } from './src/composables/useMagicTray'
 
 import type { App, Plugin } from 'vue'
 import type {
+  MagicTrayDragMode,
   MagicTrayOptions,
   MagicTraySide,
   MagicTraySidePayload,
   MagicTraySnapMode,
-  MagicTrayDragMode,
   MagicTraySnapPoint,
   MagicTraySnapPointPayload,
   MagicTrayTransformAxis,

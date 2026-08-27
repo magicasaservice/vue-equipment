@@ -1,8 +1,11 @@
-import { computed, toValue, nextTick, type MaybeRef } from 'vue'
+import { computed, nextTick, toValue } from 'vue'
 import { useToastTimeout } from './private/useToastTimeout'
 import { useToastState } from './private/useToastState'
 import { useToastView } from './private/useToastView'
-import type { ToastView, MagicToastAddOptions } from '../types'
+
+import type { MaybeRef } from 'vue'
+
+import type { MagicToastAddOptions, ToastView } from '../types'
 
 export interface AddArgs {
   component: ToastView['component']

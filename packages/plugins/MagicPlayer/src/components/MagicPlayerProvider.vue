@@ -22,28 +22,27 @@
 
 <script lang="ts" setup>
 import {
-  toRefs,
-  provide,
-  onMounted,
-  useTemplateRef,
   computed,
+  onMounted,
+  provide,
+  toRefs,
+  useTemplateRef,
   watch,
-  type MaybeRef,
 } from 'vue'
-
 import { usePlayerState } from '../composables/private/usePlayerState'
 import { usePlayerPlaylistApi } from '../composables/private/usePlayerPlaylistApi'
-
 import {
+  MagicPlayerCurrentSrcKey,
   MagicPlayerInstanceId,
   MagicPlayerOptionsKey,
   MagicPlayerRef,
-  MagicPlayerCurrentSrcKey,
 } from '../symbols'
-
-import type { MagicPlayerOptions } from '../types'
 import { usePlayerEmitter } from '../composables/private/usePlayerEmitter'
 import { usePlayerProvider } from '../composables/private/usePlayerProvider'
+
+import type { MaybeRef } from 'vue'
+
+import type { MagicPlayerOptions } from '../types'
 
 interface MagicPlayerProps {
   id: MaybeRef<string>

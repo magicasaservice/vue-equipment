@@ -50,15 +50,16 @@
 </template>
 
 <script lang="ts" setup>
-import { toValue, useTemplateRef, provide, watch, type MaybeRef } from 'vue'
+import { provide, toValue, useTemplateRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useToastState } from '../composables/private/useToastState'
 import { useToastView } from '../composables/private/useToastView'
 import { useToastCallback } from '../composables/private/useToastCallback'
 import { useToastListener } from '../composables/private/useToastListener'
-
 import MagicToastView from './MagicToastView.vue'
 import { MagicToastInstanceId } from '../symbols'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicToastOptions } from '../types/index'
 

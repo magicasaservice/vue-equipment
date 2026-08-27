@@ -29,16 +29,15 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, toValue, onUnmounted } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { inject, onUnmounted, toValue } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useModalState } from '../composables/private/useModalState'
 import { useModalCallback } from '../composables/private/useModalCallback'
 import { useModalDOM } from '../composables/private/useModalDOM'
 import { useMagicModal } from '../composables/useMagicModal'
-import { MagicModalInstanceId, MagicModalActiveKey } from '../symbols'
+import { MagicModalActiveKey, MagicModalInstanceId } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'
 import '@maas/vue-equipment/utils/css/keyframes/fade-out.css'

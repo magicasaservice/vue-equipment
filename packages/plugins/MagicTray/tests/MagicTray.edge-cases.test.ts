@@ -48,7 +48,9 @@ describe('MagicTray - Edge Cases', () => {
       await new Promise((r) => setTimeout(r, 100))
 
       // The default config makes the bottom side draggable
-      const handle = container.querySelector('.magic-tray-handle[data-side="bottom"]')
+      const handle = container.querySelector(
+        '.magic-tray-handle[data-side="bottom"]'
+      )
       expect(handle).not.toBeNull()
 
       handle!.dispatchEvent(pointer('pointerdown', 200))

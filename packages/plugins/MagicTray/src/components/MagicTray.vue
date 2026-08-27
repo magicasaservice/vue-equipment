@@ -13,9 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-import { type MaybeRef } from 'vue'
 import MagicTrayProvider from './MagicTrayProvider.vue'
 import MagicTrayContent from './MagicTrayContent.vue'
+
+import type { MaybeRef } from 'vue'
 
 import type { MagicTrayOptions } from '../types/index'
 

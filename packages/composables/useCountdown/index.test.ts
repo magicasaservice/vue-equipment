@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { createApp, nextTick, type App } from 'vue'
+import { createApp, nextTick } from 'vue'
 import { useCountdown } from '../useCountdown'
+import type { App } from 'vue'
 
 let app: App | null = null
 

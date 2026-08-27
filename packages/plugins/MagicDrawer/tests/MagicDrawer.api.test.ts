@@ -12,7 +12,13 @@ import { DrawerId, TestId } from './enums'
 
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+    components: {
+      MagicDrawerProvider,
+      MagicDrawerTrigger,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
+    },
     setup() {
       const { open, close, isActive, snapTo, progress } = useMagicDrawer(id)
       return { open, close, isActive, snapTo, progress }
@@ -32,7 +38,9 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
         </MagicDrawerTeleport>
       </MagicDrawerProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
@@ -40,7 +48,10 @@ describe('MagicDrawer - API', () => {
   describe('open / close / isActive', () => {
     it('isActive is false initially', () => {
       render(createDrawer(DrawerId.ApiDrawer))
-      expect(document.querySelector(`[data-test-id="${TestId.IsActive}"]`)!.textContent).toBe('false')
+      expect(
+        document.querySelector(`[data-test-id="${TestId.IsActive}"]`)!
+          .textContent
+      ).toBe('false')
     })
 
     it('open() sets isActive to true', async () => {
@@ -48,7 +59,9 @@ describe('MagicDrawer - API', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('close() sets isActive to false', async () => {
@@ -56,12 +69,16 @@ describe('MagicDrawer - API', () => {
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
     })
 
     it('open/close cycle can be repeated', async () => {
@@ -69,27 +86,43 @@ describe('MagicDrawer - API', () => {
 
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
 
       await userEvent.keyboard('{Escape}')
       await nextTick()
       await new Promise((r) => setTimeout(r, 400))
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('false')
 
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('multiple instances', () => {
     it('drawers with different IDs are independent', async () => {
       const wrapper = defineComponent({
-        components: { MagicDrawerProvider, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+        components: {
+          MagicDrawerProvider,
+          MagicDrawerTeleport,
+          MagicDrawerBackdrop,
+          MagicDrawerContent,
+        },
         setup() {
           const d1 = useMagicDrawer(DrawerId.Drawer1)
           const d2 = useMagicDrawer(DrawerId.Drawer2)
-          return { open1: d1.open, open2: d2.open, isActive1: d1.isActive, isActive2: d2.isActive }
+          return {
+            open1: d1.open,
+            open2: d2.open,
+            isActive1: d1.isActive,
+            isActive2: d2.isActive,
+          }
         },
         template: `
           <div>
@@ -111,8 +144,12 @@ describe('MagicDrawer - API', () => {
       await screen.getByTestId(TestId.Open1).click()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.Active1)).toHaveTextContent('true')
-      await expect.element(page.getByTestId(TestId.Active2)).toHaveTextContent('false')
+      await expect
+        .element(page.getByTestId(TestId.Active1))
+        .toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.Active2))
+        .toHaveTextContent('false')
     })
   })
 
@@ -123,22 +160,32 @@ describe('MagicDrawer - API', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('initial.transition: false suppresses mount animation', async () => {
-      render(createDrawer(DrawerId.NoTransitionDrawer, { initial: { open: true, transition: false } }))
+      render(
+        createDrawer(DrawerId.NoTransitionDrawer, {
+          initial: { open: true, transition: false },
+        })
+      )
       await nextTick()
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('snapTo', () => {
     it('snapTo does not throw when drawer is open', async () => {
-      const screen = render(createDrawer(DrawerId.SnapDrawer, { snapPoints: [0.5, 1] }))
+      const screen = render(
+        createDrawer(DrawerId.SnapDrawer, { snapPoints: [0.5, 1] })
+      )
       await screen.getByTestId(TestId.Trigger).click()
       await nextTick()
       await nextTick()
@@ -151,8 +198,14 @@ describe('MagicDrawer - API', () => {
   describe('progress', () => {
     it('progress values start at 0', () => {
       render(createDrawer(DrawerId.ApiDrawer))
-      expect(document.querySelector(`[data-test-id="${TestId.ProgressX}"]`)!.textContent).toBe('0')
-      expect(document.querySelector(`[data-test-id="${TestId.ProgressY}"]`)!.textContent).toBe('0')
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ProgressX}"]`)!
+          .textContent
+      ).toBe('0')
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ProgressY}"]`)!
+          .textContent
+      ).toBe('0')
     })
   })
 })

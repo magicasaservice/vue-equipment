@@ -34,18 +34,17 @@
 
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { usePlayerControlsApi } from '../composables/private/usePlayerControlsApi'
 import { usePlayerState } from '../composables/private/usePlayerState'
 import {
-  MagicPlayerInstanceId,
-  MagicPlayerTrackRef,
-  MagicPlayerPopoverRef,
   MagicPlayerBarRef,
+  MagicPlayerInstanceId,
+  MagicPlayerPopoverRef,
+  MagicPlayerTrackRef,
 } from '../symbols'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicPlayer',

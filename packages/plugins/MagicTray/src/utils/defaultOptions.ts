@@ -1,4 +1,5 @@
 import { easeOutQuad } from '@maas/vue-equipment/utils'
+
 import type { RequiredMagicTrayOptions } from '../types'
 
 const defaultOptions: RequiredMagicTrayOptions = {

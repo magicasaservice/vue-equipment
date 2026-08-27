@@ -1,7 +1,10 @@
-import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { onScopeDispose, reactive, toValue } from 'vue'
 import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
+
+import type { MaybeRef } from 'vue'
+
 import type { MagicPlayerOptions, PlayerState } from '../../types/index'
 
 const getPlayerStateStore = createStateStore<PlayerState[]>(

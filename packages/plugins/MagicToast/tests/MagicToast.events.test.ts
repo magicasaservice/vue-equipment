@@ -50,9 +50,7 @@ function createEventWrapper(toastId: ToastId) {
 }
 
 function getTestText(id: TestId): string {
-  return (
-    document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
-  )
+  return document.querySelector(`[data-test-id="${id}"]`)?.textContent || ''
 }
 
 describe('MagicToast - Events', () => {

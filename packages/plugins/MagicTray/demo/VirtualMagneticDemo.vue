@@ -89,9 +89,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, reactive } from 'vue'
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+
 import type {
   MagicTrayOptions,
   MagicTraySide,

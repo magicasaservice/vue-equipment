@@ -12,15 +12,15 @@
     }
   ],
   "dependencies": {
-    "@maas/vue-equipment/utils": "workspace:utils@*",
+    "utils": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@maas/mirror": "catalog:",
-    "@types/luxon": "^3.7.1",
-    "jsdom": "^26.0.0",
+    "@types/luxon": "^3.7.5",
+    "jsdom": "^26.1.0",
     "tsup": "catalog:",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.11"
   },
   "exports": "./index.ts",
   "keywords": [],

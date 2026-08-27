@@ -1,7 +1,9 @@
-import { toRefs, type MaybeRef } from 'vue'
+import { toRefs } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { isIOS } from '@maas/vue-equipment/utils'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef } from 'vue'
 
 export function usePlayerProvider(id: MaybeRef<string>) {
   // Private state

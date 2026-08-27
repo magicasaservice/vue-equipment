@@ -58,23 +58,17 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  useTemplateRef,
-  useSlots,
-  computed,
-  inject,
-  type ComponentPublicInstance,
-} from 'vue'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { computed, inject, useSlots, useTemplateRef } from 'vue'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useTrayState } from '../composables/private/useTrayState'
 import { useTrayDrag } from '../composables/private/useTrayDrag'
 import { useTrayMagnetism } from '../composables/private/useTrayMagnetism'
 import { useTrayProgress } from '../composables/private/useTrayProgress'
 import MagicTrayHandle from './MagicTrayHandle.vue'
 import { MagicTrayInstanceId } from '../symbols'
+
+import type { ComponentPublicInstance } from 'vue'
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicTraySide } from '../types/index'
 

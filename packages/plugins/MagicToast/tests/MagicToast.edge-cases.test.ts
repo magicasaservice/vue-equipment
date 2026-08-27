@@ -55,12 +55,8 @@ describe('MagicToast - Edge Cases', () => {
         .element(page.getByTestId(TestId.Count))
         .toHaveTextContent('1')
 
-      expect(
-        document.querySelector('.magic-toast-provider')
-      ).not.toBeNull()
-      expect(
-        document.querySelector('.magic-toast-view')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-toast-provider')).not.toBeNull()
+      expect(document.querySelector('.magic-toast-view')).not.toBeNull()
     })
   })
 
@@ -99,8 +95,8 @@ describe('MagicToast - Edge Cases', () => {
       // Count should be capped at max (default 3) after transitions
       await new Promise((r) => setTimeout(r, 500))
       const count = parseInt(
-        document.querySelector(`[data-test-id="${TestId.Count}"]`)!.textContent ||
-          '0'
+        document.querySelector(`[data-test-id="${TestId.Count}"]`)!
+          .textContent || '0'
       )
       expect(count).toBeGreaterThan(0)
       expect(count).toBeLessThanOrEqual(10)
@@ -284,8 +280,7 @@ describe('MagicToast - Edge Cases', () => {
     it('component can self-remove via @remove emit', async () => {
       const SelfClosing = defineComponent({
         emits: ['remove'],
-        template:
-          `<button data-test-id="${TestId.CloseSelf}" @click="$emit('remove')">Close</button>`,
+        template: `<button data-test-id="${TestId.CloseSelf}" @click="$emit('remove')">Close</button>`,
       })
 
       const wrapper = defineComponent({

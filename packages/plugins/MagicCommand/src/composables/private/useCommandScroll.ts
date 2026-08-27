@@ -1,4 +1,6 @@
-import { toValue, computed, type MaybeRef, type Ref } from 'vue'
+import { computed, toValue } from 'vue'
+
+import type { MaybeRef, Ref } from 'vue'
 
 interface IsElementAboveArgs {
   element: MaybeRef<HTMLElement>

@@ -11,7 +11,13 @@ import { DrawerId, TestId } from './enums'
 
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+    components: {
+      MagicDrawerProvider,
+      MagicDrawerTrigger,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
+    },
     template: `
       <MagicDrawerProvider id="${id}" :options="options">
         <MagicDrawerTrigger>
@@ -25,7 +31,9 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
         </MagicDrawerTeleport>
       </MagicDrawerProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
@@ -44,18 +52,30 @@ describe('MagicDrawer - Rendering', () => {
 
     it('has data-active=false initially', () => {
       render(createDrawer(DrawerId.RenderTriggerActive))
-      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-active')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-drawer-trigger')!
+          .getAttribute('data-active')
+      ).toBe('false')
     })
 
     it('has data-disabled=false by default', () => {
       render(createDrawer(DrawerId.RenderTriggerDisabled))
-      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-disabled')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-drawer-trigger')!
+          .getAttribute('data-disabled')
+      ).toBe('false')
     })
 
     it('data-active becomes true when open', async () => {
       const screen = render(createDrawer(DrawerId.RenderTriggerOpen))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-trigger')!.getAttribute('data-active')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-drawer-trigger')!
+          .getAttribute('data-active')
+      ).toBe('true')
     })
   })
 
@@ -73,51 +93,83 @@ describe('MagicDrawer - Rendering', () => {
 
       const drawer = document.querySelector('.magic-drawer-content')
       expect(drawer).not.toBeNull()
-      expect(drawer!.querySelector('.magic-drawer-content__wrapper')).not.toBeNull()
-      expect(drawer!.querySelector('.magic-drawer-content__inner')).not.toBeNull()
-      expect(drawer!.querySelector('.magic-drawer-content__drag')).not.toBeNull()
+      expect(
+        drawer!.querySelector('.magic-drawer-content__wrapper')
+      ).not.toBeNull()
+      expect(
+        drawer!.querySelector('.magic-drawer-content__inner')
+      ).not.toBeNull()
+      expect(
+        drawer!.querySelector('.magic-drawer-content__drag')
+      ).not.toBeNull()
     })
 
     it('sets data-id', async () => {
       const screen = render(createDrawer(DrawerId.RenderDataId))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-id')).toBe(DrawerId.RenderDataId)
+      expect(
+        document.querySelector('.magic-drawer-content')!.getAttribute('data-id')
+      ).toBe(DrawerId.RenderDataId)
     })
 
     it('sets data-position to bottom by default', async () => {
       const screen = render(createDrawer(DrawerId.RenderPosition))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-position')).toBe('bottom')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-position')
+      ).toBe('bottom')
     })
 
     it('sets aria-modal', async () => {
       const screen = render(createDrawer(DrawerId.RenderAriaModal))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('aria-modal')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('aria-modal')
+      ).toBe('true')
     })
 
     it('drag uses dialog by default', async () => {
       const screen = render(createDrawer(DrawerId.RenderTag))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content__drag')!.tagName.toLowerCase()).toBe('dialog')
+      expect(
+        document
+          .querySelector('.magic-drawer-content__drag')!
+          .tagName.toLowerCase()
+      ).toBe('dialog')
     })
 
     it('renders slot content', async () => {
       const screen = render(createDrawer(DrawerId.RenderSlot))
       await open(screen)
-      await expect.element(page.getByTestId(TestId.DrawerContent)).toBeInTheDocument()
+      await expect
+        .element(page.getByTestId(TestId.DrawerContent))
+        .toBeInTheDocument()
     })
 
     it('sets data-disabled from options', async () => {
-      const screen = render(createDrawer(DrawerId.RenderDisabled, { disabled: true }))
+      const screen = render(
+        createDrawer(DrawerId.RenderDisabled, { disabled: true })
+      )
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-disabled')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-disabled')
+      ).toBe('true')
     })
 
     it('data-dragging is false when not dragging', async () => {
       const screen = render(createDrawer(DrawerId.RenderDragging))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-dragging')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-dragging')
+      ).toBe('false')
     })
   })
 

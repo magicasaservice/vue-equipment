@@ -6,19 +6,17 @@ import MagicMenuProvider from './src/components/MagicMenuProvider.vue'
 import MagicMenuRemote from './src/components/MagicMenuRemote.vue'
 import MagicMenuTrigger from './src/components/MagicMenuTrigger.vue'
 import MagicMenuView from './src/components/MagicMenuView.vue'
-
 import { useMagicMenu } from './src/composables/useMagicMenu'
-
 import {
-  MagicMenuInstanceId,
-  MagicMenuViewId,
-  MagicMenuViewActive,
-  MagicMenuItemId,
-  MagicMenuItemActive,
-  MagicMenuParentTree,
-  MagicMenuChannelId,
   MagicMenuChannelActive,
+  MagicMenuChannelId,
   MagicMenuContentId,
+  MagicMenuInstanceId,
+  MagicMenuItemActive,
+  MagicMenuItemId,
+  MagicMenuParentTree,
+  MagicMenuViewActive,
+  MagicMenuViewId,
 } from './src/symbols/index'
 
 import type { App, Plugin } from 'vue'

@@ -1,5 +1,7 @@
-import { toValue, type MaybeRef } from 'vue'
+import { toValue } from 'vue'
 import { usePlayerState } from './usePlayerState'
+
+import type { MaybeRef } from 'vue'
 
 export type UsePlayerPlaylistApiArgs = {
   id: MaybeRef<string>

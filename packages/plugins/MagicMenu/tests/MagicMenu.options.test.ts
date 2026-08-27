@@ -121,7 +121,9 @@ describe('MagicMenu - Options', () => {
       render(wrapper, gc)
       await nextTick()
 
-      const area = document.querySelector(`[data-test-id="${TestId.Area}"]`) as HTMLElement
+      const area = document.querySelector(
+        `[data-test-id="${TestId.Area}"]`
+      ) as HTMLElement
       area.dispatchEvent(
         new MouseEvent('contextmenu', {
           bubbles: true,
@@ -170,7 +172,9 @@ describe('MagicMenu - Options', () => {
       render(wrapper, gc)
       await nextTick()
 
-      const trigger = document.querySelector('.magic-menu-trigger') as HTMLElement
+      const trigger = document.querySelector(
+        '.magic-menu-trigger'
+      ) as HTMLElement
       trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
@@ -235,7 +239,10 @@ describe('MagicMenu - Options', () => {
 
   describe('teleport option', () => {
     it('teleport disabled keeps content inline', async () => {
-      const screen = render(createMenu(MenuId.OptTeleportDisabled, 'dropdown'), gc)
+      const screen = render(
+        createMenu(MenuId.OptTeleportDisabled, 'dropdown'),
+        gc
+      )
       await nextTick()
 
       await screen.getByTestId(TestId.Trigger).click()

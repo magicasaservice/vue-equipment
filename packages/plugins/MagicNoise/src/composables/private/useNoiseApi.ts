@@ -1,12 +1,15 @@
-import { shallowRef, reactive, type Ref, type MaybeRef } from 'vue'
-import { defu } from 'defu'
+import { reactive, shallowRef } from 'vue'
 import {
-  useElementSize,
   useDevicePixelRatio,
-  useThrottleFn,
+  useElementSize,
   useRafFn,
+  useThrottleFn,
 } from '@vueuse/core'
+import { defu } from 'defu'
 import { defaultOptions } from '../../utils/defaultOptions'
+
+import type { MaybeRef, Ref } from 'vue'
+
 import type { MagicNoiseOptions, Pixel, RafControls } from '../../types'
 
 type UseNoiseApiArgs = {

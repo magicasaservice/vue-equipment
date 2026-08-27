@@ -1,10 +1,12 @@
-import { toRefs, type MaybeRef } from 'vue'
+import { toRefs } from 'vue'
 import { usePlayerVideoApi } from './private/usePlayerVideoApi'
 import { usePlayerAudioApi } from './private/usePlayerAudioApi'
 import { usePlayerRuntime } from './private/usePlayerRuntime'
 import { usePlayerControlsApi } from './private/usePlayerControlsApi'
 import { usePlayerState } from './private/usePlayerState'
 import { usePlayerPlaylistApi } from './private/usePlayerPlaylistApi'
+
+import type { MaybeRef } from 'vue'
 
 export function useMagicPlayer(id: MaybeRef<string>) {
   const audioApi = usePlayerAudioApi({ id })

@@ -1,4 +1,5 @@
-import { createApp, nextTick, type Component } from 'vue'
+import { createApp, nextTick } from 'vue'
+import type { Component } from 'vue'
 
 /**
  * Mount a Vue component using createApp directly.

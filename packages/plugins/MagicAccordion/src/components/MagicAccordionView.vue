@@ -12,16 +12,15 @@
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, provide, useId } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
-import {
-  useMagicError,
-  type UseMagicErrorReturn,
-} from '@maas/vue-equipment/plugins/MagicError'
+import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import {
   MagicAccordionInstanceId,
   MagicAccordionViewActive,
   MagicAccordionViewId,
 } from '../symbols'
 import { useAccordionView } from '../composables/private/useAccordionView'
+
+import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 interface MagicAccordionViewProps {
   id?: string

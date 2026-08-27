@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
-
 import { defineComponent, nextTick, onBeforeUnmount } from 'vue'
 import { useMagicEmitter } from '../index'
 import { TestId } from './enums'

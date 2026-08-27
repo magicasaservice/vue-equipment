@@ -23,12 +23,19 @@ const gc = {
   },
 }
 
-
 describe('MagicPlayer - Edge Cases', () => {
   describe('multiple instances', () => {
     it('two players do not interfere', async () => {
-      const opts1 = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
-      const opts2 = { src: VIDEO_SRC_2, preload: 'none' as const, playback: false as const }
+      const opts1 = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
+      const opts2 = {
+        src: VIDEO_SRC_2,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -81,7 +88,11 @@ describe('MagicPlayer - Edge Cases', () => {
 
   describe('rapid state changes', () => {
     it('rapid play/pause settles correctly', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -143,18 +154,18 @@ describe('MagicPlayer - Edge Cases', () => {
       await expect
         .element(page.getByTestId(TestId.Child))
         .toHaveTextContent('No controls')
-      expect(
-        document.querySelector('.magic-player-provider')
-      ).not.toBeNull()
-      expect(
-        document.querySelector('.magic-player-video')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-provider')).not.toBeNull()
+      expect(document.querySelector('.magic-player-video')).not.toBeNull()
     })
   })
 
   describe('shared state via composable', () => {
     it('composable shares state with provider', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -193,7 +204,12 @@ describe('MagicPlayer - Edge Cases', () => {
 
   describe('display time formatting', () => {
     it('display time renders in audio controls', async () => {
-      const opts = { src: VIDEO_SRC, mode: 'audio' as const, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        mode: 'audio' as const,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -225,7 +241,11 @@ describe('MagicPlayer - Edge Cases', () => {
 
   describe('unmount cleanup', () => {
     it('removing player cleans up DOM', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -251,28 +271,24 @@ describe('MagicPlayer - Edge Cases', () => {
       const screen = render(wrapper, gc)
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-provider')
-      ).not.toBeNull()
-      expect(
-        document.querySelector('.magic-player-video')
-      ).not.toBeNull()
+      expect(document.querySelector('.magic-player-provider')).not.toBeNull()
+      expect(document.querySelector('.magic-player-video')).not.toBeNull()
 
       await screen.getByTestId(TestId.Toggle).click()
       await nextTick()
 
-      expect(
-        document.querySelector('.magic-player-provider')
-      ).toBeNull()
-      expect(
-        document.querySelector('.magic-player-video')
-      ).toBeNull()
+      expect(document.querySelector('.magic-player-provider')).toBeNull()
+      expect(document.querySelector('.magic-player-video')).toBeNull()
     })
   })
 
   describe('video controls with explicit id', () => {
     it('controls rendered outside provider with explicit id', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -301,16 +317,18 @@ describe('MagicPlayer - Edge Cases', () => {
         document.querySelector('.magic-player-video-controls')
       ).not.toBeNull()
       expect(
-        document.querySelector(
-          '.magic-player-video-controls__bar--inner'
-        )
+        document.querySelector('.magic-player-video-controls__bar--inner')
       ).not.toBeNull()
     })
   })
 
   describe('data-state reflects composable changes', () => {
     it('provider data attrs update when mute changes', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'none' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'none' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -349,7 +367,11 @@ describe('MagicPlayer - Edge Cases', () => {
     })
 
     it('provider data attrs update when play changes with loaded media', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'auto' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'auto' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: {
           MagicPlayerProvider,
@@ -395,7 +417,11 @@ describe('MagicPlayer - Edge Cases', () => {
 
   describe('video element with preload auto', () => {
     it('video element receives src and can load', async () => {
-      const opts = { src: VIDEO_SRC, preload: 'auto' as const, playback: false as const }
+      const opts = {
+        src: VIDEO_SRC,
+        preload: 'auto' as const,
+        playback: false as const,
+      }
       const wrapper = defineComponent({
         components: { MagicPlayerProvider, MagicPlayerVideo },
         setup() {
@@ -414,7 +440,9 @@ describe('MagicPlayer - Edge Cases', () => {
 
       render(wrapper, gc)
 
-      const video = document.querySelector('.magic-player-video') as HTMLVideoElement
+      const video = document.querySelector(
+        '.magic-player-video'
+      ) as HTMLVideoElement
       expect(video).not.toBeNull()
       expect(video.src).toContain('mux.com')
 

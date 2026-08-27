@@ -1,6 +1,5 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
-
 import IconResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'

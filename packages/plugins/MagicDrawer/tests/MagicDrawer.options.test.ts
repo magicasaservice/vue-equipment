@@ -12,7 +12,13 @@ import { DrawerId, TestId } from './enums'
 
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
-    components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+    components: {
+      MagicDrawerProvider,
+      MagicDrawerTrigger,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
+    },
     setup() {
       const { isActive } = useMagicDrawer(id)
       return { isActive }
@@ -31,7 +37,9 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
         </MagicDrawerTeleport>
       </MagicDrawerProvider>
     `,
-    data() { return { options } },
+    data() {
+      return { options }
+    },
   })
 }
 
@@ -55,7 +63,11 @@ describe('MagicDrawer - Options', () => {
       it(`renders with data-position="${key}"`, async () => {
         const screen = render(createDrawer(id, { position: key }))
         await open(screen)
-        expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-position')).toBe(key)
+        expect(
+          document
+            .querySelector('.magic-drawer-content')!
+            .getAttribute('data-position')
+        ).toBe(key)
       })
     }
   })
@@ -64,23 +76,37 @@ describe('MagicDrawer - Options', () => {
     it('tag: dialog (default) uses dialog element', async () => {
       const screen = render(createDrawer(DrawerId.OptTagDialog))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content__drag')!.tagName.toLowerCase()).toBe('dialog')
+      expect(
+        document
+          .querySelector('.magic-drawer-content__drag')!
+          .tagName.toLowerCase()
+      ).toBe('dialog')
     })
 
     it('tag: div uses div element', async () => {
       const screen = render(createDrawer(DrawerId.OptTagDiv, { tag: 'div' }))
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content__drag')!.tagName.toLowerCase()).toBe('div')
+      expect(
+        document
+          .querySelector('.magic-drawer-content__drag')!
+          .tagName.toLowerCase()
+      ).toBe('div')
     })
   })
 
   describe('teleport', () => {
     it('teleport.disabled prevents teleportation', async () => {
-      const screen = render(createDrawer(DrawerId.TeleportDisabled, { teleport: { disabled: true } }))
+      const screen = render(
+        createDrawer(DrawerId.TeleportDisabled, {
+          teleport: { disabled: true },
+        })
+      )
       await open(screen)
 
       expect(document.querySelector('.magic-drawer-content')).not.toBeNull()
-      expect(document.body.querySelector(':scope > .magic-drawer-content')).toBeNull()
+      expect(
+        document.body.querySelector(':scope > .magic-drawer-content')
+      ).toBeNull()
     })
 
     it('teleport to custom target', async () => {
@@ -88,7 +114,11 @@ describe('MagicDrawer - Options', () => {
       target.id = 'custom-target'
       document.body.appendChild(target)
 
-      const screen = render(createDrawer(DrawerId.TeleportCustom, { teleport: { target: '#custom-target' } }))
+      const screen = render(
+        createDrawer(DrawerId.TeleportCustom, {
+          teleport: { target: '#custom-target' },
+        })
+      )
       await open(screen)
 
       expect(target.querySelector('.magic-drawer-content')).not.toBeNull()
@@ -98,47 +128,77 @@ describe('MagicDrawer - Options', () => {
 
   describe('disabled', () => {
     it('disabled: true sets data-disabled to true', async () => {
-      const screen = render(createDrawer(DrawerId.DisabledTrue, { disabled: true }))
+      const screen = render(
+        createDrawer(DrawerId.DisabledTrue, { disabled: true })
+      )
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-disabled')).toBe('true')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-disabled')
+      ).toBe('true')
     })
 
     it('disabled: false sets data-disabled to false', async () => {
-      const screen = render(createDrawer(DrawerId.DisabledFalse, { disabled: false }))
+      const screen = render(
+        createDrawer(DrawerId.DisabledFalse, { disabled: false })
+      )
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-disabled')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-disabled')
+      ).toBe('false')
     })
   })
 
   describe('snapPoints', () => {
     it('renders with percentage snap points', async () => {
-      const screen = render(createDrawer(DrawerId.SnapPercent, { snapPoints: [0.5, 1] }))
+      const screen = render(
+        createDrawer(DrawerId.SnapPercent, { snapPoints: [0.5, 1] })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('renders with pixel snap points', async () => {
-      const screen = render(createDrawer(DrawerId.SnapPx, { snapPoints: ['200px', '400px'] }))
+      const screen = render(
+        createDrawer(DrawerId.SnapPx, { snapPoints: ['200px', '400px'] })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('renders with mixed snap points', async () => {
-      const screen = render(createDrawer(DrawerId.SnapMixed, { snapPoints: ['320px', 0.75, 1] }))
+      const screen = render(
+        createDrawer(DrawerId.SnapMixed, { snapPoints: ['320px', 0.75, 1] })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
   describe('scrollLock', () => {
     it('scrollLock: true — drawer opens successfully', async () => {
-      const screen = render(createDrawer(DrawerId.ScrollLock, { scrollLock: true }))
+      const screen = render(
+        createDrawer(DrawerId.ScrollLock, { scrollLock: true })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('scrollLock: false does not lock document scroll', async () => {
-      const screen = render(createDrawer(DrawerId.NoScrollLock, { scrollLock: false }))
+      const screen = render(
+        createDrawer(DrawerId.NoScrollLock, { scrollLock: false })
+      )
       await open(screen)
       await new Promise((r) => setTimeout(r, 400))
       expect(document.documentElement.style.overflow).not.toBe('hidden')
@@ -147,9 +207,18 @@ describe('MagicDrawer - Options', () => {
 
   describe('transition', () => {
     it('custom transition names are accepted without error', async () => {
-      const screen = render(createDrawer(DrawerId.CustomTransition, { transition: { content: 'custom-content', backdrop: 'custom-backdrop' } }))
+      const screen = render(
+        createDrawer(DrawerId.CustomTransition, {
+          transition: {
+            content: 'custom-content',
+            backdrop: 'custom-backdrop',
+          },
+        })
+      )
       await open(screen)
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
@@ -160,7 +229,9 @@ describe('MagicDrawer - Options', () => {
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
 
     it('initial.open: false does not open on mount', () => {
@@ -169,12 +240,18 @@ describe('MagicDrawer - Options', () => {
     })
 
     it('initial.transition: false suppresses mount animation', async () => {
-      render(createDrawer(DrawerId.InitialNoAnim, { initial: { open: true, transition: false } }))
+      render(
+        createDrawer(DrawerId.InitialNoAnim, {
+          initial: { open: true, transition: false },
+        })
+      )
       await nextTick()
       await nextTick()
       await nextTick()
 
-      await expect.element(page.getByTestId(TestId.IsActive)).toHaveTextContent('true')
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
     })
   })
 
@@ -183,7 +260,13 @@ describe('MagicDrawer - Options', () => {
       const options = ref({ disabled: false })
 
       const wrapper = defineComponent({
-        components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+        components: {
+          MagicDrawerProvider,
+          MagicDrawerTrigger,
+          MagicDrawerTeleport,
+          MagicDrawerBackdrop,
+          MagicDrawerContent,
+        },
         setup() {
           const { isActive } = useMagicDrawer(DrawerId.ReactivityDisabled)
           return { isActive, options }
@@ -206,7 +289,9 @@ describe('MagicDrawer - Options', () => {
       const screen = render(wrapper)
       await open(screen)
 
-      const content = document.querySelector('.magic-drawer-content') as HTMLElement
+      const content = document.querySelector(
+        '.magic-drawer-content'
+      ) as HTMLElement
       expect(content.getAttribute('data-disabled')).toBe('false')
 
       options.value = { disabled: true }
@@ -219,9 +304,15 @@ describe('MagicDrawer - Options', () => {
 
   describe('enableMousewheel', () => {
     it('enableMousewheel: false — data-wheeling is false', async () => {
-      const screen = render(createDrawer(DrawerId.NoWheel, { enableMousewheel: false }))
+      const screen = render(
+        createDrawer(DrawerId.NoWheel, { enableMousewheel: false })
+      )
       await open(screen)
-      expect(document.querySelector('.magic-drawer-content')!.getAttribute('data-wheeling')).toBe('false')
+      expect(
+        document
+          .querySelector('.magic-drawer-content')!
+          .getAttribute('data-wheeling')
+      ).toBe('false')
     })
   })
 
@@ -230,9 +321,17 @@ describe('MagicDrawer - Options', () => {
       const easing = vi.fn((t: number) => t)
 
       const wrapper = defineComponent({
-        components: { MagicDrawerProvider, MagicDrawerTrigger, MagicDrawerTeleport, MagicDrawerBackdrop, MagicDrawerContent },
+        components: {
+          MagicDrawerProvider,
+          MagicDrawerTrigger,
+          MagicDrawerTeleport,
+          MagicDrawerBackdrop,
+          MagicDrawerContent,
+        },
         setup() {
-          const { open, snapTo, isActive } = useMagicDrawer(DrawerId.CustomEasing)
+          const { open, snapTo, isActive } = useMagicDrawer(
+            DrawerId.CustomEasing
+          )
           return { open, isActive, snap: () => snapTo(0.5) }
         },
         data() {
@@ -263,10 +362,15 @@ describe('MagicDrawer - Options', () => {
       await nextTick()
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
+      ;(
+        document.querySelector(
+          `[data-test-id="${TestId.SnapBtn}"]`
+        ) as HTMLElement
+      ).click()
 
-      ;(document.querySelector(`[data-test-id="${TestId.SnapBtn}"]`) as HTMLElement).click()
-
-      await vi.waitFor(() => expect(easing).toHaveBeenCalled(), { timeout: 2000 })
+      await vi.waitFor(() => expect(easing).toHaveBeenCalled(), {
+        timeout: 2000,
+      })
     })
   })
 })

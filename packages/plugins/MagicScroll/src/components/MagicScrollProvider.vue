@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, computed } from 'vue'
-import { useScroll, unrefElement, type MaybeElementRef } from '@vueuse/core'
+import { computed, provide } from 'vue'
+import { unrefElement, useScroll } from '@vueuse/core'
 import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
+
+import type { MaybeElementRef } from '@vueuse/core'
 
 interface MagicScrollProviderProps {
   target?: MaybeElementRef<HTMLElement>

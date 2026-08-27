@@ -1,5 +1,6 @@
 import { onScopeDispose, shallowRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
+
 import type { Coordinates, MenuView } from '../../types'
 
 type IsPointInTriangleArgs = {

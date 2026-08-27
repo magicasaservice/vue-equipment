@@ -49,14 +49,12 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue'
-import { useMagicCookie } from '../src/composables/useMagicCookie'
 import { MButton, MCheckbox } from '@maas/mirror/vue'
-import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
-} from '@maas/vue-equipment/plugins/MagicEmitter'
-
+import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useMagicCookie } from '../src/composables/useMagicCookie'
 import MagicCookieDemoItem from './MagicCookieDemoItem.vue'
+
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 
 import type { MagicCookieCallbackArgs } from '../src/types'
 

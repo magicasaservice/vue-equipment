@@ -4,9 +4,9 @@ import { defineComponent, nextTick, ref } from 'vue'
 import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollCollision from '../src/components/MagicScrollCollision.vue'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
-import type { ScrollEvents } from '../src/types/index'
 import { mountWithApp } from '../../tests/utils'
 import { TestId } from './enums'
+import type { ScrollEvents } from '../src/types/index'
 
 async function scrollTo(el: HTMLElement, top: number) {
   el.scrollTop = top

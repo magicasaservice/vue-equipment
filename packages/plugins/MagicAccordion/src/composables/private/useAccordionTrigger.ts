@@ -1,7 +1,8 @@
-import { type ComputedRef, type MaybeRef, type Ref } from 'vue'
-import { VuePrimitive } from '@maas/vue-primitive'
 import { useFocus } from '@vueuse/core'
 import { useAccordionView } from './useAccordionView'
+
+import type { ComputedRef, MaybeRef, Ref } from 'vue'
+import type { VuePrimitive } from '@maas/vue-primitive'
 
 import type { Interaction } from '../../types'
 

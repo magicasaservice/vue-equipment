@@ -27,6 +27,7 @@
 
 <script lang="ts" setup>
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
+
 import type {
   MagicTrayOptions,
   MagicTraySide,

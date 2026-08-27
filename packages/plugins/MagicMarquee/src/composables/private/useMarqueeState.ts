@@ -1,8 +1,11 @@
-import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { onScopeDispose, reactive, toValue } from 'vue'
 import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { MarqueeState, MagicMarqueeOptions } from '../../types/index'
+
+import type { MaybeRef } from 'vue'
+
+import type { MagicMarqueeOptions, MarqueeState } from '../../types/index'
 
 const getMarqueeStateStore = createStateStore<MarqueeState[]>(
   'MagicMarquee',

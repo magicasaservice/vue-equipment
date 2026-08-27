@@ -85,7 +85,9 @@ describe('MagicMenu - Edge Cases', () => {
       const nestedView = document.querySelector(`[data-id="${ViewId.V1}"]`)
       expect(nestedView).not.toBeNull()
 
-      const subTrigger = document.querySelector(`[data-id="${ViewId.V1}-trigger"]`)
+      const subTrigger = document.querySelector(
+        `[data-id="${ViewId.V1}-trigger"]`
+      )
       expect(subTrigger).not.toBeNull()
       expect(subTrigger!.classList.contains('magic-menu-trigger')).toBe(true)
     })
@@ -138,8 +140,12 @@ describe('MagicMenu - Edge Cases', () => {
       await screen.getByTestId(TestId.Trigger1).click()
       await nextTick()
 
-      expect(document.querySelector(`[data-test-id="${TestId.ItemM1}"]`)).not.toBeNull()
-      expect(document.querySelector(`[data-test-id="${TestId.ItemM2}"]`)).toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ItemM1}"]`)
+      ).not.toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ItemM2}"]`)
+      ).toBeNull()
     })
   })
 
@@ -310,7 +316,9 @@ describe('MagicMenu - Edge Cases', () => {
         .element(page.getByTestId(TestId.ItemActive))
         .toHaveTextContent('false')
 
-      const item = document.querySelector(`[data-id="${ItemId.SlotItem}"]`) as HTMLElement
+      const item = document.querySelector(
+        `[data-id="${ItemId.SlotItem}"]`
+      ) as HTMLElement
       item.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
       await nextTick()
 
@@ -333,7 +341,10 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: MenuId.EdgeChannel, viewId: ViewId.V0 })
+          const api = useMagicMenu({
+            instanceId: MenuId.EdgeChannel,
+            viewId: ViewId.V0,
+          })
           return { api }
         },
         template: `
@@ -366,7 +377,9 @@ describe('MagicMenu - Edge Cases', () => {
       await screen.getByTestId(TestId.Open).click()
       await nextTick()
 
-      expect(document.querySelector(`[data-test-id="${TestId.ChannelContent}"]`)).toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ChannelContent}"]`)
+      ).toBeNull()
 
       const remote = document.querySelector('.magic-menu-remote') as HTMLElement
       remote.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
@@ -389,7 +402,10 @@ describe('MagicMenu - Edge Cases', () => {
           MagicMenuRemote,
         },
         setup() {
-          const api = useMagicMenu({ instanceId: MenuId.EdgeRemoteAttr, viewId: ViewId.V0 })
+          const api = useMagicMenu({
+            instanceId: MenuId.EdgeRemoteAttr,
+            viewId: ViewId.V0,
+          })
           return { api }
         },
         template: `
@@ -422,7 +438,6 @@ describe('MagicMenu - Edge Cases', () => {
 
       const remote = document.querySelector('.magic-menu-remote')
       expect(remote!.getAttribute('data-active')).toBe('false')
-
       ;(remote as HTMLElement).dispatchEvent(
         new MouseEvent('mouseenter', { bubbles: true })
       )

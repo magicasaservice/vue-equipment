@@ -1,7 +1,9 @@
-import { nextTick, toValue, type MaybeRef } from 'vue'
+import { nextTick, toValue } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useToastView } from './useToastView'
 import { useToastState } from './useToastState'
+
+import type { MaybeRef } from 'vue'
 
 export function useToastCallback(instanceId: MaybeRef<string>) {
   const { initializeState } = useToastState(instanceId)
