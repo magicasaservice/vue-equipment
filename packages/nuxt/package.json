@@ -24,6 +24,7 @@
     "nuxt": "catalog:",
     "vitest": "^4.1.11"
   },
+  "private": true,
   "scripts": {
     "build": "pnpm dlx nuxi prepare playground && nuxt-module-build build --outDir ../../dist/nuxt",
     "dev": "nuxi dev playground",
