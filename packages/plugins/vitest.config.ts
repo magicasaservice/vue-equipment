@@ -13,19 +13,19 @@ export default defineConfig({
       },
       {
         find: /^@maas\/vue-equipment\/utils\/css\/(.*)/,
-        replacement: resolve(__dirname, '../utils/src/css/$1'),
+        replacement: resolve(import.meta.dirname, '../utils/src/css/$1'),
       },
       {
         find: '@maas/vue-equipment/utils',
-        replacement: resolve(__dirname, '../utils/index.ts'),
+        replacement: resolve(import.meta.dirname, '../utils/index.ts'),
       },
       {
         find: /^@maas\/vue-equipment\/plugins\/(.*)/,
-        replacement: resolve(__dirname, './$1'),
+        replacement: resolve(import.meta.dirname, './$1'),
       },
       {
         find: /^@maas\/vue-equipment\/composables\/(.*)/,
-        replacement: resolve(__dirname, '../composables/$1'),
+        replacement: resolve(import.meta.dirname, '../composables/$1'),
       },
     ],
   },

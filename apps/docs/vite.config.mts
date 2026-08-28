@@ -49,42 +49,42 @@ export default defineConfig(async () => {
       alias: [
         {
           find: '@maas/vue-equipment/composables',
-          replacement: resolve(__dirname, '../../packages/composables'),
+          replacement: resolve(import.meta.dirname, '../../packages/composables'),
         },
         ...plugins.map((plugin) => {
           return {
             find: `@maas/vue-equipment/plugins/${plugin.name}/css`,
             replacement: resolve(
-              __dirname,
+              import.meta.dirname,
               `../../packages/plugins/${plugin.name}/src/css`
             ),
           }
         }),
         {
           find: '@maas/vue-equipment/plugins',
-          replacement: resolve(__dirname, '../../packages/plugins'),
+          replacement: resolve(import.meta.dirname, '../../packages/plugins'),
         },
         {
           find: '@maas/vue-equipment/utils/css',
-          replacement: resolve(__dirname, '../../packages/utils/src/css'),
+          replacement: resolve(import.meta.dirname, '../../packages/utils/src/css'),
         },
         {
           find: '@maas/vue-equipment/utils',
-          replacement: resolve(__dirname, '../../packages/utils'),
+          replacement: resolve(import.meta.dirname, '../../packages/utils'),
         },
         {
           find: '@maas/mirror/tailwind',
-          replacement: resolve(__dirname, '../../.maas/tailwind.preset.css'),
+          replacement: resolve(import.meta.dirname, '../../.maas/tailwind.preset.css'),
         },
         {
           find: 'fonts',
-          replacement: resolve(__dirname, '../../packages/fonts/dist'),
+          replacement: resolve(import.meta.dirname, '../../packages/fonts/dist'),
         },
         ...overrides.map((override) => {
           return {
             find: new RegExp(`^.*\\/${override}\\.vue$`),
             replacement: resolve(
-              __dirname,
+              import.meta.dirname,
               `./.vitepress/theme/components/overrides/${override}.vue`
             ),
           }
