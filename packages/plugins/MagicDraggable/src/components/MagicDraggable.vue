@@ -88,7 +88,14 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial, threshold, scrollLock } = state.options
+const {
+  snapPoints,
+  animation,
+  initial,
+  threshold,
+  scrollLock,
+  preventEdgeNavigation,
+} = state.options
 
 const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
   useDraggableDrag({
@@ -100,6 +107,7 @@ const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
     animation,
     initial,
     scrollLock,
+    preventEdgeNavigation,
   })
 
 // Public functions

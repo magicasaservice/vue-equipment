@@ -48,6 +48,9 @@ type UseDraggableDragArgs = {
   animation: MaybeRef<RequiredMagicDraggableOptions['animation']>
   initial: MaybeRef<RequiredMagicDraggableOptions['initial']>
   scrollLock: MaybeRef<RequiredMagicDraggableOptions['scrollLock']>
+  preventEdgeNavigation: MaybeRef<
+    RequiredMagicDraggableOptions['preventEdgeNavigation']
+  >
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
@@ -60,6 +63,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     initial,
     animation,
     scrollLock,
+    preventEdgeNavigation,
   } = args
 
   const { logWarning } = useMagicError({
@@ -516,7 +520,9 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     // The drag already runs on pointer events; canceling touchstart keeps
     // WebKit’s edge navigation swipe from hijacking a drag that starts near
     // the viewport edge
-    cancelEdgeNavigation({ event: e })
+    if (toValue(preventEdgeNavigation)) {
+      cancelEdgeNavigation({ event: e })
+    }
   }
 
   function onClick(e: MouseEvent) {

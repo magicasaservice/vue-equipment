@@ -571,6 +571,20 @@ To customize the drawer, override the necessary options. Any custom options will
     {
       items: [
         {
+          label: 'preventEdgeNavigation',
+          description: 'Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag. Only applies to drawers with a `left` or `right` position.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'disabled',
           description: 'Disable all drawer interactions.'
         },
@@ -1143,7 +1157,7 @@ The drawer emits the following events through [MagicEmitter](../MagicEmitter/). 
 
 The drawer handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the drawer to differentiate when the user scrolls and when the user drags, any scrollable containers within the drawer need to have their overflow value explicitly set to `auto` or `scroll`.
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Drawers with a `left` or `right` position drag along the same axis, so they cancel `touchstart` within 44px of either edge, which is the one signal WebKit honors, and the drag stays with the drawer. Canceling also swallows the tap’s synthesized click; the drawer dispatches a replacement when the touch ends within 12px of where it started, so taps inside the strip keep working. Scrolling cannot start inside the strip — a touch that begins there belongs to the drag.
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Drawers with a `left` or `right` position drag along the same axis, so they cancel `touchstart` within 44px of either edge, which is the one signal WebKit honors, and the drag stays with the drawer. Canceling also swallows the tap’s synthesized click; the drawer dispatches a replacement when the touch ends within 12px of where it started, so taps inside the strip keep working. Scrolling cannot start inside the strip — a touch that begins there belongs to the drag. Set `preventEdgeNavigation` to `false` to opt out.
 
 ## Examples
 

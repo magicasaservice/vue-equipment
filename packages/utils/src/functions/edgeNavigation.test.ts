@@ -118,6 +118,16 @@ describe('cancelEdgeNavigation', () => {
     expect(cancelEdgeNavigation({ event })).toBe(false)
   })
 
+  it('respects custom excluded tags regardless of casing', () => {
+    const event = fakeTouchEvent({ target: document.createElement('button') })
+    expect(cancelEdgeNavigation({ event, exclude: ['button'] })).toBe(false)
+  })
+
+  it('cancels touches on focus-driven controls when excluded tags are overridden', () => {
+    const event = fakeTouchEvent({ target: document.createElement('select') })
+    expect(cancelEdgeNavigation({ event, exclude: [] })).toBe(true)
+  })
+
   it('ignores every touch on platforms without edge navigation gestures', () => {
     vi.stubGlobal('navigator', { userAgent: ANDROID_UA, maxTouchPoints: 5 })
     const event = fakeTouchEvent()

@@ -1,14 +1,8 @@
-const EDGE_NAVIGATION_THRESHOLD = 44
-const CLICK_SLOP = 12
-
-// Focus-driven controls break harder when their touchstart is canceled than
-// they would from a stray navigation swipe
-const BAILED_TAGS = ['SELECT', 'OPTION', 'INPUT', 'TEXTAREA']
-
 interface CancelEdgeNavigationArgs {
   event: TouchEvent
   threshold?: number
   slop?: number
+  exclude?: string[]
 }
 
 interface RestoreClickArgs {
@@ -29,16 +23,14 @@ export function hasEdgeNavigationGestures() {
   )
 }
 
-// Canceling touchstart is the one signal WebKit honors to keep its back and
-// forward navigation swipe from arming for a touch that starts near a
-// vertical viewport edge. Pointer events keep firing, so pointer-based
-// dragging is unaffected; the touch’s synthesized click is restored manually.
-// Returns whether the event was canceled.
+// Canceling touchstart is the one signal WebKit honors to keep its edge
+// navigation swipe from arming; pointer events keep firing regardless
 export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
   const {
     event,
-    threshold = EDGE_NAVIGATION_THRESHOLD,
-    slop = CLICK_SLOP,
+    threshold = 44,
+    slop = 12,
+    exclude = ['SELECT', 'OPTION', 'INPUT', 'TEXTAREA'],
   } = args
 
   if (!hasEdgeNavigationGestures() || !event.cancelable) {
@@ -56,7 +48,10 @@ export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
     return false
   }
 
-  if (BAILED_TAGS.includes(target.tagName) || target.isContentEditable) {
+  if (
+    exclude.some((tag) => tag.toUpperCase() === target.tagName) ||
+    target.isContentEditable
+  ) {
     return false
   }
 
@@ -73,9 +68,8 @@ export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
   return true
 }
 
-// Canceling touchstart also cancels the tap’s synthesized click, so a touch
-// that ends within the slop dispatches a replacement — deferred, to mirror a
-// native click arriving after every touchend listener has run
+// Canceling touchstart swallows the tap’s synthesized click; a touch that
+// ends within the slop dispatches a deferred replacement
 function restoreClick(args: RestoreClickArgs) {
   const { target, touch, slop } = args
   const { identifier, clientX, clientY } = touch

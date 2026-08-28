@@ -115,6 +115,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const disabled = computed(() => state.options.disabled)
   const snapMode = computed(() => state.options.snap.mode)
   const dragMode = computed(() => state.options.drag.mode)
+  const preventEdgeNavigation = computed(
+    () => state.options.preventEdgeNavigation
+  )
 
   function snapReference(side: MagicTraySide) {
     return snapMode.value === 'step'
@@ -593,7 +596,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     // On iOS the drag already runs on pointer events; canceling touchstart
     // keeps WebKit’s edge navigation swipe from hijacking a drag that starts
     // near the viewport edge
-    cancelEdgeNavigation({ event: e })
+    if (preventEdgeNavigation.value) {
+      cancelEdgeNavigation({ event: e })
+    }
 
     if (!isAndroid() || state.dragging) {
       return

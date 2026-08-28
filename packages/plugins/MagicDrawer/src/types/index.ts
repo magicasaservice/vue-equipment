@@ -44,6 +44,7 @@ export interface MagicDrawerOptions {
   enableMousewheel?: boolean
   preventZoom?: boolean
   preventDragClose?: boolean
+  preventEdgeNavigation?: boolean
   disabled?: boolean
 }
 

@@ -51,6 +51,9 @@ type UseDrawerDragArgs = {
   initial: MaybeRef<RequiredMagicDrawerOptions['initial']>
   animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
   preventDragClose: MaybeRef<RequiredMagicDrawerOptions['preventDragClose']>
+  preventEdgeNavigation: MaybeRef<
+    RequiredMagicDrawerOptions['preventEdgeNavigation']
+  >
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
 }
@@ -68,6 +71,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     initial,
     animation,
     preventDragClose,
+    preventEdgeNavigation,
     disabled,
   } = args
 
@@ -827,7 +831,9 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         // Horizontal drawers drag along the axis of WebKit’s back and forward
         // navigation swipe; canceling touchstart near the viewport edge keeps
         // the drag with the drawer
-        cancelEdgeNavigation({ event: e })
+        if (toValue(preventEdgeNavigation)) {
+          cancelEdgeNavigation({ event: e })
+        }
         break
     }
 

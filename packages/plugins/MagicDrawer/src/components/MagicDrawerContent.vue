@@ -149,6 +149,7 @@ const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
     animation: state.options.animation,
     initial: state.options.initial,
     preventDragClose: state.options.preventDragClose,
+    preventEdgeNavigation: state.options.preventEdgeNavigation,
     disabled,
   })
 

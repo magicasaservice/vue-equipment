@@ -33,6 +33,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
     },
   },
   initial: {},
+  preventEdgeNavigation: true,
   disabled: false,
   inset: false,
 }

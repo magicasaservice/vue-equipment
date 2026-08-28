@@ -43,6 +43,7 @@ const defaultOptions: RequiredMagicDrawerOptions = {
   enableMousewheel: false,
   preventZoom: true,
   preventDragClose: false,
+  preventEdgeNavigation: true,
   disabled: false,
 }
 

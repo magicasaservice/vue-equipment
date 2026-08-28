@@ -355,6 +355,20 @@ To customize the component, override the necessary options. Any custom options w
     {
       items: [
         {
+          label: 'preventEdgeNavigation',
+          description: 'Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'disabled',
           description: 'Disable the component completely.'
         },
@@ -473,7 +487,7 @@ In order to provide its basic functionality the component comes with some CSS. T
 
 ## Caveats
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. A draggable resting near either edge would lose its drag to that gesture, so it cancels `touchstart` within 44px of the edge, which is the one signal WebKit honors. Canceling also swallows the tap’s synthesized click; the draggable dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing.
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. A draggable resting near either edge would lose its drag to that gesture, so it cancels `touchstart` within 44px of the edge, which is the one signal WebKit honors. Canceling also swallows the tap’s synthesized click; the draggable dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. Set `preventEdgeNavigation` to `false` to opt out.
 
 ## Examples
 
