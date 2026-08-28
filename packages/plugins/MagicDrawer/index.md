@@ -1159,6 +1159,26 @@ The drawer handles situations where dragging and scrolling might interfere with 
 
 On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Drawers with a `left` or `right` position drag along the same axis, so they cancel `touchstart` within 44px of either edge, which is the one signal WebKit honors, and the drag stays with the drawer. Canceling also swallows the tap’s synthesized click; the drawer dispatches a replacement when the touch ends within 12px of where it started, so taps inside the strip keep working. Scrolling cannot start inside the strip — a touch that begins there belongs to the drag. Set `preventEdgeNavigation` to `false` to opt out.
 
+Starting with iOS 26, Safari renders page content beneath its translucent UI chrome, while `position: fixed` elements can stop short of the bottom controls. A fixed backdrop may leave a strip of undimmed content visible behind the chrome. To cover everything on screen, switch the backdrop to `position: absolute` and give it a positioned ancestor:
+
+```css
+body {
+  position: relative;
+  margin: 0;
+}
+
+@supports (-webkit-touch-callout: none) {
+  :root {
+    --magic-drawer-backdrop-position: absolute;
+    --magic-drawer-backdrop-height: max(100%, 100dvh);
+  }
+}
+```
+
+The `@supports` query limits the override to iOS, where every browser runs WebKit. The `height` override keeps the backdrop covering the entire document on scrolled pages, while never shrinking below the viewport on short ones. Leave `--magic-drawer-position` untouched — the content needs `position: fixed` to anchor the drawer to the viewport.
+
+The pattern relies on `body` spanning the full document and does not cover pages that scroll horizontally. If you teleport the drawer somewhere other than `body`, the new target needs to be the positioned ancestor instead.
+
 ## Examples
 
 ### Vertical

@@ -775,6 +775,28 @@ A self-contained component that composes all primitives internally. Use this for
   ]"
 />
 
+## Caveats
+
+Starting with iOS 26, Safari renders page content beneath its translucent UI chrome, while `position: fixed` elements can stop short of the bottom controls. A fixed backdrop may leave a strip of undimmed content visible behind the chrome. To cover everything on screen, switch the backdrop to `position: absolute` and give it a positioned ancestor:
+
+```css
+body {
+  position: relative;
+  margin: 0;
+}
+
+@supports (-webkit-touch-callout: none) {
+  :root {
+    --magic-modal-backdrop-position: absolute;
+    --magic-modal-backdrop-height: max(100%, 100dvh);
+  }
+}
+```
+
+The `@supports` query limits the override to iOS, where every browser runs WebKit. The `height` override keeps the backdrop covering the entire document on scrolled pages, while never shrinking below the viewport on short ones. Leave `--magic-modal-position` untouched — the content needs `position: fixed` to stay centered in the viewport.
+
+The pattern relies on `body` spanning the full document and does not cover pages that scroll horizontally. If you teleport the modal somewhere other than `body`, the new target needs to be the positioned ancestor instead.
+
 ## Examples
 
 ### Default
