@@ -1,13 +1,8 @@
-const EDGE_NAVIGATION_THRESHOLD = 44
-const CLICK_SLOP = 12
-
-// Focus-driven controls break when their touchstart is canceled
-const BAILED_TAGS = ['SELECT', 'OPTION', 'INPUT', 'TEXTAREA']
-
 interface CancelEdgeNavigationArgs {
   event: TouchEvent
   threshold?: number
   slop?: number
+  exclude?: string[]
 }
 
 interface RestoreClickArgs {
@@ -33,8 +28,9 @@ export function hasEdgeNavigationGestures() {
 export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
   const {
     event,
-    threshold = EDGE_NAVIGATION_THRESHOLD,
-    slop = CLICK_SLOP,
+    threshold = 44,
+    slop = 12,
+    exclude = ['SELECT', 'OPTION', 'INPUT', 'TEXTAREA'],
   } = args
 
   if (!hasEdgeNavigationGestures() || !event.cancelable) {
@@ -52,7 +48,10 @@ export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
     return false
   }
 
-  if (BAILED_TAGS.includes(target.tagName) || target.isContentEditable) {
+  if (
+    exclude.some((tag) => tag.toUpperCase() === target.tagName) ||
+    target.isContentEditable
+  ) {
     return false
   }
 
