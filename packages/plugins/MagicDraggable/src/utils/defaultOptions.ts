@@ -21,6 +21,7 @@ const defaultOptions: RequiredMagicDraggableOptions = {
   initial: {
     snapPoint: 'top-left',
   },
+  preventEdgeNavigation: true,
   disabled: false,
 }
 

@@ -459,6 +459,20 @@ To customize the tray, override the necessary options. Any custom options will b
     {
       items: [
         {
+          label: 'preventEdgeNavigation',
+          description: 'Cancel `touchstart` on handles near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag.'
+        },
+        {
+          label: 'boolean'
+        },
+        {
+          label: 'true'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: 'disabled',
           description: 'Disable all tray interactions.'
         },
@@ -1092,7 +1106,7 @@ The tray emits the following events through [MagicEmitter](../MagicEmitter/). Li
 
 The tray handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the tray to differentiate when the user scrolls and when the user drags, any scrollable containers within the tray need to have their overflow value explicitly set to `auto` or `scroll`.
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so handle click listeners keep firing.
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so handle click listeners keep firing. Set `preventEdgeNavigation` to `false` to opt out.
 
 ## Examples
 

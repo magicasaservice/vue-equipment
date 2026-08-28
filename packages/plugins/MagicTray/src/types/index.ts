@@ -82,6 +82,7 @@ export interface MagicTrayOptions {
     snapPoints?: Partial<Record<MagicTraySide, MagicTraySnapPoint>>
     transition?: boolean
   }
+  preventEdgeNavigation?: boolean
   disabled?: boolean
   inset?: boolean
 }
