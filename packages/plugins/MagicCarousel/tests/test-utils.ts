@@ -79,7 +79,8 @@ export function createLoopedCarousel(carouselId: string, trackStyle: string) {
 export function createCarousel(
   carouselId: string,
   options: Record<string, unknown> = {},
-  slideCount = 6
+  slideCount = 6,
+  slideSize = ''
 ) {
   return defineComponent({
     components: {
@@ -103,7 +104,7 @@ export function createCarousel(
         <MagicCarouselProvider id="${carouselId}" :options="options">
           <MagicCarouselTrack
             data-test-id="${TestId.Track}"
-            style="width: 300px; --magic-carousel-slides-per-track: 3; --magic-carousel-gap: 0px;"
+            style="width: 300px; --magic-carousel-slides-per-track: 3; --magic-carousel-gap: 0px; ${slideSize ? `--magic-carousel-slide-size: ${slideSize};` : ''}"
           >
             <MagicCarouselSlide
               v-for="index in ${slideCount}"

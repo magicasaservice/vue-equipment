@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
+import { page } from 'vitest/browser'
 import { defineComponent } from 'vue'
 import { useMagicCarousel } from '../src/composables/useMagicCarousel'
 import { createCarousel } from './test-utils'
-import { CarouselId } from './enums'
+import { CarouselId, TestId } from './enums'
 
 describe('MagicCarousel - State', () => {
   describe('shared state', () => {
@@ -23,6 +24,31 @@ describe('MagicCarousel - State', () => {
 
       await vi.waitFor(() => {
         expect(outerApi!.slideCount.value).toBe(6)
+      })
+    })
+  })
+
+  describe('active index', () => {
+    it('activates the last slide once the track is scrolled to the end', async () => {
+      // Slides narrower than the track leave the trailing ones aligned
+      // past the maximum scroll
+      render(createCarousel(CarouselId.StateActiveEnd, {}, 6, '35%'))
+
+      const track = page.getByTestId(TestId.Track).element()
+      const activeIndex = page.getByTestId(TestId.ActiveIndex).element()
+      const slides = page.getByTestId(TestId.Slide).elements()
+
+      await vi.waitFor(() => {
+        expect(track.scrollWidth).toBeGreaterThan(track.clientWidth)
+      })
+
+      track.scrollLeft = track.scrollWidth
+
+      await vi.waitFor(() => {
+        expect(activeIndex.textContent).toBe(String(slides.length - 1))
+        expect(slides[slides.length - 1]?.getAttribute('data-active')).toBe(
+          'true'
+        )
       })
     })
   })

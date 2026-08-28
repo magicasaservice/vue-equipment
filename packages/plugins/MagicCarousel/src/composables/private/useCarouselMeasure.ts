@@ -1,6 +1,6 @@
 import { computed, watch  } from 'vue'
 import { useResizeObserver, useMutationObserver } from '@vueuse/core'
-import { convertToPixels } from '@maas/vue-equipment/utils'
+import { convertToPixels, clampValue } from '@maas/vue-equipment/utils'
 import {
   useMagicError
   
@@ -155,14 +155,24 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
       }
     }
 
-    state.snapPositions = snapPositions
     state.measurements.period = period
 
     // Translated slides inflate el.scrollWidth, use the guaranteed
     // runway past the period instead (see MagicCarouselTrack)
     if (state.options.loop) {
       state.measurements.range = period + 2 * wrapThreshold
+      state.snapPositions = snapPositions
+      return
     }
+
+    // Trailing slides align beyond the maximum scroll, the track would
+    // never reach their position and they’d never become active
+    const { range, direction } = state.measurements
+    const end = range * direction
+
+    state.snapPositions = snapPositions.map((position) =>
+      clampValue(position, Math.min(end, 0), Math.max(end, 0))
+    )
   }
 
   // Public functions

@@ -17,6 +17,7 @@ export enum CarouselId {
   StateShared = 'state-shared',
   StateInd1 = 'state-ind-1',
   StateInd2 = 'state-ind-2',
+  StateActiveEnd = 'state-active-end',
   InteractionDraggable = 'interaction-draggable',
   InteractionDrag = 'interaction-drag',
   InteractionRubberband = 'interaction-rubberband',

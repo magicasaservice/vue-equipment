@@ -51,7 +51,9 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
         )
       }
 
-      if (distance < nearestDistance) {
+      // Trailing slides share the end position once clamped, the last
+      // of them is the one the track actually rests on
+      if (distance <= nearestDistance) {
         nearestDistance = distance
         activeIndex = index
       }
