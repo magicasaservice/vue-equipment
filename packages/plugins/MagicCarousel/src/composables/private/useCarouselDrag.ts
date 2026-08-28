@@ -1,4 +1,4 @@
-import { computed, toValue, watch, onScopeDispose, type MaybeRef } from 'vue'
+import { computed, toValue, watch, onScopeDispose  } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import {
   rubberband,
@@ -7,13 +7,15 @@ import {
   guardedReleasePointerCapture,
 } from '@maas/vue-equipment/utils'
 import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
+  useMagicEmitter
+  
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './useCarouselState'
 import { useCarouselLoop } from './useCarouselLoop'
 import { damp, round } from '../../utils/physics'
 import { shouldSnap, snapVelocity } from '../../utils/snap'
+import type {MaybeRef} from 'vue';
+import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
 
 const releaseMomentum = 2
 

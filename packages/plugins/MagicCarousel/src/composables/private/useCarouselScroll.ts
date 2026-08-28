@@ -1,8 +1,9 @@
-import { computed, toValue, watch, type MaybeRef } from 'vue'
+import { computed, toValue, watch  } from 'vue'
 import { useEventListener, useDebounceFn } from '@vueuse/core'
 import { clampValue } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './useCarouselState'
+import type {MaybeRef} from 'vue';
 
 export function useCarouselScroll(instanceId: MaybeRef<string>) {
   // Private state

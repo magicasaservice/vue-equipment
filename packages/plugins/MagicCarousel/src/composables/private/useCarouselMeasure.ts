@@ -1,11 +1,13 @@
-import { computed, watch, type MaybeRef } from 'vue'
+import { computed, watch  } from 'vue'
 import { useResizeObserver, useMutationObserver } from '@vueuse/core'
 import { convertToPixels } from '@maas/vue-equipment/utils'
 import {
-  useMagicError,
-  type UseMagicErrorReturn,
+  useMagicError
+  
 } from '@maas/vue-equipment/plugins/MagicError'
 import { useCarouselState } from './useCarouselState'
+import type {MaybeRef} from 'vue';
+import type {UseMagicErrorReturn} from '@maas/vue-equipment/plugins/MagicError';
 
 export function useCarouselMeasure(instanceId: MaybeRef<string>) {
   // Private state

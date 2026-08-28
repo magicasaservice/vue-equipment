@@ -1,6 +1,7 @@
-import { computed, watch, type MaybeRef } from 'vue'
+import { computed, watch  } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { useCarouselState } from './useCarouselState'
+import type {MaybeRef} from 'vue';
 
 const wrapThreshold = 4
 

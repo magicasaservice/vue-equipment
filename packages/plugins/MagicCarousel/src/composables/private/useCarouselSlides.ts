@@ -1,5 +1,6 @@
-import { reactive, markRaw, type MaybeRef } from 'vue'
+import { reactive, markRaw  } from 'vue'
 import { useCarouselState } from './useCarouselState'
+import type {MaybeRef} from 'vue';
 import type { CarouselSlide } from '../../types'
 
 type InitializeSlideArgs = {

@@ -1,6 +1,7 @@
-import { computed, toValue, type MaybeRef } from 'vue'
+import { computed, toValue  } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './private/useCarouselState'
+import type {MaybeRef} from 'vue';
 
 export function useMagicCarousel(id: MaybeRef<string>) {
   // Private state

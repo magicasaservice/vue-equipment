@@ -32,14 +32,15 @@ import {
 import { unrefElement } from '@vueuse/core'
 import { VuePrimitive } from '@maas/vue-primitive'
 import {
-  useMagicError,
-  type UseMagicErrorReturn,
+  useMagicError
+  
 } from '@maas/vue-equipment/plugins/MagicError'
 import { MagicCarouselInstanceId } from '../symbols'
 import { useCarouselState } from '../composables/private/useCarouselState'
 import { useCarouselMeasure } from '../composables/private/useCarouselMeasure'
 import { useCarouselScroll } from '../composables/private/useCarouselScroll'
 import { useCarouselDrag } from '../composables/private/useCarouselDrag'
+import type {UseMagicErrorReturn} from '@maas/vue-equipment/plugins/MagicError';
 
 interface MagicCarouselViewProps {
   asChild?: boolean

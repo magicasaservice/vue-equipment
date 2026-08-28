@@ -9,10 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, watch, type MaybeRef } from 'vue'
+import { provide, watch  } from 'vue'
 import { VuePrimitive } from '@maas/vue-primitive'
 import { useCarouselState } from '../composables/private/useCarouselState'
 import { MagicCarouselInstanceId } from '../symbols'
+import type {MaybeRef} from 'vue';
 import type { MagicCarouselOptions } from '../types'
 
 interface MagicCarouselProviderProps {

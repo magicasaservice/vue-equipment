@@ -3,11 +3,12 @@ import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, onScopeDispose } from 'vue'
 import {
-  useMagicEmitter,
-  type MagicEmitterEvents,
+  useMagicEmitter
+  
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { createCarousel, dispatchPointer } from './test-utils'
 import { CarouselId, TestId } from './enums'
+import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
 
 type RecordedEvent = {
   name: keyof MagicEmitterEvents
