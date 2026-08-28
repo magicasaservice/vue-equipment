@@ -4,7 +4,7 @@
     class="w-full"
     :options="{ loop: true }"
   >
-    <magic-carousel-view class="demo-carousel w-full">
+    <magic-carousel-track class="demo-carousel w-full">
       <magic-carousel-slide
         v-for="index in 6"
         :key="index"
@@ -12,7 +12,7 @@
       >
         <carousel-demo-card :index="index" />
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
   </magic-carousel-provider>
 </template>
 

@@ -3,7 +3,7 @@
     id="magic-carousel-dots-demo"
     class="flex w-full flex-col items-center gap-6"
   >
-    <magic-carousel-view class="demo-carousel w-full">
+    <magic-carousel-track class="demo-carousel w-full">
       <magic-carousel-slide
         v-for="index in 6"
         :key="index"
@@ -11,7 +11,7 @@
       >
         <carousel-demo-card :index="index" />
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
 
     <div class="flex items-center gap-3">
       <magic-carousel-trigger

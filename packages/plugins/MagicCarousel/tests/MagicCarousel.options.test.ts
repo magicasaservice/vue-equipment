@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent } from 'vue'
 import { useMagicCarousel } from '../src/composables/useMagicCarousel'
-import { createCarousel } from './test-utils'
+import { createCarousel, createLoopedCarousel } from './test-utils'
 import { CarouselId, TestId } from './enums'
 
 describe('MagicCarousel - Options', () => {
@@ -33,12 +33,40 @@ describe('MagicCarousel - Options', () => {
   })
 
   describe('loop', () => {
-    it('sets data-loop on the view', async () => {
+    it('sets data-loop on the track', async () => {
       render(createCarousel(CarouselId.OptLoop, { loop: true }))
 
       await vi.waitFor(() => {
-        const view = page.getByTestId(TestId.View).element()
-        expect(view.getAttribute('data-loop')).toBe('true')
+        const track = page.getByTestId(TestId.Track).element()
+        expect(track.getAttribute('data-loop')).toBe('true')
+      })
+    })
+
+    it('sizes slides in container query units relative to the provider', async () => {
+      render(
+        createLoopedCarousel(
+          CarouselId.OptLoopRelative,
+          '--magic-carousel-slide-size: 50cqi; --magic-carousel-gap: 0px;'
+        )
+      )
+
+      await vi.waitFor(() => {
+        const slides = page.getByTestId(TestId.Slide).elements()
+        expect(slides[0]?.getBoundingClientRect().width).toBeCloseTo(150, 1)
+      })
+    })
+
+    it('computes the slides per view size from the provider width', async () => {
+      render(
+        createLoopedCarousel(
+          CarouselId.OptLoopPerView,
+          '--magic-carousel-slides-per-view: 3; --magic-carousel-gap: 0px;'
+        )
+      )
+
+      await vi.waitFor(() => {
+        const slides = page.getByTestId(TestId.Slide).elements()
+        expect(slides[0]?.getBoundingClientRect().width).toBeCloseTo(100, 1)
       })
     })
   })

@@ -21,7 +21,7 @@ export function useMagicCarousel(id: MaybeRef<string>) {
 
   // Private functions
   function findSnapIndex(direction: 'previous' | 'next') {
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el) {
       return null

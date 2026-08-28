@@ -3,7 +3,7 @@
     id="magic-carousel-variable-width-demo"
     class="w-full"
   >
-    <magic-carousel-view class="demo-carousel w-full">
+    <magic-carousel-track class="demo-carousel w-full">
       <magic-carousel-slide
         v-for="(width, index) in widths"
         :key="index"
@@ -11,7 +11,7 @@
       >
         <carousel-demo-card :index="index + 1" />
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
   </magic-carousel-provider>
 </template>
 

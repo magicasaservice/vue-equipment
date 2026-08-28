@@ -6,14 +6,14 @@ import { useMagicCarousel } from '../src/composables/useMagicCarousel'
 import { createCarousel, dispatchPointer, dragPointer } from './test-utils'
 import { CarouselId, TestId } from './enums'
 
-function getView() {
-  const view = page.getByTestId(TestId.View).element()
+function getTrack() {
+  const track = page.getByTestId(TestId.Track).element()
 
-  if (!(view instanceof HTMLElement)) {
-    throw new Error('View element not found')
+  if (!(track instanceof HTMLElement)) {
+    throw new Error('Track element not found')
   }
 
-  return view
+  return track
 }
 
 async function renderWithApi(carouselId: CarouselId) {
@@ -30,18 +30,18 @@ async function renderWithApi(carouselId: CarouselId) {
     })
   )
 
-  const view = getView()
+  const track = getTrack()
 
   await vi.waitFor(() => {
-    expect(view.getAttribute('data-draggable')).toBe('true')
+    expect(track.getAttribute('data-draggable')).toBe('true')
   })
 
-  return { api: api!, view }
+  return { api: api!, track }
 }
 
 describe('MagicCarousel - Interactions', () => {
   describe('draggable', () => {
-    it('arms mouse dragging once the view overflows', async () => {
+    it('arms mouse dragging once the track overflows', async () => {
       const { api } = await renderWithApi(CarouselId.InteractionDraggable)
 
       expect(api.state.draggable).toBe(true)
@@ -49,29 +49,29 @@ describe('MagicCarousel - Interactions', () => {
   })
 
   describe('drag', () => {
-    it('scrolls the view with momentum and settles', async () => {
-      const { view } = await renderWithApi(CarouselId.InteractionDrag)
+    it('scrolls the track with momentum and settles', async () => {
+      const { track } = await renderWithApi(CarouselId.InteractionDrag)
 
-      dispatchPointer({ target: view, type: 'pointerdown', clientX: 300 })
+      dispatchPointer({ target: track, type: 'pointerdown', clientX: 300 })
 
       await vi.waitFor(() => {
-        expect(view.getAttribute('data-dragging')).toBe('true')
+        expect(track.getAttribute('data-dragging')).toBe('true')
       })
 
       await dragPointer({ target: window, from: 300, to: 60, step: 30 })
 
       await vi.waitFor(() => {
-        expect(view.getAttribute('data-scrolling')).toBe('true')
-        expect(view.scrollLeft).toBeGreaterThan(0)
+        expect(track.getAttribute('data-scrolling')).toBe('true')
+        expect(track.scrollLeft).toBeGreaterThan(0)
       })
 
       dispatchPointer({ target: window, type: 'pointerup', clientX: 60 })
 
       await vi.waitFor(
         () => {
-          expect(view.getAttribute('data-dragging')).toBeNull()
-          expect(view.getAttribute('data-scrolling')).toBeNull()
-          expect(view.scrollLeft).toBeGreaterThan(50)
+          expect(track.getAttribute('data-dragging')).toBeNull()
+          expect(track.getAttribute('data-scrolling')).toBeNull()
+          expect(track.scrollLeft).toBeGreaterThan(50)
         },
         { timeout: 5000 }
       )
@@ -80,11 +80,11 @@ describe('MagicCarousel - Interactions', () => {
 
   describe('rubberband', () => {
     it('overshoots past the start and relaxes back', async () => {
-      const { api, view } = await renderWithApi(
+      const { api, track } = await renderWithApi(
         CarouselId.InteractionRubberband
       )
 
-      dispatchPointer({ target: view, type: 'pointerdown', clientX: 100 })
+      dispatchPointer({ target: track, type: 'pointerdown', clientX: 100 })
 
       await dragPointer({ target: window, from: 100, to: 400, step: 30 })
 
@@ -96,9 +96,9 @@ describe('MagicCarousel - Interactions', () => {
 
       await vi.waitFor(
         () => {
-          expect(view.getAttribute('data-scrolling')).toBeNull()
+          expect(track.getAttribute('data-scrolling')).toBeNull()
           expect(api.state.rubberbandOffset).toBe(0)
-          expect(view.scrollLeft).toBeLessThan(2)
+          expect(track.scrollLeft).toBeLessThan(2)
         },
         { timeout: 5000 }
       )

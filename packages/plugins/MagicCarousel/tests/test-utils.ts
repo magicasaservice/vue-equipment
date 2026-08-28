@@ -43,11 +43,38 @@ export async function dragPointer(args: {
 }
 
 import MagicCarouselProvider from '../src/components/MagicCarouselProvider.vue'
-import MagicCarouselView from '../src/components/MagicCarouselView.vue'
+import MagicCarouselTrack from '../src/components/MagicCarouselTrack.vue'
 import MagicCarouselSlide from '../src/components/MagicCarouselSlide.vue'
 import MagicCarouselTrigger from '../src/components/MagicCarouselTrigger.vue'
 import { useMagicCarousel } from '../src/composables/useMagicCarousel'
 import { TestId } from './enums'
+
+export function createLoopedCarousel(carouselId: string, trackStyle: string) {
+  return defineComponent({
+    components: {
+      MagicCarouselProvider,
+      MagicCarouselTrack,
+      MagicCarouselSlide,
+    },
+    template: `
+      <MagicCarouselProvider
+        id="${carouselId}"
+        style="width: 300px"
+        :options="{ loop: true }"
+      >
+        <MagicCarouselTrack data-test-id="${TestId.Track}" style="${trackStyle}">
+          <MagicCarouselSlide
+            v-for="index in 6"
+            :key="index"
+            data-test-id="${TestId.Slide}"
+          >
+            <div style="height: 100px;">{{ index }}</div>
+          </MagicCarouselSlide>
+        </MagicCarouselTrack>
+      </MagicCarouselProvider>
+    `,
+  })
+}
 
 export function createCarousel(
   carouselId: string,
@@ -57,7 +84,7 @@ export function createCarousel(
   return defineComponent({
     components: {
       MagicCarouselProvider,
-      MagicCarouselView,
+      MagicCarouselTrack,
       MagicCarouselSlide,
       MagicCarouselTrigger,
     },
@@ -74,9 +101,9 @@ export function createCarousel(
         <span data-test-id="${TestId.SlideCount}">{{ slideCount }}</span>
         <span data-test-id="${TestId.Progress}">{{ progress }}</span>
         <MagicCarouselProvider id="${carouselId}" :options="options">
-          <MagicCarouselView
-            data-test-id="${TestId.View}"
-            style="width: 300px; --magic-carousel-slides-per-view: 3; --magic-carousel-gap: 0px;"
+          <MagicCarouselTrack
+            data-test-id="${TestId.Track}"
+            style="width: 300px; --magic-carousel-slides-per-track: 3; --magic-carousel-gap: 0px;"
           >
             <MagicCarouselSlide
               v-for="index in ${slideCount}"
@@ -85,7 +112,7 @@ export function createCarousel(
             >
               <div style="height: 100px;">{{ index }}</div>
             </MagicCarouselSlide>
-          </MagicCarouselView>
+          </MagicCarouselTrack>
           <MagicCarouselTrigger data-test-id="${TestId.TriggerPrevious}" action="previous" />
           <MagicCarouselTrigger data-test-id="${TestId.TriggerNext}" action="next" />
         </MagicCarouselProvider>

@@ -1,7 +1,7 @@
 import MagicCarouselProvider from './src/components/MagicCarouselProvider.vue'
 import MagicCarouselSlide from './src/components/MagicCarouselSlide.vue'
 import MagicCarouselTrigger from './src/components/MagicCarouselTrigger.vue'
-import MagicCarouselView from './src/components/MagicCarouselView.vue'
+import MagicCarouselTrack from './src/components/MagicCarouselTrack.vue'
 import { useMagicCarousel } from './src/composables/useMagicCarousel'
 import { MagicCarouselInstanceId } from './src/symbols/index'
 
@@ -18,7 +18,7 @@ const MagicCarouselPlugin: Plugin = {
     app.component('MagicCarouselProvider', MagicCarouselProvider)
     app.component('MagicCarouselSlide', MagicCarouselSlide)
     app.component('MagicCarouselTrigger', MagicCarouselTrigger)
-    app.component('MagicCarouselView', MagicCarouselView)
+    app.component('MagicCarouselTrack', MagicCarouselTrack)
   },
 }
 

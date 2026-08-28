@@ -1,12 +1,12 @@
 <template>
   <magic-carousel-provider id="magic-carousel-cover-flow-demo" class="w-full">
-    <magic-carousel-view class="demo-carousel w-full">
+    <magic-carousel-track class="demo-carousel w-full">
       <magic-carousel-slide v-for="index in 8" :key="index" class="demo-slide">
         <div class="demo-cover">
           <carousel-demo-card :index="index" />
         </div>
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
   </magic-carousel-provider>
 </template>
 

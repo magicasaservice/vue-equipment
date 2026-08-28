@@ -28,14 +28,14 @@ function recordedNames() {
   return recorded.map((event) => event.name)
 }
 
-function getView() {
-  const view = page.getByTestId(TestId.View).element()
+function getTrack() {
+  const track = page.getByTestId(TestId.Track).element()
 
-  if (!(view instanceof HTMLElement)) {
-    throw new Error('View element not found')
+  if (!(track instanceof HTMLElement)) {
+    throw new Error('Track element not found')
   }
 
-  return view
+  return track
 }
 
 // The emitter store is scoped to the app instance, so listeners have to be
@@ -66,10 +66,10 @@ describe('MagicCarousel - Events', () => {
     it('emits snapTo and afterSnap when a trigger is clicked', async () => {
       render(createRecordedCarousel(CarouselId.EventsSnapTo))
 
-      const view = getView()
+      const track = getTrack()
 
       await vi.waitFor(() => {
-        expect(view.scrollWidth).toBeGreaterThan(view.clientWidth)
+        expect(track.scrollWidth).toBeGreaterThan(track.clientWidth)
       })
 
       await page.getByTestId(TestId.TriggerNext).click()
@@ -95,13 +95,13 @@ describe('MagicCarousel - Events', () => {
     it('emits beforeDrag, drag and afterDrag around a mouse drag', async () => {
       render(createRecordedCarousel(CarouselId.EventsDrag))
 
-      const view = getView()
+      const track = getTrack()
 
       await vi.waitFor(() => {
-        expect(view.getAttribute('data-draggable')).toBe('true')
+        expect(track.getAttribute('data-draggable')).toBe('true')
       })
 
-      dispatchPointer({ target: view, type: 'pointerdown', clientX: 200 })
+      dispatchPointer({ target: track, type: 'pointerdown', clientX: 200 })
 
       for (let clientX = 190; clientX >= 100; clientX -= 10) {
         dispatchPointer({ target: window, type: 'pointermove', clientX })

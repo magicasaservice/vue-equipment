@@ -6,6 +6,9 @@ export enum CarouselId {
   ApiPrevious = 'api-previous',
   OptDefaults = 'opt-defaults',
   OptLoop = 'opt-loop',
+  OptLoopRelative = 'opt-loop-relative',
+  OptLoopPerView = 'opt-loop-per-view',
+  LoopWrap = 'loop-wrap',
   OptMerge = 'opt-merge',
   RenderProvider = 'render-provider',
   RenderSlides = 'render-slides',
@@ -22,7 +25,7 @@ export enum CarouselId {
 }
 
 export enum TestId {
-  View = 'view',
+  Track = 'track',
   Slide = 'slide',
   ActiveIndex = 'active-index',
   SlideCount = 'slide-count',

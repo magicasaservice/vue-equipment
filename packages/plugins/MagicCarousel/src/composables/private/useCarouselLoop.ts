@@ -3,14 +3,16 @@ import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { useCarouselState } from './useCarouselState'
 import type {MaybeRef} from 'vue';
 
-const wrapThreshold = 4
+// The looped track's ::after spacer guarantees at least 2 × this threshold
+// of scroll runway past the period (see MagicCarouselTrack)
+export const wrapThreshold = 4
 
 export function useCarouselLoop(instanceId: MaybeRef<string>) {
   // Private state
   const { initializeState } = useCarouselState(instanceId)
   const state = initializeState()
 
-  const mappedViewEl = computed(() => state.viewEl)
+  const mappedTrackEl = computed(() => state.trackEl)
   const mappedLoop = computed(() => state.options.loop)
 
   // Private functions
@@ -21,10 +23,7 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
     isEnd: boolean
   }) {
     const { startIndex, endIndex, threshold, isEnd } = args
-    const { range, gap } = state.measurements
-
-    // The seamless period includes one more gap than the scroll range
-    const period = range + gap
+    const { period, gap } = state.measurements
 
     const step = isEnd ? -1 : 1
     const baseOffset = isEnd ? -period : period
@@ -45,17 +44,19 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
 
   // Public functions
   function syncLoop(x?: number) {
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el || !mappedLoop.value || !state.slides.length) {
       return
     }
 
-    const { scrollWidth, width, paddingStart, paddingEnd } = state.measurements
+    const { width, gap, paddingStart, range, period } = state.measurements
 
     const scrollStart = x ?? el.scrollLeft
+    const contentEnd = paddingStart + period - gap
+
     const distanceToStartEdge = paddingStart - scrollStart
-    const distanceToEndEdge = scrollStart - (scrollWidth - width - paddingEnd)
+    const distanceToEndEdge = scrollStart + width - contentEnd
 
     offsetSlides({
       startIndex: state.slides.length - 1,
@@ -75,12 +76,11 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
       return
     }
 
-    const end = scrollWidth - width - wrapThreshold
     const left =
-      scrollStart > end
-        ? wrapThreshold
+      scrollStart > range - wrapThreshold
+        ? scrollStart - period
         : scrollStart < wrapThreshold
-          ? end
+          ? scrollStart + period
           : null
 
     if (left === null) {
@@ -92,7 +92,7 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
   }
 
   useEventListener(
-    mappedViewEl,
+    mappedTrackEl,
     'scroll',
     () => {
       if (!state.scrolling && !state.dragging) {
@@ -102,7 +102,7 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
     { passive: true }
   )
 
-  useResizeObserver(mappedViewEl, () => syncLoop())
+  useResizeObserver(mappedTrackEl, () => syncLoop())
 
   watch(mappedLoop, (value) => {
     if (value) {

@@ -12,17 +12,17 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
 
   const emitter = useMagicEmitter()
 
-  const mappedViewEl = computed(() => state.viewEl)
+  const mappedTrackEl = computed(() => state.trackEl)
 
   // Private functions
   function track() {
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el) {
       return
     }
 
-    const { range, direction } = state.measurements
+    const { range, direction, period } = state.measurements
     const logicalPosition = el.scrollLeft * direction
 
     state.progress =
@@ -40,7 +40,16 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
     let nearestDistance = Number.POSITIVE_INFINITY
 
     for (const [index, position] of state.snapPositions.entries()) {
-      const distance = Math.abs(position - el.scrollLeft)
+      let distance = Math.abs(position - el.scrollLeft)
+
+      // Snap positions repeat once per period when looping
+      if (state.options.loop && period > 0) {
+        distance = Math.min(
+          distance,
+          Math.abs(position - period - el.scrollLeft),
+          Math.abs(position + period - el.scrollLeft)
+        )
+      }
 
       if (distance < nearestDistance) {
         nearestDistance = distance
@@ -84,11 +93,11 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
     }
   }
 
-  useEventListener(mappedViewEl, 'scroll', onScroll, { passive: true })
-  useEventListener(mappedViewEl, 'scrollend', settle, { passive: true })
+  useEventListener(mappedTrackEl, 'scroll', onScroll, { passive: true })
+  useEventListener(mappedTrackEl, 'scrollend', settle, { passive: true })
 
   watch(
-    () => [state.viewEl, state.snapPositions],
+    () => [state.trackEl, state.snapPositions],
     () => track()
   )
 

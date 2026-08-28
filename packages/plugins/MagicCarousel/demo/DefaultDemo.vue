@@ -1,6 +1,6 @@
 <template>
   <magic-carousel-provider id="magic-carousel-default-demo" class="w-full">
-    <magic-carousel-view class="demo-carousel w-full">
+    <magic-carousel-track class="demo-carousel w-full">
       <magic-carousel-slide
         v-for="index in 6"
         :key="index"
@@ -8,7 +8,7 @@
       >
         <carousel-demo-card :index="index" />
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
   </magic-carousel-provider>
 </template>
 

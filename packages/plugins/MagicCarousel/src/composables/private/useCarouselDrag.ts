@@ -11,7 +11,7 @@ import {
   
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './useCarouselState'
-import { useCarouselLoop } from './useCarouselLoop'
+import { useCarouselLoop, wrapThreshold } from './useCarouselLoop'
 import { damp, round } from '../../utils/physics'
 import { shouldSnap, snapVelocity } from '../../utils/snap'
 import type {MaybeRef} from 'vue';
@@ -27,7 +27,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
   const { syncLoop } = useCarouselLoop(instanceId)
   const emitter = useMagicEmitter()
 
-  const mappedViewEl = computed(() => state.viewEl)
+  const mappedTrackEl = computed(() => state.trackEl)
 
   let pointerStart = 0
   let target = 0
@@ -84,7 +84,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
   }
 
   function interpolateScroll(snapPoint: number, duration?: number) {
-    const el = state.viewEl
+    const el = state.trackEl
     const position = state.snapPositions[snapPoint]
 
     if (!el || position === undefined) {
@@ -163,7 +163,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     raf = requestAnimationFrame(tick)
     frameDelta = t - lastTick
 
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el) {
       return
@@ -181,14 +181,14 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     }
 
     if (state.options.loop) {
-      const end = state.measurements.range - 4
+      const { range, period } = state.measurements
 
-      if (virtualScroll > end) {
-        virtualScroll = target = 4
-      }
-
-      if (virtualScroll < 4) {
-        virtualScroll = target = end
+      if (virtualScroll > range - wrapThreshold) {
+        virtualScroll -= period
+        target -= period
+      } else if (virtualScroll < wrapThreshold) {
+        virtualScroll += period
+        target += period
       }
     }
 
@@ -222,7 +222,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
       dragStarted = true
       emitter.emit('beforeDrag', {
         id: toValue(instanceId),
-        x: state.viewEl?.scrollLeft ?? 0,
+        x: state.trackEl?.scrollLeft ?? 0,
         y: 0,
       })
       state.scrolling = true
@@ -231,7 +231,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     if (dragStarted) {
       emitter.emit('drag', {
         id: toValue(instanceId),
-        x: state.viewEl?.scrollLeft ?? 0,
+        x: state.trackEl?.scrollLeft ?? 0,
         y: 0,
       })
     }
@@ -243,7 +243,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     stopPointermove = null
     stopPointerup = null
 
-    guardedReleasePointerCapture({ event: e, element: state.viewEl })
+    guardedReleasePointerCapture({ event: e, element: state.trackEl })
 
     state.dragging = false
 
@@ -271,14 +271,14 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
       dragStarted = false
       emitter.emit('afterDrag', {
         id: toValue(instanceId),
-        x: state.viewEl?.scrollLeft ?? 0,
+        x: state.trackEl?.scrollLeft ?? 0,
         y: 0,
       })
     }
   }
 
   function onPointerDown(e: PointerEvent) {
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el || !state.draggable || !e.isPrimary || e.button !== 0) {
       return
@@ -314,8 +314,8 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     }
   }
 
-  useEventListener(mappedViewEl, 'pointerdown', onPointerDown)
-  useEventListener(mappedViewEl, 'wheel', onWheel, { passive: true })
+  useEventListener(mappedTrackEl, 'pointerdown', onPointerDown)
+  useEventListener(mappedTrackEl, 'wheel', onWheel, { passive: true })
   useEventListener(window, 'keydown', onKeydown)
 
   emitter.on('snapTo', snapToCallback)
@@ -325,7 +325,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     () => state.scrolling,
     (value) => {
       if (value) {
-        const el = state.viewEl
+        const el = state.trackEl
 
         if (!el) {
           state.scrolling = false
@@ -347,7 +347,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     }
   )
 
-  watch(mappedViewEl, (el, _, onCleanup) => {
+  watch(mappedTrackEl, (el, _, onCleanup) => {
     if (!el) {
       return
     }

@@ -4,7 +4,7 @@
       id="magic-carousel-thumbnails-demo-main"
       class="w-full"
     >
-      <magic-carousel-view class="demo-main w-full">
+      <magic-carousel-track class="demo-main w-full">
         <magic-carousel-slide
           v-for="index in 10"
           :key="index"
@@ -12,14 +12,14 @@
         >
           <carousel-demo-card :index="index" />
         </magic-carousel-slide>
-      </magic-carousel-view>
+      </magic-carousel-track>
     </magic-carousel-provider>
 
     <magic-carousel-provider
       id="magic-carousel-thumbnails-demo-thumbs"
       class="w-full"
     >
-      <magic-carousel-view class="demo-thumbs w-full">
+      <magic-carousel-track class="demo-thumbs w-full">
         <magic-carousel-slide
           v-for="index in 10"
           :key="index"
@@ -35,7 +35,7 @@
             <carousel-demo-card :index="index" size="sm" />
           </button>
         </magic-carousel-slide>
-      </magic-carousel-view>
+      </magic-carousel-track>
     </magic-carousel-provider>
   </div>
 </template>

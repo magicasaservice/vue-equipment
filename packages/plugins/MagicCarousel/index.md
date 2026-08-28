@@ -11,11 +11,11 @@ MagicCarousel is a flexible, unstyled carousel component built on native CSS scr
 ```vue
 <template>
   <magic-carousel-provider id="your-carousel-id">
-    <magic-carousel-view>
+    <magic-carousel-track>
       <magic-carousel-slide v-for="slide in slides" :key="slide.id">
         <!-- your content -->
       </magic-carousel-slide>
-    </magic-carousel-view>
+    </magic-carousel-track>
 
     <magic-carousel-trigger action="previous" />
     <magic-carousel-trigger action="next" />
@@ -208,7 +208,7 @@ The provider wraps the carousel and provides the necessary context to its childr
       items: [
         {
           label: 'loop',
-          description: 'Loop the carousel infinitely. Slides are shifted around the edges to keep the view filled in both directions.'
+          description: 'Loop the carousel infinitely. Slides are shifted around the edges to keep the track filled in both directions.'
         },
         {
           label: 'boolean'
@@ -306,9 +306,9 @@ The provider wraps the carousel and provides the necessary context to its childr
   ]"
 />
 
-### MagicCarouselView
+### MagicCarouselTrack
 
-The view is the scroll container. All slides need to be nested inside it.
+The track is the scroll container. All slides need to be nested inside it.
 
 #### Props
 
@@ -755,8 +755,8 @@ emitter.on('afterSnap', (payload) => {
     {
       items: [
         { label: 'missing_instance_id' },
-        { label: 'MagicCarouselView' },
-        { label: 'MagicCarouselView must be nested inside MagicCarouselProvider' }
+        { label: 'MagicCarouselTrack' },
+        { label: 'MagicCarouselTrack must be nested inside MagicCarouselProvider' }
       ]
     },
     {
@@ -776,7 +776,7 @@ emitter.on('afterSnap', (payload) => {
     {
       items: [
         { label: 'overshoot_unit' },
-        { label: 'MagicCarouselView' },
+        { label: 'MagicCarouselTrack' },
         { label: '--magic-carousel-drag-overshoot needs to be specified in px or rem' }
       ]
     },
@@ -785,7 +785,7 @@ emitter.on('afterSnap', (payload) => {
 
 ## Caveats
 
-Snapping is configured entirely through CSS. Set `--magic-carousel-snap-type` on the view and `--magic-carousel-snap-align` on the slides — the drag physics read these values and simulate the same snapping while dragging with a mouse. Set `--magic-carousel-snap-type` to `none` to disable snapping altogether.
+Snapping is configured entirely through CSS. Set `--magic-carousel-snap-type` on the track and `--magic-carousel-snap-align` on the slides — the drag physics read these values and simulate the same snapping while dragging with a mouse. Set `--magic-carousel-snap-type` to `none` to disable snapping altogether.
 
 The same goes for the rubberband effect. `--magic-carousel-drag-overshoot` sets how far the carousel can be dragged past either end; resistance grows the closer it gets. The value needs to be specified in `px` or `rem`. Set it to `0px` to prevent overdragging entirely. The variable is ignored when `loop` is set.
 
@@ -803,9 +803,15 @@ Since the carousel is a native scroll container, responsive layouts don’t need
 }
 ```
 
-In order for the drag physics to stay in control of the scroll position, scroll the carousel programmatically through the composable or the element’s `scrollTo` and `scrollBy` methods. Calling `scrollIntoView` on a slide bypasses the carousel and may interrupt an ongoing animation mid-frame.
+In order for the drag physics to stay in control of the scroll position, scroll the carousel programmatically through the composable or the element’s `scrollTo` and `scrollBy` methods. Never use `scrollIntoView` to scroll a slide, as it bypasses the carousel and may interrupt an ongoing animation mid-frame.
 
-Loop mode adds `50%` inline padding to the view, which makes percentage based slide sizes resolve to `0`. Size slides in fixed units when `loop` is enabled.
+Loop mode adds `50%` inline padding to the track, which makes percentage based slide sizes resolve to `0`. The provider is an inline-size container, so use container query units instead — `cqi` resolves against the provider’s width regardless of the track’s padding. `--magic-carousel-slides-per-view` switches to a `100cqi` basis automatically when `loop` is set.
+
+```css
+.your-carousel {
+  --magic-carousel-slide-size: 40cqi;
+}
+```
 
 ## Examples
 
@@ -827,7 +833,7 @@ Pass an index as `action` to snap to a specific slide. The trigger sets `data-ac
 
 ### Snap Alignment
 
-Set `--magic-carousel-snap-align` to `center` to snap slides to the middle of the view. Add matching `padding-inline` so the first and last slide can reach the center.
+Set `--magic-carousel-snap-align` to `center` to snap slides to the middle of the track. Add matching `padding-inline` so the first and last slide can reach the center.
 
 <component-preview src="./demo/SnapAlignDemo.vue" />
 

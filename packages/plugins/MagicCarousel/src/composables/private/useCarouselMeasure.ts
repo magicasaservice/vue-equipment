@@ -6,6 +6,7 @@ import {
   
 } from '@maas/vue-equipment/plugins/MagicError'
 import { useCarouselState } from './useCarouselState'
+import { wrapThreshold } from './useCarouselLoop'
 import type {MaybeRef} from 'vue';
 import type {UseMagicErrorReturn} from '@maas/vue-equipment/plugins/MagicError';
 
@@ -19,7 +20,7 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
     source: 'useCarouselMeasure',
   })
 
-  const mappedViewEl = computed(() => state.viewEl)
+  const mappedTrackEl = computed(() => state.trackEl)
 
   // Private functions
   function resolveInlineLength(value: string, reference: number): number {
@@ -52,7 +53,7 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
     }
   }
 
-  function measureView(el: HTMLElement) {
+  function measureTrack(el: HTMLElement) {
     const styles = window.getComputedStyle(el)
 
     const width = el.clientWidth
@@ -62,6 +63,7 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
       scrollWidth: scrollWidth,
       width: width,
       range: Math.max(scrollWidth - width, 0),
+      period: state.measurements.period,
       gap: parseFloat(styles.columnGap) || 0,
       paddingStart: resolveInlineLength(styles.paddingInlineStart, width),
       paddingEnd: resolveInlineLength(styles.paddingInlineEnd, width),
@@ -109,10 +111,14 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
   }
 
   function measureSlides(el: HTMLElement) {
-    const viewRect = el.getBoundingClientRect()
-    const { width, scrollPaddingStart, scrollPaddingEnd } = state.measurements
+    const trackRect = el.getBoundingClientRect()
+    const { width, gap, scrollPaddingStart, scrollPaddingEnd } =
+      state.measurements
 
     const snapPositions: Array<number> = []
+
+    // One seamless repetition of the content: every slide plus one gap each
+    let period = 0
 
     for (const slide of state.slides) {
       if (!slide.el) {
@@ -123,9 +129,10 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
       const rect = slide.el.getBoundingClientRect()
       const styles = window.getComputedStyle(slide.el)
 
-      slide.width = slide.el.clientWidth
+      slide.width = rect.width
+      period += slide.width + gap
 
-      const left = rect.left - viewRect.left + el.scrollLeft - slide.loopOffset
+      const left = rect.left - trackRect.left + el.scrollLeft - slide.loopOffset
 
       const alignValues = styles.scrollSnapAlign.split(' ')
       const align = alignValues[alignValues.length - 1]
@@ -149,30 +156,37 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
     }
 
     state.snapPositions = snapPositions
+    state.measurements.period = period
+
+    // Translated slides inflate el.scrollWidth, use the guaranteed
+    // runway past the period instead (see MagicCarouselTrack)
+    if (state.options.loop) {
+      state.measurements.range = period + 2 * wrapThreshold
+    }
   }
 
   // Public functions
   function measure() {
-    const el = state.viewEl
+    const el = state.trackEl
 
     if (!el) {
       return
     }
 
     sortSlides()
-    measureView(el)
+    measureTrack(el)
     measureSlides(el)
   }
 
-  useResizeObserver(mappedViewEl, measure)
+  useResizeObserver(mappedTrackEl, measure)
 
-  useMutationObserver(mappedViewEl, measure, {
+  useMutationObserver(mappedTrackEl, measure, {
     childList: true,
     subtree: true,
   })
 
   watch(
-    () => [state.viewEl, state.slides.length],
+    () => [state.trackEl, state.slides.length],
     () => measure()
   )
 

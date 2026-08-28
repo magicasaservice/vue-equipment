@@ -37,6 +37,7 @@ export interface CarouselMeasurements {
   scrollWidth: number
   width: number
   range: number
+  period: number
   gap: number
   paddingStart: number
   paddingEnd: number
@@ -49,7 +50,7 @@ export interface CarouselState {
   id: string
   refCount: number
   options: RequiredMagicCarouselOptions
-  viewEl: HTMLElement | null
+  trackEl: HTMLElement | null
   slides: Array<CarouselSlide>
   snapPositions: Array<number>
   measurements: CarouselMeasurements

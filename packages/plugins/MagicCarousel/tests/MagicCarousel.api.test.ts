@@ -6,14 +6,14 @@ import { useMagicCarousel } from '../src/composables/useMagicCarousel'
 import { createCarousel } from './test-utils'
 import { CarouselId, TestId } from './enums'
 
-function getView() {
-  const view = page.getByTestId(TestId.View).element()
+function getTrack() {
+  const track = page.getByTestId(TestId.Track).element()
 
-  if (!(view instanceof HTMLElement)) {
-    throw new Error('View element not found')
+  if (!(track instanceof HTMLElement)) {
+    throw new Error('Track element not found')
   }
 
-  return view
+  return track
 }
 
 describe('MagicCarousel - API', () => {
@@ -59,16 +59,16 @@ describe('MagicCarousel - API', () => {
     it('snaps to the given slide', async () => {
       render(createCarousel(CarouselId.ApiSnapTo))
 
-      const view = getView()
+      const track = getTrack()
 
       await vi.waitFor(() => {
-        expect(view.scrollWidth).toBeGreaterThan(view.clientWidth)
+        expect(track.scrollWidth).toBeGreaterThan(track.clientWidth)
       })
 
       await page.getByTestId(TestId.SnapTo).click()
 
       await vi.waitFor(() => {
-        expect(view.scrollLeft).toBeGreaterThan(150)
+        expect(track.scrollLeft).toBeGreaterThan(150)
       })
     })
   })
@@ -77,24 +77,24 @@ describe('MagicCarousel - API', () => {
     it('scrolls forwards and backwards between snap positions', async () => {
       render(createCarousel(CarouselId.ApiNext))
 
-      const view = getView()
+      const track = getTrack()
 
       await vi.waitFor(() => {
-        expect(view.scrollWidth).toBeGreaterThan(view.clientWidth)
+        expect(track.scrollWidth).toBeGreaterThan(track.clientWidth)
       })
 
       await page.getByTestId(TestId.Next).click()
 
       await vi.waitFor(() => {
-        expect(view.scrollLeft).toBeGreaterThan(50)
+        expect(track.scrollLeft).toBeGreaterThan(50)
       })
 
-      const scrolledTo = view.scrollLeft
+      const scrolledTo = track.scrollLeft
 
       await page.getByTestId(TestId.Previous).click()
 
       await vi.waitFor(() => {
-        expect(view.scrollLeft).toBeLessThan(scrolledTo)
+        expect(track.scrollLeft).toBeLessThan(scrolledTo)
       })
     })
   })
