@@ -1,0 +1,55 @@
+import { describe, it, expect, vi } from 'vitest'
+import { render } from 'vitest-browser-vue'
+import { defineComponent } from 'vue'
+import { useMagicCarousel } from '../src/composables/useMagicCarousel'
+import { createCarousel } from './test-utils'
+import { CarouselId } from './enums'
+
+describe('MagicCarousel - State', () => {
+  describe('shared state', () => {
+    it('shares state between composable calls with the same id', async () => {
+      let outerApi: ReturnType<typeof useMagicCarousel> | undefined
+
+      render(
+        defineComponent({
+          components: { Carousel: createCarousel(CarouselId.StateShared) },
+          setup() {
+            outerApi = useMagicCarousel(CarouselId.StateShared)
+            return {}
+          },
+          template: '<Carousel />',
+        })
+      )
+
+      await vi.waitFor(() => {
+        expect(outerApi!.slideCount.value).toBe(6)
+      })
+    })
+  })
+
+  describe('independent state', () => {
+    it('keeps state of different instances separate', async () => {
+      let api1: ReturnType<typeof useMagicCarousel> | undefined
+      let api2: ReturnType<typeof useMagicCarousel> | undefined
+
+      render(
+        defineComponent({
+          components: { Carousel: createCarousel(CarouselId.StateInd1, {}, 4) },
+          setup() {
+            api1 = useMagicCarousel(CarouselId.StateInd1)
+            api2 = useMagicCarousel(CarouselId.StateInd2)
+            return {}
+          },
+          template: '<Carousel />',
+        })
+      )
+
+      await vi.waitFor(() => {
+        expect(api1!.slideCount.value).toBe(4)
+      })
+
+      expect(api2!.slideCount.value).toBe(0)
+      expect(api1!.state).not.toBe(api2!.state)
+    })
+  })
+})

@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme-without-fonts'
 // Import plugins individually
 import { MagicAccordionPlugin } from '@maas/vue-equipment/plugins/MagicAccordion'
+import { MagicCarouselPlugin } from '@maas/vue-equipment/plugins/MagicCarousel'
 import { MagicCommandPlugin } from '@maas/vue-equipment/plugins/MagicCommand'
 import { MagicCookiePlugin } from '@maas/vue-equipment/plugins/MagicCookie'
 import { MagicDraggablePlugin } from '@maas/vue-equipment/plugins/MagicDraggable'
@@ -63,6 +64,7 @@ export default {
     // Install all plugins
     const plugins = [
       MagicAccordionPlugin,
+      MagicCarouselPlugin,
       MagicCommandPlugin,
       MagicCookiePlugin,
       MagicDraggablePlugin,
