@@ -37,3 +37,9 @@ watch(
 
 provide(MagicCarouselInstanceId, id)
 </script>
+
+<style>
+.magic-carousel-provider {
+  container-type: inline-size;
+}
+</style>
