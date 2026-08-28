@@ -52,6 +52,10 @@ export function useCarouselLoop(instanceId: MaybeRef<string>) {
 
     const { width, gap, paddingStart, range, period } = state.measurements
 
+    if (period <= 0) {
+      return
+    }
+
     const scrollStart = x ?? el.scrollLeft
     const contentEnd = paddingStart + period - gap
 
