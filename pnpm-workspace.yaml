@@ -4,9 +4,10 @@ packages:
   - packages/nuxt/playground
   - '!packages/nuxt/test'
 catalog:
-  '@floating-ui/vue': ^1.1.11
+  '@floating-ui/vue': ^2.0.1
   '@maas/magic-timer': ^1.2.0
   '@maas/mirror': ^1.0.0-beta.44
+  '@maas/vue-autosize': ^1.8.0
   '@maas/vue-primitive': ^1.4.0
   '@nuxt/kit': ^4.5.2
   '@tailwindcss/vite': ^4.3.3
@@ -16,16 +17,17 @@ catalog:
   '@vueuse/integrations': '>=14.4.0'
   defu: ^6.1.7
   esno: ^4.8.0
-  focus-trap: ^7.8.0
+  focus-trap: ^8.2.2
   fs-extra: ^11.4.0
   hls.js: ^1.7.1
   luxon: ^3.7.2
   mitt: ^3.0.1
   tailwindcss: ^4.3.3
-  motion: ^12.43.0
+  motion: ^13.2.0
   nuxt: ^4.5.2
   prettier: ^3.9.6
   tsup: ^8.5.1
   typescript: ^5.9.3
   universal-cookie: ^8.1.2
   vue: ^3.5.42
+  wheel-gestures: ^2.2.48

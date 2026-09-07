@@ -126,6 +126,13 @@ If you haven't installed the required peer dependencies automatically, you'll ne
     {
       items: [
         {
+          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
         }
       ]
@@ -166,19 +173,19 @@ If you haven't installed the required peer dependencies automatically, you'll ne
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
+pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [npm]
-npm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
+npm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [yarn]
-yarn add @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
+yarn add @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 ```sh [bun]
-bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
+bun install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
 ```
 
 :::

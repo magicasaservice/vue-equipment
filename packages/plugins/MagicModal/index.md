@@ -126,6 +126,13 @@ If you haven’t installed the required peer dependencies automatically, you’l
     {
       items: [
         {
+          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+        }
+      ]
+    },
+    {
+      items: [
+        {
           label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
         }
       ]
@@ -159,19 +166,19 @@ If you haven’t installed the required peer dependencies automatically, you’l
 ::: code-group
 
 ```sh [pnpm]
-pnpm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap
+pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap
 ```
 
 ```sh [npm]
-npm install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap
+npm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap
 ```
 
 ```sh [yarn]
-yarn add @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap
+yarn add @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap
 ```
 
 ```sh [bun]
-bun install @nuxt/kit @vueuse/core @vueuse/integrations defu focus-trap
+bun install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap
 ```
 
 :::
