@@ -21,6 +21,7 @@ import {
   isAndroid,
   isIOS,
   isWithinRange,
+  lockSelection,
 } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -105,6 +106,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   let cancelTouchcancel: (() => void) | undefined = undefined
   let resizeObserverEl: UseResizeObserverReturn | null = null
   let pointerdownTarget: HTMLElement | undefined = undefined
+  let releaseSelection: (() => void) | undefined = undefined
 
   // Sides that have at least one snap point are draggable
   const draggableSides = computed(() =>
@@ -383,6 +385,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   function resetDragState() {
+    releaseSelection?.()
+    releaseSelection = undefined
     state.dragging = false
     state.draggingSide = undefined
     state.interpolateTo = undefined
@@ -529,6 +533,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     lastPendingTarget = undefined
     suppressClick = false
     pointerdownTarget = target
+    releaseSelection = lockSelection()
 
     switch (side) {
       case 'top':

@@ -14,6 +14,7 @@ export * from './src/functions/pointerCapture'
 export * from './src/functions/rubberband'
 export * from './src/functions/scrollbarGutterSupport'
 export * from './src/functions/scrollbarWidth'
+export * from './src/functions/selectionLock'
 export * from './src/functions/slugify'
 export * from './src/functions/uniq'
 

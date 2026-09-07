@@ -1108,6 +1108,8 @@ The tray handles situations where dragging and scrolling might interfere with ea
 
 On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so handle click listeners keep firing. Set `preventEdgeNavigation` to `false` to opt out.
 
+While a handle is being dragged, the tray disables text selection on the whole document and restores it on release. Without this, a pointer that leaves the handle would keep extending a selection across the page.
+
 ## Examples
 
 ### Combined Sides

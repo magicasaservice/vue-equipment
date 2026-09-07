@@ -169,6 +169,37 @@ describe('MagicTray - Interactions', () => {
       .toBeGreaterThan(0)
   })
 
+  it('locks text selection on the document for the duration of a drag', async () => {
+    const { container } = mountWithApp(
+      createTray(TrayId.RenderHandles, {
+        snapPoints: { bottom: [0, 0.5, 1] },
+      })
+    )
+    await settle()
+
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="bottom"]'
+    ) as HTMLElement
+
+    handle.dispatchEvent(pointer('pointerdown', 200))
+    await nextTick()
+    document.dispatchEvent(pointer('pointermove', 120))
+    await nextTick()
+
+    expect(document.documentElement.style.userSelect).toBe('none')
+    const selectstart = new Event('selectstart', {
+      bubbles: true,
+      cancelable: true,
+    })
+    document.body.dispatchEvent(selectstart)
+    expect(selectstart.defaultPrevented).toBe(true)
+
+    document.dispatchEvent(pointer('pointerup', 120))
+    await nextTick()
+
+    expect(document.documentElement.style.userSelect).toBe('')
+  })
+
   it('rubber-bands past the open bound and springs back on release', async () => {
     const { container } = mountWithApp(
       createTray(
