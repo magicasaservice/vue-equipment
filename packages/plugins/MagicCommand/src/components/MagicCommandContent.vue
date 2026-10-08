@@ -89,10 +89,9 @@ const isIdle = computed(() => state.input.view !== viewId)
 
 const options = inject(MagicCommandProviderOptions, undefined)
 
-const { activeItem, selectNextItem, selectPrevItem } = useCommandItem({
-  instanceId,
-  viewId,
-})
+const { getActiveItem, selectNextItem, selectPrevItem } =
+  useCommandItem(instanceId)
+const activeItem = computed(() => getActiveItem(viewId))
 
 const {
   onBeforeEnter,
@@ -140,10 +139,10 @@ if (options?.keyListener?.next) {
       if (value) {
         state.input.type = 'keyboard'
 
-        selectNextItem(options.loop)
+        selectNextItem({ viewId, loop: options.loop })
         nextTimeout.value = setTimeout(() => {
           nextInterval.value = setInterval(() => {
-            selectNextItem(options.loop)
+            selectNextItem({ viewId, loop: options.loop })
           }, 100)
         }, 500)
       } else {
@@ -171,10 +170,10 @@ if (options?.keyListener?.prev) {
       if (value) {
         state.input.type = 'keyboard'
 
-        selectPrevItem(options.loop)
+        selectPrevItem({ viewId, loop: options.loop })
         prevTimeout.value = setTimeout(() => {
           prevInterval.value = setInterval(() => {
-            selectPrevItem(options.loop)
+            selectPrevItem({ viewId, loop: options.loop })
           }, 100)
         }, 500)
       } else {
