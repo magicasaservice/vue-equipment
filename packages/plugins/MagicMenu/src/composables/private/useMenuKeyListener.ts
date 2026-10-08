@@ -35,6 +35,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
   const { selectItem } = useMenuItem(instanceId)
 
+  // Private state
+  let pointerHeld = false
+
   // Private functions
   function keyStrokeGuard(e: KeyboardEvent) {
     switch (true) {
@@ -63,14 +66,19 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     if (!state.input.disabled.includes('pointer')) {
       state.input.disabled = [...state.input.disabled, 'pointer']
     }
+
+    pointerHeld = true
   }
 
-  function enablePointer() {
-    if (state.input.disabled.includes('pointer')) {
-      state.input.disabled = state.input.disabled.filter(
-        (input) => input !== 'pointer'
-      )
+  function releasePointer() {
+    if (!pointerHeld) {
+      return
     }
+
+    pointerHeld = false
+    state.input.disabled = state.input.disabled.filter(
+      (input) => input !== 'pointer'
+    )
   }
 
   function selectFirstItem(view: MenuView) {
@@ -277,7 +285,7 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   }
 
   // Lifecycle
-  useEventListener('pointermove', enablePointer, { passive: true })
+  useEventListener('pointermove', releasePointer, { passive: true })
 
   return {
     onArrowRight,

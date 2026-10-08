@@ -65,6 +65,48 @@ function createDropdown(menuId: MenuId) {
   })
 }
 
+function createNestedDropdown(menuId: MenuId) {
+  return defineComponent({
+    components: {
+      MagicMenuProvider,
+      MagicMenuTrigger,
+      MagicMenuView,
+      MagicMenuContent,
+      MagicMenuItem,
+    },
+    setup() {
+      useMagicMenu({ instanceId: menuId, viewId: ViewId.V0 })
+      return {}
+    },
+    template: `
+      <MagicMenuProvider id="${menuId}" :options="{ mode: 'dropdown' }">
+        <MagicMenuView id="${ViewId.V0}">
+          <MagicMenuTrigger>
+            <button data-test-id="${TestId.Trigger}">Open</button>
+          </MagicMenuTrigger>
+          <MagicMenuContent :teleport="{ disabled: true }">
+            <MagicMenuItem id="${ItemId.ParentItem}">
+              <MagicMenuView id="${ViewId.V1}">
+                <MagicMenuTrigger>
+                  <div data-test-id="${TestId.SubTrigger}">Sub</div>
+                </MagicMenuTrigger>
+                <MagicMenuContent :teleport="{ disabled: true }">
+                  <MagicMenuItem id="${ItemId.SubItem}">
+                    <div>Sub Item</div>
+                  </MagicMenuItem>
+                </MagicMenuContent>
+              </MagicMenuView>
+            </MagicMenuItem>
+            <MagicMenuItem id="${ItemId.SiblingItem}">
+              <div>Sibling</div>
+            </MagicMenuItem>
+          </MagicMenuContent>
+        </MagicMenuView>
+      </MagicMenuProvider>
+    `,
+  })
+}
+
 // Tests
 describe('MagicMenu - Interactions', () => {
   describe('trigger click', () => {
@@ -247,4 +289,59 @@ describe('MagicMenu - Interactions', () => {
       expect(document.querySelector('.magic-menu-content')).toBeNull()
     })
   })
+
+  describe('submenu guard', () => {
+    it('moving through the triangle towards a submenu keeps pointer selection off', async () => {
+      const screen = render(createNestedDropdown(MenuId.IntSubmenuGuard), gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+      await screen.getByTestId(TestId.SubTrigger).hover()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 50))
+
+      const from = document
+        .querySelector(`[data-id="${ViewId.V1}-trigger"]`)!
+        .getBoundingClientRect()
+      const to = document
+        .querySelector(
+          `[data-id="${ViewId.V1}-content"] .magic-menu-content__inner`
+        )!
+        .getBoundingClientRect()
+
+      // Halfway from the trigger towards the nearest point of the submenu
+      const start = {
+        x: (from.left + from.right) / 2,
+        y: (from.top + from.bottom) / 2,
+      }
+      const end = {
+        x: Math.min(Math.max(start.x, to.left), to.right),
+        y: Math.min(Math.max(start.y, to.top), to.bottom),
+      }
+      const x = (start.x + end.x) / 2
+      const y = (start.y + end.y) / 2
+
+      move(x, y)
+      await nextTick()
+      move(x + 1, y)
+      await nextTick()
+
+      expect(
+        document
+          .querySelector(`.magic-menu-item[data-id="${ItemId.SiblingItem}"]`)
+          ?.getAttribute('data-pointer-disabled')
+      ).toBe('true')
+    })
+  })
 })
+
+// Helpers
+function move(clientX: number, clientY: number) {
+  document.dispatchEvent(
+    new PointerEvent('pointermove', { bubbles: true, clientX, clientY })
+  )
+  document.dispatchEvent(
+    new MouseEvent('mousemove', { bubbles: true, clientX, clientY })
+  )
+}
