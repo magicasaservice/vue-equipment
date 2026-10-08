@@ -78,11 +78,8 @@ const viewIndex = getRelativeViewIndex(mappedViewId.value)
 const { initializeState } = useMenuState(mappedInstanceId.value)
 const state = initializeState()
 
-const { getItem } = useMenuItem({
-  instanceId: mappedInstanceId.value,
-  viewId: mappedViewId.value,
-})
-const item = getItem(itemId ?? '')
+const { getItem } = useMenuItem(mappedInstanceId.value)
+const item = getItem({ viewId: mappedViewId.value, id: itemId ?? '' })
 
 const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
 

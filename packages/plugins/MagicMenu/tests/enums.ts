@@ -26,6 +26,15 @@ export enum MenuId {
   KbEscapeAttr = 'kb-escape-attr',
   KbEnter = 'kb-enter',
   KbTab = 'kb-tab',
+  KbArrowDown = 'kb-arrow-down',
+  KbArrowDownTwice = 'kb-arrow-down-twice',
+  KbArrowUp = 'kb-arrow-up',
+  KbPointerDisabled = 'kb-pointer-disabled',
+  KbPointerEnabled = 'kb-pointer-enabled',
+  KbNestedRight = 'kb-nested-right',
+  KbNestedEnter = 'kb-nested-enter',
+  KbNestedDown = 'kb-nested-down',
+  KbNestedLeft = 'kb-nested-left',
   OptDropdown = 'opt-dropdown',
   OptMenubar = 'opt-menubar',
   OptContext = 'opt-context',
@@ -67,6 +76,10 @@ export enum ItemId {
   KbItem1 = 'kb-item-1',
   KbItem2 = 'kb-item-2',
   KbItem3 = 'kb-item-3',
+  KbParentItem = 'kb-parent-item',
+  KbSiblingItem = 'kb-sibling-item',
+  KbSubItem1 = 'kb-sub-item-1',
+  KbSubItem2 = 'kb-sub-item-2',
 }
 
 export enum TestId {

@@ -1,3 +1,4 @@
+import { useEventListener } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuState } from './useMenuState'
 import { useMenuView } from './useMenuView'
@@ -5,6 +6,11 @@ import { useMenuItem } from './useMenuItem'
 
 import type { MaybeRef } from 'vue'
 import type { MenuView } from '../../types/index'
+
+type SelectItemArgs = {
+  viewId: string
+  id: string
+}
 
 export function useMenuKeyListener(instanceId: MaybeRef<string>) {
   const { initializeState } = useMenuState(instanceId)
@@ -26,6 +32,8 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     getNestedView,
     getParentView,
   } = useMenuView(instanceId)
+
+  const { selectItem } = useMenuItem(instanceId)
 
   // Private functions
   function keyStrokeGuard(e: KeyboardEvent) {
@@ -49,12 +57,27 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
     return view.items.filter((item) => !item.disabled)
   }
 
+  function selectItemByKeyboard(args: SelectItemArgs) {
+    selectItem(args)
+
+    if (!state.input.disabled.includes('pointer')) {
+      state.input.disabled = [...state.input.disabled, 'pointer']
+    }
+  }
+
+  function enablePointer() {
+    if (state.input.disabled.includes('pointer')) {
+      state.input.disabled = state.input.disabled.filter(
+        (input) => input !== 'pointer'
+      )
+    }
+  }
+
   function selectFirstItem(view: MenuView) {
-    const { selectItem } = useMenuItem({ instanceId, viewId: view.id })
     const firstItem = getEnabledItems(view)[0]
 
     if (firstItem) {
-      selectItem(firstItem.id, true)
+      selectItemByKeyboard({ viewId: view.id, id: firstItem.id })
     }
   }
 
@@ -150,22 +173,20 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     if (prevIndex >= 0) {
       // Select previous item
-      const { selectItem } = useMenuItem({ instanceId, viewId })
       const prevItem = enabledItems[prevIndex]
 
       if (prevItem) {
-        selectItem(prevItem.id, true)
+        selectItemByKeyboard({ viewId, id: prevItem.id })
       }
 
       // Unselect all views that are nested deeper than the view in focus
       unselectUnrelatedViews(viewId)
     } else if (prevIndex !== -1) {
       // Select last item
-      const { selectItem } = useMenuItem({ instanceId, viewId })
       const lastItem = enabledItems[enabledItems.length - 1]
 
       if (lastItem) {
-        selectItem(lastItem.id, true)
+        selectItemByKeyboard({ viewId, id: lastItem.id })
       }
 
       // Unselect all views that are nested deeper than the view in focus
@@ -195,11 +216,10 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
 
     if (nextIndex >= 0) {
       // Select next item
-      const { selectItem } = useMenuItem({ instanceId, viewId })
       const nextItem = enabledItems[nextIndex]
 
       if (nextItem) {
-        selectItem(nextItem.id, true)
+        selectItemByKeyboard({ viewId, id: nextItem.id })
       }
 
       // Unselect all views that are nested deeper than the view in focus
@@ -255,6 +275,9 @@ export function useMenuKeyListener(instanceId: MaybeRef<string>) {
       }
     }
   }
+
+  // Lifecycle
+  useEventListener('pointermove', enablePointer, { passive: true })
 
   return {
     onArrowRight,

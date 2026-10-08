@@ -11,7 +11,9 @@ export function createStateStore<T>(
     const instance = getCurrentInstance()
     const app = instance?.appContext.app
 
-    // If no app instance is found, return a fresh store
+    // If no app instance is found, return a fresh store. Event handlers,
+    // timers and watcher callbacks run without one, so composables that use
+    // a store must be called during setup, never from inside those.
     if (!app || !key) {
       return ref(setInitialValue()) as Ref<T>
     }

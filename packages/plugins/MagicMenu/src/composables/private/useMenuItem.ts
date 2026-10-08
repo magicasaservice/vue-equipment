@@ -1,5 +1,4 @@
 import { reactive } from 'vue'
-import { usePointer, watchOnce } from '@vueuse/core'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useMenuView } from './useMenuView'
 import { useMenuState } from './useMenuState'
@@ -8,18 +7,16 @@ import type { MaybeRef } from 'vue'
 
 import type { MenuItem } from '../../types/index'
 
-type UseMenuItemArgs = {
-  instanceId: MaybeRef<string>
+type ItemArgs = {
   viewId: string
+  id: string
 }
 
-type InitializeItemArgs = Pick<MenuItem, 'id' | 'disabled'>
+type InitializeItemArgs = ItemArgs & Pick<MenuItem, 'disabled'>
 type CreateItemArgs = Pick<MenuItem, 'id' | 'disabled'>
-type AddItemArgs = Pick<MenuItem, 'id' | 'disabled'>
+type AddItemArgs = ItemArgs & Pick<MenuItem, 'disabled'>
 
-export function useMenuItem(args: UseMenuItemArgs) {
-  const { instanceId, viewId } = args
-
+export function useMenuItem(instanceId: MaybeRef<string>) {
   const { throwError } = useMagicError({
     prefix: 'MagicMenu',
     source: 'useMenuItem',
@@ -28,14 +25,6 @@ export function useMenuItem(args: UseMenuItemArgs) {
   const state = initializeState()
 
   const { getView, unselectDescendingViews } = useMenuView(instanceId)
-  const view = getView(viewId)
-
-  if (!view) {
-    throwError({
-      message: `View ${viewId} not found`,
-      errorCode: 'view_id_not_found',
-    })
-  }
 
   // Private functions
   function createItem(args: CreateItemArgs) {
@@ -51,7 +40,9 @@ export function useMenuItem(args: UseMenuItemArgs) {
   }
 
   function addItem(args: AddItemArgs) {
-    const item = createItem(args)
+    const { viewId, id, disabled } = args
+    const item = createItem({ id, disabled })
+    const view = getView(viewId)
 
     if (view?.items) {
       view.items = [...view.items, item]
@@ -60,63 +51,66 @@ export function useMenuItem(args: UseMenuItemArgs) {
     return item
   }
 
-  function unselectSiblings(id: string) {
-    return view?.items
-      .filter((item) => item.id !== id)
+  function unselectSiblings(args: ItemArgs) {
+    const { viewId, id } = args
+
+    return getView(viewId)
+      ?.items.filter((item) => item.id !== id)
       .forEach((item) => (item.active = false))
   }
 
   // Public functions
   function initializeItem(args: InitializeItemArgs) {
-    const { id } = args
-    const item = getItem(id) ?? addItem(args)
+    const { viewId, id } = args
+
+    if (!getView(viewId)) {
+      throwError({
+        message: `View ${viewId} not found`,
+        errorCode: 'view_id_not_found',
+      })
+    }
+
+    const item = getItem({ viewId, id }) ?? addItem(args)
 
     return item
   }
 
-  function deleteItem(id: string) {
+  function deleteItem(args: ItemArgs) {
+    const { viewId, id } = args
+    const view = getView(viewId)
+
     if (!view?.items) {
       return
     }
     view.items = view.items.filter((x) => x.id !== id)
   }
 
-  function getItem(id: string) {
-    return view?.items.find((item) => {
+  function getItem(args: ItemArgs) {
+    const { viewId, id } = args
+
+    return getView(viewId)?.items.find((item) => {
       return item.id === id
     })
   }
 
-  function selectItem(id: string, disablePointer?: boolean) {
-    const item = getItem(id)
+  function selectItem(args: ItemArgs) {
+    const { viewId, id } = args
+    const item = getItem({ viewId, id })
 
     if (item) {
       item.active = true
 
       // Deactivate all siblings and descending views
-      unselectSiblings(id)
+      unselectSiblings({ viewId, id })
       unselectDescendingViews(viewId)
 
       // Set view in focus
-      if (view) {
-        state.input.view = view.id
-      }
-
-      if (disablePointer) {
-        const { x, y } = usePointer()
-        state.input.disabled = [...state.input.disabled, 'pointer'] // Disable pointer
-
-        watchOnce([x, y], () => {
-          state.input.disabled = state.input.disabled.filter(
-            (x) => x !== 'pointer'
-          ) // Enable pointer
-        })
-      }
+      state.input.view = viewId
     }
   }
 
-  function unselectItem(id: string) {
-    const item = getItem(id)
+  function unselectItem(args: ItemArgs) {
+    const item = getItem(args)
 
     if (item) {
       item.active = false
