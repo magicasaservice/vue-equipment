@@ -3,7 +3,7 @@
   "dist": ".maas",
   "gitProvider": "github",
   "repoName": "magicasaservice/mirror-tokens",
-  "repoBranch": "main",
+  "repoBranch": "v1",
   "tailwind": {
     "variables": true
   }
