@@ -32,11 +32,6 @@ import 'fonts/index/stylesheet.css'
 
 import '../../../../.maas/tokens/css/application.css'
 import '../../../../.maas/tokens/css/theme/dark/application.css'
-
-// The compatibility layer owns the component CSS now. Mirror no longer has
-// components of its own to tokenise, so it emits no `component/*` tree.
-import 'mirror-compat/css/index.css'
-
 import './styles/tailwind.css'
 
 export default {

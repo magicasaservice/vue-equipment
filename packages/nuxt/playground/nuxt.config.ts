@@ -50,9 +50,6 @@ export default defineNuxtConfig({
     'fonts/mirage/stylesheet.css',
     '@maas/mirror/tokens/application.css',
     '@maas/mirror/tokens/theme/dark/application.css',
-    // Mirror emits no `component/*` tree any more, so the compatibility layer
-    // carries the component CSS the demos style themselves with.
-    'mirror-compat/css/index.css',
   ],
 
   // Use public folder from docs

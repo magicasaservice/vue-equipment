@@ -6,6 +6,7 @@
 @source './../../../../../packages/plugins/**/*.vue';
 @source './../../../../../packages/plugins/**/demo/*.vue';
 @source './../../../../../packages/plugins/**/demo/**/*.vue';
+@source './../../../../../packages/mirror-compat/src';
 
 @theme {
   --default-mono-font-family: var(--vt-font-family-mono);
