@@ -163,6 +163,24 @@
               }
             }
           }
+        },
+        "secondary": {
+          "bg": {
+            "solid": {
+              "default": {
+                "$value": "{config.color.palette.stone.solid.10}",
+                "$type": "color"
+              },
+              "hover": {
+                "$value": "{config.color.palette.stone.solid.11}",
+                "$type": "color"
+              },
+              "active": {
+                "$value": "{config.color.palette.stone.solid.12}",
+                "$type": "color"
+              }
+            }
+          }
         }
       }
     }
