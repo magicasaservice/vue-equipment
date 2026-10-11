@@ -8,7 +8,7 @@
         <nav-menu-bar class="hidden sm:block" />
         <div class="flex gap-2">
           <nav-drawer class="block sm:hidden" />
-          <nav-color-mode-switch class="block sm:hidden" />
+          <nav-color-mode-switch />
           <div class="hidden gap-1 md:flex">
             <m-button
               v-for="item in theme.socialLinks"

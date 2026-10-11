@@ -152,3 +152,91 @@
   --vp-c-caution-3: var(--app-color-warning-fg-subtle);
   --vp-c-caution-soft: var(--app-color-warning-fg-subtle);
 }
+
+/**
+ * Mirror wrappers
+ * -------------------------------------------------------------------------- */
+
+/* VitePress styles bare form elements and links outside any cascade layer, which
+   beats every Tailwind utility the M* wrappers render. These rules match its
+   element specificity and load after it, so they win, while the wrappers' own
+   class rules still outrank them. revert-layer hands each property back to the
+   utilities. */
+:is(a, button, input, select, textarea):where(
+  .m-avatar,
+  .m-badge,
+  .m-button,
+  .m-checkbox,
+  .m-input,
+  .m-menu-box,
+  .m-menu-card,
+  .m-menu-card-child,
+  .m-menu-item,
+  .m-menu-item-child,
+  .m-select,
+  .m-slider,
+  .m-textarea,
+  .m-toggle
+),
+:where(
+    .m-avatar,
+    .m-badge,
+    .m-button,
+    .m-checkbox,
+    .m-input,
+    .m-menu-box,
+    .m-menu-card,
+    .m-menu-card-child,
+    .m-menu-item,
+    .m-menu-item-child,
+    .m-select,
+    .m-slider,
+    .m-textarea,
+    .m-toggle
+  )
+  :is(a, button, input, select, textarea) {
+  border: revert-layer;
+  padding: revert-layer;
+  font-family: revert-layer;
+  line-height: revert-layer;
+  color: revert-layer;
+  text-decoration: revert-layer;
+  background-color: revert-layer;
+  background-image: revert-layer;
+}
+
+:is(a, button, input, select, textarea):where(
+    .m-avatar,
+    .m-badge,
+    .m-button,
+    .m-checkbox,
+    .m-input,
+    .m-menu-box,
+    .m-menu-card,
+    .m-menu-card-child,
+    .m-menu-item,
+    .m-menu-item-child,
+    .m-select,
+    .m-slider,
+    .m-textarea,
+    .m-toggle
+  ):focus-visible,
+:where(
+    .m-avatar,
+    .m-badge,
+    .m-button,
+    .m-checkbox,
+    .m-input,
+    .m-menu-box,
+    .m-menu-card,
+    .m-menu-card-child,
+    .m-menu-item,
+    .m-menu-item-child,
+    .m-select,
+    .m-slider,
+    .m-textarea,
+    .m-toggle
+  )
+  :is(a, button, input, select, textarea):focus-visible {
+  outline: revert-layer;
+}
