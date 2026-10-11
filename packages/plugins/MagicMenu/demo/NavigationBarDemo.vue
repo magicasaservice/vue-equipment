@@ -23,7 +23,7 @@
               :channel-id="item.id"
               as-child
             >
-              <m-button :mode="channelActive ? 'translucent' : 'ghost'">
+              <m-button :mode="channelActive ? 'subtle' : 'ghost'">
                 <span class="flex items-center gap-2.5">
                   <span>{{ item.label }}</span>
                   <m-badge
@@ -61,7 +61,7 @@
                       <span class="type-surface-callout-sm text-surface-muted">
                         {{ entry.label }}
                       </span>
-                      <m-badge v-if="'badge' in entry" size="xs" mode="tone">
+                      <m-badge v-if="'badge' in entry" size="xs" variant="secondary">
                         {{ entry.badge }}
                       </m-badge>
                     </div>

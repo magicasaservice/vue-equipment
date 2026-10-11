@@ -5,7 +5,7 @@
     class="mobile-menu-channel-nested flex w-full flex-col gap-4"
   >
     <div class="w-full px-4">
-      <m-button block mode="translucent" as-child>
+      <m-button block mode="subtle" as-child>
         <magic-menu-remote
           :channel-id="ChannelId.navDrawerMenuInitial"
           :trigger="['click']"

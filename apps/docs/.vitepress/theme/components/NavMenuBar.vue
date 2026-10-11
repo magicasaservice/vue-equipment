@@ -43,7 +43,7 @@
                       <m-badge
                         v-if="item.soon || item.new"
                         size="xs"
-                        mode="tone"
+                        mode="muted"
                         variant="accent"
                         class="ml-auto"
                       >

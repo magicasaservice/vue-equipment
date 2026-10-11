@@ -10,10 +10,10 @@ hero:
     - theme: solid
       text: Get Started
       link: /overview/getting-started
-    - theme: translucent
+    - theme: subtle
       text: Introduction
       link: /overview/introduction
-    - theme: translucent
+    - theme: subtle
       text: View on Github
       link: https://github.com/magicasaservice/vue-equipment
 ---

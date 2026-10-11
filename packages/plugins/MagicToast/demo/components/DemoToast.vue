@@ -8,7 +8,7 @@
     <m-button
       size="md"
       variant="secondary"
-      mode="translucent"
+      mode="subtle"
       icon
       square
       round

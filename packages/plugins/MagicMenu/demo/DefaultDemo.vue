@@ -9,7 +9,7 @@
       :key="index"
     >
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
-        <m-button :mode="viewActive ? 'translucent' : 'ghost'" size="xs">
+        <m-button :mode="viewActive ? 'subtle' : 'ghost'" size="xs">
           {{ menuItem.label }}
         </m-button>
       </magic-menu-trigger>

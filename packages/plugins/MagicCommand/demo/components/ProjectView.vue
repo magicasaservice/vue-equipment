@@ -26,7 +26,7 @@
           class="pointer-events-none absolute bottom-2 flex w-full justify-center"
         >
           <magic-command-trigger action="close" as-child>
-            <m-button mode="tone" class="pointer-events-auto w-36">
+            <m-button variant="secondary" class="pointer-events-auto w-36">
               Go Back
             </m-button>
           </magic-command-trigger>

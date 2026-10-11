@@ -43,7 +43,7 @@ export interface DemoListProps {
     badge?: {
       name: string
       variant: 'primary' | 'accent'
-      mode: 'translucent' | 'outline'
+      mode: 'subtle' | 'outline'
     }
     icon?: string
   }[]

@@ -7,7 +7,7 @@
         :key="easing.name"
       >
         <div class="w-40">
-          <m-badge size="sm" mode="tone">{{ easing.name }}</m-badge>
+          <m-badge size="sm" variant="secondary">{{ easing.name }}</m-badge>
         </div>
         <div class="bg-surface-high flex h-6 w-full rounded-full pr-5">
           <div class="h-full w-full">
