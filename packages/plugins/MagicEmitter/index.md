@@ -2,8 +2,6 @@
 
 MagicEmitter is a wrapper around [mitt](https://github.com/developit/mitt). The emitter is used throughout all plugins to emit custom events. By using the emitter to listen to these events, you can trigger custom callbacks, after a modal opens or a drawer closes for example.
 
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
-
 ## Anatomy
 
 ```vue
@@ -25,7 +23,14 @@ onBeforeUnmount(() => {
 </script>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Nuxt
 
@@ -53,56 +58,30 @@ emitter.on('*', callback)
 emitter.off('*', callback)
 ```
 
-> [!TIP]
-> If you have installed the emitter as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the emitter as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
 If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[mitt](https://www.npmjs.com/package/mitt)'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Package
+rows:
+  - items:
+      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+  - items:
+      - label: '[mitt](https://www.npmjs.com/package/mitt)'
+---
+::
 
 ### Installation
 
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit mitt
-```
-
-```sh [npm]
-npm install @nuxt/kit mitt
-```
-
-```sh [yarn]
-yarn add @nuxt/kit mitt
-```
-
-```sh [bun]
-bun install @nuxt/kit mitt
-```
-
-:::
+::package-install{name="@nuxt/kit mitt"}
+::
 
 ## Typescript
 

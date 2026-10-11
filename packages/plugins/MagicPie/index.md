@@ -2,9 +2,8 @@
 
 MagicPie renders a percentage based value as `SVG`.
 
-<ComponentPreview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -18,7 +17,14 @@ const { percentage } = useMagicPie('your-pie-id')
 </script>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -75,8 +81,9 @@ onMounted(() => {
 })
 ```
 
-> [!TIP]
-> If you have installed the pie as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the pie as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## API Reference
 
@@ -84,122 +91,86 @@ onMounted(() => {
 
 The pie comes with a simple set of props. Only the id is required.
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicPieOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicPieOptions
+      - label: 'false'
+---
+::
 
 ### Options
 
-<ProseTable
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'flip',
-          description: 'Invert the SVG’s path direction.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: flip
+        description: Invert the SVG’s path direction.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 ### CSS Variables
 
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-pie-background' },
-        { label: 'transparent' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-pie-foreground' },
-        { label: 'currentColor' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-pie-background
+      - label: transparent
+  - items:
+      - label: --magic-pie-foreground
+      - label: currentColor
+---
+::
 
 ## Examples
 
 ### Flip
 
-<ComponentPreview src="./demo/FlipDemo.vue" />
+::component-preview{src="./demo/FlipDemo.vue"}
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'Error Code' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    { 
-      items: [ 
-        { label: 'MagicPie' }, 
-        { label: 'missing_points' }, 
-        { plaintext: true, label: 'At least two points are required to generate a path' } 
-      ] 
-    },
-    { 
-      items: [ 
-        { label: 'MagicPie' }, 
-        { label: 'invalid_percentage' }, 
-        { plaintext: true, label: 'percentage needs to be between 0 and 100' } 
-      ] 
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: Error Code
+  - label: Message
+rows:
+  - items:
+      - label: MagicPie
+      - label: missing_points
+      - plaintext: true
+        label: At least two points are required to generate a path
+  - items:
+      - label: MagicPie
+      - label: invalid_percentage
+      - plaintext: true
+        label: percentage needs to be between 0 and 100
+---
+::
