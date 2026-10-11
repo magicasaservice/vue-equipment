@@ -107,6 +107,20 @@
                 "$value": "{config.color.palette.stone.translucent.3}",
                 "$type": "color"
               }
+            },
+            "muted": {
+              "default": {
+                "$value": "{config.color.palette.stone.translucent.1}",
+                "$type": "color"
+              },
+              "hover": {
+                "$value": "{config.color.palette.stone.translucent.2}",
+                "$type": "color"
+              },
+              "active": {
+                "$value": "{config.color.palette.stone.translucent.3}",
+                "$type": "color"
+              }
             }
           },
           "fg": {

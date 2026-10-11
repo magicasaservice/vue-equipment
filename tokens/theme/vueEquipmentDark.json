@@ -107,6 +107,20 @@
                 "$value": "{config.color.palette.stone.translucent.6}",
                 "$type": "color"
               }
+            },
+            "muted": {
+              "default": {
+                "$value": "{config.color.palette.stone.translucent.4}",
+                "$type": "color"
+              },
+              "hover": {
+                "$value": "{config.color.palette.stone.translucent.5}",
+                "$type": "color"
+              },
+              "active": {
+                "$value": "{config.color.palette.stone.translucent.6}",
+                "$type": "color"
+              }
             }
           },
           "fg": {
@@ -203,6 +217,20 @@
           },
           "border": {
             "subtle": {
+              "default": {
+                "$value": "{config.color.palette.stone.translucent.4}",
+                "$type": "color"
+              },
+              "hover": {
+                "$value": "{config.color.palette.stone.translucent.5}",
+                "$type": "color"
+              },
+              "active": {
+                "$value": "{config.color.palette.stone.translucent.6}",
+                "$type": "color"
+              }
+            },
+            "muted": {
               "default": {
                 "$value": "{config.color.palette.stone.translucent.4}",
                 "$type": "color"
