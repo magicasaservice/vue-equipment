@@ -1,5 +1,3 @@
-import { vuePreset } from '@maas/config/eslint-vue-preset.mjs'
-export default [
-  ...vuePreset,
-  { ignores: ['.vitepress/cache', '.vitepress/dist'] },
-]
+import { nuxtPreset } from '@maas/config/eslint-nuxt-preset.mjs'
+
+export default [...nuxtPreset, { ignores: ['.nuxt', '.output', '.data'] }]

@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@import '@maas/mirror/tailwind';
+
+@source '../../';
+@source '../../../content/';
+@source '../../../../../packages/plugins/';
+@source '../../../../../packages/composables/';
+@source '../../../../../packages/mirror-compat/src/';
+
+/**
+ * Tailwind's preflight points `pre`, `code`, `kbd` and `samp` at this
+ * variable. The preset never sets it, so Shiki's nested `code` and `span`
+ * fell back to `ui-monospace` while the `pre` above them rendered in Index.
+ */
+@theme inline {
+  --default-mono-font-family: var(--app-font-family-surface-code);
+}
+
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
