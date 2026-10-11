@@ -28,7 +28,7 @@ const { playerApi } = useMagicPlayer('your-player-id')
 </script>
 
 <style>
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-video-controls.css';
 </style>
 ```
 
@@ -292,7 +292,7 @@ rows:
 Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
 
 ```css
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-video-controls.css';
 ```
 
 ### MagicPlayerMuxPopover
@@ -353,7 +353,7 @@ rows:
 Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
 
 ```css
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-audio-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-audio-controls.css';
 ```
 
 ### MagicPlayerDisplayTime
