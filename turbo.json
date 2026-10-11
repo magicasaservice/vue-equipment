@@ -6,6 +6,10 @@
       "cache": false,
       "persistent": true
     },
+    "preview": {
+      "cache": false,
+      "persistent": true
+    },
     "docs#dev": {
       "cache": false,
       "persistent": true,
