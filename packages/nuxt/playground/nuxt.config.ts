@@ -18,6 +18,14 @@ export default defineNuxtConfig({
     prefix: 'Mirror',
   },
 
+  // The vue-equipment theme applies under this attribute, as it does in the
+  // docs, rather than being baked into the base tokens.
+  app: {
+    head: {
+      htmlAttrs: { 'data-theme': 'vue-equipment' },
+    },
+  },
+
   devtools: { enabled: false },
 
   typescript: {
@@ -50,6 +58,8 @@ export default defineNuxtConfig({
     'fonts/mirage/stylesheet.css',
     '@maas/mirror/tokens/application.css',
     '@maas/mirror/tokens/theme/dark/application.css',
+    '@maas/mirror/tokens/theme/vue-equipment/light/application.css',
+    '@maas/mirror/tokens/theme/vue-equipment/dark/application.css',
   ],
 
   // Use public folder from docs

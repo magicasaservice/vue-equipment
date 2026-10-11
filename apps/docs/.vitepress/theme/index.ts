@@ -32,6 +32,8 @@ import 'fonts/index/stylesheet.css'
 
 import '../../../../.maas/tokens/css/application.css'
 import '../../../../.maas/tokens/css/theme/dark/application.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/light/application.css'
+import '../../../../.maas/tokens/css/theme/vue-equipment/dark/application.css'
 import './styles/tailwind.css'
 
 export default {

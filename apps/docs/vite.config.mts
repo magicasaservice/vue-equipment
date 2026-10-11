@@ -98,7 +98,9 @@ export default defineConfig(async () => {
       },
     },
     ssr: {
-      noExternal: ['wheel-gestures'],
+      // Mirror ships its parts as uncompiled SFCs, which Node cannot import,
+      // so the server build has to bundle them through the Vue plugin.
+      noExternal: ['wheel-gestures', '@maas/mirror'],
     },
   }
 })
