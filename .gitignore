@@ -44,8 +44,7 @@ packages/metadata/index.json
 .vercel
 
 # tokens
-.maas/tokens
-.maas/tailwind.preset.js
+.maas
 
 # ai
 .claude

@@ -1,11 +1,278 @@
-@theme inline {
+@custom-variant dark (&:where([data-color-mode='dark'], [data-color-mode='dark'] *));
+
+@theme inline static {
   --color-*: initial;
-  --radius-surface-lg-inset: var(--app-dimension-surface-radius-lg-inset);
+  --mirror-bg-surface-dimmer: var(--app-color-surface-bg-dimmer);
+  --mirror-bg-surface-higher: var(--app-color-surface-bg-higher);
+  --mirror-bg-surface-high: var(--app-color-surface-bg-high);
+  --mirror-bg-surface-base: var(--app-color-surface-bg-base);
+  --mirror-bg-surface-low: var(--app-color-surface-bg-low);
+  --mirror-bg-disabled-light: var(--app-color-disabled-bg-light);
+  --mirror-bg-disabled-subtle-hover: var(--app-color-disabled-bg-subtle-hover);
+  --mirror-bg-disabled-subtle: var(--app-color-disabled-bg-subtle);
+  --mirror-bg-disabled-muted-hover: var(--app-color-disabled-bg-muted-hover);
+  --mirror-bg-disabled-muted: var(--app-color-disabled-bg-muted);
+  --mirror-bg-disabled-solid: var(--app-color-disabled-bg-solid);
+  --mirror-bg-neutral-light: var(--app-color-neutral-bg-light);
+  --mirror-bg-neutral-subtle-active: var(--app-color-neutral-bg-subtle-active);
+  --mirror-bg-neutral-subtle-hover: var(--app-color-neutral-bg-subtle-hover);
+  --mirror-bg-neutral-subtle: var(--app-color-neutral-bg-subtle);
+  --mirror-bg-neutral-muted-active: var(--app-color-neutral-bg-muted-active);
+  --mirror-bg-neutral-muted-hover: var(--app-color-neutral-bg-muted-hover);
+  --mirror-bg-neutral-muted: var(--app-color-neutral-bg-muted);
+  --mirror-bg-neutral-solid-active: var(--app-color-neutral-bg-solid-active);
+  --mirror-bg-neutral-solid-hover: var(--app-color-neutral-bg-solid-hover);
+  --mirror-bg-neutral-solid: var(--app-color-neutral-bg-solid);
+  --mirror-bg-warning-light: var(--app-color-warning-bg-light);
+  --mirror-bg-warning-subtle-active: var(--app-color-warning-bg-subtle-active);
+  --mirror-bg-warning-subtle-hover: var(--app-color-warning-bg-subtle-hover);
+  --mirror-bg-warning-subtle: var(--app-color-warning-bg-subtle);
+  --mirror-bg-warning-muted-active: var(--app-color-warning-bg-muted-active);
+  --mirror-bg-warning-muted-hover: var(--app-color-warning-bg-muted-hover);
+  --mirror-bg-warning-muted: var(--app-color-warning-bg-muted);
+  --mirror-bg-warning-solid-active: var(--app-color-warning-bg-solid-active);
+  --mirror-bg-warning-solid-hover: var(--app-color-warning-bg-solid-hover);
+  --mirror-bg-warning-solid: var(--app-color-warning-bg-solid);
+  --mirror-bg-success-light: var(--app-color-success-bg-light);
+  --mirror-bg-success-subtle-active: var(--app-color-success-bg-subtle-active);
+  --mirror-bg-success-subtle-hover: var(--app-color-success-bg-subtle-hover);
+  --mirror-bg-success-subtle: var(--app-color-success-bg-subtle);
+  --mirror-bg-success-muted-active: var(--app-color-success-bg-muted-active);
+  --mirror-bg-success-muted-hover: var(--app-color-success-bg-muted-hover);
+  --mirror-bg-success-muted: var(--app-color-success-bg-muted);
+  --mirror-bg-success-solid-active: var(--app-color-success-bg-solid-active);
+  --mirror-bg-success-solid-hover: var(--app-color-success-bg-solid-hover);
+  --mirror-bg-success-solid: var(--app-color-success-bg-solid);
+  --mirror-bg-danger-light: var(--app-color-danger-bg-light);
+  --mirror-bg-danger-subtle-active: var(--app-color-danger-bg-subtle-active);
+  --mirror-bg-danger-subtle-hover: var(--app-color-danger-bg-subtle-hover);
+  --mirror-bg-danger-subtle: var(--app-color-danger-bg-subtle);
+  --mirror-bg-danger-muted-active: var(--app-color-danger-bg-muted-active);
+  --mirror-bg-danger-muted-hover: var(--app-color-danger-bg-muted-hover);
+  --mirror-bg-danger-muted: var(--app-color-danger-bg-muted);
+  --mirror-bg-danger-solid-active: var(--app-color-danger-bg-solid-active);
+  --mirror-bg-danger-solid-hover: var(--app-color-danger-bg-solid-hover);
+  --mirror-bg-danger-solid: var(--app-color-danger-bg-solid);
+  --mirror-bg-accent-light: var(--app-color-accent-bg-light);
+  --mirror-bg-accent-subtle-active: var(--app-color-accent-bg-subtle-active);
+  --mirror-bg-accent-subtle-hover: var(--app-color-accent-bg-subtle-hover);
+  --mirror-bg-accent-subtle: var(--app-color-accent-bg-subtle);
+  --mirror-bg-accent-muted-active: var(--app-color-accent-bg-muted-active);
+  --mirror-bg-accent-muted-hover: var(--app-color-accent-bg-muted-hover);
+  --mirror-bg-accent-muted: var(--app-color-accent-bg-muted);
+  --mirror-bg-accent-solid-active: var(--app-color-accent-bg-solid-active);
+  --mirror-bg-accent-solid-hover: var(--app-color-accent-bg-solid-hover);
+  --mirror-bg-accent-solid: var(--app-color-accent-bg-solid);
+  --mirror-bg-secondary-light: var(--app-color-secondary-bg-light);
+  --mirror-bg-secondary-subtle-active: var(--app-color-secondary-bg-subtle-active);
+  --mirror-bg-secondary-subtle-hover: var(--app-color-secondary-bg-subtle-hover);
+  --mirror-bg-secondary-subtle: var(--app-color-secondary-bg-subtle);
+  --mirror-bg-secondary-muted-active: var(--app-color-secondary-bg-muted-active);
+  --mirror-bg-secondary-muted-hover: var(--app-color-secondary-bg-muted-hover);
+  --mirror-bg-secondary-muted: var(--app-color-secondary-bg-muted);
+  --mirror-bg-secondary-solid-active: var(--app-color-secondary-bg-solid-active);
+  --mirror-bg-secondary-solid-hover: var(--app-color-secondary-bg-solid-hover);
+  --mirror-bg-secondary-solid: var(--app-color-secondary-bg-solid);
+  --mirror-bg-primary-light: var(--app-color-primary-bg-light);
+  --mirror-bg-primary-inverted: var(--app-color-primary-bg-inverted);
+  --mirror-bg-primary-subtle-active: var(--app-color-primary-bg-subtle-active);
+  --mirror-bg-primary-subtle-hover: var(--app-color-primary-bg-subtle-hover);
+  --mirror-bg-primary-subtle: var(--app-color-primary-bg-subtle);
+  --mirror-bg-primary-muted-active: var(--app-color-primary-bg-muted-active);
+  --mirror-bg-primary-muted-hover: var(--app-color-primary-bg-muted-hover);
+  --mirror-bg-primary-muted: var(--app-color-primary-bg-muted);
+  --mirror-bg-primary-solid-active: var(--app-color-primary-bg-solid-active);
+  --mirror-bg-primary-solid-hover: var(--app-color-primary-bg-solid-hover);
+  --mirror-bg-primary-solid: var(--app-color-primary-bg-solid);
+  --mirror-fg-surface-link: var(--app-color-surface-fg-link);
+  --mirror-fg-surface-link-active: var(--app-color-surface-fg-link-active);
+  --mirror-fg-surface-link-hover: var(--app-color-surface-fg-link-hover);
+  --mirror-fg-surface-inverted: var(--app-color-surface-fg-inverted);
+  --mirror-fg-surface-subtle: var(--app-color-surface-fg-subtle);
+  --mirror-fg-surface-muted: var(--app-color-surface-fg-muted);
+  --mirror-fg-surface: var(--app-color-surface-fg);
+  --mirror-fg-disabled-on-light: var(--app-color-disabled-fg-on-light);
+  --mirror-fg-disabled-on-subtle: var(--app-color-disabled-fg-on-subtle);
+  --mirror-fg-disabled-on-muted: var(--app-color-disabled-fg-on-muted);
+  --mirror-fg-disabled-on-solid: var(--app-color-disabled-fg-on-solid);
+  --mirror-fg-disabled-subtle: var(--app-color-disabled-fg-subtle);
+  --mirror-fg-disabled-muted: var(--app-color-disabled-fg-muted);
+  --mirror-fg-disabled-solid-hover: var(--app-color-disabled-fg-solid-hover);
+  --mirror-fg-disabled-solid: var(--app-color-disabled-fg-solid);
+  --mirror-fg-neutral-on-light: var(--app-color-neutral-fg-on-light);
+  --mirror-fg-neutral-on-subtle: var(--app-color-neutral-fg-on-subtle);
+  --mirror-fg-neutral-on-muted: var(--app-color-neutral-fg-on-muted);
+  --mirror-fg-neutral-on-solid: var(--app-color-neutral-fg-on-solid);
+  --mirror-fg-neutral-subtle: var(--app-color-neutral-fg-subtle);
+  --mirror-fg-neutral-muted: var(--app-color-neutral-fg-muted);
+  --mirror-fg-neutral-solid-active: var(--app-color-neutral-fg-solid-active);
+  --mirror-fg-neutral-solid-hover: var(--app-color-neutral-fg-solid-hover);
+  --mirror-fg-neutral-solid: var(--app-color-neutral-fg-solid);
+  --mirror-fg-warning-on-light: var(--app-color-warning-fg-on-light);
+  --mirror-fg-warning-on-subtle: var(--app-color-warning-fg-on-subtle);
+  --mirror-fg-warning-on-muted: var(--app-color-warning-fg-on-muted);
+  --mirror-fg-warning-on-solid: var(--app-color-warning-fg-on-solid);
+  --mirror-fg-warning-subtle: var(--app-color-warning-fg-subtle);
+  --mirror-fg-warning-muted: var(--app-color-warning-fg-muted);
+  --mirror-fg-warning-solid-active: var(--app-color-warning-fg-solid-active);
+  --mirror-fg-warning-solid-hover: var(--app-color-warning-fg-solid-hover);
+  --mirror-fg-warning-solid: var(--app-color-warning-fg-solid);
+  --mirror-fg-success-on-light: var(--app-color-success-fg-on-light);
+  --mirror-fg-success-on-subtle: var(--app-color-success-fg-on-subtle);
+  --mirror-fg-success-on-muted: var(--app-color-success-fg-on-muted);
+  --mirror-fg-success-on-solid: var(--app-color-success-fg-on-solid);
+  --mirror-fg-success-subtle: var(--app-color-success-fg-subtle);
+  --mirror-fg-success-muted: var(--app-color-success-fg-muted);
+  --mirror-fg-success-solid-active: var(--app-color-success-fg-solid-active);
+  --mirror-fg-success-solid-hover: var(--app-color-success-fg-solid-hover);
+  --mirror-fg-success-solid: var(--app-color-success-fg-solid);
+  --mirror-fg-danger-on-light: var(--app-color-danger-fg-on-light);
+  --mirror-fg-danger-on-subtle: var(--app-color-danger-fg-on-subtle);
+  --mirror-fg-danger-on-muted: var(--app-color-danger-fg-on-muted);
+  --mirror-fg-danger-on-solid: var(--app-color-danger-fg-on-solid);
+  --mirror-fg-danger-subtle: var(--app-color-danger-fg-subtle);
+  --mirror-fg-danger-muted: var(--app-color-danger-fg-muted);
+  --mirror-fg-danger-solid-active: var(--app-color-danger-fg-solid-active);
+  --mirror-fg-danger-solid-hover: var(--app-color-danger-fg-solid-hover);
+  --mirror-fg-danger-solid: var(--app-color-danger-fg-solid);
+  --mirror-fg-accent-on-light: var(--app-color-accent-fg-on-light);
+  --mirror-fg-accent-on-subtle: var(--app-color-accent-fg-on-subtle);
+  --mirror-fg-accent-on-muted: var(--app-color-accent-fg-on-muted);
+  --mirror-fg-accent-on-solid: var(--app-color-accent-fg-on-solid);
+  --mirror-fg-accent-subtle: var(--app-color-accent-fg-subtle);
+  --mirror-fg-accent-muted: var(--app-color-accent-fg-muted);
+  --mirror-fg-accent-solid-active: var(--app-color-accent-fg-solid-active);
+  --mirror-fg-accent-solid-hover: var(--app-color-accent-fg-solid-hover);
+  --mirror-fg-accent-solid: var(--app-color-accent-fg-solid);
+  --mirror-fg-secondary-on-light: var(--app-color-secondary-fg-on-light);
+  --mirror-fg-secondary-on-subtle: var(--app-color-secondary-fg-on-subtle);
+  --mirror-fg-secondary-on-muted: var(--app-color-secondary-fg-on-muted);
+  --mirror-fg-secondary-on-solid: var(--app-color-secondary-fg-on-solid);
+  --mirror-fg-secondary-subtle: var(--app-color-secondary-fg-subtle);
+  --mirror-fg-secondary-muted: var(--app-color-secondary-fg-muted);
+  --mirror-fg-secondary-solid-active: var(--app-color-secondary-fg-solid-active);
+  --mirror-fg-secondary-solid-hover: var(--app-color-secondary-fg-solid-hover);
+  --mirror-fg-secondary-solid: var(--app-color-secondary-fg-solid);
+  --mirror-fg-primary-on-light: var(--app-color-primary-fg-on-light);
+  --mirror-fg-primary-on-subtle: var(--app-color-primary-fg-on-subtle);
+  --mirror-fg-primary-on-muted: var(--app-color-primary-fg-on-muted);
+  --mirror-fg-primary-on-solid: var(--app-color-primary-fg-on-solid);
+  --mirror-fg-primary-subtle: var(--app-color-primary-fg-subtle);
+  --mirror-fg-primary-muted: var(--app-color-primary-fg-muted);
+  --mirror-fg-primary-solid-active: var(--app-color-primary-fg-solid-active);
+  --mirror-fg-primary-solid-hover: var(--app-color-primary-fg-solid-hover);
+  --mirror-fg-primary-solid: var(--app-color-primary-fg-solid);
+  --mirror-border-surface: var(--app-color-surface-border);
+  --mirror-border-disabled-subtle: var(--app-color-disabled-border-subtle);
+  --mirror-border-neutral-muted-active: var(--app-color-neutral-border-muted-active);
+  --mirror-border-neutral-muted-hover: var(--app-color-neutral-border-muted-hover);
+  --mirror-border-neutral-muted: var(--app-color-neutral-border-muted);
+  --mirror-border-neutral-subtle-active: var(--app-color-neutral-border-subtle-active);
+  --mirror-border-neutral-subtle-hover: var(--app-color-neutral-border-subtle-hover);
+  --mirror-border-neutral-subtle: var(--app-color-neutral-border-subtle);
+  --mirror-border-warning-muted-active: var(--app-color-warning-border-muted-active);
+  --mirror-border-warning-muted-hover: var(--app-color-warning-border-muted-hover);
+  --mirror-border-warning-muted: var(--app-color-warning-border-muted);
+  --mirror-border-warning-subtle-active: var(--app-color-warning-border-subtle-active);
+  --mirror-border-warning-subtle-hover: var(--app-color-warning-border-subtle-hover);
+  --mirror-border-warning-subtle: var(--app-color-warning-border-subtle);
+  --mirror-border-success-muted-active: var(--app-color-success-border-muted-active);
+  --mirror-border-success-muted-hover: var(--app-color-success-border-muted-hover);
+  --mirror-border-success-muted: var(--app-color-success-border-muted);
+  --mirror-border-success-subtle-active: var(--app-color-success-border-subtle-active);
+  --mirror-border-success-subtle-hover: var(--app-color-success-border-subtle-hover);
+  --mirror-border-success-subtle: var(--app-color-success-border-subtle);
+  --mirror-border-danger-muted-active: var(--app-color-danger-border-muted-active);
+  --mirror-border-danger-muted-hover: var(--app-color-danger-border-muted-hover);
+  --mirror-border-danger-muted: var(--app-color-danger-border-muted);
+  --mirror-border-danger-subtle-active: var(--app-color-danger-border-subtle-active);
+  --mirror-border-danger-subtle-hover: var(--app-color-danger-border-subtle-hover);
+  --mirror-border-danger-subtle: var(--app-color-danger-border-subtle);
+  --mirror-border-accent-muted-active: var(--app-color-accent-border-muted-active);
+  --mirror-border-accent-muted-hover: var(--app-color-accent-border-muted-hover);
+  --mirror-border-accent-muted: var(--app-color-accent-border-muted);
+  --mirror-border-accent-subtle-active: var(--app-color-accent-border-subtle-active);
+  --mirror-border-accent-subtle-hover: var(--app-color-accent-border-subtle-hover);
+  --mirror-border-accent-subtle: var(--app-color-accent-border-subtle);
+  --mirror-border-secondary-muted-active: var(--app-color-secondary-border-muted-active);
+  --mirror-border-secondary-muted-hover: var(--app-color-secondary-border-muted-hover);
+  --mirror-border-secondary-muted: var(--app-color-secondary-border-muted);
+  --mirror-border-secondary-subtle-active: var(--app-color-secondary-border-subtle-active);
+  --mirror-border-secondary-subtle-hover: var(--app-color-secondary-border-subtle-hover);
+  --mirror-border-secondary-subtle: var(--app-color-secondary-border-subtle);
+  --mirror-border-primary-muted-active: var(--app-color-primary-border-muted-active);
+  --mirror-border-primary-muted-hover: var(--app-color-primary-border-muted-hover);
+  --mirror-border-primary-muted: var(--app-color-primary-border-muted);
+  --mirror-border-primary-subtle-active: var(--app-color-primary-border-subtle-active);
+  --mirror-border-primary-subtle-hover: var(--app-color-primary-border-subtle-hover);
+  --mirror-border-primary-subtle: var(--app-color-primary-border-subtle);
+  --mirror-type-surface-display-size-xl: var(--app-font-size-surface-display-xl);
+  --mirror-type-surface-display-size-lg: var(--app-font-size-surface-display-lg);
+  --mirror-type-surface-display-size-md: var(--app-font-size-surface-display-md);
+  --mirror-type-surface-display-size-sm: var(--app-font-size-surface-display-sm);
+  --mirror-type-surface-display-leading-xl: var(--app-line-height-surface-display-xl);
+  --mirror-type-surface-display-leading-lg: var(--app-line-height-surface-display-lg);
+  --mirror-type-surface-display-leading-md: var(--app-line-height-surface-display-md);
+  --mirror-type-surface-display-leading-sm: var(--app-line-height-surface-display-sm);
+  --mirror-type-surface-display-tracking-xl: var(--app-letter-spacing-surface-display-xl);
+  --mirror-type-surface-display-tracking-lg: var(--app-letter-spacing-surface-display-lg);
+  --mirror-type-surface-display-tracking-md: var(--app-letter-spacing-surface-display-md);
+  --mirror-type-surface-display-tracking-sm: var(--app-letter-spacing-surface-display-sm);
+  --mirror-type-surface-title-size-xl: var(--app-font-size-surface-title-xl);
+  --mirror-type-surface-title-size-lg: var(--app-font-size-surface-title-lg);
+  --mirror-type-surface-title-size-md: var(--app-font-size-surface-title-md);
+  --mirror-type-surface-title-size-sm: var(--app-font-size-surface-title-sm);
+  --mirror-type-surface-title-leading-xl: var(--app-line-height-surface-title-xl);
+  --mirror-type-surface-title-leading-lg: var(--app-line-height-surface-title-lg);
+  --mirror-type-surface-title-leading-md: var(--app-line-height-surface-title-md);
+  --mirror-type-surface-title-leading-sm: var(--app-line-height-surface-title-sm);
+  --mirror-type-surface-title-tracking-xl: var(--app-letter-spacing-surface-title-xl);
+  --mirror-type-surface-title-tracking-lg: var(--app-letter-spacing-surface-title-lg);
+  --mirror-type-surface-title-tracking-md: var(--app-letter-spacing-surface-title-md);
+  --mirror-type-surface-title-tracking-sm: var(--app-letter-spacing-surface-title-sm);
+  --mirror-type-surface-subtitle-size-xl: var(--app-font-size-surface-subtitle-xl);
+  --mirror-type-surface-subtitle-size-lg: var(--app-font-size-surface-subtitle-lg);
+  --mirror-type-surface-subtitle-size-md: var(--app-font-size-surface-subtitle-md);
+  --mirror-type-surface-subtitle-size-sm: var(--app-font-size-surface-subtitle-sm);
+  --mirror-type-surface-subtitle-leading-xl: var(--app-line-height-surface-subtitle-xl);
+  --mirror-type-surface-subtitle-leading-lg: var(--app-line-height-surface-subtitle-lg);
+  --mirror-type-surface-subtitle-leading-md: var(--app-line-height-surface-subtitle-md);
+  --mirror-type-surface-subtitle-leading-sm: var(--app-line-height-surface-subtitle-sm);
+  --mirror-type-surface-subtitle-tracking-xl: var(--app-letter-spacing-surface-subtitle-xl);
+  --mirror-type-surface-subtitle-tracking-lg: var(--app-letter-spacing-surface-subtitle-lg);
+  --mirror-type-surface-subtitle-tracking-md: var(--app-letter-spacing-surface-subtitle-md);
+  --mirror-type-surface-subtitle-tracking-sm: var(--app-letter-spacing-surface-subtitle-sm);
+  --mirror-type-surface-callout-size-xl: var(--app-font-size-surface-callout-xl);
+  --mirror-type-surface-callout-size-lg: var(--app-font-size-surface-callout-lg);
+  --mirror-type-surface-callout-size-md: var(--app-font-size-surface-callout-md);
+  --mirror-type-surface-callout-size-sm: var(--app-font-size-surface-callout-sm);
+  --mirror-type-surface-callout-tracking-xl: var(--app-letter-spacing-surface-callout-xl);
+  --mirror-type-surface-callout-tracking-lg: var(--app-letter-spacing-surface-callout-lg);
+  --mirror-type-surface-callout-tracking-md: var(--app-letter-spacing-surface-callout-md);
+  --mirror-type-surface-callout-tracking-sm: var(--app-letter-spacing-surface-callout-sm);
+  --mirror-type-surface-body-size-md: var(--app-font-size-surface-body-md);
+  --mirror-type-surface-body-size-sm: var(--app-font-size-surface-body-sm);
+  --mirror-type-surface-body-tracking-md: var(--app-letter-spacing-surface-body-md);
+  --mirror-type-surface-body-tracking-sm: var(--app-letter-spacing-surface-body-sm);
+  --mirror-type-component-size-5xl: var(--app-font-size-text-5xl);
+  --mirror-type-component-size-4xl: var(--app-font-size-text-4xl);
+  --mirror-type-component-size-3xl: var(--app-font-size-text-3xl);
+  --mirror-type-component-size-2xl: var(--app-font-size-text-2xl);
+  --mirror-type-component-size-xl: var(--app-font-size-text-xl);
+  --mirror-type-component-size-lg: var(--app-font-size-text-lg);
+  --mirror-type-component-size-md: var(--app-font-size-text-md);
+  --mirror-type-component-size-sm: var(--app-font-size-text-sm);
+  --mirror-type-component-size-xs: var(--app-font-size-text-xs);
+  --mirror-type-component-size-2xs: var(--app-font-size-text-2xs);
+  --mirror-type-component-size-3xs: var(--app-font-size-text-3xs);
+  --mirror-type-component-size-4xs: var(--app-font-size-text-4xs);
+  --mirror-type-component-size-5xs: var(--app-font-size-text-5xs);
   --radius-surface-lg: var(--app-dimension-surface-radius-lg);
-  --radius-surface-md-inset: var(--app-dimension-surface-radius-md-inset);
+  --radius-surface-lg-inset: var(--app-dimension-surface-radius-lg-inset);
   --radius-surface-md: var(--app-dimension-surface-radius-md);
-  --radius-surface-sm-inset: var(--app-dimension-surface-radius-sm-inset);
+  --radius-surface-md-inset: var(--app-dimension-surface-radius-md-inset);
   --radius-surface-sm: var(--app-dimension-surface-radius-sm);
+  --radius-surface-sm-inset: var(--app-dimension-surface-radius-sm-inset);
   --radius-component-2xl: var(--app-dimension-radius-2xl);
   --radius-component-xl: var(--app-dimension-radius-xl);
   --radius-component-lg: var(--app-dimension-radius-lg);
@@ -18,1185 +285,88 @@
   --radius-component-compact-md: var(--app-dimension-radius-compact-md);
   --radius-component-compact-sm: var(--app-dimension-radius-compact-sm);
   --radius-component-round: var(--app-dimension-radius-round);
+  --shadow-surface: var(--app-box-shadow-surface);
+  --shadow-component: var(--app-box-shadow);
+  --shadow-component-high: var(--app-box-shadow-high);
 }
 
-@utility bg-surface-low {
-  background-color: var(--app-color-surface-bg-low);
+@utility bg-* {
+  background-color: --value(--mirror-bg-*);
 }
 
-@utility bg-surface-base {
-  background-color: var(--app-color-surface-bg-base);
+@utility text-* {
+  color: --value(--mirror-fg-*);
 }
 
-@utility bg-surface-high {
-  background-color: var(--app-color-surface-bg-high);
+@utility border-* {
+  border-color: --value(--mirror-border-*);
 }
 
-@utility bg-surface-higher {
-  background-color: var(--app-color-surface-bg-higher);
+@utility border-t-* {
+  border-top-color: --value(--mirror-border-*);
 }
 
-@utility bg-surface-dimmer {
-  background-color: var(--app-color-surface-bg-dimmer);
+@utility border-b-* {
+  border-bottom-color: --value(--mirror-border-*);
 }
 
-@utility text-surface {
-  color: var(--app-color-surface-fg);
+@utility border-r-* {
+  border-right-color: --value(--mirror-border-*);
 }
 
-@utility text-surface-muted {
-  color: var(--app-color-surface-fg-muted);
+@utility border-l-* {
+  border-left-color: --value(--mirror-border-*);
 }
 
-@utility text-surface-subtle {
-  color: var(--app-color-surface-fg-subtle);
-}
-
-@utility text-surface-inverted {
-  color: var(--app-color-surface-fg-inverted);
-}
-
-@utility text-surface-link {
-  color: var(--app-color-surface-fg-link);
-}
-
-@utility text-surface-link-hover {
-  color: var(--app-color-surface-fg-link-hover);
-}
-
-@utility text-surface-link-active {
-  color: var(--app-color-surface-fg-link-active);
-}
-
-@utility border-surface {
-  border-color: var(--app-color-surface-border);
-}
-
-@utility border-t-surface {
-  border-top-color: var(--app-color-surface-border);
-}
-
-@utility border-b-surface {
-  border-bottom-color: var(--app-color-surface-border);
-}
-
-@utility border-r-surface {
-  border-right-color: var(--app-color-surface-border);
-}
-
-@utility border-l-surface {
-  border-left-color: var(--app-color-surface-border);
-}
-
-@utility divide-surface {
+@utility divide-* {
   & > :not(:last-child) {
-    border-color: var(--app-color-surface-border);
+    border-color: --value(--mirror-border-*);
   }
 }
 
-@utility bg-primary-solid {
-  background-color: var(--app-color-primary-bg-solid);
-}
-
-@utility bg-primary-solid-hover {
-  background-color: var(--app-color-primary-bg-solid-hover);
-}
-
-@utility bg-primary-solid-active {
-  background-color: var(--app-color-primary-bg-solid-active);
-}
-
-@utility bg-primary-tone {
-  background-color: var(--app-color-primary-bg-tone);
-}
-
-@utility bg-primary-tone-hover {
-  background-color: var(--app-color-primary-bg-tone-hover);
-}
-
-@utility bg-primary-tone-active {
-  background-color: var(--app-color-primary-bg-tone-active);
-}
-
-@utility bg-primary-translucent {
-  background-color: var(--app-color-primary-bg-translucent);
-}
-
-@utility bg-primary-translucent-hover {
-  background-color: var(--app-color-primary-bg-translucent-hover);
-}
-
-@utility bg-primary-translucent-active {
-  background-color: var(--app-color-primary-bg-translucent-active);
-}
-
-@utility bg-secondary-solid {
-  background-color: var(--app-color-secondary-bg-solid);
-}
-
-@utility bg-secondary-solid-hover {
-  background-color: var(--app-color-secondary-bg-solid-hover);
-}
-
-@utility bg-secondary-solid-active {
-  background-color: var(--app-color-secondary-bg-solid-active);
-}
-
-@utility bg-secondary-tone {
-  background-color: var(--app-color-secondary-bg-tone);
-}
-
-@utility bg-secondary-tone-hover {
-  background-color: var(--app-color-secondary-bg-tone-hover);
-}
-
-@utility bg-secondary-tone-active {
-  background-color: var(--app-color-secondary-bg-tone-active);
-}
-
-@utility bg-secondary-translucent {
-  background-color: var(--app-color-secondary-bg-translucent);
-}
-
-@utility bg-secondary-translucent-hover {
-  background-color: var(--app-color-secondary-bg-translucent-hover);
-}
-
-@utility bg-secondary-translucent-active {
-  background-color: var(--app-color-secondary-bg-translucent-active);
-}
-
-@utility bg-accent-solid {
-  background-color: var(--app-color-accent-bg-solid);
-}
-
-@utility bg-accent-solid-hover {
-  background-color: var(--app-color-accent-bg-solid-hover);
-}
-
-@utility bg-accent-solid-active {
-  background-color: var(--app-color-accent-bg-solid-active);
-}
-
-@utility bg-accent-tone {
-  background-color: var(--app-color-accent-bg-tone);
-}
-
-@utility bg-accent-tone-hover {
-  background-color: var(--app-color-accent-bg-tone-hover);
-}
-
-@utility bg-accent-tone-active {
-  background-color: var(--app-color-accent-bg-tone-active);
-}
-
-@utility bg-accent-translucent {
-  background-color: var(--app-color-accent-bg-translucent);
-}
-
-@utility bg-accent-translucent-hover {
-  background-color: var(--app-color-accent-bg-translucent-hover);
-}
-
-@utility bg-accent-translucent-active {
-  background-color: var(--app-color-accent-bg-translucent-active);
-}
-
-@utility bg-success-solid {
-  background-color: var(--app-color-success-bg-solid);
-}
-
-@utility bg-success-solid-hover {
-  background-color: var(--app-color-success-bg-solid-hover);
-}
-
-@utility bg-success-solid-active {
-  background-color: var(--app-color-success-bg-solid-active);
-}
-
-@utility bg-success-tone {
-  background-color: var(--app-color-success-bg-tone);
-}
-
-@utility bg-success-tone-hover {
-  background-color: var(--app-color-success-bg-tone-hover);
-}
-
-@utility bg-success-tone-active {
-  background-color: var(--app-color-success-bg-tone-active);
-}
-
-@utility bg-success-translucent {
-  background-color: var(--app-color-success-bg-translucent);
-}
-
-@utility bg-success-translucent-hover {
-  background-color: var(--app-color-success-bg-translucent-hover);
-}
-
-@utility bg-success-translucent-active {
-  background-color: var(--app-color-success-bg-translucent-active);
-}
-
-@utility bg-warning-solid {
-  background-color: var(--app-color-warning-bg-solid);
-}
-
-@utility bg-warning-solid-hover {
-  background-color: var(--app-color-warning-bg-solid-hover);
-}
-
-@utility bg-warning-solid-active {
-  background-color: var(--app-color-warning-bg-solid-active);
-}
-
-@utility bg-warning-tone {
-  background-color: var(--app-color-warning-bg-tone);
-}
-
-@utility bg-warning-tone-hover {
-  background-color: var(--app-color-warning-bg-tone-hover);
-}
-
-@utility bg-warning-tone-active {
-  background-color: var(--app-color-warning-bg-tone-active);
-}
-
-@utility bg-warning-translucent {
-  background-color: var(--app-color-warning-bg-translucent);
-}
-
-@utility bg-warning-translucent-hover {
-  background-color: var(--app-color-warning-bg-translucent-hover);
-}
-
-@utility bg-warning-translucent-active {
-  background-color: var(--app-color-warning-bg-translucent-active);
-}
-
-@utility bg-danger-solid {
-  background-color: var(--app-color-danger-bg-solid);
-}
-
-@utility bg-danger-solid-hover {
-  background-color: var(--app-color-danger-bg-solid-hover);
-}
-
-@utility bg-danger-solid-active {
-  background-color: var(--app-color-danger-bg-solid-active);
-}
-
-@utility bg-danger-tone {
-  background-color: var(--app-color-danger-bg-tone);
-}
-
-@utility bg-danger-tone-hover {
-  background-color: var(--app-color-danger-bg-tone-hover);
-}
-
-@utility bg-danger-tone-active {
-  background-color: var(--app-color-danger-bg-tone-active);
-}
-
-@utility bg-danger-translucent {
-  background-color: var(--app-color-danger-bg-translucent);
-}
-
-@utility bg-danger-translucent-hover {
-  background-color: var(--app-color-danger-bg-translucent-hover);
-}
-
-@utility bg-danger-translucent-active {
-  background-color: var(--app-color-danger-bg-translucent-active);
-}
-
-@utility bg-neutral-solid {
-  background-color: var(--app-color-neutral-bg-solid);
-}
-
-@utility bg-neutral-solid-hover {
-  background-color: var(--app-color-neutral-bg-solid-hover);
-}
-
-@utility bg-neutral-solid-active {
-  background-color: var(--app-color-neutral-bg-solid-active);
-}
-
-@utility bg-neutral-tone {
-  background-color: var(--app-color-neutral-bg-tone);
-}
-
-@utility bg-neutral-tone-hover {
-  background-color: var(--app-color-neutral-bg-tone-hover);
-}
-
-@utility bg-neutral-tone-active {
-  background-color: var(--app-color-neutral-bg-tone-active);
-}
-
-@utility bg-neutral-translucent {
-  background-color: var(--app-color-neutral-bg-translucent);
-}
-
-@utility bg-neutral-translucent-hover {
-  background-color: var(--app-color-neutral-bg-translucent-hover);
-}
-
-@utility bg-neutral-translucent-active {
-  background-color: var(--app-color-neutral-bg-translucent-active);
-}
-
-@utility bg-disabled-solid {
-  background-color: var(--app-color-disabled-bg-solid);
-}
-
-@utility bg-disabled-tone {
-  background-color: var(--app-color-disabled-bg-tone);
-}
-
-@utility bg-disabled-translucent {
-  background-color: var(--app-color-disabled-bg-translucent);
-}
-
-@utility text-primary-solid {
-  color: var(--app-color-primary-fg-solid);
-}
-
-@utility text-primary-solid-hover {
-  color: var(--app-color-primary-fg-solid-hover);
-}
-
-@utility text-primary-solid-active {
-  color: var(--app-color-primary-fg-solid-active);
-}
-
-@utility text-primary-on-solid {
-  color: var(--app-color-primary-fg-on-solid);
-}
-
-@utility text-primary-on-tone {
-  color: var(--app-color-primary-fg-on-tone);
-}
-
-@utility text-primary-on-translucent {
-  color: var(--app-color-primary-fg-on-translucent);
-}
-
-@utility text-primary-muted {
-  color: var(--app-color-primary-fg-muted);
-}
-
-@utility text-primary-subtle {
-  color: var(--app-color-primary-fg-subtle);
-}
-
-@utility text-secondary-solid {
-  color: var(--app-color-secondary-fg-solid);
-}
-
-@utility text-secondary-solid-hover {
-  color: var(--app-color-secondary-fg-solid-hover);
-}
-
-@utility text-secondary-solid-active {
-  color: var(--app-color-secondary-fg-solid-active);
-}
-
-@utility text-secondary-on-solid {
-  color: var(--app-color-secondary-fg-on-solid);
-}
-
-@utility text-secondary-on-tone {
-  color: var(--app-color-secondary-fg-on-tone);
-}
-
-@utility text-secondary-on-translucent {
-  color: var(--app-color-secondary-fg-on-translucent);
-}
-
-@utility text-secondary-muted {
-  color: var(--app-color-secondary-fg-muted);
-}
-
-@utility text-secondary-subtle {
-  color: var(--app-color-secondary-fg-subtle);
-}
-
-@utility text-accent-solid {
-  color: var(--app-color-accent-fg-solid);
-}
-
-@utility text-accent-solid-hover {
-  color: var(--app-color-accent-fg-solid-hover);
-}
-
-@utility text-accent-solid-active {
-  color: var(--app-color-accent-fg-solid-active);
-}
-
-@utility text-accent-on-solid {
-  color: var(--app-color-accent-fg-on-solid);
-}
-
-@utility text-accent-on-tone {
-  color: var(--app-color-accent-fg-on-tone);
-}
-
-@utility text-accent-on-translucent {
-  color: var(--app-color-accent-fg-on-translucent);
-}
-
-@utility text-accent-muted {
-  color: var(--app-color-accent-fg-muted);
-}
-
-@utility text-accent-subtle {
-  color: var(--app-color-accent-fg-subtle);
-}
-
-@utility text-success-solid {
-  color: var(--app-color-success-fg-solid);
-}
-
-@utility text-success-solid-hover {
-  color: var(--app-color-success-fg-solid-hover);
-}
-
-@utility text-success-solid-active {
-  color: var(--app-color-success-fg-solid-active);
-}
-
-@utility text-success-on-solid {
-  color: var(--app-color-success-fg-on-solid);
-}
-
-@utility text-success-on-tone {
-  color: var(--app-color-success-fg-on-tone);
-}
-
-@utility text-success-on-translucent {
-  color: var(--app-color-success-fg-on-translucent);
-}
-
-@utility text-success-muted {
-  color: var(--app-color-success-fg-muted);
-}
-
-@utility text-success-subtle {
-  color: var(--app-color-success-fg-subtle);
-}
-
-@utility text-warning-solid {
-  color: var(--app-color-warning-fg-solid);
-}
-
-@utility text-warning-solid-hover {
-  color: var(--app-color-warning-fg-solid-hover);
-}
-
-@utility text-warning-solid-active {
-  color: var(--app-color-warning-fg-solid-active);
-}
-
-@utility text-warning-on-solid {
-  color: var(--app-color-warning-fg-on-solid);
-}
-
-@utility text-warning-on-tone {
-  color: var(--app-color-warning-fg-on-tone);
-}
-
-@utility text-warning-on-translucent {
-  color: var(--app-color-warning-fg-on-translucent);
-}
-
-@utility text-warning-muted {
-  color: var(--app-color-warning-fg-muted);
-}
-
-@utility text-warning-subtle {
-  color: var(--app-color-warning-fg-subtle);
-}
-
-@utility text-danger-solid {
-  color: var(--app-color-danger-fg-solid);
-}
-
-@utility text-danger-solid-hover {
-  color: var(--app-color-danger-fg-solid-hover);
-}
-
-@utility text-danger-solid-active {
-  color: var(--app-color-danger-fg-solid-active);
-}
-
-@utility text-danger-on-solid {
-  color: var(--app-color-danger-fg-on-solid);
-}
-
-@utility text-danger-on-tone {
-  color: var(--app-color-danger-fg-on-tone);
-}
-
-@utility text-danger-on-translucent {
-  color: var(--app-color-danger-fg-on-translucent);
-}
-
-@utility text-danger-muted {
-  color: var(--app-color-danger-fg-muted);
-}
-
-@utility text-danger-subtle {
-  color: var(--app-color-danger-fg-subtle);
-}
-
-@utility text-neutral-solid {
-  color: var(--app-color-neutral-fg-solid);
-}
-
-@utility text-neutral-solid-hover {
-  color: var(--app-color-neutral-fg-solid-hover);
-}
-
-@utility text-neutral-solid-active {
-  color: var(--app-color-neutral-fg-solid-active);
-}
-
-@utility text-neutral-on-solid {
-  color: var(--app-color-neutral-fg-on-solid);
-}
-
-@utility text-neutral-on-tone {
-  color: var(--app-color-neutral-fg-on-tone);
-}
-
-@utility text-neutral-on-translucent {
-  color: var(--app-color-neutral-fg-on-translucent);
-}
-
-@utility text-neutral-muted {
-  color: var(--app-color-neutral-fg-muted);
-}
-
-@utility text-neutral-subtle {
-  color: var(--app-color-neutral-fg-subtle);
-}
-
-@utility text-disabled-solid {
-  color: var(--app-color-disabled-fg-solid);
-}
-
-@utility text-disabled-on-solid {
-  color: var(--app-color-disabled-fg-on-solid);
-}
-
-@utility text-disabled-on-tone {
-  color: var(--app-color-disabled-fg-on-tone);
-}
-
-@utility text-disabled-on-translucent {
-  color: var(--app-color-disabled-fg-on-translucent);
-}
-
-@utility text-disabled-muted {
-  color: var(--app-color-disabled-fg-muted);
-}
-
-@utility text-disabled-subtle {
-  color: var(--app-color-disabled-fg-subtle);
-}
-
-@utility border-primary-translucent {
-  border-color: var(--app-color-primary-border-translucent);
-}
-
-@utility border-t-primary-translucent {
-  border-top-color: var(--app-color-primary-border-translucent);
-}
-
-@utility border-b-primary-translucent {
-  border-bottom-color: var(--app-color-primary-border-translucent);
-}
-
-@utility border-r-primary-translucent {
-  border-right-color: var(--app-color-primary-border-translucent);
-}
-
-@utility border-l-primary-translucent {
-  border-left-color: var(--app-color-primary-border-translucent);
-}
-
-@utility border-primary-translucent-hover {
-  border-color: var(--app-color-primary-border-translucent-hover);
-}
-
-@utility border-t-primary-translucent-hover {
-  border-top-color: var(--app-color-primary-border-translucent-hover);
-}
-
-@utility border-b-primary-translucent-hover {
-  border-bottom-color: var(--app-color-primary-border-translucent-hover);
-}
-
-@utility border-r-primary-translucent-hover {
-  border-right-color: var(--app-color-primary-border-translucent-hover);
-}
-
-@utility border-l-primary-translucent-hover {
-  border-left-color: var(--app-color-primary-border-translucent-hover);
-}
-
-@utility border-primary-translucent-active {
-  border-color: var(--app-color-primary-border-translucent-active);
-}
-
-@utility border-t-primary-translucent-active {
-  border-top-color: var(--app-color-primary-border-translucent-active);
-}
-
-@utility border-b-primary-translucent-active {
-  border-bottom-color: var(--app-color-primary-border-translucent-active);
-}
-
-@utility border-r-primary-translucent-active {
-  border-right-color: var(--app-color-primary-border-translucent-active);
-}
-
-@utility border-l-primary-translucent-active {
-  border-left-color: var(--app-color-primary-border-translucent-active);
-}
-
-@utility border-secondary-translucent {
-  border-color: var(--app-color-secondary-border-translucent);
-}
-
-@utility border-t-secondary-translucent {
-  border-top-color: var(--app-color-secondary-border-translucent);
-}
-
-@utility border-b-secondary-translucent {
-  border-bottom-color: var(--app-color-secondary-border-translucent);
-}
-
-@utility border-r-secondary-translucent {
-  border-right-color: var(--app-color-secondary-border-translucent);
-}
-
-@utility border-l-secondary-translucent {
-  border-left-color: var(--app-color-secondary-border-translucent);
-}
-
-@utility border-secondary-translucent-hover {
-  border-color: var(--app-color-secondary-border-translucent-hover);
-}
-
-@utility border-t-secondary-translucent-hover {
-  border-top-color: var(--app-color-secondary-border-translucent-hover);
-}
-
-@utility border-b-secondary-translucent-hover {
-  border-bottom-color: var(--app-color-secondary-border-translucent-hover);
-}
-
-@utility border-r-secondary-translucent-hover {
-  border-right-color: var(--app-color-secondary-border-translucent-hover);
-}
-
-@utility border-l-secondary-translucent-hover {
-  border-left-color: var(--app-color-secondary-border-translucent-hover);
-}
-
-@utility border-secondary-translucent-active {
-  border-color: var(--app-color-secondary-border-translucent-active);
-}
-
-@utility border-t-secondary-translucent-active {
-  border-top-color: var(--app-color-secondary-border-translucent-active);
-}
-
-@utility border-b-secondary-translucent-active {
-  border-bottom-color: var(--app-color-secondary-border-translucent-active);
-}
-
-@utility border-r-secondary-translucent-active {
-  border-right-color: var(--app-color-secondary-border-translucent-active);
-}
-
-@utility border-l-secondary-translucent-active {
-  border-left-color: var(--app-color-secondary-border-translucent-active);
-}
-
-@utility border-accent-translucent {
-  border-color: var(--app-color-accent-border-translucent);
-}
-
-@utility border-t-accent-translucent {
-  border-top-color: var(--app-color-accent-border-translucent);
-}
-
-@utility border-b-accent-translucent {
-  border-bottom-color: var(--app-color-accent-border-translucent);
-}
-
-@utility border-r-accent-translucent {
-  border-right-color: var(--app-color-accent-border-translucent);
-}
-
-@utility border-l-accent-translucent {
-  border-left-color: var(--app-color-accent-border-translucent);
-}
-
-@utility border-accent-translucent-hover {
-  border-color: var(--app-color-accent-border-translucent-hover);
-}
-
-@utility border-t-accent-translucent-hover {
-  border-top-color: var(--app-color-accent-border-translucent-hover);
-}
-
-@utility border-b-accent-translucent-hover {
-  border-bottom-color: var(--app-color-accent-border-translucent-hover);
-}
-
-@utility border-r-accent-translucent-hover {
-  border-right-color: var(--app-color-accent-border-translucent-hover);
-}
-
-@utility border-l-accent-translucent-hover {
-  border-left-color: var(--app-color-accent-border-translucent-hover);
-}
-
-@utility border-accent-translucent-active {
-  border-color: var(--app-color-accent-border-translucent-active);
-}
-
-@utility border-t-accent-translucent-active {
-  border-top-color: var(--app-color-accent-border-translucent-active);
-}
-
-@utility border-b-accent-translucent-active {
-  border-bottom-color: var(--app-color-accent-border-translucent-active);
-}
-
-@utility border-r-accent-translucent-active {
-  border-right-color: var(--app-color-accent-border-translucent-active);
-}
-
-@utility border-l-accent-translucent-active {
-  border-left-color: var(--app-color-accent-border-translucent-active);
-}
-
-@utility border-success-translucent {
-  border-color: var(--app-color-success-border-translucent);
-}
-
-@utility border-t-success-translucent {
-  border-top-color: var(--app-color-success-border-translucent);
-}
-
-@utility border-b-success-translucent {
-  border-bottom-color: var(--app-color-success-border-translucent);
-}
-
-@utility border-r-success-translucent {
-  border-right-color: var(--app-color-success-border-translucent);
-}
-
-@utility border-l-success-translucent {
-  border-left-color: var(--app-color-success-border-translucent);
-}
-
-@utility border-success-translucent-hover {
-  border-color: var(--app-color-success-border-translucent-hover);
-}
-
-@utility border-t-success-translucent-hover {
-  border-top-color: var(--app-color-success-border-translucent-hover);
-}
-
-@utility border-b-success-translucent-hover {
-  border-bottom-color: var(--app-color-success-border-translucent-hover);
-}
-
-@utility border-r-success-translucent-hover {
-  border-right-color: var(--app-color-success-border-translucent-hover);
-}
-
-@utility border-l-success-translucent-hover {
-  border-left-color: var(--app-color-success-border-translucent-hover);
-}
-
-@utility border-success-translucent-active {
-  border-color: var(--app-color-success-border-translucent-active);
-}
-
-@utility border-t-success-translucent-active {
-  border-top-color: var(--app-color-success-border-translucent-active);
-}
-
-@utility border-b-success-translucent-active {
-  border-bottom-color: var(--app-color-success-border-translucent-active);
-}
-
-@utility border-r-success-translucent-active {
-  border-right-color: var(--app-color-success-border-translucent-active);
-}
-
-@utility border-l-success-translucent-active {
-  border-left-color: var(--app-color-success-border-translucent-active);
-}
-
-@utility border-warning-translucent {
-  border-color: var(--app-color-warning-border-translucent);
-}
-
-@utility border-t-warning-translucent {
-  border-top-color: var(--app-color-warning-border-translucent);
-}
-
-@utility border-b-warning-translucent {
-  border-bottom-color: var(--app-color-warning-border-translucent);
-}
-
-@utility border-r-warning-translucent {
-  border-right-color: var(--app-color-warning-border-translucent);
-}
-
-@utility border-l-warning-translucent {
-  border-left-color: var(--app-color-warning-border-translucent);
-}
-
-@utility border-warning-translucent-hover {
-  border-color: var(--app-color-warning-border-translucent-hover);
-}
-
-@utility border-t-warning-translucent-hover {
-  border-top-color: var(--app-color-warning-border-translucent-hover);
-}
-
-@utility border-b-warning-translucent-hover {
-  border-bottom-color: var(--app-color-warning-border-translucent-hover);
-}
-
-@utility border-r-warning-translucent-hover {
-  border-right-color: var(--app-color-warning-border-translucent-hover);
-}
-
-@utility border-l-warning-translucent-hover {
-  border-left-color: var(--app-color-warning-border-translucent-hover);
-}
-
-@utility border-warning-translucent-active {
-  border-color: var(--app-color-warning-border-translucent-active);
-}
-
-@utility border-t-warning-translucent-active {
-  border-top-color: var(--app-color-warning-border-translucent-active);
-}
-
-@utility border-b-warning-translucent-active {
-  border-bottom-color: var(--app-color-warning-border-translucent-active);
-}
-
-@utility border-r-warning-translucent-active {
-  border-right-color: var(--app-color-warning-border-translucent-active);
-}
-
-@utility border-l-warning-translucent-active {
-  border-left-color: var(--app-color-warning-border-translucent-active);
-}
-
-@utility border-danger-translucent {
-  border-color: var(--app-color-danger-border-translucent);
-}
-
-@utility border-t-danger-translucent {
-  border-top-color: var(--app-color-danger-border-translucent);
-}
-
-@utility border-b-danger-translucent {
-  border-bottom-color: var(--app-color-danger-border-translucent);
-}
-
-@utility border-r-danger-translucent {
-  border-right-color: var(--app-color-danger-border-translucent);
-}
-
-@utility border-l-danger-translucent {
-  border-left-color: var(--app-color-danger-border-translucent);
-}
-
-@utility border-danger-translucent-hover {
-  border-color: var(--app-color-danger-border-translucent-hover);
-}
-
-@utility border-t-danger-translucent-hover {
-  border-top-color: var(--app-color-danger-border-translucent-hover);
-}
-
-@utility border-b-danger-translucent-hover {
-  border-bottom-color: var(--app-color-danger-border-translucent-hover);
-}
-
-@utility border-r-danger-translucent-hover {
-  border-right-color: var(--app-color-danger-border-translucent-hover);
-}
-
-@utility border-l-danger-translucent-hover {
-  border-left-color: var(--app-color-danger-border-translucent-hover);
-}
-
-@utility border-danger-translucent-active {
-  border-color: var(--app-color-danger-border-translucent-active);
-}
-
-@utility border-t-danger-translucent-active {
-  border-top-color: var(--app-color-danger-border-translucent-active);
-}
-
-@utility border-b-danger-translucent-active {
-  border-bottom-color: var(--app-color-danger-border-translucent-active);
-}
-
-@utility border-r-danger-translucent-active {
-  border-right-color: var(--app-color-danger-border-translucent-active);
-}
-
-@utility border-l-danger-translucent-active {
-  border-left-color: var(--app-color-danger-border-translucent-active);
-}
-
-@utility border-neutral-translucent {
-  border-color: var(--app-color-neutral-border-translucent);
-}
-
-@utility border-t-neutral-translucent {
-  border-top-color: var(--app-color-neutral-border-translucent);
-}
-
-@utility border-b-neutral-translucent {
-  border-bottom-color: var(--app-color-neutral-border-translucent);
-}
-
-@utility border-r-neutral-translucent {
-  border-right-color: var(--app-color-neutral-border-translucent);
-}
-
-@utility border-l-neutral-translucent {
-  border-left-color: var(--app-color-neutral-border-translucent);
-}
-
-@utility border-neutral-translucent-hover {
-  border-color: var(--app-color-neutral-border-translucent-hover);
-}
-
-@utility border-t-neutral-translucent-hover {
-  border-top-color: var(--app-color-neutral-border-translucent-hover);
-}
-
-@utility border-b-neutral-translucent-hover {
-  border-bottom-color: var(--app-color-neutral-border-translucent-hover);
-}
-
-@utility border-r-neutral-translucent-hover {
-  border-right-color: var(--app-color-neutral-border-translucent-hover);
-}
-
-@utility border-l-neutral-translucent-hover {
-  border-left-color: var(--app-color-neutral-border-translucent-hover);
-}
-
-@utility border-neutral-translucent-active {
-  border-color: var(--app-color-neutral-border-translucent-active);
-}
-
-@utility border-t-neutral-translucent-active {
-  border-top-color: var(--app-color-neutral-border-translucent-active);
-}
-
-@utility border-b-neutral-translucent-active {
-  border-bottom-color: var(--app-color-neutral-border-translucent-active);
-}
-
-@utility border-r-neutral-translucent-active {
-  border-right-color: var(--app-color-neutral-border-translucent-active);
-}
-
-@utility border-l-neutral-translucent-active {
-  border-left-color: var(--app-color-neutral-border-translucent-active);
-}
-
-@utility border-disabled-translucent {
-  border-color: var(--app-color-disabled-border-translucent);
-}
-
-@utility border-t-disabled-translucent {
-  border-top-color: var(--app-color-disabled-border-translucent);
-}
-
-@utility border-b-disabled-translucent {
-  border-bottom-color: var(--app-color-disabled-border-translucent);
-}
-
-@utility border-r-disabled-translucent {
-  border-right-color: var(--app-color-disabled-border-translucent);
-}
-
-@utility border-l-disabled-translucent {
-  border-left-color: var(--app-color-disabled-border-translucent);
-}
-
-@utility type-surface-display-sm {
+@utility type-surface-display-* {
   font-family: var(--app-font-family-surface-display);
-  font-size: var(--app-font-size-surface-display-sm);
   font-weight: var(--app-font-weight-surface-display);
-  line-height: var(--app-line-height-surface-display-sm);
   text-transform: var(--app-text-case-surface-display);
-  letter-spacing: var(--app-letter-spacing-surface-display-sm);
+  font-size: --value(--mirror-type-surface-display-size-*);
+  line-height: --value(--mirror-type-surface-display-leading-*);
+  letter-spacing: --value(--mirror-type-surface-display-tracking-*);
   &.-strong {
     font-weight: var(--app-font-weight-surface-display-strong);
   }
 }
 
-@utility type-surface-display-md {
-  font-family: var(--app-font-family-surface-display);
-  font-size: var(--app-font-size-surface-display-md);
-  font-weight: var(--app-font-weight-surface-display);
-  line-height: var(--app-line-height-surface-display-md);
-  text-transform: var(--app-text-case-surface-display);
-  letter-spacing: var(--app-letter-spacing-surface-display-md);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-display-strong);
-  }
-}
-
-@utility type-surface-display-lg {
-  font-family: var(--app-font-family-surface-display);
-  font-size: var(--app-font-size-surface-display-lg);
-  font-weight: var(--app-font-weight-surface-display);
-  line-height: var(--app-line-height-surface-display-lg);
-  text-transform: var(--app-text-case-surface-display);
-  letter-spacing: var(--app-letter-spacing-surface-display-lg);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-display-strong);
-  }
-}
-
-@utility type-surface-display-xl {
-  font-family: var(--app-font-family-surface-display);
-  font-size: var(--app-font-size-surface-display-xl);
-  font-weight: var(--app-font-weight-surface-display);
-  line-height: var(--app-line-height-surface-display-xl);
-  text-transform: var(--app-text-case-surface-display);
-  letter-spacing: var(--app-letter-spacing-surface-display-xl);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-display-strong);
-  }
-}
-
-@utility type-surface-title-sm {
+@utility type-surface-title-* {
   font-family: var(--app-font-family-surface-title);
-  font-size: var(--app-font-size-surface-title-sm);
   font-weight: var(--app-font-weight-surface-title);
-  line-height: var(--app-line-height-surface-title-sm);
   text-transform: var(--app-text-case-surface-title);
-  letter-spacing: var(--app-letter-spacing-surface-title-sm);
+  font-size: --value(--mirror-type-surface-title-size-*);
+  line-height: --value(--mirror-type-surface-title-leading-*);
+  letter-spacing: --value(--mirror-type-surface-title-tracking-*);
   &.-strong {
     font-weight: var(--app-font-weight-surface-title-strong);
   }
 }
 
-@utility type-surface-title-md {
-  font-family: var(--app-font-family-surface-title);
-  font-size: var(--app-font-size-surface-title-md);
-  font-weight: var(--app-font-weight-surface-title);
-  line-height: var(--app-line-height-surface-title-md);
-  text-transform: var(--app-text-case-surface-title);
-  letter-spacing: var(--app-letter-spacing-surface-title-md);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-title-strong);
-  }
-}
-
-@utility type-surface-title-lg {
-  font-family: var(--app-font-family-surface-title);
-  font-size: var(--app-font-size-surface-title-lg);
-  font-weight: var(--app-font-weight-surface-title);
-  line-height: var(--app-line-height-surface-title-lg);
-  text-transform: var(--app-text-case-surface-title);
-  letter-spacing: var(--app-letter-spacing-surface-title-lg);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-title-strong);
-  }
-}
-
-@utility type-surface-title-xl {
-  font-family: var(--app-font-family-surface-title);
-  font-size: var(--app-font-size-surface-title-xl);
-  font-weight: var(--app-font-weight-surface-title);
-  line-height: var(--app-line-height-surface-title-xl);
-  text-transform: var(--app-text-case-surface-title);
-  letter-spacing: var(--app-letter-spacing-surface-title-xl);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-title-strong);
-  }
-}
-
-@utility type-surface-subtitle-sm {
+@utility type-surface-subtitle-* {
   font-family: var(--app-font-family-surface-subtitle);
-  font-size: var(--app-font-size-surface-subtitle-sm);
   font-weight: var(--app-font-weight-surface-subtitle);
-  line-height: var(--app-line-height-surface-subtitle-sm);
   text-transform: var(--app-text-case-surface-subtitle);
-  letter-spacing: var(--app-letter-spacing-surface-subtitle-sm);
+  font-size: --value(--mirror-type-surface-subtitle-size-*);
+  line-height: --value(--mirror-type-surface-subtitle-leading-*);
+  letter-spacing: --value(--mirror-type-surface-subtitle-tracking-*);
   &.-strong {
     font-weight: var(--app-font-weight-surface-subtitle-strong);
   }
 }
 
-@utility type-surface-subtitle-md {
-  font-family: var(--app-font-family-surface-subtitle);
-  font-size: var(--app-font-size-surface-subtitle-md);
-  font-weight: var(--app-font-weight-surface-subtitle);
-  line-height: var(--app-line-height-surface-subtitle-md);
-  text-transform: var(--app-text-case-surface-subtitle);
-  letter-spacing: var(--app-letter-spacing-surface-subtitle-md);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-subtitle-strong);
-  }
-}
-
-@utility type-surface-subtitle-lg {
-  font-family: var(--app-font-family-surface-subtitle);
-  font-size: var(--app-font-size-surface-subtitle-lg);
-  font-weight: var(--app-font-weight-surface-subtitle);
-  line-height: var(--app-line-height-surface-subtitle-lg);
-  text-transform: var(--app-text-case-surface-subtitle);
-  letter-spacing: var(--app-letter-spacing-surface-subtitle-lg);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-subtitle-strong);
-  }
-}
-
-@utility type-surface-subtitle-xl {
-  font-family: var(--app-font-family-surface-subtitle);
-  font-size: var(--app-font-size-surface-subtitle-xl);
-  font-weight: var(--app-font-weight-surface-subtitle);
-  line-height: var(--app-line-height-surface-subtitle-xl);
-  text-transform: var(--app-text-case-surface-subtitle);
-  letter-spacing: var(--app-letter-spacing-surface-subtitle-xl);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-subtitle-strong);
-  }
-}
-
-@utility type-surface-callout-sm {
+@utility type-surface-callout-* {
   font-family: var(--app-font-family-surface-callout);
-  font-size: var(--app-font-size-surface-callout-sm);
   font-weight: var(--app-font-weight-surface-callout);
-  line-height: var(--app-line-height-surface-callout);
   text-transform: var(--app-text-case-surface-callout);
-  letter-spacing: var(--app-letter-spacing-surface-callout-sm);
+  line-height: var(--app-line-height-surface-callout);
+  font-size: --value(--mirror-type-surface-callout-size-*);
+  letter-spacing: --value(--mirror-type-surface-callout-tracking-*);
   &.-strong {
     font-weight: var(--app-font-weight-surface-callout-strong);
   }
@@ -1205,73 +375,13 @@
   }
 }
 
-@utility type-surface-callout-md {
-  font-family: var(--app-font-family-surface-callout);
-  font-size: var(--app-font-size-surface-callout-md);
-  font-weight: var(--app-font-weight-surface-callout);
-  line-height: var(--app-line-height-surface-callout);
-  text-transform: var(--app-text-case-surface-callout);
-  letter-spacing: var(--app-letter-spacing-surface-callout-md);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-callout-strong);
-  }
-  &.-short {
-    line-height: var(--app-line-height-surface-callout-short);
-  }
-}
-
-@utility type-surface-callout-lg {
-  font-family: var(--app-font-family-surface-callout);
-  font-size: var(--app-font-size-surface-callout-lg);
-  font-weight: var(--app-font-weight-surface-callout);
-  line-height: var(--app-line-height-surface-callout);
-  text-transform: var(--app-text-case-surface-callout);
-  letter-spacing: var(--app-letter-spacing-surface-callout-lg);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-callout-strong);
-  }
-  &.-short {
-    line-height: var(--app-line-height-surface-callout-short);
-  }
-}
-
-@utility type-surface-callout-xl {
-  font-family: var(--app-font-family-surface-callout);
-  font-size: var(--app-font-size-surface-callout-xl);
-  font-weight: var(--app-font-weight-surface-callout);
-  line-height: var(--app-line-height-surface-callout);
-  text-transform: var(--app-text-case-surface-callout);
-  letter-spacing: var(--app-letter-spacing-surface-callout-xl);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-callout-strong);
-  }
-  &.-short {
-    line-height: var(--app-line-height-surface-callout-short);
-  }
-}
-
-@utility type-surface-body-sm {
+@utility type-surface-body-* {
   font-family: var(--app-font-family-surface-body);
-  font-size: var(--app-font-size-surface-body-sm);
   font-weight: var(--app-font-weight-surface-body);
-  line-height: var(--app-line-height-surface-body);
   text-transform: var(--app-text-case-surface-body);
-  letter-spacing: var(--app-letter-spacing-surface-body-sm);
-  &.-strong {
-    font-weight: var(--app-font-weight-surface-body-strong);
-  }
-  &.-short {
-    line-height: var(--app-line-height-surface-body-short);
-  }
-}
-
-@utility type-surface-body-md {
-  font-family: var(--app-font-family-surface-body);
-  font-size: var(--app-font-size-surface-body-md);
-  font-weight: var(--app-font-weight-surface-body);
   line-height: var(--app-line-height-surface-body);
-  text-transform: var(--app-text-case-surface-body);
-  letter-spacing: var(--app-letter-spacing-surface-body-md);
+  font-size: --value(--mirror-type-surface-body-size-*);
+  letter-spacing: --value(--mirror-type-surface-body-tracking-*);
   &.-strong {
     font-weight: var(--app-font-weight-surface-body-strong);
   }
@@ -1282,18 +392,18 @@
 
 @utility type-surface-code {
   font-family: var(--app-font-family-surface-code);
-  font-size: var(--app-font-size-surface-code);
   font-weight: var(--app-font-weight-surface-code);
-  line-height: var(--app-line-height-surface-code);
   text-transform: var(--app-text-case-surface-code);
+  line-height: var(--app-line-height-surface-code);
+  font-size: var(--app-font-size-surface-code);
 }
 
 @utility type-surface-footnote {
   font-family: var(--app-font-family-surface-footnote);
-  font-size: var(--app-font-size-surface-footnote);
   font-weight: var(--app-font-weight-surface-footnote);
-  line-height: var(--app-line-height-surface-footnote);
   text-transform: var(--app-text-case-surface-footnote);
+  line-height: var(--app-line-height-surface-footnote);
+  font-size: var(--app-font-size-surface-footnote);
   letter-spacing: var(--app-letter-spacing-surface-footnote);
   &.-strong {
     font-weight: var(--app-font-weight-surface-footnote-strong);
@@ -1302,22 +412,22 @@
 
 @utility type-surface-caption {
   font-family: var(--app-font-family-surface-caption);
-  font-size: var(--app-font-size-surface-caption);
   font-weight: var(--app-font-weight-surface-caption);
-  line-height: var(--app-line-height-surface-caption);
   text-transform: var(--app-text-case-surface-caption);
+  line-height: var(--app-line-height-surface-caption);
+  font-size: var(--app-font-size-surface-caption);
   letter-spacing: var(--app-letter-spacing-surface-caption);
   &.-strong {
     font-weight: var(--app-font-weight-surface-caption-strong);
   }
 }
 
-@utility type-component-5xs {
+@utility type-component-* {
   font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-5xs);
   font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
   text-transform: var(--app-text-case);
+  line-height: var(--app-line-height);
+  font-size: --value(--mirror-type-component-size-*);
   &.-alt {
     font-weight: var(--app-font-weight-text-alt);
   }
@@ -1326,183 +436,20 @@
   }
   &.-number {
     font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-4xs {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-4xs);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-3xs {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-3xs);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-2xs {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-2xs);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-xs {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-xs);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-sm {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-sm);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-md {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-md);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-lg {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-lg);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-xl {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-xl);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-2xl {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-2xl);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
-  }
-}
-
-@utility type-component-3xl {
-  font-family: var(--app-font-family-text);
-  font-size: var(--app-font-size-text-3xl);
-  font-weight: var(--app-font-weight-text);
-  line-height: var(--app-line-height);
-  text-transform: var(--app-text-case);
-  &.-alt {
-    font-weight: var(--app-font-weight-text-alt);
-  }
-  &.-strong {
-    font-weight: var(--app-font-weight-text-strong);
-  }
-  &.-number {
-    font-family: var(--app-font-family-number);
+    letter-spacing: var(--app-letter-spacing-number);
   }
 }
 
 @utility focus-ring {
   border-color: var(--app-color-focus-border);
-  outline-color: var(--app-color-focus-outline);
   border-width: var(--app-dimension-border);
+  outline-color: var(--app-color-focus-outline);
   outline-width: var(--app-dimension-outline-focus);
   outline-style: solid;
+}
+
+@utility focus-shadow {
+  box-shadow:
+    inset 0 0 0 var(--app-dimension-border) var(--app-color-focus-border),
+    0 0 0 var(--app-dimension-outline-focus) var(--app-color-focus-outline);
 }

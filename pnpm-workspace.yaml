@@ -6,7 +6,7 @@ packages:
 catalog:
   '@floating-ui/vue': ^2.0.1
   '@maas/magic-timer': ^1.2.0
-  '@maas/mirror': ^1.0.0-beta.44
+  '@maas/mirror': ^2.0.0-beta.1
   '@maas/vue-autosize': ^1.8.0
   '@maas/vue-primitive': ^1.4.0
   '@nuxt/kit': ^4.5.2

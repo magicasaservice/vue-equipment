@@ -13,8 +13,8 @@ catalogs:
       specifier: ^1.2.0
       version: 1.2.0
     '@maas/mirror':
-      specifier: ^1.0.0-beta.44
-      version: 1.0.0-beta.44
+      specifier: ^2.0.0-beta.1
+      version: 2.0.0-beta.1
     '@maas/vue-autosize':
       specifier: ^1.8.0
       version: 1.8.0
@@ -103,7 +103,7 @@ importers:
         version: 1.2.0(eventemitter3@5.0.4)
       '@maas/mirror':
         specifier: 'catalog:'
-        version: 1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)
+        version: 2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)
       '@maas/vue-autosize':
         specifier: 'catalog:'
         version: 1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3))
@@ -193,7 +193,7 @@ importers:
     dependencies:
       '@maas/mirror':
         specifier: 'catalog:'
-        version: 1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)
+        version: 2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)
       '@tailwindcss/vite':
         specifier: 'catalog:'
         version: 4.3.3(vite@7.3.6(@types/node@26.4.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.0))
@@ -270,7 +270,7 @@ importers:
     devDependencies:
       '@maas/mirror':
         specifier: 'catalog:'
-        version: 1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)
+        version: 2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)
       '@types/luxon':
         specifier: ^3.7.5
         version: 3.7.5
@@ -342,7 +342,7 @@ importers:
     dependencies:
       '@maas/mirror':
         specifier: 'catalog:'
-        version: 1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)
+        version: 2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)
       '@tailwindcss/vite':
         specifier: 'catalog:'
         version: 4.3.3(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.0))
@@ -392,7 +392,7 @@ importers:
     devDependencies:
       '@maas/mirror':
         specifier: 'catalog:'
-        version: 1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)
+        version: 2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)
       esno:
         specifier: 'catalog:'
         version: 4.8.0
@@ -1806,21 +1806,22 @@ packages:
     peerDependencies:
       eventemitter3: ^5
 
-  '@maas/mirror@1.0.0-beta.44':
-    resolution: {integrity: sha512-LsVOZWdesjKTWyN9gyxN5g9E8F1BLggsRXJ4/Edqw+y+HV+1rfesknhQrq1vtOKKaqxb8N8q6sNLA9onisksRw==}
+  '@maas/mirror@2.0.0-beta.1':
+    resolution: {integrity: sha512-uO98UuWuabVsZBJt73RRcWoq5E2pK52NO4uH5VqPe1y21jlcSKUS255wny0tpSytf4BnU+EMSSCviIA8DN4Uhw==}
     hasBin: true
     peerDependencies:
       '@clack/prompts': ^1
-      '@maas/vue-primitive': ^1
+      '@floating-ui/vue': '>=1'
+      '@maas/vue-autosize': ^1
+      '@vueuse/core': '>=12'
       c12: ^3
       camelcase-keys: ^10
       citty: ^0
       colorjs.io: ^0.6.1
-      deepmerge: ^4
       defu: ^6
+      focus-trap: ^7
       giget: ^3
-      glob: ^13
-      lodash-es: ^4
+      mitt: ^3
       multimatch: ^8
       picocolors: ^1
       prettier: ^3
@@ -1829,6 +1830,8 @@ packages:
       scule: ^1
       style-dictionary: ^5
       tailwindcss: ^4
+      vue: ^3.5
+      yaml: ^2
 
   '@maas/vue-autosize@1.8.0':
     resolution: {integrity: sha512-juw5A3GbtPz27dUqCpJtZjzPRQk8pLk4qIPonmSlXyiQkjex30pu61CEQj6X9bq2aPqkSavxTrs6mKViTOjS6A==}
@@ -9070,19 +9073,21 @@ snapshots:
     dependencies:
       eventemitter3: 5.0.4
 
-  '@maas/mirror@1.0.0-beta.44(@clack/prompts@1.7.0)(@maas/vue-primitive@1.4.0)(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(deepmerge@4.3.1)(defu@6.1.7)(giget@3.3.1)(glob@13.0.6)(lodash-es@4.18.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)':
+  '@maas/mirror@2.0.0-beta.1(@clack/prompts@1.7.0)(@floating-ui/vue@2.0.1(vue@3.5.42(typescript@5.9.3)))(@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3)))(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(c12@3.3.4(magicast@0.5.4))(camelcase-keys@10.0.2)(citty@0.2.2)(colorjs.io@0.6.1)(defu@6.1.7)(focus-trap@8.2.2)(giget@3.3.1)(mitt@3.0.1)(multimatch@8.0.0)(picocolors@1.1.1)(prettier@3.9.6)(reduce-css-calc@2.1.8)(rimraf@6.1.3)(scule@1.3.0)(style-dictionary@5.5.2)(tailwindcss@4.3.3)(vue@3.5.42(typescript@5.9.3))(yaml@2.9.0)':
     dependencies:
       '@clack/prompts': 1.7.0
-      '@maas/vue-primitive': 1.4.0
+      '@floating-ui/vue': 2.0.1(vue@3.5.42(typescript@5.9.3))
+      '@maas/vue-autosize': 1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3))
+      '@vueuse/core': 14.4.0(vue@3.5.42(typescript@5.9.3))
       c12: 3.3.4(magicast@0.5.4)
       camelcase-keys: 10.0.2
       citty: 0.2.2
       colorjs.io: 0.6.1
-      deepmerge: 4.3.1
       defu: 6.1.7
+      focus-trap: 8.2.2
       giget: 3.3.1
-      glob: 13.0.6
-      lodash-es: 4.18.1
+      mitt: 3.0.1
+      mlly: 1.8.2
       multimatch: 8.0.0
       picocolors: 1.1.1
       prettier: 3.9.6
@@ -9091,6 +9096,8 @@ snapshots:
       scule: 1.3.0
       style-dictionary: 5.5.2
       tailwindcss: 4.3.3
+      vue: 3.5.42(typescript@5.9.3)
+      yaml: 2.9.0
 
   '@maas/vue-autosize@1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3))':
     dependencies:
