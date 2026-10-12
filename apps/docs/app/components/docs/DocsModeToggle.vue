@@ -9,11 +9,11 @@
     :title="label"
     @click="toggle"
   >
-    <base-icon
-      :name="settled && isDark ? 'sun' : 'moon'"
-      aria-hidden="true"
-      class="size-4"
-    />
+    <!-- Both symbols render, and the attribute the color mode script sets
+         before the first paint picks one, so the right one shows from the
+         first frame rather than once the page has hydrated. -->
+    <base-icon name="moon" aria-hidden="true" class="size-4 dark:hidden" />
+    <base-icon name="sun" aria-hidden="true" class="hidden size-4 dark:block" />
   </button>
 </template>
 
