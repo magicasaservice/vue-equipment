@@ -31,29 +31,39 @@
 
     <magic-command-view :id="viewId" :initial="true">
       <magic-command-content class="flex flex-col">
-        <div class="flex h-14 shrink-0 items-center gap-2.5 px-4.5">
-          <base-icon
-            name="magnifier"
-            aria-hidden="true"
-            class="text-surface-muted size-4 shrink-0"
-          />
-
-          <input
-            ref="input"
-            v-model="query"
-            type="text"
-            autocomplete="off"
-            spellcheck="false"
-            aria-label="Search the documentation"
-            placeholder="Search pages and sections"
-            class="docs-body text-surface placeholder:text-surface-muted h-full min-w-0 flex-1 bg-transparent outline-none"
-          />
-
-          <kbd
-            class="docs-code text-surface-muted rounded-component-compact-sm bg-primary-subtle shrink-0 px-1.5 py-0.5"
+        <!-- The field is shaped like the platform’s input: a filled box with
+             the symbol and the key hint inside it. It sits in from the panel
+             by the same 4px as the rows below and takes their radius, so its
+             corners nest inside the panel’s the way theirs do, and the symbol
+             lines up with the row labels. The panel keeps the focus in the
+             field the whole time it is open, so the field draws no ring. -->
+        <div class="shrink-0 px-1 pt-1">
+          <label
+            class="rounded-component-sm bg-primary-subtle flex h-10 cursor-text items-center gap-2 px-3.5"
           >
-            Esc
-          </kbd>
+            <base-icon
+              name="magnifier"
+              aria-hidden="true"
+              class="text-surface-muted size-4 shrink-0"
+            />
+
+            <input
+              ref="input"
+              v-model="query"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Search the documentation"
+              placeholder="Search"
+              class="docs-body text-surface placeholder:text-surface-muted h-full min-w-0 flex-1 bg-transparent outline-none"
+            />
+
+            <kbd
+              class="docs-code text-surface-muted rounded-component-compact-sm bg-primary-subtle shrink-0 px-1.5 py-0.5"
+            >
+              Esc
+            </kbd>
+          </label>
         </div>
 
         <!-- Results are grouped under the page they live on, so a page name is
@@ -61,10 +71,10 @@
              a real link, so the palette costs the reader nothing that a list of
              links would not already give them. -->
         <div
-          v-if="groups.length"
-          class="min-h-0 flex-1 scrollbar-none overflow-y-auto px-1 pb-2"
+          v-if="shown.length"
+          class="min-h-0 flex-1 scrollbar-none overflow-y-auto px-1 pt-1 pb-2"
         >
-          <div v-for="group in groups" :key="group.path">
+          <div v-for="group in shown" :key="group.path">
             <p class="docs-label pt-2 pb-1 pl-3.5">{{ group.title }}</p>
 
             <magic-command-item
@@ -92,12 +102,11 @@
           </div>
         </div>
 
-        <p v-else class="docs-body-sm text-surface-muted px-4 py-8 text-center">
-          {{
-            query.trim()
-              ? `Nothing matches “${query.trim()}”.`
-              : 'Type to search.'
-          }}
+        <p
+          v-else-if="query.trim()"
+          class="docs-body-sm text-surface-muted px-4 py-8 text-center"
+        >
+          Nothing matches “{{ query.trim() }}”.
         </p>
       </magic-command-content>
     </magic-command-view>
@@ -111,6 +120,7 @@ interface SearchResult {
   detail: string
   score: number
   depth: number
+  exact: boolean
   path: string
   index: number
 }
@@ -161,8 +171,9 @@ const results = computed<Array<SearchResult>>(() => {
     const words = title
       .split(/(?<=[a-z])(?=[A-Z])|\s+/)
       .map((word) => word.toLowerCase())
+    const exact = title.toLowerCase() === term
     let score = 0
-    if (title.toLowerCase() === term || words.includes(term)) {
+    if (exact || words.includes(term)) {
       score = 4
     } else if (haystack.startsWith(term)) {
       score = 3
@@ -185,14 +196,21 @@ const results = computed<Array<SearchResult>>(() => {
       detail: section.id === path ? path : titles.slice(1).join(' › '),
       score,
       depth: titles.length,
+      exact,
       path,
     })
   }
 
   // Equal scores break towards the shallower section, which is the one a
-  // reader is more likely to have meant.
+  // reader is more likely to have meant, and then towards the whole title
+  // over a word of one.
   return scored
-    .sort((a, b) => b.score - a.score || a.depth - b.depth)
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.depth - b.depth ||
+        Number(b.exact) - Number(a.exact)
+    )
     .slice(0, 20)
     .map((result, index) => ({ ...result, index }))
 })
@@ -223,6 +241,37 @@ const groups = computed(() => {
 
   return [...byPath.values()]
 })
+
+/**
+ * Before anything is typed the palette lists what the sidebar lists, section
+ * by section, so it opens as a way to every page rather than as an empty box.
+ */
+const { data: navigation } = await useDocsNavigation()
+
+const navigationGroups = computed(() => {
+  let index = 0
+
+  return (navigation.value ?? [])
+    .filter((section) => section.children?.length)
+    .map((section) => ({
+      path: section.path,
+      title: section.title,
+      results: (section.children ?? []).map((page): SearchResult => ({
+        id: page.path,
+        title: page.title,
+        detail: '',
+        score: 0,
+        depth: 0,
+        exact: false,
+        path: page.path,
+        index: index++,
+      })),
+    }))
+})
+
+const shown = computed(() =>
+  query.value.trim() ? groups.value : navigationGroups.value
+)
 
 // A page's own section is indexed under the page's path and carries its title.
 function pageTitle(result: SearchResult) {
