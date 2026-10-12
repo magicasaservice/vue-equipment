@@ -14,6 +14,7 @@
  */
 @theme inline {
   --default-mono-font-family: var(--app-font-family-surface-code);
+  --default-font-feature-settings: 'ss02', 'cv04';
 }
 
 @utility scrollbar-none {
