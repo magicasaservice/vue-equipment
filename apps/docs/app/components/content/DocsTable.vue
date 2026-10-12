@@ -33,8 +33,7 @@
             <td
               v-for="(item, cell) in row.items"
               :key="cell"
-              class="border-surface border-l-2 px-4 py-2.5 align-top first:border-l-0"
-              :data-label="cell > 0 ? columns[cell]?.label : undefined"
+              class="border-surface border-l-2 px-4 py-2.5 align-top whitespace-nowrap first:border-l-0"
             >
               <magic-menu-view
                 v-if="item.description"
@@ -178,47 +177,6 @@ const parsedRows = computed<Array<{ items: Array<ParsedItem> }>>(() =>
     content: '';
     position: absolute;
     inset: -0.75rem;
-  }
-}
-
-/* Narrow: the same rows as stacked fields, because a four-column table with a
-   type union in it cannot wrap. Each cell carries its own column heading,
-   since there is no header row left to read it from. */
-@media (width < 40rem) {
-  .docs-table {
-    overflow-x: visible;
-  }
-
-  .docs-table thead {
-    display: none;
-  }
-
-  .docs-table table,
-  .docs-table tbody,
-  .docs-table tr,
-  .docs-table td {
-    display: block;
-  }
-
-  .docs-table tr {
-    padding: 0.75rem 1rem;
-  }
-
-  .docs-table td {
-    padding: 0;
-    border-inline-start: 0;
-  }
-
-  .docs-table td[data-label] {
-    margin-top: 0.25rem;
-  }
-
-  .docs-table td[data-label]::before {
-    content: attr(data-label);
-    display: block;
-    font-size: 0.75rem;
-    line-height: 1.125rem;
-    color: var(--app-color-surface-fg-muted);
   }
 }
 </style>
