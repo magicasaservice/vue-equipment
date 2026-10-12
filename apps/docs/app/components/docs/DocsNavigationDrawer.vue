@@ -7,10 +7,11 @@
       <div
         class="border-b-surface flex h-(--docs-header) shrink-0 items-center gap-2 border-b px-(--docs-gutter)"
       >
-        <nuxt-link to="/" class="docs-tap flex shrink-0 items-center gap-2">
-          <base-icon name="carabiner" aria-hidden="true" class="size-6" />
-          <span class="docs-wordmark">{{ appTitle }}</span>
-        </nuxt-link>
+        <base-icon
+          name="carabiner"
+          aria-hidden="true"
+          class="text-surface size-6 shrink-0"
+        />
 
         <button
           type="button"
@@ -38,8 +39,6 @@
 <script setup lang="ts">
 import type { MagicDrawerOptions } from '@maas/vue-equipment/plugins/MagicDrawer'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
-
-const { appTitle } = useAppConfig()
 
 const { data: navigation } = await useDocsNavigation()
 
