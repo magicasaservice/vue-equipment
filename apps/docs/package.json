@@ -27,7 +27,6 @@
     "@tailwindcss/vite": "catalog:",
     "better-sqlite3": "^13.0.3",
     "composables": "workspace:*",
-    "fonts": "workspace:fonts@*",
     "metadata": "workspace:*",
     "mirror-compat": "workspace:*",
     "nuxt": "catalog:",

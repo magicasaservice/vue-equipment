@@ -75,6 +75,27 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/icon.svg', type: 'image/svg+xml' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon-180x180.png' },
         { rel: 'manifest', href: '/manifest.webmanifest' },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.maas.engineering',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'dns-prefetch',
+          href: 'https://fonts.maas.engineering',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.maas.engineering/mirage/1.1.3/stylesheet.css',
+          crossorigin: 'anonymous',
+          tagPriority: 'critical',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.maas.engineering/index/stylesheet.css',
+          crossorigin: 'anonymous',
+          tagPriority: 'critical',
+        },
       ],
       script: [
         {
@@ -87,8 +108,6 @@ export default defineNuxtConfig({
   },
 
   css: [
-    'fonts/mirage/stylesheet.css',
-    'fonts/index/stylesheet.css',
     resolve(tokensDir, 'application.css'),
     resolve(tokensDir, 'breakpoint/sm/application.css'),
     resolve(tokensDir, 'theme/dark/application.css'),
