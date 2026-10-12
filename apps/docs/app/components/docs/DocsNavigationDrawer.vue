@@ -26,7 +26,7 @@
            declares, so this one has to say `auto` itself. -->
       <div
         ref="scroller"
-        class="relative min-h-0 flex-1 overflow-y-auto px-(--docs-gutter) py-6"
+        class="relative min-h-0 flex-1 scrollbar-none overflow-y-auto px-(--docs-gutter) py-6"
       >
         <docs-sidebar-nav :navigation="navigation ?? []" />
         <docs-sidebar-links class="mt-8" />

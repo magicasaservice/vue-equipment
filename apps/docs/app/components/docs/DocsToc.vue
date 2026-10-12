@@ -2,7 +2,7 @@
   <aside
     v-if="links.length"
     aria-label="On this page"
-    class="docs-rail sticky top-(--docs-header) hidden h-[calc(100svh-var(--docs-header))] w-(--docs-toc) shrink-0 overflow-y-auto py-6 pl-8 min-[1200px]:block"
+    class="docs-rail sticky top-(--docs-header) hidden h-[calc(100svh-var(--docs-header))] w-(--docs-toc) shrink-0 scrollbar-none overflow-y-auto py-6 pl-8 min-[1200px]:block"
   >
     <p class="docs-label px-2 pb-1">On this page</p>
 
