@@ -11,24 +11,28 @@
   <magic-toast-provider
     id="magic-toast-position-demo"
     :options="{
-      position,
+      position: selected?.value,
     }"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { MButton, MSelect } from 'mirror-compat'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
+
+import type { MagicToastOptions } from '@maas/vue-equipment/plugins/MagicToast'
+
+type ToastPosition = NonNullable<MagicToastOptions['position']>
 
 const component = defineAsyncComponent(
   () => import('./components/DemoToast.vue')
 )
 const { add } = useMagicToast('magic-toast-position-demo')
 
-const position = ref('bottom-right')
+const position = ref<string | number>('bottom-right')
 
-const options = [
+const options: Array<{ value: ToastPosition; label: string }> = [
   { value: 'top-right', label: 'Top Right' },
   { value: 'top', label: 'Top' },
   { value: 'top-left', label: 'Top Left' },
@@ -39,9 +43,13 @@ const options = [
   { value: 'right', label: 'Right' },
 ]
 
+const selected = computed(() =>
+  options.find((option) => option.value === position.value)
+)
+
 function onClick() {
   const props = {
-    message: options.find((p) => p.value === position.value)?.label,
+    message: selected.value?.label,
   }
 
   add({ component, props })
