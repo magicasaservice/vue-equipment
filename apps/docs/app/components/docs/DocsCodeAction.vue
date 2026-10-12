@@ -11,7 +11,7 @@
     :aria-pressed="active"
     :title="label"
   >
-    <base-icon v-if="icon" :name="icon" aria-hidden="true" class="size-5" />
+    <base-icon v-if="icon" :name="icon" aria-hidden="true" class="size-4" />
     <!-- The slot shell stays for the one glyph the symbol set has no
          counterpart for: ProsePre's line-wrap mark. -->
     <svg
@@ -23,7 +23,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
       aria-hidden="true"
-      class="size-5"
+      class="size-4"
     >
       <slot />
     </svg>
@@ -39,9 +39,8 @@ defineProps<{
 </script>
 
 <style scoped>
-/* A 32px box holding a 20px mark: the house optical size, the one the table's
-   info button already uses. A finger needs 44, so the target grows on a coarse
-   pointer without moving the glyph. */
+/* A 32px box holding a 16px mark, the same as the top bar’s buttons. A finger
+   needs 44, so the target grows on a coarse pointer without moving the glyph. */
 @media (pointer: coarse) {
   .docs-action {
     min-width: 2.75rem;
