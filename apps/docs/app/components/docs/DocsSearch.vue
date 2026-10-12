@@ -4,20 +4,11 @@
       <button
         type="button"
         aria-label="Search"
-        class="rounded-component-2xs text-surface-muted hover:text-surface sm:bg-surface-high sm:hover:bg-surface-higher flex size-11 items-center justify-center gap-2 transition-colors sm:h-8 sm:w-56 sm:justify-start sm:px-2.5"
+        aria-keyshortcuts="Meta+K Control+K"
+        title="Search"
+        class="text-surface-muted hover:text-surface hover:bg-primary-muted active:bg-primary-muted-hover rounded-component-2xs flex size-11 shrink-0 items-center justify-center transition-colors sm:size-8"
       >
-        <base-icon
-          name="magnifier"
-          aria-hidden="true"
-          class="size-3.5 shrink-0"
-        />
-        <span class="docs-body-sm hidden sm:inline">Search</span>
-        <kbd
-          aria-hidden="true"
-          class="docs-code text-surface-muted ml-auto hidden sm:inline"
-        >
-          ⌘K
-        </kbd>
+        <base-icon name="magnifier" aria-hidden="true" class="size-4" />
       </button>
     </magic-command-trigger>
 
