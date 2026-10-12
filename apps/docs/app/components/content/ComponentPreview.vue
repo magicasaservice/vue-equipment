@@ -9,18 +9,14 @@
   >
     <!-- The demo stands on its own ground, one step above the panel that
          carries the code, and scrolls horizontally by itself so a wide example
-         never widens the column. It mounts in the browser only: a demo that
-         reads its provider’s state from the same template renders differently
-         before and after hydration. -->
+         never widens the column. -->
     <div
       class="bg-surface-high text-surface flex min-h-65 items-center justify-center overflow-x-auto px-4 py-8 sm:p-12"
     >
-      <client-only>
-        <component :is="preview" v-if="preview" />
-        <p v-else class="docs-body-sm text-surface-muted">
-          No preview registered for “{{ name }}”.
-        </p>
-      </client-only>
+      <component :is="preview" v-if="preview" />
+      <p v-else class="docs-body-sm text-surface-muted">
+        No preview registered for “{{ name }}”.
+      </p>
     </div>
 
     <figcaption
