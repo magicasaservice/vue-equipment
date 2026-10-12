@@ -29,6 +29,8 @@ export enum PlayerId {
   EdgeDataPlay = 'edge-data-play',
   EdgeVideoSrc = 'edge-video-src',
   EvtPlay = 'evt-play',
+  HydrationPlaylist = 'hydration-playlist',
+  HydrationLoop = 'hydration-loop',
   EvtPause = 'evt-pause',
   EvtStart = 'evt-start',
   EvtMute = 'evt-mute',

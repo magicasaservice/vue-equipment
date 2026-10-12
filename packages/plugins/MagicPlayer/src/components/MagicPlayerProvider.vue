@@ -23,6 +23,7 @@
 <script lang="ts" setup>
 import {
   computed,
+  onBeforeMount,
   onMounted,
   provide,
   toRefs,
@@ -76,8 +77,14 @@ const {
 // Normalize src into an array and set playlist state
 const rawSrc = options?.src ?? ''
 const srcs = Array.isArray(rawSrc) ? rawSrc : [rawSrc]
-state.playlistCount = srcs.length
 state.loop = state.options.loop
+
+// A component reading the playlist beside the provider renders after the
+// provider’s setup on the server, but before it in the browser. Writing the
+// count once the provider mounts gives both the same first render.
+onBeforeMount(() => {
+  state.playlistCount = srcs.length
+})
 
 const currentSrc = computed(() => srcs[state.playlistIndex] ?? '')
 
