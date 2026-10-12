@@ -83,7 +83,7 @@ rows:
   - items:
       - label: target
         description: Providing a target is optional. Can either be an element ref, a HTML element or a Vue component.
-      - label: MaybeElementRef<HTMLElement>
+      - label: MaybeElementRef<HTMLElement | null>
         description: More info can be found in the [VueUse docs](https://vueuse.org/core/unrefElement/#type-declarations).
         escape: true
       - label: 'false'
