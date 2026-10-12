@@ -12,9 +12,11 @@ import CheckOval from '~icons/maas/check-oval500'
 import ChevronS from '~icons/maas/chevron-s500'
 import Close from '~icons/maas/close500'
 import CopyClipboard from '~icons/maas/copy-clipboard500'
+import Document from '~icons/maas/document500'
 import Link from '~icons/maas/link500'
 import MaasRobot from '~icons/maas/maas-robot500'
 import Magnifier from '~icons/maas/magnifier500'
+import Md from '~icons/maas/md500'
 import Menu from '~icons/maas/menu500'
 import Moon from '~icons/maas/moon500'
 import SignInfoOval from '~icons/maas/sign-info-oval500'
@@ -33,9 +35,11 @@ const icons = {
   'chevron-s': ChevronS,
   close: Close,
   'copy-clipboard': CopyClipboard,
+  document: Document,
   link: Link,
   'maas-robot': MaasRobot,
   magnifier: Magnifier,
+  md: Md,
   menu: Menu,
   moon: Moon,
   'sign-info-oval': SignInfoOval,

@@ -57,6 +57,9 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string(),
         description: z.string().optional(),
+        // The file the page was read from, relative to the repository. Filled
+        // in at parse time by a hook in `nuxt.config.ts`.
+        sourcePath: z.string().optional(),
       }),
     }),
   },

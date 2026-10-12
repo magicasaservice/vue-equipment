@@ -3,9 +3,12 @@
     <article
       class="mx-auto max-w-(--docs-measure) min-w-0 flex-1 py-12 lg:mx-0 lg:py-16"
     >
-      <template v-if="page">
+      <template v-if="content">
         <docs-toc-inline :links="tocLinks" />
-        <content-renderer :value="page" />
+        <content-renderer
+          :value="content"
+          :components="{ 'docs-page-actions': DocsPageActions }"
+        />
         <docs-pagination class="mt-16" />
       </template>
 
@@ -25,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+import { DocsPageActions } from '#components'
+
 const route = useRoute()
 
 // `/plugins/MagicDrawer/` and `/plugins/MagicDrawer` are the same page, and
@@ -37,6 +42,40 @@ const { data: page } = await useAsyncData(
 )
 
 const tocLinks = computed(() => page.value?.body?.toc?.links ?? [])
+
+// Nuxt Content types the body as an MDC tree, but hands it over as minimark:
+// a list of `[tag, props, ...children]` tuples, with text as bare strings.
+type MinimarkNode =
+  [string, Record<string, unknown>, ...Array<unknown>] | string
+
+function tagOf(node: MinimarkNode | undefined) {
+  return Array.isArray(node) ? node[0] : undefined
+}
+
+// The h1 and the lede under it are the markdown’s own first nodes, so the
+// page’s actions are spliced into the body after them rather than rendered
+// around it.
+const content = computed(() => {
+  if (!page.value?.sourcePath) {
+    return page.value
+  }
+
+  const body = page.value.body as unknown as { value: Array<MinimarkNode> }
+  const nodes = body.value
+  const index = tagOf(nodes[0]) === 'h1' ? (tagOf(nodes[1]) === 'p' ? 2 : 1) : 0
+  const actions: MinimarkNode = [
+    'docs-page-actions',
+    { source: page.value.sourcePath, path: page.value.path },
+  ]
+
+  return {
+    ...page.value,
+    body: {
+      ...body,
+      value: [...nodes.slice(0, index), actions, ...nodes.slice(index)],
+    },
+  }
+})
 
 // A path with no content behind it is a 404, not a 200 that happens to show a
 // 404 template. Crawlers and link checkers read the status, not the markup.

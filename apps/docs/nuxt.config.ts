@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'node:path'
+import { dirname, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -178,6 +178,31 @@ export default defineNuxtConfig({
 
   mdc: {
     components: { prose: true },
+  },
+
+  hooks: {
+    // A page’s source link and its Markdown twin both need the file it was
+    // read from, which the collection’s sources only know as a glob.
+    'content:file:afterParse'({ file, collection, content }) {
+      if (collection.name === 'docs' && file.path) {
+        content.sourcePath = relative(repositoryRoot, file.path)
+      }
+    },
+  },
+
+  nitro: {
+    // The files behind the pages, which `/raw/<path>.md` serves. They are
+    // bundled for the server alone, so the content database the browser
+    // downloads never carries a second copy of every page. The pattern
+    // matches the `docs` collection’s sources in `content.config.ts`.
+    serverAssets: [
+      {
+        baseName: 'markdown',
+        dir: repositoryRoot,
+        pattern:
+          '{apps/docs/content/0.overview/*.md,packages/{plugins,composables}/*/index.md}',
+      },
+    ],
   },
 
   // The overview pages used to be served as `.html` files, and those URLs are
