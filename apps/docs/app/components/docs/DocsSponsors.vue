@@ -1,6 +1,8 @@
 <template>
   <div class="flex w-full flex-col items-center gap-3">
-    <span class="docs-label">Sponsored by</span>
+    <span class="type-surface-callout-lg -strong text-surface">
+      Sponsored by
+    </span>
 
     <m-button
       size="lg"

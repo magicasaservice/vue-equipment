@@ -16,7 +16,9 @@
 
       <div class="flex flex-col items-center gap-8 px-4 text-center">
         <div class="flex flex-col items-center gap-6 px-4">
-          <h1 class="type-surface-display-md -strong text-surface text-balance">
+          <h1
+            class="type-surface-display-md sm:type-surface-display-sm -strong text-surface text-balance"
+          >
             {{ hero.name }}
           </h1>
           <div class="flex flex-col items-center gap-4">
