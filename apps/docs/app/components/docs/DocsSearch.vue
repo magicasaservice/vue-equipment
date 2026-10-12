@@ -32,11 +32,11 @@
     <magic-command-view :id="viewId" :initial="true">
       <magic-command-content class="flex flex-col">
         <!-- The field is shaped like the platform’s input: a filled box with
-             the symbol and the key hint inside it. It sits in from the panel
-             by the same 4px as the rows below and takes their radius, so its
-             corners nest inside the panel’s the way theirs do, and the symbol
-             lines up with the row labels. The panel keeps the focus in the
-             field the whole time it is open, so the field draws no ring. -->
+             the symbol inside it. It sits in from the panel by the same 4px
+             as the rows below and takes their radius, so its corners nest
+             inside the panel’s the way theirs do, and the symbol lines up
+             with the row labels. The panel keeps the focus in the field the
+             whole time it is open, so the field draws no ring. -->
         <div class="shrink-0 px-1 pt-1">
           <label
             class="rounded-component-sm bg-primary-subtle flex h-10 cursor-text items-center gap-2 px-3.5"
@@ -57,12 +57,6 @@
               placeholder="Search"
               class="docs-body text-surface placeholder:text-surface-muted h-full min-w-0 flex-1 bg-transparent outline-none"
             />
-
-            <kbd
-              class="docs-code text-surface-muted rounded-component-compact-sm bg-primary-subtle shrink-0 px-1.5 py-0.5"
-            >
-              Esc
-            </kbd>
           </label>
         </div>
 
