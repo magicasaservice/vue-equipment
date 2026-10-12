@@ -1,33 +1,44 @@
 <template>
   <!-- Fill, not border. The manager tabs sit inside the same panel as the
        command so the block reads as one object. -->
-  <div
+  <mirror-tabs-root
+    v-model="active"
     class="rounded-component-sm bg-surface-high mt-6 mb-6 overflow-hidden first:mt-0"
   >
-    <div class="flex items-center gap-1 px-2 pt-2">
-      <button
-        v-for="manager in managers"
-        :key="manager.name"
-        type="button"
-        class="rounded-component-compact-sm docs-code docs-tap-grow inline-flex items-center px-2 py-1 transition-colors"
-        :class="
-          active === manager.name
-            ? 'bg-surface-higher text-surface'
-            : 'text-surface-muted hover:text-surface'
-        "
-        :aria-pressed="active === manager.name"
-        @click="active = manager.name"
+    <div class="flex items-center gap-2 px-2 pt-2">
+      <!-- The indicator only renders once it has measured the active tab,
+           after mount. Until then the active tab carries the same fill, so
+           the server-rendered block already shows the selection. -->
+      <mirror-tabs-list
+        :class="list"
+        class="[&:not(:has(>.mirror-tabs-indicator))>[data-active]]:bg-primary-muted"
+        aria-label="Package manager"
       >
-        {{ manager.name }}
-      </button>
+        <mirror-tabs-tab
+          v-for="manager in managers"
+          :key="manager.name"
+          :class="trigger"
+          :value="manager.name"
+        >
+          {{ manager.name }}
+        </mirror-tabs-tab>
+
+        <mirror-tabs-indicator :class="indicator" />
+      </mirror-tabs-list>
 
       <docs-code-copy :value="command" class="ml-auto" />
     </div>
 
-    <pre class="docs-code text-surface overflow-x-auto px-4 pt-2.5 pb-3.5">{{
-      command
-    }}</pre>
-  </div>
+    <mirror-tabs-content
+      v-for="manager in managers"
+      :key="manager.name"
+      :value="manager.name"
+    >
+      <pre class="docs-code text-surface overflow-x-auto px-4 pt-2.5 pb-3.5">{{
+        commandFor(manager)
+      }}</pre>
+    </mirror-tabs-content>
+  </mirror-tabs-root>
 </template>
 
 <script setup lang="ts">
@@ -53,13 +64,36 @@ const managers = [
  */
 const active = useState('package-manager', () => 'pnpm')
 
-const command = computed(() => {
-  const manager = managers.find((entry) => entry.name === active.value)
-  if (!manager) {
-    return ''
-  }
+function commandFor(manager: (typeof managers)[number]) {
   return dev
     ? `${manager.add} ${manager.devFlag} ${name}`
     : `${manager.add} ${name}`
+}
+
+// The copy button copies whichever command is showing.
+const command = computed(() => {
+  const manager = managers.find((entry) => entry.name === active.value)
+  return manager ? commandFor(manager) : ''
 })
+
+// The tabs keep the docs’ own size and face, and take their color states from
+// Mirror’s tabs demo. They fit their labels, so the indicator follows the
+// width as well as the position.
+const list = 'relative isolate flex items-center gap-1'
+
+const trigger = [
+  'rounded-component-compact-sm docs-code docs-tap-grow relative z-10',
+  'inline-flex items-center px-2 py-1 text-surface-muted',
+  'transition-colors duration-200 ease-in-out',
+  'data-[active=true]:text-surface',
+  'enabled:not-data-[active=true]:hover:bg-primary-subtle',
+  'enabled:not-data-[active=true]:hover:text-surface',
+  'enabled:not-data-[active=true]:active:bg-primary-subtle-hover',
+].join(' ')
+
+const indicator = [
+  'rounded-component-compact-sm bg-primary-muted',
+  'left-0! translate-x-[var(--mirror-tabs-indicator-left)]',
+  'transition-[translate,inline-size] duration-200 ease-out',
+].join(' ')
 </script>
