@@ -36,7 +36,7 @@
             "$type": "color"
           },
           "subtle": {
-            "$value": "{config.color.palette.stone.translucent.3}",
+            "$value": "{config.color.palette.stone.translucent.4}",
             "$type": "color"
           }
         }
