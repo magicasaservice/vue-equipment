@@ -164,9 +164,14 @@ const results = computed<Array<SearchResult>>(() => {
 
     // An exact title hit outranks a prefix, which outranks a contains, which
     // outranks a body hit, so searching `magicmenu` lands on the MagicMenu page
-    // rather than on its Installation section.
+    // rather than on its Installation section. A word of a camel-cased title
+    // counts as exact, so `drawer` ties MagicDrawer with MagicCommand’s Drawer
+    // example, and the page wins the tie.
+    const words = title
+      .split(/(?<=[a-z])(?=[A-Z])|\s+/)
+      .map((word) => word.toLowerCase())
     let score = 0
-    if (title.toLowerCase() === term) {
+    if (title.toLowerCase() === term || words.includes(term)) {
       score = 4
     } else if (haystack.startsWith(term)) {
       score = 3
