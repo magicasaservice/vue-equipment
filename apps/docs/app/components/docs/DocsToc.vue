@@ -1,6 +1,7 @@
 <template>
   <aside
     v-if="links.length"
+    ref="rail"
     aria-label="On this page"
     class="docs-rail sticky top-(--docs-header) hidden h-[calc(100svh-var(--docs-header))] w-(--docs-toc) shrink-0 scrollbar-none overflow-y-auto py-6 pl-8 min-[1200px]:block"
   >
@@ -12,6 +13,7 @@
           href="#docs-content"
           class="docs-nav-item truncate"
           :class="activeId ? '' : 'text-surface font-medium'"
+          :data-toc-active="!activeId || undefined"
         >
           Top
         </a>
@@ -22,6 +24,7 @@
           :href="`#${link.id}`"
           class="docs-nav-item truncate"
           :class="activeId === link.id ? 'text-surface font-medium' : ''"
+          :data-toc-active="activeId === link.id || undefined"
         >
           {{ link.text }}
         </a>
@@ -32,6 +35,7 @@
               :href="`#${child.id}`"
               class="docs-nav-item truncate"
               :class="activeId === child.id ? 'text-surface font-medium' : ''"
+              :data-toc-active="activeId === child.id || undefined"
             >
               {{ child.text }}
             </a>
@@ -85,6 +89,41 @@ function updateActiveId() {
 
   activeId.value = current
 }
+
+/**
+ * The rail follows the reader. Once the highlighted entry leaves the rail, the
+ * rail scrolls to bring it back to its middle. Only the rail moves:
+ * `scrollIntoView` would scroll the page under the reader as well.
+ */
+const rail = useTemplateRef('rail')
+const railMargin = 32
+
+function revealActiveId() {
+  const element = rail.value
+  const item = element?.querySelector<HTMLElement>('[data-toc-active]')
+  if (!element || !item) {
+    return
+  }
+
+  const top = item.offsetTop
+  const bottom = top + item.offsetHeight
+  const visible =
+    top >= element.scrollTop + railMargin &&
+    bottom <= element.scrollTop + element.clientHeight - railMargin
+  if (visible) {
+    return
+  }
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches
+  element.scrollTo({
+    top: top - (element.clientHeight - item.offsetHeight) / 2,
+    behavior: reduceMotion ? 'auto' : 'smooth',
+  })
+}
+
+watch(activeId, () => nextTick(revealActiveId))
 
 onMounted(() => {
   updateActiveId()
