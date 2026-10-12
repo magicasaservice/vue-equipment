@@ -5,7 +5,10 @@
     v-model="active"
     class="rounded-component-sm bg-surface-high mt-6 mb-6 overflow-hidden first:mt-0"
   >
-    <div class="flex items-center gap-2 px-2 pt-2">
+    <!-- A 6px inset under a 12px corner leaves 6px for anything that sits in
+         a corner of the row, so the tabs and the copy button take
+         compact-sm and both start at the top of the row. -->
+    <div class="flex items-start gap-2 px-1.5 pt-1.5">
       <!-- The indicator only renders once it has measured the active tab,
            after mount. Until then the active tab carries the same fill, so
            the server-rendered block already shows the selection. -->
@@ -76,14 +79,15 @@ const command = computed(() => {
   return manager ? commandFor(manager) : ''
 })
 
-// The tabs keep the docs’ own size and face, and take their color states from
-// Mirror’s tabs demo. They fit their labels, so the indicator follows the
-// width as well as the position.
+// The tabs keep the docs’ code face, set at the caption size, and take their
+// color states from Mirror’s tabs demo. They fit their labels, so the
+// indicator follows the width as well as the position.
 const list = 'relative isolate flex items-center gap-1'
 
 const trigger = [
   'rounded-component-compact-sm docs-code docs-tap-grow relative z-10',
-  'inline-flex items-center px-2 py-1 text-surface-muted',
+  'text-(length:--app-font-size-surface-caption)',
+  'inline-flex h-7 items-center px-1.5 text-surface-muted',
   'transition-colors duration-200 ease-in-out',
   'data-[active=true]:text-surface',
   'enabled:not-data-[active=true]:hover:bg-primary-subtle',
