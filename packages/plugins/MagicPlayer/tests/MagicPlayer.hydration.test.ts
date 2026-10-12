@@ -12,7 +12,7 @@ import { useMagicPlayer } from '../src/composables/useMagicPlayer'
 import { PlayerId, TestId } from './enums'
 
 import type { SSRBufferItem } from '@vue/server-renderer'
-import type { ComponentInternalInstance } from 'vue'
+import type { Component, ComponentInternalInstance } from 'vue'
 
 const VIDEO_SRC =
   'https://stream.mux.com/kj7uNjRztuyNotBkAI55oUeVKSSN1C4ONrIYuYcRKxo/highest.mp4'
@@ -65,7 +65,7 @@ function createPlaylistPage(
           'button',
           {
             'data-test-id': TestId.PlaylistNext,
-            'disabled': nextDisabled(context),
+            disabled: nextDisabled(context),
           },
           'Next'
         ),
@@ -96,11 +96,43 @@ function createPlaylistPage(
   })
 }
 
+/**
+ * A page that reads the playlist state inside the provider, the way controls
+ * placed in its slot would. Both the server and the browser set the provider
+ * up before its slot renders.
+ */
+function createSlottedPlaylistPage(playerId: PlayerId) {
+  const options = {
+    src: PLAYLIST_SRCS,
+    preload: 'none' as const,
+    playback: false as const,
+  }
+
+  const PlaylistCounter = defineComponent({
+    setup() {
+      const { playlistCount } = useMagicPlayer(playerId)
+      return () =>
+        h('span', { 'data-test-id': TestId.PlaylistCount }, [
+          String(playlistCount.value),
+        ])
+    },
+  })
+
+  return defineComponent({
+    setup() {
+      return () =>
+        h(
+          MagicPlayerProvider,
+          { id: playerId, options },
+          { default: () => [h(MagicPlayerVideo), h(PlaylistCounter)] }
+        )
+    },
+  })
+}
+
 // Renders the page on the server, then hydrates that markup in the browser
 // and collects everything Vue reports while it does.
-async function renderAndHydrate(
-  component: ReturnType<typeof createPlaylistPage>
-) {
+async function renderAndHydrate(component: Component) {
   const html = await renderToString(createSSRApp(component))
 
   const container = document.createElement('div')
@@ -161,6 +193,21 @@ describe('MagicPlayer hydration', () => {
         .querySelector(`[data-test-id="${TestId.PlaylistNext}"]`)
         ?.hasAttribute('disabled')
     ).toBe(false)
+  })
+
+  it('hydrates playlist state read inside the provider', async () => {
+    const { container, mismatches, unmount } = await renderAndHydrate(
+      createSlottedPlaylistPage(PlayerId.HydrationSlot)
+    )
+    cleanup = unmount
+
+    expect(mismatches).toEqual([])
+
+    await nextTick()
+    expect(
+      container.querySelector(`[data-test-id="${TestId.PlaylistCount}"]`)
+        ?.textContent
+    ).toBe('3')
   })
 
   it('hydrates a looping playlist without a mismatch on the video', async () => {

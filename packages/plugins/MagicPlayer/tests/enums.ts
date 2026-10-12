@@ -31,6 +31,7 @@ export enum PlayerId {
   EvtPlay = 'evt-play',
   HydrationPlaylist = 'hydration-playlist',
   HydrationLoop = 'hydration-loop',
+  HydrationSlot = 'hydration-slot',
   EvtPause = 'evt-pause',
   EvtStart = 'evt-start',
   EvtMute = 'evt-mute',
