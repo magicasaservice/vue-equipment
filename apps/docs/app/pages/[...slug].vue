@@ -1,6 +1,8 @@
 <template>
   <div class="flex items-start">
-    <article class="max-w-(--docs-measure) min-w-0 flex-1 py-12 lg:py-16">
+    <article
+      class="mx-auto max-w-(--docs-measure) min-w-0 flex-1 py-12 lg:mx-0 lg:py-16"
+    >
       <template v-if="page">
         <docs-toc-inline :links="tocLinks" />
         <content-renderer :value="page" />
