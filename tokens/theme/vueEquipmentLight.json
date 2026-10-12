@@ -32,7 +32,7 @@
             "$type": "color"
           },
           "muted": {
-            "$value": "{config.color.palette.stone.translucent.9}",
+            "$value": "{config.color.palette.stone.solid.10}",
             "$type": "color"
           },
           "subtle": {
