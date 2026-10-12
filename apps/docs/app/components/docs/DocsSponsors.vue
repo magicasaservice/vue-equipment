@@ -1,6 +1,6 @@
 <template>
   <div class="flex w-full flex-col items-center gap-3">
-    <span class="type-surface-callout-lg -strong text-surface">
+    <span class="-strong text-surface" :class="labelSizes[size]">
       Sponsored by
     </span>
 
@@ -50,3 +50,17 @@
     </m-button>
   </div>
 </template>
+
+<script setup lang="ts">
+interface DocsSponsorsProps {
+  // The home page sets the label large, the contents rail small.
+  size?: 'sm' | 'lg'
+}
+
+const { size = 'lg' } = defineProps<DocsSponsorsProps>()
+
+const labelSizes = {
+  sm: 'type-surface-callout-sm',
+  lg: 'type-surface-callout-lg',
+} as const
+</script>

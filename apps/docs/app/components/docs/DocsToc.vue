@@ -40,7 +40,7 @@
       </li>
     </ul>
 
-    <docs-sponsors class="mt-10" />
+    <docs-sponsors size="sm" class="mt-10" />
   </aside>
 </template>
 
