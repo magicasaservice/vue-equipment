@@ -235,6 +235,17 @@
     margin-inline: -0.5rem;
   }
 
+  [data-id='docs-navigation'] {
+    --magic-drawer-height: 100dvh;
+    --magic-drawer-width: 100%;
+    --magic-drawer-drag-overshoot: 0px;
+
+    @media (min-width: 40rem) {
+      --magic-drawer-width: 20rem;
+      --magic-drawer-drag-overshoot: 4rem;
+    }
+  }
+
   .docs-nav-item {
     @apply type-surface-body-sm;
     display: block;
