@@ -111,6 +111,7 @@ interface SearchResult {
   detail: string
   score: number
   depth: number
+  exact: boolean
   path: string
   index: number
 }
@@ -161,8 +162,9 @@ const results = computed<Array<SearchResult>>(() => {
     const words = title
       .split(/(?<=[a-z])(?=[A-Z])|\s+/)
       .map((word) => word.toLowerCase())
+    const exact = title.toLowerCase() === term
     let score = 0
-    if (title.toLowerCase() === term || words.includes(term)) {
+    if (exact || words.includes(term)) {
       score = 4
     } else if (haystack.startsWith(term)) {
       score = 3
@@ -185,14 +187,21 @@ const results = computed<Array<SearchResult>>(() => {
       detail: section.id === path ? path : titles.slice(1).join(' › '),
       score,
       depth: titles.length,
+      exact,
       path,
     })
   }
 
   // Equal scores break towards the shallower section, which is the one a
-  // reader is more likely to have meant.
+  // reader is more likely to have meant, and then towards the whole title
+  // over a word of one.
   return scored
-    .sort((a, b) => b.score - a.score || a.depth - b.depth)
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.depth - b.depth ||
+        Number(b.exact) - Number(a.exact)
+    )
     .slice(0, 20)
     .map((result, index) => ({ ...result, index }))
 })
