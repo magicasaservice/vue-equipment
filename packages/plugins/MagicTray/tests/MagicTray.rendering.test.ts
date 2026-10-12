@@ -86,4 +86,16 @@ describe('MagicTray - Rendering', () => {
     const el = document.querySelector(`[data-id="${TrayId.RenderDisabled}"]`)
     expect(el!.getAttribute('data-disabled')).toBe('true')
   })
+
+  it('lets --magic-tray-content-pointer-events set the content hit area', async () => {
+    render(createTray(TrayId.RenderPointerEvents))
+    await nextTick()
+    const el = document.querySelector<HTMLElement>(
+      `[data-id="${TrayId.RenderPointerEvents}"]`
+    )
+    const slot = el!.querySelector('.magic-tray-content__slot')!
+    expect(getComputedStyle(slot).pointerEvents).toBe('auto')
+    el!.style.setProperty('--magic-tray-content-pointer-events', 'none')
+    expect(getComputedStyle(slot).pointerEvents).toBe('none')
+  })
 })

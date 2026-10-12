@@ -5,6 +5,7 @@ export enum TrayId {
   RenderNoHandles = 'render-no-handles',
   RenderPartialHandles = 'render-partial-handles',
   RenderDisabled = 'render-disabled',
+  RenderPointerEvents = 'render-pointer-events',
   // slots
   SlotHandleGeneric = 'slot-handle-generic',
   SlotHandlePerSide = 'slot-handle-per-side',

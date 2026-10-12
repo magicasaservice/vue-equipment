@@ -217,7 +217,7 @@ function guardedTouchstart(side: MagicTraySide, event: TouchEvent) {
   width: 100%;
   height: 100%;
   position: relative;
-  pointer-events: auto;
+  pointer-events: var(--magic-tray-content-pointer-events, auto);
 }
 
 .magic-tray-content[data-inset='true'] .magic-tray-content__slot {
