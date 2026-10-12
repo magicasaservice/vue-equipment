@@ -23,7 +23,7 @@ catalog:
   luxon: ^3.7.2
   mitt: ^3.0.1
   tailwindcss: ^4.3.3
-  motion: ^13.2.0
+  motion: ^14.1.0
   nuxt: ^4.5.2
   prettier: ^3.9.6
   tsup: ^8.5.1
