@@ -1,14 +1,5 @@
 <template>
-  <!-- Inside a preview frame the block is bare: the frame owns the filename
-       tabs, the copy button and the fade, so all that is left is the code. -->
-  <pre
-    v-if="bare"
-    v-bind="$attrs"
-    class="docs-code overflow-x-auto px-4 py-3.5"
-    :class="wrapped ? 'docs-code-wrap' : ''"
-  ><slot /></pre>
-
-  <div v-else class="bg-surface-high rounded-component-sm mt-5 mb-6 first:mt-0">
+  <div class="bg-surface-high rounded-component-sm mt-5 mb-6 first:mt-0">
     <div
       v-if="filename || label"
       class="flex items-center gap-3 py-1 pr-1 pl-4"
@@ -62,8 +53,6 @@ const props = defineProps<{
   filename?: string
   highlights?: Array<number>
   meta?: string
-  // Set by `ComponentPreview`, never by Nuxt Content.
-  bare?: boolean
 }>()
 
 // A bare fence gets no header bar; a language on its own is not worth a strip

@@ -350,6 +350,19 @@
   background-color: transparent !important;
 }
 
+/* The theme switch for highlighted code. Nuxt Content writes the same rules
+   for a page with code blocks in it; the source under a demo is highlighted
+   outside the page and must not depend on them. */
+.shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+}
+
+html.dark .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
 /* Every code block on the site renders in Index. Tailwind's preflight points
    `pre` and `code` at `--default-mono-font-family`, which `tailwind.css` now
    defines; this covers the `span` elements Shiki nests inside them. */

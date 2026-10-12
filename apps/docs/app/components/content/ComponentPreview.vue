@@ -24,41 +24,20 @@
     </div>
 
     <figcaption
-      class="border-surface flex flex-wrap items-center gap-x-1 border-t-2 px-1.5 py-1"
+      v-if="source"
+      class="border-surface flex items-center gap-x-1 border-t-2 px-1.5 py-1"
     >
-      <div v-if="sources.length > 1" class="flex items-center gap-0.5">
-        <button
-          v-for="(source, index) in sources"
-          :key="source.name"
-          type="button"
-          class="docs-preview-tab rounded-component-compact-sm docs-code flex h-8 items-center px-2 transition-colors"
-          :class="
-            index === activeIndex
-              ? 'bg-surface-higher text-surface'
-              : 'text-surface-muted hover:text-surface'
-          "
-          :aria-pressed="index === activeIndex"
-          @click="activeIndex = index"
-        >
-          {{ source.name }}
-        </button>
-      </div>
-      <span
-        v-else-if="sources.length === 1"
-        class="docs-code text-surface-muted px-2"
-        >{{ sources[0]!.name }}</span
-      >
+      <span class="docs-code text-surface-muted px-2">
+        {{ source.filename }}
+      </span>
 
       <div class="ml-auto flex items-center gap-0.5">
-        <docs-code-copy
-          v-if="sources.length"
-          :value="sources[activeIndex]?.code"
-        />
+        <docs-code-copy :value="source.code" />
       </div>
     </figcaption>
 
     <magic-accordion-view
-      v-if="sources.length"
+      v-if="source"
       id="code"
       v-slot="{ viewActive }"
       as-child
@@ -70,11 +49,11 @@
              example have to stay on screen, so what it animates here is the
              height below the peek rather than the code itself. -->
         <div :id="`${accordionId}-code`" class="relative overflow-hidden">
-          <!-- Nothing rides over the code any more: the copy button lives on
-               the toolbar, so a horizontally scrolled line has the pane to
-               itself and cannot pass under an icon. -->
           <div ref="body" class="absolute inset-x-0 top-0">
-            <component :is="activeSource" />
+            <pre
+              class="shiki docs-code overflow-x-auto px-4 py-3.5"
+              v-html="source.html"
+            />
           </div>
 
           <div aria-hidden="true" :style="{ height: `${peek}px` }" />
@@ -105,12 +84,12 @@
 </template>
 
 <script setup lang="ts">
-import { cloneVNode, isVNode } from 'vue'
-import type { VNode } from 'vue'
+import previews from 'virtual:component-previews'
+
+import type { ComponentPreviewSource } from 'virtual:component-previews'
 
 interface ComponentPreviewProps {
-  // The registered demo. The build fills it in from the `src` a page names,
-  // together with the demo’s source as the fence below.
+  // The registered demo. The build fills it in from the `src` a page names.
   name?: string
 }
 
@@ -121,73 +100,27 @@ const preview = name ? resolveComponent(name) : undefined
 // One accordion per frame, so two previews on a page never share a view.
 const accordionId = `preview-${useId()}`
 
-/**
- * The source panes are the fences inside the block, which the build writes
- * from the demo files. Reading them off the slot vnodes keeps the tab labels,
- * the pane contents and the copy value derived from one place, and keeps the
- * build-time Shiki output rather than re-highlighting at runtime.
- */
-const slots = useSlots()
+// The source comes from the demo file itself, through a module the build
+// writes for it, so the pane always shows the file that renders above it.
+const loadSource = name ? previews[name] : undefined
+const source = shallowRef<ComponentPreviewSource | undefined>(
+  loadSource ? (await loadSource()).default : undefined
+)
 
-const fileNames: Record<string, string> = {
-  vue: 'App.vue',
-  css: 'styles.css',
-  html: 'index.html',
-  ts: 'main.ts',
-  typescript: 'main.ts',
-}
+// While the dev server runs, an edited demo sends its new source straight
+// here, next to the hot update of the demo itself.
+if (import.meta.hot) {
+  const hot = import.meta.hot
 
-interface PreviewSource {
-  name: string
-  code: string
-  vnode: VNode
-}
-
-function collect(nodes: unknown, into: Array<PreviewSource>) {
-  if (!Array.isArray(nodes)) {
-    return
-  }
-  for (const node of nodes) {
-    if (!isVNode(node)) {
-      continue
-    }
-    const props = (node.props ?? {}) as Record<string, unknown>
-    if (typeof props.code === 'string') {
-      const language = typeof props.language === 'string' ? props.language : ''
-      into.push({
-        name:
-          (typeof props.filename === 'string' && props.filename) ||
-          fileNames[language] ||
-          'Source',
-        code: props.code,
-        vnode: node,
-      })
-      continue
-    }
-    const children = node.children
-    if (Array.isArray(children)) {
-      collect(children, into)
-    } else if (children && typeof children === 'object') {
-      const slot = (children as Record<string, unknown>).default
-      if (typeof slot === 'function') {
-        collect(slot(), into)
-      }
+  function onUpdate(update: { name: string; source: ComponentPreviewSource }) {
+    if (update.name === name) {
+      source.value = update.source
     }
   }
+
+  hot.on('component-previews:update', onUpdate)
+  onUnmounted(() => hot.off('component-previews:update', onUpdate))
 }
-
-const sources = computed(() => {
-  const found: Array<PreviewSource> = []
-  collect(slots.default?.(), found)
-  return found
-})
-
-const activeIndex = ref(0)
-
-const activeSource = computed(() => {
-  const source = sources.value[activeIndex.value]
-  return source ? () => cloneVNode(source.vnode, { bare: true }) : undefined
-})
 
 /**
  * The pane is clipped to 240px unless it is shorter than that, so a four-line
@@ -221,13 +154,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => observer?.disconnect())
-
-watch(activeIndex, () => nextTick(measure))
 </script>
 
 <style scoped>
 @media (pointer: coarse) {
-  .docs-preview-tab,
   .docs-preview-more {
     min-height: 2.75rem;
   }
