@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "dev": "nuxt dev --host",
-    "build": "node scripts/check-classes.mjs && nuxt generate",
+    "build": "node scripts/check-classes.mjs && nuxt build",
     "preview": "nuxt preview",
     "lint": "eslint .",
     "test": "vitest run"

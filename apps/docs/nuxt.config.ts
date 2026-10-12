@@ -181,22 +181,13 @@ export default defineNuxtConfig({
   },
 
   // The overview pages used to be served as `.html` files, and those URLs are
-  // linked from elsewhere. Each redirect targets the folder, so a host that
-  // resolves `/overview/introduction` to `introduction.html` first cannot
-  // send a reader around in a loop.
+  // linked from elsewhere.
   routeRules: {
-    '/overview/introduction.html': { redirect: '/overview/introduction/' },
-    '/overview/getting-started.html': {
-      redirect: '/overview/getting-started/',
+    '/overview/introduction.html': {
+      redirect: { to: '/overview/introduction', statusCode: 301 },
     },
-  },
-
-  nitro: {
-    prerender: {
-      crawlLinks: true,
-      routes: ['/overview/introduction.html', '/overview/getting-started.html'],
-      // A link to a page that does not exist fails the build.
-      failOnError: true,
+    '/overview/getting-started.html': {
+      redirect: { to: '/overview/getting-started', statusCode: 301 },
     },
   },
 

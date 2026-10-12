@@ -1,0 +1,14 @@
+**/node_modules
+**/.nuxt
+**/.output
+**/.data
+**/.turbo
+.maas
+dist
+types
+.git
+**/.env
+**/.env.*
+!**/.env.example
+.docker
+.dockerignore
