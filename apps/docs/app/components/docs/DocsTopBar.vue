@@ -27,7 +27,7 @@
         target="_blank"
         rel="noopener noreferrer"
         :aria-label="`${appTitle} on GitHub`"
-        class="text-surface-muted hover:text-surface hidden size-8 shrink-0 items-center justify-center transition-colors sm:flex"
+        class="text-surface-muted hover:text-surface hover:bg-primary-muted active:bg-primary-muted-hover rounded-component-2xs hidden size-8 shrink-0 items-center justify-center transition-colors sm:flex"
       >
         <base-icon name="brand-github" aria-hidden="true" class="size-4" />
       </a>
@@ -39,7 +39,7 @@
       >
         <button
           type="button"
-          class="text-surface-muted hover:text-surface -mr-2.5 flex size-11 shrink-0 items-center justify-center transition-colors"
+          class="text-surface-muted hover:text-surface hover:bg-primary-muted active:bg-primary-muted-hover rounded-component-2xs -mr-2.5 flex size-11 shrink-0 items-center justify-center transition-colors sm:mr-0 sm:size-8"
           :class="{ 'lg:hidden': !menu }"
           :aria-expanded="active"
           aria-label="Open the menu"

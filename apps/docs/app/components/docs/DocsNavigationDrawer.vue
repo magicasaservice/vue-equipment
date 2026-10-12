@@ -16,7 +16,7 @@
         <button
           type="button"
           aria-label="Close the menu"
-          class="text-surface-muted hover:text-surface -mr-2.5 ml-auto flex size-11 shrink-0 items-center justify-center transition-colors"
+          class="text-surface-muted hover:text-surface hover:bg-primary-muted active:bg-primary-muted-hover rounded-component-2xs -mr-2.5 ml-auto flex size-11 shrink-0 items-center justify-center transition-colors sm:mr-0 sm:size-8"
           @click="close"
         >
           <base-icon name="close" aria-hidden="true" class="size-4" />

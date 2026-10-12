@@ -4,7 +4,7 @@
        reader who never touches it keeps following the OS. -->
   <button
     type="button"
-    class="text-surface-muted hover:text-surface flex size-11 shrink-0 items-center justify-center transition-colors sm:size-8"
+    class="text-surface-muted hover:text-surface hover:bg-primary-muted active:bg-primary-muted-hover rounded-component-2xs flex size-11 shrink-0 items-center justify-center transition-colors sm:size-8"
     :aria-label="label"
     :title="label"
     @click="toggle"
