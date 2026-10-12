@@ -2,9 +2,8 @@
 
 MagicCommand is a flexible collection of components intended to build command palette style menus, such as Spotlight, Raycast and the like.
 
-<component-preview src="./demo/DefaultDemo.vue"/>
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -72,9 +71,16 @@ Both `MagicCommandModal` and `MagicCommandDrawer` render a default layout out of
 </template>
 ```
 
-See [MagicModal](/plugins/MagicModal/) and [MagicDrawer](/plugins/MagicDrawer/) for details.
+See [MagicModal](/plugins/MagicModal) and [MagicDrawer](/plugins/MagicDrawer) for details.
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -116,70 +122,34 @@ function handleClick() {
 }
 ```
 
-> [!TIP]
-> If you have installed the command palette as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the command palette as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
 If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-        }
-      ]
-    },
-     {
-      items: [
-        {
-          label: '[defu](https://www.npmjs.com/package/defu)'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Package
+rows:
+  - items:
+      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+  - items:
+      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+  - items:
+      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+  - items:
+      - label: '[defu](https://www.npmjs.com/package/defu)'
+---
+::
 
 ### Installation
 
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core defu
-```
-
-```sh [npm]
-npm install @nuxt/kit @maas/vue-primitive @vueuse/core defu
-```
-
-```sh [yarn]
-yarn add @nuxt/kit @maas/vue-primitive @vueuse/core defu
-```
-
-```sh [bun]
-bun install @nuxt/kit @maas/vue-primitive @vueuse/core defu
-```
-
-:::
+::package-install{name="@nuxt/kit @maas/vue-primitive @vueuse/core defu"}
+::
 
 ## API Reference
 
@@ -189,154 +159,85 @@ The MagicCommandProvider wraps the command palette and configures all child comp
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicCommandOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: asChild
+        description: Prevent the component from rendering and pass all functionality to a child element.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicCommandOptions
+      - label: 'false'
+---
+::
 
 ### Options
 
 To customize the command palette, override the necessary options. Any custom options will be merged with the default options.
 
-<ProseTable
-:columns="[
-{ label: 'Option' },
-{ label: 'Type' },
-{ label: 'Default' }
-]"
-:rows="[
-  {
-    items: [
-      {
-        label: 'debug',
-        description: 'Set to true to get verbose error logs.',
-      },
-      { label: 'boolean' },
-      { label: 'false' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'transition.content',
-        description: 'Override the transition name of the command content.',
-      },
-      { label: 'string' },
-      { label: 'magic-command-content' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.open',
-        description: 'Key combinations that will open the command menu.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Cmd+k\', \'Ctrl+k\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.close',
-        description: 'Key combinations that will close the command menu.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Escape\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.next',
-        description: 'Key combinations that will select the next item.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'ArrowDown\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.prev',
-        description: 'Key combinations that will select the previous item.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'ArrowUp\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'keyListener.enter',
-        description:
-          'Key combinations that will trigger `MagicCommandTrigger` when active.',
-      },
-      { label: 'string[] | false' },
-      { label: '[\'Enter\']' },
-    ],
-  },
-  {
-    items: [
-      {
-        label: 'loop',
-        description:
-          'Whether to loop through items when reaching the end of the list.',
-      },
-      { label: 'boolean' },
-      { label: 'false' },
-    ],
-  },
-]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: debug
+        description: Set to true to get verbose error logs.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: transition.content
+        description: Override the transition name of the command content.
+      - label: string
+      - label: magic-command-content
+  - items:
+      - label: keyListener.open
+        description: Key combinations that will open the command menu.
+      - label: string[] | false
+      - label: "['Cmd+k', 'Ctrl+k']"
+  - items:
+      - label: keyListener.close
+        description: Key combinations that will close the command menu.
+      - label: string[] | false
+      - label: "['Escape']"
+  - items:
+      - label: keyListener.next
+        description: Key combinations that will select the next item.
+      - label: string[] | false
+      - label: "['ArrowDown']"
+  - items:
+      - label: keyListener.prev
+        description: Key combinations that will select the previous item.
+      - label: string[] | false
+      - label: "['ArrowUp']"
+  - items:
+      - label: keyListener.enter
+        description: Key combinations that will trigger `MagicCommandTrigger` when active.
+      - label: string[] | false
+      - label: "['Enter']"
+  - items:
+      - label: loop
+        description: Whether to loop through items when reaching the end of the list.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 ### MagicCommandView
 
@@ -344,63 +245,43 @@ Groups command items into a single panel and tracks which item is currently sele
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Neccessary for interacting with the view through `useMagicCommand`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'initial',
-          description: 'When set to `true` this view will be visible when opening the command palette.'
-        },
-       {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is optional. Neccessary for interacting with the view through `useMagicCommand`.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'false'
+  - items:
+      - label: initial
+        description: When set to `true` this view will be visible when opening the command palette.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 #### Slot Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'view-active' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the command palette view is currently open.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: view-active
+      - label: boolean
+      - plaintext: true
+        label: Whether the command palette view is currently open.
+---
+::
 
 ### MagicCommandDrawer
 
@@ -408,29 +289,20 @@ Wraps the command palette in a `MagicDrawerProvider` and renders teleport, backd
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'Options',
-          description: 'Refer to the MagicDrawer [options table](/plugins/MagicDrawer#options) for details. '
-        },
-        {
-          label: 'MagicCommandDrawerOptions',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: Options
+        description: 'Refer to the MagicDrawer [options table](/plugins/MagicDrawer#options) for details. '
+      - label: MagicCommandDrawerOptions
+      - label: 'false'
+---
+::
 
 ### MagicCommandModal
 
@@ -438,29 +310,20 @@ Wraps the command palette in a `MagicModalProvider` and renders teleport, backdr
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'Options',
-          description: 'Refer to the MagicModal [options table](/plugins/MagicModal#options) for details. '
-        },
-        {
-          label: 'MagicCommandModalOptions',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: Options
+        description: 'Refer to the MagicModal [options table](/plugins/MagicModal#options) for details. '
+      - label: MagicCommandModalOptions
+      - label: 'false'
+---
+::
 
 ### MagicCommandRenderer
 
@@ -468,34 +331,20 @@ Renders command items dynamically from registered commands.
 
 #### CSS Variables
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '--magic-command-renderer-width'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-command-renderer-height'
-        },
-        {
-          label: '100%'
-        },
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-command-renderer-width
+      - label: 100%
+  - items:
+      - label: --magic-command-renderer-height
+      - label: 100%
+---
+::
 
 ### MagicCommandItem
 
@@ -503,90 +352,61 @@ A single interactive command entry.
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the command item.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is optional.
+      - label: string
+      - label: 'false'
+  - items:
+      - label: disabled
+        description: Disable the command item.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 #### CSS Variables
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '--magic-command-item-cursor'
-        },
-        {
-          label: 'default'
-        },
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-command-item-cursor
+      - label: default
+---
+::
 
 #### Slot Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'item-active' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the item is currently selected.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'item-disabled' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the item is currently disabled.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: item-active
+      - label: boolean
+      - plaintext: true
+        label: Whether the item is currently selected.
+  - items:
+      - label: item-disabled
+      - label: boolean
+      - plaintext: true
+        label: Whether the item is currently disabled.
+---
+::
 
 ### MagicCommandTrigger
 
@@ -594,242 +414,161 @@ Opens or closes the command palette on click.
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'viewId',
-          description: 'Optionally pass the `viewId` of the related view. Can be omitted if the component is nested under `MagicCommandView`.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the trigger.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'trigger',
-          description: 'Override the interactions that activate the trigger.'
-        },
-        {
-          label: 'Interaction[]',
-          description: 'Array<\'click\' | \'mouseenter\'>',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'action',
-          description: 'Choose if the trigger opens or closes the related view.'
-        },
-        {
-          label: 'Action',
-          description: '\'open\' | \'close\'',
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering and pass all functionality to a child element.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: viewId
+        description: Optionally pass the `viewId` of the related view. Can be omitted if the component is nested under `MagicCommandView`.
+      - label: string
+      - label: 'false'
+  - items:
+      - label: disabled
+        description: Disable the trigger.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: trigger
+        description: Override the interactions that activate the trigger.
+      - label: Interaction[]
+        description: Array<'click' | 'mouseenter'>
+      - label: 'false'
+  - items:
+      - label: action
+        description: Choose if the trigger opens or closes the related view.
+      - label: Action
+        description: "'open' | 'close'"
+      - label: 'false'
+  - items:
+      - label: asChild
+        description: Prevent the component from rendering and pass all functionality to a child element.
+      - label: boolean
+      - label: 'false'
+---
+::
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '--magic-command-trigger-cursor'
-        },
-        {
-          label: 'pointer'
-        },
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-command-trigger-cursor
+      - label: pointer
+---
+::
 
 #### CSS Variables
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' },
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '--magic-command-trigger-cursor'
-        },
-        {
-          label: 'pointer'
-        },
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-command-trigger-cursor
+      - label: pointer
+---
+::
 
 #### Slot Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'view-active' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the command palette is currently open.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'trigger-disabled' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: view-active
+      - label: boolean
+      - plaintext: true
+        label: Whether the command palette is currently open.
+  - items:
+      - label: trigger-disabled
+      - label: boolean
+      - plaintext: true
+        label: Whether the trigger is currently disabled.
+---
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'Error Code' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'MagicCommandDrawer' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicCommandDrawer must be nested inside MagicCommandProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicCommandTrigger' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicCommandTrigger must be nested inside MagicCommandProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicCommandTrigger' },
-        { label: 'missing_view_id' },
-        { plaintext: true, label: 'MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicCommandView' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicCommandView must be nested inside MagicCommandProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicCommandContent' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicCommandContent must be nested inside MagicCommandProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicCommandContent' },
-        { label: 'missing_view_id' },
-        { plaintext: true, label: 'MagicCommandContent must be nested inside MagicCommandView' }
-      ]
-    },
-    {
-      items: [
-        { label: 'useMagicCommand' },
-        { label: 'view_id_required' },
-        { plaintext: true, label: 'viewId is required to select an item' }
-      ]
-    },
-    {
-      items: [
-        { label: 'useMagicCommand' },
-        { label: 'id_required' },
-        { plaintext: true, label: 'id is required to select an item' }
-      ]
-    },
-    {
-      items: [
-        { label: 'useMenuItem' },
-        { label: 'view_id_not_found' },
-        { plaintext: true, label: 'View {viewId} not found' }
-      ]
-    },
-    {
-      items: [
-        { label: 'useMenuKeyListener' },
-        { label: 'menu_not_active' },
-        { plaintext: true, label: 'MagicMenu {state.id} is not active' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: Error Code
+  - label: Message
+rows:
+  - items:
+      - label: MagicCommandDrawer
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCommandDrawer must be nested inside MagicCommandProvider
+  - items:
+      - label: MagicCommandTrigger
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCommandTrigger must be nested inside MagicCommandProvider
+  - items:
+      - label: MagicCommandTrigger
+      - label: missing_view_id
+      - plaintext: true
+        label: MagicCommandTrigger must be nested inside MagicCommandView or a viewId must be provided
+  - items:
+      - label: MagicCommandView
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCommandView must be nested inside MagicCommandProvider
+  - items:
+      - label: MagicCommandContent
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCommandContent must be nested inside MagicCommandProvider
+  - items:
+      - label: MagicCommandContent
+      - label: missing_view_id
+      - plaintext: true
+        label: MagicCommandContent must be nested inside MagicCommandView
+  - items:
+      - label: useMagicCommand
+      - label: view_id_required
+      - plaintext: true
+        label: viewId is required to select an item
+  - items:
+      - label: useMagicCommand
+      - label: id_required
+      - plaintext: true
+        label: id is required to select an item
+  - items:
+      - label: useMenuItem
+      - label: view_id_not_found
+      - plaintext: true
+        label: View {viewId} not found
+  - items:
+      - label: useMenuKeyListener
+      - label: menu_not_active
+      - plaintext: true
+        label: MagicMenu {state.id} is not active
+---
+::
 
 ## Examples
 
 ### Modal
 
-<component-preview src="./demo/ModalDemo.vue"/>
+::component-preview{src="./demo/ModalDemo.vue"}
+::
 
 ### Drawer
 
-<component-preview src="./demo/DrawerDemo.vue"/>
+::component-preview{src="./demo/DrawerDemo.vue"}
+::

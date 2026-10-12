@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useScrollTo } from '@maas/vue-equipment/composables/useScrollTo'
 import { easeInQuad } from '@maas/vue-equipment/utils'
 

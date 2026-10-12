@@ -32,15 +32,13 @@
     <div class="flex flex-wrap gap-x-4 gap-y-2 pt-6 sm:flex-nowrap">
       <template v-if="viewActive">
         <m-button mode="plain" block @click="toggleView">Close</m-button>
-        <m-button mode="translucent" block @click="onSave">Save</m-button>
+        <m-button mode="subtle" block @click="onSave">Save</m-button>
       </template>
       <template v-else>
         <m-button mode="plain" block @click="onRejectAll">
           Reject All
         </m-button>
-        <m-button mode="translucent" block @click="toggleView">
-          Settings
-        </m-button>
+        <m-button mode="subtle" block @click="toggleView"> Settings </m-button>
       </template>
       <m-button block @click="onAcceptAll">Accept All</m-button>
     </div>
@@ -49,7 +47,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue'
-import { MButton, MCheckbox } from '@maas/mirror/vue'
+import { MButton, MCheckbox } from 'mirror-compat'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicCookie } from '../src/composables/useMagicCookie'
 import MagicCookieDemoItem from './MagicCookieDemoItem.vue'

@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MBadge, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MBadge, MMenuItem, MMenuItemChild } from 'mirror-compat'
 
 export interface DemoListProps {
   headline: string
@@ -43,7 +43,7 @@ export interface DemoListProps {
     badge?: {
       name: string
       variant: 'primary' | 'accent'
-      mode: 'translucent' | 'outline'
+      mode: 'subtle' | 'outline'
     }
     icon?: string
   }[]

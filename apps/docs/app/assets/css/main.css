@@ -1,0 +1,402 @@
+@reference './tailwind.css';
+
+/**
+ * The docs shell. Everything here is either a layout metric or a rule that
+ * cannot be expressed as a utility. Color, type and radius come from the
+ * generated preset, never from a literal.
+ */
+
+@layer base {
+  :root {
+    /* Layout. The header height is a variable because scroll-margin, the
+       sticky rails and the mobile drawer all measure from it. */
+    --docs-header: 3.5rem;
+    --docs-sidebar: 16.25rem;
+    --docs-toc: 13.75rem;
+    --docs-measure: 42rem;
+    --docs-shell: 78rem;
+    --docs-gutter: 1.25rem;
+
+    /* Nav items stay optically centered when the type size changes, because
+       the padding is computed from the gap rather than typed in. */
+    --docs-item-height: 1.625rem;
+    --docs-item-leading: 1.25rem;
+    --docs-item-pad-y: calc(
+      (var(--docs-item-height) - var(--docs-item-leading)) / 2
+    );
+
+    /* The one touch target size on the site. Anything a finger has to hit is
+       at least this tall, whatever its visible mark measures. */
+    --docs-touch: 2.75rem;
+
+    --docs-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* The shell is exactly sidebar 260 + gutter 48 + measure 672 + contents 220,
+     plus the page gutter, so the content column sits between two rails rather
+     than adrift in the middle of a 1440 canvas. */
+  @media (min-width: 64rem) {
+    :root {
+      --docs-gutter: 1.5rem;
+    }
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--docs-header) + 2rem);
+  }
+
+  body {
+    @apply type-surface-body-md;
+    background-color: var(--app-color-surface-bg-base);
+    color: var(--app-color-surface-fg);
+    /* Nothing in the layout may widen the viewport. */
+    overflow-x: clip;
+  }
+
+  /* The accent's only structural job outside the active nav marker. Drawn as
+     an outline so it never shifts layout. */
+  :focus-visible {
+    outline: 2px solid var(--app-color-focus-border);
+    outline-offset: 2px;
+    border-radius: var(--app-dimension-radius-2xs);
+  }
+
+  /* Browser surfaces the design still owns. */
+  ::selection {
+    background-color: var(--app-color-accent-bg-subtle);
+    color: var(--app-color-surface-fg);
+  }
+
+  /* Headings sit clear of the sticky header when linked to. */
+  :is(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: calc(var(--docs-header) + 1.5rem);
+  }
+
+  /* Emphasis inherits its size (14px in a table cell, 20px in a heading) and
+     takes the strong weight of whatever family it sits in. */
+  strong,
+  b {
+    font-weight: var(--app-font-weight-surface-body-strong);
+    color: var(--app-color-surface-fg);
+  }
+}
+
+@layer components {
+  /**
+   * Type. Every role below names a rung in the generated scale; the docs own
+   * no size, leading or weight of their own. What stays local is what the
+   * token family does not model: the optical tracking a large Mirage heading
+   * wants, the color a role carries, and the space around it.
+   */
+  .docs-h1 {
+    @apply type-surface-title-xl;
+    font-weight: var(--app-font-weight-surface-title-strong);
+    letter-spacing: -0.01em;
+    color: var(--app-color-surface-fg);
+  }
+
+  .docs-h2 {
+    @apply type-surface-title-md;
+    font-weight: var(--app-font-weight-surface-title-strong);
+    letter-spacing: -0.01em;
+    color: var(--app-color-surface-fg);
+  }
+
+  .docs-h3 {
+    @apply type-surface-title-sm;
+    font-weight: var(--app-font-weight-surface-title-strong);
+    color: var(--app-color-surface-fg);
+  }
+
+  .docs-h4 {
+    @apply type-surface-subtitle-sm;
+    font-weight: var(--app-font-weight-surface-subtitle-strong);
+    color: var(--app-color-surface-fg);
+  }
+
+  .docs-body {
+    @apply type-surface-body-md;
+    color: var(--app-color-surface-fg);
+  }
+
+  /* The dense rung: table cells, nav rows, pagination. It takes the body
+     family's own short leading rather than a tighter number of its own. */
+  .docs-body-sm {
+    @apply type-surface-body-sm;
+    line-height: var(--app-line-height-surface-body-short);
+  }
+
+  /* The deck under an h1. One rung above body, and muted, so it reads as a
+     summary rather than as a first paragraph set large. */
+  .docs-lede {
+    @apply type-surface-subtitle-sm;
+    color: var(--app-color-surface-fg-muted);
+  }
+
+  .docs-h1 + .docs-body {
+    @apply type-surface-subtitle-sm;
+    color: var(--app-color-surface-fg-muted);
+  }
+
+  .docs-caption {
+    @apply type-surface-caption;
+  }
+
+  .docs-label {
+    @apply type-surface-caption;
+    font-weight: var(--app-font-weight-surface-caption-strong);
+    color: var(--app-color-surface-fg-muted);
+  }
+
+  .docs-code {
+    @apply type-surface-code;
+  }
+
+  /* A section boundary is space, not a rule: 40px above an h2, and 24px above
+     one that follows a block, which already carries its own edge. */
+  .docs-h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    scroll-margin-top: calc(var(--docs-header) + 1.5rem);
+  }
+
+  :is(div, pre, table, aside, figure, section, ol, ul) + .docs-h2 {
+    margin-top: 2rem;
+  }
+
+  .docs-h2:first-child {
+    margin-top: 0;
+  }
+
+  .docs-h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .docs-h3:first-child {
+    margin-top: 0;
+  }
+
+  /**
+   * Prose links take the body color and an underline. The rule is drawn in
+   * muted ink rather than in the text color so it reads as a mark under the
+   * word instead of a second stroke through it, and the accent appears only
+   * under a pointer.
+   */
+  .docs-link {
+    color: var(--app-color-surface-fg);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--app-color-surface-fg-muted);
+    text-underline-offset: 3px;
+    transition:
+      color 120ms var(--docs-ease),
+      text-decoration-color 120ms var(--docs-ease);
+  }
+
+  .docs-link:hover {
+    color: var(--app-color-surface-fg-link-hover);
+    text-decoration-color: var(--app-color-surface-fg-link-hover);
+  }
+
+  /* Inline code is distinguished by the face change, not by a border. The
+     fill is the same panel used by every other quiet region, so a run of
+     several pills in one sentence does not shred the line. */
+  .docs-inline-code {
+    font-family: var(--app-font-family-surface-code);
+    font-weight: var(--app-font-weight-surface-code);
+    /* The one relative size on the site. Inline code appears inside an h3 as
+       often as inside a paragraph, and the code rung is an absolute 14px. */
+    font-size: 0.9em;
+    background-color: var(--app-color-surface-bg-high);
+    color: var(--app-color-surface-fg);
+    border-radius: var(--app-dimension-radius-compact-sm);
+    padding-inline: 0.25em;
+    padding-block: 0.1em;
+  }
+
+  /* A link whose whole label is inline code keeps the underline and drops the
+     fill, so the two decorations never stack. */
+  .docs-link > .docs-inline-code {
+    background-color: transparent;
+    padding-inline: 0;
+    color: inherit;
+  }
+
+  /* The rails carry the bleed so the pill can extend past the text column
+     without giving the scroller a horizontal scrollbar. */
+  .docs-rail {
+    padding-inline: 0.5rem;
+    margin-inline: -0.5rem;
+  }
+
+  [data-id='docs-navigation'] {
+    --magic-drawer-height: 100dvh;
+    --magic-drawer-width: 100%;
+    --magic-drawer-drag-overshoot: 0px;
+
+    @media (min-width: 40rem) {
+      --magic-drawer-width: 20rem;
+      --magic-drawer-drag-overshoot: 4rem;
+    }
+  }
+
+  .docs-nav-item {
+    @apply type-surface-body-sm;
+    display: block;
+    /* A metric, not a type choice: the row height is what the rail's rhythm
+       is built on, so the leading is the one the padding is computed from. */
+    line-height: var(--docs-item-leading);
+    padding-block: var(--docs-item-pad-y);
+    padding-inline: 0.5rem;
+    border-radius: var(--app-dimension-radius-compact-sm);
+    color: var(--app-color-surface-fg-muted);
+    transition:
+      color 120ms var(--docs-ease),
+      background-color 120ms var(--docs-ease);
+  }
+
+  .docs-nav-item:hover {
+    color: var(--app-color-surface-fg);
+  }
+
+  /* The rail's own current-row mark. The sidebar draws its current row through
+     `DocsMenuItem`, which owns one color per state; this is left for the
+     contents rail, where a row is a plain anchor. */
+  .docs-nav-item[aria-current='page'] {
+    background-color: var(--app-color-accent-bg-subtle);
+    color: var(--app-color-surface-fg);
+    font-weight: var(--app-font-weight-surface-body-strong);
+  }
+
+  /* A finger target keeps its 44px even where the visible row is 26. */
+  @media (pointer: coarse) {
+    .docs-nav-item {
+      padding-block: calc(
+        (var(--docs-touch) - var(--docs-item-leading)) / 2 - 0.25rem
+      );
+    }
+  }
+
+  /* Chrome that is one line of text tall still owes a finger its 44px. The
+     padding grows the target and the negative margin puts the line back where
+     the design placed it. `docs-tap-grow` is for the rows that can afford to
+     grow into the band instead. */
+  @media (pointer: coarse) {
+    .docs-tap {
+      min-block-size: var(--docs-touch);
+      padding-block: calc((var(--docs-touch) - 1lh) / 2);
+      margin-block: calc((var(--docs-touch) - 1lh) / -2);
+    }
+
+    .docs-tap-grow {
+      min-block-size: var(--docs-touch);
+      min-inline-size: var(--docs-touch);
+    }
+  }
+
+  /* The wordmark is the one place the shell sets a size of its own: it has to
+     sit optically level with a 14px search field in a 56px bar. */
+  .docs-wordmark {
+    @apply type-surface-title-sm;
+    font-weight: var(--app-font-weight-surface-title-strong);
+    letter-spacing: -0.01em;
+    color: var(--app-color-surface-fg);
+  }
+
+  /* A callout paints its own text color; the prose inside must inherit it
+     rather than reassert the surface foreground. */
+  .docs-callout :is(p, li, strong, em, h3, h4) {
+    color: inherit;
+  }
+
+  /* A reference table stays off the layout path until it is near the
+     viewport; the longest plugin pages render several hundred rows. */
+  .docs-reference-table {
+    content-visibility: auto;
+    contain-intrinsic-height: auto calc((var(--rows, 8) + 1) * 2.75rem);
+  }
+
+  /* The search palette hangs from the top of the viewport rather than sitting
+     in the middle of it. */
+  .docs-search-modal {
+    --magic-modal-align-items: flex-start;
+  }
+
+  /* Anchor links beside headings. Present in the DOM, revealed on hover or
+     focus, so the heading never reflows. */
+  .docs-anchor {
+    opacity: 0;
+    margin-inline-start: 0.375rem;
+    transition: opacity 120ms var(--docs-ease);
+  }
+
+  :is(h2, h3, h4):hover > .docs-anchor,
+  .docs-anchor:focus-visible {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  /* Wide content (tables, code, previews) is allowed past the measure up to
+     the full column, and scrolls inside itself rather than widening the page. */
+  .docs-bleed {
+    max-width: 100%;
+  }
+}
+
+/**
+ * Shiki. Both themes are compiled into the markup by Nuxt Content and the
+ * inline `--shiki-default` / `--shiki-dark` variables are switched by a
+ * generated `html.dark` rule, so there is no runtime re-highlight and no
+ * flash. All that is left is to stop the themes painting their own ground.
+ */
+.shiki,
+.shiki span {
+  background-color: transparent !important;
+}
+
+/* The theme switch for highlighted code. Nuxt Content writes the same rules
+   for a page with code blocks in it; the source under a demo is highlighted
+   outside the page and must not depend on them. */
+.shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+}
+
+html.dark .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
+/* Every code block on the site renders in Index. Tailwind's preflight points
+   `pre` and `code` at `--default-mono-font-family`, which `tailwind.css` now
+   defines; this covers the `span` elements Shiki nests inside them. */
+.shiki,
+.shiki code,
+.shiki span {
+  font-family: var(--app-font-family-surface-code);
+}
+
+/* `highlight` is added server-side from the fence's own `{1,3-5}` meta. The
+   tint rides the inline line box and is bled across the block's horizontal
+   padding by the shadows. Making the lines block-level would cost the
+   horizontal scroll that long lines depend on. */
+.shiki .line.highlight {
+  background-color: var(--app-color-accent-bg-subtle) !important;
+  box-shadow:
+    -1rem 0 0 0 var(--app-color-accent-bg-subtle),
+    1rem 0 0 0 var(--app-color-accent-bg-subtle);
+}
+
+/* Soft-wrap toggle for long shell invocations. */
+.docs-code-wrap .shiki,
+.docs-code-wrap .shiki code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

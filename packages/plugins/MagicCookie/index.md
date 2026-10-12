@@ -2,9 +2,8 @@
 
 MagicCookie is a flexible collection of components intended to build cookie banners.
 
-<component-preview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -25,7 +24,14 @@ const { acceptAll } = useMagicCookie('your-cookie-id')
 </script>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -53,8 +59,9 @@ export default defineNuxtConfig({
 })
 ```
 
-> [!WARNING]
-> In SSR contexts, wrap `MagicCookieProvider` in `<ClientOnly>` to prevent hydration mismatches.
+::warning
+In SSR contexts, wrap `MagicCookieProvider` in `<ClientOnly>` to prevent hydration mismatches.
+::
 
 ### Composable
 
@@ -70,84 +77,38 @@ function handleClick() {
 }
 ```
 
-> [!TIP]
-> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
 If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-        }
-      ]
-    },
-     {
-      items: [
-        {
-          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[defu](https://www.npmjs.com/package/defu)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Package
+rows:
+  - items:
+      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+  - items:
+      - label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
+  - items:
+      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+  - items:
+      - label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
+  - items:
+      - label: '[defu](https://www.npmjs.com/package/defu)'
+  - items:
+      - label: '[universal-cookie](https://www.npmjs.com/package/universal-cookie)'
+---
+::
 
 ### Installation
 
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
-```
-
-```sh [npm]
-npm install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
-```
-
-```sh [yarn]
-yarn add @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
-```
-
-```sh [bun]
-bun install @nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie
-```
-
-:::
+::package-install{name="@nuxt/kit @maas/vue-autosize @vueuse/core @vueuse/integrations defu universal-cookie"}
+::
 
 ## API Reference
 
@@ -157,106 +118,60 @@ The MagicCookieProvider wraps the cookie banner and configures all child compone
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicCookieOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicCookieOptions
+      - label: 'false'
+---
+::
 
 #### Options
 
-<ProseTable 
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { 
-          label: 'maxAge',
-          description: 'Maximum age of the cookie in seconds.'
-        },
-        { label: 'number' },
-        { label: '86400' }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition',
-          description: 'Configure the transition name of the cookie view.'
-        },
-        { label: 'string' },
-        { label: 'magic-cookie-view' }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.duration',
-          description: 'Configure the cookie banner’s animation duration.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '300'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.easing',
-          description: 'Configure the cookie banner’s animation easing.'
-        },
-        {
-          label: 'function',
-          description: '(t: number) => number'
-        },
-        {
-          label: 'easeOutQuad',
-          descriptipn: 't * (2 - t)'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: maxAge
+        description: Maximum age of the cookie in seconds.
+      - label: number
+      - label: '86400'
+  - items:
+      - label: transition
+        description: Configure the transition name of the cookie view.
+      - label: string
+      - label: magic-cookie-view
+  - items:
+      - label: animation.duration
+        description: Configure the cookie banner’s animation duration.
+      - label: number
+      - label: '300'
+  - items:
+      - label: animation.easing
+        description: Configure the cookie banner’s animation easing.
+      - label: function
+        description: '(t: number) => number'
+      - label: easeOutQuad
+        descriptipn: t * (2 - t)
+---
+::
 
 ### MagicCookieItem
 
@@ -264,67 +179,45 @@ The item registers and set the cookie with the given props.
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'maxAge',
-          description: 'Override the maximum age of the cookie in seconds.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '–'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is optional.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: maxAge
+        description: Override the maximum age of the cookie in seconds.
+      - label: number
+      - label: –
+---
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'Error Code' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    { 
-      items: [ 
-        { label: 'MagicCookieItem' }, 
-        { label: 'missing_instance_id' }, 
-        { plaintext: true, label: 'MagicCookieItem must be nested inside MagicCookieProvider' } 
-      ] 
-    },
-    { 
-      items: [ 
-        { label: 'MagicCookieView' }, 
-        { label: 'missing_instance_id' }, 
-        { plaintext: true, label: 'MagicCookieView must be used within a MagicCookieProvider' } 
-      ] 
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: Error Code
+  - label: Message
+rows:
+  - items:
+      - label: MagicCookieItem
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCookieItem must be nested inside MagicCookieProvider
+  - items:
+      - label: MagicCookieView
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicCookieView must be used within a MagicCookieProvider
+---
+::

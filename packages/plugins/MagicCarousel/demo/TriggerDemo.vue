@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import CarouselDemoCard from './components/CarouselDemoCard.vue'
 </script>
 

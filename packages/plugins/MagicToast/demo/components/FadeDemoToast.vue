@@ -7,7 +7,7 @@
     <m-button
       size="md"
       variant="secondary"
-      mode="translucent"
+      mode="subtle"
       icon
       square
       round
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 
 interface FadeDemoToastProps {
   message?: string

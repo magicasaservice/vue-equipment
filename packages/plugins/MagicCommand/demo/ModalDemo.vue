@@ -18,6 +18,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton, MMenuBox } from '@maas/mirror/vue'
+import { MButton, MMenuBox } from 'mirror-compat'
 import DefaultView from './components/DefaultView.vue'
 </script>

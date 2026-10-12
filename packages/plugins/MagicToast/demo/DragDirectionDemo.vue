@@ -17,7 +17,7 @@
   <magic-toast-provider
     id="magic-toast-drag-direction-demo"
     :options="{
-      position,
+      position: selectedPosition,
       drag: { direction: resolvedDirection },
       layout: {
         expand: false,
@@ -32,18 +32,25 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue'
-import { MButton, MSelect } from '@maas/mirror/vue'
+import { MButton, MSelect } from 'mirror-compat'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
+
+import type { MagicToastOptions } from '@maas/vue-equipment/plugins/MagicToast'
+
+type ToastPosition = NonNullable<MagicToastOptions['position']>
+type ToastDragDirection = NonNullable<
+  NonNullable<MagicToastOptions['drag']>['direction']
+>
 
 const component = defineAsyncComponent(
   () => import('./components/DemoToast.vue')
 )
 const { add } = useMagicToast('magic-toast-drag-direction-demo')
 
-const position = ref('bottom-right')
-const direction = ref('left-right')
+const position = ref<string | number>('bottom-right')
+const direction = ref<string | number>('left-right')
 
-const positionOptions = [
+const positionOptions: Array<{ value: ToastPosition; label: string }> = [
   { value: 'top-right', label: 'Top Right' },
   { value: 'top', label: 'Top' },
   { value: 'top-left', label: 'Top Left' },
@@ -54,29 +61,31 @@ const positionOptions = [
   { value: 'right', label: 'Right' },
 ]
 
-const directionOptions = [
-  { value: 'auto', label: 'Auto' },
-  { value: 'left', label: 'Left' },
-  { value: 'right', label: 'Right' },
-  { value: 'up', label: 'Up' },
-  { value: 'down', label: 'Down' },
-  { value: 'left-right', label: 'Left & Right' },
-  { value: 'up-down', label: 'Up & Down' },
+// MSelect only supports a single value, so the same-axis pairs are
+// offered as presets that carry their array for the option.
+const directionOptions: Array<{
+  value: string
+  label: string
+  direction: ToastDragDirection
+}> = [
+  { value: 'auto', label: 'Auto', direction: 'auto' },
+  { value: 'left', label: 'Left', direction: 'left' },
+  { value: 'right', label: 'Right', direction: 'right' },
+  { value: 'up', label: 'Up', direction: 'up' },
+  { value: 'down', label: 'Down', direction: 'down' },
+  { value: 'left-right', label: 'Left & Right', direction: ['left', 'right'] },
+  { value: 'up-down', label: 'Up & Down', direction: ['up', 'down'] },
 ]
 
-// MSelect only supports a single value, so the same-axis pairs are
-// offered as presets here and expanded into an array for the option.
-const resolvedDirection = computed(() => {
-  if (direction.value === 'left-right') {
-    return ['left', 'right'] as const
-  }
+const selectedPosition = computed(
+  () => positionOptions.find((option) => option.value === position.value)?.value
+)
 
-  if (direction.value === 'up-down') {
-    return ['up', 'down'] as const
-  }
-
-  return direction.value
-})
+const resolvedDirection = computed(
+  () =>
+    directionOptions.find((option) => option.value === direction.value)
+      ?.direction
+)
 
 // Mirrors the fallback in useToastDrag: when direction is 'auto',
 // the actual drag axis/side is derived from the anchor position.

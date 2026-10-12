@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { shallowRef } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useScrollLock } from '@vueuse/core'
 import { useScrollLockPadding } from '@maas/vue-equipment/composables/useScrollLockPadding'
 

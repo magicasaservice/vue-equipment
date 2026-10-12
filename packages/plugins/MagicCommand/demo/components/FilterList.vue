@@ -9,7 +9,7 @@
       v-slot="{ itemActive }"
       as-child
     >
-      <m-badge :mode="itemActive ? 'solid' : 'translucent'" size="lg">
+      <m-badge :mode="itemActive ? 'solid' : 'subtle'" size="lg">
         {{ tag.name }}
       </m-badge>
     </magic-command-item>
@@ -17,6 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MBadge, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MBadge, MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { tags } from '../data/search.json'
 </script>

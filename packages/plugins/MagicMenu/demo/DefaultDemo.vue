@@ -9,7 +9,7 @@
       :key="index"
     >
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
-        <m-button :mode="viewActive ? 'translucent' : 'ghost'" size="xs">
+        <m-button :mode="viewActive ? 'subtle' : 'ghost'" size="xs">
           {{ menuItem.label }}
         </m-button>
       </magic-menu-trigger>
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { offset } from '@floating-ui/dom'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'

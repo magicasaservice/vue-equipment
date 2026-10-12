@@ -12,6 +12,7 @@
     "@maas/mirror": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "composables": "workspace:*",
+    "mirror-compat": "workspace:*",
     "plugins": "workspace:*",
     "tailwindcss": "catalog:",
     "utils": "workspace:*"

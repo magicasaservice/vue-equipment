@@ -2,9 +2,8 @@
 
 Set and reset the meta viewport tag programatically.
 
-<component-preview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -14,4 +13,11 @@ import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport
 const { setMetaViewport, resetMetaViewport } = useMetaViewport()
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::

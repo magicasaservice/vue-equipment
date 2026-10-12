@@ -1,6 +1,8 @@
 @import 'tailwindcss';
+@import '../../../../.maas/tailwind.preset.css';
 
 @source './../**/*.vue';
 @source './../../../plugins/**/*.vue';
 @source './../../../plugins/**/demo/*.vue';
 @source './../../../plugins/**/demo/**/*.vue';
+@source './../../../mirror-compat/src';

@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useMagicMarquee } from '@maas/vue-equipment/plugins/MagicMarquee'
 
 const factor = ref(1)

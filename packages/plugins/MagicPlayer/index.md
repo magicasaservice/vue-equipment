@@ -2,9 +2,8 @@
 
 MagicPlayer is a collection of components made to build a flexible, streaming ready media player for video as well as audio playback.
 
-<ComponentPreview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -29,11 +28,18 @@ const { playerApi } = useMagicPlayer('your-player-id')
 </script>
 
 <style>
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-video-controls.css';
 </style>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -75,70 +81,34 @@ function handleClick() {
 }
 ```
 
-> [!TIP]
-> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
 If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
 
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[defu](https://www.npmjs.com/package/defu)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[hls.js](https://www.npmjs.com/package/hls.js)'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Package
+rows:
+  - items:
+      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+  - items:
+      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+  - items:
+      - label: '[defu](https://www.npmjs.com/package/defu)'
+  - items:
+      - label: '[hls.js](https://www.npmjs.com/package/hls.js)'
+---
+::
 
 ### Installation
 
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit @vueuse/core defu hls.js
-```
-
-```sh [npm]
-npm install @nuxt/kit @vueuse/core defu hls.js
-```
-
-```sh [yarn]
-yarn add @nuxt/kit @vueuse/core defu hls.js
-```
-
-```sh [bun]
-bun install @nuxt/kit @vueuse/core defu hls.js
-```
-
-:::
+::package-install{name="@nuxt/kit @vueuse/core defu hls.js"}
+::
 
 ## API Reference
 
@@ -148,434 +118,242 @@ The MagicPlayerProvider wraps the menu and configures all child components accor
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicPlayerOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicPlayerOptions
+      - label: 'false'
+---
+::
 
 #### Options
 
 To customize the player, override the necessary options. Any custom options will be merged with the default options.
 
-<ProseTable 
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { 
-          label: 'src',
-          description: 'A single media URL (video, audio, or streaming link) or an array of URLs to create a playlist. When an array is provided the player advances to the next item automatically when the current one ends.'
-        },
-        { 
-          label: 'string | string[]'
-        },
-        { 
-          label: '–' 
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'mode',
-        },
-        { 
-          label: 'PlayerMode',
-          description:  '\'audio\' | \'video\''
-        },
-        { 
-          label: 'video'
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'srcType',
-          description: 'Set this to `hls` to enable straming links.'
-        },
-        { 
-          label: 'string',
-          description: '\'native\' | \'hls\'' 
-        },
-        { 
-          label: 'native' 
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'preload',
-        },
-        { 
-          label: 'string',
-          description: '\'auto\' | \'metadata\' | \'none\''
-        },
-        { 
-          label: 'metadata' 
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'autoplay',
-        },
-        { 
-          label: 'boolean' 
-        },
-        { 
-          label: 'false' 
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'playback',
-          description: 'Override how playback is managed in relation to the visibility inside the viewport and the window’s focus.'
-        },
-        { 
-          label: 'string[]',
-          description: '(\'viewport\' | \'window\')[]'
-        },
-        { 
-          label: '[\'viewport\'] | [\'viewport\', \'window\']',
-          description: 'Dependant on `options.mode`'
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'loop',
-          description: 'For single-source players, loops the media element. For playlists, loops back to the first item after the last one ends. Also controls whether `next()` and `prev()` wrap around.'
-        },
-        { 
-          label: 'boolean'
-         },
-        { 
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        { 
-          label: 'debug',
-          description: 'Enables logging for non-fatal hls.js errors.'
-        },
-        { 
-          label: 'boolean'
-         },
-        { 
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.videoControls',
-          description: 'Override the transition name of the video controls.'
-        },
-        { 
-          label: 'string' 
-        },
-        { 
-          label: 'magic-player-video-controls' 
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.overlay',
-          description: 'Override the name of the overlay’s outer wrapper transition.'
-        },
-        { 
-          label: 'string' 
-        },
-        { 
-          label: 'magic-player-overlay' 
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.icons',
-          description: 'Override the name of the overlay’s transition between icons.'
-        },
-        { 
-          label: 'string' 
-        },
-        { 
-          label: 'magic-player-icons' 
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: src
+        description: A single media URL (video, audio, or streaming link) or an array of URLs to create a playlist. When an array is provided the player advances to the next item automatically when the current one ends.
+      - label: string | string[]
+      - label: –
+  - items:
+      - label: mode
+      - label: PlayerMode
+        description: "'audio' | 'video'"
+      - label: video
+  - items:
+      - label: srcType
+        description: Set this to `hls` to enable straming links.
+      - label: string
+        description: "'native' | 'hls'"
+      - label: native
+  - items:
+      - label: preload
+      - label: string
+        description: "'auto' | 'metadata' | 'none'"
+      - label: metadata
+  - items:
+      - label: autoplay
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: playback
+        description: Override how playback is managed in relation to the visibility inside the viewport and the window’s focus.
+      - label: string[]
+        description: ('viewport' | 'window')[]
+      - label: "['viewport'] | ['viewport', 'window']"
+        description: Dependant on `options.mode`
+  - items:
+      - label: loop
+        description: For single-source players, loops the media element. For playlists, loops back to the first item after the last one ends. Also controls whether `next()` and `prev()` wrap around.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: debug
+        description: Enables logging for non-fatal hls.js errors.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: transition.videoControls
+        description: Override the transition name of the video controls.
+      - label: string
+      - label: magic-player-video-controls
+  - items:
+      - label: transition.overlay
+        description: Override the name of the overlay’s outer wrapper transition.
+      - label: string
+      - label: magic-player-overlay
+  - items:
+      - label: transition.icons
+        description: Override the name of the overlay’s transition between icons.
+      - label: string
+      - label: magic-player-icons
+---
+::
 
 #### CSS Variables
 
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-player-provider-height' },
-        { label: 'auto' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-provider-aspect-ratio' },
-        { label: '16 / 9' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-provider-background' },
-        { label: '#000' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-player-provider-height
+      - label: auto
+  - items:
+      - label: --magic-player-provider-aspect-ratio
+      - label: 16 / 9
+  - items:
+      - label: --magic-player-provider-background
+      - label: '#000'
+---
+::
 
 ### MagicPlayerOverlay
 
 #### CSS Variables
 
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-player-overlay-background' },
-        { label: 'rgba(0, 0, 0, 0.3)' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-overlay-color' },
-        { label: 'rgba(255, 255, 255, 1)' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-player-overlay-button-size' },
-        { label: '2rem' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-player-overlay-background
+      - label: rgba(0, 0, 0, 0.3)
+  - items:
+      - label: --magic-player-overlay-color
+      - label: rgba(255, 255, 255, 1)
+  - items:
+      - label: --magic-player-overlay-button-size
+      - label: 2rem
+---
+::
 
 ### MagicPlayerVideoControls
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'standalone',
-          description: 'Set to true, if the component is not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.overlay',
-          description: 'Override the [name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the outer wrapper’s transition.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.icons',
-          description: 'Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the transition between icons.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'false'
+  - items:
+      - label: standalone
+        description: Set to true, if the component is not nested inside `MagicPlayerProvider`.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: transition.overlay
+        description: Override the [name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the outer wrapper’s transition.
+      - label: string
+      - label: 'false'
+  - items:
+      - label: transition.icons
+        description: Override the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) of the transition between icons.
+      - label: string
+      - label: 'false'
+---
+::
 
 #### CSS
 
 Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
 
 ```css
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-video-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-video-controls.css';
 ```
 
 ### MagicPlayerMuxPopover
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'playbackId',
-          'description': 'Neccessary if the ancestral `MagicPlayerVideoControls` component is set to `standalone`. '
-        },
-        { 
-          label: 'string'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: playbackId
+        description: 'Neccessary if the ancestral `MagicPlayerVideoControls` component is set to `standalone`. '
+      - label: string
+      - label: 'false'
+---
+::
 
 #### CSS Variables
 
-<ProseTable 
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-player-popover-border-radius' },
-        { label: '0.25rem' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-player-popover-border-radius
+      - label: 0.25rem
+---
+::
 
 ### MagicPlayerAudioControls
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is optional. Neccessary if the controls are not nested inside `MagicPlayerProvider`.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'false'
+---
+::
 
 #### CSS
 
 Due to their complexity and opinionated nature, we have externalized the styles for this component. Make sure to import them if needed. If not style the component manually.
 
 ```css
-@import '@maas/vue-equipment/MagicPlayer/css/magic-player-audio-controls.css';
+@import '@maas/vue-equipment/plugins/MagicPlayer/css/magic-player-audio-controls.css';
 ```
 
 ### MagicPlayerDisplayTime
@@ -584,29 +362,20 @@ This component is used internally by both the video and audio controls component
 
 #### Props
 
-<ProseTable 
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'type',
-        },
-        { 
-          label: 'string',
-          description: '\'current\' | \'remaining\' | \'duration\''
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: type
+      - label: string
+        description: "'current' | 'remaining' | 'duration'"
+      - label: 'false'
+---
+::
 
 ### Playlist
 
@@ -640,279 +409,228 @@ const { playlistIndex, playlistCount, next, prev, goTo } =
 
 #### Playlist API
 
-<ProseTable
-  :columns="[
-    { label: 'Name' },
-    { label: 'Type' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'playlistIndex' },
-        { label: 'Ref\<number\>', escape: true },
-        { plaintext: true, label: 'Zero-based index of the currently active track.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'playlistCount' },
-        { label: 'Ref\<number\>', escape: true },
-        { plaintext: true, label: 'Total number of tracks in the playlist.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'next()' },
-        { label: '() => void' },
-        { plaintext: true, label: 'Advance to the next track. Wraps to the first track when `loop` is true.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'prev()' },
-        { label: '() => void' },
-        { plaintext: true, label: 'Go back to the previous track. Wraps to the last track when `loop` is true.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'goTo(index)' },
-        { label: '(index: number) => void' },
-        { plaintext: true, label: 'Jump to a specific track by its zero-based index.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Name
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: playlistIndex
+      - label: Ref<number>
+        escape: true
+      - plaintext: true
+        label: Zero-based index of the currently active track.
+  - items:
+      - label: playlistCount
+      - label: Ref<number>
+        escape: true
+      - plaintext: true
+        label: Total number of tracks in the playlist.
+  - items:
+      - label: next()
+      - label: () => void
+      - plaintext: true
+        label: Advance to the next track. Wraps to the first track when `loop` is true.
+  - items:
+      - label: prev()
+      - label: () => void
+      - plaintext: true
+        label: Go back to the previous track. Wraps to the last track when `loop` is true.
+  - items:
+      - label: goTo(index)
+      - label: '(index: number) => void'
+      - plaintext: true
+        label: Jump to a specific track by its zero-based index.
+---
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'Error Code' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'MagicPlayerMuxPopover' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerMuxPopover' },
-        { label: 'missing_options' },
-        { plaintext: true, label: 'MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerMuxPopover' },
-        { label: 'fetch_timeline_error' },
-        { plaintext: true, label: 'Failed to fetch timeline preview' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerMuxPopover' },
-        { label: 'initialize_timeline_error' },
-        { plaintext: true, label: 'Can not initialize timeline preview' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerAudioControls' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerAudioControls must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerVideo' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerVideo must be used within a MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerVideo' },
-        { label: 'missing_options' },
-        { plaintext: true, label: 'MagicPlayerVideo must be used within a MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerPoster' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerPoster must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerOverlay' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerOverlay must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerTimeline' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerTimeline must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerDisplayTime' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerDisplayTime must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicPlayerVideoControls' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicPlayerVideoControls must be nested inside MagicPlayerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'play_promise_rejected' },
-        { plaintext: true, label: 'Play promise was rejected' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'play_promise_aborted' },
-        { plaintext: true, label: 'The play() request was aborted' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'play_promise_not_allowed' },
-        { plaintext: true, label: 'Autoplay was prevented, user interaction required' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'play_promise_not_supported' },
-        { plaintext: true, label: 'Media format not supported' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'media_element_error' },
-        { plaintext: true, label: 'Media element error' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'media_element_aborted' },
-        { plaintext: true, label: 'Media loading was aborted by the user' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'media_element_network' },
-        { plaintext: true, label: 'A network error occurred while loading the media' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'media_element_decode' },
-        { plaintext: true, label: 'An error occurred while decoding the media' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerMediaApi' },
-        { label: 'media_element_src_not_supported' },
-        { plaintext: true, label: 'The media source is not supported' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerRuntime' },
-        { label: 'hls_network_error' },
-        { plaintext: true, label: 'HLS network error' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerRuntime' },
-        { label: 'hls_media_recovery_failed' },
-        { plaintext: true, label: 'HLS media recovery failed' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerRuntime' },
-        { label: 'hls_media_error' },
-        { plaintext: true, label: 'HLS media error' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerRuntime' },
-        { label: 'hls_fatal_error' },
-        { plaintext: true, label: 'HLS fatal error' }
-      ]
-    },
-    {
-      items: [
-        { label: 'usePlayerRuntime' },
-        { label: 'player_initialization_failed' },
-        { plaintext: true, label: 'Player initialization failed' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: Error Code
+  - label: Message
+rows:
+  - items:
+      - label: MagicPlayerMuxPopover
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerMuxPopover must be nested inside MagicPlayerProvider or a playbackId must be provided
+  - items:
+      - label: MagicPlayerMuxPopover
+      - label: missing_options
+      - plaintext: true
+        label: MagicPlayerMuxPopover must be nested inside MagicPlayerVideoControls
+  - items:
+      - label: MagicPlayerMuxPopover
+      - label: fetch_timeline_error
+      - plaintext: true
+        label: Failed to fetch timeline preview
+  - items:
+      - label: MagicPlayerMuxPopover
+      - label: initialize_timeline_error
+      - plaintext: true
+        label: Can not initialize timeline preview
+  - items:
+      - label: MagicPlayerAudioControls
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerAudioControls must be nested inside MagicPlayerProvider
+  - items:
+      - label: MagicPlayerVideo
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerVideo must be used within a MagicPlayerProvider
+  - items:
+      - label: MagicPlayerVideo
+      - label: missing_options
+      - plaintext: true
+        label: MagicPlayerVideo must be used within a MagicPlayerProvider
+  - items:
+      - label: MagicPlayerPoster
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerPoster must be nested inside MagicPlayerProvider
+  - items:
+      - label: MagicPlayerOverlay
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerOverlay must be nested inside MagicPlayerProvider
+  - items:
+      - label: MagicPlayerTimeline
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerTimeline must be nested inside MagicPlayerProvider
+  - items:
+      - label: MagicPlayerDisplayTime
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerDisplayTime must be nested inside MagicPlayerProvider
+  - items:
+      - label: MagicPlayerVideoControls
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicPlayerVideoControls must be nested inside MagicPlayerProvider
+  - items:
+      - label: usePlayerMediaApi
+      - label: play_promise_rejected
+      - plaintext: true
+        label: Play promise was rejected
+  - items:
+      - label: usePlayerMediaApi
+      - label: play_promise_aborted
+      - plaintext: true
+        label: The play() request was aborted
+  - items:
+      - label: usePlayerMediaApi
+      - label: play_promise_not_allowed
+      - plaintext: true
+        label: Autoplay was prevented, user interaction required
+  - items:
+      - label: usePlayerMediaApi
+      - label: play_promise_not_supported
+      - plaintext: true
+        label: Media format not supported
+  - items:
+      - label: usePlayerMediaApi
+      - label: media_element_error
+      - plaintext: true
+        label: Media element error
+  - items:
+      - label: usePlayerMediaApi
+      - label: media_element_aborted
+      - plaintext: true
+        label: Media loading was aborted by the user
+  - items:
+      - label: usePlayerMediaApi
+      - label: media_element_network
+      - plaintext: true
+        label: A network error occurred while loading the media
+  - items:
+      - label: usePlayerMediaApi
+      - label: media_element_decode
+      - plaintext: true
+        label: An error occurred while decoding the media
+  - items:
+      - label: usePlayerMediaApi
+      - label: media_element_src_not_supported
+      - plaintext: true
+        label: The media source is not supported
+  - items:
+      - label: usePlayerRuntime
+      - label: hls_network_error
+      - plaintext: true
+        label: HLS network error
+  - items:
+      - label: usePlayerRuntime
+      - label: hls_media_recovery_failed
+      - plaintext: true
+        label: HLS media recovery failed
+  - items:
+      - label: usePlayerRuntime
+      - label: hls_media_error
+      - plaintext: true
+        label: HLS media error
+  - items:
+      - label: usePlayerRuntime
+      - label: hls_fatal_error
+      - plaintext: true
+        label: HLS fatal error
+  - items:
+      - label: usePlayerRuntime
+      - label: player_initialization_failed
+      - plaintext: true
+        label: Player initialization failed
+---
+::
 
 ## Examples
 
 ### Audio Player
 
-<component-preview src="./demo/AudioPlayerDemo.vue" />
+::component-preview{src="./demo/AudioPlayerDemo.vue"}
+::
 
 ### Autoplay
 
-<component-preview src="./demo/AutoplayDemo.vue" />
+::component-preview{src="./demo/AutoplayDemo.vue"}
+::
 
 ### Autoplay with Controls
 
-<component-preview src="./demo/AutoplayControlsDemo.vue" />
+::component-preview{src="./demo/AutoplayControlsDemo.vue"}
+::
 
 ### Controls without Overlay
 
-<component-preview src="./demo/OmitOverlayDemo.vue" />
+::component-preview{src="./demo/OmitOverlayDemo.vue"}
+::
 
 ### Standalone Controls
 
-<component-preview src="./demo/StandaloneControlsDemo.vue" />
+::component-preview{src="./demo/StandaloneControlsDemo.vue"}
+::
 
 ### Native Controls
 
-<component-preview src="./demo/NativeControlsDemo.vue" />
+::component-preview{src="./demo/NativeControlsDemo.vue"}
+::
 
 ### Poster Image
 
-<component-preview src="./demo/ImagePosterDemo.vue" />
+::component-preview{src="./demo/ImagePosterDemo.vue"}
+::
 
 ### Playlist
 
-<component-preview src="./demo/PlaylistDemo.vue" />
+::component-preview{src="./demo/PlaylistDemo.vue"}
+::
 
 ### Composable
 
-<component-preview src="./demo/ComposableDemo.vue" />
+::component-preview{src="./demo/ComposableDemo.vue"}
+::

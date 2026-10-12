@@ -20,7 +20,9 @@
   },
   "devDependencies": {
     "@maas/mirror": "catalog:",
+    "@vue/server-renderer": "^3.5.42",
     "esno": "catalog:",
+    "mirror-compat": "workspace:*",
     "mkdist": "^2.4.1",
     "vue-sfc-transformer": "^0.1.17",
     "vue-tsc": "^3.3.11"

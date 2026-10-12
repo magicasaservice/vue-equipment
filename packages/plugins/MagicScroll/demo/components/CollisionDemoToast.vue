@@ -3,26 +3,26 @@
     class="bg-component-primary-translucent flex w-[264px] flex-col justify-between gap-2 rounded-md p-4 backdrop-blur-xl"
   >
     <div class="relative inline-flex gap-2">
-      <m-badge size="sm" mode="translucent">ID</m-badge>
-      <m-badge size="sm" mode="translucent">{{ payload.id }}</m-badge>
+      <m-badge size="sm" mode="subtle">ID</m-badge>
+      <m-badge size="sm" mode="subtle">{{ payload.id }}</m-badge>
     </div>
     <div class="relative inline-flex gap-2">
-      <m-badge size="sm" mode="translucent">Scroll Direction</m-badge>
-      <m-badge size="sm" mode="translucent">{{ payload.direction }}</m-badge>
+      <m-badge size="sm" mode="subtle">Scroll Direction</m-badge>
+      <m-badge size="sm" mode="subtle">{{ payload.direction }}</m-badge>
     </div>
     <div class="relative inline-flex gap-2">
-      <m-badge size="sm" mode="translucent">Scroll Container Edge</m-badge>
-      <m-badge size="sm" mode="translucent">{{ payload.parentEdge }}</m-badge>
+      <m-badge size="sm" mode="subtle">Scroll Container Edge</m-badge>
+      <m-badge size="sm" mode="subtle">{{ payload.parentEdge }}</m-badge>
     </div>
     <div class="relative inline-flex gap-2">
-      <m-badge size="sm" mode="translucent">Element Edge</m-badge>
-      <m-badge size="sm" mode="translucent">{{ payload.childEdge }}</m-badge>
+      <m-badge size="sm" mode="subtle">Element Edge</m-badge>
+      <m-badge size="sm" mode="subtle">{{ payload.childEdge }}</m-badge>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

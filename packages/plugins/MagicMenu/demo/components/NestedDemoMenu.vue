@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { offset } from '@floating-ui/dom'
-import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MMenuItem, MMenuItemChild } from 'mirror-compat'
 import NestedDemoMenu from '../components/NestedDemoMenu.vue'
 
 interface NestedDemoMenuProps {

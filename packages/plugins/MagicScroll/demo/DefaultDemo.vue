@@ -30,8 +30,10 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 
+import type { MagicScrollSequence } from '@maas/vue-equipment/plugins/MagicScroll'
+
 const parentRef = useTemplateRef('parent')
-const sequence = [
+const sequence: MagicScrollSequence = [
   [
     {
       opacity: [0, 1],

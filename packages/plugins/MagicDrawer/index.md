@@ -2,9 +2,8 @@
 
 MagicDrawer is a flexible, touch enabled, unstyled drawer component. Useful for things like shopping carts, menus, as a modal replacement on mobile devices and the like.
 
-<ComponentPreview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -42,10 +41,18 @@ const { open } = useMagicDrawer('your-drawer-id')
 </template>
 ```
 
-> [!TIP]
-> `MagicDrawerTeleport` is optional. Omit it to keep the drawer mounted at all times, with visibility controlled via `v-show`.
+::tip
+`MagicDrawerTeleport` is optional. Omit it to keep the drawer mounted at all times, with visibility controlled via `v-show`.
+::
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -104,91 +111,40 @@ onMounted(() => {
 })
 ```
 
-> [!TIP]
-> If you have installed the drawer as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the drawer as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
 If you haven't installed the required peer dependencies automatically, you'll need to install the following packages manually.
 
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[defu](https://www.npmjs.com/package/defu)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[wheel-gestures](https://www.npmjs.com/package/wheel-gestures)'
-        }
-      ]
-    },
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Package
+rows:
+  - items:
+      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
+  - items:
+      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
+  - items:
+      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
+  - items:
+      - label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
+  - items:
+      - label: '[defu](https://www.npmjs.com/package/defu)'
+  - items:
+      - label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
+  - items:
+      - label: '[wheel-gestures](https://www.npmjs.com/package/wheel-gestures)'
+---
+::
 
 ### Installation
 
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
-```
-
-```sh [npm]
-npm install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
-```
-
-```sh [yarn]
-yarn add @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
-```
-
-```sh [bun]
-bun install @nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures
-```
-
-:::
+::package-install{name="@nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures"}
+::
 
 ## API Reference
 
@@ -198,413 +154,170 @@ The MagicDrawerProvider wraps the drawer and configures all child components acc
 
 #### Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicDrawerOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicDrawerOptions
+      - label: 'false'
+---
+::
 
 #### Options
 
 To customize the drawer, override the necessary options. Any custom options will be merged with the default options.
 
-<ProseTable
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'position',
-          description: 'Set the drawer\'s position relative to the viewport.'
-        },
-        {
-          label: 'string',
-          description: '\'top\' | \'right\' | \'bottom\' | \'left\''
-        },
-        {
-          label: '\'bottom\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'tag',
-          description: 'Specify the drawer\'s HTML element.'
-        },
-        {
-          label: 'string',
-          description: '\'dialog\' | \'div\''
-        },
-        {
-          label: '\'dialog\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'focusTrap',
-          description: 'Pass focus-trap options or disable completely. A complete list of options can be found [here](https://www.npmjs.com/package/focus-trap#createoptions). Make sure to disable this, if you do not have a focusable element in your drawer.'
-        },
-        {
-          label: 'boolean | FocusTrapOptions'
-        },
-        {
-          label: 'object'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'scrollLock',
-          description: 'Lock body scroll when the drawer is open.'
-        },
-        {
-          label: 'boolean | object'
-        },
-        {
-          label: 'object'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'scrollLock.padding',
-          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'snapPoints',
-          description: 'Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like \'768px\'.'
-        },
-        {
-          label: 'MagicDrawerSnapPoint[]',
-          description: 'Array<number + \'px\' | number>'
-        },
-        {
-          label: '[1]'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'snap.mode',
-          description: 'Configure how the drawer settles after a drag. \'closest\' snaps to the nearest point in the drag direction, \'step\' always advances one point at a time.'
-        },
-        {
-          label: '\'closest\' | \'step\''
-        },
-        {
-          label: '\'closest\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'teleport.target',
-          description: 'Default teleport target used by `MagicDrawerTeleport` unless overridden on the component itself.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: '\'body\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'teleport.disabled',
-          description: 'Disable teleporting entirely when using the default target.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.content',
-          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer panel.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: '\'magic-drawer-content\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'transition.backdrop',
-          description: 'Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the backdrop.'
-        },
-        {
-          label: 'string'
-        },
-        {
-          label: '\'magic-drawer-backdrop\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.lock',
-          description: 'Configure the dragged distance before the drawer prevents other touch interactions.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '0'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.distance',
-          description: 'Configure the dragged distance before the drawer snaps.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '128'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.momentum',
-          description: 'Configure the momentum from when the drawer snaps.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '1'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.snap.duration',
-          description: 'Configure the drawer\'s snap animation duration.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '300'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.snap.easing',
-          description: 'Configure the drawer\'s snap animation easing.'
-        },
-        {
-          label: 'function'
-        },
-        {
-          label: 'function',
-          description: '(t) => t * (2 - t)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'initial.open',
-          description: 'Open the drawer as soon as the component is mounted.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'initial.transition',
-          description: 'Animate the drawer when it opens initially. Ignored if <code>initial.open</code> is not set.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: '—'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'initial.snapPoint',
-          description: 'Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.'
-        },
-        {
-          label: 'MagicDrawerSnapPoint',
-          description: 'number + \'px\' | number'
-        },
-        {
-          label: '—'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'keyListener.close',
-          description: 'Set keyboard keys to close the drawer. Set to false to disable the key listener entirely.'
-        },
-        {
-          label: 'string[] | false'
-        },
-        {
-          label: '[\'Escape\']'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'enableMousewheel',
-          description: 'When set to true, the drawer will react to mousewheel input.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'preventZoom',
-          description: 'Prevent viewport scaling when the drawer is open.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'preventDragClose',
-          description: 'Prevent the drawer from being closed by dragging.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'preventEdgeNavigation',
-          description: 'Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag. Only applies to drawers with a `left` or `right` position.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable all drawer interactions.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: position
+        description: Set the drawer’s position relative to the viewport.
+      - label: string
+        description: "'top' | 'right' | 'bottom' | 'left'"
+      - label: "'bottom'"
+  - items:
+      - label: tag
+        description: Specify the drawer’s HTML element.
+      - label: string
+        description: "'dialog' | 'div'"
+      - label: "'dialog'"
+  - items:
+      - label: focusTrap
+        description: Pass focus-trap options or disable completely. A complete list of options can be found [here](https://www.npmjs.com/package/focus-trap#createoptions). Make sure to disable this, if you do not have a focusable element in your drawer.
+      - label: boolean | FocusTrapOptions
+      - label: object
+  - items:
+      - label: scrollLock
+        description: Lock body scroll when the drawer is open.
+      - label: boolean | object
+      - label: object
+  - items:
+      - label: scrollLock.padding
+        description: Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.
+      - label: boolean
+      - label: 'true'
+  - items:
+      - label: snapPoints
+        description: Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like '768px'.
+      - label: MagicDrawerSnapPoint[]
+        description: Array<number + 'px' | number>
+      - label: '[1]'
+  - items:
+      - label: snap.mode
+        description: Configure how the drawer settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time.
+      - label: "'closest' | 'step'"
+      - label: "'closest'"
+  - items:
+      - label: teleport.target
+        description: Default teleport target used by `MagicDrawerTeleport` unless overridden on the component itself.
+      - label: string
+      - label: "'body'"
+  - items:
+      - label: teleport.disabled
+        description: Disable teleporting entirely when using the default target.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: transition.content
+        description: Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the drawer panel.
+      - label: string
+      - label: "'magic-drawer-content'"
+  - items:
+      - label: transition.backdrop
+        description: Set the [transition name](https://vuejs.org/guide/built-ins/transition#named-transitions) for the backdrop.
+      - label: string
+      - label: "'magic-drawer-backdrop'"
+  - items:
+      - label: threshold.lock
+        description: Configure the dragged distance before the drawer prevents other touch interactions.
+      - label: number
+      - label: '0'
+  - items:
+      - label: threshold.distance
+        description: Configure the dragged distance before the drawer snaps.
+      - label: number
+      - label: '128'
+  - items:
+      - label: threshold.momentum
+        description: Configure the momentum from when the drawer snaps.
+      - label: number
+      - label: '1'
+  - items:
+      - label: animation.snap.duration
+        description: Configure the drawer’s snap animation duration.
+      - label: number
+      - label: '300'
+  - items:
+      - label: animation.snap.easing
+        description: Configure the drawer’s snap animation easing.
+      - label: function
+      - label: function
+        description: (t) => t * (2 - t)
+  - items:
+      - label: initial.open
+        description: Open the drawer as soon as the component is mounted.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: initial.transition
+        description: Animate the drawer when it opens initially. Ignored if `initial.open` is not set.
+      - label: boolean
+      - label: —
+  - items:
+      - label: initial.snapPoint
+        description: Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.
+      - label: MagicDrawerSnapPoint
+        description: number + 'px' | number
+      - label: —
+  - items:
+      - label: keyListener.close
+        description: Set keyboard keys to close the drawer. Set to false to disable the key listener entirely.
+      - label: string[] | false
+      - label: "['Escape']"
+  - items:
+      - label: enableMousewheel
+        description: When set to true, the drawer will react to mousewheel input.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: preventZoom
+        description: Prevent viewport scaling when the drawer is open.
+      - label: boolean
+      - label: 'true'
+  - items:
+      - label: preventDragClose
+        description: Prevent the drawer from being closed by dragging.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: preventEdgeNavigation
+        description: Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag. Only applies to drawers with a `left` or `right` position.
+      - label: boolean
+      - label: 'true'
+  - items:
+      - label: disabled
+        description: Disable all drawer interactions.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 ### MagicDrawerTeleport
 
@@ -612,43 +325,25 @@ Teleports all child components to a target in the DOM. Uses `v-if` to mount and 
 
 #### Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'to',
-          description: 'Override the teleport target set in the provider options.'
-        },
-        {
-          label: 'string | RendererElement'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable teleporting, rendering children in place instead.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: to
+        description: Override the teleport target set in the provider options.
+      - label: string | RendererElement
+      - label: 'false'
+  - items:
+      - label: disabled
+        description: Disable teleporting, rendering children in place instead.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 ### MagicDrawerBackdrop
 
@@ -656,74 +351,44 @@ Renders a full-viewport overlay behind the drawer panel. Closes the drawer when 
 
 #### CSS Variables
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-position' },
-        { label: 'fixed' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-top' },
-        { label: '0' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-left' },
-        { label: '0' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-right' },
-        { label: '0' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-bottom' },
-        { label: '0' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-width' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-height' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-color' },
-        { label: 'rgba(0, 0, 0, 0.5)' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-filter' },
-        { label: 'unset' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-backdrop-z-index' },
-        { label: '998' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-drawer-backdrop-position
+      - label: fixed
+  - items:
+      - label: --magic-drawer-backdrop-top
+      - label: '0'
+  - items:
+      - label: --magic-drawer-backdrop-left
+      - label: '0'
+  - items:
+      - label: --magic-drawer-backdrop-right
+      - label: '0'
+  - items:
+      - label: --magic-drawer-backdrop-bottom
+      - label: '0'
+  - items:
+      - label: --magic-drawer-backdrop-width
+      - label: 100%
+  - items:
+      - label: --magic-drawer-backdrop-height
+      - label: 100%
+  - items:
+      - label: --magic-drawer-backdrop-color
+      - label: rgba(0, 0, 0, 0.5)
+  - items:
+      - label: --magic-drawer-backdrop-filter
+      - label: unset
+  - items:
+      - label: --magic-drawer-backdrop-z-index
+      - label: '998'
+---
+::
 
 ### MagicDrawerContent
 
@@ -731,122 +396,68 @@ Renders the drawer panel with drag, snap, and scroll behavior.
 
 #### CSS Variables
 
-<ProseTable
-  :columns="[
-    { label: 'Variable' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: '--magic-drawer-position' },
-        { label: 'fixed' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-inset' },
-        { label: '0' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-display' },
-        { label: 'flex' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-z-index' },
-        { label: '999' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-height' },
-        { label: '75svh' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-width' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-max-height' },
-        { label: 'none' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-max-width' },
-        { label: 'none' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-content-width' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-content-height' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-content-max-height' },
-        { label: '100%' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-justify-content' },
-        { label: 'center' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-align-items' },
-        { label: 'flex-end' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-enter-animation' },
-        { label: 'slide-btt-in 300ms ease' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-leave-animation' },
-        { label: 'slide-btt-out 300ms ease' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-drag-overshoot' },
-        { label: '4rem' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-cursor' },
-        { label: 'grab' }
-      ]
-    },
-    {
-      items: [
-        { label: '--magic-drawer-cursor-dragging' },
-        { label: 'grabbing' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-drawer-position
+      - label: fixed
+  - items:
+      - label: --magic-drawer-inset
+      - label: '0'
+  - items:
+      - label: --magic-drawer-display
+      - label: flex
+  - items:
+      - label: --magic-drawer-z-index
+      - label: '999'
+  - items:
+      - label: --magic-drawer-height
+      - label: 75svh
+  - items:
+      - label: --magic-drawer-width
+      - label: 100%
+  - items:
+      - label: --magic-drawer-max-height
+      - label: none
+  - items:
+      - label: --magic-drawer-max-width
+      - label: none
+  - items:
+      - label: --magic-drawer-content-width
+      - label: 100%
+  - items:
+      - label: --magic-drawer-content-height
+      - label: 100%
+  - items:
+      - label: --magic-drawer-content-max-height
+      - label: 100%
+  - items:
+      - label: --magic-drawer-justify-content
+      - label: center
+  - items:
+      - label: --magic-drawer-align-items
+      - label: flex-end
+  - items:
+      - label: --magic-drawer-enter-animation
+      - label: slide-btt-in 300ms ease
+  - items:
+      - label: --magic-drawer-leave-animation
+      - label: slide-btt-out 300ms ease
+  - items:
+      - label: --magic-drawer-drag-overshoot
+      - label: 4rem
+  - items:
+      - label: --magic-drawer-cursor
+      - label: grab
+  - items:
+      - label: --magic-drawer-cursor-dragging
+      - label: grabbing
+---
+::
 
 ### MagicDrawerTrigger
 
@@ -854,84 +465,53 @@ Opens or closes the drawer on click.
 
 #### Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'The drawer id. Only required when the trigger is used outside a `MagicDrawerProvider`.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the trigger. Defaults to the disabled state set on `MagicDrawerProvider` if not provided.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'asChild',
-          description: 'Prevent the component from rendering its own element and pass all functionality to the child element instead.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: The drawer id. Only required when the trigger is used outside a `MagicDrawerProvider`.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'false'
+  - items:
+      - label: disabled
+        description: Disable the trigger. Defaults to the disabled state set on `MagicDrawerProvider` if not provided.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: asChild
+        description: Prevent the component from rendering its own element and pass all functionality to the child element instead.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 #### Slot Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'active' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the drawer is currently open.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'disabled' },
-        { label: 'boolean' },
-        { plaintext: true, label: 'Whether the trigger is currently disabled.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: active
+      - label: boolean
+      - plaintext: true
+        label: Whether the drawer is currently open.
+  - items:
+      - label: disabled
+      - label: boolean
+      - plaintext: true
+        label: Whether the trigger is currently disabled.
+---
+::
 
 ### MagicDrawer
 
@@ -939,226 +519,166 @@ A self-contained component that composes all primitives internally. Use this for
 
 #### Props
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicDrawerOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicDrawerOptions
+      - label: 'false'
+---
+::
 
 #### Slots
 
-<ProseTable
-  :columns="[
-    { label: 'Slot' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'default' },
-        { plaintext: true, label: 'Content rendered inside the drawer panel.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'backdrop' },
-        { plaintext: true, label: 'Content rendered inside the backdrop element.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Slot
+  - label: Description
+rows:
+  - items:
+      - label: default
+      - plaintext: true
+        label: Content rendered inside the drawer panel.
+  - items:
+      - label: backdrop
+      - plaintext: true
+        label: Content rendered inside the backdrop element.
+---
+::
 
 ## Events
 
-The drawer emits the following events through [MagicEmitter](../MagicEmitter/). Listen to them with `useMagicEmitter`.
+The drawer emits the following events through [MagicEmitter](/plugins/MagicEmitter). Listen to them with `useMagicEmitter`.
 
-<ProseTable
-  :columns="[
-    { label: 'Event' },
-    { label: 'Payload' },
-    { label: 'Description' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'beforeEnter' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired before the drawer’s open transition starts.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'enter' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired when the drawer’s open transition starts.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'afterEnter' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired after the drawer’s open transition ends.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'beforeLeave' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired before the drawer’s close transition starts.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'leave' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired when the drawer’s close transition starts.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'afterLeave' },
-        { label: 'id' },
-        { plaintext: true, label: 'Fired after the drawer’s close transition ends.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'beforeDrag' },
-        { label: '{ id, x, y }' },
-        { plaintext: true, label: 'Fired when the drawer starts being dragged.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'drag' },
-        { label: '{ id, x, y }' },
-        { plaintext: true, label: 'Fired continuously while the drawer is dragged. `x` and `y` are the current translation in pixels.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'afterDrag' },
-        { label: '{ id, x, y }' },
-        { plaintext: true, label: 'Fired when the drawer stops being dragged.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'beforeSnap' },
-        { label: '{ id, snapPoint }' },
-        { plaintext: true, label: 'Fired before the drawer animates to a snap point.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'snapTo' },
-        { label: '{ id, snapPoint, duration? }' },
-        { plaintext: true, label: 'Fired when the drawer is asked to snap programmatically.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'afterSnap' },
-        { label: '{ id, snapPoint }' },
-        { plaintext: true, label: 'Fired after the drawer has settled on a snap point.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'willSnapTo' },
-        { label: '{ id, snapPoint }' },
-        { plaintext: true, label: 'Fired during a drag when the committed snap target changes — i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.' }
-      ]
-    },
-    {
-      items: [
-        { label: 'progress' },
-        { label: '{ id, x, y }' },
-        { plaintext: true, label: 'Fired whenever the drawer’s drag progress changes.' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Event
+  - label: Payload
+  - label: Description
+rows:
+  - items:
+      - label: beforeEnter
+      - label: id
+      - plaintext: true
+        label: Fired before the drawer’s open transition starts.
+  - items:
+      - label: enter
+      - label: id
+      - plaintext: true
+        label: Fired when the drawer’s open transition starts.
+  - items:
+      - label: afterEnter
+      - label: id
+      - plaintext: true
+        label: Fired after the drawer’s open transition ends.
+  - items:
+      - label: beforeLeave
+      - label: id
+      - plaintext: true
+        label: Fired before the drawer’s close transition starts.
+  - items:
+      - label: leave
+      - label: id
+      - plaintext: true
+        label: Fired when the drawer’s close transition starts.
+  - items:
+      - label: afterLeave
+      - label: id
+      - plaintext: true
+        label: Fired after the drawer’s close transition ends.
+  - items:
+      - label: beforeDrag
+      - label: '{ id, x, y }'
+      - plaintext: true
+        label: Fired when the drawer starts being dragged.
+  - items:
+      - label: drag
+      - label: '{ id, x, y }'
+      - plaintext: true
+        label: Fired continuously while the drawer is dragged. `x` and `y` are the current translation in pixels.
+  - items:
+      - label: afterDrag
+      - label: '{ id, x, y }'
+      - plaintext: true
+        label: Fired when the drawer stops being dragged.
+  - items:
+      - label: beforeSnap
+      - label: '{ id, snapPoint }'
+      - plaintext: true
+        label: Fired before the drawer animates to a snap point.
+  - items:
+      - label: snapTo
+      - label: '{ id, snapPoint, duration? }'
+      - plaintext: true
+        label: Fired when the drawer is asked to snap programmatically.
+  - items:
+      - label: afterSnap
+      - label: '{ id, snapPoint }'
+      - plaintext: true
+        label: Fired after the drawer has settled on a snap point.
+  - items:
+      - label: willSnapTo
+      - label: '{ id, snapPoint }'
+      - plaintext: true
+        label: Fired during a drag when the committed snap target changes — i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.
+  - items:
+      - label: progress
+      - label: '{ id, x, y }'
+      - plaintext: true
+        label: Fired whenever the drawer’s drag progress changes.
+---
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'Error Code' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'MagicDrawerTeleport' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicDrawerTeleport must be nested inside MagicDrawerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicDrawerBackdrop' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicDrawerBackdrop must be nested inside MagicDrawerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicDrawerContent' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicDrawerContent must be nested inside MagicDrawerProvider' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicDrawerTrigger' },
-        { label: 'missing_instance_id' },
-        { plaintext: true, label: 'MagicDrawerTrigger must be nested inside MagicDrawerProvider or an id must be provided' }
-      ]
-    },
-    {
-      items: [
-        { label: 'MagicDrawerContent' },
-        { label: 'overshoot_unit' },
-        { plaintext: true, label: '--magic-drawer-drag-overshoot needs to be specified in px or rem' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: Error Code
+  - label: Message
+rows:
+  - items:
+      - label: MagicDrawerTeleport
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicDrawerTeleport must be nested inside MagicDrawerProvider
+  - items:
+      - label: MagicDrawerBackdrop
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicDrawerBackdrop must be nested inside MagicDrawerProvider
+  - items:
+      - label: MagicDrawerContent
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicDrawerContent must be nested inside MagicDrawerProvider
+  - items:
+      - label: MagicDrawerTrigger
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicDrawerTrigger must be nested inside MagicDrawerProvider or an id must be provided
+  - items:
+      - label: MagicDrawerContent
+      - label: overshoot_unit
+      - plaintext: true
+        label: --magic-drawer-drag-overshoot needs to be specified in px or rem
+---
+::
 
 ## Caveats
 
@@ -1190,32 +710,39 @@ The pattern relies on `body` spanning the full document and does not cover pages
 
 ### Vertical
 
-<ComponentPreview src="./demo/VerticalDemo.vue" />
+::component-preview{src="./demo/VerticalDemo.vue"}
+::
 
 ### Horizontal
 
-<ComponentPreview src="./demo/HorizontalDemo.vue" />
+::component-preview{src="./demo/HorizontalDemo.vue"}
+::
 
 ### Snap Points
 
-<ComponentPreview src="./demo/SnapPointsDemo.vue" />
+::component-preview{src="./demo/SnapPointsDemo.vue"}
+::
 
 ### Mousewheel
 
-<ComponentPreview src="./demo/MousewheelDemo.vue" />
+::component-preview{src="./demo/MousewheelDemo.vue"}
+::
 
 ### Step Snapping
 
 With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point on each drag instead of jumping to the closest one, moving through the configured points one at a time.
 
-<ComponentPreview src="./demo/SnapModeDemo.vue" />
+::component-preview{src="./demo/SnapModeDemo.vue"}
+::
 
 ### Composed
 
-<ComponentPreview src="./demo/ComposedDemo.vue" />
+::component-preview{src="./demo/ComposedDemo.vue"}
+::
 
 ### Will Snap To
 
 The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the drawer will animate to on release. It only fires when the target actually changes, not on every move.
 
-<ComponentPreview src="./demo/WillSnapToDemo.vue" />
+::component-preview{src="./demo/WillSnapToDemo.vue"}
+::
