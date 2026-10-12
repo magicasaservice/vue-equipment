@@ -7,11 +7,11 @@
     as="figure"
     class="rounded-component-sm border-surface bg-surface-base relative mt-6 mb-10 overflow-hidden border-2 first:mt-0"
   >
-    <!-- The demo stands on its own ground, one step above the panel that
-         carries the code, and scrolls horizontally by itself so a wide example
-         never widens the column. -->
+    <!-- The demo shares the frame’s ground, so its own surfaces read against
+         it, and scrolls horizontally by itself so a wide example never widens
+         the column. -->
     <div
-      class="bg-surface-high text-surface flex min-h-65 items-center justify-center overflow-x-auto px-4 py-8 sm:p-12"
+      class="text-surface flex min-h-65 items-center justify-center overflow-x-auto px-4 py-8 sm:p-12"
     >
       <component :is="preview" v-if="preview" />
       <p v-else class="docs-body-sm text-surface-muted">
