@@ -1,9 +1,5 @@
 export type MBadgeVariant =
-  | 'primary'
-  | 'secondary'
-  | 'accent'
-  | 'success'
-  | 'danger'
+  'primary' | 'secondary' | 'accent' | 'success' | 'danger'
 
 export type MBadgeMode = 'solid' | 'muted' | 'subtle' | 'outline'
 

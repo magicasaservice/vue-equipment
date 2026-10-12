@@ -1,12 +1,7 @@
 export type MInputSize = 'xs' | 'sm' | 'md' | 'lg'
 
 export type MInputType =
-  | 'text'
-  | 'email'
-  | 'password'
-  | 'number'
-  | 'tel'
-  | 'url'
+  'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
 
 export interface MInputProps {
   modelValue: string | number

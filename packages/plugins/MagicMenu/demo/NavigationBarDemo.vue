@@ -61,7 +61,11 @@
                       <span class="type-surface-callout-sm text-surface-muted">
                         {{ entry.label }}
                       </span>
-                      <m-badge v-if="'badge' in entry" size="xs" variant="secondary">
+                      <m-badge
+                        v-if="'badge' in entry"
+                        size="xs"
+                        variant="secondary"
+                      >
                         {{ entry.badge }}
                       </m-badge>
                     </div>

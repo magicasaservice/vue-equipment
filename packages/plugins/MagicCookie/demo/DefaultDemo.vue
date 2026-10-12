@@ -38,9 +38,7 @@
         <m-button mode="plain" block @click="onRejectAll">
           Reject All
         </m-button>
-        <m-button mode="subtle" block @click="toggleView">
-          Settings
-        </m-button>
+        <m-button mode="subtle" block @click="toggleView"> Settings </m-button>
       </template>
       <m-button block @click="onAcceptAll">Accept All</m-button>
     </div>

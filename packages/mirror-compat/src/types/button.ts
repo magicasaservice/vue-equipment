@@ -2,19 +2,10 @@ import type { Component } from 'vue'
 import type { ElementOrComponent } from '@maas/mirror/vue'
 
 export type MButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'accent'
-  | 'success'
-  | 'danger'
+  'primary' | 'secondary' | 'accent' | 'success' | 'danger'
 
 export type MButtonMode =
-  | 'solid'
-  | 'muted'
-  | 'subtle'
-  | 'ghost'
-  | 'outline'
-  | 'plain'
+  'solid' | 'muted' | 'subtle' | 'ghost' | 'outline' | 'plain'
 
 export type MButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 
