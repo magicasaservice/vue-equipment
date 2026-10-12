@@ -1,4 +1,9 @@
-import { defineNuxtModule, createResolver, addComponentsDir } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  createResolver,
+  addComponentsDir,
+  addImports,
+} from '@nuxt/kit'
 
 export default defineNuxtModule({
   meta: {
@@ -10,6 +15,11 @@ export default defineNuxtModule({
       path: resolver.resolve('src/components'),
       global: true,
       pathPrefix: false,
+    })
+
+    addImports({
+      from: '@maas/vue-equipment/plugins/MagicCarousel',
+      name: 'useMagicCarousel',
     })
   },
 })
