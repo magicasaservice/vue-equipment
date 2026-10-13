@@ -744,7 +744,7 @@ If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radiu
 
 ### Virtual Magnetism
 
-With `magnetism.virtual` set to `true`, magnetism is still calucalted, but the clip path and handle stay put. The `magnet` event still fires, so you can drive custom effects such as transforms or parallax.
+With `magnetism.virtual` set to `true`, magnetism is still calculated, but the clip path and handle stay put. The `magnet` event still fires, so you can drive custom effects such as transforms or parallax.
 
 ::component-preview{src="./demo/VirtualMagneticDemo.vue"}
 ::

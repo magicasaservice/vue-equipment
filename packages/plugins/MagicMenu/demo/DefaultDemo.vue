@@ -1,7 +1,7 @@
 <template>
   <magic-menu-provider
     id="magic-menu-default-demo"
-    class="bg-surface-high inline-flex gap-2 rounded-2xl p-1"
+    class="bg-surface-base inline-flex gap-2 rounded-2xl p-1"
   >
     <magic-menu-view
       v-for="(menuItem, index) in menu"

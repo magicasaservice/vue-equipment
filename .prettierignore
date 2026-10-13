@@ -1,0 +1,4 @@
+# Prettier rewrites MDC blocks and their front matter.
+apps/docs/content
+packages/plugins/*/index.md
+packages/composables/*/index.md

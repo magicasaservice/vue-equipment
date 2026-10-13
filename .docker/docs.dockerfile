@@ -3,11 +3,6 @@ RUN corepack enable
 
 FROM base AS deps
 WORKDIR /app
-# better-sqlite3 is the @nuxt/content connector; the toolchain covers
-# platforms it ships no prebuilt binary for
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 make g++ \
-    && rm -rf /var/lib/apt/lists/*
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps/docs/package.json ./apps/docs/
 COPY packages/composables/package.json ./packages/composables/

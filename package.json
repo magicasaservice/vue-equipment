@@ -157,7 +157,6 @@
     "onlyBuiltDependencies": [
       "@bundled-es-modules/glob",
       "@parcel/watcher",
-      "better-sqlite3",
       "esbuild",
       "style-dictionary",
       "vue-demi"

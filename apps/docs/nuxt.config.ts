@@ -1,12 +1,9 @@
-import { dirname, relative, resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import tailwindcss from '@tailwindcss/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { plugins } from '../../packages/metadata'
-import { colorModeStorageKey } from './app/utils/color-mode'
-import { mirrorDark, mirrorLight } from './shiki-theme'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const repositoryRoot = resolve(currentDir, '../..')
@@ -25,29 +22,24 @@ async function loadSymbol(name: string) {
 }
 
 export default defineNuxtConfig({
-  compatibilityDate: '2026-08-19',
-  devtools: { enabled: false },
+  extends: ['@maas/docs'],
 
-  modules: [
-    // Ahead of Nuxt Content, whose options it adds to.
-    [
-      resolve(currentDir, 'component-previews'),
-      {
-        roots: [
-          resolve(packagesDir, 'plugins'),
-          resolve(packagesDir, 'composables'),
-        ],
-      },
+  docs: {
+    tokens: resolve(repositoryRoot, '.maas'),
+    sources: [
+      resolve(packagesDir, 'plugins'),
+      resolve(packagesDir, 'composables'),
+      resolve(packagesDir, 'mirror-compat/src'),
     ],
-    '@nuxt/content',
-    '@nuxtjs/color-mode',
-    '@maas/mirror/nuxt',
-    resolve(packagesDir, 'nuxt/src/module'),
-  ],
+    previews: [
+      resolve(packagesDir, 'plugins/*/demo/*.vue'),
+      resolve(packagesDir, 'composables/*/demo/*.vue'),
+    ],
+  },
 
-  // The docs run the repository’s own Nuxt module against the plugin
-  // sources, so every page tests the module and a change to a plugin shows up
-  // without a build.
+  // The layer’s `@maas/vue-equipment/nuxt` resolves to the module source
+  // through the aliases below, so every page tests the module and a change to
+  // a plugin shows up without a build.
   vueEquipment: {
     plugins: true,
     composables: true,
@@ -59,43 +51,13 @@ export default defineNuxtConfig({
     prefix: 'Mirror',
   },
 
-  colorMode: {
-    preference: 'system',
-    fallback: 'light',
-    classSuffix: '',
-    dataValue: 'color-mode',
-    storageKey: colorModeStorageKey,
-  },
-
   app: {
     head: {
-      htmlAttrs: { lang: 'en', 'data-theme': 'vue-equipment' },
-      viewport: 'width=device-width, initial-scale=1',
+      htmlAttrs: { 'data-theme': 'vue-equipment' },
       link: [
         { rel: 'icon', href: '/icon.svg', type: 'image/svg+xml' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon-180x180.png' },
         { rel: 'manifest', href: '/manifest.webmanifest' },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.maas.engineering',
-          crossorigin: 'anonymous',
-        },
-        {
-          rel: 'dns-prefetch',
-          href: 'https://fonts.maas.engineering',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.maas.engineering/mirage/1.1.3/stylesheet.css',
-          crossorigin: 'anonymous',
-          tagPriority: 'critical',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.maas.engineering/index/stylesheet.css',
-          crossorigin: 'anonymous',
-          tagPriority: 'critical',
-        },
       ],
       script: [
         {
@@ -108,17 +70,13 @@ export default defineNuxtConfig({
   },
 
   css: [
-    resolve(tokensDir, 'application.css'),
-    resolve(tokensDir, 'breakpoint/sm/application.css'),
-    resolve(tokensDir, 'theme/dark/application.css'),
     resolve(tokensDir, 'theme/vue-equipment/light/application.css'),
     resolve(tokensDir, 'theme/vue-equipment/dark/application.css'),
-    '~/assets/css/tailwind.css',
-    '~/assets/css/main.css',
   ],
 
   // The specific paths come first: the first alias that matches wins.
   alias: {
+    '@maas/vue-equipment/nuxt': resolve(packagesDir, 'nuxt/src/module'),
     ...Object.fromEntries(
       plugins.map((plugin) => [
         `@maas/vue-equipment/plugins/${plugin.name}/css`,
@@ -129,18 +87,11 @@ export default defineNuxtConfig({
     '@maas/vue-equipment/composables': resolve(packagesDir, 'composables'),
     '@maas/vue-equipment/utils/css': resolve(packagesDir, 'utils/src/css'),
     '@maas/vue-equipment/utils': resolve(packagesDir, 'utils'),
-    '@maas/mirror/tailwind': resolve(
-      repositoryRoot,
-      '.maas/tailwind.preset.css'
-    ),
   },
 
+  // The demos render `<m-*>` tags, some without importing them.
   components: [
-    { path: './components/base/', pathPrefix: false },
-    { path: './components/docs/', pathPrefix: false },
-    { path: './components/prose/', global: true },
-    { path: './components/content/', global: true },
-    // The demos render `<m-*>` tags, some without importing them.
+    '~/components',
     {
       path: resolve(packagesDir, 'mirror-compat/src/components'),
       prefix: 'M',
@@ -155,54 +106,7 @@ export default defineNuxtConfig({
         // `/plugins/MagicDrawer`, as they always have.
         slugifyOptions: { lower: false },
       },
-      markdown: {
-        toc: { depth: 3, searchDepth: 2 },
-        highlight: {
-          theme: { default: mirrorLight, dark: mirrorDark },
-          langs: [
-            'bash',
-            'css',
-            'html',
-            'ini',
-            'js',
-            'json',
-            'sh',
-            'ts',
-            'typescript',
-            'vue',
-          ],
-        },
-      },
     },
-  },
-
-  mdc: {
-    components: { prose: true },
-  },
-
-  hooks: {
-    // A page’s source link and its Markdown twin both need the file it was
-    // read from, which the collection’s sources only know as a glob.
-    'content:file:afterParse'({ file, collection, content }) {
-      if (collection.name === 'docs' && file.path) {
-        content.sourcePath = relative(repositoryRoot, file.path)
-      }
-    },
-  },
-
-  nitro: {
-    // The files behind the pages, which `/raw/<path>.md` serves. They are
-    // bundled for the server alone, so the content database the browser
-    // downloads never carries a second copy of every page. The pattern
-    // matches the `docs` collection’s sources in `content.config.ts`.
-    serverAssets: [
-      {
-        baseName: 'markdown',
-        dir: repositoryRoot,
-        pattern:
-          '{apps/docs/content/0.overview/*.md,packages/{plugins,composables}/*/index.md}',
-      },
-    ],
   },
 
   // The overview pages used to be served as `.html` files, and those URLs are
@@ -218,8 +122,7 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [
-      tailwindcss(),
-      // The demos and the shell draw symbols as `<i-maas-*>` tags, compiled
+      // The demos and the logo draw symbols as `<i-maas-*>` tags, compiled
       // into the bundle at build time.
       Components({
         dirs: [],
