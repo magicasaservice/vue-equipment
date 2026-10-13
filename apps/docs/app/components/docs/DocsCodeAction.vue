@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="docs-action rounded-component-compact-sm flex size-8 items-center justify-center transition-colors"
+    class="docs-action flex size-8 items-center justify-center rounded-(--docs-inset-radius) transition-colors"
     :class="
       active
         ? 'bg-accent-subtle text-surface'

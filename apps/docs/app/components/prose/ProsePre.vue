@@ -2,7 +2,7 @@
   <div class="bg-surface-high rounded-component-sm mt-5 mb-6 first:mt-0">
     <div
       v-if="filename || label"
-      class="flex items-center gap-3 py-1 pr-1 pl-4"
+      class="flex items-center gap-3 py-(--docs-inset) pr-(--docs-inset) pl-4"
     >
       <span class="docs-code text-surface-muted min-w-0 truncate">
         {{ filename || label }}
@@ -37,7 +37,7 @@
         ]"
       ><slot /></pre>
 
-      <div v-if="!filename && !label" class="p-1">
+      <div v-if="!filename && !label" class="p-(--docs-inset)">
         <docs-code-copy :value="code" />
       </div>
     </div>

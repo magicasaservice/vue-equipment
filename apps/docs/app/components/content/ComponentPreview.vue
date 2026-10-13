@@ -21,7 +21,7 @@
 
     <figcaption
       v-if="source"
-      class="border-surface flex items-center gap-x-1 border-t-2 px-1.5 py-1"
+      class="border-surface flex items-center gap-x-1 border-t-2 p-(--docs-inset)"
     >
       <span class="docs-code text-surface-muted px-2">
         {{ source.filename }}

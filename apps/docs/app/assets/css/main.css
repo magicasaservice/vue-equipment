@@ -29,6 +29,14 @@
        at least this tall, whatever its visible mark measures. */
     --docs-touch: 2.75rem;
 
+    /* What sits in a code block's corner, its copy button, wrap toggle and
+       tabs, keeps this distance from both edges. Its own corner is the
+       block's minus that distance, so the two curves share a center. */
+    --docs-inset: 0.5rem;
+    --docs-inset-radius: calc(
+      var(--app-dimension-radius-sm) - var(--docs-inset)
+    );
+
     --docs-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 

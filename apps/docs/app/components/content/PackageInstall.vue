@@ -5,10 +5,10 @@
     v-model="active"
     class="rounded-component-sm bg-surface-high mt-6 mb-6 overflow-hidden first:mt-0"
   >
-    <!-- A 6px inset under a 12px corner leaves 6px for anything that sits in
-         a corner of the row, so the tabs and the copy button take
-         compact-sm and both start at the top of the row. -->
-    <div class="flex items-start gap-2 px-1.5 pt-1.5">
+    <!-- The tabs and the copy button sit in the block's top corners, so both
+         take the corner inset and its radius and start at the top of the
+         row. -->
+    <div class="flex items-start gap-2 px-(--docs-inset) pt-(--docs-inset)">
       <!-- The indicator only renders once it has measured the active tab,
            after mount. Until then the active tab carries the same fill, so
            the server-rendered block already shows the selection. -->
@@ -85,7 +85,7 @@ const command = computed(() => {
 const list = 'relative isolate flex items-center gap-1'
 
 const trigger = [
-  'rounded-component-compact-sm docs-code docs-tap-grow relative z-10',
+  'rounded-(--docs-inset-radius) docs-code docs-tap-grow relative z-10',
   'text-(length:--app-font-size-surface-caption)',
   'inline-flex h-7 items-center px-1.5 text-surface-muted',
   'transition-colors duration-200 ease-in-out',
@@ -96,7 +96,7 @@ const trigger = [
 ].join(' ')
 
 const indicator = [
-  'rounded-component-compact-sm bg-primary-muted',
+  'rounded-(--docs-inset-radius) bg-primary-muted',
   'left-0! translate-x-[var(--mirror-tabs-indicator-left)]',
   'transition-[translate,inline-size] duration-200 ease-out',
 ].join(' ')
