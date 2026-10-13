@@ -17,22 +17,17 @@
     "dev": "nuxt dev --host",
     "build": "node scripts/check-classes.mjs && nuxt build",
     "preview": "nuxt preview",
-    "lint": "eslint .",
-    "test": "vitest run"
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@maas/docs": "^0.1.0",
     "@maas/mirror": "catalog:",
-    "@nuxt/content": "^3.16.0",
-    "@nuxtjs/color-mode": "^4.0.1",
-    "@tailwindcss/vite": "catalog:",
-    "better-sqlite3": "^13.0.3",
+    "@maas/vue-equipment": "workspace:*",
     "composables": "workspace:*",
     "metadata": "workspace:*",
     "mirror-compat": "workspace:*",
     "nuxt": "catalog:",
     "plugins": "workspace:*",
-    "shiki": "^4.5.0",
-    "tailwindcss": "catalog:",
     "utils": "workspace:*",
     "vue": "catalog:"
   },
@@ -40,7 +35,6 @@
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "unplugin-icons": "^22.5.0",
-    "unplugin-vue-components": "^30.0.0",
-    "vitest": "^4.1.11"
+    "unplugin-vue-components": "^30.0.0"
   }
 }
