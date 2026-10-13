@@ -16,6 +16,7 @@ export enum MenuId {
   IntTriggerClick = 'int-trigger-click',
   IntTriggerToggle = 'int-trigger-toggle',
   IntTriggerActive = 'int-trigger-active',
+  IntTriggerSwitch = 'int-trigger-switch',
   IntItemHover = 'int-item-hover',
   IntItemLeave = 'int-item-leave',
   IntItemClick = 'int-item-click',

@@ -65,6 +65,38 @@ function createDropdown(menuId: MenuId) {
   })
 }
 
+function createSiblingDropdowns(menuId: MenuId) {
+  return defineComponent({
+    components: {
+      MagicMenuProvider,
+      MagicMenuTrigger,
+      MagicMenuView,
+      MagicMenuContent,
+      MagicMenuItem,
+    },
+    template: `
+      <MagicMenuProvider id="${menuId}" :options="{ mode: 'dropdown' }">
+        <MagicMenuView id="${ViewId.V0}">
+          <MagicMenuTrigger>
+            <button data-test-id="${TestId.Trigger1}">Menu 1</button>
+          </MagicMenuTrigger>
+          <MagicMenuContent :teleport="{ disabled: true }">
+            <MagicMenuItem><div data-test-id="${TestId.ItemM1}">M1 Item</div></MagicMenuItem>
+          </MagicMenuContent>
+        </MagicMenuView>
+        <MagicMenuView id="${ViewId.V1}">
+          <MagicMenuTrigger>
+            <button data-test-id="${TestId.Trigger2}">Menu 2</button>
+          </MagicMenuTrigger>
+          <MagicMenuContent :teleport="{ disabled: true }">
+            <MagicMenuItem><div data-test-id="${TestId.ItemM2}">M2 Item</div></MagicMenuItem>
+          </MagicMenuContent>
+        </MagicMenuView>
+      </MagicMenuProvider>
+    `,
+  })
+}
+
 function createNestedDropdown(menuId: MenuId) {
   return defineComponent({
     components: {
@@ -146,6 +178,28 @@ describe('MagicMenu - Interactions', () => {
       await nextTick()
 
       expect(trigger!.getAttribute('data-active')).toBe('true')
+    })
+
+    it('clicking another trigger switches to its view', async () => {
+      const screen = render(createSiblingDropdowns(MenuId.IntTriggerSwitch), gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Trigger1).click()
+      await nextTick()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ItemM1}"]`)
+      ).not.toBeNull()
+
+      await screen.getByTestId(TestId.Trigger2).click()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 300))
+
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ItemM2}"]`)
+      ).not.toBeNull()
+      expect(
+        document.querySelector(`[data-test-id="${TestId.ItemM1}"]`)
+      ).toBeNull()
     })
   })
 
