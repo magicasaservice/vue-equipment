@@ -4,7 +4,7 @@
       "surface": {
         "bg": {
           "low": {
-            "$value": "{config.color.palette.stone.solid.3}",
+            "$value": "{config.color.palette.stone.solid.1}",
             "$type": "color"
           },
           "base": {
