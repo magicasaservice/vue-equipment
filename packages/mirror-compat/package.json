@@ -1,6 +1,6 @@
 {
   "name": "mirror-compat",
-  "version": "1.0.0-beta.87",
+  "version": "1.0.0-beta.88",
   "description": "Mirror v1’s styled M* components, rebuilt on Mirror v2’s headless parts and generated utilities, so the demos keep their <m-*> tags",
   "contributors": [
     {
