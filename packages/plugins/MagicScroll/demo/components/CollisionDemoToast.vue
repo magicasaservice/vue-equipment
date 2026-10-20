@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-component-primary-translucent flex w-[264px] flex-col justify-between gap-2 rounded-md p-4 backdrop-blur-xl"
+    class="bg-surface-higher shadow-component-high flex w-[264px] flex-col justify-between gap-2 rounded-md p-4"
   >
     <div class="relative inline-flex gap-2">
       <m-badge size="sm" mode="subtle">ID</m-badge>

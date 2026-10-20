@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem] select-none"
+    class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem] select-none"
   >
     <span class="w-16 text-center">L</span>
     <span class="w-16 text-center">R</span>

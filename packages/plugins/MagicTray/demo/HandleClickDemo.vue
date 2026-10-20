@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center gap-4 select-none">
     <div
-      class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
+      class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
     >
       <span class="w-16 text-center">L</span>
       <span class="w-16 text-center">R</span>
@@ -11,7 +11,7 @@
             <div class="bg-surface-base h-full w-full" />
           </template>
           <template #handle="{ side }">
-            <button class="bg-surface h-full w-full" @click="toggle(side)" />
+            <button class="h-full w-full" @click="toggle(side)" />
           </template>
           <div
             class="text-surface flex h-full w-full items-center justify-center p-8 text-center"

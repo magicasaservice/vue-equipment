@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-surface bg-surface-high relative flex h-15 items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
+    class="border-surface bg-surface-base relative flex h-15 items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
   >
     <magic-menu-provider
       v-if="menu"
@@ -247,7 +247,7 @@ const menu = [
 
 <style>
 .navigation-bar__menu-box {
-  --menu-box-box-shadow: none;
-  --menu-box-color-bg: var(--app-color-surface-bg-high);
+  --m-menu-box-shadow: none;
+  background-color: var(--app-color-surface-bg-base);
 }
 </style>

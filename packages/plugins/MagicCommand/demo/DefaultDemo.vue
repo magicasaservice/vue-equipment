@@ -4,7 +4,7 @@
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
-    <div class="type-surface-body-sm text-surface-subtle">
+    <div class="type-surface-body-sm text-surface-muted">
       <span>or press ⌘+K / ⌃+K</span>
     </div>
 

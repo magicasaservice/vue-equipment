@@ -23,7 +23,7 @@
             :disabled="cookie.optional === false"
             :label="cookie.title"
           />
-          <div class="type-surface-caption text-surface-subtle pl-8">
+          <div class="type-surface-caption text-surface-muted pl-8">
             {{ cookie.text }}
           </div>
         </magic-cookie-demo-item>

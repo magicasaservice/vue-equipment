@@ -8,12 +8,12 @@
       <magic-menu-trigger
         class="border-surface flex h-36 w-full items-center justify-center rounded-lg border-2 border-dashed"
       >
-        <span class="type-control-text-sm text-surface-subtle">
+        <span class="type-control-text-sm text-surface-muted">
           Right Click
         </span>
       </magic-menu-trigger>
       <magic-menu-content>
-        <div class="bg-surface-high w-[220px] rounded-2xl p-1 text-black">
+        <div class="bg-surface-base w-[220px] rounded-2xl p-1">
           <nested-demo-menu
             v-for="(item, itemIndex) in menu.items"
             :key="itemIndex"

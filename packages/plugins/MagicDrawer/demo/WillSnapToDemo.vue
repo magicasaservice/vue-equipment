@@ -5,7 +5,7 @@
     <div
       class="bg-surface-low text-surface w-120 max-w-full rounded-[0.25rem] p-4 font-mono text-sm"
     >
-      <div class="text-surface-subtle mb-3 text-xs tracking-widest uppercase">
+      <div class="text-surface-muted mb-3 text-xs tracking-widest uppercase">
         snap points
       </div>
       <div class="mb-4 flex justify-between">
@@ -15,11 +15,11 @@
           class="flex flex-col items-center gap-2"
         >
           <div class="h-2 w-2 rounded-full" :class="dotClass(point)" />
-          <span class="text-surface-subtle text-xs">{{ point }}</span>
+          <span class="text-surface-muted text-xs">{{ point }}</span>
         </div>
       </div>
 
-      <div class="text-surface-subtle mb-2 text-xs tracking-widest uppercase">
+      <div class="text-surface-muted mb-2 text-xs tracking-widest uppercase">
         willSnapTo events
       </div>
       <div class="flex flex-col gap-1.5">
@@ -27,12 +27,12 @@
           <div
             v-for="(entry, i) in log"
             :key="i"
-            :class="i === 0 ? 'text-surface' : 'text-surface-subtle'"
+            :class="i === 0 ? 'text-surface' : 'text-surface-muted'"
           >
             {{ entry.snapPoint }}
           </div>
         </template>
-        <span v-else class="text-surface-subtle">—</span>
+        <span v-else class="text-surface-muted">—</span>
       </div>
     </div>
 

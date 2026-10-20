@@ -11,7 +11,7 @@
       >
         <div class="flex h-full w-full px-8 pt-8 pb-6">
           <div class="flex flex-col items-center gap-4">
-            <h2 class="text-surface-subtle type-surface-callout-md">About</h2>
+            <h2 class="text-surface-muted type-surface-callout-md">About</h2>
             <p class="type-surface-title-md text-center">{{ about }}</p>
           </div>
           <div class="absolute right-0 bottom-2 left-0 flex justify-center">

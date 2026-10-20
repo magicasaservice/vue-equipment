@@ -56,6 +56,6 @@ const mappedPercentage = computed(() => {
 
 <style>
 [data-id='magic-pie-default-demo'] {
-  --magic-pie-background: var(--app-color-surface-high);
+  --magic-pie-background: var(--app-color-surface-bg-base);
 }
 </style>
