@@ -12,11 +12,9 @@ export default {
   github: {
     release: true,
     autoGenerate: true,
-    preRelease: true, // TODO: Remove this for the stable release
   },
   npm: {
     allowSameVersion: true,
-    tag: ['beta'], // TODO: Remove this for the stable release
   },
   plugins: {
     '@release-it/bumper': {
