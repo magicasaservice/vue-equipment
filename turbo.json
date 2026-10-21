@@ -53,7 +53,12 @@
     },
     "nuxt#build": {
       "outputs": ["$TURBO_ROOT$/dist/nuxt/**"],
-      "dependsOn": ["test", "composables#build", "plugins#build"]
+      "dependsOn": [
+        "test",
+        "metadata#update",
+        "composables#build",
+        "plugins#build"
+      ]
     },
     "metadata#update": {
       "cache": false
