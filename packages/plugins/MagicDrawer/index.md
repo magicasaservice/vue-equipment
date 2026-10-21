@@ -117,7 +117,7 @@ If you have installed the drawer as a Nuxt module, the composable will be auto-i
 
 ## Peer Dependencies
 
-If you haven't installed the required peer dependencies automatically, you'll need to install the following packages manually.
+MagicDrawer relies on the following optional peer dependencies in addition to the [core peer dependencies](/overview/getting-started#core). Package managers don’t install optional peer dependencies automatically, so add them to your project.
 
 ::docs-table
 ---
@@ -125,15 +125,7 @@ columns:
   - label: Package
 rows:
   - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-  - items:
-      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-  - items:
-      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-  - items:
       - label: '[@vueuse/integrations](https://www.npmjs.com/package/@vueuse/integrations)'
-  - items:
-      - label: '[defu](https://www.npmjs.com/package/defu)'
   - items:
       - label: '[focus-trap](https://www.npmjs.com/package/focus-trap)'
   - items:
@@ -143,7 +135,7 @@ rows:
 
 ### Installation
 
-::package-install{name="@nuxt/kit @maas/vue-primitive @vueuse/core @vueuse/integrations defu focus-trap wheel-gestures"}
+::package-install{name="@vueuse/integrations focus-trap wheel-gestures"}
 ::
 
 ## API Reference

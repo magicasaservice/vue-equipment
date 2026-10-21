@@ -81,7 +81,7 @@ If you have installed the accordion as a Nuxt module, the composable will be aut
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
+MagicAccordion relies on the following optional peer dependencies in addition to the [core peer dependencies](/overview/getting-started#core). Package managers don’t install optional peer dependencies automatically, so add them to your project.
 
 ::docs-table
 ---
@@ -89,19 +89,13 @@ columns:
   - label: Package
 rows:
   - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-  - items:
       - label: '[@maas/vue-autosize](https://www.npmjs.com/package/@maas/vue-autosize)'
-  - items:
-      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-  - items:
-      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
 ---
 ::
 
 ### Installation
 
-::package-install{name="@nuxt/kit @maas/vue-autosize @maas/vue-primitive @vueuse/core"}
+::package-install{name="@maas/vue-autosize"}
 ::
 
 ## API Reference

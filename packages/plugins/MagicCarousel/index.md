@@ -81,28 +81,7 @@ If you have installed the carousel as a Nuxt module, the composable will be auto
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
-
-::docs-table
----
-columns:
-  - label: Package
-rows:
-  - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-  - items:
-      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-  - items:
-      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-  - items:
-      - label: '[defu](https://www.npmjs.com/package/defu)'
----
-::
-
-### Installation
-
-::package-install{name="@nuxt/kit @maas/vue-primitive @vueuse/core defu"}
-::
+MagicCarousel has no optional peer dependencies. It only relies on the [core peer dependencies](/overview/getting-started#core), which npm, pnpm and bun install automatically.
 
 ## API Reference
 

@@ -42,7 +42,7 @@ export default defineNuxtConfig({
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
+MagicScroll relies on the following optional peer dependencies in addition to the [core peer dependencies](/overview/getting-started#core). Package managers don’t install optional peer dependencies automatically, so add them to your project.
 
 ::docs-table
 ---
@@ -50,19 +50,13 @@ columns:
   - label: Package
 rows:
   - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-  - items:
-      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-  - items:
-      - label: '[defu](https://www.npmjs.com/package/defu)'
-  - items:
       - label: '[motion](https://www.npmjs.com/package/motion)'
 ---
 ::
 
 ### Installation
 
-::package-install{name="@nuxt/kit @vueuse/core defu motion"}
+::package-install{name="motion"}
 ::
 
 ## API Reference

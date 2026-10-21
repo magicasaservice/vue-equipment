@@ -85,6 +85,10 @@ onMounted(() => {
 If you have installed the pie as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
 ::
 
+## Peer Dependencies
+
+MagicPie has no optional peer dependencies. It only relies on the [core peer dependencies](/overview/getting-started#core), which npm, pnpm and bun install automatically.
+
 ## API Reference
 
 ### Props

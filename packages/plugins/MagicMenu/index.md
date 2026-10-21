@@ -83,7 +83,7 @@ If you have installed the component as a Nuxt module, the composable will be aut
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
+MagicMenu relies on the following optional peer dependencies in addition to the [core peer dependencies](/overview/getting-started#core). Package managers don’t install optional peer dependencies automatically, so add them to your project.
 
 ::docs-table
 ---
@@ -92,20 +92,12 @@ columns:
 rows:
   - items:
       - label: '[@floating-ui/vue](https://www.npmjs.com/package/@floating-ui/vue)'
-  - items:
-      - label: '[@maas/vue-primitive](https://www.npmjs.com/package/@maas/vue-primitive)'
-  - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-  - items:
-      - label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-  - items:
-      - label: '[defu](https://www.npmjs.com/package/defu)'
 ---
 ::
 
 ### Installation
 
-::package-install{name="@floating-ui/vue @maas/vue-primitive @nuxt/kit @vueuse/core defu"}
+::package-install{name="@floating-ui/vue"}
 ::
 
 ## API Reference

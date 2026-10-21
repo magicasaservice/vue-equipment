@@ -61,22 +61,7 @@ If you have installed the plugin as a Nuxt module, the composable will be auto-i
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
-
-::docs-table
----
-columns:
-  - label: Package
-rows:
-  - items:
-      - label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
----
-::
-
-### Installation
-
-::package-install{name="@nuxt/kit"}
-::
+MagicError has no optional peer dependencies. It only relies on the [core peer dependencies](/overview/getting-started#core), which npm, pnpm and bun install automatically.
 
 ## Typescript
 
