@@ -55,9 +55,9 @@
       "types": "./dist/nuxt/types.d.mts",
       "import": "./dist/nuxt/module.mjs"
     },
-    "./composables": {
-      "types": "./dist/composables/index.d.ts",
-      "import": "./dist/composables/index.js"
+    "./composables/*": {
+      "types": "./dist/composables/*/index.d.ts",
+      "import": "./dist/composables/*/index.js"
     },
     "./plugins/*": {
       "types": "./dist/plugins/*/index.d.ts",
