@@ -1,5 +1,10 @@
 import { computed, nextTick, toValue } from 'vue'
-import { clampValue, interpolate } from '@maas/vue-equipment/utils'
+import {
+  clampValue,
+  interpolate,
+  snapRangeAt,
+  snapTargetAt,
+} from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useTrayUtils } from './useTrayUtils'
 
@@ -29,12 +34,6 @@ type InterpolateDraggedArgs = {
   to: number
   duration?: number
   easing?: (t: number) => number
-}
-
-type FindClosestSnapPointArgs = {
-  side: MagicTraySide
-  value: number
-  direction?: 'below' | 'above' | 'absolute'
 }
 
 type MappedSnapRange = {
@@ -154,13 +153,8 @@ export function useTraySnap(args: UseTraySnapArgs) {
   }
 
   // The range a pixel inset lies within, ends included
-  function rangeAt(
-    side: MagicTraySide,
-    inset: number
-  ): MappedSnapRange | undefined {
-    return mappedRanges(side).find(
-      (mapped) => inset >= mapped.min && inset <= mapped.max
-    )
+  function rangeAt(side: MagicTraySide, inset: number) {
+    return snapRangeAt({ ranges: mappedRanges(side), position: inset })
   }
 
   // The snap point a pixel inset resolves to: a configured point, or a value
@@ -223,52 +217,16 @@ export function useTraySnap(args: UseTraySnapArgs) {
     )
   }
 
-  function findClosestNumber(
-    value: number,
-    numbers: number[],
-    direction: 'below' | 'above' | 'absolute'
-  ) {
-    if (!numbers.length) {
-      return undefined
-    }
+  // Where a pixel inset lands without a drag: in place inside a range,
+  // otherwise at the closest snap point
+  function findSnapTarget(side: MagicTraySide, inset: number) {
+    const target = snapTargetAt({
+      points: mappedSnapPoints(side),
+      ranges: mappedRanges(side),
+      value: inset,
+    })
 
-    let filtered = numbers
-
-    switch (direction) {
-      case 'above':
-        filtered = numbers.filter((num) => num > value)
-        break
-      case 'below':
-        filtered = numbers.filter((num) => num < value)
-        break
-    }
-
-    if (filtered.length === 0) {
-      switch (direction) {
-        case 'above':
-          return Math.max(...numbers)
-        case 'below':
-          return Math.min(...numbers)
-        default:
-          return undefined
-      }
-    }
-
-    return filtered.reduce((closest, current) =>
-      Math.abs(current - value) < Math.abs(closest - value) ? current : closest
-    )
-  }
-
-  // A value inside a range is its own closest point; a directional search
-  // treats each range as its two ends
-  function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
-    const { side, value, direction = 'absolute' } = args
-
-    if (direction === 'absolute' && rangeAt(side, value)) {
-      return restingInset(side, value)
-    }
-
-    return findClosestNumber(value, mappedSnapPoints(side), direction)
+    return target === undefined ? undefined : restingInset(side, target)
   }
 
   function interpolateDragged(args: InterpolateDraggedArgs) {
@@ -337,7 +295,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
       return
     }
 
-    const closest = findClosestSnapPoint({ side, value: mapped }) ?? mapped
+    const closest = findSnapTarget(side, mapped) ?? mapped
 
     // Commit first, as an interpolation that is already in place emits afterSnap
     // right away
@@ -358,11 +316,12 @@ export function useTraySnap(args: UseTraySnapArgs) {
     maxInset,
     mapSnapPoint,
     mappedSnapPoints,
+    mappedRanges,
     rangeAt,
     snapPointAt,
     restingInset,
     isSnapTarget,
-    findClosestSnapPoint,
+    findSnapTarget,
     interpolateDragged,
     snapTo,
   }

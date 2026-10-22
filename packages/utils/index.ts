@@ -16,6 +16,7 @@ export * from './src/functions/scrollbarGutterSupport'
 export * from './src/functions/scrollbarWidth'
 export * from './src/functions/selectionLock'
 export * from './src/functions/slugify'
+export * from './src/functions/snapTarget'
 export * from './src/functions/uniq'
 
 export type * from './src/types'

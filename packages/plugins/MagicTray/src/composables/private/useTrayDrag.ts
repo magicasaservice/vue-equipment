@@ -15,7 +15,6 @@ import {
 } from '@vueuse/core'
 import {
   cancelEdgeNavigation,
-  clampValue,
   convertToPixels,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
@@ -23,6 +22,8 @@ import {
   isIOS,
   isWithinRange,
   lockSelection,
+  snapCommit,
+  snapRelease,
 } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -33,6 +34,7 @@ import { useTrayState } from './useTrayState'
 import type { MaybeRef, Ref } from 'vue'
 import type { UseResizeObserverReturn } from '@vueuse/core'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+import type { SnapDrag } from '@maas/vue-equipment/utils'
 
 import type { MagicTraySide, MagicTraySnapRange } from '../../types'
 
@@ -63,11 +65,12 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     maxInset,
     mapSnapPoint,
     mappedSnapPoints,
+    mappedRanges,
     rangeAt,
     snapPointAt,
     restingInset,
     isSnapTarget,
-    findClosestSnapPoint,
+    findSnapTarget,
     interpolateDragged,
     snapTo,
   } = useTraySnap({ id, state })
@@ -132,68 +135,28 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     () => state.options.preventEdgeNavigation
   )
 
-  // For a drag that started inside a range, the pointer clamped to that
-  // range, so travel within the range never counts toward a snap
-  function clampToStartRange(side: MagicTraySide) {
-    const range = rangeAt(side, state.snapped[side])
-
-    return range
-      ? clampValue(state.dragged[side], range.min, range.max)
-      : undefined
-  }
-
-  // Where the drag measures its distance from
-  function dragOrigin(side: MagicTraySide) {
-    return clampToStartRange(side) ?? state.lastDragged[side]
-  }
-
-  // Where a drag past the threshold commits to: the closest point in the drag
-  // direction, or in 'step' mode the next one from where the side rests
-  function committedTarget(side: MagicTraySide, direction: 'below' | 'above') {
-    const value =
-      snapMode.value === 'step' ? state.snapped[side] : state.dragged[side]
-
-    return findClosestSnapPoint({ side, value, direction })
-  }
-
-  // A release inside a range rests in place, unless flicked. In 'step' mode
-  // only inside the range the side rests in, or the one whose end is the
-  // next step.
-  function restsInPlace(side: MagicTraySide) {
-    const dragged = state.dragged[side]
-    const range = rangeAt(side, dragged)
-
-    if (!range || flicked) {
-      return false
+  // A side’s drag along its axis, for the shared snap rules
+  function snapDrag(side: MagicTraySide): SnapDrag {
+    return {
+      points: mappedSnapPoints(side),
+      ranges: mappedRanges(side),
+      mode: snapMode.value,
+      rest: state.snapped[side],
+      start: state.lastDragged[side],
+      position: state.dragged[side],
     }
-
-    const origin = state.snapped[side]
-    const startsInside = origin >= range.min && origin <= range.max
-
-    if (snapMode.value !== 'step' || startsInside) {
-      return true
-    }
-
-    const direction = dragged < origin ? 'below' : 'above'
-    const next = findClosestSnapPoint({ side, value: origin, direction })
-
-    return next === (direction === 'above' ? range.min : range.max)
   }
 
-  // Where a release comes to rest: in place inside a range, at the committed
-  // target, or back where the drag started
+  // Where a release comes to rest, rounded like any resting value
   function settleTarget(side: MagicTraySide) {
-    // A tap never rests inside a range, or a handle under a magnetic pull
-    // would keep the pulled inset
-    if (!hasDragged.value) {
-      return state.interpolateTo ?? state.snapped[side]
-    }
+    const target = snapRelease({
+      ...snapDrag(side),
+      committed: state.interpolateTo,
+      flicked,
+      tapped: !hasDragged.value,
+    })
 
-    if (restsInPlace(side)) {
-      return restingInset(side, state.dragged[side])
-    }
-
-    return state.interpolateTo ?? clampToStartRange(side) ?? state.snapped[side]
+    return restingInset(side, target)
   }
 
   function isSnapDrag(side: MagicTraySide) {
@@ -370,7 +333,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // which is what lets a genuine tap on the handle pass its click through.
   function snapDragged(side: MagicTraySide, coord: number) {
     const inset = computeInset(side, coord)
-    const target = findClosestSnapPoint({ side, value: inset })
+    const target = findSnapTarget(side, inset)
 
     if (target === undefined || target === state.snapped[side]) {
       return
@@ -417,18 +380,14 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   function checkPosition(side: MagicTraySide) {
-    const delta = state.dragged[side] - dragOrigin(side)
     const direction = state.relDirection[side]
 
-    if (Math.abs(delta) > toValue(threshold).distance) {
-      // Snap to the next point in the direction the edge was dragged
-      state.interpolateTo = committedTarget(side, delta < 0 ? 'below' : 'above')
-    } else if (flicked && direction !== 'absolute') {
-      state.interpolateTo = committedTarget(side, direction)
-    } else {
-      // Back within the threshold without a flick, so a release reverts
-      state.interpolateTo = undefined
-    }
+    state.interpolateTo = snapCommit({
+      ...snapDrag(side),
+      distance: toValue(threshold).distance,
+      flicked,
+      flickDirection: direction === 'absolute' ? undefined : direction,
+    })
   }
 
   function emitWillSnapTo(side: MagicTraySide) {
