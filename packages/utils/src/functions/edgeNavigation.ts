@@ -42,9 +42,10 @@ export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
   }
 
   const touch = event.touches[0]
-  const target = event.target
+  const target =
+    event.target instanceof Element ? closestHTMLElement(event.target) : null
 
-  if (!touch || !(target instanceof HTMLElement)) {
+  if (!touch || !target) {
     return false
   }
 
@@ -66,6 +67,22 @@ export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
   restoreClick({ target, touch, slop })
 
   return true
+}
+
+// An SVG element has no click(), so a touch on an icon restores the click on
+// the HTML element that holds it
+function closestHTMLElement(element: Element) {
+  for (
+    let current: Element | null = element;
+    current;
+    current = current.parentElement
+  ) {
+    if (current instanceof HTMLElement) {
+      return current
+    }
+  }
+
+  return null
 }
 
 // Canceling touchstart swallows the tap’s synthesized click; a touch that

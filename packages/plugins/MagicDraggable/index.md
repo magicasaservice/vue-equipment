@@ -257,7 +257,7 @@ rows:
 
 ## Caveats
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. A draggable resting near either edge would lose its drag to that gesture, so it cancels `touchstart` within 44px of the edge, which is the one signal WebKit honors. Canceling also swallows the tap’s synthesized click; the draggable dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. Set `preventEdgeNavigation` to `false` to opt out.
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. A draggable resting near either edge would lose its drag to that gesture, so it cancels `touchstart` within 44px of the edge, which is the one signal WebKit honors. Canceling also swallows the tap’s synthesized click; the draggable dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. A touch on an SVG icon counts as well, and its replacement click goes to the HTML element that holds the icon. Set `preventEdgeNavigation` to `false` to opt out.
 
 ## Examples
 

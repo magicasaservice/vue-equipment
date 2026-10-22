@@ -7,6 +7,7 @@ import {
 const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
 const IPADOS_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6)'
 const ANDROID_UA = 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36'
+const SVG_NS = 'http://www.w3.org/2000/svg'
 
 interface FakeTouchEventArgs {
   target?: EventTarget
@@ -128,6 +129,22 @@ describe('cancelEdgeNavigation', () => {
     expect(cancelEdgeNavigation({ event, exclude: [] })).toBe(true)
   })
 
+  it('cancels a touch on an SVG element near the edge', () => {
+    const icon = document.createElementNS(SVG_NS, 'svg')
+    document.createElement('button').append(icon)
+
+    const event = fakeTouchEvent({ target: icon })
+    expect(cancelEdgeNavigation({ event })).toBe(true)
+    expect(event.preventDefault).toHaveBeenCalled()
+  })
+
+  it('ignores a touch on an SVG element without an HTML element around it', () => {
+    const event = fakeTouchEvent({
+      target: document.createElementNS(SVG_NS, 'svg'),
+    })
+    expect(cancelEdgeNavigation({ event })).toBe(false)
+  })
+
   it('ignores every touch on platforms without edge navigation gestures', () => {
     vi.stubGlobal('navigator', { userAgent: ANDROID_UA, maxTouchPoints: 5 })
     const event = fakeTouchEvent()
@@ -140,6 +157,24 @@ describe('cancelEdgeNavigation', () => {
     target.addEventListener('click', onClick)
 
     const event = fakeTouchEvent({ target })
+    cancelEdgeNavigation({ event })
+
+    dispatchFakeTouch('touchend', [{ identifier: 0, clientX: 14, clientY: 96 }])
+    vi.runAllTimers()
+
+    expect(onClick).toHaveBeenCalledOnce()
+  })
+
+  it('restores the click of an SVG touch on the HTML element that holds it', () => {
+    const target = document.createElement('button')
+    const icon = document.createElementNS(SVG_NS, 'svg')
+    const path = document.createElementNS(SVG_NS, 'path')
+    icon.append(path)
+    target.append(icon)
+    const onClick = vi.fn()
+    target.addEventListener('click', onClick)
+
+    const event = fakeTouchEvent({ target: path })
     cancelEdgeNavigation({ event })
 
     dispatchFakeTouch('touchend', [{ identifier: 0, clientX: 14, clientY: 96 }])
