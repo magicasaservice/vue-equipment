@@ -350,5 +350,53 @@ describe('MagicDrawer - Interactions', () => {
         .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('true')
     })
+
+    it('dragging back within the threshold reverts the drawer', async () => {
+      const screen = render(
+        createDrawer(DrawerId.InteractRevert, {
+          snapPoints: ['100px', 1],
+          threshold: { distance: 8, momentum: 99999 },
+        })
+      )
+      await open(screen)
+
+      const drag = document.querySelector(
+        '.magic-drawer-content__drag'
+      ) as HTMLElement
+      const before = drag.getAttribute('style')
+
+      drag.dispatchEvent(
+        new PointerEvent('pointerdown', {
+          clientX: 200,
+          clientY: 300,
+          bubbles: true,
+          pointerId: 1,
+          isPrimary: true,
+        })
+      )
+      for (const clientY of [360, 304]) {
+        document.dispatchEvent(
+          new PointerEvent('pointermove', {
+            clientX: 200,
+            clientY,
+            bubbles: true,
+            pointerId: 1,
+            isPrimary: true,
+          })
+        )
+      }
+      document.dispatchEvent(
+        new PointerEvent('pointerup', {
+          clientX: 200,
+          clientY: 304,
+          bubbles: true,
+          pointerId: 1,
+          isPrimary: true,
+        })
+      )
+      await new Promise((r) => setTimeout(r, 400))
+
+      expect(drag.getAttribute('style')).toBe(before)
+    })
   })
 })

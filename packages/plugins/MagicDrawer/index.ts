@@ -10,6 +10,8 @@ import type { App, Plugin } from 'vue'
 import type {
   MagicDrawerOptions,
   MagicDrawerSnapPoint,
+  MagicDrawerSnapRange,
+  MagicDrawerSnapEntry,
   MagicDrawerWillSnapToPayload,
 } from './src/types/index'
 
@@ -37,5 +39,7 @@ export {
 export type {
   MagicDrawerOptions,
   MagicDrawerSnapPoint,
+  MagicDrawerSnapRange,
+  MagicDrawerSnapEntry,
   MagicDrawerWillSnapToPayload,
 }

@@ -12,7 +12,7 @@ export function useMagicDrawer(
 ) {
   const { initializeState } = useDrawerState(toValue(id))
   const state = initializeState(options)
-  const { progress, active } = toRefs(state)
+  const { progress, active, activeSnapPoint } = toRefs(state)
   const emitter = useMagicEmitter()
 
   // Public state
@@ -38,6 +38,7 @@ export function useMagicDrawer(
   return {
     isActive,
     progress,
+    activeSnapPoint,
     state,
     open,
     close,

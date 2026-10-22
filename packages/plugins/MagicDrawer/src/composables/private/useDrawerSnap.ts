@@ -1,12 +1,19 @@
 import { computed, nextTick, shallowRef, toValue } from 'vue'
-import { computedWithControl } from '@vueuse/core'
-import { interpolate, mapValue } from '@maas/vue-equipment/utils'
+import {
+  clampValue,
+  interpolate,
+  mapValue,
+  snapRangeAt,
+  snapTargetAt,
+} from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
+import { useDrawerUtils } from './useDrawerUtils'
 
 import type { MaybeRef, Ref } from 'vue'
 
 import type {
   MagicDrawerSnapPoint,
+  MagicDrawerSnapRange,
   RequiredMagicDrawerOptions,
 } from '../../types'
 
@@ -15,23 +22,12 @@ type UseDrawerSnapArgs = {
   wrapperRect: Ref<DOMRect | undefined>
   draggedY: Ref<number>
   draggedX: Ref<number>
+  activeSnapPoint: Ref<MagicDrawerSnapPoint | undefined>
   position: MaybeRef<RequiredMagicDrawerOptions['position']>
   animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
   snapPoints: MaybeRef<RequiredMagicDrawerOptions['snapPoints']>
   preventDragClose: MaybeRef<RequiredMagicDrawerOptions['preventDragClose']>
   overshoot: MaybeRef<number>
-}
-
-type FindClosestSnapPointArgs = {
-  draggedY: MaybeRef<number>
-  draggedX: MaybeRef<number>
-  direction?: 'below' | 'above' | 'absolute'
-}
-
-type FindClosestNumberArgs = {
-  number: number
-  numbers: number[]
-  direction: 'below' | 'above' | 'absolute'
 }
 
 type SnapToArgs = {
@@ -46,9 +42,22 @@ type InterpolateDraggedArgs = {
   easing?: (t: number) => number
 }
 
-// Two snap points closer than this in pixels count as the same, to absorb
-// float noise between units
-const SNAP_POINT_TOLERANCE = 0.01
+type MappedSnapRange = {
+  min: number
+  max: number
+  range: MagicDrawerSnapRange
+}
+
+// How close a pixel offset has to be to a snap point to count as it
+const SNAP_TOLERANCE = 0.01
+
+function isMapped(value: number | undefined): value is number {
+  return value !== undefined && !Number.isNaN(value)
+}
+
+function roundDecimal(value: number) {
+  return Math.round(value * 10000) / 10000
+}
 
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
   const {
@@ -60,64 +69,29 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     overshoot,
     draggedY,
     draggedX,
+    activeSnapPoint,
     preventDragClose,
   } = args
 
+  const { isSnapRange, flattenSnapPoints } = useDrawerUtils()
+  const emitter = useMagicEmitter()
+
   // Private state
-  const mappedSnapPoints = computedWithControl(
-    () => toValue(wrapperRect),
-    () => {
-      // Add 0 to the snap points, if preventDragClose is false
-      const extended = toValue(preventDragClose)
-        ? toValue(snapPoints)
-        : [...toValue(snapPoints), 0]
+  const isVertical = computed(() => {
+    const side = toValue(position)
+    return side === 'top' || side === 'bottom'
+  })
 
-      // Map snap points
-      const mapped = extended.map((snapPoint) => {
-        return mapSnapPoint(snapPoint)
-      })
-
-      // Filter out undefined values
-      // Keep 0 as a valid snap point
-      const filtered: number[] = mapped
-        .filter(
-          (snapPoint): snapPoint is number => !!snapPoint || snapPoint === 0
-        )
-        .sort((a, b) => a - b)
-
-      return filtered
-    }
-  )
-
-  const snapPointsMap = computedWithControl(
-    () => toValue(snapPoints),
-    () => {
-      // Add 0 to the snap points, if preventDragClose is false
-      const extended = toValue(preventDragClose)
-        ? toValue(snapPoints)
-        : [...toValue(snapPoints), 0]
-
-      const mapped = extended.reduce(
-        (acc, current) => {
-          const key = mapSnapPoint(current)
-          if (key || key === 0) {
-            acc[key] = current
-          }
-          return acc
-        },
-        {} as Record<number, MagicDrawerSnapPoint>
-      )
-
-      return mapped
-    }
-  )
+  // Snap points and range ends, plus the closed position unless dragging
+  // can’t close the drawer
+  const configuredPoints = computed(() => {
+    const flattened = flattenSnapPoints(toValue(snapPoints))
+    return toValue(preventDragClose) ? flattened : [...flattened, 0]
+  })
 
   // Public state
   const snappedY = shallowRef(0)
   const snappedX = shallowRef(0)
-  const activeSnapPoint = shallowRef<MagicDrawerSnapPoint | undefined>(
-    undefined
-  )
 
   const drawerHeight = computed(() => {
     const rect = toValue(wrapperRect)
@@ -135,46 +109,29 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     return rect.width - toValue(overshoot)
   })
 
+  // Snap points and range ends mapped to pixels, deduplicated and sorted
+  const mappedSnapPoints = computed(() => {
+    const mapped = configuredPoints.value.map(mapSnapPoint).filter(isMapped)
+    return [...new Set(mapped)].sort((a, b) => a - b)
+  })
+
+  // Configured ranges mapped to pixels, ends ordered
+  const mappedRanges = computed<Array<MappedSnapRange>>(() =>
+    toValue(snapPoints)
+      .filter(isSnapRange)
+      .flatMap((range) => {
+        const min = mapSnapPoint(range.min)
+        const max = mapSnapPoint(range.max)
+
+        if (!isMapped(min) || !isMapped(max)) {
+          return []
+        }
+
+        return [{ min: Math.min(min, max), max: Math.max(min, max), range }]
+      })
+  )
+
   // Private functions
-  const emitter = useMagicEmitter()
-
-  function findClosestNumber(args: FindClosestNumberArgs) {
-    const { number, numbers, direction } = args
-    let filtered = numbers
-
-    if (!numbers.length) {
-      return undefined
-    }
-
-    switch (direction) {
-      case 'above':
-        filtered = numbers.filter((num) => num > number)
-        break
-      case 'below':
-        filtered = numbers.filter((num) => num < number)
-        break
-    }
-
-    if (filtered.length === 0) {
-      switch (direction) {
-        case 'above':
-          return Math.max(...numbers)
-        case 'below':
-          return Math.min(...numbers)
-        default:
-          return undefined
-      }
-    }
-
-    const closestNumber = filtered.reduce((closest, current) =>
-      Math.abs(current - number) < Math.abs(closest - number)
-        ? current
-        : closest
-    )
-
-    return closestNumber
-  }
-
   function mapSnapPoint(snapPoint: MagicDrawerSnapPoint) {
     if (typeof snapPoint === 'number') {
       // Reverse snap point percentages,
@@ -276,89 +233,167 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     }
   }
 
-  // The configured snap point that maps to a pixel value
-  function findSnapPointAt(value: number) {
-    return toValue(snapPoints).find((snapPoint) => {
-      const mapped = mapSnapPoint(snapPoint)
+  // A decimal snap point for a pixel offset, the reverse of mapSnapPoint
+  // between 0 and 1
+  function decimalAt(offset: number) {
+    const rect = toValue(wrapperRect)
 
-      return (
-        mapped !== undefined && Math.abs(mapped - value) < SNAP_POINT_TOLERANCE
-      )
+    if (!rect) {
+      return 0
+    }
+
+    switch (position) {
+      case 'bottom':
+        return 1 - (offset + rect.top) / window.innerHeight
+      case 'top':
+        return 1 - (offset + rect.bottom) / window.innerHeight
+      case 'right':
+        return 1 - (offset + rect.left) / window.innerWidth
+      case 'left':
+        return 1 - (offset + rect.right) / window.innerWidth
+      default:
+        return 0
+    }
+  }
+
+  // A pixel snap point for a pixel offset, the reverse of mapSnapPoint
+  function pixelsAt(offset: number) {
+    switch (position) {
+      case 'bottom':
+        return drawerHeight.value - offset
+      case 'top':
+        return drawerHeight.value + offset
+      case 'right':
+        return drawerWidth.value - offset
+      case 'left':
+        return drawerWidth.value + offset
+      default:
+        return offset
+    }
+  }
+
+  // The configured snap point a pixel offset maps to, if any
+  function configuredPointAt(offset: number) {
+    return configuredPoints.value.find((snapPoint) => {
+      const mapped = mapSnapPoint(snapPoint)
+      return isMapped(mapped) && Math.abs(mapped - offset) < SNAP_TOLERANCE
     })
+  }
+
+  function draggedOnAxis() {
+    return isVertical.value ? draggedY.value : draggedX.value
+  }
+
+  function setDraggedOnAxis(value: number) {
+    if (isVertical.value) {
+      draggedY.value = value
+    } else {
+      draggedX.value = value
+    }
+  }
+
+  function setSnappedOnAxis(value: number) {
+    if (isVertical.value) {
+      snappedY.value = value
+    } else {
+      snappedX.value = value
+    }
   }
 
   // Public functions
 
-  // The configured snap point a snap point input stands for, written the
-  // same way or in another unit that maps to the same position
-  function findConfiguredSnapPoint(snapPoint: MagicDrawerSnapPoint) {
-    if (toValue(snapPoints).includes(snapPoint)) {
-      return snapPoint
+  // The range a pixel offset lies within, ends included
+  function rangeAt(offset: number) {
+    return snapRangeAt({ ranges: mappedRanges.value, position: offset })
+  }
+
+  // The snap point a pixel offset resolves to: a configured point, or a
+  // value inside a range, rounded to four decimals when both of its ends are
+  // decimals and to whole pixels otherwise
+  function snapPointAt(offset: number): MagicDrawerSnapPoint | undefined {
+    const configured = configuredPointAt(offset)
+
+    if (configured !== undefined) {
+      return configured
+    }
+
+    const mapped = rangeAt(offset)
+
+    if (!mapped) {
+      return undefined
+    }
+
+    const { min, max } = mapped.range
+
+    return typeof min === 'number' && typeof max === 'number'
+      ? roundDecimal(decimalAt(offset))
+      : `${Math.round(pixelsAt(offset))}px`
+  }
+
+  // The offset a value inside a range rests at, so it matches the rounded
+  // snap point it reports
+  function restingOffset(offset: number) {
+    const range = rangeAt(offset)
+    const snapPoint = snapPointAt(offset)
+
+    if (!range || snapPoint === undefined) {
+      return offset
     }
 
     const mapped = mapSnapPoint(snapPoint)
 
-    return mapped === undefined ? undefined : findSnapPointAt(mapped)
+    return isMapped(mapped) ? clampValue(mapped, range.min, range.max) : offset
+  }
+
+  // Whether a snap point maps onto a configured point or into a range
+  function isSnapTarget(snapPoint: MagicDrawerSnapPoint) {
+    const mapped = mapSnapPoint(snapPoint)
+
+    if (!isMapped(mapped)) {
+      return false
+    }
+
+    return (
+      !!rangeAt(mapped) ||
+      mappedSnapPoints.value.some(
+        (point) => Math.abs(point - mapped) < SNAP_TOLERANCE
+      )
+    )
+  }
+
+  // Where a pixel offset lands without a drag: in place inside a range,
+  // otherwise at the closest snap point
+  function findSnapTarget(offset: number) {
+    const target = snapTargetAt({
+      points: mappedSnapPoints.value,
+      ranges: mappedRanges.value,
+      value: offset,
+    })
+
+    return target === undefined ? undefined : restingOffset(target)
   }
 
   async function snapTo(args: SnapToArgs) {
-    const { snapPoint, interpolate, duration } = args
+    const { snapPoint, interpolate: shouldInterpolate, duration } = args
     await nextTick()
 
-    switch (position) {
-      case 'top':
-      case 'bottom': {
-        const mappedSnapPointY = mapSnapPoint(snapPoint)
-        if (!mappedSnapPointY && mappedSnapPointY !== 0) {
-          return
-        }
+    const mapped = mapSnapPoint(snapPoint)
 
-        const closestY =
-          findClosestSnapPoint({
-            draggedX,
-            draggedY: mappedSnapPointY,
-          }) || 0
+    if (!isMapped(mapped)) {
+      return
+    }
 
-        if (interpolate) {
-          interpolateDragged({ to: closestY, duration })
-        } else {
-          draggedY.value = closestY
-        }
+    const closest = findSnapTarget(mapped) ?? 0
 
-        // Save value the drawer will snap to, to check if we should close,
-        // as well as for window resize events
-        snappedY.value = closestY
-        activeSnapPoint.value = findSnapPointAt(closestY) ?? toValue(snapPoint)
+    // Commit first, as an interpolation that is already in place emits
+    // afterSnap right away. Snapped is also read on resize.
+    setSnappedOnAxis(closest)
+    activeSnapPoint.value = snapPointAt(closest) ?? snapPoint
 
-        break
-      }
-
-      case 'left':
-      case 'right': {
-        const mappedSnapPointX = mapSnapPoint(toValue(snapPoint))
-        if (!mappedSnapPointX && mappedSnapPointX !== 0) {
-          return
-        }
-
-        const closestX =
-          findClosestSnapPoint({
-            draggedX: mappedSnapPointX,
-            draggedY,
-          }) || 0
-
-        if (interpolate) {
-          interpolateDragged({ to: closestX, duration })
-        } else {
-          draggedX.value = closestX
-          snappedX.value = closestX
-        }
-
-        // Save value the drawer will snap to, to check if we should close,
-        // as well as for window resize events
-        snappedX.value = closestX
-        activeSnapPoint.value = findSnapPointAt(closestX) ?? toValue(snapPoint)
-        break
-      }
+    if (shouldInterpolate) {
+      interpolateDragged({ to: closest, duration })
+    } else {
+      setDraggedOnAxis(closest)
     }
   }
 
@@ -368,98 +403,48 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       duration = toValue(animation).snap.duration,
       easing = toValue(animation).snap.easing,
     } = args
-    // Find original snap point from map
-    const snapPoint = snapPointsMap.value[to]
 
-    if (!snapPoint && snapPoint !== 0) {
+    const snapPoint = snapPointAt(to)
+
+    if (snapPoint === undefined) {
       return
     }
 
     emitter.emit('beforeSnap', { id: toValue(id), snapPoint })
 
-    switch (position) {
-      case 'bottom':
-      case 'top':
-        interpolate({
-          from: draggedY.value,
-          to,
-          duration,
-          easing,
-          callback: (value: number) => {
-            draggedY.value = value
-            if (draggedY.value === to) {
-              emitter.emit('afterSnap', {
-                id: toValue(id),
-                snapPoint,
-              })
-            }
-          },
-        })
-
-        break
-      case 'right':
-      case 'left':
-        interpolate({
-          from: draggedX.value,
-          to,
-          duration,
-          easing,
-          callback: (value: number) => {
-            draggedX.value = value
-            if (draggedX.value === to) {
-              emitter.emit('afterSnap', {
-                id: toValue(id),
-                snapPoint,
-              })
-            }
-          },
-        })
-
-        break
-    }
-  }
-
-  function findClosestSnapPoint(args: FindClosestSnapPointArgs) {
-    const { draggedY, draggedX, direction = 'absolute' } = args
-
-    let closest: number | undefined = undefined
-
-    switch (position) {
-      case 'bottom':
-      case 'top':
-        if (!!toValue(draggedY) || toValue(draggedY) === 0) {
-          closest = findClosestNumber({
-            number: toValue(draggedY),
-            numbers: mappedSnapPoints.value,
-            direction: direction,
-          })
-        }
-        break
-      case 'right':
-      case 'left':
-        if (!!toValue(draggedX) || toValue(draggedX) === 0) {
-          closest = findClosestNumber({
-            number: toValue(draggedX),
-            numbers: mappedSnapPoints.value,
-            direction: direction,
-          })
-        }
-        break
+    // Already in place, as after a release inside a range; animating from
+    // and to the same value would emit afterSnap on every frame
+    if (draggedOnAxis() === to) {
+      emitter.emit('afterSnap', { id: toValue(id), snapPoint })
+      return
     }
 
-    return closest
+    interpolate({
+      from: draggedOnAxis(),
+      to,
+      duration,
+      easing,
+      callback: (value: number) => {
+        setDraggedOnAxis(value)
+        if (value === to) {
+          emitter.emit('afterSnap', { id: toValue(id), snapPoint })
+        }
+      },
+    })
   }
 
   return {
     snappedY,
     snappedX,
-    activeSnapPoint,
-    snapTo,
-    findConfiguredSnapPoint,
-    findClosestSnapPoint,
-    interpolateDragged,
-    snapPointsMap,
     drawerHeight,
     drawerWidth,
+    mappedSnapPoints,
+    mappedRanges,
+    rangeAt,
+    snapPointAt,
+    restingOffset,
+    isSnapTarget,
+    snapTo,
+    interpolateDragged,
   }
 }

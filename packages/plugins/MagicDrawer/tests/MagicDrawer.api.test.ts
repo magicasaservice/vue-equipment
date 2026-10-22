@@ -102,7 +102,8 @@ function snapPointWarnings(calls: Array<Array<unknown>>) {
   return calls.filter((call) =>
     call.some(
       (arg) =>
-        typeof arg === 'string' && arg.includes('not a configured snap point')
+        typeof arg === 'string' &&
+        arg.includes('neither a snap point nor inside a range')
     )
   )
 }
