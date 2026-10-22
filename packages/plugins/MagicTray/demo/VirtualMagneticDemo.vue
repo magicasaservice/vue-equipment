@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center gap-4 select-none">
+  <div class="flex w-120 max-w-full flex-col gap-4 select-none">
     <div
-      class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
+      class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
     >
       <magic-tray-provider :id="id" :options="options">
         <magic-tray-content
@@ -38,7 +38,7 @@
     </div>
 
     <div
-      class="bg-surface-low text-surface w-120 max-w-full rounded-[0.25rem] p-4 font-mono text-sm"
+      class="bg-surface-low text-surface w-full rounded-[0.25rem] p-4 font-mono text-sm"
     >
       <div class="text-surface-muted mb-3 text-xs tracking-widest uppercase">
         magnet event

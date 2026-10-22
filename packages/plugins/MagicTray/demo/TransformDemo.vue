@@ -8,7 +8,8 @@
       },
       threshold: { distance: 32 },
     }"
-    style="--magic-tray-radius: 0.75rem"
+    style="--magic-tray-radius: 0.75rem; --magic-tray-width: 100%"
+    class="max-w-full"
   >
     <template #background>
       <div class="bg-surface-base h-full w-full" />

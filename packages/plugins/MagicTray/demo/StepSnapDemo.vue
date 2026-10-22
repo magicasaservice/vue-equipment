@@ -6,7 +6,8 @@
       snap: { mode: 'step' },
       threshold: { distance: 32 },
     }"
-    style="--magic-tray-radius: 0.5rem"
+    style="--magic-tray-radius: 0.5rem; --magic-tray-width: 100%"
+    class="max-w-full"
   >
     <template #background>
       <div class="bg-surface-base h-full w-full" />
