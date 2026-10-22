@@ -144,6 +144,37 @@ describe('MagicDrawer - Edge Cases', () => {
         .toHaveTextContent('false')
     })
 
+    it('an initial snap point that is not a snap point warns and opens fully', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const screen = render(
+        createDrawer(DrawerId.WarnInitialSnap, {
+          snapPoints: [0.5, 1],
+          initial: { snapPoint: 0.25 },
+        })
+      )
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 400))
+
+      const warnings = warnSpy.mock.calls.filter((call) =>
+        call.some(
+          (arg) => typeof arg === 'string' && arg.includes('initial.snapPoint')
+        )
+      )
+      expect(warnings.length).toBeGreaterThan(0)
+      await expect
+        .element(page.getByTestId(TestId.IsActive))
+        .toHaveTextContent('true')
+      expect(
+        document
+          .querySelector('.magic-drawer-content__drag')!
+          .getAttribute('style')
+      ).toBe('transform: translate(0px, 0px);')
+      warnSpy.mockRestore()
+    })
+
     it('invalid overshoot CSS value triggers warning', async () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
       // Set on body so the teleported content element inherits it

@@ -153,6 +153,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     snappedX,
     activeSnapPoint,
     snapTo,
+    findConfiguredSnapPoint,
     snapPointsMap,
     interpolateDragged,
     findClosestSnapPoint,
@@ -445,14 +446,29 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  // A drawer that isn’t measured yet can’t map snap points, and snapTo bails
+  // on its own, so only a measured drawer rejects a point
+  function isUnknownSnapPoint(snapPoint: MagicDrawerSnapPoint) {
+    return (
+      !!wrapperRect.value && findConfiguredSnapPoint(snapPoint) === undefined
+    )
+  }
+
   function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
     if (payload.id === toValue(id)) {
+      const snapPoint = payload.snapPoint as MagicDrawerSnapPoint
+
       if (!toValue(isActive)) {
         logWarning('Cannot snap to point when drawer is not open')
         return
+      } else if (isUnknownSnapPoint(snapPoint)) {
+        logWarning(
+          `Cannot snap to ${snapPoint} as it is not a configured snap point`
+        )
+        return
       } else {
         snapTo({
-          snapPoint: payload.snapPoint as MagicDrawerSnapPoint,
+          snapPoint,
           interpolate: true,
           duration: payload.duration,
         })
@@ -919,9 +935,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       await getSizes()
       const snapPoint = toValue(initial)?.snapPoint
 
-      if (snapPoint) {
-        snapTo({ snapPoint, interpolate: false })
+      if (!snapPoint) {
+        return
       }
+
+      if (isUnknownSnapPoint(snapPoint)) {
+        logWarning(
+          `initial.snapPoint (${snapPoint}) is not a configured snap point and is ignored`
+        )
+        return
+      }
+
+      snapTo({ snapPoint, interpolate: false })
     }
   )
 

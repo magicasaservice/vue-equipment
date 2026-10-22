@@ -34,6 +34,8 @@ export enum DrawerId {
   InitialDrawer = 'initial-drawer',
   NoTransitionDrawer = 'no-transition-drawer',
   SnapDrawer = 'snap-drawer',
+  SnapUnknown = 'snap-unknown',
+  SnapOtherUnit = 'snap-other-unit',
   // options
   PositionTop = 'position-top',
   PositionRight = 'position-right',
@@ -69,6 +71,7 @@ export enum DrawerId {
   // edge cases
   Default = 'default',
   WarnSnap = 'warn-snap',
+  WarnInitialSnap = 'warn-initial-snap',
   OvershootWarn = 'overshoot-warn',
   RapidDrawer = 'rapid',
   DoubleOpen = 'double-open',

@@ -46,6 +46,10 @@ type InterpolateDraggedArgs = {
   easing?: (t: number) => number
 }
 
+// Two snap points closer than this in pixels count as the same, to absorb
+// float noise between units
+const SNAP_POINT_TOLERANCE = 0.01
+
 export function useDrawerSnap(args: UseDrawerSnapArgs) {
   const {
     id,
@@ -272,7 +276,31 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     }
   }
 
+  // The configured snap point that maps to a pixel value
+  function findSnapPointAt(value: number) {
+    return toValue(snapPoints).find((snapPoint) => {
+      const mapped = mapSnapPoint(snapPoint)
+
+      return (
+        mapped !== undefined && Math.abs(mapped - value) < SNAP_POINT_TOLERANCE
+      )
+    })
+  }
+
   // Public functions
+
+  // The configured snap point a snap point input stands for, written the
+  // same way or in another unit that maps to the same position
+  function findConfiguredSnapPoint(snapPoint: MagicDrawerSnapPoint) {
+    if (toValue(snapPoints).includes(snapPoint)) {
+      return snapPoint
+    }
+
+    const mapped = mapSnapPoint(snapPoint)
+
+    return mapped === undefined ? undefined : findSnapPointAt(mapped)
+  }
+
   async function snapTo(args: SnapToArgs) {
     const { snapPoint, interpolate, duration } = args
     await nextTick()
@@ -300,7 +328,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         // Save value the drawer will snap to, to check if we should close,
         // as well as for window resize events
         snappedY.value = closestY
-        activeSnapPoint.value = toValue(snapPoint)
+        activeSnapPoint.value = findSnapPointAt(closestY) ?? toValue(snapPoint)
 
         break
       }
@@ -328,7 +356,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
         // Save value the drawer will snap to, to check if we should close,
         // as well as for window resize events
         snappedX.value = closestX
-        activeSnapPoint.value = toValue(snapPoint)
+        activeSnapPoint.value = findSnapPointAt(closestX) ?? toValue(snapPoint)
         break
       }
     }
@@ -427,6 +455,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
     snappedX,
     activeSnapPoint,
     snapTo,
+    findConfiguredSnapPoint,
     findClosestSnapPoint,
     interpolateDragged,
     snapPointsMap,

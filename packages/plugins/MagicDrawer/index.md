@@ -248,7 +248,7 @@ rows:
       - label: '128'
   - items:
       - label: threshold.momentum
-        description: Configure the momentum from when the drawer snaps.
+        description: Configure the drag speed, in pixels per millisecond, past which a release snaps to the next point in the drag direction, even short of threshold.distance.
       - label: number
       - label: '1'
   - items:
@@ -274,7 +274,7 @@ rows:
       - label: —
   - items:
       - label: initial.snapPoint
-        description: Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.
+        description: Optionally provide an initial snap point for the drawer to snap to. Must be a valid snap point. Anything else logs a warning and is ignored.
       - label: MagicDrawerSnapPoint
         description: number + 'px' | number
       - label: —
@@ -551,6 +551,47 @@ rows:
 ---
 ::
 
+### useMagicDrawer
+
+The composable returns the drawer’s reactive state and a set of functions to control it programmatically.
+
+::docs-table
+---
+columns:
+  - label: Property
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: isActive
+      - label: ComputedRef<boolean>
+        escape: true
+      - plaintext: true
+        label: Whether the drawer is open.
+  - items:
+      - label: progress
+      - label: 'Ref<{ x: number, y: number }>'
+        escape: true
+      - plaintext: true
+        label: Drag progress per axis, 0 (closed) to 1 (open).
+  - items:
+      - label: open
+      - label: () => void
+      - plaintext: true
+        label: Open the drawer.
+  - items:
+      - label: close
+      - label: () => void
+      - plaintext: true
+        label: Close the drawer.
+  - items:
+      - label: snapTo
+      - label: (snapPoint, duration?) => void
+      - plaintext: true
+        label: Snap the drawer to a snap point, optionally overriding the animation duration. Snap point must be a valid snap point.
+---
+::
+
 ## Events
 
 The drawer emits the following events through [MagicEmitter](/plugins/MagicEmitter). Listen to them with `useMagicEmitter`.
@@ -626,7 +667,7 @@ rows:
       - label: willSnapTo
       - label: '{ id, snapPoint }'
       - plaintext: true
-        label: Fired during a drag when the committed snap target changes — i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.
+        label: Fired during a drag when the committed snap target changes, i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.
   - items:
       - label: progress
       - label: '{ id, x, y }'
@@ -734,7 +775,7 @@ With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point
 
 ### Will Snap To
 
-The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the drawer will animate to on release. It only fires when the target actually changes, not on every move.
+The `willSnapTo` event fires during a drag whenever the snap point the drawer will animate to on release changes. It only fires when the target changes, not on every move.
 
 ::component-preview{src="./demo/WillSnapToDemo.vue"}
 ::
