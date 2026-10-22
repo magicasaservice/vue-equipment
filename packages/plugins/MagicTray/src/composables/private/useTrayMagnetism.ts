@@ -5,6 +5,7 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 import { useTraySnap } from './useTraySnap'
+import { useTrayUtils } from './useTrayUtils'
 
 import type { ComponentPublicInstance, MaybeRef, Ref, ShallowRef } from 'vue'
 
@@ -53,6 +54,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     state,
   })
 
+  const { flattenSnapPoints } = useTrayUtils()
   const emitter = useMagicEmitter()
 
   // Private state
@@ -197,7 +199,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
         continue
       }
 
-      const configured = state.options.snapPoints[side] ?? []
+      const configured = flattenSnapPoints(state.options.snapPoints[side] ?? [])
 
       for (const key of Object.keys(config)) {
         if (!configured.includes(coercePoint(key))) {
