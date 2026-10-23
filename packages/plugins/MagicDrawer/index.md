@@ -207,13 +207,13 @@ rows:
       - label: 'true'
   - items:
       - label: snapPoints
-        description: Add snap points. Points can either be a decimal between 0 and 1 or an integer with px appended, like '768px'.
-      - label: MagicDrawerSnapPoint[]
-        description: Array<number + 'px' | number>
+        description: "Add snap points. Points can either be a decimal between 0 and 1, an integer with px appended, like '768px', or a range with min, max and optionally momentum, i.e. `{ min: 0.25, max: 0.75, momentum: false }`."
+      - label: MagicDrawerSnapEntry[]
+        description: 'Array<MagicDrawerSnapPoint | { min: MagicDrawerSnapPoint; max: MagicDrawerSnapPoint; momentum?: boolean }>'
       - label: '[1]'
   - items:
       - label: snap.mode
-        description: Configure how the drawer settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time.
+        description: Configure how the drawer settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time. A range snap point is split into its min and max values.
       - label: "'closest' | 'step'"
       - label: "'closest'"
   - items:
@@ -243,12 +243,12 @@ rows:
       - label: '0'
   - items:
       - label: threshold.distance
-        description: Configure the dragged distance before the drawer snaps.
+        description: Configure the dragged distance before the drawer snaps. A drag that starts inside a range counts the distance from the range’s nearer end. In a range that reaches 0, a drag that ends within this distance of 0 closes the drawer.
       - label: number
       - label: '128'
   - items:
       - label: threshold.momentum
-        description: Configure the momentum from when the drawer snaps.
+        description: Configure the drag speed, in pixels per millisecond, past which a release snaps to the next point in the drag direction, even short of threshold.distance or inside a range, unless the range sets momentum to false.
       - label: number
       - label: '1'
   - items:
@@ -274,7 +274,7 @@ rows:
       - label: —
   - items:
       - label: initial.snapPoint
-        description: Optionally provide an initial snap point for the drawer to snap to. Ignored if snap points are not specified.
+        description: Optionally provide an initial snap point for the drawer to snap to. Any value inside a range is valid. Anything else logs a warning and is ignored.
       - label: MagicDrawerSnapPoint
         description: number + 'px' | number
       - label: —
@@ -551,6 +551,53 @@ rows:
 ---
 ::
 
+### useMagicDrawer
+
+The composable returns the drawer’s reactive state and a set of functions to control it programmatically.
+
+::docs-table
+---
+columns:
+  - label: Property
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: isActive
+      - label: ComputedRef<boolean>
+        escape: true
+      - plaintext: true
+        label: Whether the drawer is open.
+  - items:
+      - label: progress
+      - label: 'Ref<{ x: number, y: number }>'
+        escape: true
+      - plaintext: true
+        label: Drag progress per axis, 0 (closed) to 1 (open).
+  - items:
+      - label: activeSnapPoint
+      - label: Ref<MagicDrawerSnapPoint | undefined>
+        escape: true
+      - plaintext: true
+        label: The snap point the drawer is currently snapped to, as configured. Inside a range, the value the drawer rests at, to four decimals if both ends of the range are decimals and in whole pixels otherwise.
+  - items:
+      - label: open
+      - label: () => void
+      - plaintext: true
+        label: Open the drawer.
+  - items:
+      - label: close
+      - label: () => void
+      - plaintext: true
+        label: Close the drawer.
+  - items:
+      - label: snapTo
+      - label: (snapPoint, duration?) => void
+      - plaintext: true
+        label: Snap the drawer to a snap point or a value inside a range, optionally overriding the animation duration. Snap point must be a valid snap point or inside a range.
+---
+::
+
 ## Events
 
 The drawer emits the following events through [MagicEmitter](/plugins/MagicEmitter). Listen to them with `useMagicEmitter`.
@@ -626,7 +673,7 @@ rows:
       - label: willSnapTo
       - label: '{ id, snapPoint }'
       - plaintext: true
-        label: Fired during a drag when the committed snap target changes — i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move.
+        label: Fired during a drag when the committed snap target changes, i.e. the snap point the drawer will animate to on release. Only fires when the target actually changes, not on every move. Inside a range, it fires once on entering, with the value at that moment.
   - items:
       - label: progress
       - label: '{ id, x, y }'
@@ -727,6 +774,26 @@ With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point
 ::component-preview{src="./demo/SnapModeDemo.vue"}
 ::
 
+### Ranges
+
+Pass `{ min, max }` in place of a snap point to let the drawer rest anywhere between two points. A release inside the range does not snap, while a release outside snaps to the closest point. Momentum detection is preserved. Add `momentum: false` to disable momentum based snapping inside the range.
+
+```ts
+const options: MagicDrawerOptions = {
+  snapPoints: [{ min: 0.25, max: 0.75 }, 1],
+}
+```
+
+Events and `activeSnapPoint` report the resting value to four decimals, like `0.4375`, if both ends of the range are decimals, and in whole pixels, like `'420px'`, otherwise.
+
+::component-preview{src="./demo/RangeDemo.vue"}
+::
+
+With a range from `0` as its only snap point, the drawer rests anywhere up to the range’s end, and closes once dragged to within `threshold.distance` of the bottom.
+
+::component-preview{src="./demo/RangeCloseDemo.vue"}
+::
+
 ### Composed
 
 ::component-preview{src="./demo/ComposedDemo.vue"}
@@ -734,7 +801,7 @@ With `snap.mode` set to `'step'`, the drawer advances to the adjacent snap point
 
 ### Will Snap To
 
-The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the drawer will animate to on release. It only fires when the target actually changes, not on every move.
+The `willSnapTo` event fires during a drag whenever the snap point the drawer will animate to on release changes. It only fires when the target changes, not on every move.
 
 ::component-preview{src="./demo/WillSnapToDemo.vue"}
 ::

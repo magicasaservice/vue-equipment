@@ -22,6 +22,7 @@ export enum DrawerId {
   InteractDragged = 'interact-dragged',
   InteractDisabledDrag = 'interact-disabled-drag',
   PreventDragClose = 'prevent-drag-close',
+  InteractRevert = 'interact-revert',
   Key = 'key',
   KeyDisabled = 'key-disabled',
   Disabled = 'disabled',
@@ -34,6 +35,8 @@ export enum DrawerId {
   InitialDrawer = 'initial-drawer',
   NoTransitionDrawer = 'no-transition-drawer',
   SnapDrawer = 'snap-drawer',
+  SnapUnknown = 'snap-unknown',
+  SnapOtherUnit = 'snap-other-unit',
   // options
   PositionTop = 'position-top',
   PositionRight = 'position-right',
@@ -69,6 +72,7 @@ export enum DrawerId {
   // edge cases
   Default = 'default',
   WarnSnap = 'warn-snap',
+  WarnInitialSnap = 'warn-initial-snap',
   OvershootWarn = 'overshoot-warn',
   RapidDrawer = 'rapid',
   DoubleOpen = 'double-open',
@@ -80,6 +84,21 @@ export enum DrawerId {
   Concurrent1 = 'concurrent-1',
   Concurrent2 = 'concurrent-2',
   Concurrent3 = 'concurrent-3',
+  // ranges
+  RangeRestInside = 'range-rest-inside',
+  RangeRound = 'range-round',
+  RangeSnapToEnd = 'range-snap-to-end',
+  RangeClose = 'range-close',
+  RangeNearClose = 'range-near-close',
+  RangeCloseThreshold = 'range-close-threshold',
+  RangeTapNearClose = 'range-tap-near-close',
+  RangeAwayFromClose = 'range-away-from-close',
+  RangeStep = 'range-step',
+  RangeFlick = 'range-flick',
+  RangeFlickNoMomentum = 'range-flick-no-momentum',
+  RangeInitial = 'range-initial',
+  RangeSnapTo = 'range-snap-to',
+  RangeWillSnapTo = 'range-will-snap-to',
 }
 
 export enum TestId {
@@ -103,4 +122,6 @@ export enum TestId {
   ClearEvents = 'clear-events',
   Events = 'events',
   LastPayload = 'last-payload',
+  Dragged = 'dragged',
+  WillSnapTo = 'will-snap-to',
 }

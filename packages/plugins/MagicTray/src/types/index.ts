@@ -5,6 +5,15 @@ export type MagicTraySide = 'top' | 'right' | 'bottom' | 'left'
 
 export type MagicTraySnapPoint = number | `${number}px`
 
+// A span a side can rest anywhere within, bounded by two snap points
+export interface MagicTraySnapRange {
+  min: MagicTraySnapPoint
+  max: MagicTraySnapPoint
+  momentum?: boolean
+}
+
+export type MagicTraySnapEntry = MagicTraySnapPoint | MagicTraySnapRange
+
 export interface MagicTraySnapPointPayload {
   side: MagicTraySide
   point: MagicTraySnapPoint
@@ -21,7 +30,7 @@ export type MagicTraySnapMode = 'closest' | 'step'
 export type MagicTrayDragMode = 'free' | 'snap'
 
 export type TraySnapPoints = Partial<
-  Record<MagicTraySide, MagicTraySnapPoint[]>
+  Record<MagicTraySide, Array<MagicTraySnapEntry>>
 >
 
 // Which approach arms a snap point
@@ -33,8 +42,7 @@ export type TrayMagneticSide = Partial<
 >
 
 export type TrayMagneticSides =
-  | false
-  | Partial<Record<MagicTraySide, TrayMagneticSide>>
+  false | Partial<Record<MagicTraySide, TrayMagneticSide>>
 
 // The scrub band, as perpendicular distances from the resting edge on the
 // approach side: `start` is where the pull engages, `stop` where it tops out and

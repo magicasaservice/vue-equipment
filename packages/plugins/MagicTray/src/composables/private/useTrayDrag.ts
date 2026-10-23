@@ -22,6 +22,8 @@ import {
   isIOS,
   isWithinRange,
   lockSelection,
+  snapCommit,
+  snapRelease,
 } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -32,8 +34,9 @@ import { useTrayState } from './useTrayState'
 import type { MaybeRef, Ref } from 'vue'
 import type { UseResizeObserverReturn } from '@vueuse/core'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+import type { SnapDrag } from '@maas/vue-equipment/utils'
 
-import type { MagicTraySide } from '../../types'
+import type { MagicTraySide, MagicTraySnapRange } from '../../types'
 
 type UseTrayDragArgs = {
   id: MaybeRef<string>
@@ -53,7 +56,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   const { initializeState } = useTrayState(toValue(id))
   const state = initializeState()
 
-  const { clampWithOvershoot, isVertical } = useTrayUtils()
+  const { clampWithOvershoot, isVertical, flattenSnapPoints } = useTrayUtils()
   const emitter = useMagicEmitter()
 
   const {
@@ -62,8 +65,12 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     maxInset,
     mapSnapPoint,
     mappedSnapPoints,
-    snapPointsMap,
-    findClosestSnapPoint,
+    mappedRanges,
+    rangeAt,
+    snapPointAt,
+    restingInset,
+    isSnapTarget,
+    findSnapTarget,
     interpolateDragged,
     snapTo,
   } = useTraySnap({ id, state })
@@ -87,11 +94,18 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   function openSnapPoint(side: MagicTraySide) {
     const points = mappedSnapPoints(side)
 
-    return points.length ? snapPointsMap(side)[points[0]!] : undefined
+    return points.length ? snapPointAt(side, points[0]!) : undefined
   }
 
-  // The last emitted pending snap target — only emit willSnapTo on change
-  let lastPendingTarget: number | undefined = undefined
+  // The last pending snap target emitted, so willSnapTo only fires on change.
+  // A target inside a range counts as the range itself.
+  let lastPendingTarget: number | MagicTraySnapRange | undefined = undefined
+
+  // A snap drag moved inside a range without emitting its snap events
+  let heldRangeSnap = false
+
+  // The drag outpaces the momentum threshold, so a release carries on
+  let flicked = false
 
   // Swallow the click a drag synthesises on release, so dragging a handle never
   // fires a slotted element’s click. A genuine tap leaves this false and passes
@@ -121,10 +135,28 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     () => state.options.preventEdgeNavigation
   )
 
-  function snapReference(side: MagicTraySide) {
-    return snapMode.value === 'step'
-      ? state.lastDragged[side]
-      : state.dragged[side]
+  // A side’s drag along its axis, for the shared snap rules
+  function snapDrag(side: MagicTraySide): SnapDrag {
+    return {
+      points: mappedSnapPoints(side),
+      ranges: mappedRanges(side),
+      mode: snapMode.value,
+      rest: state.snapped[side],
+      start: state.lastDragged[side],
+      position: state.dragged[side],
+    }
+  }
+
+  // Where a release comes to rest, rounded like any resting value
+  function settleTarget(side: MagicTraySide) {
+    const target = snapRelease({
+      ...snapDrag(side),
+      committed: state.interpolateTo,
+      flicked,
+      tapped: !hasDragged.value,
+    })
+
+    return restingInset(side, target)
   }
 
   function isSnapDrag(side: MagicTraySide) {
@@ -296,61 +328,81 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   // Commit straight to whichever configured point the pointer is nearest,
-  // instead of following it freely — a hard cut, no interpolation. Leaves
+  // instead of following it freely: a hard cut, no interpolation. Leaves
   // `lastDragged` untouched so `hasDragged` still reflects the gesture’s start,
   // which is what lets a genuine tap on the handle pass its click through.
   function snapDragged(side: MagicTraySide, coord: number) {
     const inset = computeInset(side, coord)
-    const target = findClosestSnapPoint({ side, value: inset })
+    const target = findSnapTarget(side, inset)
 
     if (target === undefined || target === state.snapped[side]) {
       return
     }
 
-    const snapPoint = snapPointsMap(side)[target]
-
     state.dragged[side] = target
     state.snapped[side] = target
-    state.activeSnapPoint[side] = snapPoint
+    state.activeSnapPoint[side] = snapPointAt(side, target)
 
-    if (snapPoint || snapPoint === 0) {
-      emitter.emit('beforeSnap', {
-        id: toValue(id),
-        snapPoint: { side, point: snapPoint },
-      })
-      emitter.emit('afterSnap', {
-        id: toValue(id),
-        snapPoint: { side, point: snapPoint },
-      })
+    // Inside a range the edge follows the pointer, so its snap events wait
+    // for a configured point or the release
+    heldRangeSnap = !mappedSnapPoints(side).includes(target)
+
+    if (!heldRangeSnap) {
+      emitSnap(side)
     }
+  }
+
+  // Snap-drag sides already rest on their committed point; one released
+  // inside a range still owes its snap events
+  function releaseSnapDrag(side: MagicTraySide) {
+    if (heldRangeSnap) {
+      emitSnap(side)
+    }
+
+    heldRangeSnap = false
+  }
+
+  function emitSnap(side: MagicTraySide) {
+    const point = state.activeSnapPoint[side]
+
+    if (point === undefined) {
+      return
+    }
+
+    emitter.emit('beforeSnap', {
+      id: toValue(id),
+      snapPoint: { side, point },
+    })
+    emitter.emit('afterSnap', {
+      id: toValue(id),
+      snapPoint: { side, point },
+    })
   }
 
   function checkPosition(side: MagicTraySide) {
-    const delta = state.dragged[side] - state.lastDragged[side]
+    const direction = state.relDirection[side]
 
-    if (Math.abs(delta) > toValue(threshold).distance) {
-      // Snap to the next point in the direction the edge was dragged
-      state.interpolateTo = findClosestSnapPoint({
-        side,
-        value: snapReference(side),
-        direction: delta < 0 ? 'below' : 'above',
-      })
-    } else {
-      // Dragged back within the threshold — clear any committed target so the
-      // tray reverts to its origin snap point on release
-      state.interpolateTo = undefined
-    }
+    state.interpolateTo = snapCommit({
+      ...snapDrag(side),
+      distance: toValue(threshold).distance,
+      flicked,
+      flickDirection: direction === 'absolute' ? undefined : direction,
+    })
   }
 
   function emitWillSnapTo(side: MagicTraySide) {
-    const target = state.interpolateTo ?? state.snapped[side]
-    if (target === lastPendingTarget) {
+    const target = settleTarget(side)
+    const isPoint = mappedSnapPoints(side).includes(target)
+    const pending = (!isPoint && rangeAt(side, target)?.range) || target
+
+    // Inside a range the target follows the pointer, so only entering counts
+    if (pending === lastPendingTarget) {
       return
     }
-    lastPendingTarget = target
+    lastPendingTarget = pending
 
-    const snapPoint = snapPointsMap(side)[target]
-    if (!snapPoint && snapPoint !== 0) {
+    const snapPoint = snapPointAt(side, target)
+    if (snapPoint === undefined) {
       return
     }
 
@@ -366,13 +418,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     const distance = Math.abs(state.dragged[side] - state.lastDragged[side])
     const velocity = elapsed && distance ? distance / elapsed : 0
 
-    if (velocity > toValue(threshold).momentum) {
-      state.interpolateTo = findClosestSnapPoint({
-        side,
-        value: snapReference(side),
-        direction: state.relDirection[side],
-      })
-    }
+    flicked = velocity > toValue(threshold).momentum
   }
 
   function resetListeners() {
@@ -393,14 +439,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   }
 
   function settle(side: MagicTraySide) {
-    if (state.interpolateTo || state.interpolateTo === 0) {
-      interpolateDragged({ side, to: state.interpolateTo })
-      state.snapped[side] = state.interpolateTo
-      state.activeSnapPoint[side] = snapPointsMap(side)[state.interpolateTo]
-    } else {
-      // Threshold not reached, animate back to the previous snap point
-      interpolateDragged({ side, to: state.snapped[side] })
+    const target = settleTarget(side)
+
+    // A plain revert leaves the active snap point as it was set. Commit before
+    // interpolating, which emits afterSnap right away when already in place.
+    if (target !== state.snapped[side] || state.interpolateTo !== undefined) {
+      state.snapped[side] = target
+      state.activeSnapPoint[side] = snapPointAt(side, target)
     }
+
+    interpolateDragged({ side, to: target })
   }
 
   function onPointermove(e: PointerEvent) {
@@ -442,8 +490,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       // Read before resetDragState() clears draggingSide, or hasDragged would always be false
       suppressClick = hasDragged.value
 
-      // Snap-drag sides are already resting on their committed point
-      if (!isSnapDrag(side)) {
+      if (isSnapDrag(side)) {
+        releaseSnapDrag(side)
+      } else {
         settle(side)
       }
 
@@ -505,8 +554,9 @@ export function useTrayDrag(args: UseTrayDragArgs) {
       // Read before resetDragState() clears draggingSide, or hasDragged would always be false
       suppressClick = hasDragged.value
 
-      // Snap-drag sides are already resting on their committed point
-      if (!isSnapDrag(side)) {
+      if (isSnapDrag(side)) {
+        releaseSnapDrag(side)
+      } else {
         settle(side)
       }
 
@@ -531,6 +581,8 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     state.magnetic[side] = 0
     state.lastDragged[side] = state.dragged[side]
     lastPendingTarget = undefined
+    heldRangeSnap = false
+    flicked = false
     suppressClick = false
     pointerdownTarget = target
     releaseSelection = lockSelection()
@@ -667,6 +719,13 @@ export function useTrayDrag(args: UseTrayDragArgs) {
     // Ensure an up to date rect before mapping the snap point
     await getSizes()
 
+    if (contentExtent(side) && !isSnapTarget(side, point)) {
+      logWarning(
+        `Cannot snap side "${side}" to ${point}, which is neither a snap point nor inside a range`
+      )
+      return
+    }
+
     snapTo({
       side,
       snapPoint: point,
@@ -696,8 +755,16 @@ export function useTrayDrag(args: UseTrayDragArgs) {
         continue
       }
 
-      const initial =
-        state.options.initial.snapPoints?.[side] ?? openSnapPoint(side)
+      const configured = state.options.initial.snapPoints?.[side]
+      const isValid = configured === undefined || isSnapTarget(side, configured)
+
+      if (!isValid) {
+        logWarning(
+          `initial.snapPoints.${side} (${configured}) is neither a snap point nor inside a range and is ignored`
+        )
+      }
+
+      const initial = (isValid ? configured : undefined) ?? openSnapPoint(side)
 
       if (initial === undefined) {
         continue
@@ -718,7 +785,7 @@ export function useTrayDrag(args: UseTrayDragArgs) {
   // Warn when a draggable side can neither fully open nor has an initial point
   function validateSnapPoints() {
     for (const side of draggableSides.value) {
-      const points = state.options.snapPoints[side] ?? []
+      const points = flattenSnapPoints(state.options.snapPoints[side] ?? [])
       const canOpen = points.some((point) => parseFloat(String(point)) === 0)
       const hasInitial = state.options.initial.snapPoints?.[side] !== undefined
 

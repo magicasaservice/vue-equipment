@@ -161,18 +161,18 @@ rows:
       - label: "'div'"
   - items:
       - label: snapPoints
-        description: Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1 or a pixel value, like '120px'.
+        description: "Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1, a pixel value, like '120px', or a range with min, max and optionally momentum, i.e. `{ min: 0.25, max: 0.75, momentum: false }`."
       - label: TraySnapPoints
-        description: Partial<Record<MagicTraySide, Array<number + 'px' | number>>>
+        description: 'Partial<Record<MagicTraySide, Array<MagicTraySnapPoint | { min: MagicTraySnapPoint; max: MagicTraySnapPoint; momentum?: boolean }>>>'
       - label: '{ bottom: [0, 0.5, 1] }'
   - items:
       - label: snap.mode
-        description: Configure how the tray settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time.
+        description: Configure how the tray settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time. A range snap point is split into its min and max values.
       - label: "'closest' | 'step'"
       - label: "'closest'"
   - items:
       - label: drag.mode
-        description: How a side follows the pointer. 'free' follows it and settles on release. 'snap' commits straight to the closest snap point while dragging — a hard cut, no animation, and ignores snap.mode. Set per side with an object.
+        description: "How a side follows the pointer. 'free' follows it and settles on release. 'snap' commits straight to the closest snap point while dragging: a hard cut, no animation, and ignores snap.mode. Inside a range, 'snap' follows the pointer and emits its snap events on release. Set per side with an object."
       - label: "'free' | 'snap' | Partial<Record<MagicTraySide, 'free' | 'snap'>>"
       - label: "'free'"
   - items:
@@ -182,7 +182,7 @@ rows:
       - label: 'true'
   - items:
       - label: magnetism.sides
-        description: "Enable the magnetic pull per side by mapping its snap points to a direction: 'inner' pulls in as the cursor nears from inside, 'outer' out from outside, 'both' from either side. Set to false to disable. Each snap point used must also exist in snapPoints."
+        description: "Enable the magnetic pull per side by mapping its snap points to a direction: 'inner' pulls in as the cursor nears from inside, 'outer' out from outside, 'both' from either side. Set to false to disable. Each snap point used must also exist in snapPoints, either as a point or as the end of a range."
       - label: false | Partial<Record<MagicTraySide, Partial<Record<MagicTraySnapPoint, 'inner' | 'outer' | 'both'>>>>
       - label: 'false'
   - items:
@@ -212,12 +212,12 @@ rows:
       - label: '0'
   - items:
       - label: threshold.distance
-        description: Configure the dragged distance before the side snaps to the next snap point in the drag direction.
+        description: Configure the dragged distance before the side snaps to the next snap point in the drag direction. A drag that starts inside a range counts the distance from the range’s nearer end.
       - label: number
       - label: '128'
   - items:
       - label: threshold.momentum
-        description: Configure the momentum from when the side snaps.
+        description: Configure the drag speed, in pixels per millisecond, past which a release snaps to the next point in the drag direction, even short of threshold.distance or inside a range, unless the range sets momentum to false.
       - label: number
       - label: '1'
   - items:
@@ -233,7 +233,7 @@ rows:
         description: (t) => t * (2 - t)
   - items:
       - label: initial.snapPoints
-        description: Optionally provide an initial snap point per side for the tray to snap to.
+        description: Optionally provide an initial snap point per side for the tray to snap to. Any value inside a range is valid. Anything else logs a warning and is ignored.
       - label: Partial<Record<MagicTraySide, MagicTraySnapPoint>>
       - label: —
   - items:
@@ -563,12 +563,12 @@ rows:
       - label: Ref<Partial<Record<MagicTraySide, MagicTraySnapPoint>>>
         escape: true
       - plaintext: true
-        label: The snap point each side is currently snapped to.
+        label: The snap point each side is currently snapped to, as configured. Inside a range, the value the side rests at, to four decimals if both ends of the range are decimals and in whole pixels otherwise.
   - items:
       - label: snapTo
       - label: (side, snapPoint, duration?) => void
       - plaintext: true
-        label: Snap a single side to a snap point, optionally overriding the animation duration.
+        label: Snap a single side to a snap point or a value inside a range, optionally overriding the animation duration. Snap point must be a valid snap point or inside a range.
 ---
 ::
 
@@ -627,7 +627,7 @@ rows:
       - label: willSnapTo
       - label: '{ id, side, snapPoint }'
       - plaintext: true
-        label: Fired during a drag when the committed snap target changes — i.e. the snap point the edge will animate to on release. Only fires when the target actually changes, not on every move.
+        label: Fired during a drag when the committed snap target changes, i.e. the snap point the edge will animate to on release. Only fires when the target actually changes, not on every move. Inside a range, it fires once on entering, with the value at that moment.
 ---
 ::
 
@@ -698,9 +698,26 @@ With `drag.mode` set to `'snap'`, the edge commits straight to the snap point cl
 ::component-preview{src="./demo/DragModeDemo.vue"}
 ::
 
+### Ranges
+
+Pass `{ min, max }` in place of a snap point to let a side rest anywhere between two insets. A release inside the range does not snap, while a release outside snaps to the closest point. Momentum detection is preserved. Add `momentum: false` to disable momentum based snapping inside the range.
+
+```ts
+const options: MagicTrayOptions = {
+  snapPoints: {
+    left: [0, { min: 0.15, max: 0.4 }, 0.6],
+  },
+}
+```
+
+Events and `activeSnapPoint` report the resting value to four decimals, like `0.2734`, if both ends of the range are decimals, and in whole pixels, like `'184px'`, otherwise.
+
+::component-preview{src="./demo/RangeDemo.vue"}
+::
+
 ### Will Snap To
 
-The `willSnapTo` event fires during a drag whenever the committed snap target changes — the snap point the edge will animate to on release. It only fires when the target changes, not on every move.
+The `willSnapTo` event fires during a drag whenever the snap point the edge will animate to on release changes. It only fires when the target changes, not on every move.
 
 ::component-preview{src="./demo/WillSnapToDemo.vue"}
 ::
