@@ -228,10 +228,33 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
         }
   }
 
-  // Whether an offset is where the drawer closes
+  // Whether a release at an offset closes the drawer. Inside a range that
+  // reaches the closed end, a drag toward it closes within the distance
+  // threshold, as the pointer can’t follow the drawer past the window edge.
   function isClosing(offset: number) {
     const extent = isVertical.value ? drawerHeight.value : drawerWidth.value
-    return extent > 0 && Math.abs(offset) === extent
+
+    if (extent <= 0) {
+      return false
+    }
+
+    if (Math.abs(offset) === extent) {
+      return true
+    }
+
+    const side = toValue(position)
+    const closed = side === 'bottom' || side === 'right' ? extent : -extent
+    const rest = isVertical.value ? snappedY.value : snappedX.value
+    const range = rangeAt(offset)
+    const reachesClosed = range?.min === closed || range?.max === closed
+    const towardClosed = Math.abs(closed - offset) < Math.abs(closed - rest)
+
+    return (
+      hasDragged.value &&
+      reachesClosed &&
+      towardClosed &&
+      Math.abs(closed - offset) <= toValue(threshold).distance
+    )
   }
 
   // Where a release comes to rest, rounded like any resting value

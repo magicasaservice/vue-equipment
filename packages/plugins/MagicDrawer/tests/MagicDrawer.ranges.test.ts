@@ -186,7 +186,7 @@ describe('MagicDrawer - Ranges', () => {
       await expect.poll(() => read(TestId.IsActive)).toBe('false')
     })
 
-    it('rests close to the closed end of a range without closing', async () => {
+    it('rests near the closed end of a range, outside the distance threshold', async () => {
       const screen = render(
         createDrawer(DrawerId.RangeNearClose, {
           ...base,
@@ -197,6 +197,65 @@ describe('MagicDrawer - Ranges', () => {
 
       await drag(280)
       release(280)
+
+      await expect.poll(() => read(TestId.Active1)).toBe('20px')
+      expect(read(TestId.IsActive)).toBe('true')
+    })
+
+    it('closes once dragged within the distance threshold of the closed end', async () => {
+      const screen = render(
+        createDrawer(DrawerId.RangeCloseThreshold, {
+          snapPoints: [{ min: 0, max: '250px' }, 1],
+          threshold: { distance: 30, momentum: 99999 },
+        })
+      )
+      await open(screen)
+
+      await drag(280)
+      release(280)
+
+      await expect.poll(() => read(TestId.IsActive)).toBe('false')
+    })
+
+    it('a tap within the threshold of the closed end leaves the drawer open', async () => {
+      const screen = render(
+        createDrawer(
+          DrawerId.RangeTapNearClose,
+          {
+            snapPoints: [{ min: 0, max: '250px' }, 1],
+            threshold: { distance: 30, momentum: 99999 },
+          },
+          '20px'
+        )
+      )
+      await open(screen)
+      click(TestId.SnapBtn)
+      await expect.poll(() => read(TestId.Dragged)).toBe('280')
+
+      await drag(0)
+      release(0)
+      await new Promise((r) => setTimeout(r, 100))
+
+      expect(read(TestId.IsActive)).toBe('true')
+    })
+
+    it('a drag away from the closed end leaves the drawer open', async () => {
+      const screen = render(
+        createDrawer(
+          DrawerId.RangeAwayFromClose,
+          {
+            snapPoints: [{ min: 0, max: '250px' }, 1],
+            threshold: { distance: 30, momentum: 99999 },
+          },
+          '10px'
+        )
+      )
+      await open(screen)
+      click(TestId.SnapBtn)
+      await expect.poll(() => read(TestId.Dragged)).toBe('290')
+
+      await drag(-10)
+      release(-10)
 
       await expect.poll(() => read(TestId.Active1)).toBe('20px')
       expect(read(TestId.IsActive)).toBe('true')
