@@ -62,6 +62,15 @@
         >
           {{ option }}
         </m-button>
+        <m-button
+          :mode="momentum ? 'subtle' : 'ghost'"
+          :aria-pressed="momentum"
+          size="xs"
+          class="ml-2 select-none"
+          @click="momentum = !momentum"
+        >
+          momentum
+        </m-button>
       </div>
     </div>
   </div>
@@ -79,16 +88,22 @@ import type {
   MagicTraySnapPoint,
 } from '@maas/vue-equipment/plugins/MagicTray'
 
-type RangeDemoEntry = number | { min: number; max: number }
+type RangeDemoEntry = number | { min: number; max: number; momentum?: boolean }
 
 const id = 'magic-tray-range-demo'
 const modes: Array<MagicTraySnapMode> = ['closest', 'step']
-const entries: Array<RangeDemoEntry> = [0, { min: 0.15, max: 0.4 }, 0.6]
 
 const mode = ref<MagicTraySnapMode>('closest')
+const momentum = ref(true)
+
+const entries = computed<Array<RangeDemoEntry>>(() => [
+  0,
+  { min: 0.15, max: 0.4, momentum: momentum.value },
+  0.6,
+])
 
 const options = computed<MagicTrayOptions>(() => ({
-  snapPoints: { left: entries },
+  snapPoints: { left: entries.value },
   snap: { mode: mode.value },
   threshold: { distance: 32 },
   inset: true,
@@ -112,7 +127,7 @@ const ring = computed(() => {
     return undefined
   }
 
-  const isInsideRange = entries.some(
+  const isInsideRange = entries.value.some(
     (entry) =>
       typeof entry !== 'number' && value > entry.min && value < entry.max
   )

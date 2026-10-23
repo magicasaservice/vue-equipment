@@ -39,6 +39,7 @@ type InterpolateDraggedArgs = {
 type MappedSnapRange = {
   min: number
   max: number
+  momentum?: boolean
   range: MagicTraySnapRange
 }
 
@@ -148,7 +149,14 @@ export function useTraySnap(args: UseTraySnapArgs) {
         return []
       }
 
-      return [{ min: Math.min(min, max), max: Math.max(min, max), range }]
+      return [
+        {
+          min: Math.min(min, max),
+          max: Math.max(min, max),
+          momentum: range.momentum,
+          range,
+        },
+      ]
     })
   }
 

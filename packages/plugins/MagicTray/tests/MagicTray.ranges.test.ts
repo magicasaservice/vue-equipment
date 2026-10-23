@@ -314,6 +314,31 @@ describe('MagicTray - Ranges', () => {
         .poll(() => read(container, TestId.Active1), { timeout: 2000 })
         .toBe('140px')
     })
+
+    it('a flick inside a range without momentum rests where it was let go', async () => {
+      const container = await mountAt(
+        TrayId.RangeFlickNoMomentum,
+        {
+          ...base,
+          snapPoints: { bottom: [0, { ...range, momentum: false }] },
+          threshold: { distance: 99999, momentum: 0.1 },
+          initial: { snapPoints: { bottom: '100px' } },
+        },
+        100
+      )
+
+      const handle = container.querySelector<HTMLElement>(
+        '.magic-tray-handle[data-side="bottom"]'
+      )!
+      handle.dispatchEvent(pointer('pointerdown', 200))
+      await new Promise((r) => setTimeout(r, 20))
+      await move(20)
+      release(20)
+
+      await expect
+        .poll(() => read(container, TestId.Active1), { timeout: 2000 })
+        .toBe('120px')
+    })
   })
 
   describe('step mode', () => {

@@ -93,6 +93,7 @@ export enum TrayId {
   RangeRoundDecimals = 'range-round-decimals',
   RangeMixedUnits = 'range-mixed-units',
   RangeFlick = 'range-flick',
+  RangeFlickNoMomentum = 'range-flick-no-momentum',
   RangeResizeDecimals = 'range-resize-decimals',
   RangeSnapToOtherUnit = 'range-snap-to-other-unit',
   RangeSnapToRejected = 'range-snap-to-rejected',

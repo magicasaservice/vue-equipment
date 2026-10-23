@@ -45,6 +45,7 @@ type InterpolateDraggedArgs = {
 type MappedSnapRange = {
   min: number
   max: number
+  momentum?: boolean
   range: MagicDrawerSnapRange
 }
 
@@ -127,7 +128,14 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
           return []
         }
 
-        return [{ min: Math.min(min, max), max: Math.max(min, max), range }]
+        return [
+          {
+            min: Math.min(min, max),
+            max: Math.max(min, max),
+            momentum: range.momentum,
+            range,
+          },
+        ]
       })
   )
 

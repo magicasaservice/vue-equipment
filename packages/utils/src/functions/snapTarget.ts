@@ -3,6 +3,8 @@ import { clampValue } from './clampValue'
 export type SnapRange = {
   min: number
   max: number
+  // False keeps a flick released inside the range from carrying on
+  momentum?: boolean
 }
 
 export type SnapDirection = 'below' | 'above'
@@ -107,14 +109,14 @@ function nextSnapPoint(args: SnapDrag & { direction: SnapDirection }) {
   return closestSnapPoint({ points, value, direction })
 }
 
-// A release inside a range rests in place, unless flicked. In 'step' mode
-// only inside the range the side rests in, or the one whose end is the
-// next step.
+// A release inside a range rests in place, unless flicked in a range with
+// momentum. In 'step' mode only inside the range the side rests in, or the
+// one whose end is the next step.
 function restsInRange(args: SnapDrag & { flicked: boolean }) {
   const { ranges, mode, rest, position, flicked } = args
   const range = snapRangeAt({ ranges, position })
 
-  if (!range || flicked) {
+  if (!range || (flicked && range.momentum !== false)) {
     return false
   }
 

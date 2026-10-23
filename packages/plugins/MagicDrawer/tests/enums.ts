@@ -95,6 +95,7 @@ export enum DrawerId {
   RangeAwayFromClose = 'range-away-from-close',
   RangeStep = 'range-step',
   RangeFlick = 'range-flick',
+  RangeFlickNoMomentum = 'range-flick-no-momentum',
   RangeInitial = 'range-initial',
   RangeSnapTo = 'range-snap-to',
   RangeWillSnapTo = 'range-will-snap-to',

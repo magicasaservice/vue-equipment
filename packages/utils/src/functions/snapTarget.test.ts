@@ -154,6 +154,22 @@ describe('snapRelease', () => {
     ).toBe(60)
   })
 
+  it('rests a flick in place inside a range without momentum', () => {
+    expect(
+      snapRelease({
+        ...drag({
+          ranges: [{ ...range, momentum: false }],
+          rest: 100,
+          start: 100,
+          position: 120,
+        }),
+        committed: 140,
+        flicked: true,
+        tapped: false,
+      })
+    ).toBe(120)
+  })
+
   it("rests inside the range it steps into in 'step' mode", () => {
     expect(
       snapRelease({

@@ -292,6 +292,26 @@ describe('MagicDrawer - Ranges', () => {
 
       await expect.poll(() => read(TestId.Active1)).toBe('100px')
     })
+
+    it('a flick inside a range without momentum rests where it was let go', async () => {
+      const screen = render(
+        createDrawer(DrawerId.RangeFlickNoMomentum, {
+          snapPoints: [{ ...range, momentum: false }, 1],
+          threshold: { distance: 99999, momentum: 0.1 },
+          initial: { snapPoint: '180px' },
+        })
+      )
+      await open(screen)
+
+      document
+        .querySelector('.magic-drawer-content__drag')!
+        .dispatchEvent(pointer('pointerdown', 300))
+      await new Promise((r) => setTimeout(r, 20))
+      await move(20)
+      release(20)
+
+      await expect.poll(() => read(TestId.Active1)).toBe('160px')
+    })
   })
 
   describe('api', () => {

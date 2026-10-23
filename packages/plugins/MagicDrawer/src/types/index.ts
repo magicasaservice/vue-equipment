@@ -7,6 +7,7 @@ export type MagicDrawerSnapPoint = number | `${number}px`
 export interface MagicDrawerSnapRange {
   min: MagicDrawerSnapPoint
   max: MagicDrawerSnapPoint
+  momentum?: boolean
 }
 
 export type MagicDrawerSnapEntry = MagicDrawerSnapPoint | MagicDrawerSnapRange

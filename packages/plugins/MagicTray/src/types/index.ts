@@ -9,6 +9,7 @@ export type MagicTraySnapPoint = number | `${number}px`
 export interface MagicTraySnapRange {
   min: MagicTraySnapPoint
   max: MagicTraySnapPoint
+  momentum?: boolean
 }
 
 export type MagicTraySnapEntry = MagicTraySnapPoint | MagicTraySnapRange
@@ -41,8 +42,7 @@ export type TrayMagneticSide = Partial<
 >
 
 export type TrayMagneticSides =
-  | false
-  | Partial<Record<MagicTraySide, TrayMagneticSide>>
+  false | Partial<Record<MagicTraySide, TrayMagneticSide>>
 
 // The scrub band, as perpendicular distances from the resting edge on the
 // approach side: `start` is where the pull engages, `stop` where it tops out and
