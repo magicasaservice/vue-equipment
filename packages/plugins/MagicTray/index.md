@@ -161,13 +161,13 @@ rows:
       - label: "'div'"
   - items:
       - label: snapPoints
-        description: Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1 or a pixel value, like '120px'. Pass `{ min, max }` in place of a point for a range the side can rest anywhere within.
+        description: "Snap points per side. A side becomes draggable as soon as it has at least one snap point. Each point is the inset from that edge, either a decimal between 0 and 1, a pixel value, like '120px', or a range with min, max and optionally momentum, i.e. `{ min: 0.25, max: 0.75, momentum: false }`."
       - label: TraySnapPoints
-        description: 'Partial<Record<MagicTraySide, Array<MagicTraySnapPoint | { min: MagicTraySnapPoint; max: MagicTraySnapPoint }>>>'
+        description: 'Partial<Record<MagicTraySide, Array<MagicTraySnapPoint | { min: MagicTraySnapPoint; max: MagicTraySnapPoint; momentum?: boolean }>>>'
       - label: '{ bottom: [0, 0.5, 1] }'
   - items:
       - label: snap.mode
-        description: Configure how the tray settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time. Both count a range as its two ends.
+        description: Configure how the tray settles after a drag. 'closest' snaps to the nearest point in the drag direction, 'step' always advances one point at a time. A range snap point is split into its min and max values.
       - label: "'closest' | 'step'"
       - label: "'closest'"
   - items:
@@ -217,7 +217,7 @@ rows:
       - label: '128'
   - items:
       - label: threshold.momentum
-        description: Configure the drag speed, in pixels per millisecond, past which a release snaps to the next point in the drag direction, even short of threshold.distance or inside a range.
+        description: Configure the drag speed, in pixels per millisecond, past which a release snaps to the next point in the drag direction, even short of threshold.distance or inside a range, unless the range sets momentum to false.
       - label: number
       - label: '1'
   - items:
@@ -700,7 +700,7 @@ With `drag.mode` set to `'snap'`, the edge commits straight to the snap point cl
 
 ### Ranges
 
-Pass `{ min, max }` in place of a snap point to let a side rest anywhere between two insets. A release inside the range stays where it is, and a release outside of it, or a flick, snaps as if the range were its two ends. With `snap.mode` set to `'step'`, a release inside a range more than one point away lands on the next point instead.
+Pass `{ min, max }` in place of a snap point to let a side rest anywhere between two insets. A release inside the range does not snap, while a release outside snaps to the closest point. Momentum detection is preserved. Add `momentum: false` to disable momentum based snapping inside the range.
 
 ```ts
 const options: MagicTrayOptions = {
