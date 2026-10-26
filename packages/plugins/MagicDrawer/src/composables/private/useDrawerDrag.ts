@@ -631,12 +631,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     // Save pointermove direction
     checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
 
-    // Reset shouldClose before checking
-    shouldClose.value = false
-
-    // Save pointermove direction
-    checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
-
     // Possibly lock scroll
     if (!scrollLock) {
       const scrollLockTarget = lockScroll(firstTouch.target)

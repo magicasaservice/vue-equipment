@@ -406,6 +406,10 @@ dialog.magic-drawer-content__drag::backdrop {
   user-select: none;
 }
 
+.magic-drawer-content[data-dragging='true'] .magic-drawer-content__drag * {
+  -webkit-user-drag: none;
+}
+
 .magic-drawer-content[data-wheeling='true'] .magic-drawer-content__drag {
   cursor: auto;
 }
