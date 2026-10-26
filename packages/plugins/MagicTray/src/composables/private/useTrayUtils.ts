@@ -4,7 +4,15 @@ import type {
   MagicTraySide,
   MagicTraySnapEntry,
   MagicTraySnapRange,
+  TraySnapPoints,
 } from '../../types'
+
+export const SIDES: Array<MagicTraySide> = ['top', 'right', 'bottom', 'left']
+
+type IsDraggableSideArgs = {
+  snapPoints: TraySnapPoints
+  side: MagicTraySide
+}
 
 export function useTrayUtils() {
   // Clamp to [min, max], allowing rubber-band travel up to `outer` pixels past
@@ -57,11 +65,18 @@ export function useTrayUtils() {
     )
   }
 
+  // A side becomes draggable with its first snap point
+  function isDraggableSide(args: IsDraggableSideArgs) {
+    const { snapPoints, side } = args
+    return (snapPoints[side]?.length ?? 0) > 0
+  }
+
   return {
     clampWithOvershoot,
     isVertical,
     oppositeSide,
     isSnapRange,
     flattenSnapPoints,
+    isDraggableSide,
   }
 }

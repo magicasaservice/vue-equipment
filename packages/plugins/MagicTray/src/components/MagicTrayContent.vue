@@ -40,7 +40,6 @@
           :style="handleStyle(side)"
           @pointerdown="guardedPointerdown(side, $event)"
           @touchstart="guardedTouchstart(side, $event)"
-          @click.capture="onHandleClick"
         >
           <template
             v-if="slots[`handle-${side}`] || slots.handle"
@@ -62,6 +61,7 @@ import { computed, inject, useSlots, useTemplateRef } from 'vue'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useTrayState } from '../composables/private/useTrayState'
 import { useTrayDrag } from '../composables/private/useTrayDrag'
+import { useTrayGesture } from '../composables/private/useTrayGesture'
 import { useTrayMagnetism } from '../composables/private/useTrayMagnetism'
 import { useTrayProgress } from '../composables/private/useTrayProgress'
 import MagicTrayHandle from './MagicTrayHandle.vue'
@@ -110,17 +110,15 @@ const inset = computed(() => state.options.inset)
 
 const slots = useSlots()
 
-const {
-  draggableSides,
-  clipPath,
-  handleStyle,
-  hasDragged,
-  onHandlePointerdown,
-  onHandleTouchstart,
-  onHandleClick,
-} = useTrayDrag({
+const { draggableSides, clipPath, handleStyle } = useTrayDrag({
   id: instanceId,
   elRef,
+})
+
+const { hasDragged, onPointerdown, onTouchstart } = useTrayGesture({
+  id: instanceId,
+  state,
+  preventEdgeNavigation: () => state.options.preventEdgeNavigation,
 })
 
 useTrayMagnetism({ id: instanceId, elRef, handleRefs, state })
@@ -139,13 +137,13 @@ const visibleHandles = computed<MagicTraySide[]>(() => {
 
 function guardedPointerdown(side: MagicTraySide, event: PointerEvent) {
   if (!disabled.value) {
-    onHandlePointerdown(side, event)
+    onPointerdown(side, event)
   }
 }
 
 function guardedTouchstart(side: MagicTraySide, event: TouchEvent) {
   if (!disabled.value) {
-    onHandleTouchstart(side, event)
+    onTouchstart(side, event)
   }
 }
 </script>
@@ -261,5 +259,13 @@ dialog.magic-tray-content__inner {
 
 .magic-tray-content[data-dragging='true'] .magic-tray-handle {
   cursor: var(--magic-tray-handle-cursor-dragging, grabbing);
+}
+
+.magic-tray-content[data-dragging='true'] .magic-tray-handle * {
+  -webkit-user-drag: none;
+}
+
+.magic-tray-content[data-dragged='true'] .magic-tray-handle * {
+  pointer-events: none;
 }
 </style>

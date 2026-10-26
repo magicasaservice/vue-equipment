@@ -43,9 +43,6 @@ type MappedSnapRange = {
   range: MagicTraySnapRange
 }
 
-// How close a pixel inset has to be to a snap point to count as it
-const SNAP_TOLERANCE = 0.01
-
 function isMapped(value: number | undefined): value is number {
   return value !== undefined && !Number.isNaN(value)
 }
@@ -217,12 +214,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
       return false
     }
 
-    return (
-      !!rangeAt(side, mapped) ||
-      mappedSnapPoints(side).some(
-        (point) => Math.abs(point - mapped) < SNAP_TOLERANCE
-      )
-    )
+    return !!rangeAt(side, mapped) || mappedSnapPoints(side).includes(mapped)
   }
 
   // Where a pixel inset lands without a drag: in place inside a range,
@@ -308,6 +300,7 @@ export function useTraySnap(args: UseTraySnapArgs) {
     // Commit first, as an interpolation that is already in place emits afterSnap
     // right away
     state.snapped[side] = closest
+    state.lastDragged[side] = closest
     state.activeSnapPoint[side] = snapPointAt(side, closest) ?? snapPoint
 
     if (shouldInterpolate) {

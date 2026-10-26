@@ -31,6 +31,9 @@ const { snapTo } = useMagicTray('your-tray-id')
 ```vue
 <template>
   <magic-tray-provider id="your-tray-id" :options="options">
+    <magic-tray-trigger side="left">
+      <!-- content that drags the left side -->
+    </magic-tray-trigger>
     <magic-tray-content>
       <!-- your content -->
       <template #handle="{ side }">
@@ -86,6 +89,7 @@ import {
   MagicTrayProvider,
   MagicTrayContent,
   MagicTrayHandle,
+  MagicTrayTrigger,
 } from '@maas/vue-equipment/plugins/MagicTray'
 </script>
 ```
@@ -459,6 +463,98 @@ rows:
 ---
 ::
 
+### MagicTrayTrigger
+
+Makes an element a drag surface for one side of the tray, so the user can drag a sidebar or panel shut from anywhere on it. Nest it inside `MagicTrayProvider`, or place it anywhere in your app and pass the tray’s `id`.
+
+```vue
+<template>
+  <magic-tray-trigger id="your-tray-id" side="left" as-child>
+    <aside>
+      <!-- your sidebar -->
+    </aside>
+  </magic-tray-trigger>
+</template>
+```
+
+A press starts the drag right away, so the side follows the pointer from the first pixel. A release within `threshold.lock` counts as a tap and passes its click to the element inside, while a longer drag swallows it. Presses on form fields and editable text never start a drag, and links and images inside the trigger never start a native drag while the side is being dragged.
+
+#### Props
+
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: The tray id. Only required when the trigger is used outside a `MagicTrayProvider`.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'false'
+  - items:
+      - label: side
+        description: The side the trigger drags. A side without snap points ignores the trigger.
+      - label: MagicTraySide
+        description: "'top' | 'right' | 'bottom' | 'left'"
+      - label: 'true'
+  - items:
+      - label: disabled
+        description: Disable the trigger. The trigger is also disabled while the tray’s `disabled` option is set.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: preventEdgeNavigation
+        description: Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag. Defaults to the option set on `MagicTrayProvider` if not provided.
+      - label: boolean
+      - label: 'false'
+  - items:
+      - label: asChild
+        description: Prevent the component from rendering its own element and pass all functionality to the child element instead.
+      - label: boolean
+      - label: 'false'
+---
+::
+
+#### Slot Props
+
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: dragging
+      - label: boolean
+      - plaintext: true
+        label: Whether this trigger is dragging its side.
+  - items:
+      - label: disabled
+      - label: boolean
+      - plaintext: true
+        label: Whether the trigger is currently disabled.
+---
+::
+
+#### CSS Variables
+
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-tray-trigger-touch-action
+      - label: pan-y
+        description: pan-x on the top and bottom sides. A disabled trigger leaves touch-action as it is.
+---
+::
+
 ### MagicTrayTransform
 
 Translates a nested layer alongside the clip. As an edge is dragged inward, the wrapped content is pushed away from that edge by the same distance, while a `background` layer stays anchored.
@@ -650,6 +746,11 @@ rows:
       - label: missing_instance_id
       - plaintext: true
         label: MagicTrayTransform must be nested inside MagicTrayProvider
+  - items:
+      - label: MagicTrayTrigger
+      - label: missing_instance_id
+      - plaintext: true
+        label: MagicTrayTrigger must be nested inside MagicTrayProvider or an id must be provided
 ---
 ::
 
@@ -657,11 +758,17 @@ rows:
 
 The tray handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the tray to differentiate when the user scrolls and when the user drags, any scrollable containers within the tray need to have their overflow value explicitly set to `auto` or `scroll`.
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so handle click listeners keep firing. A touch on an SVG icon counts as well, and its replacement click goes to the HTML element that holds the icon. Set `preventEdgeNavigation` to `false` to opt out.
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe, in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles and triggers within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. A touch on an SVG icon counts as well, and its replacement click goes to the HTML element that holds the icon. A canceled touch never scrolls either. Set the `preventEdgeNavigation` prop to `false` on a trigger whose content needs to scroll next to a viewport edge, and the option to `false` to opt out for the whole tray.
 
 The clip insets hide part of the content, but the content still covers the whole tray. Taps respect the clip, so an element showing through the clipped area receives them. On iOS, the native hit test that decides which scroller takes a pan ignores the clip, so a scrollable element behind the clipped area never scrolls. Set `--magic-tray-content-pointer-events` to `none` while that area needs to scroll, for example while a side is open over a sidebar. Content that sets its own `pointer-events` still catches touches.
 
-While a handle is being dragged, the tray disables text selection on the whole document and restores it on release. Without this, a pointer that leaves the handle would keep extending a selection across the page.
+While a handle is being dragged, the tray disables text selection on the whole document and restores it on release. Without this, a pointer that leaves the handle would keep extending a selection across the page. A trigger disables it only once its drag moves past `threshold.lock`, so a long press on its content still selects text.
+
+In order for a trigger to tell a scroll from a drag on touch devices, it sets `touch-action` to `pan-y` on the left and right sides and to `pan-x` on the top and bottom: the browser scrolls along the other axis and leaves the drag axis to the tray. The browser reads `touch-action` only up to the nearest scroll container, so give any scrollable element inside a trigger the same value. Without it, a swipe along the drag axis that starts on that element cancels the drag.
+
+A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests.
+
+If an element inside a trigger runs its own drag, like a swipe action on a list row, stop `pointerdown` from propagating on that element. Otherwise the tray starts a drag from the same press and moves along with it.
 
 ## Examples
 
@@ -727,6 +834,13 @@ The `willSnapTo` event fires during a drag whenever the snap point the edge will
 A handle passes clicks through to its slotted content, so a clickable element inside a `handle` slot works as expected.
 
 ::component-preview{src="./demo/HandleClickDemo.vue"}
+::
+
+### Trigger
+
+Wrap an element in `MagicTrayTrigger` to drag a side from anywhere on it. The list below sits outside the provider and passes the tray’s `id`, so dragging it closes the left side, while a tap selects an item.
+
+::component-preview{src="./demo/TriggerDemo.vue"}
 ::
 
 ### Magnetic

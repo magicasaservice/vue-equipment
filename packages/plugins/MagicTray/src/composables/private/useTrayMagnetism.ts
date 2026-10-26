@@ -5,7 +5,7 @@ import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
 import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 import { useTraySnap } from './useTraySnap'
-import { useTrayUtils } from './useTrayUtils'
+import { SIDES, useTrayUtils } from './useTrayUtils'
 
 import type { ComponentPublicInstance, MaybeRef, Ref, ShallowRef } from 'vue'
 
@@ -29,17 +29,12 @@ type UseTrayMagnetismArgs = {
   state: TrayState
 }
 
-type MagneticPoint = { inset: number; direction: TrayMagneticDirection }
-
 // The scrub band normalized from `magnetism.radius`; ends undefined when unset
 type RadiusBand = {
   start: number | undefined
   stop: number | undefined
   configured: boolean
 }
-
-const SIDES: MagicTraySide[] = ['top', 'right', 'bottom', 'left']
-const EPSILON = 0.5
 
 export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   const { id, elRef, handleRefs, state } = args
@@ -49,10 +44,7 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     source: 'useTrayMagnetism',
   })
 
-  const { mapSnapPoint, mappedSnapPoints, maxInset } = useTraySnap({
-    id,
-    state,
-  })
+  const { maxInset } = useTraySnap({ id, state })
 
   const { flattenSnapPoints } = useTrayUtils()
   const emitter = useMagicEmitter()
@@ -87,35 +79,6 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
   // While false, nothing is attached and no per-frame math runs
   const enabled = computed(
     () => magneticSides.value.length > 0 && !disabled.value
-  )
-
-  // Resting insets at which each side is magnetic, with their direction. Cached
-  // so the per-frame loop doesn’t re-resolve it on every pointer move.
-  const magneticPoints = computed<Record<MagicTraySide, MagneticPoint[]>>(
-    () => {
-      const result: Record<MagicTraySide, MagneticPoint[]> = {
-        top: [],
-        right: [],
-        bottom: [],
-        left: [],
-      }
-      for (const side of magneticSides.value) {
-        const config = sideConfig(side)
-        if (!config || !mappedSnapPoints(side).length) {
-          continue
-        }
-        result[side] = Object.entries(config)
-          .map(([key, direction]) => ({
-            inset: mapSnapPoint(side, coercePoint(key)),
-            direction: direction as TrayMagneticDirection,
-          }))
-          .filter(
-            (point): point is MagneticPoint =>
-              point.inset === 0 || (!!point.inset && !Number.isNaN(point.inset))
-          )
-      }
-      return result
-    }
   )
 
   // Last emitted progress per side, to only emit the magnetism event on change
@@ -214,15 +177,16 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     }
   }
 
-  // The active direction(s) for a side at its current rest, or null if it is
-  // not resting at a magnetic snap point
+  // The configured direction for the snap point a side rests at, or null if
+  // that point is not magnetic
   function restDirection(side: MagicTraySide): TrayMagneticDirection | null {
-    const rest = state.snapped[side]
-    const match = magneticPoints.value[side].find(
-      (point) => Math.abs(point.inset - rest) < EPSILON
-    )
+    const point = state.activeSnapPoint[side]
 
-    return match ? match.direction : null
+    if (point === undefined) {
+      return null
+    }
+
+    return sideConfig(side)?.[point] ?? null
   }
 
   // The handle’s bounding rect, or null if no handle is mounted for the side.
@@ -263,7 +227,8 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
       return
     }
 
-    if (Math.abs(magneticOffset[side]) <= EPSILON) {
+    // A pull under half a pixel has nothing visible to ease
+    if (Math.round(magneticOffset[side]) === 0) {
       resetSide(side)
       return
     }
@@ -509,13 +474,14 @@ export function useTrayMagnetism(args: UseTrayMagnetismArgs) {
     const magnitude = overflow === 0 ? easing.value(t) : 1
     const offset = sign * pull * magnitude
 
-    // Clamp to the side’s travel, then write a live pull or ease a collapse home.
+    // Clamp to the side’s travel, then write a visible pull live or ease a
+    // collapse home
     const target = clampValue(
       offset,
       -state.dragged[side],
       maxInset(side) - state.dragged[side]
     )
-    if (Math.abs(target) > EPSILON) {
+    if (Math.round(target) !== 0) {
       cancelSettle(side)
       magneticOffset[side] = target
       if (!isVirtual.value) {

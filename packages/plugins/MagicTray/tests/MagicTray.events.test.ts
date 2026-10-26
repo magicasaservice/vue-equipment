@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { page, userEvent } from 'vitest/browser'
 import {
   defineComponent,
   nextTick,
@@ -328,7 +329,7 @@ describe('MagicTray - Events', () => {
             <span data-test-id="${TestId.Events}">{{ clicks }}</span>
             <MagicTrayContent>
               <template #handle>
-                <button data-test-id="${TestId.SnapBtn}" @click="clicks++">Toggle</button>
+                <button data-test-id="${TestId.SnapBtn}" style="width: 120px; height: 60px;" @click="clicks++">Toggle</button>
               </template>
               <div style="width: 200px; height: 200px;">Content</div>
             </MagicTrayContent>
@@ -379,24 +380,20 @@ describe('MagicTray - Events', () => {
       await nextTick()
       await new Promise((r) => setTimeout(r, 100))
 
-      const handle = container.querySelector(
-        '.magic-tray-handle[data-side="bottom"]'
-      ) as HTMLElement
-      const button = container.querySelector(
-        `[data-test-id="${TestId.SnapBtn}"]`
-      ) as HTMLButtonElement
-
-      // Drag well past the lock threshold, then the click that follows on release
-      handle.dispatchEvent(pointer('pointerdown', 200))
-      await nextTick()
-      document.dispatchEvent(pointer('pointermove', 160))
-      await nextTick()
-      document.dispatchEvent(pointer('pointerup', 160))
-      await nextTick()
-      button.dispatchEvent(
-        new MouseEvent('click', { bubbles: true, cancelable: true })
+      const button = page.elementLocator(
+        container.querySelector<HTMLElement>(
+          `[data-test-id="${TestId.SnapBtn}"]`
+        )!
       )
-      await nextTick()
+
+      // Drag well past the lock threshold and release over the button, then
+      // give the browser a moment to deliver the click it synthesises
+      await userEvent.dragAndDrop(button, button, {
+        sourcePosition: { x: 10, y: 55 },
+        targetPosition: { x: 10, y: 5 },
+        force: true,
+      })
+      await new Promise((r) => setTimeout(r, 100))
 
       const clicks = container.querySelector(
         `[data-test-id="${TestId.Events}"]`
