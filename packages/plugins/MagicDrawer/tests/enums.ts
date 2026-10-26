@@ -30,6 +30,7 @@ export enum DrawerId {
   ApiDrawer = 'api-drawer',
   ApiClose = 'api-close',
   ApiCycle = 'api-cycle',
+  ApiActiveSnapPoint = 'api-active-snap-point',
   Drawer1 = 'drawer-1',
   Drawer2 = 'drawer-2',
   InitialDrawer = 'initial-drawer',

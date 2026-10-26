@@ -879,7 +879,10 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       await getSizes()
       const snapPoint = toValue(initial)?.snapPoint
 
+      // Without an initial snap point the drawer opens fully, so record the
+      // point it rests at
       if (!snapPoint) {
+        activeSnapPoint.value = snapPointAt(0)
         return
       }
 
