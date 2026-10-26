@@ -11,7 +11,6 @@ import MagicPlayerVideo from '../src/components/MagicPlayerVideo.vue'
 import { useMagicPlayer } from '../src/composables/useMagicPlayer'
 import { PlayerId, TestId } from './enums'
 
-import type { SSRBufferItem } from '@vue/server-renderer'
 import type { Component, ComponentInternalInstance } from 'vue'
 
 const VIDEO_SRC =
@@ -23,6 +22,10 @@ interface PlaylistPageContext {
   playlistIndex: number
   playlistCount: number
 }
+
+// The renderer does not export its buffer item type, so name what a page
+// pushes: markup and rendered components
+type SSRPushItem = string | ReturnType<typeof ssrRenderComponent>
 
 /**
  * A page that reads the playlist state beside the provider, the way a counter
@@ -73,7 +76,7 @@ function createPlaylistPage(
     },
     ssrRender(
       context: PlaylistPageContext,
-      push: (item: SSRBufferItem) => void,
+      push: (item: SSRPushItem) => void,
       parent: ComponentInternalInstance
     ) {
       push('<div>')
