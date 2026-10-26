@@ -22,14 +22,16 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
       MagicDrawerContent,
     },
     setup() {
-      const { open, close, isActive, snapTo, progress } = useMagicDrawer(id)
-      return { open, close, isActive, snapTo, progress }
+      const { open, close, isActive, snapTo, progress, activeSnapPoint } =
+        useMagicDrawer(id)
+      return { open, close, isActive, snapTo, progress, activeSnapPoint }
     },
     template: `
       <MagicDrawerProvider id="${id}" :options="options">
         <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
         <span data-test-id="${TestId.ProgressX}">{{ progress.x }}</span>
         <span data-test-id="${TestId.ProgressY}">{{ progress.y }}</span>
+        <span data-test-id="${TestId.Active1}">{{ activeSnapPoint }}</span>
         <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
         <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
         <MagicDrawerTeleport>
@@ -143,6 +145,20 @@ describe('MagicDrawer - API', () => {
       await expect
         .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
+    })
+
+    it('open() sets activeSnapPoint to the point the drawer rests at', async () => {
+      const screen = render(createDrawer(DrawerId.ApiActiveSnapPoint))
+      await expect
+        .element(screen.getByTestId(TestId.Active1))
+        .toHaveTextContent('')
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+
+      await expect
+        .element(screen.getByTestId(TestId.Active1))
+        .toHaveTextContent('1')
     })
 
     it('open/close cycle can be repeated', async () => {
