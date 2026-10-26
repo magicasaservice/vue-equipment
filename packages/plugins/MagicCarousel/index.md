@@ -133,9 +133,9 @@ rows:
       - label: 'false'
   - items:
       - label: threshold.lock
-        description: The distance in px the pointer needs to travel before a mouse drag engages. Clicks below the threshold pass through to the slides.
+        description: The distance in px the pointer travels before a mouse press counts as a drag. A release within it is a click and passes through to the slides.
       - label: number
-      - label: '10'
+      - label: '8'
   - items:
       - label: animation.snap.duration
         description: The duration in ms when snapping programmatically, through a trigger or the composable.

@@ -199,7 +199,7 @@ rows:
       - label: 'false'
   - items:
       - label: threshold.lock
-        description: Configure the dragged distance before the toaster prevents other touch interactions.
+        description: The distance in px a press may travel and still count as a tap on release. A tap returns to rest and passes its click through. Past it the release snaps and the click is swallowed.
       - label: number
       - label: '8'
   - items:

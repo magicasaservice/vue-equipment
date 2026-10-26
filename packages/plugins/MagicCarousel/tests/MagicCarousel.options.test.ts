@@ -24,7 +24,7 @@ describe('MagicCarousel - Options', () => {
 
       expect(api!.state.options.loop).toBe(false)
       expect(api!.state.options.disabled).toBe(false)
-      expect(api!.state.options.threshold.lock).toBe(10)
+      expect(api!.state.options.threshold.lock).toBe(8)
       expect(api!.state.options.animation.snap.duration).toBe(300)
       expect(typeof api!.state.options.animation.snap.easing).toBe('function')
       expect(api!.state.options.animation.momentum.friction).toBe(0.72)
