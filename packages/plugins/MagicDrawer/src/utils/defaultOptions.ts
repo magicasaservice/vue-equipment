@@ -24,7 +24,7 @@ const defaultOptions: RequiredMagicDrawerOptions = {
     backdrop: 'magic-drawer-backdrop',
   },
   threshold: {
-    lock: 0,
+    lock: 8,
     distance: 128,
     momentum: 1,
   },

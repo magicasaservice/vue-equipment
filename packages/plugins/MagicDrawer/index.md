@@ -238,9 +238,9 @@ rows:
       - label: "'magic-drawer-backdrop'"
   - items:
       - label: threshold.lock
-        description: Configure the dragged distance before the drawer prevents other touch interactions.
+        description: The distance in px a press may travel and still count as a tap on release. A tap returns to rest and passes its click through. Past it the release snaps and the click is swallowed.
       - label: number
-      - label: '0'
+      - label: '8'
   - items:
       - label: threshold.distance
         description: Configure the dragged distance before the drawer snaps. A drag that starts inside a range counts the distance from the range’s nearer end. In a range that reaches 0, a drag that ends within this distance of 0 closes the drawer.

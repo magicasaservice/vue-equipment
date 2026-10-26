@@ -153,9 +153,9 @@ rows:
       - label: '250'
   - items:
       - label: threshold.lock
-        description: Configure the dragged distance before the component prevents other touch interactions.
+        description: The distance in px a press may travel and still count as a tap on release. A tap returns to rest and passes its click through. Past it the release snaps and the click is swallowed.
       - label: number
-      - label: '0'
+      - label: '8'
   - items:
       - label: animation.snap.duration
         description: Configure the component’s snap animation duration.

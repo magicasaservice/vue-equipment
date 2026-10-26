@@ -207,9 +207,9 @@ rows:
       - label: 'false'
   - items:
       - label: threshold.lock
-        description: Configure the dragged distance before the tray prevents other touch interactions.
+        description: The distance in px a press may travel and still count as a tap on release. A tap returns to rest and passes its click through. Past it the release snaps and the click is swallowed.
       - label: number
-      - label: '0'
+      - label: '8'
   - items:
       - label: threshold.distance
         description: Configure the dragged distance before the side snaps to the next snap point in the drag direction. A drag that starts inside a range counts the distance from the range’s nearer end.

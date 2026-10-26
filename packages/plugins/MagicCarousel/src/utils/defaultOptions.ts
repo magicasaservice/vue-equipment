@@ -4,7 +4,7 @@ import type { RequiredMagicCarouselOptions } from '../types'
 const defaultOptions: RequiredMagicCarouselOptions = {
   loop: false,
   threshold: {
-    lock: 10,
+    lock: 8,
   },
   animation: {
     snap: {
