@@ -49,9 +49,6 @@ type MappedSnapRange = {
   range: MagicDrawerSnapRange
 }
 
-// How close a pixel offset has to be to a snap point to count as it
-const SNAP_TOLERANCE = 0.01
-
 function isMapped(value: number | undefined): value is number {
   return value !== undefined && !Number.isNaN(value)
 }
@@ -284,7 +281,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
   function configuredPointAt(offset: number) {
     return configuredPoints.value.find((snapPoint) => {
       const mapped = mapSnapPoint(snapPoint)
-      return isMapped(mapped) && Math.abs(mapped - offset) < SNAP_TOLERANCE
+      return mapped === offset
     })
   }
 
@@ -361,12 +358,7 @@ export function useDrawerSnap(args: UseDrawerSnapArgs) {
       return false
     }
 
-    return (
-      !!rangeAt(mapped) ||
-      mappedSnapPoints.value.some(
-        (point) => Math.abs(point - mapped) < SNAP_TOLERANCE
-      )
-    )
+    return !!rangeAt(mapped) || mappedSnapPoints.value.includes(mapped)
   }
 
   // Where a pixel offset lands without a drag: in place inside a range,
