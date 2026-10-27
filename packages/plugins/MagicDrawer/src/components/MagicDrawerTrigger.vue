@@ -28,7 +28,11 @@ interface MagicDrawerTriggerProps {
   asChild?: boolean
 }
 
-const { id, disabled, asChild } = defineProps<MagicDrawerTriggerProps>()
+const {
+  id,
+  disabled = undefined,
+  asChild,
+} = defineProps<MagicDrawerTriggerProps>()
 
 const injectedInstanceId = inject(MagicDrawerInstanceId, undefined)
 

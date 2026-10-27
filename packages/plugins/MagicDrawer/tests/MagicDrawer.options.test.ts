@@ -20,8 +20,8 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
       MagicDrawerContent,
     },
     setup() {
-      const { isActive } = useMagicDrawer(id)
-      return { isActive }
+      const { isActive, open } = useMagicDrawer(id)
+      return { isActive, open }
     },
     template: `
       <MagicDrawerProvider id="${id}" :options="options">
@@ -29,6 +29,7 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
         <MagicDrawerTrigger>
           <button data-test-id="${TestId.Trigger}">Open</button>
         </MagicDrawerTrigger>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open by API</button>
         <MagicDrawerTeleport>
           <MagicDrawerBackdrop />
           <MagicDrawerContent>
@@ -45,6 +46,14 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
 
 async function open(screen: ReturnType<typeof render>) {
   await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+  await nextTick()
+  await new Promise((r) => setTimeout(r, 50))
+}
+
+// A disabled drawer disables its trigger too, so it opens through the API
+async function openDisabled(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.OpenBtn).click()
   await nextTick()
   await nextTick()
   await new Promise((r) => setTimeout(r, 50))
@@ -131,7 +140,7 @@ describe('MagicDrawer - Options', () => {
       const screen = render(
         createDrawer(DrawerId.DisabledTrue, { disabled: true })
       )
-      await open(screen)
+      await openDisabled(screen)
       expect(
         document
           .querySelector('.magic-drawer-content')!

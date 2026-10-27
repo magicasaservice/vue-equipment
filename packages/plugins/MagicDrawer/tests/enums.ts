@@ -3,6 +3,7 @@ export enum DrawerId {
   RenderTrigger = 'render-trigger',
   RenderTriggerActive = 'render-trigger-active',
   RenderTriggerDisabled = 'render-trigger-disabled',
+  RenderTriggerInheritsDisabled = 'render-trigger-inherits-disabled',
   RenderTriggerOpen = 'render-trigger-open',
   RenderContentClosed = 'render-content-closed',
   RenderContentOpen = 'render-content-open',
@@ -104,6 +105,7 @@ export enum DrawerId {
 
 export enum TestId {
   Trigger = 'trigger',
+  OpenBtn = 'open-btn',
   CloseBtn = 'close-btn',
   IsActive = 'is-active',
   DrawerContent = 'drawer-content',

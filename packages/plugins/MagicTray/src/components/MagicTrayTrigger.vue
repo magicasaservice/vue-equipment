@@ -35,8 +35,13 @@ interface MagicTrayTriggerProps {
   asChild?: boolean
 }
 
-const { id, side, disabled, preventEdgeNavigation, asChild } =
-  defineProps<MagicTrayTriggerProps>()
+const {
+  id,
+  side,
+  disabled,
+  preventEdgeNavigation = undefined,
+  asChild,
+} = defineProps<MagicTrayTriggerProps>()
 
 const injectedInstanceId = inject(MagicTrayInstanceId, undefined)
 
