@@ -257,7 +257,7 @@ rows:
       - label: 'false'
   - items:
       - label: inset
-        description: Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on every side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek.
+        description: Position the content absolutely and offset it by `--magic-tray-drag-overshoot-outer` on each draggable side, so the reserved overshoot padding bleeds outside a clipping parent instead of into the visible peek.
       - label: boolean
       - label: 'false'
 ---

@@ -218,10 +218,6 @@ function guardedTouchstart(side: MagicTraySide, event: TouchEvent) {
   pointer-events: var(--magic-tray-content-pointer-events, auto);
 }
 
-.magic-tray-content[data-inset='true'] .magic-tray-content__slot {
-  padding: var(--magic-tray-drag-overshoot-outer);
-}
-
 .magic-tray-content__inner[data-drag-top='true'] {
   padding-top: var(--magic-tray-drag-overshoot-outer);
 }
