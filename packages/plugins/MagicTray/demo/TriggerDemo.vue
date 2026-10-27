@@ -109,11 +109,12 @@
 import { ref } from 'vue'
 import { useMagicTray } from '@maas/vue-equipment/plugins/MagicTray'
 
+import type { SVGAttributes } from 'vue'
 import type { MagicTrayOptions } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-trigger-demo'
 
-const svg = {
+const svg: SVGAttributes = {
   viewBox: '0 0 16 16',
   fill: 'none',
   stroke: 'currentColor',
