@@ -8,7 +8,7 @@ catalog:
   '@maas/magic-timer': ^1.2.0
   '@maas/mirror': ^2.0.0-beta.3
   '@maas/vue-autosize': ^1.8.0
-  '@maas/vue-primitive': ^1.4.0
+  '@maas/vue-primitive': ^1.5.0
   '@nuxt/kit': ^4.5.2
   '@tailwindcss/vite': ^4.3.3
   '@types/fs-extra': ^11.0.4

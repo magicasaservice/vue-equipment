@@ -78,7 +78,7 @@
     "@floating-ui/vue": "^1 || ^2",
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
-    "@maas/vue-primitive": "^1.4",
+    "@maas/vue-primitive": "^1.5",
     "@nuxt/kit": ">=3",
     "@vueuse/core": ">=12",
     "@vueuse/integrations": ">=12",

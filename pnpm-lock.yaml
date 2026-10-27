@@ -19,8 +19,8 @@ catalogs:
       specifier: ^1.8.0
       version: 1.8.0
     '@maas/vue-primitive':
-      specifier: ^1.4.0
-      version: 1.4.0
+      specifier: ^1.5.0
+      version: 1.5.0
     '@nuxt/kit':
       specifier: ^4.5.2
       version: 4.5.2
@@ -109,7 +109,7 @@ importers:
         version: 1.8.0(@vueuse/core@14.4.0(vue@3.5.42(typescript@5.9.3)))(vue@3.5.42(typescript@5.9.3))
       '@maas/vue-primitive':
         specifier: 'catalog:'
-        version: 1.4.0
+        version: 1.5.0
       '@nuxt/kit':
         specifier: 'catalog:'
         version: 4.5.2(magic-string@1.2.3)(magicast@0.5.4)(rolldown@1.2.6)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.6)(rollup@4.63.0)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.0)))
@@ -1632,8 +1632,8 @@ packages:
       '@vueuse/core': '>=12'
       vue: ^3.5
 
-  '@maas/vue-primitive@1.4.0':
-    resolution: {integrity: sha512-6gdwEbIPZz6C+uZCaERG9D2ijlYCqTeNSPWlvjK4BjkFMhBWC3eCo7zRTDJjXXhTz+iZq19EHVx08OxeMR+KSg==}
+  '@maas/vue-primitive@1.5.0':
+    resolution: {integrity: sha512-KyawjJlgu/BDnewYo6WaB1HQT8w+BkCbMdONd/hT3fht6P61gte3b1JTwJ/5yQIDsdV3Zc88r6fNzcNPbu1iuA==}
 
   '@mapbox/node-pre-gyp@2.0.3':
     resolution: {integrity: sha512-uwPAhccfFJlsfCxMYTwOdVfOz3xqyj8xYL3zJj8f0pb30tLohnnFPhLuqp4/qoEz8sNxe4SESZedcBojRefIzg==}
@@ -9368,7 +9368,7 @@ snapshots:
       '@vueuse/core': 14.4.0(vue@3.5.42(typescript@5.9.3))
       vue: 3.5.42(typescript@5.9.3)
 
-  '@maas/vue-primitive@1.4.0': {}
+  '@maas/vue-primitive@1.5.0': {}
 
   '@mapbox/node-pre-gyp@2.0.3':
     dependencies:
