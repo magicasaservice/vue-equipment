@@ -21,6 +21,7 @@ export enum MenuId {
   IntItemLeave = 'int-item-leave',
   IntItemClick = 'int-item-click',
   IntItemDisabled = 'int-item-disabled',
+  IntItemDisabledTrigger = 'int-item-disabled-trigger',
   IntContext = 'int-context',
   IntEscape = 'int-escape',
   IntSubmenuGuard = 'int-submenu-guard',

@@ -459,7 +459,7 @@ columns:
 rows:
   - items:
       - label: disabled
-        description: Disable the trigger.
+        description: Disable the trigger. Defaults to the disabled state of the surrounding `MagicMenuItem` if not provided.
       - label: boolean
       - label: 'false'
   - items:

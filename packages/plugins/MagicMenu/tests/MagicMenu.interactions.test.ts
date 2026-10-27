@@ -271,6 +271,45 @@ describe('MagicMenu - Interactions', () => {
       const item = document.querySelector(`[data-id="${ItemId.Item3}"]`)
       expect(item!.getAttribute('data-disabled')).toBe('true')
     })
+
+    it('a submenu trigger inside a disabled item is disabled', async () => {
+      const component = defineComponent({
+        template: `
+          <MagicMenuProvider id="${MenuId.IntItemDisabledTrigger}" :options="{ mode: 'dropdown' }">
+            <MagicMenuView id="${ViewId.V0}">
+              <MagicMenuTrigger>
+                <button data-test-id="${TestId.Trigger}">Open</button>
+              </MagicMenuTrigger>
+              <MagicMenuContent :teleport="{ disabled: true }">
+                <MagicMenuItem id="${ItemId.Item3}" :disabled="true">
+                  <div>Parent</div>
+                  <MagicMenuView id="${ViewId.V1}">
+                    <MagicMenuTrigger>
+                      <div data-test-id="${TestId.SubTrigger}">Sub</div>
+                    </MagicMenuTrigger>
+                    <MagicMenuContent :teleport="{ disabled: true }">
+                      <MagicMenuItem id="${ItemId.SubItem}">
+                        <div>Sub Item</div>
+                      </MagicMenuItem>
+                    </MagicMenuContent>
+                  </MagicMenuView>
+                </MagicMenuItem>
+              </MagicMenuContent>
+            </MagicMenuView>
+          </MagicMenuProvider>
+        `,
+      })
+      const screen = render(component, gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+
+      const trigger = document
+        .querySelector(`[data-test-id="${TestId.SubTrigger}"]`)!
+        .closest('.magic-menu-trigger')
+      expect(trigger!.getAttribute('data-disabled')).toBe('true')
+    })
   })
 
   describe('context menu', () => {
