@@ -838,7 +838,7 @@ A handle passes clicks through to its slotted content, so a clickable element in
 
 ### Trigger
 
-Wrap an element in `MagicTrayTrigger` to drag a side from anywhere on it. The list below sits outside the provider and passes the tray’s `id`, so dragging it closes the left side, while a tap selects an item.
+Wrap an element in `MagicTrayTrigger` to drag a side from anywhere on it. The sidebar sits outside the provider and passes the tray’s `id`, the chat view inside is a second trigger wrapped in `MagicTrayTransform` so it moves with the drag, and taps still select a chat or open the menu.
 
 ::component-preview{src="./demo/TriggerDemo.vue"}
 ::
