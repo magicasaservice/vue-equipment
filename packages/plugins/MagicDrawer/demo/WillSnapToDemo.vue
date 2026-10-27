@@ -1,61 +1,61 @@
 <template>
-  <div class="flex flex-col items-center gap-4 select-none">
-    <m-button @click="drawerApi.open">Open Drawer</m-button>
+  <m-button @click="drawerApi.open">Open Drawer</m-button>
 
-    <div
-      class="bg-surface-low text-surface w-120 max-w-full rounded-[0.25rem] p-4 font-mono text-sm"
-    >
-      <div class="text-surface-muted mb-3 text-xs tracking-widest uppercase">
-        snap points
-      </div>
-      <div class="mb-4 flex justify-between">
+  <magic-drawer
+    id="magic-drawer-will-snap-to-demo"
+    :options="{
+      focusTrap: false,
+      snapPoints,
+      threshold: { distance: 32 },
+      initial: { snapPoint: snapPoints[0] },
+    }"
+  >
+    <div class="bg-surface-base absolute inset-0 select-none">
+      <div class="flex justify-center p-4">
         <div
-          v-for="point in snapPoints"
-          :key="String(point)"
-          class="flex flex-col items-center gap-2"
+          class="bg-surface-high text-surface w-120 max-w-full rounded-[0.5rem] p-4 font-mono text-sm"
         >
-          <div class="h-2 w-2 rounded-full" :class="dotClass(point)" />
-          <span class="text-surface-muted text-xs">{{ point }}</span>
+          <div class="mb-4 flex justify-between text-xs">
+            <span class="text-surface-muted tracking-widest uppercase">
+              snap points
+            </span>
+            <span
+              :class="
+                willSnapTo !== null
+                  ? 'text-warning-solid'
+                  : 'text-success-solid'
+              "
+            >
+              {{ status }}
+            </span>
+          </div>
+          <div class="relative flex justify-between">
+            <div class="border-surface absolute inset-x-5 top-1.25 border-t" />
+            <div
+              v-for="point in snapPoints"
+              :key="String(point)"
+              class="relative flex w-10 flex-col items-center gap-2"
+            >
+              <div
+                class="h-2.5 w-2.5 rounded-full transition-colors"
+                :class="dotClass(point)"
+              />
+              <span class="text-surface-muted text-xs">{{ point }}</span>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="text-surface-muted mb-2 text-xs tracking-widest uppercase">
-        willSnapTo events
-      </div>
-      <div class="flex flex-col gap-1.5">
-        <template v-if="log.length">
-          <div
-            v-for="(entry, i) in log"
-            :key="i"
-            :class="i === 0 ? 'text-surface' : 'text-surface-muted'"
-          >
-            {{ entry.snapPoint }}
-          </div>
-        </template>
-        <span v-else class="text-surface-muted">—</span>
-      </div>
     </div>
-
-    <magic-drawer
-      id="magic-drawer-will-snap-to-demo"
-      :options="{
-        focusTrap: false,
-        snapPoints,
-        threshold: { distance: 32 },
-        initial: { snapPoint: snapPoints[0] },
-      }"
-    >
-      <div class="bg-surface-base absolute inset-0" />
-    </magic-drawer>
-  </div>
+  </magic-drawer>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { MButton } from 'mirror-compat'
 import { useMagicDrawer } from '@maas/vue-equipment/plugins/MagicDrawer'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 
+import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 import type {
   MagicDrawerSnapPoint,
   MagicDrawerWillSnapToPayload,
@@ -69,52 +69,50 @@ const emitter = useMagicEmitter()
 
 // The pending snap target during drag — null when not dragging
 const willSnapTo = ref<MagicDrawerSnapPoint | null>(null)
-// The snap point the drawer has settled on
-const settledSnapPoint = ref<MagicDrawerSnapPoint>(snapPoints[0]!)
+
+const status = computed(() =>
+  willSnapTo.value !== null
+    ? `will snap to ${willSnapTo.value}`
+    : `snapped to ${drawerApi.activeSnapPoint.value ?? snapPoints[0]}`
+)
 
 function dotClass(point: MagicDrawerSnapPoint) {
   if (willSnapTo.value === point) {
     return 'bg-warning-solid'
   }
-  if (settledSnapPoint.value === point) {
+  if (drawerApi.activeSnapPoint.value === point) {
     return 'bg-success-solid'
   }
-  return 'bg-surface-base'
+  return 'text-surface-subtle bg-current'
 }
-
-const log = ref<MagicDrawerWillSnapToPayload[]>([])
 
 function onWillSnapTo(payload: MagicDrawerWillSnapToPayload) {
-  if (payload.id !== id) {
-    return
-  }
-  willSnapTo.value = payload.snapPoint
-  log.value.unshift(payload)
-  if (log.value.length > 5) {
-    log.value.length = 5
+  if (payload.id === id) {
+    willSnapTo.value = payload.snapPoint
   }
 }
 
-function isDrawerSnapPoint(v: unknown): v is MagicDrawerSnapPoint {
-  return typeof v === 'number' || typeof v === 'string'
+function onAfterSnap(payload: MagicEmitterEvents['afterSnap']) {
+  if (payload.id === id) {
+    willSnapTo.value = null
+  }
 }
 
-function onAfterSnap(payload: { id: string; snapPoint: unknown }) {
-  if (payload.id !== id) {
-    return
+// A drag that closes the drawer never settles on a snap point
+function onAfterLeave(payload: MagicEmitterEvents['afterLeave']) {
+  if (payload === id) {
+    willSnapTo.value = null
   }
-  if (isDrawerSnapPoint(payload.snapPoint)) {
-    settledSnapPoint.value = payload.snapPoint
-  }
-  willSnapTo.value = null
 }
 
 emitter.on('willSnapTo', onWillSnapTo)
 emitter.on('afterSnap', onAfterSnap)
+emitter.on('afterLeave', onAfterLeave)
 
 onBeforeUnmount(() => {
   emitter.off('willSnapTo', onWillSnapTo)
   emitter.off('afterSnap', onAfterSnap)
+  emitter.off('afterLeave', onAfterLeave)
 })
 </script>
 
