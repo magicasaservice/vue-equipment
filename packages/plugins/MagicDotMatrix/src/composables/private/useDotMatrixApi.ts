@@ -9,7 +9,11 @@ import { useIntervalFn } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useDotMatrixState } from './useDotMatrixState'
 import { defaultOptions } from '../../utils/defaultOptions'
-import type { DotMatrixSequence } from '../../types/index'
+import type {
+  DotMatrixFrame,
+  DotMatrixLayeredFrame,
+  DotMatrixSequence,
+} from '../../types/index'
 
 export type UseDotMatrixApiParams = {
   instanceId: MaybeRef<string>
@@ -39,11 +43,25 @@ export function useDotMatrixApi({
   })
 
   // Public state
-  const activeIndices = computed(
-    () => new Set(toValue(sequence)[state.frame] ?? [])
-  )
+  const tones = computed(() => {
+    const frame = toValue(sequence)[state.frame] ?? []
+    const layers = isLayered(frame) ? frame : [frame]
+    const mapped = new Map<number, number>()
+
+    layers.forEach((layer, index) => {
+      layer.forEach((dot) => mapped.set(dot, index + 1))
+    })
+
+    return mapped
+  })
 
   // Private functions
+  function isLayered(
+    frame: DotMatrixFrame | DotMatrixLayeredFrame
+  ): frame is DotMatrixLayeredFrame {
+    return frame.some((entry) => Array.isArray(entry))
+  }
+
   function advance() {
     const length = toValue(sequence).length
 
@@ -99,7 +117,7 @@ export function useDotMatrixApi({
   watch(() => state.playing, sync)
 
   return {
-    activeIndices,
+    tones,
     initialize,
   }
 }

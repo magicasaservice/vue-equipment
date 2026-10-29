@@ -1,12 +1,12 @@
-import type { App, Plugin } from 'vue'
-
 import MagicDotMatrix from './src/components/MagicDotMatrix.vue'
 import { useMagicDotMatrix } from './src/composables/useMagicDotMatrix'
+import type { App, Plugin } from 'vue'
 
 import type {
   DotMatrixEvents,
   DotMatrixFrame,
   DotMatrixGrid,
+  DotMatrixLayeredFrame,
   DotMatrixSequence,
   MagicDotMatrixOptions,
 } from './src/types'
@@ -29,6 +29,7 @@ export type {
   DotMatrixEvents,
   DotMatrixFrame,
   DotMatrixGrid,
+  DotMatrixLayeredFrame,
   DotMatrixSequence,
   MagicDotMatrixOptions,
 }

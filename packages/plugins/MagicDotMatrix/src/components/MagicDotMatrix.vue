@@ -10,7 +10,7 @@
         v-for="dot in dots"
         :key="dot"
         class="magic-dot-matrix__dot"
-        :data-active="activeIndices.has(dot) || null"
+        :data-active="tones.has(dot) || null"
         :style="dotStyle(dot)"
       />
     </svg>
@@ -43,7 +43,7 @@ watch(
   { deep: true }
 )
 
-const { activeIndices, initialize } = useDotMatrixApi({
+const { tones, initialize } = useDotMatrixApi({
   instanceId: id,
   sequence: () => sequence,
 })
@@ -59,9 +59,14 @@ const dots = computed(() =>
 )
 
 function dotStyle(index: number) {
+  const tone = tones.value.get(index)
+
   return {
     '--mdm-col': index % mappedCols.value,
     '--mdm-row': Math.floor(index / mappedCols.value),
+    '--mdm-tone-color': tone
+      ? `var(--magic-dot-matrix-color-${tone})`
+      : undefined,
   }
 }
 
@@ -107,6 +112,6 @@ onMounted(() => {
 }
 
 .magic-dot-matrix__dot[data-active='true'] {
-  fill: var(--magic-dot-matrix-color, currentColor);
+  fill: var(--mdm-tone-color, var(--magic-dot-matrix-color, currentColor));
 }
 </style>

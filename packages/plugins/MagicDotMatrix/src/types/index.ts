@@ -1,5 +1,6 @@
 export type DotMatrixFrame = Array<number>
-export type DotMatrixSequence = Array<DotMatrixFrame>
+export type DotMatrixLayeredFrame = Array<DotMatrixFrame>
+export type DotMatrixSequence = Array<DotMatrixFrame | DotMatrixLayeredFrame>
 
 export interface DotMatrixGrid {
   cols: number

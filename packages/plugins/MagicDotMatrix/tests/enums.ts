@@ -1,6 +1,8 @@
 export enum MatrixId {
   RenderDefault = 'render-default',
   RenderActive = 'render-active',
+  RenderLayers = 'render-layers',
+  RenderLayerFallback = 'render-layer-fallback',
   OptDefaults = 'opt-defaults',
   OptCssVars = 'opt-css-vars',
   OptAutoplay = 'opt-autoplay',
