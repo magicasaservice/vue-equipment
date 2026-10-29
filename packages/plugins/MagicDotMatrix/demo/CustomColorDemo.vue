@@ -17,8 +17,8 @@ const sequence = createEqualizer({ cols: 7, rows: 7 })
 <style>
 [data-id='magic-dot-matrix-custom-color-demo'] {
   --magic-dot-matrix-radius: 0.5;
-  --magic-dot-matrix-color: #46a758;
-  --magic-dot-matrix-inactive-color: #1d3a24;
-  background: #101211;
+  --magic-dot-matrix-color: var(--app-color-accent-bg-solid);
+  --magic-dot-matrix-inactive-color: var(--app-color-accent-bg-muted);
+  background: oklch(0.16 0.03 264);
 }
 </style>
