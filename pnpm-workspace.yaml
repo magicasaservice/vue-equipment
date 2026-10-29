@@ -1,7 +1,6 @@
 packages:
   - packages/*
   - apps/*
-  - packages/nuxt/playground
   - '!packages/nuxt/test'
 catalog:
   '@floating-ui/vue': ^2.0.1
@@ -10,7 +9,6 @@ catalog:
   '@maas/vue-autosize': ^1.8.0
   '@maas/vue-primitive': ^1.5.0
   '@nuxt/kit': ^4.5.2
-  '@tailwindcss/vite': ^4.3.3
   '@types/fs-extra': ^11.0.4
   '@types/node': ^22.20.1
   '@vueuse/core': '>=14.4.0'
@@ -22,7 +20,6 @@ catalog:
   hls.js: ^1.7.1
   luxon: ^3.7.2
   mitt: ^3.0.1
-  tailwindcss: ^4.3.3
   motion: ^14.1.0
   nuxt: ^4.5.2
   prettier: ^3.9.6

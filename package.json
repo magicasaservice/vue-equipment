@@ -134,8 +134,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:docs": "turbo run dev --filter=docs",
-    "dev:nuxt": "turbo run dev --filter=nuxt",
-    "build": "turbo run build --filter=!playground",
+    "build": "turbo run build",
     "build:types": "turbo run build:types",
     "build:docs": "pnpm exec playwright install chromium --with-deps && turbo run build --filter=docs",
     "tokens": "mirror tokens && mirror css",

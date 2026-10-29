@@ -300,6 +300,10 @@ defineExpose({
   outline: none;
 }
 
+.m-input .m-input__control input:focus-visible {
+  box-shadow: none;
+}
+
 .m-input .m-input__control input[type='number'] {
   -moz-appearance: textfield;
 }

@@ -10,7 +10,6 @@ COPY packages/fonts/package.json ./packages/fonts/
 COPY packages/metadata/package.json ./packages/metadata/
 COPY packages/mirror-compat/package.json ./packages/mirror-compat/
 COPY packages/nuxt/package.json ./packages/nuxt/
-COPY packages/nuxt/playground/package.json ./packages/nuxt/playground/
 COPY packages/plugins/package.json ./packages/plugins/
 COPY packages/utils/package.json ./packages/utils/
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
