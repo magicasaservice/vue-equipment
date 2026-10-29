@@ -501,3 +501,7 @@ The dot matrix emits the following events through [MagicEmitter](../MagicEmitter
 ### Custom Colors
 
 <ComponentPreview src="./demo/CustomColorDemo.vue" />
+
+## Inspiration
+
+MagicDotMatrix is inspired by [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) from [shawn](https://github.com/zzzzshawn/matrix).
