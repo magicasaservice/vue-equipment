@@ -1,7 +1,8 @@
-import { reactive, toValue, onScopeDispose, type MaybeRef } from 'vue'
+import { reactive, toValue, onScopeDispose } from 'vue'
 import { defu } from 'defu'
 import { createStateStore } from '@maas/vue-equipment/utils'
 import { defaultOptions } from '../../utils/defaultOptions'
+import type { MaybeRef } from 'vue'
 import type { DotMatrixState, MagicDotMatrixOptions } from '../../types/index'
 
 const getDotMatrixStateStore = createStateStore<Array<DotMatrixState>>(

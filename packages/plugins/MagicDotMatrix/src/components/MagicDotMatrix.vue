@@ -18,10 +18,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, toValue, watch, type MaybeRef } from 'vue'
+import { computed, onMounted, toValue, watch } from 'vue'
 import { useDotMatrixState } from '../composables/private/useDotMatrixState'
 import { useDotMatrixApi } from '../composables/private/useDotMatrixApi'
 import { defaultOptions } from '../utils/defaultOptions'
+import type { MaybeRef } from 'vue'
 import type { DotMatrixSequence, MagicDotMatrixOptions } from '../types/index'
 
 interface MagicDotMatrixProps {

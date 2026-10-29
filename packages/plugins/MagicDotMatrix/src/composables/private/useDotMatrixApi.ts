@@ -1,14 +1,9 @@
-import {
-  computed,
-  toValue,
-  watch,
-  type MaybeRef,
-  type MaybeRefOrGetter,
-} from 'vue'
+import { computed, toValue, watch } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useDotMatrixState } from './useDotMatrixState'
 import { defaultOptions } from '../../utils/defaultOptions'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import type {
   DotMatrixFrame,
   DotMatrixLayeredFrame,

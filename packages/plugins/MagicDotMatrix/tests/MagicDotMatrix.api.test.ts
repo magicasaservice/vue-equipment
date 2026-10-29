@@ -3,11 +3,9 @@ import { render } from 'vitest-browser-vue'
 import { defineComponent, nextTick, ref } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import MagicDotMatrix from '../src/components/MagicDotMatrix.vue'
-import {
-  useMagicDotMatrix,
-  type UseMagicDotMatrixReturn,
-} from '../src/composables/useMagicDotMatrix'
+import { useMagicDotMatrix } from '../src/composables/useMagicDotMatrix'
 import { MatrixId } from './enums'
+import type { UseMagicDotMatrixReturn } from '../src/composables/useMagicDotMatrix'
 import type { DotMatrixSequence, MagicDotMatrixOptions } from '../src/types'
 
 function frames(count: number) {
