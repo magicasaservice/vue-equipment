@@ -316,6 +316,10 @@ defineExpose({
   outline: none;
 }
 
+.m-textarea .m-textarea__line textarea:focus-visible {
+  box-shadow: none;
+}
+
 .m-textarea .m-textarea__label {
   display: flex;
   block-size: 100%;
