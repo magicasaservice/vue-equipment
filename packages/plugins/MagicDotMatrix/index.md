@@ -473,4 +473,4 @@ The example passes the emoji in the input to [useMagicDotMatrixEmoji](#usemagicd
 
 ## Inspiration
 
-MagicDotMatrix is inspired by [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) from [shawn](https://github.com/zzzzshawn/matrix).
+MagicDotMatrix is inspired by [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/).
