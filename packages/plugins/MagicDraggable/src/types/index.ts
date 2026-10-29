@@ -45,6 +45,7 @@ export interface MagicDraggableOptions {
   initial?: {
     snapPoint?: DraggableSnapPoint
   }
+  preventEdgeNavigation?: boolean
   disabled?: boolean
 }
 

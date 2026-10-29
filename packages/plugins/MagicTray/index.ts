@@ -2,6 +2,7 @@ import MagicTray from './src/components/MagicTray.vue'
 import MagicTrayProvider from './src/components/MagicTrayProvider.vue'
 import MagicTrayContent from './src/components/MagicTrayContent.vue'
 import MagicTrayHandle from './src/components/MagicTrayHandle.vue'
+import MagicTrayTrigger from './src/components/MagicTrayTrigger.vue'
 import MagicTrayTransform from './src/components/MagicTrayTransform.vue'
 import { useMagicTray } from './src/composables/useMagicTray'
 
@@ -11,9 +12,11 @@ import type {
   MagicTrayOptions,
   MagicTraySide,
   MagicTraySidePayload,
+  MagicTraySnapEntry,
   MagicTraySnapMode,
   MagicTraySnapPoint,
   MagicTraySnapPointPayload,
+  MagicTraySnapRange,
   MagicTrayTransformAxis,
   MagicTrayWillSnapToPayload,
 } from './src/types/index'
@@ -24,6 +27,7 @@ const MagicTrayPlugin: Plugin = {
     app.component('MagicTrayProvider', MagicTrayProvider)
     app.component('MagicTrayContent', MagicTrayContent)
     app.component('MagicTrayHandle', MagicTrayHandle)
+    app.component('MagicTrayTrigger', MagicTrayTrigger)
     app.component('MagicTrayTransform', MagicTrayTransform)
   },
 }
@@ -34,6 +38,7 @@ export {
   MagicTrayProvider,
   MagicTrayContent,
   MagicTrayHandle,
+  MagicTrayTrigger,
   MagicTrayTransform,
   useMagicTray,
 }
@@ -44,6 +49,8 @@ export type {
   MagicTraySnapMode,
   MagicTrayDragMode,
   MagicTraySnapPoint,
+  MagicTraySnapRange,
+  MagicTraySnapEntry,
   MagicTraySnapPointPayload,
   MagicTrayWillSnapToPayload,
   MagicTrayTransformAxis,

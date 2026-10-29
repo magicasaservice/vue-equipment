@@ -169,6 +169,67 @@ describe('MagicTray - Interactions', () => {
       .toBeGreaterThan(0)
   })
 
+  it('a short flick past the momentum threshold snaps to the next point', async () => {
+    const { container } = mountWithApp(
+      createTray(TrayId.MomentumFlick, {
+        snapPoints: { bottom: [0, '100px'] },
+        threshold: { distance: 99999, momentum: 0.1 },
+      })
+    )
+    await nextTick()
+    await new Promise((r) => setTimeout(r, 100))
+
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="bottom"]'
+    ) as HTMLElement
+
+    handle.dispatchEvent(pointer('pointerdown', 200))
+    await new Promise((r) => setTimeout(r, 20))
+    document.dispatchEvent(pointer('pointermove', 180))
+    await nextTick()
+    document.dispatchEvent(pointer('pointerup', 180))
+
+    await expect
+      .poll(
+        () =>
+          container.querySelector(`[data-test-id="${TestId.Active1}"]`)!
+            .textContent,
+        { timeout: 2000 }
+      )
+      .toBe('100px')
+  })
+
+  it('locks text selection on the document for the duration of a drag', async () => {
+    const { container } = mountWithApp(
+      createTray(TrayId.RenderHandles, {
+        snapPoints: { bottom: [0, 0.5, 1] },
+      })
+    )
+    await settle()
+
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="bottom"]'
+    ) as HTMLElement
+
+    handle.dispatchEvent(pointer('pointerdown', 200))
+    await nextTick()
+    document.dispatchEvent(pointer('pointermove', 120))
+    await nextTick()
+
+    expect(document.documentElement.style.userSelect).toBe('none')
+    const selectstart = new Event('selectstart', {
+      bubbles: true,
+      cancelable: true,
+    })
+    document.body.dispatchEvent(selectstart)
+    expect(selectstart.defaultPrevented).toBe(true)
+
+    document.dispatchEvent(pointer('pointerup', 120))
+    await nextTick()
+
+    expect(document.documentElement.style.userSelect).toBe('')
+  })
+
   it('rubber-bands past the open bound and springs back on release', async () => {
     const { container } = mountWithApp(
       createTray(
@@ -1074,6 +1135,36 @@ describe('MagicTray - Magnetism', () => {
     await nextTick()
 
     expect(readNumber(container, MAGNETIC.Magnetic)).toBe(0)
+  })
+
+  it('a tap on a pulled range end leaves it resting at the end', async () => {
+    const { container } = mountWithApp(
+      createMagneticTray(TrayId.MagneticRangeTap, {
+        snapPoints: { left: [{ min: 0, max: '120px' }] },
+        magnetism: { sides: { left: { 0: 'inner' } } },
+      })
+    )
+    await settle()
+
+    const { edgeX, midY, stageInner, stage } = magneticGeometry(container)
+    const rest = readNumber(container, MAGNETIC.Snapped)
+
+    // Scrub to the resting edge so the pull tops out, then tap the handle
+    await stage(stageInner)
+    movePointer(edgeX, midY)
+    await nextFrame()
+    await nextTick()
+
+    expect(readNumber(container, MAGNETIC.Magnetic)).toBeGreaterThan(0)
+
+    const handle = container.querySelector(
+      '.magic-tray-handle[data-side="left"]'
+    ) as HTMLElement
+    handle.dispatchEvent(pointerX('pointerdown', edgeX))
+    document.dispatchEvent(pointerX('pointerup', edgeX))
+    await settle()
+
+    expect(readNumber(container, MAGNETIC.Snapped)).toBe(rest)
   })
 
   it('throws when a magnetic snap point is not configured in snapPoints', () => {

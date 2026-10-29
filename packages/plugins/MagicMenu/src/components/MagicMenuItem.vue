@@ -74,17 +74,16 @@ const mappedId = computed(() => id ?? `magic-menu-item-${uuid}`)
 const mappedActive = computed(() => item.active)
 
 // Register item
-const { initializeItem, deleteItem, selectItem, unselectItem } = useMenuItem({
-  instanceId,
-  viewId,
-})
+const { initializeItem, deleteItem, selectItem, unselectItem } =
+  useMenuItem(instanceId)
+const itemArgs = computed(() => ({ viewId, id: mappedId.value }))
 
 // Guarded select
 // Check for mode and active state
 const { initializeState } = useMenuState(instanceId)
 const state = initializeState()
 const item = initializeItem({
-  id: mappedId.value,
+  ...itemArgs.value,
   disabled: disabled ?? false,
 })
 
@@ -97,7 +96,7 @@ function guardedSelect() {
     !item.active &&
     !item.disabled
   ) {
-    selectItem(mappedId.value)
+    selectItem(itemArgs.value)
   }
 }
 
@@ -109,7 +108,7 @@ const nestedView = computed(() => getNestedView(mappedId.value))
 function guardedUnselect() {
   // If there is no nested active view, unselect the item
   if (!nestedView.value || !nestedView.value.active) {
-    unselectItem(mappedId.value)
+    unselectItem(itemArgs.value)
   } else {
     // If there is a nested active view,
     //  unselect the item once it is closed
@@ -117,7 +116,7 @@ function guardedUnselect() {
       () => nestedView.value?.active,
       (value) => {
         if (!value) {
-          unselectItem(mappedId.value)
+          unselectItem(itemArgs.value)
         }
       },
       { once: true }
@@ -132,7 +131,7 @@ function onClick(event: MouseEvent) {
   state.input.disabled = []
 
   if (!item.disabled && !item.active) {
-    selectItem(mappedId.value)
+    selectItem(itemArgs.value)
   }
 
   if (!nestedView.value) {
@@ -155,7 +154,7 @@ provide(MagicMenuItemActive, mappedActive)
 onKeyStroke('Enter', onReturn)
 
 onBeforeUnmount(() => {
-  deleteItem(mappedId.value)
+  deleteItem(itemArgs.value)
 })
 </script>
 

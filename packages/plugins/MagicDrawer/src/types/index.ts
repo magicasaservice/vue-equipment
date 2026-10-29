@@ -3,6 +3,15 @@ import type { RequireAllNested } from '@maas/vue-equipment/utils'
 
 export type MagicDrawerSnapPoint = number | `${number}px`
 
+// A span the drawer can rest anywhere within, bounded by two snap points
+export interface MagicDrawerSnapRange {
+  min: MagicDrawerSnapPoint
+  max: MagicDrawerSnapPoint
+  momentum?: boolean
+}
+
+export type MagicDrawerSnapEntry = MagicDrawerSnapPoint | MagicDrawerSnapRange
+
 export type DrawerSnapMode = 'closest' | 'step'
 
 export interface MagicDrawerOptions {
@@ -10,7 +19,7 @@ export interface MagicDrawerOptions {
   tag?: 'dialog' | 'div'
   focusTrap?: boolean | FocusTrapOptions
   scrollLock?: boolean | { padding: boolean }
-  snapPoints?: MagicDrawerSnapPoint[]
+  snapPoints?: Array<MagicDrawerSnapEntry>
   snap?: {
     mode?: DrawerSnapMode
   }
@@ -44,6 +53,7 @@ export interface MagicDrawerOptions {
   enableMousewheel?: boolean
   preventZoom?: boolean
   preventDragClose?: boolean
+  preventEdgeNavigation?: boolean
   disabled?: boolean
 }
 
@@ -66,6 +76,7 @@ export interface DrawerState {
     x: number
     y: number
   }
+  activeSnapPoint: MagicDrawerSnapPoint | undefined
   shouldClose: boolean
   interpolateTo: number | undefined
   originX: number

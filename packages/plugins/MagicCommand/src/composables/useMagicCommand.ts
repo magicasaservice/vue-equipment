@@ -34,6 +34,9 @@ export function useMagicCommand(id: MaybeRef<string>) {
   const { selectView, unselectView, selectInitialView, unselectAllViews } =
     useCommandView(id)
 
+  const { selectItem: selectViewItem, unselectItem: unselectViewItem } =
+    useCommandItem(id)
+
   async function open() {
     state.active = true
     await nextTick()
@@ -47,7 +50,7 @@ export function useMagicCommand(id: MaybeRef<string>) {
   }
 
   function selectItem(args: SelectItemArgs) {
-    const { id, viewId } = args
+    const { id: itemId, viewId } = args
 
     if (!viewId) {
       throwError({
@@ -56,23 +59,18 @@ export function useMagicCommand(id: MaybeRef<string>) {
       })
     }
 
-    if (!id) {
+    if (!itemId) {
       throwError({
         message: 'id is required to select an item',
         errorCode: 'id_required',
       })
     }
 
-    const { selectItem } = useCommandItem({
-      instanceId: id,
-      viewId: viewId,
-    })
-
-    return selectItem(id)
+    return selectViewItem({ viewId, id: itemId })
   }
 
   function unselectItem(args: UnselectItemArgs) {
-    const { id, viewId } = args
+    const { id: itemId, viewId } = args
 
     if (!viewId) {
       throwError({
@@ -81,19 +79,14 @@ export function useMagicCommand(id: MaybeRef<string>) {
       })
     }
 
-    if (!id) {
+    if (!itemId) {
       throwError({
         message: 'id is required to select an item',
         errorCode: 'id_required',
       })
     }
 
-    const { unselectItem } = useCommandItem({
-      instanceId: id,
-      viewId: viewId,
-    })
-
-    return unselectItem(id)
+    return unselectViewItem({ viewId, id: itemId })
   }
 
   return {

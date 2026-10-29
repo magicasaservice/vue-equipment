@@ -7,12 +7,12 @@
         :key="easing.name"
       >
         <div class="w-40">
-          <m-badge size="sm" mode="tone">{{ easing.name }}</m-badge>
+          <m-badge size="sm" variant="secondary">{{ easing.name }}</m-badge>
         </div>
         <div class="bg-surface-high flex h-6 w-full rounded-full pr-5">
           <div class="h-full w-full">
             <div
-              class="bg-primary-tone m-1 h-4 w-4 rounded-full text-center"
+              class="bg-primary-muted m-1 h-4 w-4 rounded-full text-center"
               :style="easing.style"
             />
           </div>
@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton, MBadge } from '@maas/mirror/vue'
+import { MButton, MBadge } from 'mirror-compat'
 import { useEasings } from '@maas/vue-equipment/composables/useEasings'
 import { useRafFn } from '@vueuse/core'
 

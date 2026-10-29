@@ -7,6 +7,7 @@ import MagicDrawerTrigger from '../src/components/MagicDrawerTrigger.vue'
 import MagicDrawerTeleport from '../src/components/MagicDrawerTeleport.vue'
 import MagicDrawerBackdrop from '../src/components/MagicDrawerBackdrop.vue'
 import MagicDrawerContent from '../src/components/MagicDrawerContent.vue'
+import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
@@ -18,11 +19,16 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
       MagicDrawerBackdrop,
       MagicDrawerContent,
     },
+    setup() {
+      const { open } = useMagicDrawer(id)
+      return { open }
+    },
     template: `
       <MagicDrawerProvider id="${id}" :options="options">
         <MagicDrawerTrigger>
           <button data-test-id="${TestId.Trigger}">Open</button>
         </MagicDrawerTrigger>
+        <button data-test-id="${TestId.OpenBtn}" @click="open">Open by API</button>
         <MagicDrawerTeleport>
           <MagicDrawerBackdrop />
           <MagicDrawerContent>
@@ -39,6 +45,13 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
 
 async function open(screen: ReturnType<typeof render>) {
   await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+  await nextTick()
+}
+
+// A disabled drawer disables its trigger too, so it opens through the API
+async function openDisabled(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.OpenBtn).click()
   await nextTick()
   await nextTick()
 }
@@ -66,6 +79,17 @@ describe('MagicDrawer - Rendering', () => {
           .querySelector('.magic-drawer-trigger')!
           .getAttribute('data-disabled')
       ).toBe('false')
+    })
+
+    it('follows the provider’s disabled option without a disabled prop', () => {
+      render(
+        createDrawer(DrawerId.RenderTriggerInheritsDisabled, { disabled: true })
+      )
+      expect(
+        document
+          .querySelector('.magic-drawer-trigger')!
+          .getAttribute('data-disabled')
+      ).toBe('true')
     })
 
     it('data-active becomes true when open', async () => {
@@ -154,7 +178,7 @@ describe('MagicDrawer - Rendering', () => {
       const screen = render(
         createDrawer(DrawerId.RenderDisabled, { disabled: true })
       )
-      await open(screen)
+      await openDisabled(screen)
       expect(
         document
           .querySelector('.magic-drawer-content')!

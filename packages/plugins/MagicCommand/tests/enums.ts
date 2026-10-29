@@ -13,6 +13,8 @@ export enum CommandId {
   ApiInitial = 'api-initial',
   ApiClose = 'api-close',
   ApiSv = 'api-sv',
+  ApiSelectItem = 'api-select-item',
+  ApiUnselectItem = 'api-unselect-item',
   Trigger = 'int-trigger',
   Hover = 'int-hover',
   Click = 'int-click',
@@ -73,6 +75,8 @@ export enum ItemId {
   ParentItem = 'parent-item',
   ChildItem = 'child-item',
   SItem = 's-item',
+  ApiItem1 = 'api-item-1',
+  ApiItem2 = 'api-item-2',
 }
 
 export enum TestId {
@@ -90,4 +94,6 @@ export enum TestId {
   SlotDisabled = 'slot-disabled',
   LayoutContent = 'layout-content',
   Loop = 'loop',
+  SelectItem = 'select-item',
+  UnselectItem = 'unselect-item',
 }

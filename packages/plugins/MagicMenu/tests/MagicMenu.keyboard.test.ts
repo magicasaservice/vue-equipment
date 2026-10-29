@@ -65,6 +65,52 @@ function createDropdown(menuId: MenuId) {
   })
 }
 
+function createNestedDropdown(menuId: MenuId) {
+  return defineComponent({
+    components: {
+      MagicMenuProvider,
+      MagicMenuTrigger,
+      MagicMenuView,
+      MagicMenuContent,
+      MagicMenuItem,
+    },
+    setup() {
+      useMagicMenu({ instanceId: menuId, viewId: ViewId.V0 })
+      return {}
+    },
+    template: `
+      <MagicMenuProvider id="${menuId}" :options="{ mode: 'dropdown' }">
+        <MagicMenuView id="${ViewId.V0}">
+          <MagicMenuTrigger>
+            <button data-test-id="${TestId.Trigger}">Open</button>
+          </MagicMenuTrigger>
+          <MagicMenuContent :teleport="{ disabled: true }">
+            <MagicMenuItem id="${ItemId.KbParentItem}">
+              <div>Parent</div>
+              <MagicMenuView id="${ViewId.V1}">
+                <MagicMenuTrigger>
+                  <div>Sub</div>
+                </MagicMenuTrigger>
+                <MagicMenuContent :teleport="{ disabled: true }">
+                  <MagicMenuItem id="${ItemId.KbSubItem1}">
+                    <div>Sub Item 1</div>
+                  </MagicMenuItem>
+                  <MagicMenuItem id="${ItemId.KbSubItem2}">
+                    <div>Sub Item 2</div>
+                  </MagicMenuItem>
+                </MagicMenuContent>
+              </MagicMenuView>
+            </MagicMenuItem>
+            <MagicMenuItem id="${ItemId.KbSiblingItem}">
+              <div>Sibling</div>
+            </MagicMenuItem>
+          </MagicMenuContent>
+        </MagicMenuView>
+      </MagicMenuProvider>
+    `,
+  })
+}
+
 // Tests
 describe('MagicMenu - Keyboard Navigation', () => {
   // Suppress MagicError unhandled rejections
@@ -182,4 +228,142 @@ describe('MagicMenu - Keyboard Navigation', () => {
       expect(defaultPrevented).toBe(true)
     })
   })
+
+  describe('arrow navigation', () => {
+    it('ArrowDown selects the first item', async () => {
+      const screen = render(createDropdown(MenuId.KbArrowDown), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      await nextTick()
+
+      expect(item(ItemId.KbItem1)?.getAttribute('data-active')).toBe('true')
+    })
+
+    it('ArrowDown again moves to the next item', async () => {
+      const screen = render(createDropdown(MenuId.KbArrowDownTwice), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('ArrowDown')
+      await nextTick()
+
+      expect(item(ItemId.KbItem1)?.getAttribute('data-active')).toBe('false')
+      expect(item(ItemId.KbItem2)?.getAttribute('data-active')).toBe('true')
+    })
+
+    it('ArrowUp moves back to the previous item', async () => {
+      const screen = render(createDropdown(MenuId.KbArrowUp), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('ArrowDown')
+      press('ArrowUp')
+      await nextTick()
+
+      expect(item(ItemId.KbItem1)?.getAttribute('data-active')).toBe('true')
+      expect(item(ItemId.KbItem2)?.getAttribute('data-active')).toBe('false')
+    })
+  })
+
+  describe('pointer during keyboard navigation', () => {
+    it('arrow keys disable pointer selection', async () => {
+      const screen = render(createDropdown(MenuId.KbPointerDisabled), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      await nextTick()
+
+      expect(item(ItemId.KbItem1)?.getAttribute('data-pointer-disabled')).toBe(
+        'true'
+      )
+    })
+
+    it('moving the pointer enables pointer selection again', async () => {
+      const screen = render(createDropdown(MenuId.KbPointerEnabled), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      await nextTick()
+      window.dispatchEvent(new PointerEvent('pointermove', { bubbles: true }))
+      await nextTick()
+
+      expect(item(ItemId.KbItem1)?.getAttribute('data-pointer-disabled')).toBe(
+        'false'
+      )
+    })
+  })
+  describe('nested navigation', () => {
+    it('ArrowRight on an item with a nested view selects its first item', async () => {
+      const screen = render(createNestedDropdown(MenuId.KbNestedRight), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('ArrowRight')
+      await frame()
+
+      expect(item(ItemId.KbSubItem1)?.getAttribute('data-active')).toBe('true')
+    })
+
+    it('Enter on an item with a nested view selects its first item', async () => {
+      const screen = render(createNestedDropdown(MenuId.KbNestedEnter), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('Enter')
+      await frame()
+
+      expect(item(ItemId.KbSubItem1)?.getAttribute('data-active')).toBe('true')
+    })
+
+    it('ArrowDown inside a nested view moves to its next item', async () => {
+      const screen = render(createNestedDropdown(MenuId.KbNestedDown), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('ArrowRight')
+      await frame()
+      press('ArrowDown')
+      await nextTick()
+
+      expect(item(ItemId.KbSubItem1)?.getAttribute('data-active')).toBe('false')
+      expect(item(ItemId.KbSubItem2)?.getAttribute('data-active')).toBe('true')
+    })
+
+    it('ArrowLeft returns to the parent view', async () => {
+      const screen = render(createNestedDropdown(MenuId.KbNestedLeft), gc)
+      await open(screen)
+
+      press('ArrowDown')
+      press('ArrowRight')
+      await frame()
+      press('ArrowLeft')
+      press('ArrowDown')
+      await nextTick()
+
+      expect(item(ItemId.KbSiblingItem)?.getAttribute('data-active')).toBe(
+        'true'
+      )
+      expect(item(ItemId.KbSubItem1)).toBeNull()
+    })
+  })
 })
+
+// Helpers
+async function open(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+}
+
+async function frame() {
+  await new Promise((resolve) => requestAnimationFrame(resolve))
+  await nextTick()
+}
+
+function press(key: string) {
+  window.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }))
+}
+
+function item(id: ItemId) {
+  return document.querySelector(`.magic-menu-item[data-id="${id}"]`)
+}

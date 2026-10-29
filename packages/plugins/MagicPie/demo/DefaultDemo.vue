@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { MBadge, MButton } from '@maas/mirror/vue'
+import { MBadge, MButton } from 'mirror-compat'
 import { useMagicPie } from '@maas/vue-equipment/plugins/MagicPie'
 
 const {
@@ -56,6 +56,6 @@ const mappedPercentage = computed(() => {
 
 <style>
 [data-id='magic-pie-default-demo'] {
-  --magic-pie-background: var(--app-color-surface-high);
+  --magic-pie-background: var(--app-color-surface-bg-base);
 }
 </style>

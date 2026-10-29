@@ -5,7 +5,7 @@
       class="bg-surface-base aspect-16/9 w-full snap-both snap-mandatory overflow-scroll"
     >
       <div
-        class="type-surface-body-sm text-surface-subtle relative h-[900px] w-[900px]"
+        class="type-surface-body-sm text-surface-muted relative h-[900px] w-[900px]"
       >
         <div class="bg-surface-high absolute top-0 left-0 px-2 py-1">
           Top Left
@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useScrollTo } from '@maas/vue-equipment/composables/useScrollTo'
 import { easeInQuad } from '@maas/vue-equipment/utils'
 

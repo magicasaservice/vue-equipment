@@ -5,7 +5,7 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, h, ref } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 
 import type { Slots } from 'vue'

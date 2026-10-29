@@ -2,9 +2,8 @@
 
 A small utility to prevent fixed elements from jumping when locking scroll. Intended to be used in combination with [`useScrollLock`](https://vueuse.org/core/useScrollLock/).
 
-<component-preview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -17,7 +16,14 @@ add()
 remove()
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Direct import
 

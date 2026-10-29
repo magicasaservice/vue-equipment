@@ -11,7 +11,7 @@
         class="h-[500svh]"
       >
         <div
-          class="type-surface-body-sm text-surface-subtle sticky top-0 mb-[-100%] flex w-full justify-between p-4"
+          class="type-surface-body-sm text-surface-muted sticky top-0 mb-[-100%] flex w-full justify-between p-4"
         >
           <span>{{ Math.round(progress * 100) }}%</span>
           <span>Scroll down</span>
@@ -30,8 +30,10 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 
+import type { MagicScrollSequence } from '@maas/vue-equipment/plugins/MagicScroll'
+
 const parentRef = useTemplateRef('parent')
-const sequence = [
+const sequence: MagicScrollSequence = [
   [
     {
       opacity: [0, 1],

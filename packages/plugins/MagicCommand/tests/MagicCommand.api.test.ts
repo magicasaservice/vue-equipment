@@ -10,7 +10,7 @@ import MagicCommandTrigger from '../src/components/MagicCommandTrigger.vue'
 import MagicCommandRenderer from '../src/components/MagicCommandRenderer.vue'
 import { useMagicCommand } from '../src/composables/useMagicCommand'
 import { useMagicEmitter } from '../../MagicEmitter/src/composables/useMagicEmitter'
-import { CommandId, ViewId, TestId } from './enums'
+import { CommandId, ViewId, ItemId, TestId } from './enums'
 
 // Globals
 const gc = {
@@ -251,4 +251,75 @@ describe('MagicCommand - API', () => {
         .toHaveTextContent(ViewId.ViewB)
     })
   })
+
+  describe('selectItem / unselectItem', () => {
+    it('selectItem from a click selects the item', async () => {
+      const screen = render(createItemCommand(CommandId.ApiSelectItem), gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.SelectItem).click()
+      await nextTick()
+
+      expect(commandItem(ItemId.ApiItem2)?.getAttribute('data-active')).toBe(
+        'true'
+      )
+    })
+
+    it('unselectItem from a click unselects the item', async () => {
+      const screen = render(createItemCommand(CommandId.ApiUnselectItem), gc)
+      await nextTick()
+
+      await screen.getByTestId(TestId.Open).click()
+      await nextTick()
+
+      await screen.getByTestId(TestId.SelectItem).click()
+      await nextTick()
+      await screen.getByTestId(TestId.UnselectItem).click()
+      await nextTick()
+
+      expect(commandItem(ItemId.ApiItem2)?.getAttribute('data-active')).toBe(
+        'false'
+      )
+    })
+  })
 })
+
+// Factory
+function createItemCommand(commandId: CommandId) {
+  return defineComponent({
+    components: {
+      MagicCommandProvider,
+      MagicCommandView,
+      MagicCommandContent,
+      MagicCommandItem,
+      MagicCommandRenderer,
+    },
+    setup() {
+      const { api, openCommand } = useOpenHelper(commandId)
+      return { api, openCommand }
+    },
+    template: `
+      <div>
+        <button data-test-id="${TestId.Open}" @click="openCommand()">Open</button>
+        <button data-test-id="${TestId.SelectItem}" @click="api.selectItem({ id: '${ItemId.ApiItem2}', viewId: '${ViewId.V0}' })">Select</button>
+        <button data-test-id="${TestId.UnselectItem}" @click="api.unselectItem({ id: '${ItemId.ApiItem2}', viewId: '${ViewId.V0}' })">Unselect</button>
+        <MagicCommandProvider id="${commandId}">
+          <MagicCommandRenderer />
+          <MagicCommandView id="${ViewId.V0}" :initial="true">
+            <MagicCommandContent>
+              <MagicCommandItem id="${ItemId.ApiItem1}"><div>Item 1</div></MagicCommandItem>
+              <MagicCommandItem id="${ItemId.ApiItem2}"><div>Item 2</div></MagicCommandItem>
+            </MagicCommandContent>
+          </MagicCommandView>
+        </MagicCommandProvider>
+      </div>
+    `,
+  })
+}
+
+function commandItem(id: ItemId) {
+  return document.querySelector(`.magic-command-item[data-id="${id}"]`)
+}

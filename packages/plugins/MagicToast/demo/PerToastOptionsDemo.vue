@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, shallowRef } from 'vue'
-import { MButton, MInput, MSelect, MToggle } from '@maas/mirror/vue'
+import { MButton, MInput, MSelect, MToggle } from 'mirror-compat'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 
 import type { MagicToastAddOptions } from '@maas/vue-equipment/plugins/MagicToast'

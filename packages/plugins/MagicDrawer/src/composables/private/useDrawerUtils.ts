@@ -1,5 +1,7 @@
 import { rubberband } from '@maas/vue-equipment/utils'
 
+import type { MagicDrawerSnapEntry, MagicDrawerSnapRange } from '../../types'
+
 export function useDrawerUtils() {
   // Track the finger freely up to the `from` bound, then apply rubber-band
   // resistance toward the signed overshoot extreme `to` (asymptotic, never
@@ -18,7 +20,22 @@ export function useDrawerUtils() {
     }
   }
 
+  function isSnapRange(
+    entry: MagicDrawerSnapEntry
+  ): entry is MagicDrawerSnapRange {
+    return typeof entry === 'object'
+  }
+
+  // Single snap points plus both ends of every range
+  function flattenSnapPoints(entries: Array<MagicDrawerSnapEntry>) {
+    return entries.flatMap((entry) =>
+      isSnapRange(entry) ? [entry.min, entry.max] : [entry]
+    )
+  }
+
   return {
     clamp,
+    isSnapRange,
+    flattenSnapPoints,
   }
 }

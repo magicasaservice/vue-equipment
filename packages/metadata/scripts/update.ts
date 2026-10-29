@@ -12,7 +12,7 @@ import type {
   VueEquipmentPackage,
 } from '../index'
 
-export const DOCS_URL = 'https://maas.egineering/vue-equipment'
+export const DOCS_URL = 'https://vue.equipment'
 export const DIR_PACKAGE = resolve(__dirname, '..')
 export const DIR_ROOT = resolve(__dirname, '../../..')
 export const DIR_SRC = resolve(DIR_ROOT, 'packages')
@@ -90,7 +90,7 @@ export async function readMetadata() {
           return
         }
 
-        fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}/`
+        fn.docs = `${DOCS_URL}/${pkg.name}/${fnName}`
 
         const mdRaw = await readFile(mdPath, 'utf-8')
 

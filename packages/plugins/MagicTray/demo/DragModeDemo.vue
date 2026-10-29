@@ -5,7 +5,8 @@
       snapPoints: { bottom: [0, 0.25, 0.5, 0.75, 1] },
       drag: { mode: 'snap' },
     }"
-    style="--magic-tray-radius: 0.5rem"
+    style="--magic-tray-radius: 0.5rem; --magic-tray-width: 100%"
+    class="max-w-full"
   >
     <template #background>
       <div class="bg-surface-base h-full w-full" />

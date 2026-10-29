@@ -8,7 +8,7 @@
         class="flex flex-col items-center justify-evenly gap-[100vh] pb-[100vh]"
       >
         <span
-          class="type-surface-body-sm text-surface-subtle flex aspect-square w-full items-center justify-center"
+          class="type-surface-body-sm text-surface-muted flex aspect-square w-full items-center justify-center"
         >
           Scroll down
         </span>
@@ -18,7 +18,9 @@
           :key="i"
           class="bg-surface-high flex aspect-square w-full items-center justify-center"
         >
-          <m-badge size="lg" mode="tone">{{ `Collision ${i}` }}</m-badge>
+          <m-badge size="lg" variant="secondary">{{
+            `Collision ${i}`
+          }}</m-badge>
         </magic-scroll-collision>
       </magic-scroll-scene>
     </div>
@@ -33,7 +35,7 @@
 import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
 

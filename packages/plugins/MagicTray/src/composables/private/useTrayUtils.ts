@@ -1,6 +1,18 @@
 import { rubberband } from '@maas/vue-equipment/utils'
 
-import type { MagicTraySide } from '../../types'
+import type {
+  MagicTraySide,
+  MagicTraySnapEntry,
+  MagicTraySnapRange,
+  TraySnapPoints,
+} from '../../types'
+
+export const SIDES: Array<MagicTraySide> = ['top', 'right', 'bottom', 'left']
+
+type IsDraggableSideArgs = {
+  snapPoints: TraySnapPoints
+  side: MagicTraySide
+}
 
 export function useTrayUtils() {
   // Clamp to [min, max], allowing rubber-band travel up to `outer` pixels past
@@ -42,9 +54,29 @@ export function useTrayUtils() {
     }
   }
 
+  function isSnapRange(entry: MagicTraySnapEntry): entry is MagicTraySnapRange {
+    return typeof entry === 'object'
+  }
+
+  // Single snap points plus both ends of every range
+  function flattenSnapPoints(entries: Array<MagicTraySnapEntry>) {
+    return entries.flatMap((entry) =>
+      isSnapRange(entry) ? [entry.min, entry.max] : [entry]
+    )
+  }
+
+  // A side becomes draggable with its first snap point
+  function isDraggableSide(args: IsDraggableSideArgs) {
+    const { snapPoints, side } = args
+    return (snapPoints[side]?.length ?? 0) > 0
+  }
+
   return {
     clampWithOvershoot,
     isVertical,
     oppositeSide,
+    isSnapRange,
+    flattenSnapPoints,
+    isDraggableSide,
   }
 }

@@ -22,7 +22,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
     virtual: false,
   },
   threshold: {
-    lock: 0,
+    lock: 8,
     distance: 128,
     momentum: 1,
   },
@@ -33,6 +33,7 @@ const defaultOptions: RequiredMagicTrayOptions = {
     },
   },
   initial: {},
+  preventEdgeNavigation: true,
   disabled: false,
   inset: false,
 }

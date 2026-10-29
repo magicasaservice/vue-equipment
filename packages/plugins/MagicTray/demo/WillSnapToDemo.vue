@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center gap-4 select-none">
+  <div class="flex w-120 max-w-full flex-col gap-4 select-none">
     <div
-      class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
+      class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-full items-center justify-between overflow-hidden rounded-[0.5rem]"
     >
       <span class="w-16 text-center">L</span>
       <span class="w-16 text-center">R</span>
@@ -25,9 +25,9 @@
     </div>
 
     <div
-      class="bg-surface-low text-surface w-120 max-w-full rounded-[0.25rem] p-4 font-mono text-sm"
+      class="bg-surface-low text-surface w-full rounded-[0.5rem] p-4 font-mono text-sm"
     >
-      <div class="text-surface-subtle mb-3 text-xs tracking-widest uppercase">
+      <div class="text-surface-muted mb-3 text-xs tracking-widest uppercase">
         snap points
       </div>
       <div class="mb-4 flex flex-col gap-3">
@@ -36,7 +36,7 @@
           :key="side"
           class="flex items-center gap-3"
         >
-          <span class="text-surface-subtle w-8 text-xs">{{ side }}</span>
+          <span class="text-surface-muted w-8 text-xs">{{ side }}</span>
           <div class="flex flex-1 justify-between">
             <div
               v-for="point in side === 'right'
@@ -49,13 +49,13 @@
                 class="h-2 w-2 rounded-full"
                 :class="dotClass(side, point)"
               />
-              <span class="text-surface-subtle text-xs">{{ point }}</span>
+              <span class="text-surface-muted text-xs">{{ point }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="text-surface-subtle mb-2 text-xs tracking-widest uppercase">
+      <div class="text-surface-muted mb-2 text-xs tracking-widest uppercase">
         willSnapTo events
       </div>
       <div class="flex flex-col gap-1.5">
@@ -64,7 +64,7 @@
             v-for="(entry, i) in log"
             :key="i"
             class="flex justify-between"
-            :class="i === 0 ? 'text-surface' : 'text-surface-subtle'"
+            :class="i === 0 ? 'text-surface' : 'text-surface-muted'"
           >
             <span>
               <span class="opacity-50">{{ entry.side }}</span>
@@ -73,7 +73,7 @@
             <span>{{ directionArrow(entry.side, entry.snapPoint) }}</span>
           </div>
         </template>
-        <span v-else class="text-surface-subtle">—</span>
+        <span v-else class="text-surface-muted">—</span>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ import type {
 } from '@maas/vue-equipment/plugins/MagicTray'
 
 const id = 'magic-tray-will-snap-to-demo'
-const snapPointKeys = [0, 0.25, 0.5, 0.75, 1]
+const snapPointKeys = [0, 0.25, 0.5, 0.75]
 
 const options: MagicTrayOptions = {
   snapPoints: {

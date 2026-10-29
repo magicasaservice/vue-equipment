@@ -9,7 +9,7 @@
           "badge": {
             "name": "Pro",
             "variant": "accent",
-            "mode": "translucent"
+            "mode": "subtle"
           },
 
           "icon": "maas-mr"

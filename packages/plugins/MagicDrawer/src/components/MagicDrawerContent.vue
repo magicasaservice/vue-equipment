@@ -149,6 +149,7 @@ const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
     animation: state.options.animation,
     initial: state.options.initial,
     preventDragClose: state.options.preventDragClose,
+    preventEdgeNavigation: state.options.preventEdgeNavigation,
     disabled,
   })
 
@@ -403,6 +404,10 @@ dialog.magic-drawer-content__drag::backdrop {
 .magic-drawer-content[data-dragging='true'] .magic-drawer-content__drag {
   cursor: var(--magic-drawer-cursor-dragging, grabbing);
   user-select: none;
+}
+
+.magic-drawer-content[data-dragging='true'] .magic-drawer-content__drag * {
+  -webkit-user-drag: none;
 }
 
 .magic-drawer-content[data-wheeling='true'] .magic-drawer-content__drag {

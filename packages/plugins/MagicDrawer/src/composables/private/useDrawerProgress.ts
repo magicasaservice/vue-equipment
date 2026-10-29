@@ -28,8 +28,15 @@ interface UseDrawerProgressArgs {
 export function useDrawerProgress(args: UseDrawerProgressArgs) {
   const { id, drawerRef, elRef, position, overshoot } = args
   const { initializeState } = useDrawerState(id)
+  const emitter = useMagicEmitter()
 
   // Private state
+  const state = initializeState()
+  const { draggedX, draggedY, wrapperRect } = toRefs(state)
+
+  // The open and close transitions run in CSS, so while one plays only the
+  // DOM knows where the panel is
+  let transitioning = false
   const drawerRect = useElementBounding(drawerRef)
   const elRect = useElementBounding(elRef)
 
@@ -42,35 +49,50 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
   )
 
   // Public state
-  const state = initializeState()
   const { progress } = toRefs(state)
 
-  // Private method
-  function rafCallback() {
-    drawerRect.update()
-    elRect.update()
-    calculateProgress()
+  // Private functions
+  // Clamp to 0..1 and drop the -0 that mapValue can produce
+  function setProgress(x: number, y: number) {
+    progress.value = {
+      x: clampValue(x, 0, 1) || 0,
+      y: clampValue(y, 0, 1) || 0,
+    }
   }
 
-  const emitter = useMagicEmitter()
+  // Progress from the translation along the drawer’s axis: 1 at rest, 0 once
+  // the panel has travelled its full extent toward closed
+  function calculate() {
+    const rect = wrapperRect.value
 
-  const { pause: snapPause, resume: snapResume } = useRafFn(rafCallback, {
-    immediate: false,
-  })
+    if (!rect) {
+      setProgress(0, 0)
+      return
+    }
 
-  const { pause: dragPause, resume: dragResume } = useRafFn(rafCallback, {
-    immediate: false,
-  })
+    const extentX = rect.width - toValue(overshoot)
+    const extentY = rect.height - toValue(overshoot)
 
-  const { pause, resume } = useRafFn(rafCallback, {
-    immediate: false,
-  })
+    switch (toValue(position)) {
+      case 'top':
+      case 'bottom':
+        setProgress(0, extentY ? 1 - Math.abs(draggedY.value) / extentY : 0)
+        break
+      case 'left':
+      case 'right':
+        setProgress(extentX ? 1 - Math.abs(draggedX.value) / extentX : 0, 0)
+        break
+    }
+  }
 
-  function calculateProgress() {
+  function measure() {
+    drawerRect.update()
+    elRect.update()
+
     let rawX = 0
     let rawY = 0
 
-    switch (position) {
+    switch (toValue(position)) {
       case 'bottom':
         rawY = mapValue(
           elRect.top.value,
@@ -109,19 +131,33 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
         break
     }
 
-    if (Object.is(rawX, -0)) {
-      rawX = 0
-    }
-    if (Object.is(rawY, -0)) {
-      rawY = 0
-    }
-
-    // Clamp the values between 0 and 1
-    const x = clampValue(rawX, 0, 1)
-    const y = clampValue(rawY, 0, 1)
-
-    progress.value = { x, y }
+    setProgress(rawX, rawY)
   }
+
+  const { pause, resume } = useRafFn(measure, { immediate: false })
+
+  function beforeTransition(payload: MagicEmitterEvents['beforeEnter']) {
+    if (payload === toValue(id)) {
+      transitioning = true
+      resume()
+    }
+  }
+
+  async function afterTransition(payload: MagicEmitterEvents['afterEnter']) {
+    await nextTick()
+
+    if (payload === toValue(id)) {
+      pause()
+      transitioning = false
+      calculate()
+    }
+  }
+
+  watch([draggedX, draggedY, wrapperRect, () => toValue(overshoot)], () => {
+    if (!transitioning) {
+      calculate()
+    }
+  })
 
   watch([() => progress.value.x, () => progress.value.y], ([x, y]) => {
     emitter.emit('progress', {
@@ -131,78 +167,18 @@ export function useDrawerProgress(args: UseDrawerProgressArgs) {
     })
   })
 
-  function beforeCallback(
-    payload: MagicEmitterEvents[keyof MagicEmitterEvents]
-  ) {
-    if (payload === toValue(id)) {
-      resume()
-    }
-  }
-
-  function beforeSnapCallback(payload: MagicEmitterEvents['beforeSnap']) {
-    if (payload.id === toValue(id)) {
-      snapResume()
-    }
-  }
-
-  function beforeDragCallback(payload: MagicEmitterEvents['beforeDrag']) {
-    if (payload.id === toValue(id)) {
-      dragResume()
-    }
-  }
-
-  async function afterCallback(
-    payload: MagicEmitterEvents[keyof MagicEmitterEvents]
-  ) {
-    await nextTick()
-
-    if (payload === toValue(id)) {
-      pause()
-      await nextTick()
-      rafCallback()
-    }
-  }
-
-  async function afterSnapCallback(payload: MagicEmitterEvents['afterSnap']) {
-    await nextTick()
-
-    if (payload.id === toValue(id)) {
-      snapPause()
-      await nextTick()
-      rafCallback()
-    }
-  }
-
-  async function afterDragCallback(payload: MagicEmitterEvents['drag']) {
-    await nextTick()
-
-    if (payload.id === toValue(id)) {
-      dragPause()
-      await nextTick()
-      rafCallback()
-    }
-  }
-
   onMounted(() => {
-    emitter.on('beforeEnter', beforeCallback)
-    emitter.on('afterEnter', afterCallback)
-    emitter.on('beforeDrag', beforeDragCallback)
-    emitter.on('afterDrag', afterDragCallback)
-    emitter.on('beforeSnap', beforeSnapCallback)
-    emitter.on('afterSnap', afterSnapCallback)
-    emitter.on('beforeLeave', beforeCallback)
-    emitter.on('afterLeave', afterCallback)
+    emitter.on('beforeEnter', beforeTransition)
+    emitter.on('afterEnter', afterTransition)
+    emitter.on('beforeLeave', beforeTransition)
+    emitter.on('afterLeave', afterTransition)
   })
 
   onBeforeUnmount(() => {
-    emitter.off('beforeEnter', beforeCallback)
-    emitter.off('afterEnter', afterCallback)
-    emitter.off('beforeDrag', beforeDragCallback)
-    emitter.off('afterDrag', afterDragCallback)
-    emitter.off('beforeSnap', beforeSnapCallback)
-    emitter.off('afterSnap', afterSnapCallback)
-    emitter.off('beforeLeave', beforeCallback)
-    emitter.off('afterLeave', afterCallback)
+    emitter.off('beforeEnter', beforeTransition)
+    emitter.off('afterEnter', afterTransition)
+    emitter.off('beforeLeave', beforeTransition)
+    emitter.off('afterLeave', afterTransition)
   })
 
   return { progress }

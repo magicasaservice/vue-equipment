@@ -12,7 +12,18 @@ export default defineNuxtConfig({
   },
 
   mirror: {
-    components: true,
+    // v2 registers every export and takes a prefix instead of a component
+    // list. `Mirror` keeps `MButton` and friends free for the compatibility
+    // wrappers, which is what the demos render.
+    prefix: 'Mirror',
+  },
+
+  // The vue-equipment theme applies under this attribute, as it does in the
+  // docs, rather than being baked into the base tokens.
+  app: {
+    head: {
+      htmlAttrs: { 'data-theme': 'vue-equipment' },
+    },
   },
 
   devtools: { enabled: false },
@@ -45,10 +56,10 @@ export default defineNuxtConfig({
     'fonts/index/stylesheet.css',
     'fonts/interface/stylesheet.css',
     'fonts/mirage/stylesheet.css',
-    '@maas/mirror/tokens/components/index.css',
-    '@maas/mirror/tokens/theme/dark/components/index.css',
     '@maas/mirror/tokens/application.css',
     '@maas/mirror/tokens/theme/dark/application.css',
+    '@maas/mirror/tokens/theme/vue-equipment/light/application.css',
+    '@maas/mirror/tokens/theme/vue-equipment/dark/application.css',
   ],
 
   // Use public folder from docs

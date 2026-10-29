@@ -26,7 +26,7 @@
           class="pointer-events-none absolute bottom-2 flex w-full justify-center"
         >
           <magic-command-trigger action="close" as-child>
-            <m-button mode="tone" class="pointer-events-auto w-36">
+            <m-button variant="secondary" class="pointer-events-auto w-36">
               Go Back
             </m-button>
           </magic-command-trigger>
@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { MButton, MInput, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MButton, MInput, MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { projects } from '../data/search.json'
 
 const search = ref('')

@@ -27,7 +27,7 @@
         </m-menu-item>
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
-        <div class="bg-surface-high w-[220px] rounded-2xl p-1">
+        <div class="bg-surface-base w-[220px] rounded-2xl p-1">
           <nested-demo-menu
             v-for="(subItem, index) in item.items"
             :key="index"
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { offset } from '@floating-ui/dom'
-import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MMenuItem, MMenuItemChild } from 'mirror-compat'
 import NestedDemoMenu from '../components/NestedDemoMenu.vue'
 
 interface NestedDemoMenuProps {

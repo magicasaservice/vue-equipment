@@ -12,7 +12,8 @@ import { MagicScrollReturn, MagicScrollTarget } from '../symbols'
 import type { MaybeElementRef } from '@vueuse/core'
 
 interface MagicScrollProviderProps {
-  target?: MaybeElementRef<HTMLElement>
+  // A template ref is null until the element mounts.
+  target?: MaybeElementRef<HTMLElement | null>
 }
 
 const { target } = defineProps<MagicScrollProviderProps>()

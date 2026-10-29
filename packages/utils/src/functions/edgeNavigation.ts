@@ -1,0 +1,137 @@
+interface CancelEdgeNavigationArgs {
+  event: TouchEvent
+  threshold?: number
+  slop?: number
+  exclude?: string[]
+}
+
+interface RestoreClickArgs {
+  target: HTMLElement
+  touch: Touch
+  slop: number
+}
+
+// iPadOS reports a Macintosh user agent, so touch support is the tell
+export function hasEdgeNavigationGestures() {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return (
+    /iPad|iPhone|iPod/.test(navigator?.userAgent) ||
+    (/Macintosh/.test(navigator?.userAgent) && navigator?.maxTouchPoints > 1)
+  )
+}
+
+// Canceling touchstart is the one signal WebKit honors to keep its edge
+// navigation swipe from arming; pointer events keep firing regardless
+export function cancelEdgeNavigation(args: CancelEdgeNavigationArgs): boolean {
+  const {
+    event,
+    threshold = 44,
+    slop = 12,
+    exclude = ['SELECT', 'OPTION', 'INPUT', 'TEXTAREA'],
+  } = args
+
+  if (!hasEdgeNavigationGestures() || !event.cancelable) {
+    return false
+  }
+
+  if (event.touches.length !== 1) {
+    return false
+  }
+
+  const touch = event.touches[0]
+  const target =
+    event.target instanceof Element ? closestHTMLElement(event.target) : null
+
+  if (!touch || !target) {
+    return false
+  }
+
+  if (
+    exclude.some((tag) => tag.toUpperCase() === target.tagName) ||
+    target.isContentEditable
+  ) {
+    return false
+  }
+
+  if (
+    touch.clientX > threshold &&
+    touch.clientX < window.innerWidth - threshold
+  ) {
+    return false
+  }
+
+  event.preventDefault()
+  restoreClick({ target, touch, slop })
+
+  return true
+}
+
+// An SVG element has no click(), so a touch on an icon restores the click on
+// the HTML element that holds it
+function closestHTMLElement(element: Element) {
+  for (
+    let current: Element | null = element;
+    current;
+    current = current.parentElement
+  ) {
+    if (current instanceof HTMLElement) {
+      return current
+    }
+  }
+
+  return null
+}
+
+// Canceling touchstart swallows the tap’s synthesized click; a touch that
+// ends within the slop dispatches a deferred replacement
+function restoreClick(args: RestoreClickArgs) {
+  const { target, touch, slop } = args
+  const { identifier, clientX, clientY } = touch
+
+  function findTouch(list: TouchList) {
+    for (let index = 0; index < list.length; index++) {
+      const candidate = list[index]
+      if (candidate?.identifier === identifier) {
+        return candidate
+      }
+    }
+
+    return undefined
+  }
+
+  function teardown() {
+    document.removeEventListener('touchend', onTouchend, true)
+    document.removeEventListener('touchcancel', onTouchcancel, true)
+  }
+
+  function onTouchend(event: TouchEvent) {
+    const endTouch = findTouch(event.changedTouches)
+
+    if (!endTouch) {
+      return
+    }
+
+    teardown()
+
+    const distance = Math.hypot(
+      endTouch.clientX - clientX,
+      endTouch.clientY - clientY
+    )
+
+    if (distance <= slop) {
+      setTimeout(() => target.click())
+    }
+  }
+
+  function onTouchcancel(event: TouchEvent) {
+    if (findTouch(event.changedTouches)) {
+      teardown()
+    }
+  }
+
+  document.addEventListener('touchend', onTouchend, true)
+  document.addEventListener('touchcancel', onTouchcancel, true)
+}

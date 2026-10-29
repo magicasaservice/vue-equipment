@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center gap-4 select-none">
+  <div class="flex w-120 max-w-full flex-col gap-4 select-none">
     <div
-      class="bg-surface-low text-surface-subtle relative flex aspect-16/9 w-120 max-w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
+      class="bg-surface-low text-surface-muted relative flex aspect-16/9 w-full items-center justify-between overflow-hidden rounded-[0.25rem]"
     >
       <magic-tray-provider :id="id" :options="options">
         <magic-tray-content
@@ -14,13 +14,13 @@
         >
           <template #handle-left>
             <div
-              class="h-[calc(2.5rem+var(--handle-v,0)*1rem)] w-1 rounded-full bg-[#fff] opacity-[calc(0.1+var(--handle-v,0)*0.9)]"
+              class="text-surface h-[calc(2.5rem+var(--handle-v,0)*1rem)] w-1 rounded-full bg-current opacity-[calc(0.1+var(--handle-v,0)*0.9)]"
               :style="{ '--handle-v': handleV('left') }"
             />
           </template>
           <template #handle-right>
             <div
-              class="h-[calc(2.5rem+var(--handle-v,0)*1rem)] w-1 rounded-full bg-[#fff] opacity-[calc(0.1+var(--handle-v,0)*0.9)]"
+              class="text-surface h-[calc(2.5rem+var(--handle-v,0)*1rem)] w-1 rounded-full bg-current opacity-[calc(0.1+var(--handle-v,0)*0.9)]"
               :style="{ '--handle-v': handleV('right') }"
             />
           </template>
@@ -38,17 +38,17 @@
     </div>
 
     <div
-      class="bg-surface-low text-surface w-120 max-w-full rounded-[0.25rem] p-4 font-mono text-sm"
+      class="bg-surface-low text-surface w-full rounded-[0.25rem] p-4 font-mono text-sm"
     >
-      <div class="text-surface-subtle mb-3 text-xs tracking-widest uppercase">
+      <div class="text-surface-muted mb-3 text-xs tracking-widest uppercase">
         magnet event
       </div>
       <div class="mb-1.5 flex justify-between text-xs">
-        <span class="text-surface-subtle">
+        <span class="text-surface-muted">
           left
           <span class="text-surface">{{ magnetValues.left.toFixed(3) }}</span>
         </span>
-        <span class="text-surface-subtle">
+        <span class="text-surface-muted">
           right
           <span class="text-surface">{{ magnetValues.right.toFixed(3) }}</span>
         </span>
@@ -63,23 +63,23 @@
           :style="{ '--bar-v': magnetValues.right }"
         />
         <div
-          class="bg-surface-subtle absolute top-0 left-1/2 h-full w-px -translate-x-1/2"
+          class="text-surface-subtle absolute top-0 left-1/2 h-full w-px -translate-x-1/2 bg-current"
         />
       </div>
 
       <div
-        class="text-surface-subtle mt-4 mb-3 text-xs tracking-widest uppercase"
+        class="text-surface-muted mt-4 mb-3 text-xs tracking-widest uppercase"
       >
         state
       </div>
       <div class="flex flex-col gap-1.5">
         <template v-for="side in sides" :key="side">
           <div class="flex justify-between">
-            <span class="text-surface-subtle">activeSnapPoint.{{ side }}</span>
+            <span class="text-surface-muted">activeSnapPoint.{{ side }}</span>
             <span>{{ state.activeSnapPoint[side] ?? '—' }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-surface-subtle">progress.{{ side }}</span>
+            <span class="text-surface-muted">progress.{{ side }}</span>
             <span>{{ state.progress[side].toFixed(3) }}</span>
           </div>
         </template>

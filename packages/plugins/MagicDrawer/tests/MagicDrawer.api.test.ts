@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from 'vitest-browser-vue'
 import { page, userEvent } from 'vitest/browser'
 import { defineComponent, nextTick } from 'vue'
@@ -10,6 +10,8 @@ import MagicDrawerContent from '../src/components/MagicDrawerContent.vue'
 import { useMagicDrawer } from '../src/composables/useMagicDrawer'
 import { DrawerId, TestId } from './enums'
 
+import type { MagicDrawerSnapPoint } from '../src/types/index'
+
 function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
   return defineComponent({
     components: {
@@ -20,14 +22,16 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
       MagicDrawerContent,
     },
     setup() {
-      const { open, close, isActive, snapTo, progress } = useMagicDrawer(id)
-      return { open, close, isActive, snapTo, progress }
+      const { open, close, isActive, snapTo, progress, activeSnapPoint } =
+        useMagicDrawer(id)
+      return { open, close, isActive, snapTo, progress, activeSnapPoint }
     },
     template: `
       <MagicDrawerProvider id="${id}" :options="options">
         <span data-test-id="${TestId.IsActive}">{{ isActive }}</span>
         <span data-test-id="${TestId.ProgressX}">{{ progress.x }}</span>
         <span data-test-id="${TestId.ProgressY}">{{ progress.y }}</span>
+        <span data-test-id="${TestId.Active1}">{{ activeSnapPoint }}</span>
         <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
         <button data-test-id="${TestId.CloseBtn}" @click="close">Close</button>
         <MagicDrawerTeleport>
@@ -42,6 +46,68 @@ function createDrawer(id: DrawerId, options: Record<string, unknown> = {}) {
       return { options }
     },
   })
+}
+
+function createSnapDrawer(
+  id: DrawerId,
+  options: Record<string, unknown>,
+  snapPoint: MagicDrawerSnapPoint
+) {
+  return defineComponent({
+    components: {
+      MagicDrawerProvider,
+      MagicDrawerTeleport,
+      MagicDrawerBackdrop,
+      MagicDrawerContent,
+    },
+    setup() {
+      const { open, snapTo } = useMagicDrawer(id)
+      return { open, snap: () => snapTo(snapPoint) }
+    },
+    template: `
+      <MagicDrawerProvider id="${id}" :options="options">
+        <button data-test-id="${TestId.Trigger}" @click="open">Open</button>
+        <button data-test-id="${TestId.SnapBtn}" @click="snap">Snap</button>
+        <MagicDrawerTeleport>
+          <MagicDrawerBackdrop />
+          <MagicDrawerContent>
+            <div style="height: 200px; width: 100%;">Content</div>
+          </MagicDrawerContent>
+        </MagicDrawerTeleport>
+      </MagicDrawerProvider>
+    `,
+    data() {
+      return { options }
+    },
+  })
+}
+
+async function openAndSnap(screen: ReturnType<typeof render>) {
+  await screen.getByTestId(TestId.Trigger).click()
+  await nextTick()
+  await nextTick()
+  await new Promise((r) => setTimeout(r, 100))
+
+  const drag = document.querySelector('.magic-drawer-content__drag')!
+  const before = drag.getAttribute('style')
+
+  // The open drawer’s backdrop covers the button, so click it directly
+  document
+    .querySelector<HTMLElement>(`[data-test-id="${TestId.SnapBtn}"]`)!
+    .click()
+  await new Promise((r) => setTimeout(r, 400))
+
+  return { before, after: drag.getAttribute('style') }
+}
+
+function snapPointWarnings(calls: Array<Array<unknown>>) {
+  return calls.filter((call) =>
+    call.some(
+      (arg) =>
+        typeof arg === 'string' &&
+        arg.includes('neither a snap point nor inside a range')
+    )
+  )
 }
 
 describe('MagicDrawer - API', () => {
@@ -79,6 +145,20 @@ describe('MagicDrawer - API', () => {
       await expect
         .element(page.getByTestId(TestId.IsActive))
         .toHaveTextContent('false')
+    })
+
+    it('open() sets activeSnapPoint to the point the drawer rests at', async () => {
+      const screen = render(createDrawer(DrawerId.ApiActiveSnapPoint))
+      await expect
+        .element(screen.getByTestId(TestId.Active1))
+        .toHaveTextContent('')
+
+      await screen.getByTestId(TestId.Trigger).click()
+      await nextTick()
+
+      await expect
+        .element(screen.getByTestId(TestId.Active1))
+        .toHaveTextContent('1')
     })
 
     it('open/close cycle can be repeated', async () => {
@@ -192,6 +272,32 @@ describe('MagicDrawer - API', () => {
 
       const { snapTo } = useMagicDrawer(DrawerId.SnapDrawer)
       expect(() => snapTo(0.5)).not.toThrow()
+    })
+
+    it('snapTo ignores a value that is not a snap point and warns', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const screen = render(
+        createSnapDrawer(DrawerId.SnapUnknown, { snapPoints: [0.5, 1] }, 0.25)
+      )
+
+      const { before, after } = await openAndSnap(screen)
+
+      expect(snapPointWarnings(warnSpy.mock.calls).length).toBe(1)
+      expect(after).toBe(before)
+      warnSpy.mockRestore()
+    })
+
+    it('snapTo accepts a snap point written in another unit', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const screen = render(
+        createSnapDrawer(DrawerId.SnapOtherUnit, { snapPoints: ['0px', 1] }, 0)
+      )
+
+      const { before, after } = await openAndSnap(screen)
+
+      expect(snapPointWarnings(warnSpy.mock.calls).length).toBe(0)
+      expect(after).not.toBe(before)
+      warnSpy.mockRestore()
     })
   })
 

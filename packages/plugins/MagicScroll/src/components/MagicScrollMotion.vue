@@ -63,7 +63,7 @@ function createAnimation() {
   }
 
   const mappedSequence: AnimationSequence = sequence.map((item) => {
-    const [animation = [], options = {}] = item
+    const [animation, options = {}] = item
     return [el, animation, options]
   })
 

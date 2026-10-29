@@ -5,8 +5,10 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useMagicToast } from '@maas/vue-equipment/plugins/MagicToast'
+
+import type { MagicToastOptions } from '@maas/vue-equipment/plugins/MagicToast'
 
 const count = ref(0)
 
@@ -25,7 +27,7 @@ function onClick() {
   add({ component, props })
 }
 
-const options = {
+const options: MagicToastOptions = {
   layout: {
     expand: 'hover',
   },

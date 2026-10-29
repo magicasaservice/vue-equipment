@@ -19,7 +19,6 @@
     <div class="relative flex w-full items-center pt-4">
       <magic-player-video-controls
         id="magic-player-standalone-controls-demo"
-        class="bg-black"
         standalone
       >
         <template #timeline-before>

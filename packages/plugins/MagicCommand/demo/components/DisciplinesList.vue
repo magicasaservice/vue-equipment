@@ -15,6 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { disciplines } from '../data/search.json'
 </script>

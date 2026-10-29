@@ -1,0 +1,4 @@
+{
+  "extends": "@maas/config/tsconfig/vue-base.json",
+  "include": ["src/**/*.ts", "src/**/*.vue", "tests/**/*.ts", "*.mts"]
+}

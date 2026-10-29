@@ -5,7 +5,7 @@
     playsinline
     disablePictureInPicture
     :preload="injectedOptions.preload"
-    :loop="playlistCount <= 1 && injectedOptions.loop"
+    :loop="sourceCount <= 1 && injectedOptions.loop"
     :muted="muted"
   />
 </template>
@@ -76,7 +76,13 @@ const { initialize } = usePlayerRuntime({
 
 const { initializeState } = usePlayerState(injectedInstanceId)
 const state = initializeState()
-const { muted, playing, started, loaded, playlistCount } = toRefs(state)
+const { muted, playing, started, loaded } = toRefs(state)
+
+// Counted from the options rather than read from the shared state, which the
+// provider only fills in once it mounts.
+const sourceCount = computed(() =>
+  Array.isArray(injectedOptions.src) ? injectedOptions.src.length : 1
+)
 
 usePlayerMediaApi({
   id: injectedInstanceId,

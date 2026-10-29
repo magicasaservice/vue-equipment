@@ -4,14 +4,14 @@
       <m-button @click="setMetaViewport">Set meta viewport</m-button>
       <m-button @click="resetMetaViewport">Reset meta viewport</m-button>
     </div>
-    <span class="type-surface-body-sm text-surface-subtle">
+    <span class="type-surface-body-sm text-surface-muted">
       Inspect the meta viewport in your browser console.
     </span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import { useMetaViewport } from '@maas/vue-equipment/composables/useMetaViewport'
 
 const { setMetaViewport, resetMetaViewport } = useMetaViewport()

@@ -2,7 +2,7 @@
   <div class="flex w-full flex-col gap-4">
     <div
       v-if="years || years === 0"
-      class="type-surface-body-sm text-surface-subtle flex flex-col items-center gap-2"
+      class="type-surface-body-sm text-surface-muted flex flex-col items-center gap-2"
     >
       <m-badge>{{ days }} Day{{ days !== 1 ? 's' : '' }}</m-badge>
       <m-badge>{{ hours }} Hour{{ hours !== 1 ? 's' : '' }}</m-badge>
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { MBadge } from '@maas/mirror/vue'
+import { MBadge } from 'mirror-compat'
 import {
   useCountdown,
   type DateTimeArray,

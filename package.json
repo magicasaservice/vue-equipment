@@ -1,7 +1,7 @@
 {
   "name": "@maas/vue-equipment",
   "description": "Our Frontend Toolkit, Free and Open Source",
-  "version": "1.0.0-beta.81",
+  "version": "1.2.0",
   "contributors": [
     {
       "name": "Robin Scholz",
@@ -13,21 +13,38 @@
     }
   ],
   "devDependencies": {
+    "@floating-ui/vue": "catalog:",
     "@maas/config": "^1.16.1",
+    "@maas/magic-timer": "catalog:",
     "@maas/mirror": "catalog:",
+    "@maas/vue-autosize": "catalog:",
+    "@maas/vue-primitive": "catalog:",
+    "@nuxt/kit": "catalog:",
     "@release-it/bumper": "^7.0.6",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/browser-playwright": "^4.1.11",
+    "@vueuse/core": "catalog:",
+    "@vueuse/integrations": "catalog:",
+    "defu": "catalog:",
     "eslint": "^10.9.1",
+    "focus-trap": "catalog:",
+    "hls.js": "catalog:",
+    "luxon": "catalog:",
+    "mitt": "catalog:",
+    "motion": "catalog:",
+    "nuxt": "catalog:",
     "playwright": "^1.62.1",
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.7.4",
     "release-it": "^19.2.4",
     "turbo": "^2.10.12",
     "typescript": "catalog:",
+    "universal-cookie": "catalog:",
     "vitest": "^4.1.11",
-    "vitest-browser-vue": "^2.1.0"
+    "vitest-browser-vue": "^2.1.0",
+    "vue": "catalog:",
+    "wheel-gestures": "catalog:"
   },
   "sideEffects": [
     "**/*.css"
@@ -38,9 +55,9 @@
       "types": "./dist/nuxt/types.d.mts",
       "import": "./dist/nuxt/module.mjs"
     },
-    "./composables": {
-      "types": "./dist/composables/index.d.ts",
-      "import": "./dist/composables/index.js"
+    "./composables/*": {
+      "types": "./dist/composables/*/index.d.ts",
+      "import": "./dist/composables/*/index.js"
     },
     "./plugins/*": {
       "types": "./dist/plugins/*/index.d.ts",
@@ -58,72 +75,60 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@floating-ui/vue": "^1",
+    "@floating-ui/vue": "^1 || ^2",
     "@maas/magic-timer": "^1",
     "@maas/vue-autosize": "^1",
-    "@maas/vue-primitive": "^1.4",
+    "@maas/vue-primitive": "^1.5",
     "@nuxt/kit": ">=3",
     "@vueuse/core": ">=12",
     "@vueuse/integrations": ">=12",
     "defu": "^6",
-    "focus-trap": "^7",
+    "focus-trap": "^7 || ^8",
     "hls.js": "^1",
     "luxon": "^3",
     "mitt": "^3",
-    "motion": "^12",
+    "motion": "^12 || ^13 || ^14",
     "nuxt": ">=3.15",
-    "universal-cookie": "^7",
+    "universal-cookie": "^7 || ^8",
     "vue": "^3.5",
     "wheel-gestures": "^2.2.48"
   },
   "peerDependenciesMeta": {
     "@floating-ui/vue": {
-      "optional": false
-    },
-    "@nuxt/kit": {
-      "optional": false
+      "optional": true
     },
     "@maas/magic-timer": {
-      "optional": false
+      "optional": true
     },
     "@maas/vue-autosize": {
-      "optional": false
+      "optional": true
     },
-    "@maas/vue-primitive": {
-      "optional": false
-    },
-    "@vueuse/core": {
-      "optional": false
+    "@nuxt/kit": {
+      "optional": true
     },
     "@vueuse/integrations": {
-      "optional": false
+      "optional": true
     },
-    "defu": {
-      "optional": false
+    "focus-trap": {
+      "optional": true
     },
     "hls.js": {
-      "optional": false
+      "optional": true
     },
     "luxon": {
-      "optional": false
-    },
-    "mitt": {
-      "optional": false
+      "optional": true
     },
     "motion": {
-      "optional": false
+      "optional": true
     },
     "nuxt": {
-      "optional": false
+      "optional": true
     },
     "universal-cookie": {
-      "optional": false
-    },
-    "vue": {
-      "optional": false
+      "optional": true
     },
     "wheel-gestures": {
-      "optional": false
+      "optional": true
     }
   },
   "scripts": {
@@ -133,7 +138,7 @@
     "build": "turbo run build --filter=!playground",
     "build:types": "turbo run build:types",
     "build:docs": "pnpm exec playwright install chromium --with-deps && turbo run build --filter=docs",
-    "tokens": "pnpm dlx @maas/mirror@beta tokens --skip true && pnpm dlx @maas/mirror@beta tailwind --skip true",
+    "tokens": "mirror tokens && mirror css",
     "preview:docs": "turbo run preview --filter=docs",
     "update:metadata": "turbo run update --filter=metadata",
     "test": "turbo run test",

@@ -106,7 +106,14 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
       viewId
     ) {
       switch (true) {
-        case !state.active: {
+        case state.active && !itemId && view?.active: {
+          state.active = false
+          unselectView(viewId)
+          break
+        }
+        // An active menu hands over to another top-level trigger’s view
+        case !state.active:
+        case !itemId: {
           const delay =
             state.options.delay?.click ?? ModeDelayClick[state.options.mode]
           state.active = true
@@ -116,11 +123,6 @@ export function useMenuTrigger(args: UseMenuTriggerArgs) {
           if (!itemId) {
             state.input.view = viewId
           }
-          break
-        }
-        case state.active && !itemId: {
-          state.active = false
-          unselectView(viewId)
           break
         }
       }

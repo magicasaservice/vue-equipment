@@ -16,11 +16,14 @@ import {
   useThrottleFn,
 } from '@vueuse/core'
 import {
+  cancelEdgeNavigation,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
   isAndroid,
   isIOS,
   isWithinRange,
+  snapCommit,
+  snapRelease,
 } from '@maas/vue-equipment/utils'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useMagicError } from '@maas/vue-equipment/plugins/MagicError'
@@ -33,9 +36,11 @@ import { useDrawerState } from './useDrawerState'
 import type { MaybeRef, Ref, WritableComputedRef } from 'vue'
 import type { UseResizeObserverReturn } from '@vueuse/core'
 import type { MagicEmitterEvents } from '@maas/vue-equipment/plugins/MagicEmitter'
+import type { SnapDrag } from '@maas/vue-equipment/utils'
 
 import type {
   MagicDrawerSnapPoint,
+  MagicDrawerSnapRange,
   RequiredMagicDrawerOptions,
 } from '../../types'
 
@@ -50,6 +55,9 @@ type UseDrawerDragArgs = {
   initial: MaybeRef<RequiredMagicDrawerOptions['initial']>
   animation: MaybeRef<RequiredMagicDrawerOptions['animation']>
   preventDragClose: MaybeRef<RequiredMagicDrawerOptions['preventDragClose']>
+  preventEdgeNavigation: MaybeRef<
+    RequiredMagicDrawerOptions['preventEdgeNavigation']
+  >
   disabled: MaybeRef<boolean>
   overshoot: MaybeRef<number>
 }
@@ -67,6 +75,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     initial,
     animation,
     preventDragClose,
+    preventEdgeNavigation,
     disabled,
   } = args
 
@@ -96,12 +105,17 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     absDirectionY,
     elRect,
     wrapperRect,
+    activeSnapPoint,
   } = toRefs(state)
 
   const { isActive, close } = useMagicDrawer(id)
 
-  // The last emitted pending snap target — only emit willSnapTo on change
-  let lastPendingTarget: number | undefined = undefined
+  // The last pending snap target emitted, so willSnapTo only fires on change.
+  // A target inside a range counts as the range itself.
+  let lastPendingTarget: number | MagicDrawerSnapRange | undefined = undefined
+
+  // The drag outpaces the momentum threshold, so a release carries on
+  let flicked = false
 
   let pointerdownTarget: HTMLElement | undefined = undefined
   let cancelPointerup: (() => void) | undefined = undefined
@@ -135,24 +149,25 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
   const snapMode = computed(() => toValue(snap).mode)
 
-  const draggedRefX = computed(() =>
-    snapMode.value === 'step' ? lastDraggedX.value : draggedX.value
-  )
-  const draggedRefY = computed(() =>
-    snapMode.value === 'step' ? lastDraggedY.value : draggedY.value
-  )
+  const isVertical = computed(() => {
+    const side = toValue(position)
+    return side === 'top' || side === 'bottom'
+  })
 
   // Snap logic
   const {
     snappedY,
     snappedX,
-    activeSnapPoint,
-    snapTo,
-    snapPointsMap,
-    interpolateDragged,
-    findClosestSnapPoint,
     drawerHeight,
     drawerWidth,
+    mappedSnapPoints,
+    mappedRanges,
+    rangeAt,
+    snapPointAt,
+    restingOffset,
+    isSnapTarget,
+    snapTo,
+    interpolateDragged,
   } = useDrawerSnap({
     id,
     wrapperRect,
@@ -163,6 +178,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     overshoot,
     draggedY,
     draggedX,
+    activeSnapPoint,
   })
 
   const { canDrag, canInterpolate, lockScroll } = useDrawerGuards({
@@ -189,127 +205,113 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     await nextTick()
   }
 
-  function checkPosition() {
-    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
-    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
-
-    switch (position) {
-      case 'bottom':
-      case 'top': {
-        if (distanceY > toValue(threshold).distance) {
-          const snapPointY = findClosestSnapPoint({
-            draggedX: 0,
-            draggedY: draggedRefY.value,
-            direction: relDirectionY.value,
-          })
-
-          // Close if last snap point is reached
-          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointY
-          }
-        }
-
-        break
-      }
-
-      case 'right':
-      case 'left': {
-        if (distanceX > toValue(threshold).distance) {
-          const snapPointX = findClosestSnapPoint({
-            draggedX: draggedRefX.value,
-            draggedY: 0,
-            direction: relDirectionX.value,
-          })
-
-          // Close if last snap point is reached
-          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointX
-          }
-        }
-        break
-      }
+  // The drag along the drawer’s axis, for the shared snap rules
+  function snapDrag(): SnapDrag {
+    const layout = {
+      points: mappedSnapPoints.value,
+      ranges: mappedRanges.value,
+      mode: snapMode.value,
     }
+
+    return isVertical.value
+      ? {
+          ...layout,
+          rest: snappedY.value,
+          start: lastDraggedY.value,
+          position: draggedY.value,
+        }
+      : {
+          ...layout,
+          rest: snappedX.value,
+          start: lastDraggedX.value,
+          position: draggedX.value,
+        }
+  }
+
+  // Whether a release at an offset closes the drawer. Inside a range that
+  // reaches the closed end, a drag toward it closes within the distance
+  // threshold, as the pointer can’t follow the drawer past the window edge.
+  function isClosing(offset: number) {
+    const extent = isVertical.value ? drawerHeight.value : drawerWidth.value
+
+    if (extent <= 0) {
+      return false
+    }
+
+    if (Math.abs(offset) === extent) {
+      return true
+    }
+
+    const side = toValue(position)
+    const closed = side === 'bottom' || side === 'right' ? extent : -extent
+    const rest = isVertical.value ? snappedY.value : snappedX.value
+    const range = rangeAt(offset)
+    const reachesClosed = range?.min === closed || range?.max === closed
+    const towardClosed = Math.abs(closed - offset) < Math.abs(closed - rest)
+
+    return (
+      hasDragged.value &&
+      reachesClosed &&
+      towardClosed &&
+      Math.abs(closed - offset) <= toValue(threshold).distance
+    )
+  }
+
+  // Where a release comes to rest, rounded like any resting value
+  function settleTarget() {
+    const target = snapRelease({
+      ...snapDrag(),
+      committed: interpolateTo.value,
+      flicked,
+      tapped: !hasDragged.value,
+    })
+
+    return restingOffset(target)
   }
 
   function checkMomentum() {
     const elapsed = Date.now() - dragStart.value!.getTime()
+    const { position: dragged, start } = snapDrag()
+    const distance = Math.abs(dragged - start)
+    const velocity = elapsed && distance ? distance / elapsed : 0
 
-    const distanceX = Math.abs(draggedX.value - lastDraggedX.value)
-    const distanceY = Math.abs(draggedY.value - lastDraggedY.value)
+    flicked = velocity > toValue(threshold).momentum
+  }
 
-    const velocityX = elapsed && distanceX ? distanceX / elapsed : 0
-    const velocityY = elapsed && distanceY ? distanceY / elapsed : 0
+  function checkPosition() {
+    const direction = isVertical.value
+      ? relDirectionY.value
+      : relDirectionX.value
 
-    switch (position) {
-      case 'bottom':
-      case 'top': {
-        if (velocityY > toValue(threshold).momentum) {
-          const snapPointY = findClosestSnapPoint({
-            draggedX: 0,
-            draggedY: draggedRefY.value,
-            direction: relDirectionY.value,
-          })
-          // Close if last snap point is reached
-          if (Math.abs(snapPointY ?? 0) === drawerHeight.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointY
-          }
-        }
-        break
-      }
+    interpolateTo.value = snapCommit({
+      ...snapDrag(),
+      distance: toValue(threshold).distance,
+      flicked,
+      flickDirection: direction === 'absolute' ? undefined : direction,
+    })
 
-      case 'right':
-      case 'left': {
-        if (velocityX > toValue(threshold).momentum) {
-          const snapPointX = findClosestSnapPoint({
-            draggedX: draggedRefX.value,
-            draggedY,
-            direction: relDirectionX.value,
-          })
-
-          // Close if last snap point is reached
-          if (Math.abs(snapPointX ?? 0) === drawerWidth.value) {
-            shouldClose.value = true
-          } else {
-            // Snap to next snap point
-            interpolateTo.value = snapPointX
-          }
-        }
-        break
-      }
-    }
+    // Close once a release would land where the drawer closes
+    shouldClose.value = isClosing(settleTarget())
   }
 
   function emitWillSnapTo() {
-    // Pending target is the value the drawer will settle on, either the
-    // committed interpolation target or the current snap point
-    const target =
-      interpolateTo.value || interpolateTo.value === 0
-        ? interpolateTo.value
-        : position === 'top' || position === 'bottom'
-          ? snappedY.value
-          : snappedX.value
-
     // Heading to close, not to a snap point
     if (shouldClose.value) {
       return
     }
 
-    if (target === lastPendingTarget) {
+    const target = settleTarget()
+    const isPoint = mappedSnapPoints.value.includes(target)
+    const pending = (!isPoint && rangeAt(target)?.range) || target
+
+    // Inside a range the target follows the pointer, so only entering counts
+    if (pending === lastPendingTarget) {
       return
     }
-    lastPendingTarget = target
+    lastPendingTarget = pending
 
-    const snapPoint = snapPointsMap.value[target]
-    if (!snapPoint && snapPoint !== 0) {
+    const snapPoint = snapPointAt(target)
+    if (snapPoint === undefined) {
       return
     }
 
@@ -317,6 +319,38 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       id: toValue(id),
       snapPoint,
     })
+  }
+
+  // Close, come to rest where the release lands, or animate back
+  function settle(target: EventTarget) {
+    if (shouldClose.value) {
+      close()
+      return
+    }
+
+    const destination = settleTarget()
+    const snapped = isVertical.value ? snappedY.value : snappedX.value
+
+    if (destination === snapped && interpolateTo.value === undefined) {
+      interpolateDragged({ to: snapped })
+      return
+    }
+
+    // Commit before interpolating, which emits afterSnap right away when
+    // already in place
+    activeSnapPoint.value = snapPointAt(destination)
+
+    if (isVertical.value) {
+      snappedY.value = destination
+    } else {
+      snappedX.value = destination
+    }
+
+    // If scroll is locked, interpolate to snap point
+    // Scroll should only be locked at one end!
+    if ((scrollLock && scrollLock.value) || canInterpolate(target)) {
+      interpolateDragged({ to: destination })
+    }
   }
 
   function setDragged({ x, y }: { x: number; y: number }) {
@@ -440,14 +474,27 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     }
   }
 
+  // A drawer that isn’t measured yet can’t map snap points, and snapTo bails
+  // on its own, so only a measured drawer rejects a point
+  function isUnknownSnapPoint(snapPoint: MagicDrawerSnapPoint) {
+    return !!wrapperRect.value && !isSnapTarget(snapPoint)
+  }
+
   function snapToCallback(payload: MagicEmitterEvents['snapTo']) {
     if (payload.id === toValue(id)) {
+      const snapPoint = payload.snapPoint as MagicDrawerSnapPoint
+
       if (!toValue(isActive)) {
         logWarning('Cannot snap to point when drawer is not open')
         return
+      } else if (isUnknownSnapPoint(snapPoint)) {
+        logWarning(
+          `Cannot snap to ${snapPoint}, which is neither a snap point nor inside a range`
+        )
+        return
       } else {
         snapTo({
-          snapPoint: payload.snapPoint as MagicDrawerSnapPoint,
+          snapPoint,
           interpolate: true,
           duration: payload.duration,
         })
@@ -547,49 +594,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onPointerup(e: PointerEvent) {
-    if (shouldClose.value) {
-      close()
-    } else if (interpolateTo.value || interpolateTo.value === 0) {
-      // If scroll is locked, interpolate to snap point
-      // Scroll should only be locked at one end!
-      if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
-        interpolateDragged({
-          to: interpolateTo.value,
-        })
-      }
-
-      // Save the snap point we’re snapping to
-      // both the input value, as well as the actual pixel value
-      activeSnapPoint.value = snapPointsMap.value[interpolateTo.value]
-
-      switch (position) {
-        case 'bottom':
-        case 'top':
-          snappedY.value = interpolateTo.value
-          break
-
-        case 'right':
-        case 'left':
-          snappedX.value = interpolateTo.value
-          break
-      }
-    } else {
-      switch (position) {
-        case 'bottom':
-        case 'top':
-          interpolateDragged({
-            to: snappedY.value,
-          })
-          break
-
-        case 'right':
-        case 'left':
-          interpolateDragged({
-            to: snappedX.value,
-          })
-          break
-      }
-    }
+    settle(e.target!)
 
     emitter.emit('afterDrag', {
       id: toValue(id),
@@ -622,12 +627,6 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
     if (!firstTouch) {
       return
     }
-
-    // Save pointermove direction
-    checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
-
-    // Reset shouldClose before checking
-    shouldClose.value = false
 
     // Save pointermove direction
     checkDirection({ x: firstTouch.clientX, y: firstTouch.clientY })
@@ -672,49 +671,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onTouchend(e: TouchEvent) {
-    if (shouldClose.value) {
-      close()
-    } else if (interpolateTo.value || interpolateTo.value === 0) {
-      // If scroll is locked, interpolate to snap point
-      // Scroll should only be locked at one end!
-      if ((scrollLock && scrollLock.value) || canInterpolate(e.target!)) {
-        interpolateDragged({
-          to: interpolateTo.value,
-        })
-      }
-
-      // Save the snap point we’re snapping to
-      // both the input value, as well as the actual pixel value
-      activeSnapPoint.value = snapPointsMap.value[interpolateTo.value]
-
-      switch (position) {
-        case 'bottom':
-        case 'top':
-          snappedY.value = interpolateTo.value
-          break
-
-        case 'right':
-        case 'left':
-          snappedX.value = interpolateTo.value
-          break
-      }
-    } else {
-      switch (position) {
-        case 'bottom':
-        case 'top':
-          interpolateDragged({
-            to: snappedY.value,
-          })
-          break
-
-        case 'right':
-        case 'left':
-          interpolateDragged({
-            to: snappedX.value,
-          })
-          break
-      }
-    }
+    settle(e.target!)
 
     emitter.emit('afterDrag', {
       id: toValue(id),
@@ -753,6 +710,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       // Reset the pending snap target for the new gesture
       lastPendingTarget = undefined
+      flicked = false
 
       // Save pointerdown target and capture pointer
       // Capture the target, not the elRef, since this would break canDrag
@@ -820,6 +778,18 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   }
 
   function onTouchstart(e: TouchEvent) {
+    switch (position) {
+      case 'left':
+      case 'right':
+        // Horizontal drawers drag along the axis of WebKit’s back and forward
+        // navigation swipe; canceling touchstart near the viewport edge keeps
+        // the drag with the drawer
+        if (toValue(preventEdgeNavigation)) {
+          cancelEdgeNavigation({ event: e })
+        }
+        break
+    }
+
     // Only handle touch on Android
     if (!isAndroid()) {
       return
@@ -846,6 +816,7 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
 
       // Reset the pending snap target for the new gesture
       lastPendingTarget = undefined
+      flicked = false
 
       // Save pointerdown target
       // Capture the target, not the elRef, since this would break canDrag
@@ -902,9 +873,21 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
       await getSizes()
       const snapPoint = toValue(initial)?.snapPoint
 
-      if (snapPoint) {
-        snapTo({ snapPoint, interpolate: false })
+      // Without an initial snap point the drawer opens fully, so record the
+      // point it rests at
+      if (!snapPoint) {
+        activeSnapPoint.value = snapPointAt(0)
+        return
       }
+
+      if (isUnknownSnapPoint(snapPoint)) {
+        logWarning(
+          `initial.snapPoint (${snapPoint}) is neither a snap point nor inside a range and is ignored`
+        )
+        return
+      }
+
+      snapTo({ snapPoint, interpolate: false })
     }
   )
 
@@ -924,14 +907,12 @@ export function useDrawerDrag(args: UseDrawerDragArgs) {
   )
 
   // Make sure the drawer keeps the correct position when the window is resized
-  // To achieve this, we update the snapPointsMap after the drawer has snapped
   resizeObserverEl = useResizeObserver(elRef, async () => {
     useThrottleFn(async () => {
       await getSizes()
 
       if (activeSnapPoint.value) {
         await snapTo({ snapPoint: activeSnapPoint.value, interpolate: false })
-        snapPointsMap.trigger()
       }
     }, 100)()
   })

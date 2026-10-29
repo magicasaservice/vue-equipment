@@ -42,8 +42,12 @@ interface MagicMenuTriggerProps {
   asChild?: boolean
 }
 
-const { instanceId, viewId, disabled, trigger } =
-  defineProps<MagicMenuTriggerProps>()
+const {
+  instanceId,
+  viewId,
+  disabled = undefined,
+  trigger,
+} = defineProps<MagicMenuTriggerProps>()
 
 const magicError: UseMagicErrorReturn = useMagicError({
   prefix: 'MagicMenu',
@@ -71,18 +75,20 @@ magicError.assert(mappedViewId.value, {
   errorCode: 'missing_view_id',
 })
 
-const { getView, getRelativeViewIndex } = useMenuView(mappedInstanceId.value)
+const { getView, getRelativeViewIndex, getParentView } = useMenuView(
+  mappedInstanceId.value
+)
 const view = getView(mappedViewId.value)
 const viewIndex = getRelativeViewIndex(mappedViewId.value)
 
 const { initializeState } = useMenuState(mappedInstanceId.value)
 const state = initializeState()
 
-const { getItem } = useMenuItem({
-  instanceId: mappedInstanceId.value,
-  viewId: mappedViewId.value,
+const { getItem } = useMenuItem(mappedInstanceId.value)
+const item = getItem({
+  viewId: getParentView(mappedViewId.value)?.id ?? '',
+  id: itemId ?? '',
 })
-const item = getItem(itemId ?? '')
 
 const mappedDisabled = computed(() => disabled ?? item?.disabled ?? false)
 

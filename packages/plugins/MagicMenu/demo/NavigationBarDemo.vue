@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-surface bg-surface-high relative flex h-15 items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
+    class="border-surface bg-surface-base relative flex h-15 items-center gap-1 overflow-hidden rounded-[1.25rem] p-1"
   >
     <magic-menu-provider
       v-if="menu"
@@ -23,7 +23,7 @@
               :channel-id="item.id"
               as-child
             >
-              <m-button :mode="channelActive ? 'translucent' : 'ghost'">
+              <m-button :mode="channelActive ? 'subtle' : 'ghost'">
                 <span class="flex items-center gap-2.5">
                   <span>{{ item.label }}</span>
                   <m-badge
@@ -61,7 +61,11 @@
                       <span class="type-surface-callout-sm text-surface-muted">
                         {{ entry.label }}
                       </span>
-                      <m-badge v-if="'badge' in entry" size="xs" mode="tone">
+                      <m-badge
+                        v-if="'badge' in entry"
+                        size="xs"
+                        variant="secondary"
+                      >
                         {{ entry.badge }}
                       </m-badge>
                     </div>
@@ -85,7 +89,7 @@
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue'
 import { AutoSize } from '@maas/vue-autosize'
-import { MBadge, MButton, MMenuBox } from '@maas/mirror/vue'
+import { MBadge, MButton, MMenuBox } from 'mirror-compat'
 import MenuDemoCard from './components/MenuDemoCard.vue'
 
 import type { ComponentPublicInstance } from 'vue'
@@ -243,7 +247,7 @@ const menu = [
 
 <style>
 .navigation-bar__menu-box {
-  --menu-box-box-shadow: none;
-  --menu-box-color-bg: var(--app-color-surface-bg-high);
+  --m-menu-box-shadow: none;
+  background-color: var(--app-color-surface-bg-base);
 }
 </style>

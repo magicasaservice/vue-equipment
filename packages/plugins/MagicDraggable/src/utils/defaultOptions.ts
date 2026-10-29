@@ -7,7 +7,7 @@ const defaultOptions: RequiredMagicDraggableOptions = {
   scrollLock: { padding: true },
   snapPoints: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
   threshold: {
-    lock: 0,
+    lock: 8,
     distance: 128,
     momentum: 1.5,
     idle: 250,
@@ -21,6 +21,7 @@ const defaultOptions: RequiredMagicDraggableOptions = {
   initial: {
     snapPoint: 'top-left',
   },
+  preventEdgeNavigation: true,
   disabled: false,
 }
 

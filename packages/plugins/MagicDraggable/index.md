@@ -2,9 +2,8 @@
 
 MagicDraggable is a touch enabled, draggable component that can snap to configurable points inside its container.
 
-<component-preview src="./demo/DefaultDemo.vue" />
-
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
+::component-preview{src="./demo/DefaultDemo.vue"}
+::
 
 ## Anatomy
 
@@ -20,7 +19,14 @@ const { open } = useMagicDraggable('your-draggable-id')
 </script>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Vue
 
@@ -78,63 +84,13 @@ function handleClick() {
 }
 ```
 
-> [!TIP]
-> If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the component as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
-
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-     {
-      items: [
-        {
-          label: '[@vueuse/core](https://www.npmjs.com/package/@vueuse/core)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: '[defu](https://www.npmjs.com/package/defu)'
-        }
-      ]
-    }
-  ]"
-/>
-
-### Installation
-
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit @vueuse/core defu
-```
-
-```sh [npm]
-npm install @nuxt/kit @vueuse/core defu
-```
-
-```sh [yarn]
-yarn add @nuxt/kit @vueuse/core defu
-```
-
-```sh [bun]
-bun install @nuxt/kit @vueuse/core defu
-```
-
-:::
+MagicDraggable has no optional peer dependencies. It only relies on the [core peer dependencies](/overview/getting-started#core), which npm, pnpm and bun install automatically.
 
 ## API Reference
 
@@ -142,341 +98,175 @@ bun install @nuxt/kit @vueuse/core defu
 
 The component comes with a simple set of props. Only the id is required.
 
-<ProseTable
-  :columns="[
-    { label: 'Prop' },
-    { label: 'Type' },
-    { label: 'Required' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'id',
-          description: 'Providing an id is required. Can either be a string or a ref.'
-        },
-        {
-          label: 'MaybeRef\<string\>',
-          escape: true
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'options',
-          description: 'Refer to the [options table](#options) for details.'
-        },
-        {
-          label: 'MagicDraggableOptions'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Prop
+  - label: Type
+  - label: Required
+rows:
+  - items:
+      - label: id
+        description: Providing an id is required. Can either be a string or a ref.
+      - label: MaybeRef<string>
+        escape: true
+      - label: 'true'
+  - items:
+      - label: options
+        description: Refer to the [options table](#options) for details.
+      - label: MagicDraggableOptions
+      - label: 'false'
+---
+::
 
 ### Options
 
 To customize the component, override the necessary options. Any custom options will be merged with the default options.
 
-<ProseTable
-  :columns="[
-    { label: 'Option' },
-    { label: 'Type' },
-    { label: 'Default' }
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: 'tag',
-          description: 'Specify the drawer\'s HTML element.'
-        },
-        {
-          label: 'string',
-          description: '\'dialog\' | \'div\''
-        },
-        {
-          label: '\'div\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.distance',
-          description: 'Configure the dragged distance before the component snaps.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '128'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.momentum',
-          description: 'Configure the momentum from when the component snaps.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '1.5'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.idle',
-          description: 'Configure the idle time threshold in milliseconds before drag is considered complete.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '250'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'threshold.lock',
-          description: 'Configure the dragged distance before the component prevents other touch interactions.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '0'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.snap.duration',
-          description: 'Configure the component’s snap animation duration.'
-        },
-        {
-          label: 'number'
-        },
-        {
-          label: '500'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'animation.snap.easing',
-          description: 'Configure the component’s snap animation easing.'
-        },
-        {
-          label: 'function',
-          description: '(t: number) => number'
-        },
-        {
-          label: 'easeOutBack',
-          description: '1 + (t - 1) * (t - 1) * ((o + 1) * (t - 1) + o)'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'initial.snapPoint',
-          description: 'Provide an initial snap point for the component to snap to.'
-        },
-        {
-          label: 'DraggableSnapPoint',
-          description: 'Position | [Position, { x?: number, y?: number }]'
-        },
-        {
-          label: '\'center\''
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'snapPoints',
-          description: 'Add snap points. Points can be either a position string (\'top-left\', \'center\', etc.) or a tuple with position and offset coordinates.'
-        },
-        {
-          label: 'DraggableSnapPoint[]',
-          description: 'Array<Position | [Position, { x?: number, y?: number }]>'
-        },
-        {
-          label: 'DraggableSnapPoint[]',
-          description: '[\'top-left\', \'top-right\', \'bottom-left\', \'bottom-right\']'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'scrollLock',
-          description: 'Lock body scroll when the menu is open.'
-        },
-        {
-          label: 'boolean | object'
-        },
-        {
-          label: 'object'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'scrollLock.padding',
-          description: 'Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'true'
-        }
-      ]
-    },
-    {
-      items: [
-        {
-          label: 'disabled',
-          description: 'Disable the component completely.'
-        },
-        {
-          label: 'boolean'
-        },
-        {
-          label: 'false'
-        }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: tag
+        description: Specify the drawer’s HTML element.
+      - label: string
+        description: "'dialog' | 'div'"
+      - label: "'div'"
+  - items:
+      - label: threshold.distance
+        description: Configure the dragged distance before the component snaps.
+      - label: number
+      - label: '128'
+  - items:
+      - label: threshold.momentum
+        description: Configure the momentum from when the component snaps.
+      - label: number
+      - label: '1.5'
+  - items:
+      - label: threshold.idle
+        description: Configure the idle time threshold in milliseconds before drag is considered complete.
+      - label: number
+      - label: '250'
+  - items:
+      - label: threshold.lock
+        description: The distance in px a press may travel and still count as a tap on release. A tap returns to rest and passes its click through. Past it the release snaps and the click is swallowed.
+      - label: number
+      - label: '8'
+  - items:
+      - label: animation.snap.duration
+        description: Configure the component’s snap animation duration.
+      - label: number
+      - label: '500'
+  - items:
+      - label: animation.snap.easing
+        description: Configure the component’s snap animation easing.
+      - label: function
+        description: '(t: number) => number'
+      - label: easeOutBack
+        description: 1 + (t - 1) * (t - 1) * ((o + 1) * (t - 1) + o)
+  - items:
+      - label: initial.snapPoint
+        description: Provide an initial snap point for the component to snap to.
+      - label: DraggableSnapPoint
+        description: 'Position | [Position, { x?: number, y?: number }]'
+      - label: "'center'"
+  - items:
+      - label: snapPoints
+        description: Add snap points. Points can be either a position string ('top-left', 'center', etc.) or a tuple with position and offset coordinates.
+      - label: DraggableSnapPoint[]
+        description: 'Array<Position | [Position, { x?: number, y?: number }]>'
+      - label: DraggableSnapPoint[]
+        description: "['top-left', 'top-right', 'bottom-left', 'bottom-right']"
+  - items:
+      - label: scrollLock
+        description: Lock body scroll when the menu is open.
+      - label: boolean | object
+      - label: object
+  - items:
+      - label: scrollLock.padding
+        description: Locking the body scroll hides any permanently visible scrollbar. Adding a padding to fixed elements prevents them from shifting in this case.
+      - label: boolean
+      - label: 'true'
+  - items:
+      - label: preventEdgeNavigation
+        description: Cancel `touchstart` near the viewport edge on iOS to keep the browser’s navigation swipe from hijacking the drag.
+      - label: boolean
+      - label: 'true'
+  - items:
+      - label: disabled
+        description: Disable the component completely.
+      - label: boolean
+      - label: 'false'
+---
+::
 
 ### CSS Variables
 
 In order to provide its basic functionality the component comes with some CSS. To ensure that the component is customizable, relevant values are available as CSS variables.
 
-<ProseTable
- :columns="[
-   { label: 'Variable' },
-   { label: 'Default' },
- ]"
- :rows="[
-   {
-      items: [
-        {
-          label: '--magic-draggable-position'
-        },
-        {
-          label: 'fixed'
-        },
-      ]
-   },
-   {
-      items: [
-        {
-          label: '--magic-draggable-width'
-        },
-        {
-          label: '100%'
-        },
-      ]
-   },
-   {
-      items: [
-        {
-          label: '--magic-draggable-height'
-        },
-        {
-          label: '100%'
-        },
-      ]
-   },
-   {
-      items: [
-        {
-          label: '--magic-draggable-z-index'
-        },
-        {
-          label: '999'
-        },
-      ]
-   },
-   {
-      items: [
-        {
-          label: '--magic-draggable-inset'
-        },
-        {
-          label: '0'
-        },
-      ]
-    },
-    {
-      items: [
-        {
-          label: '--magic-draggable-cursor'
-        },
-        {
-          label: 'grab'
-        },
-      ]
-   },
-  {
-    items: [
-        {
-          label: '--magic-draggable-cursor-dragging'
-        },
-        {
-          label: 'grabbing'
-        },
-      ]
-   }
- ]"
-/>
+::docs-table
+---
+columns:
+  - label: Variable
+  - label: Default
+rows:
+  - items:
+      - label: --magic-draggable-position
+      - label: fixed
+  - items:
+      - label: --magic-draggable-width
+      - label: 100%
+  - items:
+      - label: --magic-draggable-height
+      - label: 100%
+  - items:
+      - label: --magic-draggable-z-index
+      - label: '999'
+  - items:
+      - label: --magic-draggable-inset
+      - label: '0'
+  - items:
+      - label: --magic-draggable-cursor
+      - label: grab
+  - items:
+      - label: --magic-draggable-cursor-dragging
+      - label: grabbing
+---
+::
 
 ## Errors
 
-<ProseTable
-  :columns="[
-    { label: 'Source' },
-    { label: 'ErrorCode' },
-    { label: 'Message' }
-  ]"
-  :rows="[
-    {
-      items: [
-        { label: 'MagicDraggable' },
-        { label: 'missing_snap_point' },
-        { plaintext: true, label: 'MagicDraggable must have at least one snap point set' }
-      ]
-    }
-  ]"
-/>
+::docs-table
+---
+columns:
+  - label: Source
+  - label: ErrorCode
+  - label: Message
+rows:
+  - items:
+      - label: MagicDraggable
+      - label: missing_snap_point
+      - plaintext: true
+        label: MagicDraggable must have at least one snap point set
+---
+::
+
+## Caveats
+
+On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe — in Safari as well as in installed web apps. A draggable resting near either edge would lose its drag to that gesture, so it cancels `touchstart` within 44px of the edge, which is the one signal WebKit honors. Canceling also swallows the tap’s synthesized click; the draggable dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. A touch on an SVG icon counts as well, and its replacement click goes to the HTML element that holds the icon. Set `preventEdgeNavigation` to `false` to opt out.
 
 ## Examples
 
 ### Resize
 
-<ComponentPreview src="./demo/ResizeDemo.vue" />
+::component-preview{src="./demo/ResizeDemo.vue"}
+::
 
 ### Snap Points
 
-<ComponentPreview src="./demo/SnapPointsDemo.vue" />
+::component-preview{src="./demo/SnapPointsDemo.vue"}
+::

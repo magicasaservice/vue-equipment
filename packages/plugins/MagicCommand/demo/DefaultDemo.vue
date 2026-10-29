@@ -4,7 +4,7 @@
       <m-button>Open Menu</m-button>
     </magic-command-trigger>
 
-    <div class="type-surface-body-sm text-surface-subtle">
+    <div class="type-surface-body-sm text-surface-muted">
       <span>or press ⌘+K / ⌃+K</span>
     </div>
 
@@ -19,6 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton, MMenuBox } from '@maas/mirror/vue'
+import { MButton, MMenuBox } from 'mirror-compat'
 import DefaultView from './components/DefaultView.vue'
 </script>

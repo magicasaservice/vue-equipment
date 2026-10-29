@@ -1,26 +1,25 @@
-import { computed, reactive } from 'vue'
+import { reactive } from 'vue'
 import { useCommandView } from './useCommandView'
 
 import type { MaybeRef } from 'vue'
 import type { CommandItem } from '../../types/index'
 
-type UseCommandItemArgs = {
-  instanceId: MaybeRef<string>
+type ItemArgs = {
   viewId: string
+  id: string
 }
 
-type InitializeItemArgs = Pick<CommandItem, 'id' | 'disabled'>
+type InitializeItemArgs = ItemArgs & Pick<CommandItem, 'disabled'>
 type CreateItemArgs = Pick<CommandItem, 'id' | 'disabled'>
-type AddItemArgs = Pick<CommandItem, 'id' | 'disabled'>
+type AddItemArgs = ItemArgs & Pick<CommandItem, 'disabled'>
 
-export function useCommandItem(args: UseCommandItemArgs) {
-  const { instanceId, viewId } = args
+type SelectSiblingArgs = {
+  viewId: string
+  loop?: boolean
+}
 
+export function useCommandItem(instanceId: MaybeRef<string>) {
   const { getView } = useCommandView(instanceId)
-  const view = getView(viewId)
-
-  // Public state
-  const activeItem = computed(() => view?.items.find((item) => item.active))
 
   // Private functions
   function createItem(args: CreateItemArgs) {
@@ -36,7 +35,9 @@ export function useCommandItem(args: UseCommandItemArgs) {
   }
 
   function addItem(args: AddItemArgs) {
-    const item = createItem(args)
+    const { viewId, id, disabled } = args
+    const item = createItem({ id, disabled })
+    const view = getView(viewId)
 
     if (view?.items) {
       view.items = [...view.items, item]
@@ -45,61 +46,76 @@ export function useCommandItem(args: UseCommandItemArgs) {
     return item
   }
 
-  function unselectSiblings(id: string) {
-    return view?.items
-      .filter((item) => item.id !== id)
+  function unselectSiblings(args: ItemArgs) {
+    const { viewId, id } = args
+
+    return getView(viewId)
+      ?.items.filter((item) => item.id !== id)
       .forEach((item) => (item.active = false))
   }
 
   // Public functions
+  function getActiveItem(viewId: string) {
+    return getView(viewId)?.items.find((item) => item.active)
+  }
+
   function initializeItem(args: InitializeItemArgs) {
-    const { id } = args
-    const item = getItem(id) ?? addItem(args)
+    const { viewId, id } = args
+    const item = getItem({ viewId, id }) ?? addItem(args)
 
     return item
   }
 
-  function deleteItem(id: string) {
+  function deleteItem(args: ItemArgs) {
+    const { viewId, id } = args
+    const view = getView(viewId)
+
     if (!view?.items) {
       return
     }
     view.items = view.items.filter((x) => x.id !== id)
   }
 
-  function getItem(id: string) {
-    return view?.items.find((item) => {
+  function getItem(args: ItemArgs) {
+    const { viewId, id } = args
+
+    return getView(viewId)?.items.find((item) => {
       return item.id === id
     })
   }
 
-  function selectItem(id: string) {
-    const item = getItem(id)
+  function selectItem(args: ItemArgs) {
+    const item = getItem(args)
 
     if (item) {
       item.active = true
 
       // Deactivate all siblings
-      unselectSiblings(id)
+      unselectSiblings(args)
     }
   }
 
-  function selectNextItem(loop: boolean = false) {
+  function selectNextItem(args: SelectSiblingArgs) {
+    const { viewId, loop = false } = args
+    const view = getView(viewId)
     const index = view?.items.findIndex(
-      (item) => item.id === activeItem.value?.id
+      (item) => item.id === getActiveItem(viewId)?.id
     )
 
     if (index !== undefined && view) {
       const nextItem =
         view.items[index + 1] ?? (loop ? view.items[0] : undefined)
       if (nextItem) {
-        selectItem(nextItem.id)
+        selectItem({ viewId, id: nextItem.id })
       }
     }
   }
 
-  function selectPrevItem(loop: boolean = false) {
+  function selectPrevItem(args: SelectSiblingArgs) {
+    const { viewId, loop = false } = args
+    const view = getView(viewId)
     const index = view?.items.findIndex(
-      (item) => item.id === activeItem.value?.id
+      (item) => item.id === getActiveItem(viewId)?.id
     )
 
     if (index !== undefined && view) {
@@ -107,13 +123,13 @@ export function useCommandItem(args: UseCommandItemArgs) {
         view.items[index - 1] ??
         (loop ? view.items[view.items.length - 1] : undefined)
       if (prevItem) {
-        selectItem(prevItem.id)
+        selectItem({ viewId, id: prevItem.id })
       }
     }
   }
 
-  function unselectItem(id: string) {
-    const item = getItem(id)
+  function unselectItem(args: ItemArgs) {
+    const item = getItem(args)
 
     if (item) {
       item.active = false
@@ -121,7 +137,7 @@ export function useCommandItem(args: UseCommandItemArgs) {
   }
 
   return {
-    activeItem,
+    getActiveItem,
     initializeItem,
     deleteItem,
     getItem,

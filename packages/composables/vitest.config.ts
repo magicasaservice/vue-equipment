@@ -6,7 +6,7 @@ export default defineConfig({
     alias: [
       {
         find: '@maas/vue-equipment/utils',
-        replacement: resolve(__dirname, '../utils/index.ts'),
+        replacement: resolve(import.meta.dirname, '../utils/index.ts'),
       },
     ],
   },

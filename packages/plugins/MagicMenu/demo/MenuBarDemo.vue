@@ -1,7 +1,7 @@
 <template>
   <magic-menu-provider
     id="magic-menu-menubar-demo"
-    class="bg-surface-high inline-flex gap-2 rounded-2xl p-1"
+    class="bg-surface-base inline-flex gap-2 rounded-2xl p-1"
   >
     <magic-menu-view
       v-for="(menuItem, index) in menu"
@@ -9,12 +9,12 @@
       :key="index"
     >
       <magic-menu-trigger v-slot="{ viewActive }" as-child>
-        <m-button :mode="viewActive ? 'translucent' : 'ghost'" size="xs">
+        <m-button :mode="viewActive ? 'subtle' : 'ghost'" size="xs">
           {{ menuItem.label }}
         </m-button>
       </magic-menu-trigger>
       <magic-menu-content :middleware="offsetMiddleware">
-        <div class="bg-surface-high w-[220px] rounded-2xl p-1">
+        <div class="bg-surface-base w-[220px] rounded-2xl p-1">
           <nested-demo-menu
             v-for="(item, itemIndex) in menuItem.items"
             :key="itemIndex"
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { offset } from '@floating-ui/dom'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import NestedDemoMenu from './components/NestedDemoMenu.vue'
 
 import '@maas/vue-equipment/utils/css/keyframes/fade-in.css'

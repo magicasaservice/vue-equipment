@@ -84,17 +84,15 @@ const uuid = useId()
 const mappedId = computed(() => id ?? `magic-command-item-${uuid}`)
 
 // Register item
-const { initializeItem, deleteItem, selectItem } = useCommandItem({
-  instanceId,
-  viewId,
-})
+const { initializeItem, deleteItem, selectItem } = useCommandItem(instanceId)
+const itemArgs = computed(() => ({ viewId, id: mappedId.value }))
 
 // Guarded select
 // Check for mode and active state
 const { initializeState } = useCommandState(instanceId)
 const state = initializeState()
 const item = initializeItem({
-  id: mappedId.value,
+  ...itemArgs.value,
   disabled: disabled ?? false,
 })
 
@@ -104,7 +102,7 @@ const mappedActive = computed(() => item?.active)
 
 function guardedSelect() {
   if (state.input.type === 'pointer' && !item.disabled && !item.active) {
-    selectItem(mappedId.value)
+    selectItem(itemArgs.value)
   }
 }
 
@@ -130,12 +128,12 @@ onKeyStroke('Enter', onReturn)
 
 onMounted(() => {
   if (initial) {
-    selectItem(mappedId.value)
+    selectItem(itemArgs.value)
   }
 })
 
 onBeforeUnmount(() => {
-  deleteItem(mappedId.value)
+  deleteItem(itemArgs.value)
 })
 </script>
 

@@ -17,6 +17,7 @@ import {
   useThrottleFn,
 } from '@vueuse/core'
 import {
+  cancelEdgeNavigation,
   guardedReleasePointerCapture,
   guardedSetPointerCapture,
   isIOS,
@@ -47,6 +48,9 @@ type UseDraggableDragArgs = {
   animation: MaybeRef<RequiredMagicDraggableOptions['animation']>
   initial: MaybeRef<RequiredMagicDraggableOptions['initial']>
   scrollLock: MaybeRef<RequiredMagicDraggableOptions['scrollLock']>
+  preventEdgeNavigation: MaybeRef<
+    RequiredMagicDraggableOptions['preventEdgeNavigation']
+  >
 }
 
 export function useDraggableDrag(args: UseDraggableDragArgs) {
@@ -59,6 +63,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     initial,
     animation,
     scrollLock,
+    preventEdgeNavigation,
   } = args
 
   const { logWarning } = useMagicError({
@@ -511,6 +516,15 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     onPointermove(e)
   }
 
+  function onTouchstart(e: TouchEvent) {
+    // The drag already runs on pointer events; canceling touchstart keeps
+    // WebKit’s edge navigation swipe from hijacking a drag that starts near
+    // the viewport edge
+    if (toValue(preventEdgeNavigation)) {
+      cancelEdgeNavigation({ event: e })
+    }
+  }
+
   function onClick(e: MouseEvent) {
     if (hasDragged.value) {
       e.preventDefault()
@@ -609,6 +623,7 @@ export function useDraggableDrag(args: UseDraggableDragArgs) {
     initialize,
     destroy,
     onPointerdown,
+    onTouchstart,
     onClick,
     style,
     hasDragged,

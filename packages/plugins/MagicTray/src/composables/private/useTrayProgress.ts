@@ -2,17 +2,16 @@ import { toValue, watch } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { clampValue } from '@maas/vue-equipment/utils'
 import { useTraySnap } from './useTraySnap'
+import { SIDES } from './useTrayUtils'
 
 import type { MaybeRef } from 'vue'
 
-import type { MagicTraySide, TrayState } from '../../types'
+import type { TrayState } from '../../types'
 
 type UseTrayProgressArgs = {
   id: MaybeRef<string>
   state: TrayState
 }
-
-const SIDES: MagicTraySide[] = ['top', 'right', 'bottom', 'left']
 
 export function useTrayProgress(args: UseTrayProgressArgs) {
   const { id, state } = args

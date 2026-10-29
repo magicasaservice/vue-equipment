@@ -11,12 +11,12 @@
       >
         <div class="flex h-full w-full px-8 pt-8 pb-6">
           <div class="flex flex-col items-center gap-4">
-            <h2 class="text-surface-subtle type-surface-callout-md">About</h2>
+            <h2 class="text-surface-muted type-surface-callout-md">About</h2>
             <p class="type-surface-title-md text-center">{{ about }}</p>
           </div>
           <div class="absolute right-0 bottom-2 left-0 flex justify-center">
             <magic-command-trigger action="close" as-child>
-              <m-button mode="tone" class="w-36">Go Back</m-button>
+              <m-button variant="secondary" class="w-36">Go Back</m-button>
             </magic-command-trigger>
           </div>
         </div>
@@ -26,6 +26,6 @@
 </template>
 
 <script lang="ts" setup>
-import { MButton, MMenuItem, MMenuItemChild } from '@maas/mirror/vue'
+import { MButton, MMenuItem, MMenuItemChild } from 'mirror-compat'
 import { about } from '../data/about.json'
 </script>

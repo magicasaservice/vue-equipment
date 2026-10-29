@@ -76,8 +76,15 @@ const {
 // Normalize src into an array and set playlist state
 const rawSrc = options?.src ?? ''
 const srcs = Array.isArray(rawSrc) ? rawSrc : [rawSrc]
-state.playlistCount = srcs.length
 state.loop = state.options.loop
+
+// A component reading the playlist beside the provider renders after the
+// provider’s setup on the server, but before it in the browser. The server
+// never mounts, so writing the count once the provider has mounted gives
+// every reader, inside the slot or beside it, the same first render.
+onMounted(() => {
+  state.playlistCount = srcs.length
+})
 
 const currentSrc = computed(() => srcs[state.playlistIndex] ?? '')
 

@@ -2,8 +2,6 @@
 
 MagicError is a composable and a class used throughout Vue Equipment for error handling and logging. It allows you to throw custom errors including a source, error code, timestamp and an automatically prefixed message.
 
-<!--@include: @/apps/docs/src/content/snippets/overview.md-->
-
 ## Anatomy
 
 ```vue
@@ -22,7 +20,14 @@ throwError({ message: 'An error occurred', errorCode: 'custom_error_code' })
 </script>
 ```
 
-<!--@include: @/apps/docs/src/content/snippets/installation.md-->
+## Installation
+
+### CLI
+
+Add `@maas/vue-equipment` to your dependencies.
+
+::package-install{name="@maas/vue-equipment"}
+::
 
 ### Nuxt
 
@@ -50,49 +55,13 @@ const { throwError, logError, logWarning } = useMagicError({
 })
 ```
 
-> [!TIP]
-> If you have installed the plugin as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::tip
+If you have installed the plugin as a Nuxt module, the composable will be auto-imported and is automatically available in your Nuxt app.
+::
 
 ## Peer Dependencies
 
-If you haven’t installed the required peer dependencies automatically, you’ll need to install the following packages manually.
-
-<ProseTable
-  :columns="[
-    { label: 'Package'},
-  ]"
-  :rows="[
-    {
-      items: [
-        {
-          label: '[@nuxt/kit](https://www.npmjs.com/package/@nuxt/kit)'
-        }
-      ]
-    },
-  ]"
-/>
-
-### Installation
-
-::: code-group
-
-```sh [pnpm]
-pnpm install @nuxt/kit
-```
-
-```sh [npm]
-npm install @nuxt/kit
-```
-
-```sh [yarn]
-yarn add @nuxt/kit
-```
-
-```sh [bun]
-bun install @nuxt/kit
-```
-
-:::
+MagicError has no optional peer dependencies. It only relies on the [core peer dependencies](/overview/getting-started#core), which npm, pnpm and bun install automatically.
 
 ## Typescript
 

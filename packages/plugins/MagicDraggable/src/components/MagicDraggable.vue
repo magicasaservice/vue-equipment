@@ -14,6 +14,7 @@
         class="magic-draggable__drag"
         :style="style"
         @pointerdown="guardedPointerdown"
+        @touchstart="guardedTouchstart"
         @click="guardedClick"
       >
         <slot />
@@ -87,23 +88,38 @@ const disabled = computed(() => {
   }
 })
 
-const { snapPoints, animation, initial, threshold, scrollLock } = state.options
-
-const { onPointerdown, onClick, style, hasDragged } = useDraggableDrag({
-  id,
-  elRef,
-  wrapperRef,
-  threshold,
+const {
   snapPoints,
   animation,
   initial,
+  threshold,
   scrollLock,
-})
+  preventEdgeNavigation,
+} = state.options
+
+const { onPointerdown, onTouchstart, onClick, style, hasDragged } =
+  useDraggableDrag({
+    id,
+    elRef,
+    wrapperRef,
+    threshold,
+    snapPoints,
+    animation,
+    initial,
+    scrollLock,
+    preventEdgeNavigation,
+  })
 
 // Public functions
 function guardedPointerdown(event: PointerEvent) {
   if (!disabled.value) {
     onPointerdown(event)
+  }
+}
+
+function guardedTouchstart(event: TouchEvent) {
+  if (!disabled.value) {
+    onTouchstart(event)
   }
 }
 

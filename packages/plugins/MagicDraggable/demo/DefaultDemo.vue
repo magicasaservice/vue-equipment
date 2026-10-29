@@ -1,7 +1,7 @@
 <template>
   <magic-draggable id="magic-draggable-demo" class="bg-surface-base rounded-md">
     <div
-      class="bg-surface-high flex aspect-square w-32 items-center justify-center rounded-md"
+      class="bg-surface-higher flex aspect-square w-32 items-center justify-center rounded-md"
     >
       <m-badge>Drag me</m-badge>
     </div>
