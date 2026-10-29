@@ -29,7 +29,7 @@
     "build": "nuxt-module-build prepare && nuxt-module-build build --outDir ../../dist/nuxt",
     "dev:prepare": "nuxt-module-build prepare",
     "lint": "eslint .",
-    "test": "vitest run",
+    "test": "nuxt-module-build prepare && vitest run",
     "test:watch": "vitest watch"
   },
   "type": "module",
