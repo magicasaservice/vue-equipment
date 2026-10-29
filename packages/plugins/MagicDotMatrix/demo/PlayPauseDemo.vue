@@ -9,13 +9,13 @@
     <div class="flex w-full max-w-xs gap-2">
       <m-button v-if="!isPlaying" block @click="play">Play</m-button>
       <m-button v-else block @click="pause">Pause</m-button>
-      <m-button block mode="translucent" @click="restart">Restart</m-button>
+      <m-button block mode="subtle" @click="restart">Restart</m-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import {
   createComet,
   useMagicDotMatrix,

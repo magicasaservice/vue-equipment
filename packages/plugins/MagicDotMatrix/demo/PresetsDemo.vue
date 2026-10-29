@@ -10,7 +10,7 @@
         v-for="preset in presets"
         :key="preset.name"
         size="sm"
-        :mode="preset.name === selected ? 'solid' : 'translucent'"
+        :mode="preset.name === selected ? 'solid' : 'subtle'"
         @click="select(preset.name)"
       >
         {{ preset.name }}
@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { MButton } from '@maas/mirror/vue'
+import { MButton } from 'mirror-compat'
 import {
   createCheckerboard,
   createDrift,
