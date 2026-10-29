@@ -88,13 +88,6 @@ export function useDotMatrixApi({
   }
 
   watch(
-    () => state.frame,
-    (frame) => {
-      emitter.emit('frameChange', { id: toValue(instanceId), frame })
-    }
-  )
-
-  watch(
     () => toValue(sequence),
     () => {
       state.frame = 0

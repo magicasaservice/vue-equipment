@@ -24,10 +24,6 @@ export interface DotMatrixState {
 }
 
 export interface DotMatrixEvents {
-  frameChange: {
-    id: string
-    frame: number
-  }
   finish: {
     id: string
   }

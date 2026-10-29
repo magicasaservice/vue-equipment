@@ -9,7 +9,6 @@ export enum MatrixId {
   ApiPlay = 'api-play',
   ApiAdvance = 'api-advance',
   ApiRestart = 'api-restart',
-  ApiFrameChange = 'api-frame-change',
   ApiSeqReset = 'api-seq-reset',
   ApiLoopOnce = 'api-loop-once',
   ApiFinish = 'api-finish',

@@ -484,13 +484,6 @@ The dot matrix emits the following events through [MagicEmitter](../MagicEmitter
   :rows="[
     {
       items: [
-        { label: 'frameChange' },
-        { label: '{ id, frame }' },
-        { plaintext: true, label: 'Fired whenever the rendered frame changes. `frame` is the new frame’s index.' }
-      ]
-    },
-    {
-      items: [
         { label: 'finish' },
         { label: '{ id }' },
         { plaintext: true, label: 'Fired when the sequence has played the configured number of loops.' }

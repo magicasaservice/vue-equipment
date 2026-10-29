@@ -18,7 +18,6 @@ type RenderDotMatrixResult = {
   api: UseMagicDotMatrixReturn
   sequence: ReturnType<typeof ref<DotMatrixSequence>>
   finished: ReturnType<typeof vi.fn>
-  frameChanged: ReturnType<typeof vi.fn>
 }
 
 function renderDotMatrix(
@@ -29,7 +28,6 @@ function renderDotMatrix(
   let api: UseMagicDotMatrixReturn | undefined
   const sequence = ref(initialSequence)
   const finished = vi.fn()
-  const frameChanged = vi.fn()
 
   render(
     defineComponent({
@@ -38,7 +36,6 @@ function renderDotMatrix(
         api = useMagicDotMatrix(matrixId)
         const emitter = useMagicEmitter()
         emitter.on('finish', finished)
-        emitter.on('frameChange', frameChanged)
         return { sequence }
       },
       data() {
@@ -50,7 +47,7 @@ function renderDotMatrix(
     })
   )
 
-  return { api: api!, sequence, finished, frameChanged }
+  return { api: api!, sequence, finished }
 }
 
 describe('MagicDotMatrix - API', () => {
@@ -118,22 +115,6 @@ describe('MagicDotMatrix - API', () => {
 
     expect(api.currentFrame.value).toBe(0)
     expect(api.isPlaying.value).toBe(true)
-  })
-
-  it('emits frameChange with the instance id and frame index', async () => {
-    const { frameChanged } = renderDotMatrix(
-      MatrixId.ApiFrameChange,
-      frames(10),
-      { interval: 20 }
-    )
-    await nextTick()
-
-    await vi.waitFor(() => {
-      expect(frameChanged).toHaveBeenCalledWith({
-        id: MatrixId.ApiFrameChange,
-        frame: 1,
-      })
-    })
   })
 
   it('resets to the first frame when the sequence changes', async () => {
