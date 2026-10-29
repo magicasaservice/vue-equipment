@@ -15,4 +15,15 @@ export enum MatrixId {
   ApiLoopOnce = 'api-loop-once',
   ApiFinish = 'api-finish',
   StateShared = 'state-shared',
+  EmojiRender = 'emoji-render',
+  EmojiGrid = 'emoji-grid',
+  EmojiColors = 'emoji-colors',
+  EmojiEmpty = 'emoji-empty',
+  EmojiChange = 'emoji-change',
+}
+
+export enum TestId {
+  Motion = 'motion',
+  Frames = 'frames',
+  SetBell = 'set-bell',
 }

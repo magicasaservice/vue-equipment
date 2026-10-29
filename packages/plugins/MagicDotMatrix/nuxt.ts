@@ -17,9 +17,15 @@ export default defineNuxtModule({
       global: true,
     })
 
-    addImports({
-      from: '@maas/vue-equipment/plugins/MagicDotMatrix',
-      name: 'useMagicDotMatrix',
-    })
+    addImports([
+      {
+        from: '@maas/vue-equipment/plugins/MagicDotMatrix',
+        name: 'useMagicDotMatrix',
+      },
+      {
+        from: '@maas/vue-equipment/plugins/MagicDotMatrix',
+        name: 'useMagicDotMatrixEmoji',
+      },
+    ])
   },
 })

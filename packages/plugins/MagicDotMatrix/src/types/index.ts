@@ -29,3 +29,51 @@ export interface DotMatrixEvents {
     id: string
   }
 }
+
+export type DotMatrixEmojiMotion =
+  | 'beat'
+  | 'flicker'
+  | 'swing'
+  | 'wave'
+  | 'fly'
+  | 'drive'
+  | 'bounce'
+  | 'hop'
+  | 'spin'
+  | 'flip'
+  | 'float'
+  | 'twinkle'
+  | 'shake'
+  | 'rain'
+  | 'snow'
+  | 'sleep'
+  | 'rock'
+  | 'burst'
+  | 'stamp'
+  | 'gleam'
+  | 'flag'
+  | 'sway'
+  | 'love'
+  | 'steam'
+  | 'look'
+  | 'nod'
+  | 'tilt'
+  | 'swim'
+  | 'flap'
+  | 'clap'
+  | 'bob'
+  | 'pop'
+
+export interface MagicDotMatrixEmojiOptions {
+  cols?: number
+  rows?: number
+  colors?: number
+  threshold?: number
+}
+
+export interface DotMatrixEmojiAnimation {
+  motion: DotMatrixEmojiMotion
+  interval: number
+  sequence: Array<DotMatrixLayeredFrame>
+  colors: Array<string>
+}

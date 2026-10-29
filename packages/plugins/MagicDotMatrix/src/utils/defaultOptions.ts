@@ -1,4 +1,7 @@
-import type { MagicDotMatrixOptions } from '../types/index'
+import type {
+  MagicDotMatrixEmojiOptions,
+  MagicDotMatrixOptions,
+} from '../types/index'
 
 const defaultOptions: Required<MagicDotMatrixOptions> = {
   cols: 7,
@@ -8,4 +11,11 @@ const defaultOptions: Required<MagicDotMatrixOptions> = {
   autoplay: true,
 }
 
-export { defaultOptions }
+const defaultEmojiOptions: Required<MagicDotMatrixEmojiOptions> = {
+  cols: 10,
+  rows: 10,
+  colors: 6,
+  threshold: 0.38,
+}
+
+export { defaultOptions, defaultEmojiOptions }

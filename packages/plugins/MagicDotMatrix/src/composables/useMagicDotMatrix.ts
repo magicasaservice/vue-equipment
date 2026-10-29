@@ -1,5 +1,6 @@
-import { computed, type MaybeRef } from 'vue'
+import { computed } from 'vue'
 import { useDotMatrixState } from './private/useDotMatrixState'
+import type { MaybeRef } from 'vue'
 
 export function useMagicDotMatrix(id: MaybeRef<string>) {
   // Private state

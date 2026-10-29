@@ -286,6 +286,103 @@ rows:
 ---
 ::
 
+### useMagicDotMatrixEmoji
+
+::warning
+`useMagicDotMatrixEmoji` is experimental. Its options, return values and motions may change, and it may be removed again in a future release.
+::
+
+The emoji composable turns any emoji into an animated sequence. It picks a motion that fits the emoji, such as a swing for a bell or rain for a cloud, draws every frame onto a canvas and samples it down to the grid. Bind the returned values to the dot matrix.
+
+```vue
+<template>
+  <magic-dot-matrix
+    id="your-dot-matrix-id"
+    :sequence="sequence"
+    :options="options"
+    :style="style"
+  />
+</template>
+
+<script setup>
+import { useMagicDotMatrixEmoji } from '@maas/vue-equipment/plugins/MagicDotMatrix'
+
+const { sequence, options, style } = useMagicDotMatrixEmoji('🔥')
+</script>
+```
+
+Since the canvas only exists in the browser, the sequence stays empty during server-side rendering and fills in once the component has mounted. The emoji is drawn with the system’s emoji font, so the result differs between platforms.
+
+#### Options
+
+Pass the options as the second argument. Both arguments can be refs or getters, and the sequence is drawn again when they change.
+
+::docs-table
+---
+columns:
+  - label: Option
+  - label: Type
+  - label: Default
+rows:
+  - items:
+      - label: cols
+        description: The number of columns the emoji is sampled onto.
+      - label: number
+      - label: '10'
+  - items:
+      - label: rows
+        description: The number of rows the emoji is sampled onto.
+      - label: number
+      - label: '10'
+  - items:
+      - label: colors
+        description: The maximum number of colors taken from the emoji. Particles and the shine add their own.
+      - label: number
+      - label: '6'
+  - items:
+      - label: threshold
+        description: How much of a dot the emoji has to cover for the dot to light up, from 0 to 1.
+      - label: number
+      - label: '0.38'
+---
+::
+
+#### Return Values
+
+::docs-table
+---
+columns:
+  - label: Property
+  - label: Type
+  - label: Description
+rows:
+  - items:
+      - label: sequence
+      - label: ComputedRef<DotMatrixLayeredFrame[]>
+        escape: true
+      - plaintext: true
+        label: The animation’s frames, with one layer per color.
+  - items:
+      - label: options
+      - label: ComputedRef<MagicDotMatrixOptions>
+        escape: true
+      - plaintext: true
+        label: The grid size and the motion’s frame interval.
+  - items:
+      - label: style
+      - label: ComputedRef<Record<string, string>>
+        escape: true
+      - plaintext: true
+        label: The colors as `--magic-dot-matrix-color-{n}` variables, plus an inactive color tinted by the most common one.
+  - items:
+      - label: motion
+      - label: ComputedRef<DotMatrixEmojiMotion>
+        escape: true
+      - plaintext: true
+        label: The name of the picked motion.
+---
+::
+
 ### CSS Variables
 
 The dots’ geometry and colors are styled through CSS. The component fills its container and derives the dot size from the available width, the number of columns and the gap.
@@ -365,6 +462,13 @@ rows:
 ### Layers
 
 ::component-preview{src="./demo/EmojiDemo.vue"}
+::
+
+### Emoji
+
+The example passes the emoji in the input to [useMagicDotMatrixEmoji](#usemagicdotmatrixemoji). The badge shows the motion it picked.
+
+::component-preview{src="./demo/EmojiInputDemo.vue"}
 ::
 
 ## Inspiration
