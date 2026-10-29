@@ -26,10 +26,8 @@
   },
   "private": true,
   "scripts": {
-    "build": "pnpm dlx nuxi prepare playground && nuxt-module-build build --outDir ../../dist/nuxt",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
+    "build": "nuxt-module-build prepare && nuxt-module-build build --outDir ../../dist/nuxt",
+    "dev:prepare": "nuxt-module-build prepare",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"

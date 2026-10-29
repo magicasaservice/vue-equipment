@@ -15,11 +15,6 @@
       "persistent": true,
       "dependsOn": ["//#tokens", "metadata#update", "^build:types", "^build"]
     },
-    "nuxt#dev": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["composables#build", "plugins#build"]
-    },
     "test": {
       "cache": true,
       "outputs": []

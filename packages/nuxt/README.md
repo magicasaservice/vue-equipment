@@ -6,11 +6,8 @@
 # Generate type stubs
 npm run dev:prepare
 
-# Develop with the playground
-npm run dev
-
-# Build the playground
-npm run dev:build
+# Build the module
+npm run build
 
 # Run ESLint
 npm run lint
