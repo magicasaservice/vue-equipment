@@ -479,6 +479,18 @@ Makes an element a drag surface for one side of the tray, so the user can drag a
 
 A press starts the drag right away, so the side follows the pointer from the first pixel. A release within `threshold.lock` counts as a tap and passes its click to the element inside, while a longer drag swallows it. Presses on form fields and editable text never start a drag, and links and images inside the trigger never start a native drag while the side is being dragged.
 
+Pass an array of sides to drag more than one from the same element, like the view between a left and a right sidebar. A press on it holds until it moves past `threshold.lock`, and its direction picks the side: a move to the right drags the left side, a move to the left the right side, and a move down or up the top or bottom side. With sides along both axes, the axis the press moves further along wins. Until the press moves that far, nothing starts, so a tap passes its click through without a drag and without the tray’s events. Only sides with snap points count: a trigger left with one of them drags on press like a trigger with one side.
+
+```vue
+<template>
+  <magic-tray-trigger :side="['left', 'right']" as-child>
+    <main>
+      <!-- your content -->
+    </main>
+  </magic-tray-trigger>
+</template>
+```
+
 #### Props
 
 ::docs-table
@@ -496,8 +508,8 @@ rows:
       - label: 'false'
   - items:
       - label: side
-        description: The side the trigger drags. A side without snap points ignores the trigger.
-      - label: MagicTraySide
+        description: The side the trigger drags, or several, which the direction of the press picks from. A side without snap points ignores the trigger.
+      - label: MagicTraySide | Array<MagicTraySide>
         description: "'top' | 'right' | 'bottom' | 'left'"
       - label: 'true'
   - items:
@@ -551,7 +563,7 @@ rows:
   - items:
       - label: --magic-tray-trigger-touch-action
       - label: pan-y
-        description: pan-x on the top and bottom sides. A disabled trigger leaves touch-action as it is.
+        description: pan-x on the top and bottom sides, none on a trigger with sides along both axes. A disabled trigger leaves touch-action as it is.
 ---
 ::
 
@@ -764,9 +776,9 @@ The clip insets hide part of the content, but the content still covers the whole
 
 While a handle is being dragged, the tray disables text selection on the whole document and restores it on release. Without this, a pointer that leaves the handle would keep extending a selection across the page. A trigger disables it only once its drag moves past `threshold.lock`, so a long press on its content still selects text.
 
-In order for a trigger to tell a scroll from a drag on touch devices, it sets `touch-action` to `pan-y` on the left and right sides and to `pan-x` on the top and bottom: the browser scrolls along the other axis and leaves the drag axis to the tray. The browser reads `touch-action` only up to the nearest scroll container, so give any scrollable element inside a trigger the same value. Without it, a swipe along the drag axis that starts on that element cancels the drag.
+In order for a trigger to tell a scroll from a drag on touch devices, it sets `touch-action` to `pan-y` on the left and right sides, to `pan-x` on the top and bottom, and to `none` with sides along both axes: the browser scrolls along the other axis and leaves the drag axis to the tray. The browser reads `touch-action` only up to the nearest scroll container, so give any scrollable element inside a trigger the same value. Without it, a swipe along the drag axis that starts on that element cancels the drag.
 
-A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests.
+A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests. A trigger with several sides starts its drag once the press moves past `threshold.lock`, so a tap on it emits nothing.
 
 If an element inside a trigger runs its own drag, like a swipe action on a list row, stop `pointerdown` from propagating on that element. Otherwise the tray starts a drag from the same press and moves along with it.
 

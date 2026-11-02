@@ -139,6 +139,16 @@ export enum TrayId {
   TriggerScrollTakeover = 'trigger-scroll-takeover',
   TriggerUnmount = 'trigger-unmount',
   TriggerWobble = 'trigger-wobble',
+  TriggerSides = 'trigger-sides',
+  TriggerSidesAxisY = 'trigger-sides-axis-y',
+  TriggerSidesAxisBoth = 'trigger-sides-axis-both',
+  TriggerSidesLeft = 'trigger-sides-left',
+  TriggerSidesRight = 'trigger-sides-right',
+  TriggerSidesHold = 'trigger-sides-hold',
+  TriggerSidesTap = 'trigger-sides-tap',
+  TriggerSidesSingle = 'trigger-sides-single',
+  TriggerSidesBothAxes = 'trigger-sides-both-axes',
+  TriggerSidesTakeover = 'trigger-sides-takeover',
 }
 
 export enum TestId {
@@ -162,6 +172,8 @@ export enum TestId {
   AfterSnapActive = 'after-snap-active',
   DraggedLeft = 'dragged-left',
   ActiveLeft = 'active-left',
+  ActiveRight = 'active-right',
+  ActiveTop = 'active-top',
   Dragging = 'dragging',
   Trigger = 'trigger',
   TriggerButton = 'trigger-button',

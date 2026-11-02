@@ -3,7 +3,8 @@
     class="magic-tray-trigger"
     :as-child="asChild"
     :data-id="`${mappedId}-trigger`"
-    :data-side="side"
+    :data-side="mappedSide"
+    :data-axis="axis"
     :data-dragging="active"
     :data-dragged="hasDragged"
     :data-disabled="mappedDisabled"
@@ -29,7 +30,7 @@ import type { MagicTraySide } from '../types/index'
 
 interface MagicTrayTriggerProps {
   id?: MaybeRef<string>
-  side: MagicTraySide
+  side: MagicTraySide | Array<MagicTraySide>
   disabled?: boolean
   preventEdgeNavigation?: boolean
   asChild?: boolean
@@ -73,6 +74,21 @@ const { active, hasDragged, onPointerdown, onTouchstart } = useTrayGesture({
 
 const mappedDisabled = computed(() => disabled || state.options.disabled)
 
+const sides = computed(() => (Array.isArray(side) ? side : [side]))
+const mappedSide = computed(() => sides.value.join(' '))
+
+// The axis the trigger drags along decides which way the browser may scroll
+const axis = computed(() => {
+  const horizontal = sides.value.some(
+    (side) => side === 'left' || side === 'right'
+  )
+  const vertical = sides.value.some(
+    (side) => side === 'top' || side === 'bottom'
+  )
+
+  return horizontal && vertical ? 'both' : vertical ? 'y' : 'x'
+})
+
 // Form fields and editable text keep their presses, so typing and selecting
 // text inside a trigger still work
 function isEditable(target: EventTarget | null) {
@@ -104,14 +120,16 @@ function guardedTouchstart(event: TouchEvent) {
 </script>
 
 <style>
-.magic-tray-trigger[data-disabled='false'][data-side='left'],
-.magic-tray-trigger[data-disabled='false'][data-side='right'] {
+.magic-tray-trigger[data-disabled='false'][data-axis='x'] {
   touch-action: var(--magic-tray-trigger-touch-action, pan-y);
 }
 
-.magic-tray-trigger[data-disabled='false'][data-side='top'],
-.magic-tray-trigger[data-disabled='false'][data-side='bottom'] {
+.magic-tray-trigger[data-disabled='false'][data-axis='y'] {
   touch-action: var(--magic-tray-trigger-touch-action, pan-x);
+}
+
+.magic-tray-trigger[data-disabled='false'][data-axis='both'] {
+  touch-action: var(--magic-tray-trigger-touch-action, none);
 }
 
 .magic-tray-trigger[data-dragging='true'] * {
