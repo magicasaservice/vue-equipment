@@ -93,6 +93,7 @@ function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
       const activeLeft = computed(() => activeSnapPoint.value.left)
       const activeRight = computed(() => activeSnapPoint.value.right)
       const activeTop = computed(() => activeSnapPoint.value.top)
+      const draggedLeft = computed(() => state.dragged.left)
       const dragging = computed(() => state.dragging)
       const clicks = ref(0)
       const emitter = useMagicEmitter()
@@ -115,6 +116,7 @@ function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
         activeLeft,
         activeRight,
         activeTop,
+        draggedLeft,
         dragging,
         clicks,
         events,
@@ -125,6 +127,7 @@ function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
         <span data-test-id="${TestId.ActiveLeft}">{{ activeLeft }}</span>
         <span data-test-id="${TestId.ActiveRight}">{{ activeRight }}</span>
         <span data-test-id="${TestId.ActiveTop}">{{ activeTop }}</span>
+        <span data-test-id="${TestId.DraggedLeft}">{{ draggedLeft }}</span>
         <span data-test-id="${TestId.Dragging}">{{ dragging }}</span>
         <span data-test-id="${TestId.Clicks}">{{ clicks }}</span>
         <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
@@ -770,34 +773,55 @@ describe('MagicTray - Trigger', () => {
       expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
     })
 
-    it('a press holds until it moves past the lock threshold', async () => {
+    it('a press starts its drag on its first move', async () => {
       const { container } = await mount(
-        createSidesTray(TrayId.TriggerSidesHold)
+        createSidesTray(TrayId.TriggerSidesFirstMove)
       )
       const trigger = find(container, TestId.Trigger)
+      const resting = Number(find(container, TestId.DraggedLeft).textContent)
 
       trigger.dispatchEvent(pointer('pointerdown', 50))
-      await nextTick()
-      document.dispatchEvent(pointer('pointermove', 54))
       await nextTick()
 
       expect(find(container, TestId.Dragging).textContent).toBe('false')
       expect(trigger.getAttribute('data-dragging')).toBe('false')
       expect(find(container, TestId.Events).textContent).toBe('')
 
-      document.dispatchEvent(pointer('pointermove', 60))
+      document.dispatchEvent(pointer('pointermove', 51))
       await nextTick()
 
       expect(find(container, TestId.Dragging).textContent).toBe('true')
       expect(trigger.getAttribute('data-dragging')).toBe('true')
+      expect(Number(find(container, TestId.DraggedLeft).textContent)).toBe(
+        resting + 1
+      )
       expect(find(container, TestId.Events).textContent).toBe('beforeDrag')
 
-      document.dispatchEvent(pointer('pointerup', 60))
+      document.dispatchEvent(pointer('pointerup', 51))
       await nextTick()
 
       expect(find(container, TestId.Events).textContent).toBe(
         'beforeDrag,afterDrag'
       )
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+    })
+
+    it('a move toward an open side closes it instead of opening the other', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesClose, {
+          options: {
+            ...sidesOptions,
+            initial: { snapPoints: { left: '100px' } },
+          },
+        })
+      )
+
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('100px')
+
+      await drag(find(container, TestId.Trigger), 150, 80)
+
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+      expect(find(container, TestId.ActiveRight).textContent).toBe('0')
     })
 
     it('a tap on several sides emits nothing and keeps its click', async () => {
@@ -856,11 +880,12 @@ describe('MagicTray - Trigger', () => {
       expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
     })
 
-    it('a scroll taking over a held press leaves the sides at rest', async () => {
+    it('a scroll taking over a press leaves the sides at rest', async () => {
       const { container } = await mount(
         createSidesTray(TrayId.TriggerSidesTakeover)
       )
       const trigger = find(container, TestId.Trigger)
+      const resting = find(container, TestId.DraggedLeft).textContent
 
       trigger.dispatchEvent(pointer('pointerdown', 50))
       await nextTick()
@@ -870,9 +895,13 @@ describe('MagicTray - Trigger', () => {
       await nextTick()
       document.dispatchEvent(pointer('pointermove', 90))
       await nextTick()
+      await new Promise((r) => setTimeout(r, 400))
 
       expect(find(container, TestId.Dragging).textContent).toBe('false')
-      expect(find(container, TestId.Events).textContent).toBe('')
+      expect(find(container, TestId.Events).textContent).toBe(
+        'beforeDrag,afterDrag'
+      )
+      expect(find(container, TestId.DraggedLeft).textContent).toBe(resting)
       expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
     })
   })

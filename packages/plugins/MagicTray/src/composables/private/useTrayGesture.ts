@@ -35,8 +35,8 @@ type PendingPress = {
   pressedAt: Date
 }
 
-// One press, drag, and release on a side. Every handle and trigger runs its
-// own gesture, while the side’s position lives in the shared state.
+// One press, drag, and release on a side. Each handle and trigger runs its
+// own, the side’s position lives in the shared state.
 export function useTrayGesture(args: UseTrayGestureArgs) {
   const { id, state, selectionLock = 'press', preventEdgeNavigation } = args
 
@@ -55,8 +55,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   } = useTraySnap({ id, state })
 
   // Private state
-  // The last pending snap target emitted, so willSnapTo only fires on change.
-  // A target inside a range counts as the range itself.
+  // The last willSnapTo target, a range counting as one
   let lastPendingTarget: number | MagicTraySnapRange | undefined = undefined
 
   // A snap drag moved inside a range without emitting its snap events
@@ -74,7 +73,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   let pointerdownTarget: Element | null = null
   let releaseSelection: (() => void) | undefined = undefined
 
-  // A press on several sides holds until its direction picks one
+  // A press on several sides, resolved by its first move
   let pending: PendingPress | undefined = undefined
 
   const threshold = computed(() => state.options.threshold)
@@ -83,12 +82,10 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   const dragMode = computed(() => state.options.drag.mode)
 
   // Public state
-  // This gesture drives the current drag, as opposed to another handle or
-  // trigger of the same tray
+  // This gesture drives the current drag
   const active = ref(false)
 
-  // Measured from where the press began while dragging, from the resting snap
-  // point otherwise, so a settling side counts as dragged until it arrives
+  // Past the lock threshold, from the press or the resting snap point
   const hasDragged = computed(() => {
     const sides = state.draggingSide ? [state.draggingSide] : SIDES
 
@@ -103,19 +100,17 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   })
 
   // Private functions
-  // A trigger waits for the drag to pass the lock threshold, so a long press
-  // on its content still selects text
+  // A trigger locks past the lock threshold, so a long press selects text
   function lockSelectionOnce() {
     releaseSelection ??= lockSelection()
   }
 
-  // A press begins a drag once the tray is measured and enabled and no other
-  // handle or trigger drives a drag
+  // Measured, enabled, and no drag under way
   function canStart() {
     return !state.dragging && !toValue(disabled) && state.elRect !== undefined
   }
 
-  // The sides a press can drag, which are the given ones with snap points
+  // The given sides with snap points
   function draggableSides(side: MagicTraySide | Array<MagicTraySide>) {
     const sides = Array.isArray(side) ? side : [side]
 
@@ -124,10 +119,13 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     )
   }
 
-  // The side a pending press drags once it has moved past the lock
-  // threshold: along the axis it moved further on, where the press has
-  // sides, the side whose edge the movement points away from, or the one
-  // side the press has on that axis
+  // A side rests past its smallest snap point
+  function isOpen(side: MagicTraySide) {
+    return state.dragged[side] > dragBounds(side).min
+  }
+
+  // The side the first move picks: the one it closes if open, else the one
+  // it opens, else the one on its axis
   function resolveSide(
     sides: Array<MagicTraySide>,
     dx: number,
@@ -140,24 +138,27 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       (!vertical.length || Math.abs(dx) >= Math.abs(dy))
     const delta = alongX ? dx : dy
 
-    if (Math.abs(delta) <= toValue(threshold).lock) {
+    if (delta === 0) {
       return undefined
     }
 
     const candidates: Array<MagicTraySide> = alongX ? horizontal : vertical
-    const preferred: MagicTraySide = alongX
+    const [opens, closes]: [MagicTraySide, MagicTraySide] = alongX
       ? delta > 0
-        ? 'left'
-        : 'right'
+        ? ['left', 'right']
+        : ['right', 'left']
       : delta > 0
-        ? 'top'
-        : 'bottom'
+        ? ['top', 'bottom']
+        : ['bottom', 'top']
 
-    return candidates.includes(preferred) ? preferred : candidates[0]
+    if (candidates.includes(closes) && isOpen(closes)) {
+      return closes
+    }
+
+    return candidates.includes(opens) ? opens : candidates[0]
   }
 
-  // Begins the drag of a pending press once its direction picks a side,
-  // from the press itself, so the side catches up with the pointer
+  // Starts the drag from the press, so the side follows from the first pixel
   function resolvePending(x: number, y: number) {
     if (!pending) {
       return undefined
@@ -228,8 +229,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       : (dragMode.value?.[side] ?? 'free') === 'snap'
   }
 
-  // The raw pointer-relative inset for a side, rubber-banded past its outermost
-  // snap points. Shared by free dragging and the snap-drag read-out below.
+  // The inset under the pointer, rubber-banded past the outermost snap points
   function computeInset(side: MagicTraySide, coord: number) {
     let newInset = 0
 
@@ -270,10 +270,8 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     state.dragged[side] = newInset
   }
 
-  // Commit straight to whichever configured point the pointer is nearest,
-  // instead of following it freely: a hard cut, no interpolation. Leaves
-  // `lastDragged` untouched so `hasDragged` still reflects the gesture’s start,
-  // which is what lets a genuine tap on the handle pass its click through.
+  // Commit to the nearest snap point without interpolating. lastDragged
+  // stays put, so a tap still passes its click through
   function snapDragged(side: MagicTraySide, coord: number) {
     const inset = computeInset(side, coord)
     const target = findSnapTarget(side, inset)
@@ -286,8 +284,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     state.snapped[side] = target
     state.activeSnapPoint[side] = snapPointAt(side, target)
 
-    // Inside a range the edge follows the pointer, so its snap events wait
-    // for a configured point or the release
+    // Inside a range the snap events wait for a point or the release
     heldRangeSnap = !mappedSnapPoints(side).includes(target)
 
     if (!heldRangeSnap) {
@@ -295,8 +292,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     }
   }
 
-  // Snap-drag sides already rest on their committed point; one released
-  // inside a range still owes its snap events
+  // A release inside a range still owes its snap events
   function releaseSnapDrag(side: MagicTraySide) {
     if (heldRangeSnap) {
       emitSnap(side)
@@ -393,8 +389,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   function settle(side: MagicTraySide) {
     const target = settleTarget(side)
 
-    // A plain revert leaves the active snap point as it was set. Commit before
-    // interpolating, which emits afterSnap right away when already in place.
+    // Commit before interpolating, a revert keeps the active snap point
     if (target !== state.snapped[side] || state.interpolateTo !== undefined) {
       state.snapped[side] = target
       state.activeSnapPoint[side] = snapPointAt(side, target)
@@ -570,8 +565,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     })
   }
 
-  // End a drag cut short by the tray disabling or this scope ending, so the
-  // side returns to its last snap point instead of resting mid-way
+  // A drag cut short returns to its last snap point
   function onCancel() {
     const side = state.draggingSide
 
@@ -585,8 +579,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   }
 
   // Public functions
-  // A press on one side begins its drag right away; one on several sides
-  // waits for its direction to pick one
+  // One side drags on press, several wait for the first move
   function onPointerdown(
     side: MagicTraySide | Array<MagicTraySide>,
     e: PointerEvent
@@ -649,8 +642,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     side: MagicTraySide | Array<MagicTraySide>,
     e: TouchEvent
   ) {
-    // On iOS the drag already runs on pointer events; canceling touchstart
-    // keeps WebKit’s edge navigation swipe from hijacking a drag that starts
+    // Canceling touchstart keeps WebKit’s edge navigation swipe off a drag
     // near the viewport edge
     if (toValue(preventEdgeNavigation)) {
       cancelEdgeNavigation({ event: e })

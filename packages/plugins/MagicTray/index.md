@@ -479,7 +479,7 @@ Makes an element a drag surface for one side of the tray, so the user can drag a
 
 A press starts the drag right away, so the side follows the pointer from the first pixel. A release within `threshold.lock` counts as a tap and passes its click to the element inside, while a longer drag swallows it. Presses on form fields and editable text never start a drag, and links and images inside the trigger never start a native drag while the side is being dragged.
 
-Pass an array of sides to drag more than one from the same element, like the view between a left and a right sidebar. A press on it holds until it moves past `threshold.lock`, and its direction picks the side: a move to the right drags the left side, a move to the left the right side, and a move down or up the top or bottom side. With sides along both axes, the axis the press moves further along wins. Until the press moves that far, nothing starts, so a tap passes its click through without a drag and without the tray’s events. Only sides with snap points count: a trigger left with one of them drags on press like a trigger with one side.
+Pass an array of sides to drag more than one from the same element, like the view between a left and a right sidebar. The first move of a press picks the side and starts its drag: a move closes the side it points toward when that side is open, and opens the side it points away from otherwise, so a move to the right opens the left side or closes the right one. With sides along both axes, the axis the move leans to wins. A press without a move starts nothing, so a tap passes its click through without a drag and without the tray’s events. Only sides with snap points count: a trigger left with one of them drags on press like a trigger with one side.
 
 ```vue
 <template>
@@ -778,7 +778,7 @@ While a handle is being dragged, the tray disables text selection on the whole d
 
 In order for a trigger to tell a scroll from a drag on touch devices, it sets `touch-action` to `pan-y` on the left and right sides, to `pan-x` on the top and bottom, and to `none` with sides along both axes: the browser scrolls along the other axis and leaves the drag axis to the tray. The browser reads `touch-action` only up to the nearest scroll container, so give any scrollable element inside a trigger the same value. Without it, a swipe along the drag axis that starts on that element cancels the drag.
 
-A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests. A trigger with several sides starts its drag once the press moves past `threshold.lock`, so a tap on it emits nothing.
+A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests. A trigger with several sides starts its drag on the first move of the press, so a tap on it emits nothing.
 
 If an element inside a trigger runs its own drag, like a swipe action on a list row, stop `pointerdown` from propagating on that element. Otherwise the tray starts a drag from the same press and moves along with it.
 
