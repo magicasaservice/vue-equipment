@@ -27,6 +27,14 @@ type UseTrayGestureArgs = {
   preventEdgeNavigation: MaybeRefOrGetter<boolean>
 }
 
+type PendingPress = {
+  sides: Array<MagicTraySide>
+  x: number
+  y: number
+  target: Element | null
+  pressedAt: Date
+}
+
 // One press, drag, and release on a side. Every handle and trigger runs its
 // own gesture, while the side’s position lives in the shared state.
 export function useTrayGesture(args: UseTrayGestureArgs) {
@@ -66,6 +74,9 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   let pointerdownTarget: Element | null = null
   let releaseSelection: (() => void) | undefined = undefined
 
+  // A press on several sides holds until its direction picks one
+  let pending: PendingPress | undefined = undefined
+
   const threshold = computed(() => state.options.threshold)
   const disabled = computed(() => state.options.disabled)
   const snapMode = computed(() => state.options.snap.mode)
@@ -98,15 +109,78 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     releaseSelection ??= lockSelection()
   }
 
-  // A press begins a drag once the tray is measured and enabled, the side has
-  // snap points, and no other handle or trigger drives a drag
-  function canBegin(side: MagicTraySide) {
-    return (
-      !state.dragging &&
-      !toValue(disabled) &&
-      state.elRect !== undefined &&
+  // A press begins a drag once the tray is measured and enabled and no other
+  // handle or trigger drives a drag
+  function canStart() {
+    return !state.dragging && !toValue(disabled) && state.elRect !== undefined
+  }
+
+  // The sides a press can drag, which are the given ones with snap points
+  function draggableSides(side: MagicTraySide | Array<MagicTraySide>) {
+    const sides = Array.isArray(side) ? side : [side]
+
+    return sides.filter((side) =>
       isDraggableSide({ snapPoints: state.options.snapPoints, side })
     )
+  }
+
+  // The side a pending press drags once it has moved past the lock
+  // threshold: along the axis it moved further on, where the press has
+  // sides, the side whose edge the movement points away from, or the one
+  // side the press has on that axis
+  function resolveSide(
+    sides: Array<MagicTraySide>,
+    dx: number,
+    dy: number
+  ): MagicTraySide | undefined {
+    const horizontal = sides.filter((side) => !isVertical(side))
+    const vertical = sides.filter(isVertical)
+    const alongX =
+      horizontal.length > 0 &&
+      (!vertical.length || Math.abs(dx) >= Math.abs(dy))
+    const delta = alongX ? dx : dy
+
+    if (Math.abs(delta) <= toValue(threshold).lock) {
+      return undefined
+    }
+
+    const candidates: Array<MagicTraySide> = alongX ? horizontal : vertical
+    const preferred: MagicTraySide = alongX
+      ? delta > 0
+        ? 'left'
+        : 'right'
+      : delta > 0
+        ? 'top'
+        : 'bottom'
+
+    return candidates.includes(preferred) ? preferred : candidates[0]
+  }
+
+  // Begins the drag of a pending press once its direction picks a side,
+  // from the press itself, so the side catches up with the pointer
+  function resolvePending(x: number, y: number) {
+    if (!pending) {
+      return undefined
+    }
+
+    if (!canStart()) {
+      pending = undefined
+      resetListeners()
+      return undefined
+    }
+
+    const side = resolveSide(pending.sides, x - pending.x, y - pending.y)
+
+    if (!side) {
+      return undefined
+    }
+
+    const { x: pressX, y: pressY, target, pressedAt } = pending
+    pending = undefined
+    beginDrag(side, isVertical(side) ? pressY : pressX, target)
+    state.dragStart = pressedAt
+
+    return side
   }
 
   // Drag range bounded by the outermost snap points, capped by the opposite side
@@ -301,6 +375,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
 
   function resetDragState() {
     const side = state.draggingSide
+    pending = undefined
 
     // A release rests at the snap point, so hasDragged clears once it arrives
     if (side) {
@@ -333,7 +408,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       return
     }
 
-    const side = state.draggingSide
+    const side = state.draggingSide ?? resolvePending(e.clientX, e.clientY)
 
     if (!side) {
       return
@@ -388,15 +463,17 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   }
 
   function onTouchmove(e: TouchEvent) {
-    const side = state.draggingSide
-
-    if (!side) {
-      return
-    }
-
     const firstTouch = e.touches[0]
 
     if (!firstTouch) {
+      return
+    }
+
+    const side =
+      state.draggingSide ??
+      resolvePending(firstTouch.clientX, firstTouch.clientY)
+
+    if (!side) {
       return
     }
 
@@ -503,18 +580,39 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       resetDragState()
     }
 
+    pending = undefined
     resetListeners()
   }
 
   // Public functions
-  function onPointerdown(side: MagicTraySide, e: PointerEvent) {
-    if (!canBegin(side)) {
+  // A press on one side begins its drag right away; one on several sides
+  // waits for its direction to pick one
+  function onPointerdown(
+    side: MagicTraySide | Array<MagicTraySide>,
+    e: PointerEvent
+  ) {
+    const sides = draggableSides(side)
+
+    if (!canStart() || !sides.length) {
       return
     }
 
-    const coord = isVertical(side) ? e.clientY : e.clientX
     const target = e.target instanceof Element ? e.target : null
-    beginDrag(side, coord, target)
+    const only = sides.length === 1 ? sides[0] : undefined
+
+    if (only) {
+      beginDrag(only, isVertical(only) ? e.clientY : e.clientX, target)
+    } else {
+      pending = {
+        sides,
+        x: e.clientX,
+        y: e.clientY,
+        target,
+        pressedAt: new Date(),
+      }
+      pointerdownTarget = target
+    }
+
     guardedSetPointerCapture({ event: e, element: target })
 
     resetListeners()
@@ -542,10 +640,15 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
         ? useEventListener(document, 'touchcancel', onTouchend)
         : undefined
 
-    onPointermove(e)
+    if (!pending) {
+      onPointermove(e)
+    }
   }
 
-  function onTouchstart(side: MagicTraySide, e: TouchEvent) {
+  function onTouchstart(
+    side: MagicTraySide | Array<MagicTraySide>,
+    e: TouchEvent
+  ) {
     // On iOS the drag already runs on pointer events; canceling touchstart
     // keeps WebKit’s edge navigation swipe from hijacking a drag that starts
     // near the viewport edge
@@ -553,7 +656,9 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       cancelEdgeNavigation({ event: e })
     }
 
-    if (!isAndroid() || !canBegin(side)) {
+    const sides = draggableSides(side)
+
+    if (!isAndroid() || !canStart() || !sides.length) {
       return
     }
 
@@ -563,11 +668,27 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       return
     }
 
-    e.stopImmediatePropagation()
-    e.stopPropagation()
+    const target = e.target instanceof Element ? e.target : null
+    const only = sides.length === 1 ? sides[0] : undefined
 
-    const coord = isVertical(side) ? firstTouch.clientY : firstTouch.clientX
-    beginDrag(side, coord, e.target instanceof Element ? e.target : null)
+    if (only) {
+      e.stopImmediatePropagation()
+      e.stopPropagation()
+      beginDrag(
+        only,
+        isVertical(only) ? firstTouch.clientY : firstTouch.clientX,
+        target
+      )
+    } else {
+      pending = {
+        sides,
+        x: firstTouch.clientX,
+        y: firstTouch.clientY,
+        target,
+        pressedAt: new Date(),
+      }
+      pointerdownTarget = target
+    }
 
     cancelTouchmove?.()
     cancelTouchmove = useEventListener(document, 'touchmove', onTouchmove, {
@@ -580,7 +701,9 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     cancelTouchcancel?.()
     cancelTouchcancel = useEventListener(document, 'touchcancel', onTouchend)
 
-    onTouchmove(e)
+    if (!pending) {
+      onTouchmove(e)
+    }
   }
 
   // If disabled while dragging, snap back to the last snap point

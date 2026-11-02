@@ -61,14 +61,81 @@ function createTray(id: TrayId, triggerProps: TriggerProps = {}) {
   })
 }
 
-function pointer(type: string, clientX: number) {
+function pointer(type: string, clientX: number, clientY = 100) {
   return new PointerEvent(type, {
     bubbles: true,
     cancelable: true,
     pointerId: 1,
     isPrimary: true,
     clientX,
-    clientY: 100,
+    clientY,
+  })
+}
+
+const sidesOptions: MagicTrayOptions = {
+  snapPoints: { left: [0, '100px'], right: [0, '100px'] },
+  threshold: { distance: 32, lock: 5, momentum: Infinity },
+}
+
+type SidesProps = {
+  sides?: Array<MagicTraySide>
+  options?: MagicTrayOptions
+}
+
+function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
+  const { sides = ['left', 'right'], options: trayOptions = sidesOptions } =
+    sidesProps
+
+  return defineComponent({
+    components: { MagicTrayProvider, MagicTrayContent, MagicTrayTrigger },
+    setup() {
+      const { state, activeSnapPoint } = useMagicTray(id)
+      const activeLeft = computed(() => activeSnapPoint.value.left)
+      const activeRight = computed(() => activeSnapPoint.value.right)
+      const activeTop = computed(() => activeSnapPoint.value.top)
+      const dragging = computed(() => state.dragging)
+      const clicks = ref(0)
+      const emitter = useMagicEmitter()
+      const events = reactive<Array<string>>([])
+
+      function record(name: string) {
+        return (payload: { id: string }) => {
+          if (payload.id === id) {
+            events.push(name)
+          }
+        }
+      }
+
+      emitter.on('beforeDrag', record('beforeDrag'))
+      emitter.on('afterDrag', record('afterDrag'))
+
+      return {
+        options: trayOptions,
+        sides,
+        activeLeft,
+        activeRight,
+        activeTop,
+        dragging,
+        clicks,
+        events,
+      }
+    },
+    template: `
+      <MagicTrayProvider id="${id}" :options="options">
+        <span data-test-id="${TestId.ActiveLeft}">{{ activeLeft }}</span>
+        <span data-test-id="${TestId.ActiveRight}">{{ activeRight }}</span>
+        <span data-test-id="${TestId.ActiveTop}">{{ activeTop }}</span>
+        <span data-test-id="${TestId.Dragging}">{{ dragging }}</span>
+        <span data-test-id="${TestId.Clicks}">{{ clicks }}</span>
+        <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
+        <MagicTrayTrigger :side="sides" data-test-id="${TestId.Trigger}">
+          <button data-test-id="${TestId.TriggerButton}" style="width: 120px; height: 40px;" @click="clicks++">Item</button>
+        </MagicTrayTrigger>
+        <MagicTrayContent>
+          <div style="width: 200px; height: 200px;">Content</div>
+        </MagicTrayContent>
+      </MagicTrayProvider>
+    `,
   })
 }
 
@@ -648,6 +715,165 @@ describe('MagicTray - Trigger', () => {
       )
 
       document.dispatchEvent(pointer('pointerup', 130))
+    })
+  })
+
+  describe('sides', () => {
+    it('renders every side and the axis they share', async () => {
+      const { container } = await mount(createSidesTray(TrayId.TriggerSides))
+      const trigger = find(container, TestId.Trigger)
+
+      expect(trigger.getAttribute('data-side')).toBe('left right')
+      expect(trigger.getAttribute('data-axis')).toBe('x')
+      expect(getComputedStyle(trigger).touchAction).toBe('pan-y')
+    })
+
+    it('leaves scrolling across the axis to the browser on vertical sides', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesAxisY, { sides: ['top', 'bottom'] })
+      )
+      const trigger = find(container, TestId.Trigger)
+
+      expect(trigger.getAttribute('data-axis')).toBe('y')
+      expect(getComputedStyle(trigger).touchAction).toBe('pan-x')
+    })
+
+    it('leaves no scrolling to the browser on sides along both axes', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesAxisBoth, { sides: ['left', 'top'] })
+      )
+      const trigger = find(container, TestId.Trigger)
+
+      expect(trigger.getAttribute('data-axis')).toBe('both')
+      expect(getComputedStyle(trigger).touchAction).toBe('none')
+    })
+
+    it('a move to the right drags the left side', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesLeft)
+      )
+
+      await drag(find(container, TestId.Trigger), 50, 120)
+
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('100px')
+      expect(find(container, TestId.ActiveRight).textContent).toBe('0')
+    })
+
+    it('a move to the left drags the right side', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesRight)
+      )
+
+      await drag(find(container, TestId.Trigger), 150, 80)
+
+      expect(find(container, TestId.ActiveRight).textContent).toBe('100px')
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+    })
+
+    it('a press holds until it moves past the lock threshold', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesHold)
+      )
+      const trigger = find(container, TestId.Trigger)
+
+      trigger.dispatchEvent(pointer('pointerdown', 50))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 54))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('false')
+      expect(trigger.getAttribute('data-dragging')).toBe('false')
+      expect(find(container, TestId.Events).textContent).toBe('')
+
+      document.dispatchEvent(pointer('pointermove', 60))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('true')
+      expect(trigger.getAttribute('data-dragging')).toBe('true')
+      expect(find(container, TestId.Events).textContent).toBe('beforeDrag')
+
+      document.dispatchEvent(pointer('pointerup', 60))
+      await nextTick()
+
+      expect(find(container, TestId.Events).textContent).toBe(
+        'beforeDrag,afterDrag'
+      )
+    })
+
+    it('a tap on several sides emits nothing and keeps its click', async () => {
+      const { container } = await mount(createSidesTray(TrayId.TriggerSidesTap))
+      const button = find(container, TestId.TriggerButton)
+
+      button.dispatchEvent(pointer('pointerdown', 150))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 150))
+      await nextTick()
+      button.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true })
+      )
+      await nextTick()
+
+      expect(find(container, TestId.Clicks).textContent).toBe('1')
+      expect(find(container, TestId.Events).textContent).toBe('')
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+      expect(find(container, TestId.ActiveRight).textContent).toBe('0')
+    })
+
+    it('one side with snap points among several drags on press', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesSingle, { options })
+      )
+
+      find(container, TestId.Trigger).dispatchEvent(pointer('pointerdown', 150))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('true')
+
+      document.dispatchEvent(pointer('pointerup', 150))
+      await nextTick()
+    })
+
+    it('sides along both axes follow the axis the press moves along', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesBothAxes, {
+          sides: ['left', 'top'],
+          options: {
+            snapPoints: { left: [0, '100px'], top: [0, '100px'] },
+            threshold: { distance: 32, lock: 5, momentum: Infinity },
+          },
+        })
+      )
+      const trigger = find(container, TestId.Trigger)
+
+      trigger.dispatchEvent(pointer('pointerdown', 100, 50))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 110, 120))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 110, 120))
+      await nextTick()
+
+      expect(find(container, TestId.ActiveTop).textContent).toBe('100px')
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+    })
+
+    it('a scroll taking over a held press leaves the sides at rest', async () => {
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesTakeover)
+      )
+      const trigger = find(container, TestId.Trigger)
+
+      trigger.dispatchEvent(pointer('pointerdown', 50))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 53))
+      await nextTick()
+      document.dispatchEvent(pointer('pointercancel', 53))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 90))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('false')
+      expect(find(container, TestId.Events).textContent).toBe('')
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
     })
   })
 })
