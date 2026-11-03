@@ -465,7 +465,7 @@ rows:
 
 ### MagicTrayTrigger
 
-Makes an element a drag surface for one side of the tray, so the user can drag a sidebar or panel shut from anywhere on it. Nest it inside `MagicTrayProvider`, or place it anywhere in your app and pass the tray’s `id`.
+Drags a side of the tray from any element. Wrap a sidebar in it and the sidebar can be dragged shut from anywhere on it. Nest it inside `MagicTrayProvider` or pass the tray’s `id` to use it anywhere in your app.
 
 ```vue
 <template>
@@ -477,9 +477,11 @@ Makes an element a drag surface for one side of the tray, so the user can drag a
 </template>
 ```
 
-A press starts the drag right away, so the side follows the pointer from the first pixel. A release within `threshold.lock` counts as a tap and passes its click to the element inside, while a longer drag swallows it. Presses on form fields and editable text never start a drag, and links and images inside the trigger never start a native drag while the side is being dragged.
+The drag starts on press, and a release within `threshold.lock` counts as a tap that passes its click to the element inside. Past it the click is swallowed. Form fields and editable text keep their presses, and links and images inside the trigger do not start a native drag while a side is being dragged.
 
-Pass an array of sides to drag more than one from the same element, like the view between a left and a right sidebar. The first move of a press picks the side and starts its drag: a move closes the side it points toward when that side is open, and opens the side it points away from otherwise, so a move to the right opens the left side or closes the right one. With sides along both axes, the axis the move leans to wins. A press without a move starts nothing, so a tap passes its click through without a drag and without the tray’s events. Only sides with snap points count: a trigger left with one of them drags on press like a trigger with one side.
+Pass an array to `side` to drag several sides from one element, like the view between a left and a right sidebar. The drag then starts on the first move of the press, and the direction of that move picks the side: a move toward an open side closes it, any other move opens the side it points away from. With sides on both axes, the axis with the larger move wins.
+
+A tap on a trigger with several sides starts no drag and emits no events. Sides without snap points are skipped, so a trigger left with a single side drags on press.
 
 ```vue
 <template>
@@ -585,7 +587,7 @@ rows:
   - items:
       - label: --magic-tray-trigger-touch-action
       - label: pan-y
-        description: pan-x on the top and bottom sides, none on a trigger with sides along both axes. A disabled trigger leaves touch-action as it is.
+        description: pan-x on the top and bottom sides, none on a trigger with sides along both axes. Not applied while the trigger is disabled.
 ---
 ::
 
@@ -790,19 +792,19 @@ rows:
 
 ## Caveats
 
-The tray handles situations where dragging and scrolling might interfere with each other on touch devices. In order for the tray to differentiate when the user scrolls and when the user drags, any scrollable containers within the tray need to have their overflow value explicitly set to `auto` or `scroll`.
+In order for the tray to differentiate when the user scrolls and when the user drags, any scrollable containers within the tray need to have their overflow value explicitly set to `auto` or `scroll`.
 
-On iOS, a touch that starts near a vertical viewport edge arms the browser’s back and forward navigation swipe, in Safari as well as in installed web apps. Since a closed side’s handle sits exactly there, the tray cancels `touchstart` on its handles and triggers within 44px of either edge, which is the one signal WebKit honors, so grabbing a handle drags the tray instead of navigating. Canceling also swallows the tap’s synthesized click; the tray dispatches a replacement when the touch ends within 12px of where it started, so click listeners keep firing. A touch on an SVG icon counts as well, and its replacement click goes to the HTML element that holds the icon. A canceled touch never scrolls either. Set the `preventEdgeNavigation` prop to `false` on a trigger whose content needs to scroll next to a viewport edge, and the option to `false` to opt out for the whole tray.
+On iOS, a touch near a vertical viewport edge arms the browser’s back and forward swipe, so the tray cancels `touchstart` on handles and triggers within 44px of either edge and replaces the lost click when the touch ends within 12px of where it started. Set `preventEdgeNavigation` to `false` on a trigger whose content needs to scroll next to the edge, or the option for the whole tray.
 
-The clip insets hide part of the content, but the content still covers the whole tray. Taps respect the clip, so an element showing through the clipped area receives them. On iOS, the native hit test that decides which scroller takes a pan ignores the clip, so a scrollable element behind the clipped area never scrolls. Set `--magic-tray-content-pointer-events` to `none` while that area needs to scroll, for example while a side is open over a sidebar. Content that sets its own `pointer-events` still catches touches.
+Taps respect the clip, but on iOS a pan does not, so a scrollable element behind the clipped area never scrolls. Set `--magic-tray-content-pointer-events` to `none` while that area needs to scroll, for example while a side is open over a sidebar. Content with its own `pointer-events` still catches touches.
 
-While a handle is being dragged, the tray disables text selection on the whole document and restores it on release. Without this, a pointer that leaves the handle would keep extending a selection across the page. A trigger disables it only once its drag moves past `threshold.lock`, so a long press on its content still selects text.
+A handle drag disables text selection on the whole document until release. A trigger does so only past `threshold.lock`, so a long press on its content still selects text.
 
-In order for a trigger to tell a scroll from a drag on touch devices, it sets `touch-action` to `pan-y` on the left and right sides, to `pan-x` on the top and bottom, and to `none` with sides along both axes: the browser scrolls along the other axis and leaves the drag axis to the tray. The browser reads `touch-action` only up to the nearest scroll container, so give any scrollable element inside a trigger the same value. Without it, a swipe along the drag axis that starts on that element cancels the drag.
+A trigger sets `touch-action` to `pan-y` on the left and right sides, `pan-x` on the top and bottom and `none` with sides on both axes. The browser reads it only up to the nearest scroll container, so set the same value on any scrollable element inside a trigger.
 
-A trigger starts its drag on press, so a tap on an element inside it emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag` as well, while the side stays where it rests. A trigger with several sides starts its drag on the first move of the press, so a tap on it emits nothing.
+A tap on a trigger with one side emits `beforeDrag`, `willSnapTo`, `drag`, `beforeSnap`, `afterSnap` and `afterDrag`, since its drag starts on press. A tap on a trigger with several sides emits nothing.
 
-If an element inside a trigger runs its own drag, like a swipe action on a list row, stop `pointerdown` from propagating on that element. Otherwise the tray starts a drag from the same press and moves along with it.
+Stop `pointerdown` from propagating on elements inside a trigger that drag on their own, like a swipe action on a list row, or the same press drags the side too.
 
 ## Examples
 
@@ -897,7 +899,7 @@ If you move the handle with `--magic-tray-handle-offset-*`, set `magnetism.radiu
 
 ### Virtual Magnetism
 
-With `magnetism.virtual` set to `true`, magnetism is still calculated, but the clip path and handle stay put. The `magnet` event still fires, so you can drive custom effects such as transforms or parallax.
+With `magnetism.virtual` set to `true`, magnetism is calculated, but not applied. The `magnet` event still fires, so you can drive custom effects such as transforms or parallax.
 
 ::component-preview{src="./demo/VirtualMagneticDemo.vue"}
 ::
