@@ -872,9 +872,16 @@ A handle passes clicks through to its slotted content, so a clickable element in
 
 ### Trigger
 
-Wrap an element in `MagicTrayTrigger` to drag a side from anywhere on it. The sidebar sits outside the provider and passes the tray’s `id`, the chat view inside is a second trigger wrapped in `MagicTrayTransform` so it moves with the drag, and taps still select a chat or open the menu.
+Use `MagicTrayTrigger` to drag from anywhere inside your app.
 
 ::component-preview{src="./demo/TriggerDemo.vue"}
+::
+
+#### Two-Sided Trigger
+
+Pass an array to `side` to drag several sides from the same element. Pass `isScrolling` from `useTouchIntent` as `disabled`, to prevent dragging while scrolling.
+
+::component-preview{src="./demo/TriggerSidesDemo.vue"}
 ::
 
 ### Magnetic
