@@ -64,7 +64,7 @@
               <header class="flex items-center gap-3 px-4 pt-6 pb-3">
                 <button
                   class="bg-surface-high flex size-8 shrink-0 items-center justify-center rounded-full"
-                  @click="snapTo('left', '224px')"
+                  @click="toggleSidebar()"
                 >
                   <svg v-bind="svg" class="size-4">
                     <path :d="icons.menu" />
@@ -159,5 +159,11 @@ const options: MagicTrayOptions = {
   inset: true,
 }
 
-const { snapTo } = useMagicTray(id, options)
+const { activeSnapPoint, snapTo } = useMagicTray(id, options)
+
+function toggleSidebar() {
+  const isOpen = (activeSnapPoint.value.left ?? 0) !== 0
+
+  snapTo('left', isOpen ? 0 : '224px')
+}
 </script>
