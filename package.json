@@ -148,17 +148,8 @@
     "update:deps:major": "pnpm dlx taze major -r -w"
   },
   "type": "module",
-  "packageManager": "pnpm@10.34.5",
-  "pnpm": {
-    "overrides": {
-      "typescript": "catalog:"
-    },
-    "onlyBuiltDependencies": [
-      "@bundled-es-modules/glob",
-      "@parcel/watcher",
-      "esbuild",
-      "style-dictionary",
-      "vue-demi"
-    ]
-  }
+  "engines": {
+    "pnpm": ">=12"
+  },
+  "packageManager": "pnpm@12.16.1"
 }

@@ -28,3 +28,12 @@ catalog:
   universal-cookie: ^8.1.2
   vue: ^3.5.42
   wheel-gestures: ^2.2.48
+overrides:
+  typescript: 'catalog:'
+allowBuilds:
+  '@bundled-es-modules/glob': true
+  '@parcel/watcher': true
+  esbuild: true
+  style-dictionary: true
+  vue-demi: true
+  unrs-resolver: false
