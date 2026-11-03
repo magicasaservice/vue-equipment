@@ -24,6 +24,7 @@ type UseTrayGestureArgs = {
   id: MaybeRef<string>
   state: TrayState
   selectionLock?: 'press' | 'drag'
+  disabled?: MaybeRefOrGetter<boolean>
   preventEdgeNavigation: MaybeRefOrGetter<boolean>
 }
 
@@ -38,7 +39,13 @@ type PendingPress = {
 // One press, drag, and release on a side. Each handle and trigger runs its
 // own, the side’s position lives in the shared state.
 export function useTrayGesture(args: UseTrayGestureArgs) {
-  const { id, state, selectionLock = 'press', preventEdgeNavigation } = args
+  const {
+    id,
+    state,
+    selectionLock = 'press',
+    disabled: ownDisabled,
+    preventEdgeNavigation,
+  } = args
 
   const { clampWithOvershoot, isVertical, isDraggableSide } = useTrayUtils()
   const emitter = useMagicEmitter()
@@ -77,7 +84,10 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
   let pending: PendingPress | undefined = undefined
 
   const threshold = computed(() => state.options.threshold)
-  const disabled = computed(() => state.options.disabled)
+  // The tray’s option or the trigger’s own prop, read on every move
+  const disabled = computed(
+    () => state.options.disabled || toValue(ownDisabled) === true
+  )
   const snapMode = computed(() => state.options.snap.mode)
   const dragMode = computed(() => state.options.drag.mode)
 
@@ -158,15 +168,24 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     return candidates.includes(opens) ? opens : candidates[0]
   }
 
+  // A press a disabled trigger lets go of: its listeners and the pointer go
+  function dropPending(e?: PointerEvent) {
+    pending = undefined
+    resetListeners()
+
+    if (e) {
+      guardedReleasePointerCapture({ event: e, element: pointerdownTarget })
+    }
+  }
+
   // Starts the drag from the press, so the side follows from the first pixel
-  function resolvePending(x: number, y: number) {
+  function resolvePending(x: number, y: number, e?: PointerEvent) {
     if (!pending) {
       return undefined
     }
 
     if (!canStart()) {
-      pending = undefined
-      resetListeners()
+      dropPending(e)
       return undefined
     }
 
@@ -403,7 +422,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
       return
     }
 
-    const side = state.draggingSide ?? resolvePending(e.clientX, e.clientY)
+    const side = state.draggingSide ?? resolvePending(e.clientX, e.clientY, e)
 
     if (!side) {
       return
@@ -698,7 +717,7 @@ export function useTrayGesture(args: UseTrayGestureArgs) {
     }
   }
 
-  // If disabled while dragging, snap back to the last snap point
+  // Disabled mid-press, the press is let go; mid-drag, the side snaps back
   watch(disabled, (value) => {
     if (value) {
       onCancel()

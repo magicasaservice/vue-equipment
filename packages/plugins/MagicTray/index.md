@@ -491,6 +491,27 @@ Pass an array of sides to drag more than one from the same element, like the vie
 </template>
 ```
 
+Scrollable content inside a trigger drags a side along with every scroll, since any press on the trigger starts a drag. To prevent this, pass `disabled` as a ref or getter: the trigger reads it on every move, drops the press when disabled before the drag starts and snaps the side back to rest when disabled mid-drag. [useTouchIntent](/composables/useTouchIntent) returns a flag that tells a scroll from any other press.
+
+```vue
+<template>
+  <magic-tray-trigger
+    :side="['left', 'right']"
+    :disabled="touchIntent.isScrolling"
+    as-child
+  >
+    <main ref="content">
+      <!-- your content -->
+    </main>
+  </magic-tray-trigger>
+</template>
+
+<script setup>
+const content = ref()
+const touchIntent = useTouchIntent({ target: content })
+</script>
+```
+
 #### Props
 
 ::docs-table
@@ -508,14 +529,15 @@ rows:
       - label: 'false'
   - items:
       - label: side
-        description: The side the trigger drags, or several, which the direction of the press picks from. A side without snap points ignores the trigger.
+        description: The side to drag, or several for the direction of the press to pick from. Sides without snap points are skipped.
       - label: MagicTraySide | Array<MagicTraySide>
         description: "'top' | 'right' | 'bottom' | 'left'"
       - label: 'true'
   - items:
       - label: disabled
-        description: Disable the trigger. The trigger is also disabled while the tray’s `disabled` option is set.
-      - label: boolean
+        description: Disable the trigger. A ref or getter is read on every move and cancels a press or drag under way. The trigger is also disabled while the tray’s `disabled` option is set.
+      - label: MaybeRefOrGetter<boolean>
+        escape: true
       - label: 'false'
   - items:
       - label: preventEdgeNavigation

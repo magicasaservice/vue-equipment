@@ -23,7 +23,7 @@ import { useTrayState } from '../composables/private/useTrayState'
 import { useTrayGesture } from '../composables/private/useTrayGesture'
 import { MagicTrayInstanceId } from '../symbols'
 
-import type { MaybeRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import type { UseMagicErrorReturn } from '@maas/vue-equipment/plugins/MagicError'
 
 import type { MagicTraySide } from '../types/index'
@@ -31,7 +31,7 @@ import type { MagicTraySide } from '../types/index'
 interface MagicTrayTriggerProps {
   id?: MaybeRef<string>
   side: MagicTraySide | Array<MagicTraySide>
-  disabled?: boolean
+  disabled?: MaybeRefOrGetter<boolean>
   preventEdgeNavigation?: boolean
   asChild?: boolean
 }
@@ -68,11 +68,14 @@ const { active, hasDragged, onPointerdown, onTouchstart } = useTrayGesture({
   id: mappedId,
   state,
   selectionLock: 'drag',
+  disabled: () => toValue(disabled) === true,
   preventEdgeNavigation: () =>
     preventEdgeNavigation ?? state.options.preventEdgeNavigation,
 })
 
-const mappedDisabled = computed(() => disabled || state.options.disabled)
+const mappedDisabled = computed(
+  () => toValue(disabled) === true || state.options.disabled
+)
 
 const sides = computed(() => (Array.isArray(side) ? side : [side]))
 const mappedSide = computed(() => sides.value.join(' '))

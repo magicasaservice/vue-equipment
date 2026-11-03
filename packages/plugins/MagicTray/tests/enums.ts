@@ -150,6 +150,8 @@ export enum TrayId {
   TriggerSidesSingle = 'trigger-sides-single',
   TriggerSidesBothAxes = 'trigger-sides-both-axes',
   TriggerSidesTakeover = 'trigger-sides-takeover',
+  TriggerSidesDisabledPress = 'trigger-sides-disabled-press',
+  TriggerSidesDisabledDrag = 'trigger-sides-disabled-drag',
 }
 
 export enum TestId {

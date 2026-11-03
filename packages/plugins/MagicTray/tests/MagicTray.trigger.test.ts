@@ -9,6 +9,8 @@ import { useMagicEmitter } from '../../MagicEmitter'
 import { mountWithApp } from '../../tests/utils'
 import { TrayId, TestId } from './enums'
 
+import type { Ref } from 'vue'
+
 import type { MagicTrayOptions, MagicTraySide } from '../src/types/index'
 
 const options: MagicTrayOptions = {
@@ -80,11 +82,15 @@ const sidesOptions: MagicTrayOptions = {
 type SidesProps = {
   sides?: Array<MagicTraySide>
   options?: MagicTrayOptions
+  disabled?: Ref<boolean>
 }
 
 function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
-  const { sides = ['left', 'right'], options: trayOptions = sidesOptions } =
-    sidesProps
+  const {
+    sides = ['left', 'right'],
+    options: trayOptions = sidesOptions,
+    disabled,
+  } = sidesProps
 
   return defineComponent({
     components: { MagicTrayProvider, MagicTrayContent, MagicTrayTrigger },
@@ -113,6 +119,7 @@ function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
       return {
         options: trayOptions,
         sides,
+        trigger: { disabled },
         activeLeft,
         activeRight,
         activeTop,
@@ -131,7 +138,7 @@ function createSidesTray(id: TrayId, sidesProps: SidesProps = {}) {
         <span data-test-id="${TestId.Dragging}">{{ dragging }}</span>
         <span data-test-id="${TestId.Clicks}">{{ clicks }}</span>
         <span data-test-id="${TestId.Events}">{{ events.join(',') }}</span>
-        <MagicTrayTrigger :side="sides" data-test-id="${TestId.Trigger}">
+        <MagicTrayTrigger :side="sides" :disabled="trigger.disabled" data-test-id="${TestId.Trigger}">
           <button data-test-id="${TestId.TriggerButton}" style="width: 120px; height: 40px;" @click="clicks++">Item</button>
         </MagicTrayTrigger>
         <MagicTrayContent>
@@ -878,6 +885,68 @@ describe('MagicTray - Trigger', () => {
 
       expect(find(container, TestId.ActiveTop).textContent).toBe('100px')
       expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+    })
+
+    it('a trigger disabled during a press lets the press go', async () => {
+      const disabled = ref(false)
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesDisabledPress, { disabled })
+      )
+      const trigger = find(container, TestId.Trigger)
+      const resting = find(container, TestId.DraggedLeft).textContent
+
+      trigger.dispatchEvent(pointer('pointerdown', 50))
+      await nextTick()
+      disabled.value = true
+      document.dispatchEvent(pointer('pointermove', 60))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('false')
+      expect(find(container, TestId.Events).textContent).toBe('')
+      expect(find(container, TestId.DraggedLeft).textContent).toBe(resting)
+
+      document.dispatchEvent(pointer('pointermove', 120))
+      await nextTick()
+      document.dispatchEvent(pointer('pointerup', 120))
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 400))
+
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+      expect(find(container, TestId.Events).textContent).toBe('')
+
+      disabled.value = false
+      await nextTick()
+      await drag(trigger, 50, 120)
+
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('100px')
+    })
+
+    it('a trigger disabled mid-drag returns its side to rest', async () => {
+      const disabled = ref(false)
+      const { container } = await mount(
+        createSidesTray(TrayId.TriggerSidesDisabledDrag, { disabled })
+      )
+      const trigger = find(container, TestId.Trigger)
+      const resting = find(container, TestId.DraggedLeft).textContent
+
+      trigger.dispatchEvent(pointer('pointerdown', 50))
+      await nextTick()
+      document.dispatchEvent(pointer('pointermove', 90))
+      await nextTick()
+
+      expect(find(container, TestId.Dragging).textContent).toBe('true')
+
+      disabled.value = true
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 400))
+
+      expect(find(container, TestId.Dragging).textContent).toBe('false')
+      expect(trigger.getAttribute('data-disabled')).toBe('true')
+      expect(find(container, TestId.DraggedLeft).textContent).toBe(resting)
+      expect(find(container, TestId.ActiveLeft).textContent).toBe('0')
+
+      document.dispatchEvent(pointer('pointerup', 90))
+      await nextTick()
     })
 
     it('a scroll taking over a press leaves the sides at rest', async () => {
