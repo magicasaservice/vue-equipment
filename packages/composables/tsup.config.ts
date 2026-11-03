@@ -6,6 +6,7 @@ export default defineConfig({
     './useEasings/index.ts',
     './useMetaViewport/index.ts',
     './useScrollTo/index.ts',
+    './useTouchIntent/index.ts',
     './useScrollLockPadding/index.ts',
   ],
   outDir: '../../dist/composables',
