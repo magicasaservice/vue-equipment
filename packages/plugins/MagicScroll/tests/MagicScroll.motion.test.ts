@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from 'vitest-browser-vue'
-import { defineComponent, nextTick } from 'vue'
+import { defineComponent, nextTick, ref } from 'vue'
 import MagicScrollProvider from '../src/components/MagicScrollProvider.vue'
 import MagicScrollScene from '../src/components/MagicScrollScene.vue'
 import MagicScrollMotion from '../src/components/MagicScrollMotion.vue'
@@ -92,6 +92,73 @@ describe('MagicScroll - Motion', () => {
       await new Promise((r) => setTimeout(r, 50))
 
       expect(document.querySelector('.magic-scroll-motion')).not.toBeNull()
+    })
+  })
+
+  describe('sequence updates', () => {
+    function createReactiveMotion(initialSequence: unknown[]) {
+      const sequence = ref(initialSequence)
+      const component = defineComponent({
+        components: { MagicScrollMotion },
+        setup() {
+          return { sequence }
+        },
+        template: `
+          <MagicScrollMotion :sequence="sequence" :progress="0.5">
+            <div>Animated</div>
+          </MagicScrollMotion>
+        `,
+      })
+
+      return { sequence, component }
+    }
+
+    it('emptying the sequence clears the old animation', async () => {
+      const { sequence, component } = createReactiveMotion([
+        [
+          { opacity: [0, 0.5], x: [50, 100] },
+          { duration: 1, ease: 'linear' },
+        ],
+      ])
+
+      render(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 50))
+
+      const el = document.querySelector('.magic-scroll-motion')!
+      expect(getComputedStyle(el).opacity).toBe('0.25')
+      expect(getComputedStyle(el).transform).toBe('matrix(1, 0, 0, 1, 75, 0)')
+
+      sequence.value = []
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 50))
+
+      expect(getComputedStyle(el).opacity).toBe('1')
+      expect(getComputedStyle(el).transform).toBe('none')
+    })
+
+    it('replacing the sequence clears values the new one drops', async () => {
+      const { sequence, component } = createReactiveMotion([
+        [
+          { opacity: [0, 0.5], x: [50, 100] },
+          { duration: 1, ease: 'linear' },
+        ],
+      ])
+
+      render(component)
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 50))
+
+      const el = document.querySelector('.magic-scroll-motion')!
+      expect(getComputedStyle(el).opacity).toBe('0.25')
+      expect(getComputedStyle(el).transform).toBe('matrix(1, 0, 0, 1, 75, 0)')
+
+      sequence.value = [[{ y: [0, 100] }, { duration: 1, ease: 'linear' }]]
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 50))
+
+      expect(getComputedStyle(el).opacity).toBe('1')
+      expect(getComputedStyle(el).transform).toBe('matrix(1, 0, 0, 1, 0, 50)')
     })
   })
 

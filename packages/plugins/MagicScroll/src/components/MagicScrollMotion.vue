@@ -16,12 +16,13 @@ import {
 } from 'vue'
 import { unrefElement } from '@vueuse/core'
 import defu from 'defu'
-import { animate } from 'motion'
+import { animate, scopeMotion } from 'motion'
 import { MagicScrollProgress } from '../symbols'
 
 import type {
   AnimationPlaybackControls,
   AnimationSequence,
+  MotionScope,
   SequenceOptions,
 } from 'motion'
 import type { MagicScrollSequence } from '../types'
@@ -36,6 +37,7 @@ const { progress, sequence, sequenceOptions } =
   defineProps<MagicScrollMotionProps>()
 
 const animation = shallowRef<AnimationPlaybackControls | undefined>(undefined)
+const animationScope = shallowRef<MotionScope | undefined>(undefined)
 const elRef = useTemplateRef('el')
 
 const injectedProgress = inject(
@@ -54,8 +56,18 @@ const defaultSequenceOptions: SequenceOptions = {
 
 const mappedSequenceOptions = defu(sequenceOptions, defaultSequenceOptions)
 
+function cancelAnimation() {
+  // Unlike animation.cancel(), this also resets values motion runs on the main thread
+  animationScope.value?.cancel()
+  animationScope.value = undefined
+  animation.value = undefined
+}
+
 function createAnimation() {
   const el = unrefElement(elRef)
+
+  // Cancel before the guard, so an empty sequence clears the old one
+  cancelAnimation()
 
   // Prevent animation creation
   if (!sequence || !sequence.length || !el) {
@@ -67,7 +79,10 @@ function createAnimation() {
     return [el, animation, options]
   })
 
-  animation.value = animate(mappedSequence, mappedSequenceOptions)
+  animationScope.value = scopeMotion()
+  animation.value = animationScope.value.run(() =>
+    animate(mappedSequence, mappedSequenceOptions)
+  )
   animation.value.pause()
   animation.value.time = mappedProgress.value
 }
@@ -95,7 +110,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  animation.value?.cancel()
-  animation.value = undefined
+  cancelAnimation()
 })
 </script>
