@@ -20,7 +20,7 @@ catalog:
   hls.js: ^1.7.1
   luxon: ^3.7.2
   mitt: ^3.0.1
-  motion: ^14.1.0
+  motion: ^14.9.1
   nuxt: ^4.5.2
   prettier: ^3.9.6
   tsup: ^8.5.1
