@@ -7,3 +7,11 @@ export function rubberband(distance: number, max: number, tightness = 2) {
   }
   return (1 - 1 / ((distance * tightness) / max + 1)) * max
 }
+
+// The distance `rubberband` maps onto `offset`, 0 when there is none
+export function rubberbandInverse(offset: number, max: number, tightness = 2) {
+  if (offset <= 0 || offset >= max) {
+    return 0
+  }
+  return (offset * max) / ((max - offset) * tightness)
+}

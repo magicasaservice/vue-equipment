@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { rubberband } from './rubberband'
+import { rubberband, rubberbandInverse } from './rubberband'
 
 describe('rubberband', () => {
   it('returns 0 for non-positive distance or max', () => {
@@ -26,5 +26,19 @@ describe('rubberband', () => {
 
   it('climbs toward the edge sooner with higher tightness', () => {
     expect(rubberband(100, 100, 3)).toBeGreaterThan(rubberband(100, 100, 1))
+  })
+})
+
+describe('rubberbandInverse', () => {
+  it('returns the distance rubberband maps onto the offset', () => {
+    expect(rubberbandInverse(rubberband(40, 100), 100)).toBeCloseTo(40)
+    expect(rubberbandInverse(rubberband(250, 64, 3), 64, 3)).toBeCloseTo(250)
+  })
+
+  it('returns 0 for an offset no distance maps onto', () => {
+    expect(rubberbandInverse(0, 100)).toBe(0)
+    expect(rubberbandInverse(-10, 100)).toBe(0)
+    expect(rubberbandInverse(100, 100)).toBe(0)
+    expect(rubberbandInverse(50, 0)).toBe(0)
   })
 })
