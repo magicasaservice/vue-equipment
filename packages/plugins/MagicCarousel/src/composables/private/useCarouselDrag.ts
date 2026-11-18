@@ -85,6 +85,13 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     state.snapping = false
   }
 
+  // Snapping is restored within this frame, the scroll has ended after it
+  function endScroll() {
+    requestAnimationFrame(() => {
+      state.trackEl?.dispatchEvent(new Event('scrollend'))
+    })
+  }
+
   function interpolateScroll(snapPoint: number, duration?: number) {
     const el = state.trackEl
     const position = state.snapPositions[snapPoint]
@@ -110,6 +117,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
         if (value === position) {
           state.snapping = false
           state.interpolationId = null
+          endScroll()
         }
       },
       interpolationIdCallback: (interpolationId) => {
@@ -212,6 +220,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
 
     if (!state.dragging && round(velocity, 12) === 0) {
       state.scrolling = false
+      endScroll()
     }
 
     if (state.options.loop) {
@@ -266,6 +275,8 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
 
     // A caught band relaxes again, dragged or not
     if (!moved && !state.rubberbandOffset) {
+      // A press that stopped a snap midway ends its scroll
+      endScroll()
       return
     }
 

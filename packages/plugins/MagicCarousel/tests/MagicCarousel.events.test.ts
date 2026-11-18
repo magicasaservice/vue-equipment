@@ -6,7 +6,7 @@ import {
   useMagicEmitter
   
 } from '@maas/vue-equipment/plugins/MagicEmitter'
-import { createCarousel, dispatchPointer } from './test-utils'
+import { createCarousel, dispatchPointer, dragPointer } from './test-utils'
 import { CarouselId, TestId } from './enums'
 import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
 
@@ -26,6 +26,14 @@ function recordEvent(
 
 function recordedNames() {
   return recorded.map((event) => event.name)
+}
+
+function recordedCount(name: keyof MagicEmitterEvents) {
+  return recorded.filter((event) => event.name === name).length
+}
+
+function nextFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve))
 }
 
 function getTrack() {
@@ -89,6 +97,74 @@ describe('MagicCarousel - Events', () => {
         snapPoint: 1,
       })
     })
+
+    it('emits scrollEnd and afterSnap once per programmatic snap', async () => {
+      render(createRecordedCarousel(CarouselId.EventsSnapOnce))
+
+      const track = getTrack()
+
+      await vi.waitFor(() => {
+        expect(track.scrollWidth).toBeGreaterThan(track.clientWidth)
+      })
+
+      await page.getByTestId(TestId.TriggerNext).click()
+
+      await vi.waitFor(
+        () => {
+          expect(track.getAttribute('data-snapping')).toBeNull()
+          expect(recordedNames()).toContain('afterSnap')
+        },
+        { timeout: 5000 }
+      )
+
+      // The browser reports the same rest within a frame or two of the snap
+      await nextFrame()
+      await nextFrame()
+      await nextFrame()
+
+      expect(recordedCount('scrollEnd')).toBe(1)
+      expect(recordedCount('afterSnap')).toBe(1)
+    })
+
+    it('emits scrollEnd and afterSnap once when a press stops the snap', async () => {
+      render(createRecordedCarousel(CarouselId.EventsSnapPress))
+
+      const track = getTrack()
+
+      await vi.waitFor(() => {
+        expect(track.getAttribute('data-draggable')).toBe('true')
+      })
+
+      await page.getByTestId(TestId.TriggerNext).click()
+
+      await vi.waitFor(() => {
+        expect(track.getAttribute('data-snapping')).toBe('true')
+        expect(track.scrollLeft).toBeGreaterThan(0)
+      })
+
+      dispatchPointer({ target: track, type: 'pointerdown', clientX: 150 })
+
+      // The press outlasts the scroll events of the step it stopped
+      for (let frame = 0; frame < 6; frame++) {
+        await nextFrame()
+      }
+
+      dispatchPointer({ target: window, type: 'pointerup', clientX: 150 })
+
+      await vi.waitFor(
+        () => {
+          expect(recordedNames()).toContain('afterSnap')
+        },
+        { timeout: 5000 }
+      )
+
+      await nextFrame()
+      await nextFrame()
+      await nextFrame()
+
+      expect(recordedCount('scrollEnd')).toBe(1)
+      expect(recordedCount('afterSnap')).toBe(1)
+    })
   })
 
   describe('dragging', () => {
@@ -118,6 +194,37 @@ describe('MagicCarousel - Events', () => {
       const beforeDrag = recorded.find((event) => event.name === 'beforeDrag')
 
       expect(beforeDrag?.payload).toMatchObject({ id: CarouselId.EventsDrag })
+    })
+
+    it('emits scrollEnd and afterSnap once the drag has come to rest', async () => {
+      render(createRecordedCarousel(CarouselId.EventsDragRest))
+
+      const track = getTrack()
+
+      await vi.waitFor(() => {
+        expect(track.getAttribute('data-draggable')).toBe('true')
+      })
+
+      dispatchPointer({ target: track, type: 'pointerdown', clientX: 250 })
+
+      await dragPointer({ target: window, from: 250, to: 90, step: 40 })
+
+      dispatchPointer({ target: window, type: 'pointerup', clientX: 90 })
+
+      await vi.waitFor(
+        () => {
+          expect(recordedNames()).toContain('afterSnap')
+        },
+        { timeout: 5000 }
+      )
+
+      // The browser reports the same rest within a frame or two of the drag
+      await nextFrame()
+      await nextFrame()
+      await nextFrame()
+
+      expect(recordedCount('scrollEnd')).toBe(1)
+      expect(recordedCount('afterSnap')).toBe(1)
     })
   })
 })

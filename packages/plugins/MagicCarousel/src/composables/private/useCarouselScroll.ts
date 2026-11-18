@@ -14,6 +14,8 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
 
   const mappedTrackEl = computed(() => state.trackEl)
 
+  let rested = true
+
   // Private functions
   function track() {
     const el = state.trackEl
@@ -74,9 +76,12 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
   }
 
   function settle() {
-    if (state.dragging || state.scrolling) {
+    // The browser and the carousel can both end the same scroll
+    if (state.dragging || state.scrolling || state.snapping || rested) {
       return
     }
+
+    rested = true
 
     emitter.emit('scrollEnd', toValue(instanceId))
     emitter.emit('afterSnap', {
@@ -89,6 +94,7 @@ export function useCarouselScroll(instanceId: MaybeRef<string>) {
 
   function onScroll() {
     track()
+    rested = false
 
     if (typeof window !== 'undefined' && !('onscrollend' in window)) {
       debouncedSettle()

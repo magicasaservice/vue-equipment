@@ -27,7 +27,10 @@ export enum CarouselId {
   InteractionRubberbandCatch = 'interaction-rubberband-catch',
   InteractionRubberbandLetGo = 'interaction-rubberband-let-go',
   EventsSnapTo = 'events-snap-to',
+  EventsSnapOnce = 'events-snap-once',
+  EventsSnapPress = 'events-snap-press',
   EventsDrag = 'events-drag',
+  EventsDragRest = 'events-drag-rest',
 }
 
 export enum TestId {
