@@ -16,6 +16,7 @@ import { useCarouselState } from './useCarouselState'
 import { useCarouselLoop, wrapThreshold } from './useCarouselLoop'
 import { damp, project, round } from '../../utils/physics'
 import { shouldSnap, snapVelocity } from '../../utils/snap'
+import { measureScale } from '../../utils/scale'
 import type {MaybeRef} from 'vue';
 import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
 
@@ -32,6 +33,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
   const mappedTrackEl = computed(() => state.trackEl)
 
   let pointerStart = 0
+  let scale = 1
   let target = 0
   let velocity = 0
   let virtualScroll = 0
@@ -235,7 +237,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
   function onPointerMove(e: PointerEvent) {
     e.preventDefault()
 
-    const deltaX = pointerStart - e.clientX
+    const deltaX = (pointerStart - e.clientX) / scale
 
     target += deltaX
     velocity += deltaX
@@ -325,6 +327,7 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
         rubberbandInverse(Math.abs(state.rubberbandOffset), state.overshoot)
     target = virtualScroll
     pointerStart = e.clientX
+    scale = measureScale(el)
     velocity = 0
     distanceMoved = 0
 

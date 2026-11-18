@@ -31,6 +31,10 @@ export enum CarouselId {
   EventsSnapPress = 'events-snap-press',
   EventsDrag = 'events-drag',
   EventsDragRest = 'events-drag-rest',
+  EdgeEntrance = 'edge-entrance',
+  EdgeZoom = 'edge-zoom',
+  EdgeLoop = 'edge-loop',
+  EdgeDrag = 'edge-drag',
 }
 
 export enum TestId {

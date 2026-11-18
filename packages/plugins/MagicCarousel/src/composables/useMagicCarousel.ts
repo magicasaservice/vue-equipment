@@ -1,6 +1,7 @@
 import { computed, toValue  } from 'vue'
 import { useMagicEmitter } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './private/useCarouselState'
+import { measureScale } from '../utils/scale'
 import type {MaybeRef} from 'vue';
 
 export function useMagicCarousel(id: MaybeRef<string>) {
@@ -30,11 +31,14 @@ export function useMagicCarousel(id: MaybeRef<string>) {
     const left = el.scrollLeft
     const positions = state.snapPositions
 
+    // The track rests on whole screen pixels and reads its position rounded
+    const tolerance = 1 + 1 / measureScale(el)
+
     if (direction === 'previous') {
       for (let i = positions.length - 1; i >= 0; i--) {
         const position = positions[i]
 
-        if (position !== undefined && position < left - 1) {
+        if (position !== undefined && position < left - tolerance) {
           return i
         }
       }
@@ -42,7 +46,7 @@ export function useMagicCarousel(id: MaybeRef<string>) {
       for (let i = 0; i < positions.length; i++) {
         const position = positions[i]
 
-        if (position !== undefined && position > left + 1) {
+        if (position !== undefined && position > left + tolerance) {
           return i
         }
       }

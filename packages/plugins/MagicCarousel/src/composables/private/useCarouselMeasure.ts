@@ -7,6 +7,7 @@ import {
 } from '@maas/vue-equipment/plugins/MagicError'
 import { useCarouselState } from './useCarouselState'
 import { wrapThreshold } from './useCarouselLoop'
+import { measureScale } from '../../utils/scale'
 import type {MaybeRef} from 'vue';
 import type {UseMagicErrorReturn} from '@maas/vue-equipment/plugins/MagicError';
 
@@ -115,6 +116,9 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
     const { width, gap, scrollPaddingStart, scrollPaddingEnd } =
       state.measurements
 
+    // Rects are in screen pixels, the track scrolls in its own
+    const scale = measureScale(el)
+
     const snapPositions: Array<number> = []
 
     // One seamless repetition of the content: every slide plus one gap each
@@ -129,10 +133,11 @@ export function useCarouselMeasure(instanceId: MaybeRef<string>) {
       const rect = slide.el.getBoundingClientRect()
       const styles = window.getComputedStyle(slide.el)
 
-      slide.width = rect.width
+      slide.width = rect.width / scale
       period += slide.width + gap
 
-      const left = rect.left - trackRect.left + el.scrollLeft - slide.loopOffset
+      const left =
+        (rect.left - trackRect.left) / scale + el.scrollLeft - slide.loopOffset
 
       const alignValues = styles.scrollSnapAlign.split(' ')
       const align = alignValues[alignValues.length - 1]
