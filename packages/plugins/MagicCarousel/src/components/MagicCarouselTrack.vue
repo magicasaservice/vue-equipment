@@ -122,6 +122,13 @@ onBeforeUnmount(() => {
   scroll-snap-type: none;
 }
 
+.magic-carousel-track[data-scrolling='true'] {
+  clip-path: inset(
+    0 max(0px, var(--mc-rubberband-x, 0px)) 0
+      max(0px, calc(-1 * var(--mc-rubberband-x, 0px)))
+  );
+}
+
 .magic-carousel-track[data-loop='true'] {
   --mc-slide-basis: 100cqi;
 

@@ -2,7 +2,9 @@ import { computed, toValue, watch, onScopeDispose  } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import {
   rubberband,
+  rubberbandInverse,
   interpolate,
+  clampValue,
   guardedSetPointerCapture,
   guardedReleasePointerCapture,
 } from '@maas/vue-equipment/utils'
@@ -12,7 +14,7 @@ import {
 } from '@maas/vue-equipment/plugins/MagicEmitter'
 import { useCarouselState } from './useCarouselState'
 import { useCarouselLoop, wrapThreshold } from './useCarouselLoop'
-import { damp, round } from '../../utils/physics'
+import { damp, project, round } from '../../utils/physics'
 import { shouldSnap, snapVelocity } from '../../utils/snap'
 import type {MaybeRef} from 'vue';
 import type {MagicEmitterEvents} from '@maas/vue-equipment/plugins/MagicEmitter';
@@ -140,23 +142,36 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
     )
   }
 
-  function applyRubberband() {
+  // The signed distance past either end of the scroll range
+  function toOverscroll(value: number) {
     const { range, direction } = state.measurements
-    const edge = range * direction
+    const end = range * direction
 
-    let offset = 0
+    return value - clampValue(value, Math.min(end, 0), Math.max(end, 0))
+  }
 
-    if (virtualScroll * direction <= 0) {
-      offset =
-        Math.sign(-virtualScroll) *
-        rubberband(Math.abs(virtualScroll), state.overshoot)
-    } else if (virtualScroll * direction > edge * direction) {
-      offset =
-        Math.sign(edge - virtualScroll) *
-        rubberband(Math.abs(virtualScroll - edge), state.overshoot)
+  function applyRubberband() {
+    const overscroll = toOverscroll(virtualScroll)
+    const distance = Math.abs(overscroll)
+
+    // The band only resists a held pointer, once released
+    // the overscroll is the visible offset itself
+    const offset = state.dragging
+      ? rubberband(distance, state.overshoot)
+      : Math.min(distance, state.overshoot)
+
+    state.rubberbandOffset = round(overscroll > 0 ? -offset : offset, 3)
+  }
+
+  // The pointer pulls much further than the band stretches, let go
+  // it relaxes from where the track visibly is
+  function releaseRubberband() {
+    virtualScroll -= toOverscroll(virtualScroll) + state.rubberbandOffset
+
+    if (toOverscroll(target)) {
+      target = virtualScroll
+      velocity = 0
     }
-
-    state.rubberbandOffset = round(offset, 3)
   }
 
   function tick(t: number) {
@@ -247,25 +262,31 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
 
     state.dragging = false
 
-    if (distanceMoved <= state.options.threshold.lock) {
+    const moved = distanceMoved > state.options.threshold.lock
+
+    // A caught band relaxes again, dragged or not
+    if (!moved && !state.rubberbandOffset) {
       return
+    }
+
+    if (!state.options.loop) {
+      releaseRubberband()
     }
 
     velocity *= releaseMomentum
 
-    const { range, direction } = state.measurements
-    const end = range * direction
+    const { friction } = state.options.animation.momentum
     const outOfBounds =
-      target * direction < 0 || target * direction > end * direction
+      !state.options.loop &&
+      toOverscroll(project(target, velocity, friction)) !== 0
 
-    if (
-      shouldSnap({ target, velocity, state }) ||
-      (!state.options.loop && outOfBounds)
-    ) {
+    if (shouldSnap({ target, velocity, state }) || outOfBounds) {
       velocity = snapVelocity({ target, velocity, state })
     }
 
-    preventNextClick()
+    if (moved) {
+      preventNextClick()
+    }
 
     if (dragStarted) {
       dragStarted = false
@@ -286,8 +307,12 @@ export function useCarouselDrag(instanceId: MaybeRef<string>) {
 
     cancelInterpolation()
 
-    virtualScroll = el.scrollLeft
-    target = el.scrollLeft
+    // A relaxing band is caught at the pull that stretches it this far
+    virtualScroll =
+      el.scrollLeft -
+      Math.sign(state.rubberbandOffset) *
+        rubberbandInverse(Math.abs(state.rubberbandOffset), state.overshoot)
+    target = virtualScroll
     pointerStart = e.clientX
     velocity = 0
     distanceMoved = 0

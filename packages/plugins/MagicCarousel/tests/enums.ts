@@ -21,6 +21,11 @@ export enum CarouselId {
   InteractionDraggable = 'interaction-draggable',
   InteractionDrag = 'interaction-drag',
   InteractionRubberband = 'interaction-rubberband',
+  InteractionRubberbandRelax = 'interaction-rubberband-relax',
+  InteractionRubberbandWindow = 'interaction-rubberband-window',
+  InteractionRubberbandFling = 'interaction-rubberband-fling',
+  InteractionRubberbandCatch = 'interaction-rubberband-catch',
+  InteractionRubberbandLetGo = 'interaction-rubberband-let-go',
   EventsSnapTo = 'events-snap-to',
   EventsDrag = 'events-drag',
 }
